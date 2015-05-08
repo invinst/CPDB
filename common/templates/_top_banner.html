@@ -1,0 +1,16 @@
+{% load i18n %}
+{% load url from future %}
+<div class="page-header" id="banner">
+    {% if show_top_banner %}
+        <div class="row">
+            <div class="col-lg-6">
+                <h1><a href="{% url 'homepage' %}" title="{% trans "CPDB" %}" rel="home">{% trans "CPDB" %}</a>
+                </h1>
+
+                <p class="lead">
+                    {% trans "CPDB" %}
+                </p>
+            </div>
+        </div>
+    {% endif %}
+</div>

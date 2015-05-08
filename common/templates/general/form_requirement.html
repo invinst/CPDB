@@ -1,0 +1,8 @@
+{% load staticfiles %}
+{% if datetimepicker %}
+    <script>
+        jQuery("head").append("<link rel=\"stylesheet\" href=\"{% static 'css/bootstrap-datetimepicker.min.css' %}\">");
+    </script>
+    <script type="text/javascript" src="{% static 'js/moment.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/bootstrap-datetimepicker.min.js' %}"></script>
+{% endif %}

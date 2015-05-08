@@ -1,0 +1,16 @@
+machine:
+  python:
+    version: 3.4.1
+  environment:
+    DJANGO_SETTINGS_MODULE: cpdb.settings.test.circleci
+dependencies:
+  pre:
+    - npm install -g bower
+test:
+  pre:
+    - python manage.py bower_install
+    - python manage.py collectstatic --noinput
+  override:
+    - coverage run manage.py test --noinput
+  post:
+    - coverage report --omit="/home/ubuntu/virtualenvs/*,common/json_serializer.py"

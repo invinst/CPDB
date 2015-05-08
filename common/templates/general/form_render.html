@@ -1,0 +1,41 @@
+{% load bootstrap %}
+{% form_requirements form %}
+{% for error in form.non_field_errors %}
+    <div class="alert alert-danger">
+        {{ error }}
+    </div>
+{% endfor %}
+{% for field in form %}
+    {% if field.is_hidden %}
+        {{ field }}
+    {% else %}
+        <div class="form-group{% if field.errors %} has-error{% endif %}">
+            <label for="{{ field.auto_id }}" class="col-lg-3 control-label">{{ field.label }}</label>
+
+            <div class="col-lg-9">
+                {% if field.field.datepicker %}
+                    <div id="datetimepicker_{{ field.auto_id }}" class="input-group date" data-date-format="YYYY-MM-DD">
+                        {{ field }}
+					    <span class="input-group-addon">
+					      <span data-time-icon="icon-time" data-date-icon="glyphicon glyphicon-calendar">
+					      </span>
+					    </span>
+                    </div>
+                    <script type="text/javascript">
+                        jQuery(function () {
+                            jQuery('#datetimepicker_{{ field.auto_id }}').datetimepicker();
+                        });
+                    </script>
+                {% else %}
+                    {{ field }}
+                {% endif %}
+                {% if field.errors %}
+                    <div class="alert alert-danger">
+                        {{ field.errors }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+{% endfor %}
+{{ form.media }}

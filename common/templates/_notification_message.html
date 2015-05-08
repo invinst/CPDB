@@ -1,0 +1,7 @@
+{% if "template" in message.tags_array %}
+    {% include message.message %}
+{% else %}
+    <div class="alert alert-dismissable alert-{{ message.tags }}">
+        {{ message }}
+    </div>
+{% endif %}

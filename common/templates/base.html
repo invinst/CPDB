@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+{% load i18n %}
+{% load staticfiles %}
+<html>
+<head>
+    <title>{% block title %}Home{% endblock %} - {{ SITE_NAME }}</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="cache-control" content="public" />
+    <meta name="robots" content="follow, all" />
+    <meta name="language" content="{{ LANGUAGE_CODE }}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description"
+          content="{% block meta-description %}{% trans 'CPDB' %}{% endblock %}" />
+    <meta name="keywords" content="{% block meta-keywords %}{% endblock %}" />
+    <meta name="author" content="Antipro.VN" />
+    {% block meta %}{% endblock %}
+    <link rel="pingback" href="/xmlrpc/" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="home" href="/" />
+    {% block head-link %}
+        <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'toastr/toastr.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+    {% endblock %}
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="{% static 'jquery-cookie/jquery.cookie.js' %}"></script>
+    <script src="{% static 'js/head_define.js' %}"></script>
+</head>
+<body id="{% block page_id %}body{% endblock %}">
+{% include '_top_nav.html' %}
+<div class="container">
+    {% include '_top_banner.html' %}
+    {% block slider %}{% endblock %}
+    <div id="content" class="hfeed">
+        {% include '_notification.html' %}
+
+        {% block content %}
+
+        {% endblock %}
+    </div>
+    <footer>
+        <div class="row">
+            <div class="col-lg-12">
+                {% include '_footer_nav.html' %}
+                <p>
+                    {% blocktrans %}Powered by <a href="/">CPDB</a>{% endblocktrans %}
+                </p>
+            </div>
+        </div>
+    </footer>
+</div>
+
+{% block footerjs %}
+    <script src="{% static 'js/head_define.js' %}"></script>
+    <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'toastr/toastr.min.js' %}"></script>
+    <script src="{% static 'js/foot_define.js' %}"></script>
+{% endblock %}
+</body>
+</html>
