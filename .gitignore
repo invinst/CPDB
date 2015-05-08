@@ -60,3 +60,4 @@ target/
 .idea/
 *.sqlite3
 bower_components/
+static/
