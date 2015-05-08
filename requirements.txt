@@ -1,3 +1,8 @@
 Django==1.8.1
 dj-database-url==0.3.0
+django-bower==5.0.4
+django-extensions==1.5.3
+mock==1.0.1
 psycopg2==2.6
+six==1.9.0
+sure==1.2.10
