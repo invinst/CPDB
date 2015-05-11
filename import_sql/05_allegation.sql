@@ -15,6 +15,6 @@ COPY common_allegation (id,
     incident_date,
     start_date,
     end_date,
-    investigator) FROM '/Users/eastagile/code/CPDB/data.csv' (DELIMITER ',', QUOTE '"', FORMAT 'csv');
+    investigator) FROM '/Users/eastagile/code/CPDB/test_data/data_allegation.csv' (DELIMITER ',', QUOTE '"', FORMAT 'csv');
 
 

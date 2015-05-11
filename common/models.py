@@ -20,6 +20,29 @@ class Officer(Model):
     star = FloatField(null=True)
 
 
+class OfficerHistory(Model):
+    officer = ForeignKey(Officer, null=True)
+    unit = CharField(max_length=5, null=True)
+    rank = CharField(max_length=5, null=True)
+    star = FloatField(null=True)
+    as_of = DateField(null=True)
+
+
+class PoliceWitness(Model):
+    pwit_id = IntegerField(primary_key=True)
+    crid = CharField(max_length=30, null=True)
+    gender = CharField(max_length=1, null=True)
+    race = CharField(max_length=50, null=True)
+    officer = ForeignKey(Officer, null=True)
+
+
+class ComplainingWitness(Model):
+    cwit_id = IntegerField(primary_key=True)
+    crid = CharField(max_length=30, null=True)
+    gender = CharField(max_length=1, null=True)
+    race = CharField(max_length=50, null=True)
+
+
 class AllegationCategory(Model):
     cat_id = CharField(primary_key=True, max_length=255)
     category = CharField(max_length=255, null=True)
