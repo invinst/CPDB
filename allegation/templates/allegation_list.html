@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load render_table from django_tables2 %}
+
+{% block head-link %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'django_tables2/themes/paleblue/css/screen.css' %}" />
+{% endblock %}
+
+{% block content %}
+
+    {% render_table allegation_list %}
+
+{% endblock %}

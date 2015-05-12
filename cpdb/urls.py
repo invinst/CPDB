@@ -15,9 +15,9 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
-from django.views.generic.base import TemplateView
+from allegation.views import AllegationListView
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', TemplateView.as_view(template_name='homepage.html'), name='homepage'),
+    url(r'^$', AllegationListView.as_view(), name='homepage'),
 ]
