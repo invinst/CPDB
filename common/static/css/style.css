@@ -1,0 +1,25 @@
+body {
+    padding-top: 50px;
+}
+
+.page-header {
+    margin-top: 20px;
+}
+
+button a:hover {
+    text-decoration: none
+}
+
+.form-group ul.errorlist {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.form-group .alert {
+    margin-bottom: 0;
+}
+
+footer {
+    margin: 3em 0;
+}
