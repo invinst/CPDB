@@ -20,5 +20,5 @@ from allegation.views import AllegationListView
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', AllegationListView.as_view(), name='homepage'),
-    url(r'^', include('allegation.urls')),
+    url(r'^', include('allegation.urls', namespace='allegation')),
 ]
