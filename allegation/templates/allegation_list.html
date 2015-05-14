@@ -41,15 +41,9 @@
         {
             source: function (query, syncResults) {
                 // Add searchable fields here
-                syncResults([
-                    'officer_first',
-                    'officer_last',
-                    'category',
-                    'start_date',
-                    'end_date',
-                    'crid'
-                ]);
-            }
+                syncResults({{ searchable_fields | safe }});
+            },
+            limit: {{ searchable_fields | length }}
         });
 
         // On selecting a field
