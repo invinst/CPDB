@@ -5,11 +5,13 @@
 {% block head-link %}
     {{ block.super }}
     <link rel="stylesheet" href="{% static 'django_tables2/themes/paleblue/css/screen.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/allegation/search-box.css' %}" />
 {% endblock %}
 
 {% block content %}
 
-    <input id="search-box" type="text">
+    <div class="autocomplete-search">
+    </div>
 
     {% render_table allegation_list %}
 
@@ -19,26 +21,67 @@
     {{ block.super }}
     <script src="{% static 'typeahead.js/dist/typeahead.bundle.min.js' %}"></script>
     <script>
-    function createBloodhound(field) {
-        return new Bloodhound({
-            datumTokenizer: Bloodhound.tokenizers.whitespace,
-            queryTokenizer: Bloodhound.tokenizers.whitespace,
-            prefetch: '{{ autocomplete_json_url }}?field=' + field,
-            remote: {
-                url: '{{ autocomplete_json_url }}?field=' + field + '&query=%QUERY',
-                wildcard: '%QUERY'
+    // Create the first autocomplete, which suggests the fields to search
+    createFieldAutocomplete();
+
+    // Code to create a 'field' autocomplete
+    function createFieldAutocomplete() {
+        // Append the <input> which will suggest search fields
+        var searchElem = $('<input type="text" class="field-search">');
+        $('.autocomplete-search').append(searchElem);
+
+        // Init Typeahead.js for said <input>
+        searchElem.typeahead({
+            highlight: true,
+            classNames: {
+                menu: 'dropdown-menu'
             }
+        },
+        {
+            source: function (query, syncResults) {
+                // Add searchable fields here
+                syncResults([
+                    'officer_first',
+                    'officer_last'
+                ]);
+            }
+        });
+
+        // On selecting a field
+        searchElem.bind('typeahead:select', function (ev, suggestion) {
+            // Create an autocomplete for that field, plus a new field autocomplete after it
+            createValueAutocomplete(suggestion);
+            createFieldAutocomplete();
         });
     }
 
-    $('#search-box').typeahead({
-        highlight: true
-    },
-    {
-        source: createBloodhound('officer_first')
-    },
-    {
-        source: createBloodhound('officer_last')
-    });
+    // Code to create a 'value' autocomplete for a certain field
+    function createValueAutocomplete(field) {
+
+        function createBloodhound(field) {
+            return new Bloodhound({
+                datumTokenizer: Bloodhound.tokenizers.whitespace,
+                queryTokenizer: Bloodhound.tokenizers.whitespace,
+                prefetch: '{{ autocomplete_json_url }}?field=' + field,
+                remote: {
+                    url: '{{ autocomplete_json_url }}?field=' + field + '&query=%QUERY',
+                    wildcard: '%QUERY'
+                }
+            });
+        }
+
+        var searchElem = $('<input type="text" class="' + field + '-search">');
+        $('.autocomplete-search').append(searchElem);
+
+        searchElem.typeahead({
+            highlight: true,
+            classNames: {
+                menu: 'dropdown-menu'
+            }
+        },
+        {
+            source: createBloodhound(field)
+        });
+    }
     </script>
 {% endblock %}
