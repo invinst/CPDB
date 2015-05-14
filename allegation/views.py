@@ -1,36 +1,31 @@
 import json
+import re
+
 from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
 from django.core.urlresolvers import reverse
-from django.db import connection
 from django.db.models.query_utils import Q
-from django.forms.models import model_to_dict
 from django.http.response import HttpResponse
 from django.views.generic.base import View
 from django.views.generic.list import ListView
-import re
+
 from common.json_serializer import JSONSerializer
 from common.models import Allegation, Officer, AllegationCategory
 
 
-autocomplete_searchable_fields = [
-    'officer_first',
-    'officer_last',
-    'category',
-    'start_date',
-    'end_date',
-    'crid',
-    'final_outcome',
+autocomplete_fields = [
+    Officer._meta.get_field('officer_first'),
+    Officer._meta.get_field('officer_last'),
+    AllegationCategory._meta.get_field('category'),
+    Allegation._meta.get_field('start_date'),
+    Allegation._meta.get_field('end_date'),
+    Allegation._meta.get_field('crid'),
+    Allegation._meta.get_field('final_outcome'),
 ]
-autocomplete_search_models = {
-    'officer_first': Officer,
-    'officer_last': Officer,
-    'category': AllegationCategory,
-    'start_date': Allegation,
-    'end_date': Allegation,
-    'crid': Allegation,
-    'final_outcome': Allegation,
-}
+autocomplete_field_verbose = [x.verbose_name for x in autocomplete_fields]
+autocomplete_field_names = [x.name for x in autocomplete_fields]
+autocomplete_field_verbose_to_names = dict(zip(autocomplete_field_verbose, autocomplete_field_names))
+autocomplete_field_name_to_models = {x.name: x.model for x in autocomplete_fields}
 
 
 class AllegationListView(ListView):
@@ -40,16 +35,16 @@ class AllegationListView(ListView):
     def get_context_data(self, **kwargs):
         context = super(AllegationListView, self).get_context_data(**kwargs)
         context['autocomplete_json_url'] = reverse('allegation:autocomplete_json')
-        context['searchable_fields'] = autocomplete_searchable_fields
+        context['searchable_fields'] = autocomplete_field_verbose
         return context
 
 
 class AllegationAutocompleteJSONView(View):
     def get(self, request):
         suggestions = []
-        if 'field' in request.GET and request.GET.get('field') in autocomplete_searchable_fields:
-            field = request.GET.get('field')
-            model = autocomplete_search_models[field]
+        if 'field' in request.GET and request.GET.get('field') in autocomplete_field_verbose:
+            field = autocomplete_field_verbose_to_names[request.GET.get('field')]
+            model = autocomplete_field_name_to_models[field]
 
             if 'query' in request.GET:
                 suggestions = model.objects.all().filter(**{
