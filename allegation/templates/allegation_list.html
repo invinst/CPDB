@@ -33,6 +33,7 @@
         // Init Typeahead.js for said <input>
         searchElem.typeahead({
             highlight: true,
+            minLength: 0,
             classNames: {
                 menu: 'dropdown-menu'
             }
@@ -42,7 +43,11 @@
                 // Add searchable fields here
                 syncResults([
                     'officer_first',
-                    'officer_last'
+                    'officer_last',
+                    'category',
+                    'start_date',
+                    'end_date',
+                    'crid'
                 ]);
             }
         });
