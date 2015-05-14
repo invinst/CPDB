@@ -30,7 +30,7 @@ class AllegationAutocompleteJSONView(View):
             if 'query' in request.GET:
                 suggestions = Officer.objects.all().filter(**{
                     field + '__icontains': request.GET.get('query')
-                }).values_list(field)
+                }).values_list(field, flat=True)
             else:
                 suggestions = Officer.objects.all()[:10].values_list(field)
 
