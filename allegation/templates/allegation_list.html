@@ -48,6 +48,8 @@
 
         // On selecting a field
         searchElem.bind('typeahead:select', function (ev, suggestion) {
+            $(this).attr('size', suggestion.length);
+
             // Create an autocomplete for that field, plus a new field autocomplete after it
             createValueAutocomplete(suggestion);
             createFieldAutocomplete();
@@ -80,6 +82,9 @@
         },
         {
             source: createBloodhound(field)
+        });
+        searchElem.bind('typeahead:select', function (ev, suggestion) {
+            $(this).attr('size', suggestion.length);
         });
     }
     </script>

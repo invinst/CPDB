@@ -2,3 +2,9 @@
 {
     margin-left: 10px;
 }
+
+.autocomplete-search
+{
+    font-family: "courier new", monospace;
+    font-size: medium;
+}
