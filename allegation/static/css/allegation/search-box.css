@@ -53,3 +53,7 @@
     background: gray;
     color: white;
 }
+
+.dataTables_wrapper .dataTables_filter{
+    display: none;
+}
