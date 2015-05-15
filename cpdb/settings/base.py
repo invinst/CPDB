@@ -134,7 +134,12 @@ BOWER_INSTALLED_APPS = (
     'toastr#2.1.0',
     'jquery-validation#1.13.1',
     'bootstrap-toggle#2.2.0',
+    'bootstrap-material-design#0.3.0',
+    'datatables#1.10.7',
+    'datatables-scroller#1.2.2',
 )
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR + '/media/'
+
+ALLEGATION_LIST_ITEM_COUNT = 100
