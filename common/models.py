@@ -49,18 +49,14 @@ class AllegationCategory(models.Model):
     allegation_name = models.CharField(max_length=255, null=True)
 
     def __str__(self):
-        return self.allegation_name
+        return str(self.allegation_name)
 
-class Neighborhood(models.Model):
+
+class Area(models.Model):
     name = models.CharField(max_length=100)
+    type = models.CharField(max_length=30,choices=[['beat','Beat'],['neighborhood','Neighborhood'],['school-grounds','School Grounds'],['ward','Ward'],['police-districts','Police District']])
     polygon = models.MultiPolygonField(srid=4326, null=True, blank=True)
     objects = models.GeoManager()
-
-class Beat(models.Model):
-    name = models.CharField(max_length=100)
-    polygon = models.MultiPolygonField(srid=4326, null=True, blank=True)
-    objects = models.GeoManager()
-
 
 class Allegation(models.Model):
     record_id = models.IntegerField(null=True)
@@ -72,8 +68,7 @@ class Allegation(models.Model):
     final_finding = models.CharField(max_length=255, null=True)
     final_outcome = models.CharField(max_length=5, null=True)
 
-    beat = models.ForeignKey('Beat', null=True, blank=True)
-    neighborhood = models.ForeignKey('Neighborhood', null=True, blank=True)
+    areas = models.ManyToManyField('Area',blank=True)
     location = models.CharField(max_length=20, null=True)
     add1 = models.IntegerField(null=True)
     add2 = models.CharField(max_length=255, null=True)
@@ -84,6 +79,21 @@ class Allegation(models.Model):
     investigator = models.CharField(max_length=255, null=True)
     point = models.PointField(srid=4326,null=True,blank=True)
     objects = models.GeoManager()
+
+    @property
+    def beat(self):
+        beats = self.areas.filter(type='beat')
+        if beats:
+            return beats[0]
+        return False
+
+    @property
+    def neighborhood(self):
+        n = self.areas.filter(type='neighborhood')
+        if n:
+            return n[0]
+        return False
+
 
     def save(self,*args,**kwargs):
         if self.location and not self.point:

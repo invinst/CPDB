@@ -15,18 +15,18 @@ class ComplainingWitnessAdmin(admin.ModelAdmin):
 
 class AllegationAdmin(admin.ModelAdmin):
     search_fields = ['officer__officer_last','officer__officer_first']
-    list_filter = ['beat','officer__race','officer__gender','city','cat']
-    
-    
+    list_filter = ['officer__race','officer__gender','city','cat']
+
+
 class AllegationInline(admin.StackedInline):
     model = Allegation
     extra = 0
-    
+
 
 class OfficerHistoryInline(admin.StackedInline):
     model = OfficerHistory
     extra = 0
-    
+
 
 class OfficerAdmin(admin.ModelAdmin):
     list_display = ['id','officer_first','officer_last','gender','race']

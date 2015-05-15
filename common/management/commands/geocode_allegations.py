@@ -4,7 +4,7 @@ import json
 from django.core.management.base import BaseCommand
 from django.db import connection
 from django.conf import settings
-from common.models import Allegation, Neighborhood
+from common.models import Allegation, Area
 from django.contrib.gis.geos import Point
 
 class Command(BaseCommand):
@@ -22,14 +22,14 @@ class Command(BaseCommand):
         data = response.read().decode('utf-8')
         ret = json.loads(data)
         for feature in ret['features']:
-            if feature['relevance'] > 0.9:
+            if feature['relevance'] > 0.80:
                 return Point(*feature['geometry']['coordinates'])
         return False
 
 
     def handle(self, *args, **options):
         counter = 0
-        for allegation in Allegation.objects.filter():
+        for allegation in Allegation.objects.filter(point=None):
             city = 'Chicago'
             add1 = ""
             add2 = ""
@@ -39,12 +39,18 @@ class Command(BaseCommand):
                 add2 = allegation.add2
             if allegation.city:
                 city = allegation.city
+            point = False
+            if add1 or add2:
+                address_lookup = "%s %s, %s" % (add1,add2,city)
+                point = self.geocode_address(address_lookup,allegation.beat)
+            elif allegation.beat and allegation.beat.polygon:
+                point = allegation.beat.polygon.centroid
 
-            point = self.geocode_address("%s %s, %s" % (add1,add2,city),allegation.beat)
             if point:
-                neighborhoods = Neighborhood.objects.filter(polygon__intersects=point)
-                if neighborhoods.count() == 1:
-                    allegation.neighborhoods = neighborhoods[0]
+                print(point.y,point.x)
+                areas = Area.objects.filter(polygon__intersects=point)
+                for area in areas:
+                    allegation.areas.add(area)
 
                 allegation.point = point
                 allegation.save()
