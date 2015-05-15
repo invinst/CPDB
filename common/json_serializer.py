@@ -3,6 +3,7 @@ Created on Nov 16, 2013
 
 @author: antipro
 """
+from datetime import datetime
 from io import StringIO
 from json import dumps
 
@@ -75,6 +76,8 @@ class JSONSerializer():
         """ Called to handle everything, looks for the correct handling """
         if isinstance(object, dict):
             self.handle_dictionary(object)
+        elif object is None:
+            self.handle_simple(object)
         elif isinstance(object, list):
             self.handle_list(object)
         elif isinstance(object, Model):
@@ -89,6 +92,8 @@ class JSONSerializer():
             self.handle_simple(object)
         elif isinstance(object, tuple):
             self.handle_simple(object)
+        elif isinstance(object, datetime):
+            self.handle_simple(object.strftime("%Y-%m-%d %H:%M:%S"))
         else:
             raise UnableToSerializeError(type(object))
 
@@ -112,9 +117,10 @@ class JSONSerializer():
         """Called to handle a list"""
         self.start_array()
 
-        for value in l:
+        for i in range(len(l)):
+            value = l[i]
             self.handle_object(value)
-            if l.index(value) != len(l) - 1:
+            if i != len(l) - 1:
                 self.stream.write(u', ')
 
         self.end_array()
@@ -145,7 +151,10 @@ class JSONSerializer():
         it = 0
         for mod in queryset:
             it += 1
-            self.handle_model(mod)
+            if isinstance(mod, tuple):
+                self.handle_list(mod)
+            else:
+                self.handle_model(mod)
             if queryset.count() != it:
                 self.stream.write(u', ')
         self.end_array()

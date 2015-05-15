@@ -4,88 +4,60 @@
 
 {% block head-link %}
     {{ block.super }}
-    <link rel="stylesheet" href="{% static 'django_tables2/themes/paleblue/css/screen.css' %}" />
     <link rel="stylesheet" href="{% static 'css/allegation/search-box.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/allegation/table-scroll.css' %}" />
+    <link rel="stylesheet" href="{% static 'datatables/media/css/jquery.dataTables.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'datatables-scroller/css/dataTables.scroller.css' %}" />
 {% endblock %}
 
 {% block content %}
-
-    <div class="autocomplete-search">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="autocomplete-search form-control">
+            </div>
+        </div>
     </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table table-striped" id="allegation-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>CRID</th>
+                        <th>Incident Date</th>
+                        <th>Officer</th>
+                        <th>Misconduct</th>
+                    </tr>
+                </thead>
+                <tbody>
 
-    {% render_table allegation_list %}
-
+                </tbody>
+            </table>
+        </div>
+    </div>
 {% endblock %}
 
 {% block footerjs %}
     {{ block.super }}
     <script src="{% static 'typeahead.js/dist/typeahead.bundle.min.js' %}"></script>
     <script>
-    // Create the first autocomplete, which suggests the fields to search
-    createFieldAutocomplete();
-
-    // Code to create a 'field' autocomplete
-    function createFieldAutocomplete() {
-        // Append the <input> which will suggest search fields
-        var searchElem = $('<input type="text" class="field-search">');
-        $('.autocomplete-search').append(searchElem);
-
-        // Init Typeahead.js for said <input>
-        searchElem.typeahead({
-            highlight: true,
-            minLength: 0,
-            classNames: {
-                menu: 'dropdown-menu'
-            }
+    searchable_fields = {{ searchable_fields | safe }};
+    searchable_fields_length = {{ searchable_fields | length }};
+    autocomplete_json_url = '{{ autocomplete_json_url }}';
+    </script>
+    <script src="{% static 'datatables/media/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'datatables-scroller/js/dataTables.scroller.js' %}"></script>
+    <script src="{% static 'js/allegation/search-autocomplete.js' %}"></script>
+    <script>
+    jQuery("#allegation-table").dataTable({
+        ajax: {
+            url: '/api/allegations/data.txt',
+            dataSrc: 'allegations'
         },
-        {
-            source: function (query, syncResults) {
-                // Add searchable fields here
-                syncResults({{ searchable_fields | safe }});
-            },
-            limit: {{ searchable_fields | length }}
-        });
-
-        // On selecting a field
-        searchElem.bind('typeahead:select', function (ev, suggestion) {
-            $(this).attr('size', suggestion.length);
-
-            // Create an autocomplete for that field, plus a new field autocomplete after it
-            createValueAutocomplete(suggestion);
-            createFieldAutocomplete();
-        });
-    }
-
-    // Code to create a 'value' autocomplete for a certain field
-    function createValueAutocomplete(field) {
-
-        function createBloodhound(field) {
-            return new Bloodhound({
-                datumTokenizer: Bloodhound.tokenizers.whitespace,
-                queryTokenizer: Bloodhound.tokenizers.whitespace,
-                prefetch: '{{ autocomplete_json_url }}?field=' + field,
-                remote: {
-                    url: '{{ autocomplete_json_url }}?field=' + field + '&query=%QUERY',
-                    wildcard: '%QUERY'
-                }
-            });
-        }
-
-        var searchElem = $('<input type="text" class="' + field + '-search">');
-        $('.autocomplete-search').append(searchElem);
-
-        searchElem.typeahead({
-            highlight: true,
-            classNames: {
-                menu: 'dropdown-menu'
-            }
-        },
-        {
-            source: createBloodhound(field)
-        });
-        searchElem.bind('typeahead:select', function (ev, suggestion) {
-            $(this).attr('size', suggestion.length);
-        });
-    }
+		bServerSide: true,
+        scrollY: "400px",
+        dom: "frtiS",
+        deferRender: true
+    });
     </script>
 {% endblock %}

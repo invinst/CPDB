@@ -4,6 +4,7 @@ import re
 from django.conf import settings
 from django.core.serializers.json import DjangoJSONEncoder
 from django.core.urlresolvers import reverse
+from django.db.models.functions import Concat
 from django.db.models.query_utils import Q
 from django.http.response import HttpResponse
 from django.views.generic.base import View
@@ -59,9 +60,11 @@ class AllegationAutocompleteJSONView(View):
 class AllegationAPIView(View):
     def get(self, request):
         try:
-            page = int(request.GET.get('page', 1))
+            start = int(request.GET.get('start', 0))
         except ValueError:
-            page = 1
+            start = 0
+        length = 200
+
         allegations = Allegation.objects.all()
 
         if 'crid' in request.GET:
@@ -91,7 +94,35 @@ class AllegationAPIView(View):
         if 'end_date' in request.GET:
             allegations = allegations.filter(end_date__lte=request.GET.get('end_date'))
 
-        start = (page - 1) * settings.ALLEGATION_LIST_ITEM_COUNT
-        allegations = allegations[start:start+settings.ALLEGATION_LIST_ITEM_COUNT]
-        content = JSONSerializer().serialize(allegations)
+        fields = [
+            'id',
+            'crid',
+            'incident_date',
+            'cat',
+            'officer__officer_last',
+            'officer__officer_first'
+        ]
+
+        def concat_name(value):
+            result = list(value[0:4])
+            result.insert(2, "%s %s" % (value[4], value[5]))
+            return result
+
+        order_column = request.GET.get('order[0][column]')
+        if order_column:
+            order = fields[int(order_column)]
+            if request.GET.get('order[0][dir]') == 'asc':
+                allegations = allegations.order_by(order)
+            else:
+                allegations = allegations.order_by("-%s" % order)
+
+        display_allegations = allegations[start:start+length].values_list(*fields)
+
+        allegations_list = [concat_name(x) for x in display_allegations]
+
+        content = JSONSerializer().serialize({
+            'allegations': allegations_list,
+            'iTotalRecords': Allegation.objects.all().count(),
+            'iTotalDisplayRecords': allegations.count()
+        })
         return HttpResponse(content)
