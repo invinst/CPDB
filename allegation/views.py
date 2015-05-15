@@ -63,7 +63,7 @@ class AllegationAPIView(View):
             start = int(request.GET.get('start', 0))
         except ValueError:
             start = 0
-        length = 200
+        length = getattr(settings, 'ALLEGATION_LIST_ITEM_COUNT', 200)
 
         allegations = Allegation.objects.all()
 
@@ -97,15 +97,16 @@ class AllegationAPIView(View):
         fields = [
             'id',
             'crid',
+            'officer__id',  # placeholder for name
             'incident_date',
-            'cat',
+            'cat__allegation_name',
+            'officer__officer_first',
             'officer__officer_last',
-            'officer__officer_first'
         ]
 
         def concat_name(value):
-            result = list(value[0:4])
-            result.insert(2, "%s %s" % (value[4], value[5]))
+            result = list(value[0:5])
+            result[2] = "%s %s" % (value[5], value[6])
             return result
 
         order_column = request.GET.get('order[0][column]')

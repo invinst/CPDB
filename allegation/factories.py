@@ -1,4 +1,4 @@
-import datetime
+from django.utils import timezone
 import factory
 from faker import Faker
 from common.models import Allegation, AllegationCategory, Officer
@@ -23,6 +23,7 @@ class AllegationCategoryFactory(factory.django.DjangoModelFactory):
         django_get_or_create = ('cat_id',)
 
     cat_id = factory.Sequence(lambda n: fake.random_element(['12A', '34B']))
+    allegation_name = factory.Sequence(lambda n: fake.name())
 
 
 class AllegationFactory(factory.django.DjangoModelFactory):
@@ -34,5 +35,4 @@ class AllegationFactory(factory.django.DjangoModelFactory):
     cat = factory.SubFactory(AllegationCategoryFactory)
     officer = factory.SubFactory(OfficerFactory)
     final_outcome = factory.Sequence(lambda n: fake.random_element(['600', '601']))
-    start_date = factory.Sequence(lambda n: datetime.datetime.now())
-    end_date = factory.Sequence(lambda n: datetime.datetime.now() + datetime.timedelta(days=n % 10))
+    incident_date = factory.Sequence(lambda n: timezone.now())
