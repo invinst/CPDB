@@ -4,15 +4,20 @@ import json
 from django.core.management.base import BaseCommand
 from django.db import connection
 from django.conf import settings
-from common.models import Allegation
+from common.models import Allegation, Neighborhood
 from django.contrib.gis.geos import Point
 
 class Command(BaseCommand):
     help = 'GeoCode Allegations'
 
-    def geocode_address(self,address):
-        url = "http://api.tiles.mapbox.com/v4/geocode/mapbox.places/%(address)s.json?access_token=%(mapbox_api_key)s" % {'address':urllib.parse.quote(address),'mapbox_api_key':settings.MAP_BOX_API_KEY}
-        print(url)
+    def geocode_address(self,address,beat):
+        proximity = ""
+        if beat and beat.polygon:
+            proximity = "&proximity=%(lng)s,%(lat)s" %  {'lng':beat.polygon.centroid.x,'lat':beat.polygon.centroid.y}
+
+        url = "http://api.tiles.mapbox.com/v4/geocode/mapbox.places/%(address)s.json?access_token=%(mapbox_api_key)s%(proximity)s" \
+                     % {'address':urllib.parse.quote(address),'mapbox_api_key':settings.MAP_BOX_API_KEY,'proximity':proximity}
+        #print(url)
         response = urllib.request.urlopen(url)
         data = response.read().decode('utf-8')
         ret = json.loads(data)
@@ -23,7 +28,8 @@ class Command(BaseCommand):
 
 
     def handle(self, *args, **options):
-        for allegation in Allegation.objects.filter(point=None):
+        counter = 0
+        for allegation in Allegation.objects.filter():
             city = 'Chicago'
             add1 = ""
             add2 = ""
@@ -34,7 +40,14 @@ class Command(BaseCommand):
             if allegation.city:
                 city = allegation.city
 
-            point = self.geocode_address("%s %s, %s" % (add1,add2,city))
+            point = self.geocode_address("%s %s, %s" % (add1,add2,city),allegation.beat)
             if point:
+                neighborhoods = Neighborhood.objects.filter(polygon__intersects=point)
+                if neighborhoods.count() == 1:
+                    allegation.neighborhoods = neighborhoods[0]
+
                 allegation.point = point
                 allegation.save()
+            counter += 1
+            if counter % 100 == 0:
+                print("Geocoded %d" % counter)

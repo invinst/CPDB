@@ -72,7 +72,8 @@ class Allegation(models.Model):
     final_finding = models.CharField(max_length=255, null=True)
     final_outcome = models.CharField(max_length=5, null=True)
 
-    beat = models.ForeignKey('Beat',null=True)
+    beat = models.ForeignKey('Beat', null=True, blank=True)
+    neighborhood = models.ForeignKey('Neighborhood', null=True, blank=True)
     location = models.CharField(max_length=20, null=True)
     add1 = models.IntegerField(null=True)
     add2 = models.CharField(max_length=255, null=True)
