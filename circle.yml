@@ -13,4 +13,5 @@ test:
   override:
     - coverage run manage.py test --noinput
   post:
+    - psql -c "CREATE EXTENSION postgis;" -d circle_test
     - coverage report --omit="/home/ubuntu/virtualenvs/*,common/json_serializer.py"
