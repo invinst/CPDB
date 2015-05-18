@@ -97,8 +97,8 @@ class AllegationAPIView(View):
         fields = [
             'id',
             'crid',
-            'officer__id',  # placeholder for name
             'incident_date',
+            'officer__id',  # placeholder for name
             'cat__allegation_name',
             'officer__officer_first',
             'officer__officer_last',
@@ -106,7 +106,7 @@ class AllegationAPIView(View):
 
         def concat_name(value):
             result = list(value[0:5])
-            result[2] = "%s %s" % (value[5], value[6])
+            result[3] = "%s %s" % (value[5], value[6])
             return result
 
         order_column = request.GET.get('order[0][column]')
