@@ -5,12 +5,14 @@
     {{ block.super }}
     <link rel="stylesheet" href="{% static 'datatables/media/css/jquery.dataTables.min.css' %}" />
     <link rel="stylesheet" href="{% static 'datatables-scroller/css/dataTables.scroller.css' %}" />
+    <link rel="stylesheet" href="{% static 'jquery-ui/themes/base/all.css' %}" />
+    <link rel="stylesheet" href="{% static 'bootstrap-tagsinput/dist/bootstrap-tagsinput.css' %}" />
 {% endblock %}
 
 {% block content %}
     <div class="row">
         <div class="col-lg-12">
-            <input class="autocomplete-search form-control" />
+            <input id="cpdb-search" class="form-control" />
         </div>
     </div>
 
@@ -50,4 +52,8 @@
         deferRender: true
     });
     </script>
+
+    <script src="{% static 'jquery-ui/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'bootstrap-tagsinput/src/bootstrap-tagsinput.js' %}"></script>
+    <script src="{% static 'search/js/search.js' %}"></script>
 {% endblock %}

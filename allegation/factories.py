@@ -15,6 +15,7 @@ class OfficerFactory(factory.django.DjangoModelFactory):
 
     officer_first = factory.Sequence(lambda n: fake.first_name())
     officer_last = factory.Sequence(lambda n: fake.last_name())
+    star = factory.Sequence(lambda n: n)
 
 
 class AllegationCategoryFactory(factory.django.DjangoModelFactory):
