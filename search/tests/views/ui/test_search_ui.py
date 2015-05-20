@@ -12,6 +12,6 @@ class SearchUITestCase(BaseLiveTestCase):
         officer = OfficerFactory(officer_first='Jerry')
 
         self.visit('/')
-        self.find('#cpdb-search').send_keys('je')
+        self.find('.ui-autocomplete-input').send_keys('je')
 
         self.until(lambda: self.should_see_text(officer.officer_first))
