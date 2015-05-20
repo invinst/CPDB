@@ -23,14 +23,13 @@ class AllegationCategoryFactory(factory.django.DjangoModelFactory):
         model = AllegationCategory
         django_get_or_create = ('cat_id',)
 
-    cat_id = factory.Sequence(lambda n: fake.random_element(['12A', '34B']))
+    cat_id = factory.Sequence(lambda n: ['12A', '34B'][n % 2])
     allegation_name = factory.Sequence(lambda n: fake.name())
 
 
 class AllegationFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Allegation
-
 
     crid = factory.Sequence(lambda n: fake.random_int(min=1000))
     cat = factory.SubFactory(AllegationCategoryFactory)

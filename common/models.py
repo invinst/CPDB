@@ -22,6 +22,7 @@ class Officer(Model):
     def __str__(self):
         return "%(last)s %(first)s" % {'last':self.officer_last,'first':self.officer_first}
 
+
 class OfficerHistory(Model):
     officer = ForeignKey(Officer, null=True)
     unit = CharField(max_length=5, null=True)
@@ -36,7 +37,6 @@ class PoliceWitness(Model):
     gender = CharField(max_length=1, null=True)
     race = CharField(max_length=50, null=True)
     officer = ForeignKey(Officer, null=True)
-
 
 
 class ComplainingWitness(Model):

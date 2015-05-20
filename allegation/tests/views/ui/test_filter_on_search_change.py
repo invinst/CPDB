@@ -1,4 +1,5 @@
 from allegation.factories import OfficerFactory, AllegationCategoryFactory, AllegationFactory
+from common.models import Officer, AllegationCategory
 from common.tests.core import BaseLiveTestCase
 
 
@@ -12,6 +13,10 @@ class FilterOnSearchChangeTestCase(BaseLiveTestCase):
         self.other = AllegationFactory(officer=officer2, cat=cat2)
 
         self.visit('/')
+
+    def tearDown(self):
+        Officer.objects.all().delete()
+        AllegationCategory.objects.all().delete()
 
     def test_no_search_term(self):
         self.should_see_text(self.allegation.crid)
@@ -40,9 +45,8 @@ class FilterOnSearchChangeTestCase(BaseLiveTestCase):
         elem = lambda: self.element_by_classname_and_text('autocomplete-category', self.allegation.cat.category)
         self.until(elem)
         elem().click()
-
         self.check_remaining_allegations()
 
     def check_remaining_allegations(self):
         self.until(lambda: self.should_not_see_text(str(self.other.crid)))
-        self.should_see_text(str(self.allegation.crid))
+        self.until(lambda: self.should_see_text(str(self.allegation.crid)))

@@ -31,6 +31,7 @@ WebElement.has_class = has_class
 class TimeoutException(Exception):
     pass
 
+
 world = threading.local()
 world.browser = None
 

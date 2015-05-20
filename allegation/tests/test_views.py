@@ -83,14 +83,3 @@ class AllegationApiViewTestCase(TestCase):
 
         for row in data:
             happen_between(row).should.be.true
-
-    '''def test_filter_by_neighborhood_name(self):
-        neighborhood = 'ABC'
-        beat = beat_from_neighborhood_name(neighborhood)
-
-        response = self.client.get('/api/allegations/', {
-            'neighborhood': neighborhood
-        })
-
-        for row in json.loads(response.content.decode()):
-            row['beat'].should.equal(beat)'''
