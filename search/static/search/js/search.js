@@ -53,7 +53,7 @@
             autoFocus: true,
             source: function( request, response ) {
                 $.ajax({
-                    url: "/search/suggest",
+                    url: "/search/suggest/",
                     dataType: "json",
                     data: {
                         term: request.term
