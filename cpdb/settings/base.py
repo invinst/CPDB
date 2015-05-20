@@ -45,6 +45,7 @@ INSTALLED_APPS = (
 
     'common',
     'allegation',
+    'corsheaders',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -56,6 +57,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+
 )
 
 ROOT_URLCONF = 'cpdb.urls'
@@ -139,3 +142,4 @@ BOWER_INSTALLED_APPS = (
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR + '/media/'
+CORS_ORIGIN_ALLOW_ALL = True
