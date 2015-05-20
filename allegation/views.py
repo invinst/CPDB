@@ -21,10 +21,12 @@ class AllegationAPIView(View):
             start = int(request.GET.get('start', 0))
         except ValueError:
             start = 0
+
+        length = getattr(settings, 'ALLEGATION_LIST_ITEM_COUNT', 200)
         try:
-            length = int(request.GET.get('length', 0))
+            length = int(request.GET.get('length', length))
         except ValueError:
-            length = getattr(settings, 'ALLEGATION_LIST_ITEM_COUNT', 200)
+            pass
 
         allegations = Allegation.objects.all()
 

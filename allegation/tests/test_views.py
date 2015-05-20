@@ -64,9 +64,8 @@ class AllegationApiViewTestCase(TestCase):
                 if part in fullname:
                     return True
             return False
-
         for row in data:
-            name_contains(row[2], name).should.be.true
+            name_contains(row[3], name).should.be.true
 
     def test_filter_by_final_outcome(self):
         data = self.fetch_allegations(final_outcome=600)

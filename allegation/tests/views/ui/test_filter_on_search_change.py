@@ -44,5 +44,5 @@ class FilterOnSearchChangeTestCase(BaseLiveTestCase):
         self.check_remaining_allegations()
 
     def check_remaining_allegations(self):
-        self.should_not_see_text(str(self.other.crid))
+        self.until(lambda: self.should_not_see_text(str(self.other.crid)))
         self.should_see_text(str(self.allegation.crid))
