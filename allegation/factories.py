@@ -32,7 +32,7 @@ class AllegationFactory(factory.django.DjangoModelFactory):
         model = Allegation
 
 
-    crid = factory.Sequence(lambda n: n % 10)
+    crid = factory.Sequence(lambda n: fake.random_int(min=1000))
     cat = factory.SubFactory(AllegationCategoryFactory)
     officer = factory.SubFactory(OfficerFactory)
     final_outcome = factory.Sequence(lambda n: fake.random_element(['600', '601']))

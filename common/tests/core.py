@@ -118,6 +118,15 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
                 pass
         return False
 
+    def element_by_classname_and_text(self, class_name, text, parent="body"):
+        _xpath = ".//*[contains(@class, '%s')][normalize-space(.)='%s']" % (class_name, text)
+        for node in self.find_all(parent):
+            try:
+                return node.xpath(_xpath)
+            except NoSuchElementException:
+                pass
+        return False
+
     def button(self, button_text, parent="body"):
         return self.element_by_tagname_and_text("button", button_text, parent)
 
@@ -146,6 +155,9 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
                     f.write("\r\n")
                     f.write(self.browser.page_source)
             raise
+
+    def sleep(self, seconds):
+        time.sleep(seconds)
 
     def until(self, method, timeout=10, message='', interval=0.5):
         """Calls the method provided with the driver as an argument until the \

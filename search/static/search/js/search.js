@@ -20,6 +20,9 @@
                 }
                 widget._renderItemData(ul, item);
             });
+        },
+        _renderItem: function(ul, item) {
+            return $( "<li>").addClass('autocomplete-'+item.category).text( item.label ).appendTo( ul );
         }
     });
 
