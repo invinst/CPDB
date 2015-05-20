@@ -94,11 +94,15 @@ class JSONSerializer():
             self.handle_simple(object)
         elif isinstance(object, tuple):
             self.handle_simple(object)
+        elif object == None:
+            self.handle_simple(None)
         else:
             raise UnableToSerializeError(type(object))
 
     def handle_polygon(self,p):
         """Called to handle Polygons - NOT handled yet"""
+        if p:
+            self.stream.write(p.geojson)
         return self.handle_dictionary({})
 
     def handle_point(self,p):
