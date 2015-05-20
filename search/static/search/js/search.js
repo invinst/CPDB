@@ -26,34 +26,41 @@
 
     $(function () {
         $('#cpdb-search').tagsinput({
-            autocomplete: function($input){
-                $($input).catcomplete({
-                    source: function( request, response ) {
-                        $.ajax({
-                            url: "/search/suggest",
-                            dataType: "json",
-                            data: {
-                                term: request.term
-                            },
-                            success: function( data ) {
-                                var newData = [];
-                                $.each(data, function(i, subdata) {
-                                    newData = newData.concat(subdata);
-                                });
+            itemValue: 'value',
+            itemText: 'text'
+        });
+        cpdbAutocomplete($('#cpdb-search').tagsinput("input"));
+    });
 
-                                response( newData );
-                            }
+    function cpdbAutocomplete($input){
+        $($input).catcomplete({
+            source: function( request, response ) {
+                $.ajax({
+                    url: "/search/suggest",
+                    dataType: "json",
+                    data: {
+                        term: request.term
+                    },
+                    success: function( data ) {
+                        var newData = [];
+                        $.each(data, function(i, subdata) {
+                            newData = newData.concat(subdata);
                         });
-                    },
-                    close: function(event, ui){
-                        $($input).val('');
-                    },
-                    select: function(event, ui){
-                        $('#cpdb-search').tagsinput("add", ui.item.category + ':' + ui.item.label);
-                        $($input).val('');
+
+                        response( newData );
                     }
                 });
+            },
+            close: function(event, ui){
+                $($input).val('');
+            },
+            select: function(event, ui){
+                $('#cpdb-search').tagsinput("add", {
+                    text: ui.item.category_name + ":" + ui.item.label,
+                    value: [ui.item.category,  ui.item.label]
+                });
+                $($input).val('');
             }
         });
-    });
+    }
 })();

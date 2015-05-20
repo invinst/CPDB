@@ -12,7 +12,7 @@ from common.models import Allegation
 
 class AllegationListView(ListView):
     model = Allegation
-    template_name = 'allegation_list.html'
+    template_name = 'allegation/allegation_list.html'
 
 
 class AllegationAPIView(View):

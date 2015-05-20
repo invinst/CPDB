@@ -20,7 +20,8 @@ class Officer(Model):
     star = FloatField(null=True, verbose_name='Badge number')
 
     def __str__(self):
-        return "%(last)s %(first)s" % {'last':self.officer_last,'first':self.officer_first} 
+        return "%(last)s %(first)s" % {'last':self.officer_last,'first':self.officer_first}
+
 
 class OfficerHistory(Model):
     officer = ForeignKey(Officer, null=True)
@@ -36,7 +37,6 @@ class PoliceWitness(Model):
     gender = CharField(max_length=1, null=True)
     race = CharField(max_length=50, null=True)
     officer = ForeignKey(Officer, null=True)
-    
 
 
 class ComplainingWitness(Model):
@@ -50,7 +50,7 @@ class AllegationCategory(Model):
     cat_id = CharField(primary_key=True, max_length=255)
     category = CharField(max_length=255, null=True, verbose_name='Complaint type')
     allegation_name = CharField(max_length=255, null=True)
-    
+
     def __str__(self):
         return self.allegation_name
 
@@ -73,7 +73,7 @@ class Allegation(Model):
     start_date = DateField(null=True, verbose_name='Start date')
     end_date = DateField(null=True, verbose_name='End date')
     investigator = CharField(max_length=255, null=True)
-    
+
     def __str__(self):
-        return "%s" % self.crid 
+        return "%s" % self.crid
 
