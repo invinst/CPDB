@@ -127,18 +127,18 @@ AUTH_USER_MODEL = 'common.User'
 BOWER_COMPONENTS_ROOT = BASE_DIR
 
 BOWER_INSTALLED_APPS = (
-    'bootstrap#3.3.2',
+    'bootstrap-toggle#2.2.0',
+    'toastr#2.1.0',
+    'bootstrap-material-design#0.3.0',
     'underscore#1.7.0',
     'jquery#2.1.3',
-    'jquery-cookie#1.4.1',
-    'jquery-ui#1.11.3',
-    'toastr#2.1.0',
     'jquery-validation#1.13.1',
-    'bootstrap-toggle#2.2.0',
-    'bootstrap-material-design#0.3.0',
-    'datatables#1.10.7',
+    'jquery-ui#1.11.3',
     'datatables-scroller#1.2.2',
-    'typeahead.js#0.11.1',
+    'datatables#1.10.7',
+    'bootstrap#3.3.2',
+    'bootstrap-tagsinput#0.4.2',
+    'jquery-cookie#1.4.1',
 )
 
 MEDIA_URL = '/media/'
