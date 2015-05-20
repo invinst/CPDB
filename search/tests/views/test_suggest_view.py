@@ -11,13 +11,13 @@ class SuggestViewTestCase(SimpleTestCase):
             'term': 'je'
         })
         data = json.loads(response.content.decode())
-        data.should.contain('officer_names')
+        data.should.contain('officer_name')
 
         response = self.client.get("/search/suggest/", {
             'term': 'ge'
         })
         data = json.loads(response.content.decode())
-        data.shouldnt.contain('officer_name')
+        len(data['officer_name']).should.equal(0)
 
     def test_detect_suggest_type_officer_badge_number(self):
         OfficerFactory(star=123456)
@@ -40,7 +40,7 @@ class SuggestViewTestCase(SimpleTestCase):
             'term': 'Bonding'
         })
         data = json.loads(response.content.decode())
-        data.should.contain('category')
+        data.should.contain('cat')
 
     def test_detect_suggest_type_complaint_id_number(self):
         AllegationFactory(crid=123456)
