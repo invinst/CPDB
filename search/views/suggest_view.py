@@ -7,10 +7,11 @@ from common.models import Officer, AllegationCategory, Allegation
 
 class SuggestView(View):
     autocomplete_category_names = {
-        'officer_names': 'Officer name',
+        'officer_name': 'Officer name',
         'officer_badge_number': 'Badge number',
         'crid': 'Complaint ID',
         'category': 'Complaint type',
+        'cat': 'Allegation type',
     }
 
     def get(self, request):
@@ -33,11 +34,17 @@ class SuggestView(View):
             condition = Q(officer_first__icontains=q) | Q(officer_last__icontains=q)
             results = self.query_suggestions(Officer, condition, ['officer_first', 'officer_last'])
             results = [x[0]+' '+x[1] for x in results]
-            ret['officer_names'] = results
+            ret['officer_name'] = results
 
-            condition = Q(category__icontains=q) | Q(allegation_name__icontains=q)
+            condition = Q(category__icontains=q)
             results = self.query_suggestions(AllegationCategory, condition, ['category'])
-            ret['category'] = results
+            if len(results):
+                ret['category'] = results
+
+            condition = Q(allegation_name__icontains=q)
+            results = self.query_suggestions(AllegationCategory, condition, ['allegation_name', 'cat_id'])
+            if len(results):
+                ret['cat'] = results
 
         ret = self.to_jquery_ui_autocomplete_format(ret)
         ret = json.dumps(ret)
@@ -45,16 +52,22 @@ class SuggestView(View):
 
     def query_suggestions(self, model_cls, cond, fields_to_get, limit=5):
         flat = True if len(fields_to_get) == 1 else False
-        return list(model_cls.objects.filter(cond).values_list(*fields_to_get, flat=flat)[:limit])
+        return list(model_cls.objects.filter(cond).values_list(*fields_to_get, flat=flat).distinct()[:limit])
 
     def to_jquery_ui_autocomplete_format(self, data):
-        new_dict = {}
+        new_dict = {
+            'categories': {
+
+            }
+        }
         for category in data:
             new_dict[category] = []
+            new_dict['categories'][category] = self.autocomplete_category_names[category]
             for label in data[category]:
-                new_dict[category].append({
+                info = {
                     'category': category,
                     'category_name': self.autocomplete_category_names[category],
                     'label': label
-                })
+                }
+                new_dict[category].append(info)
         return new_dict

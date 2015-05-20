@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{% static 'jquery-ui/themes/base/all.css' %}" />
     <link rel="stylesheet" href="{% static 'bootstrap-tagsinput/dist/bootstrap-tagsinput.css' %}" />
     <link rel="stylesheet" href="{% static 'search/css/search.css' %}" />
+    <link rel="stylesheet" href="{% static 'allegation/css/table.css' %}" />
 {% endblock %}
 
 {% block content %}
@@ -42,15 +43,12 @@
     <script src="{% static 'datatables/media/js/jquery.dataTables.js' %}"></script>
     <script src="{% static 'datatables-scroller/js/dataTables.scroller.js' %}"></script>
     <script>
-    jQuery("#allegation-table").dataTable({
+    allegation_table = jQuery("#allegation-table").DataTable({
         ajax: {
             url: '/api/allegations/data.txt',
             dataSrc: 'allegations'
         },
-		bServerSide: true,
-        scrollY: "400px",
-        dom: "frtiS",
-        deferRender: true
+		bServerSide: true
     });
     </script>
 

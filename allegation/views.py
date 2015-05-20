@@ -21,7 +21,10 @@ class AllegationAPIView(View):
             start = int(request.GET.get('start', 0))
         except ValueError:
             start = 0
-        length = getattr(settings, 'ALLEGATION_LIST_ITEM_COUNT', 200)
+        try:
+            length = int(request.GET.get('length', 0))
+        except ValueError:
+            length = getattr(settings, 'ALLEGATION_LIST_ITEM_COUNT', 200)
 
         allegations = Allegation.objects.all()
 
@@ -33,14 +36,21 @@ class AllegationAPIView(View):
             cat = request.GET.get('cat')
             allegations = allegations.filter(cat=cat)
 
-        if 'officer_name' in request.GET:
-            name = request.GET.get('officer_name')
-            name = name.strip()
-            re.sub(r'\s{2,}', '\s', name)
+        if 'category' in request.GET:
+            category = request.GET.get('category')
+            allegations = allegations.filter(cat__category=category)
 
-            parts = name.split(' ')
-            for part in parts:
-                condition = Q(officer__officer_first__icontains=part) | Q(officer__officer_last__icontains=part)
+        if 'officer_name' in request.GET:
+            names = request.GET.getlist('officer_name')
+            condition = Q()
+
+            for name in names:
+                name = name.strip()
+                re.sub(r'\s{2,}', '\s', name)
+                parts = name.split(' ')
+                full_name_search = Q(Q(officer__officer_first=parts[0]) & Q(officer__officer_last=" ".join(parts[1:])))
+                condition = condition | full_name_search
+
             allegations = allegations.filter(condition)
 
         if 'final_outcome' in request.GET:
