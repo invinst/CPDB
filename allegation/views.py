@@ -4,6 +4,7 @@ from django.conf import settings
 from django.db.models.query_utils import Q
 from django.http.response import HttpResponse
 from django.views.generic.base import View
+from django.views.generic.list import ListView
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import D
 import re
@@ -13,7 +14,7 @@ import json
 #import requests
 class AllegationListView(ListView):
     model = Allegation
-    template_name = 'allegation/allegation_list.html'
+    template_name = 'allegation/home.html'
 
 class FilterAPIView(View):
     def get(self, request, *args, **kwargs):
