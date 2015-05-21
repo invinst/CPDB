@@ -9,7 +9,7 @@ from json import dumps
 
 from django.db.models import Model
 from django.db.models.query import QuerySet
-
+from django.contrib.gis.geos.collections import MultiPolygon, Polygon, Point
 
 class UnableToSerializeError(Exception):
     """ Error for not implemented classes """
@@ -26,6 +26,7 @@ class JSONSerializer():
     boolean_fields = ['BooleanField', 'NullBooleanField']
     datetime_fields = ['DatetimeField', 'DateField', 'TimeField']
     number_fields = ['IntegerField', 'AutoField', 'DecimalField', 'FloatField', 'PositiveSmallIntegerField']
+    gis_fields = ['PolygonField','PointField','MultiPolygonField']
 
     def __init__(self):
         pass
@@ -74,7 +75,11 @@ class JSONSerializer():
 
     def handle_object(self, object):
         """ Called to handle everything, looks for the correct handling """
-        if isinstance(object, dict):
+        if isinstance(object,MultiPolygon) or isinstance(object,Polygon):
+            self.handle_polygon(object)
+        elif isinstance(object,Point):
+            self.handle_point(object)
+        elif isinstance(object, dict):
             self.handle_dictionary(object)
         elif object is None:
             self.handle_simple(object)
@@ -92,10 +97,19 @@ class JSONSerializer():
             self.handle_simple(object)
         elif isinstance(object, tuple):
             self.handle_simple(object)
-        elif isinstance(object, datetime):
-            self.handle_simple(object.strftime("%Y-%m-%d %H:%M:%S"))
         else:
             raise UnableToSerializeError(type(object))
+
+    def handle_polygon(self,p):
+        """Called to handle Polygons - NOT handled yet"""
+        if p:
+            self.stream.write(p.geojson)
+        return self.handle_dictionary({})
+
+    def handle_point(self,p):
+        if p and p.x and p.y:
+            return self.handle_dictionary({'lat':p.y,'lng':p.x})
+        return self.handle_dictionary({})
 
     def handle_dictionary(self, d):
         """Called to handle a Dictionary"""
@@ -162,13 +176,21 @@ class JSONSerializer():
     def handle_field(self, mod, field):
         """Called to handle each individual (non-relational) field on an object."""
         self.handle_simple(field.name)
-        if field.get_internal_type() in self.boolean_fields:
+        internal_type = field.get_internal_type()
+        if internal_type in self.boolean_fields:
             if field.value_to_string(mod) == 'True':
                 self.stream.write(u': true')
             elif field.value_to_string(mod) == 'False':
                 self.stream.write(u': false')
             else:
                 self.stream.write(u': undefined')
+        elif internal_type in self.gis_fields:
+            value = getattr(mod,field.name)
+            self.stream.write(u": ")
+            if value:
+                self.handle_object(value)
+            else:
+                self.handle_dictionary({})
         else:
             self.stream.write(u': ')
             self.handle_simple(field.value_to_string(mod))

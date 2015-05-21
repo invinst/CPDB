@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
 
     'django_extensions',
     'djangobower',
@@ -44,7 +45,7 @@ INSTALLED_APPS = (
 
     'common',
     'allegation',
-    'search',
+    'corsheaders',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -56,6 +57,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+
 )
 
 ROOT_URLCONF = 'cpdb.urls'
@@ -85,7 +88,7 @@ WSGI_APPLICATION = 'cpdb.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'cpdb',
         'USER': 'eastagile',
         'PASSWORD': '',
@@ -143,5 +146,4 @@ BOWER_INSTALLED_APPS = (
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR + '/media/'
-
-ALLEGATION_LIST_ITEM_COUNT = 200
+CORS_ORIGIN_ALLOW_ALL = True
