@@ -22,27 +22,34 @@ class SuggestView(View):
         ret = {}
         if q[0].isnumeric():
             condition = Q(star__icontains=q)
-            results = self.query_suggestions(Officer, condition, ['star'])
+            results = self.query_suggestions(Officer, condition, ['star'], order_bys=['star'])
             results = [int(x) for x in results]
             ret['officer_badge_number'] = results
 
             if len(q) >= 4:
                 condition = Q(crid__icontains=q)
-                results = self.query_suggestions(Allegation, condition, ['crid'])
+                results = self.query_suggestions(Allegation, condition, ['crid'], order_bys=['crid'])
                 ret['crid'] = results
         else:
-            condition = Q(officer_first__icontains=q) | Q(officer_last__icontains=q)
-            results = self.query_suggestions(Officer, condition, ['officer_first', 'officer_last'])
+            # suggestion for officer name
+            parts = q.split(' ')
+            if len(parts) > 1:
+                condition = Q(officer_first__istartswith=parts[0]) & Q(officer_last__istartswith=" ".join(parts[1:]))
+            else:
+                condition = Q(officer_first__icontains=q) | Q(officer_last__icontains=q)
+            results = self.query_suggestions(Officer, condition, ['officer_first', 'officer_last'],
+                                             order_bys=('officer_first', 'officer_last'))
             results = [x[0]+' '+x[1] for x in results]
             ret['officer_name'] = results
 
             condition = Q(category__icontains=q)
-            results = self.query_suggestions(AllegationCategory, condition, ['category'])
+            results = self.query_suggestions(AllegationCategory, condition, ['category'], order_bys=['category'])
             if len(results):
                 ret['category'] = results
 
             condition = Q(allegation_name__icontains=q)
-            results = self.query_suggestions(AllegationCategory, condition, ['allegation_name', 'cat_id'])
+            results = self.query_suggestions(AllegationCategory, condition, ['allegation_name', 'cat_id'],
+                                             order_bys=['allegation_name'])
             if len(results):
                 ret['cat'] = results
 
@@ -50,9 +57,13 @@ class SuggestView(View):
         ret = json.dumps(ret)
         return HttpResponse(ret)
 
-    def query_suggestions(self, model_cls, cond, fields_to_get, limit=5):
+    def query_suggestions(self, model_cls, cond, fields_to_get, limit=5, order_bys=None):
         flat = True if len(fields_to_get) == 1 else False
-        return list(model_cls.objects.filter(cond).values_list(*fields_to_get, flat=flat).distinct()[:limit])
+        queryset = model_cls.objects.filter(cond).values_list(*fields_to_get, flat=flat)
+        if order_bys:
+            queryset = queryset.order_by(*order_bys)
+        queryset = queryset.distinct()[:limit]
+        return list(queryset)
 
     def to_jquery_ui_autocomplete_format(self, data):
         new_dict = {
