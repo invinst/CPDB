@@ -10,7 +10,7 @@
     "object-assign": "^1.0.0",
     "react": "^0.12.0",
     "react-tagsinput": "~1.3.3",
-    "leaflet.markercluster":"~0.4.0."
+    "leaflet.markercluster":"0.4.0"
   },
   "devDependencies": {
     "browserify": "^6.2.0",
@@ -18,8 +18,7 @@
     "jest-cli": "^0.4.3",
     "reactify": "^0.15.2",
     "uglify-js": "~2.4.15",
-    "watchify": "^2.1.1",
-    "leaflet.markercluster":"~0.4.0."
+    "watchify": "^2.1.1"
   },
   "scripts": {
     "start": "watchify -o allegation/static/allegation/js/bundle.js -v -d allegation/static/allegation/js/app.js",

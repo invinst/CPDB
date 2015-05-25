@@ -15,11 +15,6 @@ var CPDBApp = require('./components/CPDBApp.react');
 
 
 React.render(
-  <CPDBApp host="http://localhost:8000/" />,
+  <CPDBApp />,
   document.getElementById('cpdbapp')
 );
-
-// React.render(
-//   <TodoApp />,
-//   document.getElementById('todoapp')
-//   );

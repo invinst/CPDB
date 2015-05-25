@@ -1,11 +1,14 @@
 machine:
   python:
-    version: 3.4.1
+    version: 3.4.2
   environment:
     DJANGO_SETTINGS_MODULE: cpdb.settings.test.circleci
 dependencies:
   pre:
+    - pyenv local 2.7.9
     - npm install -g bower
+  post:
+    - pyenv local 3.4.2
 test:
   pre:
     - python manage.py bower_install

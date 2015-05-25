@@ -33,14 +33,12 @@ var Filters = React.createClass({
   render: function() {
     // This section should be hidden by default
     // and shown when there are todos.
-    var all_filters = [];
+    var allFilters = [];
     for(var key in this.state.filters){
 
-      all_filters.push(<MapFilter filterkey={key} key={key} options={this.state.filters[key].items} value={this.state.filters[key].value} />)
+      allFilters.push(<MapFilter filterkey={key} key={key} options={this.state.filters[key].items} value={this.state.filters[key].value} />)
       //FilterStore.addFilter()
     }
-
-
 
     return <div>
               <div className="row">
@@ -49,23 +47,22 @@ var Filters = React.createClass({
                 </div>
               </div>
             <div className='hidden'>
-              {all_filters}
+              {allFilters}
             </div>
           </div>
 
   },
   getQueryString: function(){
     var s = ""
-    for(var filter_name in this.state.filters){
-      console.log(this.state.filters[filter_name]);
-      var filter = this.state.filters[filter_name];
-      console.log(filter);
+    for(var filterName in this.state.filters){
+      var filter = this.state.filters[filterName];
+
       if(filter['value']){
         for(var i=0;i<filter['value'].length; i++){
           if(typeof(filter['value'][i]) == 'object'){
-            s += filter_name + "=" + filter['value'][i][1] + "&";
+            s += filterName + "=" + filter['value'][i][1] + "&";
           } else {
-            s += filter_name + "=" + filter['value'][i] + "&";
+            s += filterName + "=" + filter['value'][i] + "&";
           }
         }
 
@@ -79,14 +76,13 @@ var Filters = React.createClass({
   _onChange: function() {
     this.setState(getFilterState());
     var query_string = this.getQueryString();
-    console.log(query_string)
+
     if(query_string.length > 5){
-      $.getJSON(HOST + "/api/allegations/gis/?" + query_string,function(data){
+      $.getJSON("/api/allegations/gis/?" + query_string,function(data){
         MapStore.setMarkers(data);
       })
     }
   }
-
 
 });
 

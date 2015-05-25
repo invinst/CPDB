@@ -13,7 +13,6 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var MapConstants = require('../constants/MapConstants');
 var assign = require('object-assign');
-var HOST = 'http://localhost:8000';
 var MBX = 'pk.eyJ1Ijoic3RlZmFuZ2VvcmciLCJhIjoiVnBNOEp4byJ9.7i2N7gTV-t_QtAA-kAAlFA';
 var MAP_TYPE = 'mapbox.streets';
 var highlightStyle = {
@@ -49,8 +48,7 @@ function setArea(area_type){
         _map.removeLayer(_geo_json_layer);
     }
 
-    console.log(HOST);
-    $.get(HOST + "/api/areas/?type=" + area_type,{},function(data){
+    $.get("/api/areas/?type=" + area_type,{},function(data){
 
         _geo_json_layer = L.geoJson(data, {
           pointToLayer: L.mapbox.marker.style,
@@ -64,7 +62,6 @@ function setArea(area_type){
             layer.bindPopup(msg.join(''), {maxWidth: 200});
           }
         }).addTo(_map);
-
 
     },'json').fail(function(jqxhr, textStatus, error) {
       var err = textStatus + ", " + error;
@@ -89,8 +86,6 @@ var MapStore = assign({}, EventEmitter.prototype, {
     if(_markers){
         _map.removeLayer(_markers)
     }
-
-    var coords = []
 
     _markers = L.markerClusterGroup();
     _map.addLayer(_markers);
@@ -119,15 +114,15 @@ AppDispatcher.register(function(action) {
     case MapConstants.INIT:
       create(action);
       break;
-    case MapConstants.MAP_CHANGE_FILTER:
 
+    case MapConstants.MAP_CHANGE_FILTER:
       if(action.key == 'area_types'){
-        console.log(action);
         setArea(action.value.value)
       }
       break;
+
     default:
-      // no op
+      break;
   }
 });
 
