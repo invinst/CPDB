@@ -3,11 +3,12 @@ machine:
     version: 3.4.2
   environment:
     DJANGO_SETTINGS_MODULE: cpdb.settings.test.circleci
+    NODE_ENV: development
 dependencies:
   pre:
     - npm install -g bower
   override:
-    - export NODE_ENV=development
+    - pip install -r requirements.txt
     - pyenv local 2.7.9
     - PYTHON=python2 npm install
     - pyenv local 3.4.2
