@@ -13,7 +13,12 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var MapConstants = require('../constants/MapConstants');
 
 var FilterActions = {
-
+  replaceFilters:function(values){
+    AppDispatcher.dispatch({
+      actionType:MapConstants.MAP_REPLACE_FILTERS,
+      filters:values
+    })
+  },
   changeFilter: function(key, value) {
     AppDispatcher.dispatch({
       actionType: MapConstants.MAP_CHANGE_FILTER,

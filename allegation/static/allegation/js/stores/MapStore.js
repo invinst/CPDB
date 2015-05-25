@@ -8,7 +8,7 @@
  *
  * MapStore
  */
-
+var LeafletClusters = require("leaflet.markercluster");
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var MapConstants = require('../constants/MapConstants');
@@ -28,6 +28,7 @@ var _markers = {}
 var _map = null;
 var _polygons = null;
 var _geo_json_layer = null;
+var _heat = null;
 /**
  * Update a TODO item.
  * @param  {string} id
@@ -47,12 +48,10 @@ function setArea(area_type){
         console.log('unsetting')
         _map.removeLayer(_geo_json_layer);
     }
+
     console.log(HOST);
     $.get(HOST + "/api/areas/?type=" + area_type,{},function(data){
 
-        //FilterAction.addFilter('area',data);
-        //console.log(data);
-        //console.log(data);
         _geo_json_layer = L.geoJson(data, {
           pointToLayer: L.mapbox.marker.style,
           style: function(feature) { return feature.properties; },
@@ -61,7 +60,7 @@ function setArea(area_type){
             var triggerId = feature.properties.activityId;
             var msg = [];
             msg.push(area_type + " name: "+feature.properties.name);
-
+            layer.setZIndex(1001);
             layer.bindPopup(msg.join(''), {maxWidth: 200});
           }
         }).addTo(_map);
@@ -84,18 +83,24 @@ var MapStore = assign({}, EventEmitter.prototype, {
         console.log('unsetting')
         _map.removeLayer(_markers);
     }
-    _markers = L.geoJson(markers, {
+    if(_heat){
+        _map.removeLayer(_heat);
+    }
+    if(_markers){
+        _map.removeLayer(_markers)
+    }
+
+    var coords = []
+
+    _markers = L.markerClusterGroup();
+    _map.addLayer(_markers);
+
+    markers = L.geoJson(markers, {
           pointToLayer: L.mapbox.marker.style,
           style: function(feature) { return feature.properties; },
-          onEachFeature: function(feature, layer){
-            var date = new Date(feature.properties.startTime);
-            var triggerId = feature.properties.activityId;
-            var msg = [];
-            msg.push("Crid: "+feature.properties.name);
 
-            layer.bindPopup(msg.join(''), {maxWidth: 200});
-          }
-        }).addTo(_map);
+        })
+    _markers.addLayer(markers);
   },
   getMap: function(){
     return _map;

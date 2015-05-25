@@ -48,7 +48,7 @@ class SuggestView(View):
                 ret['category'] = results
 
             condition = Q(allegation_name__icontains=q)
-            results = self.query_suggestions(AllegationCategory, condition, ['allegation_name', 'cat_id'],
+            results = self.query_suggestions(AllegationCategory, condition, ['allegation_name','cat_id'],
                                              order_bys=['allegation_name'])
             if len(results):
                 ret['cat'] = results

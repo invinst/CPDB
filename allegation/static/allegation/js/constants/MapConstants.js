@@ -13,6 +13,7 @@ var keyMirror = require('keymirror');
 
 module.exports = keyMirror({
   MAP_CHANGE_FILTER: null,
+  MAP_REPLACE_FILTERS: null,
   MAP_ADD_FILTER: null,
   INIT: null,
 });

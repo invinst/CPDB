@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'common',
     'allegation',
     'corsheaders',
+    'search',
 )
 
 MIDDLEWARE_CLASSES = (

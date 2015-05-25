@@ -38,13 +38,6 @@ var CPDBApp = React.createClass({
   componentDidMount: function() {
     //MapStore.addChangeListener(this._onChange);
     MapStore.init();
-
-    $.getJSON(HOST + "/api/filters/",function(data){
-        $.each(data,function(i){
-            FilterAction.addFilter(i,this);
-        });
-    })
-
   },
 
   componentWillUnmount: function() {

@@ -54,7 +54,19 @@ var FilterStore = assign({}, EventEmitter.prototype, {
   emitCreate: function() {
     this.emit(CHANGE_EVENT);
   },
-
+  replaceFilters: function(filters){
+    _filters = {}
+    $.each(filters,function(){
+        if(this.value[0] in _filters){
+          _filters[this.value[0]]['value'].push(this.value[1])
+        }
+        else{
+          _filters[this.value[0]] = {'value':[this.value[1]]};
+        }
+    })
+    console.log(_filters);
+    this.emit(CHANGE_EVENT);
+  },
   /**
    * @param {function} callback
    */
@@ -71,7 +83,11 @@ AppDispatcher.register(function(action) {
 
 
   switch(action.actionType){
+    case MapConstants.MAP_REPLACE_FILTERS:
+      FilterStore.replaceFilters(action.filters)
+      break;
     case MapConstants.MAP_CHANGE_FILTER:
+
       update(action.key,action.value);
       FilterStore.emitChange()
       break;

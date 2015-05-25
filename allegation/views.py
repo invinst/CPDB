@@ -26,7 +26,6 @@ class FilterAPIView(View):
             'recc_finding':list(Allegation.objects.exclude(recc_finding=None).values_list('recc_finding',flat=True).distinct()),
             'recc_outcome':list(Allegation.objects.exclude(recc_outcome=None).values_list('recc_finding',flat=True).distinct()),
         }
-        print(filters)
         content = JSONSerializer().serialize(filters)
         return HttpResponse(content)
 
@@ -52,7 +51,6 @@ class AreaAPIView(View):
                 'geometry': polygon
             }
 
-
             area_dict['features'].append(area_json)
         content = json.dumps(area_dict)
         #validate_endpoint = 'http://geojsonlint.com/validate'
@@ -61,11 +59,16 @@ class AreaAPIView(View):
         return HttpResponse(content)
 
 class AllegationAPIView(View):
-    filters = {}
+    def __init__(self,*args,**kwargs):
+        super(AllegationAPIView,self).__init__(*args,**kwargs)
+        self.filters = {}
     def add_filter(self,field):
-        value = self.request.GET.get(field,None)
+        value = self.request.GET.getlist(field,None)
+        if len(value) > 1:
+            self.filters["%s__in" % field] = value
+
         if value:
-            self.filters[field] = value
+            self.filters[field] = value[0]
 
     def add_icontains_filter(self,field):
         value = self.request.GET.get(field,None)
@@ -73,10 +76,8 @@ class AllegationAPIView(View):
             self.filters["%s__icontains" % field] = value
 
     def get_allegations(self):
-
-
-
-        filters = ['crid','beat_id','cat','final_outcome','neighborhood_id','recc_finding','final_outcome','recc_outcome','final_finding']
+        filters = ['crid', 'beat_id', 'cat', 'final_outcome', 'neighborhood_id', 'recc_finding',
+                   'final_outcome', 'recc_outcome', 'final_finding']
         for filter_field in filters:
             self.add_filter(filter_field)
 
@@ -87,13 +88,15 @@ class AllegationAPIView(View):
         allegations = Allegation.objects.filter(**self.filters)
 
         if 'officer_name' in self.request.GET:
-            name = self.request.GET.get('officer_name')
-            name = name.strip()
-            re.sub(r'\s{2,}', '\s', name)
+            condition = Q()
+            names = self.request.GET.getlist('officer_name')
+            for name in names:
+                name = name.strip()
+                re.sub(r'\s{2,}', '\s', name)
 
-            parts = name.split(' ')
-            for part in parts:
-                condition = Q(officer__officer_first__icontains=part) | Q(officer__officer_last__icontains=part)
+                parts = name.split(' ')
+                for part in parts:
+                    condition |= Q(officer__officer_first__icontains=part) | Q(officer__officer_last__icontains=part)
             allegations = allegations.filter(condition)
 
         if 'start_date' in self.request.GET:
@@ -115,6 +118,7 @@ class AllegationAPIView(View):
             page = int(self.request.GET.get('page', 1))
         except ValueError:
             page = 1
+
         start = (page - 1) * settings.ALLEGATION_LIST_ITEM_COUNT
         allegations = allegations[start:start+settings.ALLEGATION_LIST_ITEM_COUNT]
         content = JSONSerializer().serialize(allegations)

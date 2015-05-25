@@ -9,6 +9,7 @@
 var HOST = 'http://localhost:8000';
 var React = require('react');
 var MapFilter = require('./MapFilter.react');
+var AutoComplete = require('./AutoComplete.react');
 var FilterStore = require('../stores/FilterStore');
 var MapStore = require('../stores/MapStore');
 function getFilterState(){
@@ -42,23 +43,32 @@ var Filters = React.createClass({
 
 
     return <div>
-            <div class="row">
-                <div class="col-lg-12">
-                   AutoComplete <input id="cpdb-search" class="form-control" />
+              <div className="row">
+                <div className="col-lg-12">
+                  <AutoComplete />
                 </div>
+              </div>
+            <div className='hidden'>
+              {all_filters}
             </div>
-
-            {all_filters}
           </div>
 
   },
   getQueryString: function(){
     var s = ""
     for(var filter_name in this.state.filters){
-      if(this.state.filters[filter_name]['value']
-        && this.state.filters[filter_name]['value'] != "[object Object]"
-        && this.state.filters[filter_name]['value'].indexOf("Select a") < 0){
-        s += filter_name + "=" + this.state.filters[filter_name]['value'] + "&";
+      console.log(this.state.filters[filter_name]);
+      var filter = this.state.filters[filter_name];
+      console.log(filter);
+      if(filter['value']){
+        for(var i=0;i<filter['value'].length; i++){
+          if(typeof(filter['value'][i]) == 'object'){
+            s += filter_name + "=" + filter['value'][i][1] + "&";
+          } else {
+            s += filter_name + "=" + filter['value'][i] + "&";
+          }
+        }
+
       }
     }
     return s;
@@ -69,6 +79,7 @@ var Filters = React.createClass({
   _onChange: function() {
     this.setState(getFilterState());
     var query_string = this.getQueryString();
+    console.log(query_string)
     if(query_string.length > 5){
       $.getJSON(HOST + "/api/allegations/gis/?" + query_string,function(data){
         MapStore.setMarkers(data);
