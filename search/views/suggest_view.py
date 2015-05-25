@@ -37,9 +37,9 @@ class SuggestView(View):
                 condition = Q(officer_first__istartswith=parts[0]) & Q(officer_last__istartswith=" ".join(parts[1:]))
             else:
                 condition = Q(officer_first__icontains=q) | Q(officer_last__icontains=q)
-            results = self.query_suggestions(Officer, condition, ['officer_first', 'officer_last'],
-                                             order_bys=('officer_first', 'officer_last'))
-            results = [x[0]+' '+x[1] for x in results]
+            results = self.query_suggestions(Officer, condition, ['officer_first', 'officer_last', 'allegations_count'],
+                                             order_bys=('allegations_count', 'officer_first', 'officer_last'))
+            results = ["%s %s (%s)" % x for x in results]
             ret['officer_name'] = results
 
             condition = Q(category__icontains=q)
