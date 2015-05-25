@@ -4,6 +4,9 @@ machine:
   environment:
     DJANGO_SETTINGS_MODULE: cpdb.settings.test.circleci
     NODE_ENV: development
+database:
+  post:
+    - psql -c "CREATE EXTENSION postgis;" -d circle_test
 dependencies:
   pre:
     - npm install -g bower
@@ -19,5 +22,4 @@ test:
   override:
     - coverage run manage.py test --noinput
   post:
-    - psql -c "CREATE EXTENSION postgis;" -d circle_test
     - coverage report --omit="/home/ubuntu/virtualenvs/*,common/json_serializer.py"
