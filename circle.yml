@@ -5,9 +5,11 @@ machine:
     DJANGO_SETTINGS_MODULE: cpdb.settings.test.circleci
 dependencies:
   pre:
-    - pyenv local 2.7.9
     - npm install -g bower
-  post:
+  override:
+    - export NODE_ENV=development
+    - pyenv local 2.7.9
+    - PYTHON=python2 npm install
     - pyenv local 3.4.2
 test:
   pre:
