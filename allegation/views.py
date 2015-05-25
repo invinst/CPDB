@@ -3,8 +3,8 @@ import re
 from django.conf import settings
 from django.db.models.query_utils import Q
 from django.http.response import HttpResponse
-from django.views.generic.base import View
-from django.views.generic.list import ListView
+from django.views.generic import View
+from django.views.generic import TemplateView
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import D
 import re
@@ -12,8 +12,7 @@ from common.json_serializer import JSONSerializer
 from common.models import Allegation, Area, AllegationCategory
 import json
 #import requests
-class AllegationListView(ListView):
-    model = Allegation
+class AllegationListView(TemplateView):
     template_name = 'allegation/home.html'
 
 class FilterAPIView(View):
@@ -115,14 +114,41 @@ class AllegationAPIView(View):
     def get(self, request):
         allegations = self.get_allegations()
         try:
-            page = int(self.request.GET.get('page', 1))
+            start = int(request.GET.get('start', 0))
         except ValueError:
-            page = 1
+            start = 0
 
-        start = (page - 1) * settings.ALLEGATION_LIST_ITEM_COUNT
-        allegations = allegations[start:start+settings.ALLEGATION_LIST_ITEM_COUNT]
-        content = JSONSerializer().serialize(allegations)
+        length = getattr(settings, 'ALLEGATION_LIST_ITEM_COUNT', 200)
+        try:
+            length = int(request.GET.get('length', length))
+        except ValueError:
+            pass
+
+        fields = [
+            'id',
+            'crid',
+            'incident_date',
+            'officer__id',  # placeholder for name
+            'cat__allegation_name',
+            'officer__officer_first',
+            'officer__officer_last',
+        ]
+
+        def concat_name(value):
+            result = list(value[0:5])
+            result[3] = "%s %s" % (value[5], value[6])
+            return result
+
+        display_allegations = allegations[start:start+length].values_list(*fields)
+        allegations_list = [concat_name(x) for x in display_allegations]
+
+        content = JSONSerializer().serialize({
+            'allegations': allegations_list,
+            'iTotalRecords': Allegation.objects.all().count(),
+            'iTotalDisplayRecords': allegations.count()
+        })
         return HttpResponse(content)
+
 
 class AllegationGISApiView(AllegationAPIView):
     def get(self, request, *args, **kwargs):

@@ -95,6 +95,8 @@ class JSONSerializer():
             self.handle_simple(object)
         elif isinstance(object, str):
             self.handle_simple(object)
+        elif isinstance(object, datetime):
+            self.handle_simple(object.strftime("%Y-%m-%d %H:%M:%S"))
         elif isinstance(object, tuple):
             self.handle_simple(object)
         else:
