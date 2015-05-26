@@ -1,6 +1,36 @@
 .bootstrap-tagsinput {
     width: 100%;
+    border: none;
+    box-shadow: none;
+    border-bottom: solid 1px #66aad7;
+    border-radius: 0;
+    padding: 0;
+
+    position: relative;
 }
-.ui-autocomplete{
-  z-index:100000;
+
+.bootstrap-tagsinput:after {
+    content: "\e003";
+    font-family: "Glyphicons Halflings";
+    line-height: 1;
+    display: inline-block;
+    color: #107ac0;
+
+    position: absolute;
+    right: 0;
+    top: 5px;
 }
+
+.bootstrap-tagsinput input {
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+.ui-autocomplete {
+    z-index: 100000;
+}
+
+#search-wrapper {
+    width: 1000px;
+    margin-right: 50px;
+}
+

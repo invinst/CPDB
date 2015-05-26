@@ -41,11 +41,7 @@ var Filters = React.createClass({
     }
 
     return <div>
-              <div className="row">
-                <div className="col-lg-12">
-                  <AutoComplete />
-                </div>
-              </div>
+                <AutoComplete />
             <div className='hidden'>
               {allFilters}
             </div>

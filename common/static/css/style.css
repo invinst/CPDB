@@ -1,5 +1,6 @@
 body {
     padding-top: 50px;
+    font-family: 'Vollkorn', serif;
 }
 
 .page-header {
@@ -26,4 +27,23 @@ footer {
 #map{
   width:100%;
   height:400px;
+}
+
+.navbar.navbar, .navbar-default.navbar {
+    background: #ffffff;
+    color: #000000;
+}
+
+.navbar .navbar-brand, .navbar .navbar-brand:hover, .navbar .navbar-brand:focus {
+    background: #0079af;
+    color: #ffffff;
+    font-family: Helvetica Neue, sans-serif;
+    font-size: 20px;
+    font-weight: bold;
+    font-stretch: condensed;
+}
+
+.site-title {
+    font-style: italic;
+    font-size: 30px;
 }

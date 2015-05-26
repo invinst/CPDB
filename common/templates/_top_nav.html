@@ -2,7 +2,7 @@
 {% load common_tags %}
 
 <div class="navbar navbar-default navbar-fixed-top">
-    <div class="container">
+
         <div class="navbar-header">
             <a href="/" class="navbar-brand">{% trans "CPDB" %}</a>
             <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
@@ -13,28 +13,13 @@
         </div>
         <div class="navbar-collapse collapse" id="navbar-main">
             <ul class="nav navbar-nav">
-                {% if user.is_provider %}
-                    <li class="dropdown">
-                        <a id="my-services" class="dropdown-toggle" data-toggle="dropdown" href="#">
-                            {% trans "My Services" %}
-                            <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <a href="{% url 'services:create' %}">New Service</a>
-                            </li>
-                            {% for service in user.service_set.all %}
-                                {% if forloop.counter0 == 0 %}
-                                    <li class="divider"></li>
-                                {% endif %}
-                                <li class="my-service" data-id="{{ service.id }}">
-                                    <a href="{% url 'services:edit' service.id %}">{{ service.name }}</a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </li>
-                {% endif %}
+                <li class="site-title">
+                    <a>{% trans 'Police Misconduct in Chicago' %}</a>
+                </li>
             </ul>
+            <form class="navbar-form navbar-right" role="search">
+              <div id="search-wrapper">
+              </div>
+            </form>
         </div>
-    </div>
 </div>

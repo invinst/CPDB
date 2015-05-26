@@ -11,10 +11,15 @@ var React = require('react');
 
 
 var CPDBApp = require('./components/CPDBApp.react');
-
+var Filters = require('./components/Filters.react');
 
 
 React.render(
   <CPDBApp />,
   document.getElementById('cpdbapp')
+);
+
+React.render(
+  <Filters />,
+  document.getElementById('search-wrapper')
 );

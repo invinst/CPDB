@@ -1,13 +1,12 @@
 import datetime
 import json
+
 from django.test.testcases import TestCase
-from django.test.utils import override_settings
 from allegation.factories import AllegationFactory
-from common.models import Officer, Allegation
+from common.models import Allegation
 
 
 class AllegationApiViewTestCase(TestCase):
-
     _overridden_settings = {
         'ALLEGATION_LIST_ITEM_COUNT': 10,
     }
@@ -62,6 +61,7 @@ class AllegationApiViewTestCase(TestCase):
                 if part in fullname:
                     return True
             return False
+
         for row in data:
             name_contains(row[3], name).should.be.true
 
