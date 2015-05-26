@@ -12,8 +12,6 @@ class AllegationApiViewTestCase(TestCase):
         'ALLEGATION_LIST_ITEM_COUNT': 10,
     }
 
-    allegations = []
-
     def setUp(self):
         self.allegations = []
         for i in range(100):
