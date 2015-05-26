@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block head-link %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'datatables/media/css/jquery.dataTables.min.css' %}" />
+    <link rel="stylesheet" href="{% static 'datatables-scroller/css/dataTables.scroller.css' %}" />
+    <link rel="stylesheet" href="{% static 'jquery-ui/themes/base/all.css' %}" />
+    <link rel="stylesheet" href="{% static 'bootstrap-tagsinput/dist/bootstrap-tagsinput.css' %}" />
+    <link rel="stylesheet" href="{% static 'search/css/search.css' %}" />
+    <link rel="stylesheet" href="{% static 'allegation/css/table.css' %}" />
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+            <input id="cpdb-search" class="form-control" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <table class="table table-striped" id="allegation-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>CRID</th>
+                        <th>Incident Date</th>
+                        <th>Officer</th>
+                        <th>Misconduct</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footerjs %}
+    {{ block.super }}
+    <script src="{% static 'datatables/media/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static 'datatables-scroller/js/dataTables.scroller.js' %}"></script>
+    <script>
+    allegation_table = jQuery("#allegation-table").DataTable({
+        ajax: {
+            url: '/api/allegations/',
+            dataSrc: 'allegations'
+        },
+		bServerSide: true
+    });
+    </script>
+
+    <script src="{% static 'jquery-ui/jquery-ui.min.js' %}"></script>
+    <script src="{% static 'bootstrap-tagsinput/src/bootstrap-tagsinput.js' %}"></script>
+    <script src="{% static 'search/js/search.js' %}"></script>
+{% endblock %}

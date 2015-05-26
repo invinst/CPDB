@@ -19,10 +19,12 @@
     <link rel="home" href="/" />
     {% block head-link %}
         <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'bootstrap-material-design/dist/css/material-fullpalette.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'bootstrap-material-design/dist/css/roboto.min.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'toastr/toastr.min.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
     {% endblock %}
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
     <script src="{% static 'jquery-cookie/jquery.cookie.js' %}"></script>
     <script src="{% static 'js/head_define.js' %}"></script>
 </head>
@@ -53,6 +55,7 @@
 {% block footerjs %}
     <script src="{% static 'js/head_define.js' %}"></script>
     <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'bootstrap-material-design/dist/js/material.min.js' %}"></script>
     <script src="{% static 'toastr/toastr.min.js' %}"></script>
     <script src="{% static 'js/foot_define.js' %}"></script>
 {% endblock %}

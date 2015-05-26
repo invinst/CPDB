@@ -11,8 +11,8 @@ MANAGE_FILE=${MANAGE_FILE:2}
 
 echo "-----> Collecting static files"
 
-python $MANAGE_FILE bower_install  2>&1
+python $MANAGE_FILE bower_install 2>&1
 
-python $MANAGE_FILE collectstatic --noinput  2>&1 | sed '/^Copying/d;/^$/d;/^ /d' | indent
+python $MANAGE_FILE collectstatic --noinput  --settings=cpdb.settings.local.dev 2>&1 | sed '/^Copying/d;/^$/d;/^ /d' | indent
 
 echo

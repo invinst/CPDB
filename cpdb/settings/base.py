@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
 
     'django_extensions',
     'djangobower',
@@ -44,6 +45,8 @@ INSTALLED_APPS = (
 
     'common',
     'allegation',
+    'corsheaders',
+    'search',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -55,6 +58,8 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+
 )
 
 ROOT_URLCONF = 'cpdb.urls'
@@ -84,7 +89,7 @@ WSGI_APPLICATION = 'cpdb.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'cpdb',
         'USER': 'eastagile',
         'PASSWORD': '',
@@ -126,15 +131,22 @@ AUTH_USER_MODEL = 'common.User'
 BOWER_COMPONENTS_ROOT = BASE_DIR
 
 BOWER_INSTALLED_APPS = (
-    'bootstrap#3.3.2',
+    'bootstrap-toggle#2.2.0',
+    'toastr#2.1.0',
+    'bootstrap-material-design#0.3.0',
     'underscore#1.7.0',
     'jquery#2.1.3',
-    'jquery-cookie#1.4.1',
-    'jquery-ui#1.11.3',
-    'toastr#2.1.0',
     'jquery-validation#1.13.1',
-    'bootstrap-toggle#2.2.0',
+    'jquery-ui#1.11.3',
+    'datatables-scroller#1.2.2',
+    'datatables#1.10.7',
+    'bootstrap#3.3.2',
+    'bootstrap-tagsinput#0.4.2',
+    'jquery-cookie#1.4.1',
 )
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR + '/media/'
+CORS_ORIGIN_ALLOW_ALL = True
+
+MAP_BOX_API_KEY = os.environ.get('MAP_BOX_API_KEY')

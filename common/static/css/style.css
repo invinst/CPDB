@@ -23,3 +23,7 @@ button a:hover {
 footer {
     margin: 3em 0;
 }
+#map{
+  width:100%;
+  height:400px;
+}

@@ -1,0 +1,65 @@
+import json
+from allegation.factories import OfficerFactory, AllegationCategoryFactory, AllegationFactory
+from common.tests.core import SimpleTestCase
+
+
+class SuggestViewTestCase(SimpleTestCase):
+
+    def test_detect_suggest_type_officer_name(self):
+        OfficerFactory(officer_first='Jerry', officer_last="Dao")
+        response = self.client.get("/search/suggest/", {
+            'term': 'je'
+        })
+        data = json.loads(response.content.decode())
+        data.should.contain('officer_name')
+
+        response = self.client.get("/search/suggest/", {
+            'term': 'ge'
+        })
+        data = json.loads(response.content.decode())
+        len(data['officer_name']).should.equal(0)
+
+    def test_detect_suggest_type_officer_badge_number(self):
+        OfficerFactory(star=123456)
+        response = self.client.get("/search/suggest/", {
+            'term': '12'
+        })
+        data = json.loads(response.content.decode())
+        data.should.contain('officer_badge_number')
+    #
+    # def test_detect_suggest_type_neighborhood_name(self):
+    #     response = self.client.get("/search/suggest/", {
+    #         'term': 'wq'
+    #     })
+    #     data = json.loads(response.content.decode())
+    #     data.should.contain('neighborhood_name')
+
+    def test_detect_suggest_type_complaint_category(self):
+        AllegationCategoryFactory(allegation_name='Bonding category')
+        response = self.client.get("/search/suggest/", {
+            'term': 'Bonding'
+        })
+        data = json.loads(response.content.decode())
+        data.should.contain('cat')
+
+    def test_detect_suggest_type_complaint_id_number(self):
+        AllegationFactory(crid=123456)
+        response = self.client.get("/search/suggest/", {
+            'term': '1234'
+        })
+        data = json.loads(response.content.decode())
+        data.should.contain('crid')
+
+        response = self.client.get("/search/suggest/", {
+            'term': '123'
+        })
+        data = json.loads(response.content.decode())
+        data.shouldnt.contain('crid')
+
+        response = self.client.get("/search/suggest/", {
+            'term': '8908'
+        })
+        data = json.loads(response.content.decode())
+        len(data['crid']).should.equal(0)
+
+
