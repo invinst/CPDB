@@ -1,14 +1,12 @@
 import os
 from django.core.management.base import BaseCommand
 from django.db import connection
+
 from cpdb.settings.base import BASE_DIR
 
 
 class Command(BaseCommand):
     help = 'Import csv data'
-
-    def add_arguments(self, parser):
-        pass
 
     def handle(self, *args, **options):
         cursor = connection.cursor()
