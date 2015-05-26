@@ -1,6 +1,7 @@
 .bootstrap-tagsinput {
     width: 100%;
 }
-.ui-autocomplete{
-  z-index:100000;
+
+.ui-autocomplete {
+    z-index: 100000;
 }
