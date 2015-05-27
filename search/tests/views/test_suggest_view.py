@@ -11,13 +11,13 @@ class SuggestViewTestCase(SimpleTestCase):
             'term': 'je'
         })
         data = json.loads(response.content.decode())
-        data.should.contain('officer_name')
+        data.should.contain('officer_id')
 
         response = self.client.get("/search/suggest/", {
             'term': 'ge'
         })
         data = json.loads(response.content.decode())
-        len(data['officer_name']).should.equal(0)
+        len(data['officer_id']).should.equal(0)
 
     def test_detect_suggest_type_officer_badge_number(self):
         OfficerFactory(star=123456)

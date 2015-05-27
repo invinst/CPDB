@@ -17,3 +17,7 @@ DATABASES = {
 }
 
 CELERY_ALWAYS_EAGER = True
+
+CACHES = {
+
+}
