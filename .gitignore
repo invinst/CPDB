@@ -66,3 +66,4 @@ bower_components/
 /test_data/
 node_modules/
 *.sql
+allegation/static/allegation/js/bundle.js

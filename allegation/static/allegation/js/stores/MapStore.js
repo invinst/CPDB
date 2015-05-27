@@ -57,7 +57,7 @@ function createAreas(){
           pointToLayer: L.mapbox.marker.style,
           style: function(feature) { return feature.properties; },
           onEachFeature: function(feature, layer){
-            var msg=[]
+            var msg = [];
             var area_type = feature.properties.type;
             msg.push(area_type + " name: "+feature.properties.name);
             layer.bindPopup(msg.join(''), {maxWidth: 200});
