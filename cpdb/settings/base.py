@@ -150,3 +150,12 @@ MEDIA_ROOT = BASE_DIR + '/media/'
 CORS_ORIGIN_ALLOW_ALL = True
 
 MAP_BOX_API_KEY = os.environ.get('MAP_BOX_API_KEY')
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': [
+            '127.0.0.1:11211',
+        ]
+    }
+}

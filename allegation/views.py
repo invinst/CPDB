@@ -30,7 +30,7 @@ class FilterAPIView(View):
 
 class AreaAPIView(View):
     def get(self, request, *args, **kwargs):
-        areas = Area.objects.filter(type=request.GET.get('type'))
+        areas = Area.objects.filter()
         area_dict = {
             "type": "FeatureCollection",
             "features": [],
@@ -44,6 +44,7 @@ class AreaAPIView(View):
                 "properties": {
                   "fillColor": "#eeffee",
                   "fillOpacity": 0.5,
+                  "weight":1,
                   "name":area.name,
                   'type':area.type,
                 },
@@ -52,9 +53,6 @@ class AreaAPIView(View):
 
             area_dict['features'].append(area_json)
         content = json.dumps(area_dict)
-        #validate_endpoint = 'http://geojsonlint.com/validate'
-        #good_request = requests.post(validate_endpoint, data=content)
-        #print(good_request.json())
         return HttpResponse(content)
 
 class AllegationAPIView(View):
@@ -66,7 +64,7 @@ class AllegationAPIView(View):
         if len(value) > 1:
             self.filters["%s__in" % field] = value
 
-        if value:
+        elif value:
             self.filters[field] = value[0]
 
     def add_icontains_filter(self,field):
@@ -76,7 +74,7 @@ class AllegationAPIView(View):
 
     def get_allegations(self):
         filters = ['crid', 'beat_id', 'cat', 'final_outcome', 'neighborhood_id', 'recc_finding',
-                   'final_outcome', 'recc_outcome', 'final_finding']
+                   'final_outcome', 'recc_outcome', 'final_finding', 'officer_id']
         for filter_field in filters:
             self.add_filter(filter_field)
 
@@ -84,19 +82,10 @@ class AllegationAPIView(View):
         for filter_field in filter_names:
             self.add_icontains_filter(filter_field)
 
+        if 'category' in self.request.GET:
+            self.filters['cat__category'] = self.request.GET['category']
+
         allegations = Allegation.objects.filter(**self.filters)
-
-        if 'officer_name' in self.request.GET:
-            condition = Q()
-            names = self.request.GET.getlist('officer_name')
-            for name in names:
-                name = name.strip()
-                re.sub(r'\s{2,}', '\s', name)
-
-                parts = name.split(' ')
-                for part in parts:
-                    condition |= Q(officer__officer_first__icontains=part) | Q(officer__officer_last__icontains=part)
-            allegations = allegations.filter(condition)
 
         if 'start_date' in self.request.GET:
             allegations = allegations.filter(start_date__gte=self.request.GET.get('start_date'))
@@ -113,6 +102,7 @@ class AllegationAPIView(View):
 
     def get(self, request):
         allegations = self.get_allegations()
+
         try:
             start = int(request.GET.get('start', 0))
         except ValueError:
@@ -161,13 +151,11 @@ class AllegationGISApiView(AllegationAPIView):
             point = None
             if allegation.point:
                 point = json.loads(allegation.point.geojson)
+
             allegation_json = {
                 "type": "Feature",
                 "properties": {
-                  "fillColor": "#eeffee",
-                  "fillOpacity": 0.5,
                   "name":allegation.crid,
-
                 },
                 'geometry': point
             }

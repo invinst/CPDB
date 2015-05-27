@@ -7,7 +7,7 @@ from common.models import Officer, AllegationCategory, Allegation
 
 class SuggestView(View):
     autocomplete_category_names = {
-        'officer_name': 'Officer name',
+        'officer_id': 'Officer name',
         'officer_badge_number': 'Badge number',
         'crid': 'Complaint ID',
         'category': 'Complaint type',
@@ -37,10 +37,10 @@ class SuggestView(View):
                 condition = Q(officer_first__istartswith=parts[0]) & Q(officer_last__istartswith=" ".join(parts[1:]))
             else:
                 condition = Q(officer_first__icontains=q) | Q(officer_last__icontains=q)
-            results = self.query_suggestions(Officer, condition, ['officer_first', 'officer_last', 'allegations_count'],
+            results = self.query_suggestions(Officer, condition, ['officer_first', 'officer_last', 'allegations_count', 'id'],
                                              order_bys=('allegations_count', 'officer_first', 'officer_last'))
-            results = ["%s %s (%s)" % x for x in results]
-            ret['officer_name'] = results
+            results = [["%s %s (%s)" % (x[0], x[1], x[2]), x[3] ] for x in results]
+            ret['officer_id'] = results
 
             condition = Q(category__icontains=q)
             results = self.query_suggestions(AllegationCategory, condition, ['category'], order_bys=['category'])
@@ -75,10 +75,17 @@ class SuggestView(View):
             new_dict[category] = []
             new_dict['categories'][category] = self.autocomplete_category_names[category]
             for label in data[category]:
+                if isinstance(label, (list, tuple)):
+                    value = label[1]
+                    label = label[0]
+                else:
+                    value = label
+
                 info = {
                     'category': category,
                     'category_name': self.autocomplete_category_names[category],
-                    'label': label
+                    'label': label,
+                    'value': value,
                 }
                 new_dict[category].append(info)
         return new_dict
