@@ -14,7 +14,7 @@ class AllegationApiViewTestCase(TestCase):
 
     def setUp(self):
         self.allegations = []
-        for i in range(100):
+        for i in range(400):
             self.allegations.append(AllegationFactory())
 
     def fetch_allegations(self, **params):

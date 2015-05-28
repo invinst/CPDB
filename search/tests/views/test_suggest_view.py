@@ -14,7 +14,7 @@ class SuggestViewTestCase(SimpleTestCase):
         data.should.contain('officer_id')
 
         response = self.client.get("/search/suggest/", {
-            'term': 'ge'
+            'term': 'genie'
         })
         data = json.loads(response.content.decode())
         len(data['officer_id']).should.equal(0)
