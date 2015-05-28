@@ -40,7 +40,6 @@ var AutoComplete = React.createClass({
    * Event handler for 'change' events coming from the TodoStore
    */
   _onChange: function(event) {
-    console.log(event)
     if(event){
       FilterActions.changeFilter(this.props.filterkey,event.target.value);
     }

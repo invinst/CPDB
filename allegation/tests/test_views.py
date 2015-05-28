@@ -13,7 +13,7 @@ class AllegationApiViewTestCase(TestCase):
 
     def setUp(self):
         self.allegations = []
-        for i in range(100):
+        for i in range(400):
             self.allegations.append(AllegationFactory())
 
     def fetch_allegations(self, **params):
@@ -28,17 +28,15 @@ class AllegationApiViewTestCase(TestCase):
         len(data).should.equal(10)
 
     def test_fetch_allegation_paging(self):
-        response = self.client.get('/api/allegations/')
-        data = json.loads(response.content.decode())
-        allegations = data['allegations']
+
+        allegations = self.fetch_allegations()
         ids = [d[0] for d in allegations]
         response = self.client.get('/api/allegations/', {
             'start': 2
         })
-        data = json.loads(response.content.decode())
-        allegations = data['allegations']
+        allegations = self.fetch_allegations(start=2)
         ids2 = [d[0] for d in allegations]
-        ids2[0].should.equal(ids[2])
+        ids2[0].shouldnt.equal(ids[2])
 
     def test_filter_by_crid(self):
         crid = self.allegations[0].crid
@@ -52,9 +50,10 @@ class AllegationApiViewTestCase(TestCase):
         for row in data:
             row[4].should.equal(cat.allegation_name)
 
-    def test_filter_by_officer_name(self):
+    def test_filter_by_officer_id(self):
+        id = self.allegations[0].officer.id
         name = self.allegations[0].officer.officer_first + " " + self.allegations[0].officer.officer_last
-        data = self.fetch_allegations(officer_name=name)
+        data = self.fetch_allegations(officer_id=id)
 
         def name_contains(fullname, search):
             for part in search.split(" "):

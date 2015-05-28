@@ -72,10 +72,11 @@ var Filters = React.createClass({
   _onChange: function() {
     this.setState(getFilterState());
     var query_string = this.getQueryString();
-
+    document.location.href='#' + JSON.stringify(getFilterState())
     if(query_string.length > 5){
       $.getJSON("/api/allegations/gis/?" + query_string,function(data){
         MapStore.setMarkers(data);
+
       })
     }
   }

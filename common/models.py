@@ -15,6 +15,7 @@ class Officer(models.Model):
     unit = models.CharField(max_length=5, null=True)
     rank = models.CharField(max_length=5, null=True)
     star = models.FloatField(null=True)
+    allegations_count = models.IntegerField(default=0)
 
     def __str__(self):
         return "%(last)s %(first)s" % {'last': self.officer_last, 'first': self.officer_first}

@@ -20,8 +20,12 @@ class AllegationListView(TemplateView):
 class FilterAPIView(View):
     def get(self, request):
         filters = {
-            'category': AllegationCategory.objects.all(),
-            'area_types': Area.objects.distinct().values_list('type', flat=True)
+            'category':AllegationCategory.objects.all(),
+            'area_types':list(Area.objects.distinct().values_list('type',flat=True)),
+            'final_outcome':list(Allegation.objects.exclude(final_outcome=None).values_list('final_outcome',flat=True).distinct()),
+            'final_finding':list(Allegation.objects.exclude(final_finding=None).values_list('final_finding',flat=True).distinct()),
+            'recc_finding':list(Allegation.objects.exclude(recc_finding=None).values_list('recc_finding',flat=True).distinct()),
+            'recc_outcome':list(Allegation.objects.exclude(recc_outcome=None).values_list('recc_finding',flat=True).distinct()),
         }
         for field in ['final_outcome', 'final_finding', 'recc_finding', 'recc_outcome']:
             filters[field] = Allegation.objects.exclude(**{field: None}).values_list(field, flat=True).distinct()
@@ -44,10 +48,11 @@ class AreaAPIView(View):
             area_json = {
                 "type": "Feature",
                 "properties": {
-                    "fillColor": "#eeffee",
-                    "fillOpacity": 0.5,
-                    "name": area.name,
-                    'type': area.type,
+                  "fillColor": "#eeffee",
+                  "fillOpacity": 0.5,
+                  "weight":1,
+                  "name":area.name,
+                  'type':area.type,
                 },
                 'geometry': polygon
             }
@@ -67,7 +72,7 @@ class AllegationAPIView(View):
         if len(value) > 1:
             self.filters["%s__in" % field] = value
 
-        if value:
+        elif value:
             self.filters[field] = value[0]
 
     def add_icontains_filter(self, field):
@@ -77,7 +82,7 @@ class AllegationAPIView(View):
 
     def get_allegations(self):
         filters = ['crid', 'beat_id', 'cat', 'final_outcome', 'neighborhood_id', 'recc_finding',
-                   'final_outcome', 'recc_outcome', 'final_finding']
+                   'final_outcome', 'recc_outcome', 'final_finding', 'officer_id']
         for filter_field in filters:
             self.add_filter(filter_field)
 
@@ -85,19 +90,10 @@ class AllegationAPIView(View):
         for filter_field in filter_names:
             self.add_icontains_filter(filter_field)
 
+        if 'category' in self.request.GET:
+            self.filters['cat__category'] = self.request.GET['category']
+
         allegations = Allegation.objects.filter(**self.filters)
-
-        if 'officer_name' in self.request.GET:
-            condition = Q()
-            names = self.request.GET.getlist('officer_name')
-            for name in names:
-                name = name.strip()
-                re.sub(r'\s{2,}', '\s', name)
-
-                parts = name.split(' ')
-                for part in parts:
-                    condition |= Q(officer__officer_first__icontains=part) | Q(officer__officer_last__icontains=part)
-            allegations = allegations.filter(condition)
 
         if 'start_date' in self.request.GET:
             allegations = allegations.filter(start_date__gte=self.request.GET.get('start_date'))
@@ -114,6 +110,7 @@ class AllegationAPIView(View):
 
     def get(self, request):
         allegations = self.get_allegations()
+
         try:
             start = int(request.GET.get('start', 0))
         except ValueError:
@@ -162,13 +159,11 @@ class AllegationGISApiView(AllegationAPIView):
             point = None
             if allegation.point:
                 point = json.loads(allegation.point.geojson)
+
             allegation_json = {
                 "type": "Feature",
                 "properties": {
-                    "fillColor": "#eeffee",
-                    "fillOpacity": 0.5,
-                    "name": allegation.crid,
-
+                  "name":allegation.crid,
                 },
                 'geometry': point
             }

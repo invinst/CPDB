@@ -28,6 +28,9 @@ var _map = null;
 var _polygons = null;
 var _geo_json_layer = null;
 var _heat = null;
+var _areas = {}
+var _controls = {};
+var _layers = {}
 /**
  * Update a TODO item.
  * @param  {string} id
@@ -40,28 +43,39 @@ function update(id, updates) {
 function create(){
     L.mapbox.accessToken = MBX;
     _map = L.mapbox.map('map', MAP_TYPE).setView([41.8369, -87.68470], 9);
-    setArea('beat');
+    createAreas();
 }
-function setArea(area_type){
+function createAreas(){
     if(_geo_json_layer){
         console.log('unsetting')
         _map.removeLayer(_geo_json_layer);
     }
 
-    $.get("/api/areas/?type=" + area_type,{},function(data){
+    $.get("/api/areas/",function(data){
 
         _geo_json_layer = L.geoJson(data, {
           pointToLayer: L.mapbox.marker.style,
           style: function(feature) { return feature.properties; },
           onEachFeature: function(feature, layer){
-            var date = new Date(feature.properties.startTime);
-            var triggerId = feature.properties.activityId;
             var msg = [];
+            var area_type = feature.properties.type;
             msg.push(area_type + " name: "+feature.properties.name);
-            layer.setZIndex(1001);
             layer.bindPopup(msg.join(''), {maxWidth: 200});
+            layer.on('mouseover',function(){
+              layer.setStyle(highlightStyle);
+            });
+            layer.on('mouseout',function(){
+              layer.setStyle(feature.properties);
+            });
+
+            if(!(area_type in _layers)){
+              _layers[area_type] = L.layerGroup();
+              _controls[area_type] = _layers[area_type];
+            }
+            _layers[area_type].addLayer(layer);
           }
-        }).addTo(_map);
+        })
+        L.control.layers(_controls).addTo(_map);
 
     },'json').fail(function(jqxhr, textStatus, error) {
       var err = textStatus + ", " + error;

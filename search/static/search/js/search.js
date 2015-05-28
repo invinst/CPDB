@@ -52,7 +52,7 @@ function cpdbAutocomplete($input){
 
                     var newData = [];
                     $.each(data, function(i, subdata) {
-                        if (['officer_name', 'start', 'crid', 'officer_badge_number'].indexOf(i) != -1) {
+                        if (['officer_id', 'start', 'crid', 'officer_badge_number'].indexOf(i) != -1) {
                             // if request.term is found in the suggestion then we dont need to add this
                             if(!suggestionExists(request.term, subdata)){
                                 var freeTextData = {
@@ -76,7 +76,7 @@ function cpdbAutocomplete($input){
         select: function(event, ui){
             $('#cpdb-search').tagsinput("add", {
                 text: ui.item.category_name + ":" + ui.item.label,
-                value: [ui.item.category,  ui.item.label]
+                value: [ui.item.category,  ui.item.value]
             });
             $($input).val('');
         }
