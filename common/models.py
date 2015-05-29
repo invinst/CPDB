@@ -18,7 +18,8 @@ class Officer(models.Model):
     allegations_count = models.IntegerField(default=0)
 
     def __str__(self):
-        return "%(last)s %(first)s" % {'last':self.officer_last,'first':self.officer_first}
+        return "%(last)s %(first)s" % {'last': self.officer_last, 'first': self.officer_first}
+
 
 class OfficerHistory(models.Model):
     officer = models.ForeignKey(Officer, null=True)
@@ -34,7 +35,6 @@ class PoliceWitness(models.Model):
     gender = models.CharField(max_length=1, null=True)
     race = models.CharField(max_length=50, null=True)
     officer = models.ForeignKey(Officer, null=True)
-
 
 
 class ComplainingWitness(models.Model):
@@ -55,9 +55,12 @@ class AllegationCategory(models.Model):
 
 class Area(models.Model):
     name = models.CharField(max_length=100)
-    type = models.CharField(max_length=30,choices=[['beat','Beat'],['neighborhood','Neighborhood'],['school-grounds','School Grounds'],['ward','Ward'],['police-districts','Police District']])
+    type = models.CharField(max_length=30, choices=[['beat', 'Beat'], ['neighborhood', 'Neighborhood'],
+                                                    ['school-grounds', 'School Grounds'], ['ward', 'Ward'],
+                                                    ['police-districts', 'Police District']])
     polygon = models.MultiPolygonField(srid=4326, null=True, blank=True)
     objects = models.GeoManager()
+
 
 class Allegation(models.Model):
     record_id = models.IntegerField(null=True)
@@ -69,7 +72,7 @@ class Allegation(models.Model):
     final_finding = models.CharField(max_length=255, null=True)
     final_outcome = models.CharField(max_length=5, null=True)
 
-    areas = models.ManyToManyField('Area',blank=True)
+    areas = models.ManyToManyField('Area', blank=True)
     location = models.CharField(max_length=20, null=True)
     add1 = models.IntegerField(null=True)
     add2 = models.CharField(max_length=255, null=True)
@@ -78,7 +81,7 @@ class Allegation(models.Model):
     start_date = models.DateField(null=True)
     end_date = models.DateField(null=True)
     investigator = models.CharField(max_length=255, null=True)
-    point = models.PointField(srid=4326,null=True,blank=True)
+    point = models.PointField(srid=4326, null=True, blank=True)
     objects = models.GeoManager()
 
     @property
@@ -96,11 +99,11 @@ class Allegation(models.Model):
         return False
 
 
-    def save(self,*args,**kwargs):
+    def save(self, *args, **kwargs):
         if self.location and not self.point:
-            #geolocate
+            # geolocate
             pass
-        super(Allegation,self).save(*args,**kwargs)
+        super(Allegation, self).save(*args, **kwargs)
 
     def __str__(self):
         return "%s" % self.crid

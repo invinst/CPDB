@@ -11,6 +11,7 @@ from django.db.models import Model
 from django.db.models.query import QuerySet
 from django.contrib.gis.geos.collections import MultiPolygon, Polygon, Point
 
+
 class UnableToSerializeError(Exception):
     """ Error for not implemented classes """
 
@@ -26,7 +27,7 @@ class JSONSerializer():
     boolean_fields = ['BooleanField', 'NullBooleanField']
     datetime_fields = ['DatetimeField', 'DateField', 'TimeField']
     number_fields = ['IntegerField', 'AutoField', 'DecimalField', 'FloatField', 'PositiveSmallIntegerField']
-    gis_fields = ['PolygonField','PointField','MultiPolygonField']
+    gis_fields = ['PolygonField', 'PointField', 'MultiPolygonField']
 
     def __init__(self):
         pass
@@ -75,9 +76,9 @@ class JSONSerializer():
 
     def handle_object(self, object):
         """ Called to handle everything, looks for the correct handling """
-        if isinstance(object,MultiPolygon) or isinstance(object,Polygon):
+        if isinstance(object, MultiPolygon) or isinstance(object, Polygon):
             self.handle_polygon(object)
-        elif isinstance(object,Point):
+        elif isinstance(object, Point):
             self.handle_point(object)
         elif isinstance(object, dict):
             self.handle_dictionary(object)
@@ -102,15 +103,15 @@ class JSONSerializer():
         else:
             raise UnableToSerializeError(type(object))
 
-    def handle_polygon(self,p):
+    def handle_polygon(self, p):
         """Called to handle Polygons - NOT handled yet"""
         if p:
             self.stream.write(p.geojson)
         return self.handle_dictionary({})
 
-    def handle_point(self,p):
+    def handle_point(self, p):
         if p and p.x and p.y:
-            return self.handle_dictionary({'lat':p.y,'lng':p.x})
+            return self.handle_dictionary({'lat': p.y, 'lng': p.x})
         return self.handle_dictionary({})
 
     def handle_dictionary(self, d):
@@ -187,7 +188,7 @@ class JSONSerializer():
             else:
                 self.stream.write(u': undefined')
         elif internal_type in self.gis_fields:
-            value = getattr(mod,field.name)
+            value = getattr(mod, field.name)
             self.stream.write(u": ")
             if value:
                 self.handle_object(value)

@@ -1,35 +1,37 @@
 import re
+import json
 
 from django.conf import settings
+
 from django.db.models.query_utils import Q
 from django.http.response import HttpResponse
 from django.views.generic import View
 from django.views.generic import TemplateView
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import D
-import re
 from common.json_serializer import JSONSerializer
 from common.models import Allegation, Area, AllegationCategory
-import json
-#import requests
+
+
 class AllegationListView(TemplateView):
     template_name = 'allegation/home.html'
 
+
 class FilterAPIView(View):
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         filters = {
-            'category':AllegationCategory.objects.all(),
-            'area_types':list(Area.objects.distinct().values_list('type',flat=True)),
-            'final_outcome':list(Allegation.objects.exclude(final_outcome=None).values_list('final_outcome',flat=True).distinct()),
-            'final_finding':list(Allegation.objects.exclude(final_finding=None).values_list('final_finding',flat=True).distinct()),
-            'recc_finding':list(Allegation.objects.exclude(recc_finding=None).values_list('recc_finding',flat=True).distinct()),
-            'recc_outcome':list(Allegation.objects.exclude(recc_outcome=None).values_list('recc_finding',flat=True).distinct()),
+            'category': AllegationCategory.objects.all(),
+            'area_types': Area.objects.distinct().values_list('type', flat=True)
         }
+        for field in ['final_outcome', 'final_finding', 'recc_finding', 'recc_outcome']:
+            filters[field] = Allegation.objects.exclude(**{field: None}).values_list(field, flat=True).distinct()
+
         content = JSONSerializer().serialize(filters)
         return HttpResponse(content)
 
+
 class AreaAPIView(View):
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         areas = Area.objects.filter(type=request.GET.get('type'))
         area_dict = {
             "type": "FeatureCollection",
@@ -42,35 +44,34 @@ class AreaAPIView(View):
             area_json = {
                 "type": "Feature",
                 "properties": {
-                  "fillColor": "#eeffee",
-                  "fillOpacity": 0.5,
-                  "name":area.name,
-                  'type':area.type,
+                    "fillColor": "#eeffee",
+                    "fillOpacity": 0.5,
+                    "name": area.name,
+                    'type': area.type,
                 },
                 'geometry': polygon
             }
 
             area_dict['features'].append(area_json)
         content = json.dumps(area_dict)
-        #validate_endpoint = 'http://geojsonlint.com/validate'
-        #good_request = requests.post(validate_endpoint, data=content)
-        #print(good_request.json())
         return HttpResponse(content)
 
+
 class AllegationAPIView(View):
-    def __init__(self,*args,**kwargs):
-        super(AllegationAPIView,self).__init__(*args,**kwargs)
+    def __init__(self, *args, **kwargs):
+        super(AllegationAPIView, self).__init__(*args, **kwargs)
         self.filters = {}
-    def add_filter(self,field):
-        value = self.request.GET.getlist(field,None)
+
+    def add_filter(self, field):
+        value = self.request.GET.getlist(field, None)
         if len(value) > 1:
             self.filters["%s__in" % field] = value
 
         if value:
             self.filters[field] = value[0]
 
-    def add_icontains_filter(self,field):
-        value = self.request.GET.get(field,None)
+    def add_icontains_filter(self, field):
+        value = self.request.GET.get(field, None)
         if value:
             self.filters["%s__icontains" % field] = value
 
@@ -80,7 +81,7 @@ class AllegationAPIView(View):
         for filter_field in filters:
             self.add_filter(filter_field)
 
-        filter_names = ['neighborhood__name','beat__name']
+        filter_names = ['neighborhood__name', 'beat__name']
         for filter_field in filter_names:
             self.add_icontains_filter(filter_field)
 
@@ -106,9 +107,9 @@ class AllegationAPIView(View):
         if 'latlng' in self.request.GET:
             latlng = self.request.GET['latlng'].split(',')
             if len(latlng) == 2:
-                radius = self.request.GET.get('radius',500)
+                radius = self.request.GET.get('radius', 500)
                 point = Point(float(latlng[1]), float(latlng[0]))
-                allegations = allegations.filter(point__distance_lt=(point,D(m=radius)))
+                allegations = allegations.filter(point__distance_lt=(point, D(m=radius)))
         return allegations
 
     def get(self, request):
@@ -139,7 +140,7 @@ class AllegationAPIView(View):
             result[3] = "%s %s" % (value[5], value[6])
             return result
 
-        display_allegations = allegations[start:start+length].values_list(*fields)
+        display_allegations = allegations[start:start + length].values_list(*fields)
         allegations_list = [concat_name(x) for x in display_allegations]
 
         content = JSONSerializer().serialize({
@@ -151,7 +152,7 @@ class AllegationAPIView(View):
 
 
 class AllegationGISApiView(AllegationAPIView):
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         allegations = self.get_allegations()
         allegation_dict = {
             "type": "FeatureCollection",
@@ -164,9 +165,9 @@ class AllegationGISApiView(AllegationAPIView):
             allegation_json = {
                 "type": "Feature",
                 "properties": {
-                  "fillColor": "#eeffee",
-                  "fillOpacity": 0.5,
-                  "name":allegation.crid,
+                    "fillColor": "#eeffee",
+                    "fillOpacity": 0.5,
+                    "name": allegation.crid,
 
                 },
                 'geometry': point

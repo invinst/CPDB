@@ -1,4 +1,5 @@
 import json
+
 from django.db.models.query_utils import Q
 from django.http.response import HttpResponseBadRequest, HttpResponse
 from django.views.generic.base import View
@@ -48,7 +49,7 @@ class SuggestView(View):
                 ret['category'] = results
 
             condition = Q(allegation_name__icontains=q)
-            results = self.query_suggestions(AllegationCategory, condition, ['allegation_name','cat_id'],
+            results = self.query_suggestions(AllegationCategory, condition, ['allegation_name', 'cat_id'],
                                              order_bys=['allegation_name'])
             if len(results):
                 ret['cat'] = results
