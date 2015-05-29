@@ -25,7 +25,7 @@ SECRET_KEY = '***REMOVED***'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -151,13 +151,12 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 MAP_BOX_API_KEY = os.environ.get('MAP_BOX_API_KEY')
 OFFICER_LIST_SEND_LENGTH = os.environ.get('OFFICER_LIST_SEND_LENGTH', 150)
-import sys
-if sys.argv[1] != 'test': #dont enable memcache for unit tests or you'll give yourself a headache!
-    CACHES = {
-        'default': {
-            'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-            'LOCATION': [
-                '127.0.0.1:11211',
-            ]
-        }
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': [
+            '127.0.0.1:11211',
+        ]
     }
+}

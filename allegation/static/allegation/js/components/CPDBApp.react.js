@@ -20,6 +20,7 @@ var MapStore = require('../stores/MapStore');
 var FilterAction = require('../actions/FilterActions');
 var Summary = require('./Summary.react');
 var OfficerList = require('./OfficerList.react');
+var ComplaintList = require('./ComplaintList.react');
 
 /**
  * Retrieve the current TODO data from the MapStore
@@ -59,6 +60,9 @@ var CPDBApp = React.createClass({
       </div>
       <div className="row">
         <OfficerList />
+      </div>
+      <div className='row'>
+        <ComplaintList />
       </div>
     </div>;
   },

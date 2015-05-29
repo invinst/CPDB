@@ -42,9 +42,16 @@ function create(id, officer){
 
 
 var OfficerStore = assign({}, EventEmitter.prototype, {
-  update: function(){
+  getQueryString: function(){
     var query_string = FilterStore.getQueryString();
-    $.getJSON('/api/allegations/officers/?' + query_string, function(data){
+    for(var i=0;i<_state['active_officers'].length;i++){
+      query_string += "officer_id=" + _state['active_officers'][i] + "&"
+    }
+    return query_string;
+  },
+  update: function(){
+    _state['active_officers'] = [];
+    $.getJSON('/api/allegations/officers/?' + OfficerStore.getQueryString(), function(data){
         _state['officers'] = data.officers;
         OfficerStore.emitChange();
     })
@@ -79,13 +86,7 @@ var OfficerStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function(action) {
   switch(action.actionType){
     case MapConstants.MAP_REPLACE_FILTERS:
-      OfficerStore.update();
-      break;
-
     case MapConstants.MAP_CHANGE_FILTER:
-      OfficerStore.update();
-      break;
-
     case MapConstants.MAP_ADD_FILTER:
       OfficerStore.update();
       break;
