@@ -48,30 +48,13 @@ var Filters = React.createClass({
           </div>
 
   },
-  getQueryString: function(){
-    var s = ""
-    for(var filterName in this.state.filters){
-      var filter = this.state.filters[filterName];
 
-      if(filter['value']){
-        for(var i=0;i<filter['value'].length; i++){
-          if(typeof(filter['value'][i]) == 'object'){
-            s += filterName + "=" + filter['value'][i][1] + "&";
-          } else {
-            s += filterName + "=" + filter['value'][i] + "&";
-          }
-        }
-
-      }
-    }
-    return s;
-  },
   _onCreate: function() {
     this.setState(getFilterState());
   },
   _onChange: function() {
     this.setState(getFilterState());
-    var query_string = this.getQueryString();
+    var query_string = FilterStore.getQueryString();
     document.location.href='#' + JSON.stringify(getFilterState())
     if(query_string.length > 5){
       $.getJSON("/api/allegations/gis/?" + query_string,function(data){

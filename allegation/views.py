@@ -2,13 +2,14 @@ import re
 import json
 
 from django.conf import settings
-
+from django.db.models import Count
 from django.db.models.query_utils import Q
 from django.http.response import HttpResponse
 from django.views.generic import View
 from django.views.generic import TemplateView
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import D
+
 from common.json_serializer import JSONSerializer
 from common.models import Allegation, Area, AllegationCategory
 
@@ -173,3 +174,50 @@ class AllegationGISApiView(AllegationAPIView):
 
         content = json.dumps(allegation_dict)
         return HttpResponse(content)
+
+
+class AllegationSummaryApiView(AllegationAPIView):
+    def get(self, request):
+        allegations = self.get_allegations()
+
+        count_query = allegations.values_list('cat').annotate(dcount=Count('id'))
+        count_by_category = dict(count_query)
+
+        discipline_allegations = allegations.exclude(final_outcome=600)
+        discipline_count_query = discipline_allegations.values_list('cat').annotate(dcount=Count('id'))
+        discipline_count_by_category = dict(discipline_count_query)
+        categories = AllegationCategory.objects.filter(cat_id__in=allegations.values('cat')).order_by('category')
+
+        summary = []
+        summary_map_by_name = {}
+
+        for category in categories:
+            if category.category in summary_map_by_name:
+                summary_value = summary_map_by_name[category.category]
+            else:
+                summary_value = summary_map_by_name[category.category] = {
+                    'name': category.category,
+                    'total': 0,
+                    'count': 0,
+                    'subcategories': []
+                }
+                summary.append(summary_value)
+
+            count = count_by_category.get(category.cat_id, 0)
+            summary_value['total'] += count
+            summary_value['count'] += discipline_count_by_category.get(category.cat_id, 0)
+            summary_value['subcategories'].append({
+                'name': category.allegation_name,
+                'count': count
+            })
+
+        summary = sorted(summary, key=lambda x: -x['total'])
+
+        maximum = summary[0]['total']
+        for value in summary:
+            value['percentToMax'] = value['total'] * 100.0 / maximum
+
+        content = JSONSerializer().serialize({
+            'summary': summary
+        })
+        return HttpResponse(content, content_type="application/json")

@@ -170,6 +170,8 @@ class JSONSerializer():
             it += 1
             if isinstance(mod, tuple):
                 self.handle_list(mod)
+            elif isinstance(mod, dict):
+                self.handle_dictionary(mod)
             else:
                 self.handle_model(mod)
             if queryset.count() != it:

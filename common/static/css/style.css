@@ -47,3 +47,11 @@ footer {
     font-style: italic;
     font-size: 30px;
 }
+
+#summary {
+    min-height: 450px;
+}
+
+#summary .progress {
+    height: 20px;
+}

@@ -76,6 +76,24 @@ var FilterStore = assign({}, EventEmitter.prototype, {
   addCreateListener: function(callback) {
     this.on(CREATE_EVENT, callback);
   },
+  getQueryString: function(){
+    var query = ""
+    for(var filterName in _filters){
+      var filter = _filters[filterName];
+
+      if(filter['value']){
+        for(var i=0;i<filter['value'].length; i++){
+          if(typeof(filter['value'][i]) == 'object'){
+            query += filterName + "=" + filter['value'][i][1] + "&";
+          } else {
+            query += filterName + "=" + filter['value'][i] + "&";
+          }
+        }
+
+      }
+    }
+    return query;
+  },
 });
 
 // Register callback to handle all updates
