@@ -11,7 +11,7 @@ from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import D
 
 from common.json_serializer import JSONSerializer
-from common.models import Allegation, Area, AllegationCategory
+from common.models import Allegation, Area, AllegationCategory, Officer
 
 
 class AllegationListView(TemplateView):
@@ -219,5 +219,21 @@ class AllegationSummaryApiView(AllegationAPIView):
 
         content = JSONSerializer().serialize({
             'summary': summary
+        })
+        return HttpResponse(content, content_type="application/json")
+
+class OfficerListAPIView(AllegationAPIView):
+    def get(self, request):
+        allegations = self.get_allegations()
+        officers = allegations.values_list('officer', flat=True).distinct()
+        officers = Officer.objects.filter(pk__in=officers).order_by('officer_last', 'officer_first')
+        officer_list_length = officers.count()
+
+        num_to_send = settings.OFFICER_LIST_SEND_LENGTH
+        if officer_list_length > num_to_send:
+            officers = officers[0:num_to_send]
+
+        content = JSONSerializer().serialize({
+            'officers': officers
         })
         return HttpResponse(content, content_type="application/json")

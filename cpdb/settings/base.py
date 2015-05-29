@@ -150,6 +150,7 @@ MEDIA_ROOT = BASE_DIR + '/media/'
 CORS_ORIGIN_ALLOW_ALL = True
 
 MAP_BOX_API_KEY = os.environ.get('MAP_BOX_API_KEY')
+OFFICER_LIST_SEND_LENGTH = os.environ.get('OFFICER_LIST_SEND_LENGTH', 150)
 import sys
 if sys.argv[1] != 'test': #dont enable memcache for unit tests or you'll give yourself a headache!
     CACHES = {

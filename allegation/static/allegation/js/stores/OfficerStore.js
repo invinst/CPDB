@@ -16,9 +16,11 @@ var assign = require('object-assign');
 var FilterStore = require('./FilterStore');
 var CHANGE_EVENT = 'change';
 var SUMMARY_CHANGE = 'summary-change';
+var SET_ACTIVE_OFFICER = 'set-active-officer';
 var _state = {
-  'rows':[],
-  'current':false
+    'officers':{},
+    'show_more':false,
+    'active_officers':[]
 }
 
 /**
@@ -28,34 +30,30 @@ var _state = {
  *     updated.
  */
 function update(id, updates) {
-  _complaints[id] = assign({}, _complaints[id], updates);
+  _officers[id] = assign({}, _complaints[id], updates);
 }
 
 
-function create(id,complaint){
-  _complaints[id] = {
-    'items':filter,
-    'value':"Select a " + id
+function create(id, officer){
+  _officers[id] = {
+
   };
 }
 
 
-var SummaryStore = assign({}, EventEmitter.prototype, {
+var OfficerStore = assign({}, EventEmitter.prototype, {
   update: function(){
     var query_string = FilterStore.getQueryString();
-    $.getJSON('/api/allegations/summary/?' + query_string, function(data){
-        _state['rows'] = data.summary;
-        SummaryStore.emitChange();
+    $.getJSON('/api/allegations/officers/?' + query_string, function(data){
+        _state['officers'] = data.officers;
+        OfficerStore.emitChange();
     })
   },
   set: function(key,value){
     _state[key] = value;
+    this.emitChange();
   },
   init: function(){
-    _state = {
-    'rows': [],
-    'current': false
-    }
     this.update();
     return _state;
   },
@@ -68,7 +66,6 @@ var SummaryStore = assign({}, EventEmitter.prototype, {
   emitSummaryChange: function() {
     this.emit(SUMMARY_CHANGE);
   },
-
   addChangeListener: function(callback) {
     this.on(CHANGE_EVENT, callback);
   },
@@ -80,28 +77,35 @@ var SummaryStore = assign({}, EventEmitter.prototype, {
 
 // Register callback to handle all updates
 AppDispatcher.register(function(action) {
-  console.log(_state);
-
   switch(action.actionType){
     case MapConstants.MAP_REPLACE_FILTERS:
-      SummaryStore.update();
+      OfficerStore.update();
       break;
 
     case MapConstants.MAP_CHANGE_FILTER:
-      SummaryStore.update();
+      OfficerStore.update();
       break;
 
     case MapConstants.MAP_ADD_FILTER:
-      SummaryStore.update();
+      OfficerStore.update();
       break;
 
-    case MapConstants.SET_SUMMARY:
-      SummaryStore.set('current',action.type);
-      SummaryStore.emitSummaryChange();
+    case MapConstants.OFFICER_VIEW_MORE:
+      OfficerStore.set('show_more',!_state['show_more']);
+      break;
+    case MapConstants.SET_ACTIVE_OFFICER:
+      var index = _state.active_officers.indexOf(action.officer.id);
+      if(index == -1 ){
+        _state.active_officers.push(action.officer.id);
 
+      }
+      else{
+        _state.active_officers.pop(index);
+      }
+      OfficerStore.emitChange()
     default:
       break;
   }
 });
 
-module.exports = SummaryStore;
+module.exports = OfficerStore;

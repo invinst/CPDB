@@ -36,15 +36,15 @@ var Summary = React.createClass({
       backLink = <a href='#' onClick={this.goBack}>Go Back</a>
     }
     return <div id='summary' className="well">
-      <div className='clearfix'>
-        <div className='pull-right'>Discipline Taken | Complaints</div>
-        <h3 className='pull-left'>Number of Complaints</h3>
-      </div>
-      <div className="">
-      {rows}
-      </div>
-      {backLink}
-    </div>;
+            <div className='clearfix'>
+              <div className='pull-right'>Discipline Taken | Complaints</div>
+              <h3 className='pull-left'>Number of Complaints</h3>
+            </div>
+            <div className="">
+            {rows}
+            </div>
+            {backLink}
+          </div>;
 
   },
   goBack: function(e){
