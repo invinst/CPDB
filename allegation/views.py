@@ -21,12 +21,8 @@ class AllegationListView(TemplateView):
 class FilterAPIView(View):
     def get(self, request):
         filters = {
-            'category':AllegationCategory.objects.all(),
-            'area_types':list(Area.objects.distinct().values_list('type',flat=True)),
-            'final_outcome':list(Allegation.objects.exclude(final_outcome=None).values_list('final_outcome',flat=True).distinct()),
-            'final_finding':list(Allegation.objects.exclude(final_finding=None).values_list('final_finding',flat=True).distinct()),
-            'recc_finding':list(Allegation.objects.exclude(recc_finding=None).values_list('recc_finding',flat=True).distinct()),
-            'recc_outcome':list(Allegation.objects.exclude(recc_outcome=None).values_list('recc_finding',flat=True).distinct()),
+            'category': AllegationCategory.objects.all(),
+            'area_types': Area.objects.distinct().values_list('type', flat=True)
         }
         for field in ['final_outcome', 'final_finding', 'recc_finding', 'recc_outcome']:
             filters[field] = Allegation.objects.exclude(**{field: None}).values_list(field, flat=True).distinct()
@@ -51,7 +47,6 @@ class AreaAPIView(View):
                 "properties": {
                   "fillColor": "#eeffee",
                   "fillOpacity": 0.5,
-                  "weight":1,
                   "name":area.name,
                   'type':area.type,
                 },
