@@ -25,8 +25,8 @@ var SummaryRow = React.createClass({
 
     return <div className='row'>
               <div className='col-md-5'>
-                <div className="progress" style={progressStyle}>
-                  <div className="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style={style}>
+                <div className="progress complaint" style={progressStyle}>
+                  <div className="progress-bar discipline" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style={style}>
                     <span className="sr-only"></span>
                   </div>
                 </div>
@@ -37,8 +37,8 @@ var SummaryRow = React.createClass({
               <div className='col-md-1'>
                 {this.props.data.total}
               </div>
-              <div className='col-md-5'>
-                <a onClickCapture={this.onClick} href='#'>{this.props.data.name}</a>
+              <div className='col-md-5 '>
+                <a onClickCapture={this.onClick} href='#' className="category-name">{this.props.data.name}</a>
               </div>
             </div>
 

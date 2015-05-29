@@ -15,10 +15,18 @@ var Officer = React.createClass({
   },
   render: function(){
     var selection_state = this.props.active ? 'selected' : '';
-    return <div className={selection_state} onClick={this.onClick}>
-            <div className='bold'>{this.props.officer.officer_first} {this.props.officer.officer_last}</div>
-            <div>Unit {this.props.officer.unit} - {this.props.officer.rank} - #{this.props.officer.star}</div>
-            <div>{this.props.officer.allegations_count} complaints | {this.props.officer.disciplines} disciplines</div>
+    return <div className="well officer" data-state={selection_state} onClick={this.onClick}>
+            <div className='officer_name'>
+              <strong>
+                {this.props.officer.officer_first.toLowerCase()} {this.props.officer.officer_last.toLowerCase()}
+              </strong>
+            </div>
+            <div>Unit {this.props.officer.unit}</div>
+            <div>
+              <strong>{this.props.officer.allegations_count} complaints</strong>
+              |
+              <strong>10 {this.props.officer.disciplines} disciplines</strong>
+            </div>
            </div>
 
   },

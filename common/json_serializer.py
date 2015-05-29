@@ -3,7 +3,7 @@ Created on Nov 16, 2013
 
 @author: antipro
 """
-from datetime import datetime
+import datetime
 from io import StringIO
 from json import dumps
 
@@ -96,8 +96,10 @@ class JSONSerializer():
             self.handle_simple(object)
         elif isinstance(object, str):
             self.handle_simple(object)
-        elif isinstance(object, datetime):
+        elif isinstance(object, datetime.datetime):
             self.handle_simple(object.strftime("%Y-%m-%d %H:%M:%S"))
+        elif isinstance(object, datetime.date):
+            self.handle_simple(object.strftime("%Y-%m-%d"))
         elif isinstance(object, tuple):
             self.handle_simple(object)
         else:
@@ -198,7 +200,7 @@ class JSONSerializer():
                 self.handle_dictionary({})
         else:
             self.stream.write(u': ')
-            self.handle_simple(field.value_to_string(mod))
+            self.handle_object(getattr(mod, field.name))
         self.stream.write(u', ')
 
     def handle_fk_field(self, mod, field):

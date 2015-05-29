@@ -3,6 +3,7 @@ var HOST = 'http://localhost:8000';
 var React = require('react');
 var Filters = require('./Filters.react');
 var ComplaintListStore = require('../stores/ComplaintListStore');
+var ComplaintListRow = require('./ComplaintListRow.react');
 
 
 var ComplaintList = React.createClass({
@@ -19,30 +20,21 @@ var ComplaintList = React.createClass({
     var rows=[]
     for(var i=0;i<this.state.complaints.length;i++){
       var complaint = this.state.complaints[i];
-      rows.push(<tr><td>{complaint[3]}</td></tr>)
+      rows.push(<ComplaintListRow complaint={complaint} />)
     }
 
     return <div>
             <div className='row'>
-              <h3 className='col-md-2'>Complaint List</h3>
+              <div className='col-md-2'>
+                <h3 className="margin-top-0">Complaint List</h3>
+              </div>
               <div className='col-md-4'>All | Investigating | Investigated | Pending</div>
               <div className='col-md-8'><div className='pull-right'>Latest</div></div>
             </div>
-            <div className='row'>
-              <table>
-                <thead>
-                  <tr>
-                    <th>Category</th>
-                    <th>CRID</th>
-                    <th>Incident Date</th>
-                    <th>Officer</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {rows}
-                </tbody>
-              </table>
-            </div>
+
+            {rows}
+
+
           </div>
 
   },

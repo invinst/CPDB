@@ -58,12 +58,8 @@ var CPDBApp = React.createClass({
           <Summary />
         </div>
       </div>
-      <div className="row">
-        <OfficerList />
-      </div>
-      <div className='row'>
-        <ComplaintList />
-      </div>
+      <OfficerList />
+      <ComplaintList />
     </div>;
   },
 

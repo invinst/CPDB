@@ -85,7 +85,9 @@ function createAreas(){
 
 
 var MapStore = assign({}, EventEmitter.prototype, {
-
+  getToken: function(){
+    return MBX;
+  },
   getMarkers: function(){
     return _markers;
   },

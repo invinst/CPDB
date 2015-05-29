@@ -24,11 +24,33 @@ var OfficerList = React.createClass({
       }
       var officer = this.state.officers[id];
       var active = this.state.active_officers.indexOf(officer.id) > -1;
-      officers.push(<div className='col-md-2'><Officer officer={officer} active={active}/></div>)
+      officers.push(<div className='col-sm-2'><Officer officer={officer} active={active}/></div>)
     }
-    return <div>
+
+    // 6 items per row
+    officer_rows = []
+    current_row = []
+    officer_rows.push(current_row);
+    counter = 0;
+    for(var i = 0; i < officers.length; i++){
+      if(counter++ == 6) {
+        current_row = [];
+        officer_rows.push(current_row);
+      }
+      current_row.push(officers[i]);
+    }
+
+    // prepare output
+    officer_output = []
+    for(var i = 0; i < officer_rows.length; i++){
+      officer_output.push(<div className="row officers">{officer_rows[i]}</div>)
+    }
+
+    return <div id="officer_list">
               <div className='row'>
-                <h3 className='col-md-2'>Officers List</h3>
+                <div className='col-md-2'>
+                  <h3 className="margin-top-0">Officers List</h3>
+                </div>
                 <div className='col-md-4'>
                   All | Above Avg | Below Complaints | Good Reputation
 
@@ -37,9 +59,7 @@ var OfficerList = React.createClass({
                   <span className='pull-right'>ALphabetical</span>
                 </div>
               </div>
-              <div className='row'>
-                {officers}
-              </div>
+              {officer_output}
               <a className='pull-right' onClick={this.showMore}>{showMoreText}</a>
           </div>
 

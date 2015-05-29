@@ -1,5 +1,9 @@
 body {
     padding-top: 50px;
+    background-color: white;
+}
+
+body, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4 {
     font-family: 'Vollkorn', serif;
 }
 
@@ -21,12 +25,17 @@ button a:hover {
     margin-bottom: 0;
 }
 
+.margin-top-0 {
+    margin-top: 0;
+}
+
 footer {
     margin: 3em 0;
 }
+
 #map{
   width:100%;
-  height:400px;
+  height:650px;
 }
 
 .navbar.navbar, .navbar-default.navbar {
@@ -49,9 +58,89 @@ footer {
 }
 
 #summary {
-    min-height: 450px;
+    min-height: 400px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 12px;
 }
 
 #summary .progress {
     height: 20px;
+    margin-bottom: 7px;
+}
+
+#summary .category-name {
+   color: #0079af;
+}
+
+#summary .main-category-name {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+#summary .main-count {
+    line-height: 25px;
+}
+
+#summary a.back {
+    color: #666;
+}
+
+#summary .discipline {
+    background: #709ec1;
+}
+
+#summary .complaint {
+    background: #a6b5bf;
+}
+
+#summary .type {
+    font-weight: 300;
+    line-height: 26px;
+}
+
+#summary .discipline-text {
+    color: #709ec1;
+}
+
+#summary .complaint-text {
+    color: #a6b5bf;
+}
+
+#officer_list .officers .col-sm-2 {
+    padding-right: 5px;
+}
+
+.well.officer {
+    background-color: #ebebeb;
+    border-top: 3px solid red;
+    padding: 15px;
+    font-size: 12px;
+}
+
+.well.officer .avg {
+    border-top-color: yellow;
+}
+
+.well.officer .bellow {
+    border-top-color: green;
+}
+
+.officer_name {
+    text-transform: capitalize;
+    font-size: 16px;
+    font-style: italic;
+
+}
+
+.complain-row {
+    padding:  0.5em 0;
+}
+
+.complain-row .title {
+    color: gray;
+    font-size: 12px;
+}
+
+.complain-row + .complain-row {
+    border-top: 1px solid black;
 }

@@ -32,13 +32,28 @@ var Summary = React.createClass({
         var data = this.state.current.subcategories[i];
         rows.push(<SummaryChildRow data={data} />);
       }
+      rows = <div>
+        <div className="row">
+          <div className="col-md-1 main-count"><strong>{this.state.current.total}</strong></div>
+          <div className="col-md-11 main-category-name category-name">{this.state.current.name}</div>
+        </div>
+        <br />
+        <div className="row">{rows}</div>
+      </div>
 
-      backLink = <a href='#' onClick={this.goBack}>Go Back</a>
+      backLink = <a href='#' className="back" onClick={this.goBack}><i className="fa fa-angle-double-left"/> Go Back</a>
     }
     return <div id='summary' className="well">
-            <div className='clearfix'>
-              <div className='pull-right'>Discipline Taken | Complaints</div>
-              <h3 className='pull-left'>Number of Complaints</h3>
+            <div className='row'>
+              <div className='col-md-6'>
+                <h3 className="margin-top-0">Number of Complaints</h3>
+              </div>
+              <div className='col-md-3'>
+                <i className="glyphicon glyphicon-stop type discipline-text" />Discipline Taken
+              </div>
+              <div className='col-md-3'>
+                <i className="glyphicon glyphicon-stop type complaint-text" />Complaints
+              </div>
             </div>
             <div className="">
             {rows}

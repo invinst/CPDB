@@ -10,8 +10,14 @@ var SummaryChildRow = React.createClass({
   render: function(){
 
     return <div className='col-md-6'>
-              {this.props.data.count}
-              {this.props.data.name}
+              <div className="row">
+                <div className="col-md-2">
+                  <strong>{this.props.data.count}</strong>
+                </div>
+                <div className="col-md-10 category-name">
+                  {this.props.data.name}
+                </div>
+              </div>
             </div>
 
   },

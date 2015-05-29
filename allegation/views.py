@@ -11,7 +11,7 @@ from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import D
 
 from common.json_serializer import JSONSerializer
-from common.models import Allegation, Area, AllegationCategory, Officer
+from common.models import Allegation, Area, AllegationCategory, Officer, PoliceWitness, ComplainingWitness
 
 
 class AllegationListView(TemplateView):
@@ -118,23 +118,25 @@ class AllegationAPIView(View):
         except ValueError:
             pass
 
-        fields = [
-            'id',
-            'crid',
-            'incident_date',
-            'officer__id',  # placeholder for name
-            'cat__allegation_name',
-            'officer__officer_first',
-            'officer__officer_last',
-        ]
 
-        def concat_name(value):
-            result = list(value[0:5])
-            result[3] = "%s %s" % (value[5], value[6])
-            return result
+        allegations = allegations.select_related('officer','cat')
 
-        display_allegations = allegations[start:start + length].values_list(*fields)
-        allegations_list = [concat_name(x) for x in display_allegations]
+        display_allegations = allegations[start:start + length]
+        allegations_list = []
+        for allegation in display_allegations:
+            officer = None
+            category = None
+            if allegation.officer_id:
+                officer = allegation.officer
+            if allegation.cat:
+                category = allegation.cat
+            witness = ComplainingWitness.objects.filter(crid=allegation.crid)
+            police_witness = PoliceWitness.objects.filter(crid=allegation.crid)
+            ret = {
+                        'allegation': allegation, 'officer': officer, 'category': category,
+                        'complaining_witness': witness, 'police_witness': police_witness
+            }
+            allegations_list.append(ret)
 
         content = JSONSerializer().serialize({
             'allegations': allegations_list,
@@ -146,6 +148,7 @@ class AllegationAPIView(View):
 
 class AllegationGISApiView(AllegationAPIView):
     def get(self, request):
+
         allegations = self.get_allegations()
         allegation_dict = {
             "type": "FeatureCollection",
