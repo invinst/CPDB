@@ -25,8 +25,9 @@ class Officer(models.Model):
     def count_by_num_complaints(cls, allegations):
         count = []
 
-        for officer in Officer.objects.all():
-            allegation_count = allegations.filter(officer=officer).count()
+        officer_ids = allegations.values_list('officer', flat=True)
+        for officer in Officer.objects.filter(id__in=officer_ids):
+            allegation_count = officer.allegations_count
             if len(count) <= allegation_count:
                 for _ in range(len(count), allegation_count+1):
                     count.append(0)
