@@ -19,85 +19,105 @@ var CHANGE_EVENT = 'change';
 var SUMMARY_CHANGE = 'summary-change';
 var SET_ACTIVE_OFFICER = 'set-active-officer';
 var _state = {
-
 }
 
-/**
- * Update a TODO item.
- * @param  {string} id
- * @param {object} updates An object literal containing only the data to be
- *     updated.
- */
+
+var GRAPH_ELEM_SEL = '#complained-officers .graph';
+
+
+function drawChart(cols, rotated) {
+    var chart = c3.generate({
+        bindto: GRAPH_ELEM_SEL,
+        data: {
+            columns: [
+                ['No. officers'].concat(cols)
+            ],
+            type: 'area-spline',
+            empty: {
+                label: {
+                    text: 'Loading data...'
+                }
+            }
+        },
+        regions: [
+            {
+              end: AppConstants.AVG_COMPLAINTS_NUMBER_GREEN,
+              class: 'light',
+              opacity: .5
+            },
+            {
+              start: AppConstants.AVG_COMPLAINTS_NUMBER_GREEN,
+              end: AppConstants.AVG_COMPLAINTS_NUMBER_YELLOW,
+              class: 'medium',
+              opacity: .5
+            },
+            {
+              start: AppConstants.AVG_COMPLAINTS_NUMBER_YELLOW,
+              class: 'heavy',
+              opacity: .5
+            }
+        ],
+        point: {
+            show: false
+        },
+        axis: {
+            rotated: rotated,
+            x: {
+                label: {
+                    text: 'Number of complaints',
+                    position: 'outer-right'
+                }
+            },
+            y: {
+                label: {
+                    text: 'Number of officers',
+                    position: 'outer-top'
+                }
+            }
+        },
+        legend: {
+            show: false
+        },
+        tooltip: {
+            format: {
+                title: function(d) { return d + ' complaints'; }
+            },
+            position: function (data, width, height, element) {
+                return {
+                    top: -15,
+                    left: 300
+                }
+            },
+            contents: function (d, defaultTitleFormat, defaultValueFormat, color) {
+                var point = d[0];
+                var numOfficers = point.value;
+                var numComplaints = point.index;
+                return '<strong>'+numOfficers + '</strong> officers with <strong>' + numComplaints + '</strong> complaints';
+            }
+        }
+    });
+}
+
+
+var rotate = false;
+var cols = [];
 
 
 var DistributionChartStore = assign({}, EventEmitter.prototype, {
   set: function(key,value){
     _state[key] = value;
   },
+  data: [],
+  rotateChart: function(){
+    rotate = !rotate;
+    drawChart(cols, rotate);
+  },
   update: function(){
     query_string = FilterStore.getQueryString();
-    console.log(query_string)
     $.get('/officer/count/?by=num_complaints&' + query_string, function(data) {
-        if(_state['chart']){
-            _state['chart'].destroy();
-        }
-        _state['chart'] = c3.generate({
-          bindto: '#complained-officers',
-          data: {
-              columns: [
-                ['No. officers'].concat(data)
-              ],
-              type: 'area-spline'
-          },
-          regions: [
-              {
-                end: AppConstants.AVG_COMPLAINTS_NUMBER_GREEN,
-                class: 'light',
-                opacity: .5
-              },
-              {
-                start: AppConstants.AVG_COMPLAINTS_NUMBER_GREEN,
-                end: AppConstants.AVG_COMPLAINTS_NUMBER_YELLOW,
-                class: 'medium',
-                opacity: .5
-              },
-              {
-                start: AppConstants.AVG_COMPLAINTS_NUMBER_YELLOW,
-                class: 'heavy',
-                opacity: .5
-              }
-          ],
-          point: {
-              show: false
-          },
-          axis: {
-              x: {
-                  label: {
-                      text: 'Number of complaints',
-                      position: 'outer-right'
-                  }
-              },
-              y: {
-                  label: {
-                      text: 'Number of officers',
-                      position: 'outer-top'
-                  }
-              }
-          },
-          legend: {
-              show: false
-          },
-          tooltip: {
-              format: {
-                  title: function(d) { return d + ' complaints'; }
-              }
-          }
-        });
-        var under20 = 0;
-        for (var i = 0; i < 20; i++) {
-            under20 += data[i];
-        }
-        _state['chart'].xgrids.add({value: 20, text: under20 + ' under 20 complaints', class: 'under20'});
+        rotate = false;
+        cols = data;
+        drawChart(data, rotate);
     });
   },
   init: function(){

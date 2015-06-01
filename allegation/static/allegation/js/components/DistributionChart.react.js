@@ -9,13 +9,19 @@ var DistributionChart = React.createClass({
      return {'selected':false}
   },
   componentDidMount: function() {
-
     DistributionChartStore.update();
   },
+  rotateChart: function(){
+    DistributionChartStore.rotateChart();
+  },
   render: function(){
-    return <div>
-            <div id="complained-officers"></div>
-          </div>
+    return <div id="complained-officers">
+              <div className="graph"></div>
+              <div className="controls">
+                <h3>Adjust graph</h3>
+                <button className="btn btn-primary swap-axes" onClick={this.rotateChart} type="button">Swap axes</button>
+              </div>
+            </div>
 
   },
 
