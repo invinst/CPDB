@@ -33,6 +33,7 @@
 </head>
 <body id="{% block page_id %}body{% endblock %}">
 {% include '_top_nav.html' %}
+{% block body %}
 <div class="container">
     {% include '_top_banner.html' %}
     {% block slider %}{% endblock %}
@@ -54,7 +55,7 @@
         </div>
     </footer>
 </div>
-
+{% endblock %}
 {% block footerjs %}
     <script src="{% static 'js/head_define.js' %}"></script>
     <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>

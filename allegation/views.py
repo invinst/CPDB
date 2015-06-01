@@ -220,11 +220,18 @@ class AllegationSummaryApiView(AllegationAPIView):
         })
         return HttpResponse(content, content_type="application/json")
 
+
 class OfficerListAPIView(AllegationAPIView):
     def get(self, request):
         allegations = self.get_allegations()
         officers = allegations.values_list('officer', flat=True).distinct()
-        officers = Officer.objects.filter(pk__in=officers).order_by('officer_last', 'officer_first')
+        officers = Officer.objects.filter(pk__in=officers).order_by('-allegations_count')
+
+        if 'allegations_count_start' in request.GET:
+            officers = officers.filter(allegations_count__gt=int(request.GET['allegations_count_start']))
+        if 'allegations_count_end' in request.GET:
+            officers = officers.filter(allegations_count__lte=int(request.GET['allegations_count_end']))
+
         officer_list_length = officers.count()
 
         num_to_send = settings.OFFICER_LIST_SEND_LENGTH

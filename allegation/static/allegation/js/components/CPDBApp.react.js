@@ -21,6 +21,7 @@ var FilterAction = require('../actions/FilterActions');
 var Summary = require('./Summary.react');
 var OfficerList = require('./OfficerList.react');
 var ComplaintList = require('./ComplaintList.react');
+var DistributionChart = require('./DistributionChart.react');
 
 /**
  * Retrieve the current TODO data from the MapStore
@@ -53,13 +54,19 @@ var CPDBApp = React.createClass({
   render: function() {
   	return <div>
       <div id='map' className='pin-top pin-bottom'></div>
-      <div className="row">
-        <div className="col-md-6 col-md-offset-6">
-          <Summary />
+      <div className='container'>
+        <div className="row">
+          <div className="col-md-6">
+            <h3>Number of Complained Officer</h3>
+            <DistributionChart />
+          </div>
+          <div className="col-md-6">
+            <Summary />
+          </div>
         </div>
+        <OfficerList />
+        <ComplaintList />
       </div>
-      <OfficerList />
-      <ComplaintList />
     </div>;
   },
 

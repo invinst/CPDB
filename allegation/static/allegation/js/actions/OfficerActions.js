@@ -25,6 +25,13 @@ var OfficerActions = {
       actionType: MapConstants.SET_ACTIVE_OFFICER,
       officer:officer
     })
+  },
+  setComplaintsCount: function(start, end) {
+    AppDispatcher.dispatch({
+      actionType: MapConstants.SET_OFFICER_LIST_FILTER,
+      start: start,
+      end: end
+    })
   }
 
 };

@@ -11,10 +11,8 @@
   <link rel="stylesheet" href="{% static 'c3/c3.min.css' %}" />
   <link rel="stylesheet" href="{% static 'graph/css/complained-officers.css' %}" />
 {% endblock %}
-{% block content %}
+{% block body %}
   <section id='cpdbapp'></section>
-
-  <div id="complained-officers"></div>
 {% endblock %}
 {% block footerjs %}
   {{ block.super }}
@@ -23,8 +21,7 @@
   <script src="{% static 'jquery-ui/jquery-ui.min.js' %}"></script>
   <script src="{% static 'bootstrap-tagsinput/src/bootstrap-tagsinput.js' %}"></script>
   <script src="{% static 'search/js/search.js' %}"></script>
-  <script src="{% static 'allegation/js/bundle.js' %}"></script>
   <script src="{% static 'd3/d3.min.js' %}"></script>
   <script src="{% static 'c3/c3.min.js' %}"></script>
-  <script src="{% static 'graph/js/complained-officers.js' %}"></script>
+  <script src="{% static 'allegation/js/bundle.js' %}"></script>
 {% endblock %}

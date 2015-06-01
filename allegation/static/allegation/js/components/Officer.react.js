@@ -4,6 +4,7 @@ var React = require('react');
 var Filters = require('./Filters.react');
 var OfficerActions = require('../actions/OfficerActions');
 var Officer = require("./Officer.react");
+var AppConstants = require("../constants/AppConstants")
 
 
 var Officer = React.createClass({
@@ -14,18 +15,29 @@ var Officer = React.createClass({
 
   },
   render: function(){
+    var officer = this.props.officer;
+    var officerComplaintAvgStatus = 'bellow';
+    if (officer.allegations_count > AppConstants.AVG_COMPLAINTS_NUMBER_GREEN) {
+      officerComplaintAvgStatus = 'middle';
+    }
+    if (officer.allegations_count > AppConstants.AVG_COMPLAINTS_NUMBER_YELLOW) {
+      officerComplaintAvgStatus = 'above';
+    }
+
+    var className = 'well officer ' + officerComplaintAvgStatus;
+
     var selection_state = this.props.active ? 'selected' : '';
-    return <div className="well officer" data-state={selection_state} onClick={this.onClick}>
+    return <div className={className} data-state={selection_state} onClick={this.onClick}>
             <div className='officer_name'>
               <strong>
-                {this.props.officer.officer_first.toLowerCase()} {this.props.officer.officer_last.toLowerCase()}
+                {this.props.officer.officer_first.toLowerCase()} {officer.officer_last.toLowerCase()}
               </strong>
             </div>
-            <div>Unit {this.props.officer.unit}</div>
+            <div>Unit {officer.unit}</div>
             <div>
-              <strong>{this.props.officer.allegations_count} complaints</strong>
+              <strong>{officer.allegations_count} complaints</strong>
               |
-              <strong>10 {this.props.officer.disciplines} disciplines</strong>
+              <strong>10 {officer.disciplines} disciplines</strong>
             </div>
            </div>
 

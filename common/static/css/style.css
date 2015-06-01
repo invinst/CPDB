@@ -117,12 +117,16 @@ footer {
     font-size: 12px;
 }
 
-.well.officer .avg {
+.well.officer.middle {
     border-top-color: yellow;
 }
 
-.well.officer .bellow {
+.well.officer.bellow {
     border-top-color: green;
+}
+
+.well.officer.above {
+    border-top-color: red;
 }
 
 .officer_name {
@@ -130,6 +134,10 @@ footer {
     font-size: 16px;
     font-style: italic;
 
+}
+
+.complaint_list {
+    margin-top: 2em;
 }
 
 .complain-row {
@@ -141,6 +149,29 @@ footer {
     font-size: 12px;
 }
 
+.complaint_detail {
+    background-color: #f7f7ed;
+    padding: 0 7.1% 1em;
+    border-bottom: 1px solid black;
+}
+
+.btn.btn-request:not(.btn-link):not(.btn-flat) {
+    background-color: #0079af;
+    color: white;
+}
+.btn.btn-request:hover:not(.btn-link):not(.btn-flat) {
+    background-color: #0a90cb;
+}
+
 .complain-row + .complain-row {
     border-top: 1px solid black;
+}
+
+.filter_links a {
+    margin-right: 1.5em;
+    color: #9a9a9a;
+}
+.filter_links a.active {
+    color: black;
+    border-bottom: 2px solid black;
 }

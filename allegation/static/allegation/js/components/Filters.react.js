@@ -26,6 +26,7 @@ var Filters = React.createClass({
   componentDidMount: function() {
     FilterStore.addChangeListener(this._onChange);
     FilterStore.addCreateListener(this._onCreate);
+    this._onChange();
   },
   /**
    * @return {object}
@@ -56,12 +57,12 @@ var Filters = React.createClass({
     this.setState(getFilterState());
     var query_string = FilterStore.getQueryString();
     document.location.href='#' + JSON.stringify(getFilterState())
-    if(query_string.length > 5){
-      $.getJSON("/api/allegations/gis/?" + query_string,function(data){
-        MapStore.setMarkers(data);
 
-      })
-    }
+    $.getJSON("/api/allegations/gis/?" + query_string,function(data){
+      MapStore.setMarkers(data);
+
+    })
+
   }
 
 });

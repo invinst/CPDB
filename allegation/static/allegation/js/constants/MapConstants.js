@@ -18,5 +18,6 @@ module.exports = keyMirror({
   SET_SUMMARY: null,
   OFFICER_VIEW_MORE: null,
   SET_ACTIVE_OFFICER: null,
+  SET_OFFICER_LIST_FILTER: null,
   INIT: null,
 });

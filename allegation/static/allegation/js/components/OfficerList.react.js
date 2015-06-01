@@ -14,17 +14,33 @@ var OfficerList = React.createClass({
   componentDidMount: function() {
     OfficerStore.addChangeListener(this._onChange);
   },
+  filterByComplaintCount: function(count_start, count_end, e){
+    e.preventDefault();
+    $(".officer_filter_links a").removeClass("active");
+    $(e.target).addClass("active");
+    OfficerActions.setComplaintsCount(count_start, count_end);
+  },
   render: function(){
     var officers = []
     var counter = 0;
-    var showMoreText = this.state.show_more ? "Show Less" : "Show More";
+    var showMore = this.state.show_more;
+    var showMoreText = showMore ? "Show Less" : "Show More";
+    var isFiltering = this.state.complaints_count_start || this.state.complaints_count_end;
+
+    if (isFiltering) {
+      showMoreText = '';
+      showMore = true;
+    }
+
     for(var id in this.state.officers){
-      if(counter++ >= 12 && !this.state.show_more){
+      var officer = this.state.officers[id];
+
+      if(counter++ >= 12 && !showMore){
         break;
       }
-      var officer = this.state.officers[id];
+
       var active = this.state.active_officers.indexOf(officer.id) > -1;
-      officers.push(<div className='col-sm-2'><Officer officer={officer} active={active}/></div>)
+      officers.push(<div className='col-sm-2' key={officer.id}><Officer officer={officer} active={active}/></div>)
     }
 
     // 6 items per row
@@ -34,6 +50,7 @@ var OfficerList = React.createClass({
     counter = 0;
     for(var i = 0; i < officers.length; i++){
       if(counter++ == 6) {
+        counter = 1;
         current_row = [];
         officer_rows.push(current_row);
       }
@@ -43,7 +60,7 @@ var OfficerList = React.createClass({
     // prepare output
     officer_output = []
     for(var i = 0; i < officer_rows.length; i++){
-      officer_output.push(<div className="row officers">{officer_rows[i]}</div>)
+      officer_output.push(<div className="row officers" key={i}>{officer_rows[i]}</div>)
     }
 
     return <div id="officer_list">
@@ -51,25 +68,26 @@ var OfficerList = React.createClass({
                 <div className='col-md-2'>
                   <h3 className="margin-top-0">Officers List</h3>
                 </div>
-                <div className='col-md-4'>
-                  All | Above Avg | Below Complaints | Good Reputation
+                <div className='col-md-4 filter_links'>
+                    <a href="#" className="active" onClick={this.filterByComplaintCount.bind(this, 0, 0)}>All</a>
 
-                </div>
-                <div className='col-md-6'>
-                  <span className='pull-right'>ALphabetical</span>
+                    <a href="#" onClick={this.filterByComplaintCount.bind(this, 60, 0)}>Above Avg</a>
+
+                    <a href="#" onClick={this.filterByComplaintCount.bind(this, 20, 60)}>Below Avg</a>
+
+                    <a href="#" onClick={this.filterByComplaintCount.bind(this, 0, 20)}>Good Reputation</a>
                 </div>
               </div>
               {officer_output}
-              <a className='pull-right' onClick={this.showMore}>{showMoreText}</a>
+              <a className='pull-right' href="#" onClick={this.showMore}>{showMoreText}</a>
           </div>
 
   },
   _onChange: function(){
-    console.log('on change')
     this.setState(OfficerStore.getAll());
-    console.log(this.state)
   },
-  showMore: function(){
+  showMore: function(e){
+    e.preventDefault();
     OfficerActions.setViewMore();
   },
 

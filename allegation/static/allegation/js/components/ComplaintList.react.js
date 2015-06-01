@@ -23,13 +23,12 @@ var ComplaintList = React.createClass({
       rows.push(<ComplaintListRow complaint={complaint} />)
     }
 
-    return <div>
+    return <div className="complaint_list">
             <div className='row'>
               <div className='col-md-2'>
                 <h3 className="margin-top-0">Complaint List</h3>
               </div>
-              <div className='col-md-4'>All | Investigating | Investigated | Pending</div>
-              <div className='col-md-8'><div className='pull-right'>Latest</div></div>
+              <div className='col-md-10'><div className='pull-right'>Latest</div></div>
             </div>
 
             {rows}
