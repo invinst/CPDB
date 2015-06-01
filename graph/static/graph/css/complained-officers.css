@@ -7,14 +7,15 @@
 .c3-region.heavy {
     fill: red;
 }
-.under20 line {
+.c3-xgrid-focus line {
     stroke: white;
 }
-.under20 text {
-    fill: black;
+.tick text {
+    font-weight: bold;
 }
 
 #complained-officers .graph {
     width: 500px;
     height: 300px;
+    margin-top: 20px;
 }

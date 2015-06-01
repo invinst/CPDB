@@ -1,4 +1,6 @@
 (function() {
+    var GRAPH_ELEM_SEL = '#complained-officers .graph';
+
     var cols = [];
     var rotated = false;
     drawChart();
@@ -15,7 +17,7 @@
 
     function drawChart() {
         var chart = c3.generate({
-            bindto: '#complained-officers .graph',
+            bindto: GRAPH_ELEM_SEL,
             data: {
                 columns: [
                     ['No. officers'].concat(cols)
@@ -56,14 +58,20 @@
             tooltip: {
                 format: {
                     title: function(d) { return d + ' complaints'; }
+                },
+                position: function (data, width, height, element) {
+                    return {
+                        top: -15,
+                        left: 300
+                    }
+                },
+                contents: function (d, defaultTitleFormat, defaultValueFormat, color) {
+                    var point = d[0];
+                    var numOfficers = point.value;
+                    var numComplaints = point.index;
+                    return '<strong>'+numOfficers + '</strong> officers with <strong>' + numComplaints + '</strong> complaints';
                 }
             }
         });
-
-        var under20 = 0;
-        for (var i = 0; i < 20; i++) {
-            under20 += cols[i];
-        }
-        chart.xgrids.add({value: 20, text: under20 + ' under 20 complaints', class: 'under20'});
     }
 })();
