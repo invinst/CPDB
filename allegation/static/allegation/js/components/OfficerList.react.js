@@ -16,7 +16,7 @@ var OfficerList = React.createClass({
   },
   filterByComplaintCount: function(count_start, count_end, e){
     e.preventDefault();
-    $(".officer_filter_links a").removeClass("active");
+    $(".filter_links a").removeClass("active");
     $(e.target).addClass("active");
     OfficerActions.setComplaintsCount(count_start, count_end);
   },
