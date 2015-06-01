@@ -144,7 +144,7 @@ BOWER_INSTALLED_APPS = (
     'bootstrap#3.3.2',
     'bootstrap-tagsinput#0.4.2',
     'jquery-cookie#1.4.1',
-    'd3',
+    'c3',
 )
 
 MEDIA_URL = '/media/'
