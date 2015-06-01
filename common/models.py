@@ -20,6 +20,19 @@ class Officer(models.Model):
     def __str__(self):
         return "%(last)s %(first)s" % {'last': self.officer_last, 'first': self.officer_first}
 
+    @classmethod
+    def count_by_num_complaints(cls, allegations):
+        count = []
+
+        for officer in Officer.objects.all():
+            allegation_count = allegations.filter(officer=officer).count()
+            if len(count) <= allegation_count:
+                for _ in range(len(count), allegation_count+1):
+                    count.append(0)
+            count[allegation_count] += 1
+
+        return count
+
 
 class OfficerHistory(models.Model):
     officer = models.ForeignKey(Officer, null=True)
@@ -99,7 +112,7 @@ class Allegation(models.Model):
         return False
 
 
-    def save(self, *args, **kwargs):
+    def save(self,*args,**kwargs):
         if self.location and not self.point:
             # geolocate
             pass

@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'allegation',
     'corsheaders',
     'search',
+    'graph',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -143,7 +144,6 @@ BOWER_INSTALLED_APPS = (
     'bootstrap#3.3.2',
     'bootstrap-tagsinput#0.4.2',
     'jquery-cookie#1.4.1',
-    'components-font-awesome#4.3.0',
 )
 
 MEDIA_URL = '/media/'
