@@ -1,23 +1,24 @@
-import os
 import urllib
 import json
+
 from django.core.management.base import BaseCommand
-from django.db import connection
 from django.conf import settings
 from common.models import Allegation, Area
 from django.contrib.gis.geos import Point
 
+
 class Command(BaseCommand):
     help = 'GeoCode Allegations'
 
-    def geocode_address(self,address,beat):
+    def geocode_address(self, address, beat):
         proximity = ""
         if beat and beat.polygon:
-            proximity = "&proximity=%(lng)s,%(lat)s" %  {'lng':beat.polygon.centroid.x,'lat':beat.polygon.centroid.y}
+            proximity = "&proximity=%(lng)s,%(lat)s" % {'lng': beat.polygon.centroid.x, 'lat': beat.polygon.centroid.y}
 
         url = "http://api.tiles.mapbox.com/v4/geocode/mapbox.places/%(address)s.json?access_token=%(mapbox_api_key)s%(proximity)s" \
-                     % {'address':urllib.parse.quote(address),'mapbox_api_key':settings.MAP_BOX_API_KEY,'proximity':proximity}
-        #print(url)
+              % {'address': urllib.parse.quote(address), 'mapbox_api_key': settings.MAP_BOX_API_KEY,
+                 'proximity': proximity}
+        # print(url)
         response = urllib.request.urlopen(url)
         data = response.read().decode('utf-8')
         ret = json.loads(data)
@@ -41,13 +42,13 @@ class Command(BaseCommand):
                 city = allegation.city
             point = False
             if add1 or add2:
-                address_lookup = "%s %s, %s" % (add1,add2,city)
-                point = self.geocode_address(address_lookup,allegation.beat)
+                address_lookup = "%s %s, %s" % (add1, add2, city)
+                point = self.geocode_address(address_lookup, allegation.beat)
             elif allegation.beat and allegation.beat.polygon:
                 point = allegation.beat.polygon.centroid
 
             if point:
-                print(point.y,point.x)
+                print(point.y, point.x)
                 areas = Area.objects.filter(polygon__intersects=point)
                 for area in areas:
                     allegation.areas.add(area)

@@ -9,7 +9,6 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.select import Select
-
 from common.factories import UserFactory
 
 
@@ -20,11 +19,15 @@ WebElement.xpath = WebElement.find_element_by_xpath
 
 def select_by_visible_text(self, text):
     Select(self).select_by_visible_text(text)
+
+
 WebElement.select_by_visible_text = select_by_visible_text
 
 
 def has_class(self, value):
     return value in self.get_attribute('class')
+
+
 WebElement.has_class = has_class
 
 
@@ -58,7 +61,6 @@ class UserTestBaseMixin(object):
 
 
 class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
-
     source = 0
     source_dir = os.environ.get('CIRCLE_ARTIFACTS')
 
@@ -193,7 +195,6 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
 
 
 class SimpleTestCase(DjangoSimpleTestCase, UserTestBaseMixin):
-
     response = None
     _soup = None
 

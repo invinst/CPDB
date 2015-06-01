@@ -8,7 +8,6 @@ fake = Faker()
 
 
 class OfficerFactory(factory.django.DjangoModelFactory):
-
     class Meta:
         model = Officer
         django_get_or_create = ('officer_first', 'officer_last')
