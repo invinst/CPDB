@@ -35,6 +35,10 @@ var ComplaintListRow = React.createClass({
         map_image = 'http://api.tiles.mapbox.com/v4/mapbox.streets/pin-l-park+482('+lng+','+lat+')/'+lng+','+lat+',13/500x300.png?access_token=' + token;
       }
     }
+    var officer_name = "";
+    if(this.props.complaint.officer){
+        officer_name = this.props.complaint.officer.officer_first + " " + this.props.complaint.officer.officer_last;
+    }
     category = {};
     if(this.props.complaint.category){
       category = this.props.complaint.category;
@@ -58,7 +62,7 @@ var ComplaintListRow = React.createClass({
               </div>
               <div className='col-md-3'>
                 <div className='title'>Officer</div>
-                {this.props.complaint.officer.officer_first} {this.props.complaint.officer.officer_last}
+                {officer_name}
               </div>
               <div className='col-md-1'>
                 <a className='btn btn-sm btn-request'>

@@ -28,9 +28,16 @@
 .ui-autocomplete {
     z-index: 100000;
 }
-
+.ui-widget{
+    font-family: 'Source Sans Pro', serif;
+}
+.ui-state-focus, .ui-widget-content .ui-state-focus{
+    font-weight: 300;
+}
 #search-wrapper {
     width: 1000px;
     margin-right: 50px;
 }
-
+.bootstrap-tagsinput .tag,.bootstrap-tagsinput input{
+    font-size: 1em;
+}

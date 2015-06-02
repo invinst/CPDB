@@ -75,7 +75,7 @@ function cpdbAutocomplete($input){
         },
         select: function(event, ui){
             $('#cpdb-search').tagsinput("add", {
-                text: ui.item.category_name + ":" + ui.item.label,
+                text: ui.item.category_name + ": " + ui.item.label,
                 value: [ui.item.category,  ui.item.value]
             });
             $($input).val('');

@@ -4,7 +4,7 @@ var React = require('react');
 var Filters = require('./Filters.react');
 var OfficerActions = require('../actions/OfficerActions');
 var Officer = require("./Officer.react");
-var AppConstants = require("../constants/AppConstants")
+var AppConstants = require("../constants/AppConstants");
 
 
 var Officer = React.createClass({
@@ -16,6 +16,9 @@ var Officer = React.createClass({
   },
   render: function(){
     var officer = this.props.officer;
+    if(!officer){
+      return <div></div>
+    }
     var officerComplaintAvgStatus = 'bellow';
     if (officer.allegations_count > AppConstants.AVG_COMPLAINTS_NUMBER_GREEN) {
       officerComplaintAvgStatus = 'middle';
@@ -35,9 +38,8 @@ var Officer = React.createClass({
             </div>
             <div>Unit {officer.unit}</div>
             <div>
-              <strong>{officer.allegations_count} complaints</strong>
-              |
-              <strong>10 {officer.disciplines} disciplines</strong>
+              <div><strong>{officer.allegations_count}</strong> complaints</div>
+              <div><strong>{officer.discipline_count}</strong> disciplines</div>
             </div>
            </div>
 

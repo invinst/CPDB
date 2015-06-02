@@ -14,6 +14,12 @@
     width: 200px;
     text-align: right;
 }
+.c3-axis-x-label {
+    fill: #999999;
+}
+.c3-axis-y-label {
+    fill: #999999;
+}
 .tick text {
     font-weight: bold;
 }

@@ -39,18 +39,18 @@ class SuggestView(View):
             else:
                 condition = Q(officer_first__icontains=q) | Q(officer_last__icontains=q)
             results = self.query_suggestions(Officer, condition, ['officer_first', 'officer_last', 'allegations_count', 'id'],
-                                             order_bys=('allegations_count', 'officer_first', 'officer_last'))
+                                             order_bys=('-allegations_count', 'officer_first', 'officer_last'))
             results = [["%s %s (%s)" % (x[0], x[1], x[2]), x[3] ] for x in results]
             ret['officer_id'] = results
 
             condition = Q(category__icontains=q)
-            results = self.query_suggestions(AllegationCategory, condition, ['category'], order_bys=['category'])
+            results = self.query_suggestions(AllegationCategory, condition, ['category'], order_bys=['-category_count'])
             if len(results):
                 ret['category'] = results
 
             condition = Q(allegation_name__icontains=q)
             results = self.query_suggestions(AllegationCategory, condition, ['allegation_name', 'cat_id'],
-                                             order_bys=['allegation_name'])
+                                             order_bys=['-allegation_count'])
             if len(results):
                 ret['cat'] = results
 

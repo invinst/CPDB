@@ -1,9 +1,10 @@
 body {
     padding-top: 50px;
     background-color: white;
+    font-family: 'Source Sans Pro', serif;
 }
 
-body, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4 {
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4 {
     font-family: 'Vollkorn', serif;
 }
 
@@ -174,4 +175,8 @@ footer {
 .filter_links a.active {
     color: black;
     border-bottom: 2px solid black;
+}
+
+.margin-top{
+    margin-top:1em;
 }
