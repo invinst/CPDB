@@ -138,7 +138,7 @@ var MapStore = assign({}, EventEmitter.prototype, {
         _map.removeLayer(_markers)
     }
 
-    _heat = L.heatLayer([], {radius: 25})
+    _heat = L.heatLayer([], {radius: 8})
     _markers = L.markerClusterGroup();
     _controls['markers'] = _markers;
     _controls['heat-map'] = _heat;
