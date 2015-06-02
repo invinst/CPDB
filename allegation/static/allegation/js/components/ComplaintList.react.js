@@ -26,9 +26,9 @@ var ComplaintList = React.createClass({
     return <div className="complaint_list">
             <div className='row'>
               <div className='col-md-2'>
-                <h3 className="margin-top-0">Complaint List</h3>
+                <h3 className="margin-top-0">Complaint</h3>
               </div>
-              <div className='col-md-10'><div className='pull-right'>Latest</div></div>
+              
             </div>
 
             {rows}
