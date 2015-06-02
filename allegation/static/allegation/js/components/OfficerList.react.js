@@ -66,7 +66,7 @@ var OfficerList = React.createClass({
     return <div id="officer_list">
               <div className='row'>
                 <div className='col-md-2'>
-                  <h3 className="margin-top-0">Officers List</h3>
+                  <h3 className="margin-top-0">Officers</h3>
                 </div>
               </div>
               {officer_output}

@@ -141,13 +141,17 @@ footer {
     margin-top: 2em;
 }
 
-.complain-row {
+.complaint-row {
     padding:  0.5em 0;
 }
 
-.complain-row .title {
+.complaint-row .title {
     color: gray;
     font-size: 12px;
+}
+
+.complaint-row .show_more {
+    font-size: 34px;
 }
 
 .complaint_detail {
@@ -164,7 +168,7 @@ footer {
     background-color: #0a90cb;
 }
 
-.complain-row + .complain-row {
+.complaint-row + .complaint-row {
     border-top: 1px solid black;
 }
 

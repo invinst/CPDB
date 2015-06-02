@@ -32,7 +32,7 @@ var ComplaintListRow = React.createClass({
         var token = MapStore.getToken();
         var lat = allegation.point.lat;
         var lng = allegation.point.lng;
-        map_image = 'http://api.tiles.mapbox.com/v4/mapbox.streets/pin-l-park+482('+lng+','+lat+')/'+lng+','+lat+',13/500x300.png?access_token=' + token;
+        map_image = 'http://api.tiles.mapbox.com/v4/mapbox.streets/pin-l-park+482('+lng+','+lat+')/'+lng+','+lat+',13/489x300.png?access_token=' + token;
       }
     }
     var officer_name = "";
@@ -43,7 +43,7 @@ var ComplaintListRow = React.createClass({
     if(this.props.complaint.category){
       category = this.props.complaint.category;
     }
-    return <div className="complain-row">
+    return <div className="complaint-row">
             <div className='row'>
               <div className='col-md-1'>
                 <i className='fa fa-check'></i>
@@ -70,7 +70,7 @@ var ComplaintListRow = React.createClass({
                 </a>
               </div>
               <div className='col-md-1 text-center' >
-                <a onClick={this.toggleComplaint}><i className={icon}></i></a>
+                <a onClick={this.toggleComplaint} href="#" className="show_more"><i className={icon}></i></a>
               </div>
             </div>
 
@@ -128,13 +128,11 @@ var ComplaintListRow = React.createClass({
                 </div>
               </div>
             </div>
-
           </div>
-
-
   },
 
-  toggleComplaint: function(){
+  toggleComplaint: function(e){
+    e.preventDefault();
     this.setState({'show':!this.state.show});
   },
 });
