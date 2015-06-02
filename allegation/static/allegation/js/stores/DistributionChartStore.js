@@ -26,6 +26,8 @@ var GRAPH_ELEM_SEL = '#complained-officers .graph';
 
 
 function drawChart(cols, rotated) {
+    rotated = typeof rotated !== 'undefined' ? rotated : false;
+
     var chart = c3.generate({
         bindto: GRAPH_ELEM_SEL,
         data: {
@@ -64,13 +66,13 @@ function drawChart(cols, rotated) {
             rotated: rotated,
             x: {
                 label: {
-                    text: 'Number of complaints',
+                    text: 'Complaints',
                     position: 'outer-right'
                 }
             },
             y: {
                 label: {
-                    text: 'Number of officers',
+                    text: 'Officers',
                     position: 'outer-top'
                 }
             }

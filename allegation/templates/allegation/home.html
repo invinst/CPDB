@@ -12,16 +12,9 @@
   <link rel="stylesheet" href="{% static 'c3/c3.min.css' %}" />
   <link rel="stylesheet" href="{% static 'graph/css/complained-officers.css' %}" />
 {% endblock %}
+
 {% block content %}
   <section id='cpdbapp'></section>
-
-  <div id="complained-officers">
-    <div class="graph"></div>
-    <div class="controls {{ user.is_superuser | yesno:',hidden,hidden' }}">
-      <h3>Adjust graph</h3>
-      <button class="swap-axes" type="button" class="btn btn-default">Swap axes</button>
-    </div>
-  </div>
 {% endblock %}
 
 {% block footerjs %}
