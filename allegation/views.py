@@ -33,7 +33,7 @@ class FilterAPIView(View):
 
 class AreaAPIView(View):
     def get(self, request):
-        areas = Area.objects.filter(type=request.GET.get('type'))
+        areas = Area.objects.filter()
         area_dict = {
             "type": "FeatureCollection",
             "features": [],
@@ -45,8 +45,7 @@ class AreaAPIView(View):
             area_json = {
                 "type": "Feature",
                 "properties": {
-                  "fillColor": "#eeffee",
-                  "fillOpacity": 0.5,
+                  'id':area.id,
                   "name":area.name,
                   'type':area.type,
                 },
@@ -77,14 +76,10 @@ class AllegationAPIView(View):
             self.filters["%s__icontains" % field] = value
 
     def get_allegations(self):
-        filters = ['crid', 'beat_id', 'cat', 'final_outcome', 'neighborhood_id', 'recc_finding',
+        filters = ['crid', 'areas__id', 'cat', 'final_outcome', 'neighborhood_id', 'recc_finding',
                    'final_outcome', 'recc_outcome', 'final_finding', 'officer_id']
         for filter_field in filters:
             self.add_filter(filter_field)
-
-        filter_names = ['neighborhood__name', 'beat__name']
-        for filter_field in filter_names:
-            self.add_icontains_filter(filter_field)
 
         if 'category' in self.request.GET:
             self.filters['cat__category'] = self.request.GET['category']

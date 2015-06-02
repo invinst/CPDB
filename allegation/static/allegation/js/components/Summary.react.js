@@ -41,7 +41,7 @@ var Summary = React.createClass({
         <div className="row">{rows}</div>
       </div>
 
-      backLink = <a href='#' className="back" onClick={this.goBack}><i className="fa fa-angle-double-left"/> Go Back</a>
+      backLink = <div className='margin-top'><a href='#' className="back" onClick={this.goBack}><i className="fa fa-angle-double-left"/> Go Back</a></div>
     }
     return <div id='summary' className="well">
             <div className='row'>
