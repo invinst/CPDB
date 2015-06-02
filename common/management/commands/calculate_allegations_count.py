@@ -16,4 +16,4 @@ class Command(BaseCommand):
         for allegation_cat in AllegationCategory.objects.all():
           allegation_cat.allegations_count = allegation_cat.allegation_set.count()
           allegation_cat.category_count = Allegation.objects.filter(cat__category=allegation_cat.category).count()
-          allegation.save()
+          allegation_cat.save()
