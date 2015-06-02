@@ -25,14 +25,14 @@ var _state = {
 var GRAPH_ELEM_SEL = '#complained-officers .graph';
 
 
-function drawChart(data, rotated) {
+function drawChart(col, rotated) {
     rotated = typeof rotated !== 'undefined' ? rotated : false;
 
     c3.generate({
         bindto: GRAPH_ELEM_SEL,
         data: {
             columns: [
-                ['No. officers'].concat(data.col)
+                ['No. officers'].concat(col)
             ],
             type: 'area-spline',
             empty: {
@@ -74,9 +74,6 @@ function drawChart(data, rotated) {
                 label: {
                     text: 'Officers',
                     position: 'outer-top'
-                },
-                tick: {
-                    values: data.ticks.y
                 }
             }
         },
