@@ -66,13 +66,13 @@ function drawChart(cols, rotated) {
             rotated: rotated,
             x: {
                 label: {
-                    text: 'Number of complaints',
+                    text: 'Complaints',
                     position: 'outer-right'
                 }
             },
             y: {
                 label: {
-                    text: 'Number of officers',
+                    text: 'Officers',
                     position: 'outer-top'
                 }
             }
