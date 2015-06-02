@@ -68,15 +68,6 @@ var OfficerList = React.createClass({
                 <div className='col-md-2'>
                   <h3 className="margin-top-0">Officers List</h3>
                 </div>
-                <div className='col-md-4 filter_links'>
-                    <a href="#" className="active" onClick={this.filterByComplaintCount.bind(this, 0, 0)}>All</a>
-
-                    <a href="#" onClick={this.filterByComplaintCount.bind(this, 60, 0)}>Above Avg</a>
-
-                    <a href="#" onClick={this.filterByComplaintCount.bind(this, 20, 60)}>Below Avg</a>
-
-                    <a href="#" onClick={this.filterByComplaintCount.bind(this, 0, 20)}>Good Reputation</a>
-                </div>
               </div>
               {officer_output}
               <a className='pull-right' href="#" onClick={this.showMore}>{showMoreText}</a>
