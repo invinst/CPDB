@@ -17,10 +17,6 @@ var DistributionChart = React.createClass({
   render: function(){
     return <div id="complained-officers">
               <div className="graph"></div>
-              <div className="controls">
-                <h3>Adjust graph</h3>
-                <button className="btn btn-primary swap-axes" onClick={this.rotateChart} type="button">Swap axes</button>
-              </div>
             </div>
 
   },

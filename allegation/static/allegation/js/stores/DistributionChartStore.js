@@ -26,6 +26,8 @@ var GRAPH_ELEM_SEL = '#complained-officers .graph';
 
 
 function drawChart(cols, rotated) {
+    rotated = typeof rotated !== 'undefined' ? rotated : false;
+
     var chart = c3.generate({
         bindto: GRAPH_ELEM_SEL,
         data: {
