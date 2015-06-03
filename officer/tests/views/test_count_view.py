@@ -15,7 +15,8 @@ class CountViewTestCase(SimpleTestCase):
         response = self.client.get(reverse('officer:count') + '?by=num_complaints')
         count = json.loads(response.content.decode())
 
-        self.assertListEqual(count, [2, 2])
+        # Does not count officers with 0 complaint
+        self.assertListEqual(count, [2])
 
     def test_count_no_param(self):
         response = self.client.get(reverse('officer:count'))
