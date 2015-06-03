@@ -57,6 +57,7 @@ var CPDBApp = React.createClass({
       <div className='container'>
         <div className="row">
           <div className="col-md-6">
+            <h3>Complaints per Officer</h3>
             <DistributionChart />
           </div>
           <div className="col-md-6">

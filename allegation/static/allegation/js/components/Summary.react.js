@@ -54,7 +54,7 @@ var Summary = React.createClass({
     return <div id='summary' className="well">
             <div className='row'>
               <div className='col-md-6'>
-                <h3 className="margin-top-0">Categories of Complaints</h3>
+                <h3 className="margin-top-0">Allegations</h3>
               </div>
               <div className='col-md-3'>
                 <i className="glyphicon glyphicon-stop type discipline-text" />Discipline Taken

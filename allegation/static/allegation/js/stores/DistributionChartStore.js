@@ -19,20 +19,20 @@ var CHANGE_EVENT = 'change';
 var SUMMARY_CHANGE = 'summary-change';
 var SET_ACTIVE_OFFICER = 'set-active-officer';
 var _state = {
-}
+};
 
 
 var GRAPH_ELEM_SEL = '#complained-officers .graph';
 
 
-function drawChart(cols, rotated) {
+function drawChart(data, rotated) {
     rotated = typeof rotated !== 'undefined' ? rotated : false;
 
-    var chart = c3.generate({
+    c3.generate({
         bindto: GRAPH_ELEM_SEL,
         data: {
             columns: [
-                ['No. officers'].concat(cols)
+                ['No. officers'].concat(data.col)
             ],
             type: 'area-spline',
             empty: {
@@ -74,6 +74,9 @@ function drawChart(cols, rotated) {
                 label: {
                     text: 'Officers',
                     position: 'outer-top'
+                },
+                tick: {
+                    values: data.ticks.y
                 }
             }
         },
@@ -102,7 +105,7 @@ function drawChart(cols, rotated) {
 
 
 var rotate = false;
-var cols = [];
+var col = [];
 
 
 var DistributionChartStore = assign({}, EventEmitter.prototype, {
@@ -112,14 +115,12 @@ var DistributionChartStore = assign({}, EventEmitter.prototype, {
   data: [],
   rotateChart: function(){
     rotate = !rotate;
-    drawChart(cols, rotate);
+    drawChart(col, rotate);
   },
   update: function(){
     query_string = FilterStore.getQueryString();
     $.get('/officer/count/?by=num_complaints&' + query_string, function(data) {
-        rotate = false;
-        cols = data;
-        drawChart(data, rotate);
+        drawChart(data);
     });
   },
   init: function(){

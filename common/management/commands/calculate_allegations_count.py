@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.db.models import Count
 
-from common.models import Officer, AllegationCategory
+from common.models import Officer, AllegationCategory, Allegation
 
 
 class Command(BaseCommand):
@@ -16,4 +16,4 @@ class Command(BaseCommand):
         for allegation_cat in AllegationCategory.objects.all():
           allegation_cat.allegations_count = allegation_cat.allegation_set.count()
           allegation_cat.category_count = Allegation.objects.filter(cat__category=allegation_cat.category).count()
-          allegation.save()
+          allegation_cat.save()
