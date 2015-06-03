@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div id="DV-viewer" class="DV-container"></div>
+{% endblock %}
+
+{% block footerjs %}
+  {{ block.super }}
+  <script src="//s3.amazonaws.com/s3.documentcloud.org/viewer/loader.js"></script>
+  <script>
+    var CONTAINER_ID = "#DV-viewer";
+
+    DV.load("//www.documentcloud.org/documents/{{ id }}-{{ title }}.js", {
+      width: $(CONTAINER_ID).width(),
+      height: 800,
+      sidebar: true,
+      text: true,
+      container: CONTAINER_ID
+    });
+  </script>
+  <noscript>
+    <a href="http://s3.documentcloud.org/documents/{{ id }}/{{ title }}.pdf">{{ title }} (PDF)</a>
+    <br />
+    <a href="http://s3.documentcloud.org/documents/{{ id }}/{{ title }}.txt">{{ title }} (Text)</a>
+  </noscript>
+{% endblock %}

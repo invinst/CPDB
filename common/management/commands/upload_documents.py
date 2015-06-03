@@ -20,7 +20,7 @@ class Command(BaseCommand):
         filepath_pattern = os.path.join(self.doc_dir, '*.pdf')
         for filepath in glob.glob(filepath_pattern):
             client = DocumentCloud(self.username, self.secret)
-            obj = client.documents.upload(filepath)
+            obj = client.documents.upload(filepath, access='public')
 
             if obj:
                 upload_path = os.path.join(self.doc_dir, self.uploaded_dir)
