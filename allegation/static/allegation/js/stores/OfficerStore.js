@@ -64,7 +64,7 @@ var OfficerStore = assign({}, EventEmitter.prototype, {
         OfficerStore.emitChange();
     })
   },
-  set: function(key,value){
+  set: function(key, value){
     _state[key] = value;
     this.emitChange();
   },
@@ -104,7 +104,6 @@ AppDispatcher.register(function(action) {
       break;
 
     case MapConstants.SET_OFFICER_LIST_FILTER:
-    console.log(action);
       _state.complaints_count_start = action.start;
       _state.complaints_count_end = action.end;
       OfficerStore.update();

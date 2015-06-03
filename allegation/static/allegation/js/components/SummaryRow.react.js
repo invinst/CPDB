@@ -16,11 +16,12 @@ var SummaryRow = React.createClass({
     return getSummaryRowState();
   },
   render: function(){
+    var category = this.props.category;
     var style = {
-      width: (this.props.data.count/this.props.data.total * 100) + "%"
+      width: (category.count/category.total * 100) + "%"
     };
     var progressStyle = {
-      width: this.props.data.percentToMax + "%"
+      width: category.percentToMax + "%"
     };
 
     return <div className='row'>
@@ -32,20 +33,23 @@ var SummaryRow = React.createClass({
                 </div>
               </div>
               <div className='col-md-1'>
-                {this.props.data.count}
+                {category.count}
               </div>
               <div className='col-md-1'>
-                {this.props.data.total}
+                {category.total}
               </div>
               <div className='col-md-5 '>
-                <a onClickCapture={this.onClick} href='#' className="category-name">{this.props.data.name}</a>
+                <a onClickCapture={this.onClick} href='#' className="category-name">{category.name}</a>
               </div>
             </div>
 
   },
   onClick: function(e){
-    e.preventDefault()
-    SummaryActions.setSummary(this.props.data)
+    e.preventDefault();
+    var current = this.props.category;
+    $('#cpdb-search').tagsinput("add", current.tagValue);
+
+    SummaryActions.setSummary(current);
   }
 })
 

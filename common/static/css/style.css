@@ -73,6 +73,10 @@ footer {
    color: #0079af;
 }
 
+#summary .category-name.active{
+    font-weight: 700;
+}
+
 #summary .main-category-name {
     font-size: 16px;
     font-weight: 600;

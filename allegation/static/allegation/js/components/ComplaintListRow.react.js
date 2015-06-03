@@ -27,7 +27,7 @@ var ComplaintListRow = React.createClass({
     if(this.state.show){
       icon = 'fa fa-caret-up';
       show_more = 'col-md-12 complaint_detail';
-      console.log(allegation.point)
+
       if(allegation.point.lat){
         var token = MapStore.getToken();
         var lat = allegation.point.lat;

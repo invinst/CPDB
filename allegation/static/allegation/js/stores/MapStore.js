@@ -48,13 +48,12 @@ function create(){
     var maxBounds = L.LatLngBounds(southWest,northEast)
     _map = L.mapbox.map('map', MAP_TYPE, {'maxZoom':14,'minZoom':10}).setView([41.85677, -87.6024055], 12);
     _map.on('click',function(event){
-        console.log(_map.getBounds())
+
     }).setMaxBounds(maxBounds)
     createAreas();
 }
 function createAreas(){
     if(_geo_json_layer){
-        console.log('unsetting')
         _map.removeLayer(_geo_json_layer);
     }
     var normalStyle = {"fillColor": "#eeffee", "fillOpacity": 0.5,'weight': 2};
@@ -79,7 +78,6 @@ function createAreas(){
             })
             msg.push(area_type + " name: "+ feature.properties.name);
             layer.bindPopup(msg.join(''), {maxWidth: 200});
-
 
             var tagValue = {
               text: area_type + ": " + feature.properties.name,
@@ -128,7 +126,6 @@ var MapStore = assign({}, EventEmitter.prototype, {
   },
   setMarkers: function(markers){
     if(_markers){
-        console.log('unsetting')
         _map.removeLayer(_markers);
     }
     if(_heat){
@@ -145,7 +142,7 @@ var MapStore = assign({}, EventEmitter.prototype, {
     _map.addLayer(_markers)
     var marker_length = markers.features.length;
     var start = 0;
-    var count = 5000;
+    var count = 3000;
     function addMarkers(){
       var features = markers.features.slice(start, start + count)
       start += count;
@@ -166,7 +163,7 @@ var MapStore = assign({}, EventEmitter.prototype, {
       }
       setTimeout(function(){
         addMarkers();
-      }, 0.2);
+      }, 0.5);
     }
     addMarkers();
 

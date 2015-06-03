@@ -64,7 +64,6 @@ var FilterStore = assign({}, EventEmitter.prototype, {
           _filters[this.value[0]] = {'value':[this.value[1]]};
         }
     })
-    console.log(_filters);
     this.emit(CHANGE_EVENT);
   },
   /**
