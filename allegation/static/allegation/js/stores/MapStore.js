@@ -30,8 +30,8 @@ var _geo_json_layer = null;
 var _heat = null;
 var _areas = {}
 var _controls = {};
-var _layers = {}
-var _baseLayers = {}
+var _layers = {};
+var _baseLayers = {};
 /**
  * Update a TODO item.
  * @param  {string} id
@@ -125,6 +125,7 @@ var MapStore = assign({}, EventEmitter.prototype, {
     return _markers;
   },
   setMarkers: function(markers){
+    current_markers = markers
     if(_markers){
         _map.removeLayer(_markers);
     }
@@ -140,10 +141,15 @@ var MapStore = assign({}, EventEmitter.prototype, {
     _controls['markers'] = _markers;
     _controls['heat-map'] = _heat;
     _map.addLayer(_markers)
+
     var marker_length = markers.features.length;
     var start = 0;
     var count = 3000;
+
     function addMarkers(){
+      if (current_markers != markers) {
+        return;
+      }
       var features = markers.features.slice(start, start + count)
       start += count;
       var coords = [];

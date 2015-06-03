@@ -94,6 +94,9 @@ function drawChart(col, rotated) {
                 var point = d[0];
                 var numOfficers = point.value;
                 var numComplaints = point.index;
+                if (!numComplaints) {
+                  return '';
+                }
                 return '<strong>'+numOfficers + '</strong> officers with <strong>' + numComplaints + '</strong> complaints';
             }
         }
