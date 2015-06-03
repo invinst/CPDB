@@ -23,6 +23,7 @@
   "scripts": {
     "start": "watchify -o allegation/static/allegation/js/bundle.js -v -d allegation/static/allegation/js/app.js",
     "build": "browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > allegation/static/allegation/js/bundle.min.js",
+    "circleci": "browserify allegation/static/allegation/js/app.js > allegation/static/allegation/js/bundle.js",
     "test": "jest"
   },
   "author": "Stefan Georg",

@@ -34,6 +34,11 @@ class FilterAPIView(View):
 class AreaAPIView(View):
     def get(self, request):
         areas = Area.objects.filter()
+        type_filter = request.GET.get('type')
+
+        if type_filter:
+            areas = areas.filter(type=type_filter)
+
         area_dict = {
             "type": "FeatureCollection",
             "features": [],

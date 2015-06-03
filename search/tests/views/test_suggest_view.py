@@ -1,10 +1,14 @@
 import json
 
 from allegation.factories import OfficerFactory, AllegationCategoryFactory, AllegationFactory
+from common.models import AllegationCategory
 from common.tests.core import SimpleTestCase
 
 
 class SuggestViewTestCase(SimpleTestCase):
+    def setUp(self):
+        AllegationCategory.objects.all().delete()
+
     def test_detect_suggest_type_officer_name(self):
         OfficerFactory(officer_first='Jerry', officer_last="Dao")
         response = self.client.get("/search/suggest/", {
