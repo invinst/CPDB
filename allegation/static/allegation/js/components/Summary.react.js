@@ -23,14 +23,22 @@ var Summary = React.createClass({
     if(!this.state.current){
 
       for(var i=0;i<this.state.rows.length;i++){
-        var data = this.state.rows[i];
-        rows.push(<SummaryRow data={data} />);
+        var category = this.state.rows[i];
+        category.tagValue = {
+          text: "Category: " + category.name,
+          value: ['category',  category.name]
+        };
+        rows.push(<SummaryRow key={i} category={category} />);
       }
     }
     else{
       for(var i=0;i<this.state.current.subcategories.length;i++){
-        var data = this.state.current.subcategories[i];
-        rows.push(<SummaryChildRow data={data} />);
+        var subcategory = this.state.current.subcategories[i];
+        subcategory.tagValue = {
+          text: "Allegation Type: " + subcategory.name,
+          value: ['cat',  subcategory.cat_id]
+        };
+        rows.push(<SummaryChildRow category={this.state.current} key={subcategory.cat_id} subcategory={subcategory} />);
       }
       rows = <div>
         <div className="row">
@@ -46,7 +54,7 @@ var Summary = React.createClass({
     return <div id='summary' className="well">
             <div className='row'>
               <div className='col-md-6'>
-                <h3 className="margin-top-0">Number of Complaints</h3>
+                <h3 className="margin-top-0">Allegations</h3>
               </div>
               <div className='col-md-3'>
                 <i className="glyphicon glyphicon-stop type discipline-text" />Discipline Taken
@@ -68,7 +76,6 @@ var Summary = React.createClass({
   },
   _onChange: function(){
     this.setState(SummaryStore.getAll())
-
   },
   _changeView: function(){
     this.setState(SummaryStore.getAll())

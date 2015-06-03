@@ -18,24 +18,20 @@ var ComplaintList = React.createClass({
   },
   render: function(){
     var rows=[]
-    for(var i=0;i<this.state.complaints.length;i++){
+    for(var i=0; i<this.state.complaints.length; i++){
       var complaint = this.state.complaints[i];
-      rows.push(<ComplaintListRow complaint={complaint} />)
+      rows.push(<ComplaintListRow key={i} complaint={complaint} />)
     }
 
     return <div className="complaint_list">
             <div className='row'>
               <div className='col-md-2'>
-                <h3 className="margin-top-0">Complaint List</h3>
+                <h3 className="margin-top-0">Complaint</h3>
               </div>
-              <div className='col-md-10'><div className='pull-right'>Latest</div></div>
+              
             </div>
-
             {rows}
-
-
           </div>
-
   },
 
   _onChange: function(){

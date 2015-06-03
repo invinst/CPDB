@@ -49,7 +49,7 @@ var ComplaintListStore = assign({}, EventEmitter.prototype, {
         ComplaintListStore.emitChange();
     })
   },
-  set: function(key,value){
+  set: function(key, value){
     _state[key] = value;
     this.emitChange();
   },

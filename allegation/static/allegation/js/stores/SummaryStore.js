@@ -48,7 +48,7 @@ var SummaryStore = assign({}, EventEmitter.prototype, {
         SummaryStore.emitChange();
     })
   },
-  set: function(key,value){
+  set: function(key, value){
     _state[key] = value;
   },
   init: function(){
@@ -80,23 +80,17 @@ var SummaryStore = assign({}, EventEmitter.prototype, {
 
 // Register callback to handle all updates
 AppDispatcher.register(function(action) {
-  console.log(_state);
 
   switch(action.actionType){
     case MapConstants.MAP_REPLACE_FILTERS:
-      SummaryStore.update();
-      break;
-
     case MapConstants.MAP_CHANGE_FILTER:
-      SummaryStore.update();
-      break;
-
     case MapConstants.MAP_ADD_FILTER:
       SummaryStore.update();
       break;
 
     case MapConstants.SET_SUMMARY:
-      SummaryStore.set('current',action.type);
+
+      SummaryStore.set('current', action.type);
       SummaryStore.emitSummaryChange();
 
     default:

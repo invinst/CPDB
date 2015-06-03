@@ -106,7 +106,7 @@ var col = [];
 
 
 var DistributionChartStore = assign({}, EventEmitter.prototype, {
-  set: function(key,value){
+  set: function(key, value){
     _state[key] = value;
   },
   data: [],

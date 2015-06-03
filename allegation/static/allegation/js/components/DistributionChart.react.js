@@ -16,6 +16,7 @@ var DistributionChart = React.createClass({
   },
   render: function(){
     return <div id="complained-officers">
+            <h3>Complaints per Officer</h3>
               <div className="graph"></div>
             </div>
 
