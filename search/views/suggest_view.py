@@ -9,7 +9,7 @@ from common.models import Officer, AllegationCategory, Allegation
 class SuggestView(View):
     autocomplete_category_names = {
         'officer_id': 'Officer name',
-        'officer_badge_number': 'Badge number',
+        'officer__star': 'Badge number',
         'crid': 'Complaint ID',
         'category': 'Complaint type',
         'cat': 'Allegation type',
@@ -25,7 +25,7 @@ class SuggestView(View):
             condition = Q(star__icontains=q)
             results = self.query_suggestions(Officer, condition, ['star'], order_bys=['star'])
             results = [int(x) for x in results]
-            ret['officer_badge_number'] = results
+            ret['officer__star'] = results
 
             if len(q) >= 4:
                 condition = Q(crid__icontains=q)
