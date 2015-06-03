@@ -70,6 +70,3 @@ node_modules/
 bundle.js
 *.sql
 allegation/static/allegation/js/bundle.js
-
-# Project
-/requested_docs/

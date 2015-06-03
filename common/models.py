@@ -87,6 +87,10 @@ class Allegation(models.Model):
     point = models.PointField(srid=4326, null=True, blank=True)
     objects = models.GeoManager()
 
+    document_id = models.IntegerField(null=True)
+    document_normalized_title = models.CharField(max_length=255, null=True)
+    document_title = models.CharField(max_length=255, null=True)
+
     @property
     def beat(self):
         beats = self.areas.filter(type='beat')
