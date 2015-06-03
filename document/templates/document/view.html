@@ -10,7 +10,7 @@
   <script>
     var CONTAINER_ID = "#DV-viewer";
 
-    DV.load("//www.documentcloud.org/documents/{{ id }}-{{ title }}.js", {
+    DV.load("//www.documentcloud.org/documents/{{ id }}-{{ normalized_title }}.js", {
       width: $(CONTAINER_ID).width(),
       height: 800,
       sidebar: true,
@@ -19,8 +19,8 @@
     });
   </script>
   <noscript>
-    <a href="http://s3.documentcloud.org/documents/{{ id }}/{{ title }}.pdf">{{ title }} (PDF)</a>
+    <a href="http://s3.documentcloud.org/documents/{{ id }}/{{ normalized_title }}.pdf">{{ title }} (PDF)</a>
     <br />
-    <a href="http://s3.documentcloud.org/documents/{{ id }}/{{ title }}.txt">{{ title }} (Text)</a>
+    <a href="http://s3.documentcloud.org/documents/{{ id }}/{{ normalized_title }}.txt">{{ title }} (Text)</a>
   </noscript>
 {% endblock %}
