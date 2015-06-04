@@ -21,7 +21,7 @@ class SuggestViewTestCase(SimpleTestCase):
             'term': 'genie'
         })
         data = json.loads(response.content.decode())
-        len(data['officer_id']).should.equal(0)
+        data.shouldnt.contain('officer_id')
 
     def test_detect_suggest_type_officer_badge_number(self):
         OfficerFactory(star=123456)
