@@ -25,7 +25,7 @@ SECRET_KEY = '***REMOVED***'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'allegation',
     'corsheaders',
     'search',
+    'graph',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -143,6 +144,8 @@ BOWER_INSTALLED_APPS = (
     'bootstrap#3.3.2',
     'bootstrap-tagsinput#0.4.2',
     'jquery-cookie#1.4.1',
+    'c3',
+    'components-font-awesome',
 )
 
 MEDIA_URL = '/media/'
@@ -150,3 +153,16 @@ MEDIA_ROOT = BASE_DIR + '/media/'
 CORS_ORIGIN_ALLOW_ALL = True
 
 MAP_BOX_API_KEY = os.environ.get('MAP_BOX_API_KEY')
+OFFICER_LIST_SEND_LENGTH = os.environ.get('OFFICER_LIST_SEND_LENGTH', 150)
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': [
+            '127.0.0.1:11211',
+        ]
+    }
+}
+
+GRAPH_DISTCURVE_NUM_X_TICKS = 6
+GRAPH_DISTCURVE_NUM_Y_TICKS = 4

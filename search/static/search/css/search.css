@@ -1,7 +1,43 @@
 .bootstrap-tagsinput {
     width: 100%;
+    border: none;
+    box-shadow: none;
+    border-bottom: solid 1px #66aad7;
+    border-radius: 0;
+    padding: 0;
+
+    position: relative;
+}
+
+.bootstrap-tagsinput:after {
+    content: "\e003";
+    font-family: "Glyphicons Halflings";
+    line-height: 1;
+    display: inline-block;
+    color: #107ac0;
+
+    position: absolute;
+    right: 0;
+    top: 5px;
+}
+
+.bootstrap-tagsinput input {
+    font-family: 'Source Sans Pro', sans-serif;
 }
 
 .ui-autocomplete {
     z-index: 100000;
+}
+.ui-widget{
+    font-family: 'Source Sans Pro', serif;
+}
+.ui-state-focus, .ui-widget-content .ui-state-focus{
+    font-weight: 300;
+}
+#search-wrapper {
+    width: 1000px;
+    margin-right: 50px;
+}
+.bootstrap-tagsinput .tag,.bootstrap-tagsinput input{
+    font-size: 1em;
 }

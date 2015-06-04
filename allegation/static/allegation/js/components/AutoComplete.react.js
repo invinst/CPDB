@@ -16,6 +16,10 @@ var cx = require('react/lib/cx');
 var AutoComplete = React.createClass({
 
   tagsChanged: function(event){
+    console.log(event);
+    if (event.item.layer) {
+      event.item.layer.toggleStyle();
+    }
     var tags = $(this.getDOMNode()).tagsinput("items");
     FilterActions.replaceFilters(tags);
   },
@@ -40,7 +44,6 @@ var AutoComplete = React.createClass({
    * Event handler for 'change' events coming from the TodoStore
    */
   _onChange: function(event) {
-    console.log(event)
     if(event){
       FilterActions.changeFilter(this.props.filterkey,event.target.value);
     }
@@ -52,7 +55,7 @@ var AutoComplete = React.createClass({
    */
   render: function() {
 
-    return <input id="cpdb-search" className="form-control" />
+    return <input id="cpdb-search" className="form-control" placeholder="Search..." />
 
   },
 

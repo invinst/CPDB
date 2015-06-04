@@ -18,7 +18,11 @@ var React = require('react');
 var Filters = require('./Filters.react');
 var MapStore = require('../stores/MapStore');
 var FilterAction = require('../actions/FilterActions');
-//var Mapbox = require('mapbox.js')
+var Summary = require('./Summary.react');
+var OfficerList = require('./OfficerList.react');
+var ComplaintList = require('./ComplaintList.react');
+var DistributionChart = require('./DistributionChart.react');
+
 /**
  * Retrieve the current TODO data from the MapStore
  */
@@ -49,10 +53,19 @@ var CPDBApp = React.createClass({
    */
   render: function() {
   	return <div>
-      <Filters />
       <div id='map' className='pin-top pin-bottom'></div>
-
-
+      <div className='container'>
+        <div className="row">
+          <div className="col-md-6">
+            <DistributionChart />
+          </div>
+          <div className="col-md-6">
+            <Summary />
+          </div>
+        </div>
+        <OfficerList />
+        <ComplaintList />
+      </div>
     </div>;
   },
 

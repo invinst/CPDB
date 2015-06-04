@@ -1,0 +1,31 @@
+.c3-region.light {
+    fill: green;
+}
+.c3-region.medium {
+    fill: yellow;
+}
+.c3-region.heavy {
+    fill: red;
+}
+.c3-xgrid-focus line {
+    stroke: white;
+}
+.c3-tooltip-container {
+    width: 200px;
+    text-align: right;
+}
+.c3-axis-x-label {
+    fill: #999999;
+}
+.c3-axis-y-label {
+    fill: #999999;
+}
+.tick text {
+    font-weight: bold;
+}
+
+#complained-officers .graph {
+    width: 500px;
+    height: 300px;
+    margin-top: 20px;
+}

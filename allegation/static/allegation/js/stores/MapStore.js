@@ -28,6 +28,10 @@ var _map = null;
 var _polygons = null;
 var _geo_json_layer = null;
 var _heat = null;
+var _areas = {}
+var _controls = {};
+var _layers = {};
+var _baseLayers = {};
 /**
  * Update a TODO item.
  * @param  {string} id
@@ -39,29 +43,78 @@ function update(id, updates) {
 }
 function create(){
     L.mapbox.accessToken = MBX;
-    _map = L.mapbox.map('map', MAP_TYPE).setView([41.8369, -87.68470], 9);
-    setArea('beat');
+    var southWest = L.latLng(41.143501411390766,-88.53057861328125)
+    var northEast = L.latLng(42.474122772511485,-85.39947509765625)
+    var maxBounds = L.LatLngBounds(southWest,northEast)
+    _map = L.mapbox.map('map', MAP_TYPE, {'maxZoom':14,'minZoom':10}).setView([41.85677, -87.6024055], 12);
+    _map.on('click',function(event){
+
+    }).setMaxBounds(maxBounds)
+    createAreas();
 }
-function setArea(area_type){
+function createAreas(){
     if(_geo_json_layer){
-        console.log('unsetting')
         _map.removeLayer(_geo_json_layer);
     }
-
-    $.get("/api/areas/?type=" + area_type,{},function(data){
-
+    var normalStyle = {"fillColor": "#eeffee", "fillOpacity": 0.5,'weight': 2};
+    $.get("/api/areas/",function(data){
+        var first_layer_added = false;
         _geo_json_layer = L.geoJson(data, {
           pointToLayer: L.mapbox.marker.style,
-          style: function(feature) { return feature.properties; },
+          style: function(feature) {
+           return normalStyle
+          },
           onEachFeature: function(feature, layer){
-            var date = new Date(feature.properties.startTime);
-            var triggerId = feature.properties.activityId;
-            var msg = [];
-            msg.push(area_type + " name: "+feature.properties.name);
-            layer.setZIndex(1001);
-            layer.bindPopup(msg.join(''), {maxWidth: 200});
+
+            layer.selected = false;
+            var area_type = feature.properties.type;
+            layer.on('mouseover',function(){
+              layer.setStyle(highlightStyle);
+            })
+            layer.on('mouseout',function(){
+              if(!layer.selected){
+                layer.setStyle(normalStyle);
+              }
+            })
+
+            var tagValue = {
+              text: area_type + ": " + feature.properties.name,
+              value: ['areas__id',  feature.properties.id],
+              layer: layer
+            };
+
+            layer.toggleStyle = function(){
+              if(!layer.selected){
+                layer.selected = true;
+                layer.setStyle(highlightStyle);
+              }
+              else{
+                layer.selected = false;
+                layer.setStyle(normalStyle);
+              }
+            }
+
+            layer.on('click', function(){
+              if(!layer.selected){
+                $('#cpdb-search').tagsinput("add", tagValue);
+              }
+              else{
+                $('#cpdb-search').tagsinput("remove", tagValue);
+              }
+            });
+
+            if(!(area_type in _layers)){
+              _layers[area_type] = L.layerGroup();
+              _baseLayers[area_type] = _layers[area_type];
+              if(!first_layer_added && area_type == 'police-districts'){
+                first_layer_added = true;
+                _map.addLayer(_layers[area_type]);
+              }
+            }
+            _layers[area_type].addLayer(layer);
           }
-        }).addTo(_map);
+        })
+        L.control.layers(_baseLayers,_controls).addTo(_map);
 
     },'json').fail(function(jqxhr, textStatus, error) {
       var err = textStatus + ", " + error;
@@ -71,13 +124,15 @@ function setArea(area_type){
 
 
 var MapStore = assign({}, EventEmitter.prototype, {
-
+  getToken: function(){
+    return MBX;
+  },
   getMarkers: function(){
     return _markers;
   },
   setMarkers: function(markers){
+    current_markers = markers
     if(_markers){
-        console.log('unsetting')
         _map.removeLayer(_markers);
     }
     if(_heat){
@@ -87,15 +142,43 @@ var MapStore = assign({}, EventEmitter.prototype, {
         _map.removeLayer(_markers)
     }
 
+    _heat = L.heatLayer([], {radius: 8})
     _markers = L.markerClusterGroup();
-    _map.addLayer(_markers);
+    _controls['markers'] = _markers;
+    _controls['heat-map'] = _heat;
+    _map.addLayer(_markers)
 
-    markers = L.geoJson(markers, {
-          pointToLayer: L.mapbox.marker.style,
-          style: function(feature) { return feature.properties; },
+    var marker_length = markers.features.length;
+    var start = 0;
+    var count = 3000;
 
-        })
-    _markers.addLayer(markers);
+    function addMarkers(){
+      if (current_markers != markers) {
+        return;
+      }
+      var features = markers.features.slice(start, start + count)
+      start += count;
+      var coords = [];
+      featuresMarkers = L.geoJson({features: features}, {
+            pointToLayer: L.mapbox.marker.style,
+            style: function(feature) { return feature.properties; },
+            onEachFeature: function(feature,layer){
+              if(feature.geometry.coordinates && feature.geometry.coordinates[0]){
+                _heat.addLatLng([feature.geometry.coordinates[1],feature.geometry.coordinates[0]])
+              }
+            }
+          })
+      _markers.addLayer(featuresMarkers);
+
+      if(start > marker_length){
+        return;
+      }
+      setTimeout(function(){
+        addMarkers();
+      }, 0.5);
+    }
+    addMarkers();
+
   },
   getMap: function(){
     return _map;

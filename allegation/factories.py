@@ -1,10 +1,18 @@
 from django.utils import timezone
 import factory
 from faker import Faker
-from common.models import Allegation, AllegationCategory, Officer
+from common.models import Allegation, AllegationCategory, Officer, Area
 
 
 fake = Faker()
+
+
+class AreaFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Area
+
+    name = factory.Sequence(lambda n: fake.first_name())
+    type = factory.Sequence(lambda n: fake.first_name())
 
 
 class OfficerFactory(factory.django.DjangoModelFactory):
@@ -35,3 +43,15 @@ class AllegationFactory(factory.django.DjangoModelFactory):
     officer = factory.SubFactory(OfficerFactory)
     final_outcome = factory.Sequence(lambda n: fake.random_element(['600', '601']))
     incident_date = factory.Sequence(lambda n: timezone.now())
+    @factory.post_generation
+    def areas(self, create, extracted, **kwargs):
+
+        if Area.objects.all().count() == 0:
+            for i in range(2):
+                area = AreaFactory()
+            extracted = Area.objects.all()
+
+        if extracted:
+            # A list of groups were passed in, use them
+            for area in extracted:
+                self.areas.add(area)

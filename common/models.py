@@ -16,6 +16,7 @@ class Officer(models.Model):
     rank = models.CharField(max_length=5, null=True)
     star = models.FloatField(null=True)
     allegations_count = models.IntegerField(default=0)
+    discipline_count = models.IntegerField(default=0)
 
     def __str__(self):
         return "%(last)s %(first)s" % {'last': self.officer_last, 'first': self.officer_first}
@@ -48,6 +49,8 @@ class AllegationCategory(models.Model):
     cat_id = models.CharField(primary_key=True, max_length=255)
     category = models.CharField(max_length=255, null=True)
     allegation_name = models.CharField(max_length=255, null=True)
+    allegation_count = models.IntegerField(default=0)
+    category_count = models.IntegerField(default=0)
 
     def __str__(self):
         return str(self.allegation_name)
@@ -99,7 +102,7 @@ class Allegation(models.Model):
         return False
 
 
-    def save(self, *args, **kwargs):
+    def save(self,*args,**kwargs):
         if self.location and not self.point:
             # geolocate
             pass

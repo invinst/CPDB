@@ -1,23 +1,27 @@
 import json
 
 from allegation.factories import OfficerFactory, AllegationCategoryFactory, AllegationFactory
+from common.models import AllegationCategory
 from common.tests.core import SimpleTestCase
 
 
 class SuggestViewTestCase(SimpleTestCase):
+    def setUp(self):
+        AllegationCategory.objects.all().delete()
+
     def test_detect_suggest_type_officer_name(self):
         OfficerFactory(officer_first='Jerry', officer_last="Dao")
         response = self.client.get("/search/suggest/", {
             'term': 'je'
         })
         data = json.loads(response.content.decode())
-        data.should.contain('officer_name')
+        data.should.contain('officer_id')
 
         response = self.client.get("/search/suggest/", {
-            'term': 'ge'
+            'term': 'genie'
         })
         data = json.loads(response.content.decode())
-        len(data['officer_name']).should.equal(0)
+        data.shouldnt.contain('officer_id')
 
     def test_detect_suggest_type_officer_badge_number(self):
         OfficerFactory(star=123456)
@@ -25,7 +29,7 @@ class SuggestViewTestCase(SimpleTestCase):
             'term': '12'
         })
         data = json.loads(response.content.decode())
-        data.should.contain('officer_badge_number')
+        data.should.contain('officer__star')
 
     def test_detect_suggest_type_complaint_category(self):
         AllegationCategoryFactory(allegation_name='Bonding category')

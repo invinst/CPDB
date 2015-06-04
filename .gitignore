@@ -65,3 +65,8 @@ bower_components/
 /static/
 /test_data/
 node_modules/
+
+# ReactJS
+bundle.js
+*.sql
+allegation/static/allegation/js/bundle.js
