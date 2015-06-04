@@ -16,6 +16,10 @@ var cx = require('react/lib/cx');
 var AutoComplete = React.createClass({
 
   tagsChanged: function(event){
+    console.log(event);
+    if (event.item.layer) {
+      event.item.layer.toggleStyle();
+    }
     var tags = $(this.getDOMNode()).tagsinput("items");
     FilterActions.replaceFilters(tags);
   },

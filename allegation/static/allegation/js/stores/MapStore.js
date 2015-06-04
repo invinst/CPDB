@@ -65,7 +65,7 @@ function createAreas(){
            return normalStyle
           },
           onEachFeature: function(feature, layer){
-            var msg = [];
+
             layer.selected = false;
             var area_type = feature.properties.type;
             layer.on('mouseover',function(){
@@ -76,23 +76,29 @@ function createAreas(){
                 layer.setStyle(normalStyle);
               }
             })
-            msg.push(area_type + " name: "+ feature.properties.name);
-            layer.bindPopup(msg.join(''), {maxWidth: 200});
 
             var tagValue = {
               text: area_type + ": " + feature.properties.name,
-              value: ['areas__id',  feature.properties.id]
+              value: ['areas__id',  feature.properties.id],
+              layer: layer
             };
 
-            layer.on('click', function(){
+            layer.toggleStyle = function(){
               if(!layer.selected){
                 layer.selected = true;
                 layer.setStyle(highlightStyle);
-                $('#cpdb-search').tagsinput("add", tagValue);
               }
               else{
                 layer.selected = false;
                 layer.setStyle(normalStyle);
+              }
+            }
+
+            layer.on('click', function(){
+              if(!layer.selected){
+                $('#cpdb-search').tagsinput("add", tagValue);
+              }
+              else{
                 $('#cpdb-search').tagsinput("remove", tagValue);
               }
             });
