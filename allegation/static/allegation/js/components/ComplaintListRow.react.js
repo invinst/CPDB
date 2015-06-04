@@ -43,7 +43,7 @@ var ComplaintListRow = React.createClass({
     if(this.props.complaint.category){
       category = this.props.complaint.category;
     }
-    return <div className="complain-row">
+    return <div className="complaint-row">
             <div onClick={this.toggleComplaint} className='row'>
               <div className='col-md-1'>
                 <i className='fa fa-check'></i>
