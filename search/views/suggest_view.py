@@ -8,11 +8,12 @@ from common.models import Officer, AllegationCategory, Allegation
 
 class SuggestView(View):
     autocomplete_category_names = {
-        'officer_id': 'Officer name',
-        'officer__star': 'Badge number',
         'crid': 'Complaint ID',
         'category': 'Complaint type',
         'cat': 'Allegation type',
+        'investigator': 'Investigator',
+        'officer_id': 'Officer name',
+        'officer__star': 'Badge number',
     }
 
     def get(self, request):
@@ -41,7 +42,8 @@ class SuggestView(View):
             results = self.query_suggestions(Officer, condition, ['officer_first', 'officer_last', 'allegations_count', 'id'],
                                              order_bys=('-allegations_count', 'officer_first', 'officer_last'))
             results = [["%s %s (%s)" % (x[0], x[1], x[2]), x[3] ] for x in results]
-            ret['officer_id'] = results
+            if len(results):
+                ret['officer_id'] = results
 
             condition = Q(category__icontains=q)
             results = self.query_suggestions(AllegationCategory, condition, ['category'], order_bys=['-category_count'])
@@ -53,6 +55,11 @@ class SuggestView(View):
                                              order_bys=['-allegation_count'])
             if len(results):
                 ret['cat'] = results
+
+            condition = Q(investigator__icontains=q)
+            results = self.query_suggestions(Allegation, condition, ['investigator'])
+            if len(results):
+                ret['investigator'] = results
 
         ret = self.to_jquery_ui_autocomplete_format(ret)
         ret = json.dumps(ret)
