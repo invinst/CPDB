@@ -29,7 +29,7 @@ class SuggestViewTestCase(SimpleTestCase):
             'term': '12'
         })
         data = json.loads(response.content.decode())
-        data.should.contain('officer_badge_number')
+        data.should.contain('officer__star')
 
     def test_detect_suggest_type_complaint_category(self):
         AllegationCategoryFactory(allegation_name='Bonding category')
