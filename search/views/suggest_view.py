@@ -3,7 +3,7 @@ import json
 from django.db.models.query_utils import Q
 from django.http.response import HttpResponseBadRequest, HttpResponse
 from django.views.generic.base import View
-from common.models import Officer, AllegationCategory, Allegation
+from common.models import Officer, AllegationCategory, Allegation, OUTCOMES, FINDINGS
 
 
 class SuggestView(View):
@@ -14,6 +14,10 @@ class SuggestView(View):
         'investigator': 'Investigator',
         'officer_id': 'Officer name',
         'officer__star': 'Badge number',
+        'recc_outcome': 'Recommended Outcome',
+        'recc_finding': 'Recommended Finding',
+        'final_outcome': 'Final Outcome',
+        'final_finding': 'Final Finding',
     }
 
     def get(self, request):
@@ -60,6 +64,24 @@ class SuggestView(View):
             results = self.query_suggestions(Allegation, condition, ['investigator'])
             if len(results):
                 ret['investigator'] = results
+
+        results = []
+        for outcome in OUTCOMES:
+            if outcome[1].startswith(q):
+                results.append([outcome[1], outcome[0]])
+
+        if results:
+            ret['final_outcome'] = results
+            ret['recc_outcome'] = results
+
+        results = []
+        for finding in FINDINGS:
+            if finding[1].startswith(q):
+                results.append([finding[1], finding[0]])
+
+        if results:
+            ret['final_finding'] = results
+            ret['recc_finding'] = results
 
         ret = self.to_jquery_ui_autocomplete_format(ret)
         ret = json.dumps(ret)

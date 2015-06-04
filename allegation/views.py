@@ -81,9 +81,8 @@ class AllegationAPIView(View):
             self.filters["%s__icontains" % field] = value
 
     def get_allegations(self):
-        filters = ['crid', 'areas__id', 'cat', 'final_outcome', 'neighborhood_id', 'recc_finding',
-                   'final_outcome', 'recc_outcome', 'final_finding', 'officer_id', 'officer__star',
-                   'investigator']
+        filters = ['crid', 'areas__id', 'cat', 'neighborhood_id', 'recc_finding', 'final_outcome',
+        'recc_outcome', 'final_finding', 'officer_id', 'officer__star', 'investigator']
         for filter_field in filters:
             self.add_filter(filter_field)
 
