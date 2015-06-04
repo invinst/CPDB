@@ -1,3 +1,5 @@
+from collections import OrderedDict
+import datetime
 import json
 
 from django.db.models.query_utils import Q
@@ -18,6 +20,9 @@ class SuggestView(View):
         'recc_finding': 'Recommended Finding',
         'final_outcome': 'Final Outcome',
         'final_finding': 'Final Finding',
+        'incident_date__year': 'Incident Year',
+        'incident_date__month_year': 'Incident Month/Year',
+        'incident_date': 'Incident Date',
     }
 
     def get(self, request):
@@ -38,6 +43,28 @@ class SuggestView(View):
                 results = self.query_suggestions(Allegation, condition, ['crid'], order_bys=['crid'])
                 if len(results):
                     ret['crid'] = results
+
+            if '/' in q:
+                count = q.count("/")
+                if count == 2: # date
+                    year, month, day = q.split("/")
+                    if year.isnumeric() and month.isnumeric():
+                        days = ["%02d" % x for x in range(1, 32)]
+                        results = ["%s/%s/%s" % (year, month, x) for x in days if x.startswith(day)]
+                        if len(results):
+                            ret['incident_date'] = results
+                elif count == 1: # month/year
+                    year, month = q.split("/")
+                    if year.isnumeric():
+                        months = ["%02d" % x for x in range(1, 13)]
+                        results = ["%s/%s" % (year, x) for x in months if x.startswith(month)]
+                        if(len(results)):
+                            ret['incident_date__month_year'] = results
+            else: # only the year
+                current_year = datetime.datetime.now().year
+                results = [x for x in range(2010, current_year) if str(x).startswith(q)]
+                if len(results):
+                    ret['incident_date__year'] = results
         else:
             # suggestion for officer name
             parts = q.split(' ')
