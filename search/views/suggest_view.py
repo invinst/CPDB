@@ -25,17 +25,19 @@ class SuggestView(View):
         if not q:
             return HttpResponseBadRequest()
 
-        ret = {}
+        ret = OrderedDict()
         if q[0].isnumeric():
             condition = Q(star__icontains=q)
             results = self.query_suggestions(Officer, condition, ['star'], order_bys=['star'])
             results = [int(x) for x in results]
-            ret['officer__star'] = results
+            if(len(results)):
+                ret['officer__star'] = results
 
             if len(q) >= 4:
                 condition = Q(crid__icontains=q)
                 results = self.query_suggestions(Allegation, condition, ['crid'], order_bys=['crid'])
-                ret['crid'] = results
+                if len(results):
+                    ret['crid'] = results
         else:
             # suggestion for officer name
             parts = q.split(' ')
