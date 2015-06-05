@@ -39,12 +39,13 @@ class SuggestView(View):
         for i in range(1, 13):
             months_choices.append((i, datetime.date(2011, i, 1).strftime('%B')))
         results = []
+        lower_q = q.lower()
         for month in months_choices:
-            if month[1].startswith(q):
+            if month[1].lower().startswith(lower_q):
                 for year in range(2010, current_year):
                     results.append(["%s %s" % (month[1], year),"%s-%s" % (year, month[0])])
         if results:
-            ret['incident_date_only__month_year'] = results
+            ret['incident_date_only__year_month'] = results
 
         if q[0].isnumeric():
             condition = Q(star__icontains=q)
@@ -74,11 +75,11 @@ class SuggestView(View):
                         months = ["%02d" % x for x in range(1, 13)]
                         results = ["%s/%s" % (year, x) for x in months if x.startswith(month)]
                         if results:
-                            ret['incident_date_only__month_year'] = results
+                            ret['incident_date_only__year_month'] = results
             else: # only the year
                 results = [x for x in range(2010, current_year) if str(x).startswith(q)]
                 if results:
-                    ret['incident_date__year'] = results
+                    ret['incident_date_only__year'] = results
         else:
             # suggestion for officer name
             parts = q.split(' ')
