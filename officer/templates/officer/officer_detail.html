@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="complaint_list">
+    <div class='row'>
+      <div class='col-md-2'>
+        <h3 class="margin-top-0">Complaints</h3>
+      </div>
+    </div>
+
+    {% for allegation in allegations %}
+      <div class="complaint-row">
+        <div onclick="console.log('Fix me')" class='row'>
+          <div class='col-md-1'>
+            <i class='fa fa-check'></i>
+          </div>
+          <div class='col-md-3'>
+            <div class='title'>Misconduct</div>
+            {{ allegation.allegation.category }}
+          </div>
+          <div class='col-md-1'>
+            <div class='title'>CRID</div>
+            {{ allegation.crid }}
+          </div>
+          <div class='col-md-2'>
+            <div class='title'>Incident Date</div>
+            {{allegation.incident_date}}
+          </div>
+          <div class='col-md-3'>
+            <div class='title'>Officer</div>
+            {{officer.officer_first}} {{officer.officer_last}}
+          </div>
+          <div class='col-md-1'>
+            <a class='btn btn-sm btn-request'>
+              <i class='fa fa-file-pdf-o'></i>&nbsp;&nbsp;&nbsp;Request
+            </a>
+          </div>
+          <div class='col-md-1 text-center' >
+            <a onclick="console.log('Fix me')" href="#" class="show_more"><i class="icon"></i></a>
+          </div>
+        </div>
+
+        <div class="show_more">
+          <div class="row-fluid">
+            <div class="col-md-12">
+              <div class='row'>
+                <div class="col-md-12">
+                  <h3>{{allegation.allegation.category}}</h3>
+                  {{allegation.category.cat_id}} {{allegation.category.allegation_name}}
+                </div>
+                <div class='col-md-12'>
+                  <h4>Officers Involved</h4>
+                </div>
+                <div>
+                  <div class='col-md-2'>
+                    <div class="class" data-state="selection_state" onclick="console.log('Fix me')">
+                    <div class='officer_name'>
+                      <strong>
+                        {{officer.officer_first}} {{officer.officer_last}}
+                      </strong>
+                    </div>
+                    <div>Unit {{officer.unit}}</div>
+                    <div>
+                      <div><strong>{{officer.allegations_count}}</strong> complaints</div>
+                      <div><strong>{{officer.discipline_count}}</strong> disciplines</div>
+                    </div>
+                   </div>
+                  </div>
+                </div>
+              </div>
+              <div class='row'>
+                <div class='map col-md-6'>
+                  <img src="" alt="Fix me" />
+                </div>
+                <div class='col-md-6'>
+                  <div>Location: {{allegation.location}}</div>
+                  <div>Address: {{allegation.add1}} {{allegation.add2}}</div>
+                  <div>City: {{allegation.city}}</div>
+                </div>
+              </div>
+
+              <h4>Investigation</h4>
+              <div class='row'>
+                <div class='col-md-3'>
+                  Timeline
+                </div>
+                <div class='col-md-6'>
+                  Investigation Start: {{allegation.start_date}} <br />
+                  Incident date: {{allegation.incident_date}}
+
+                </div>
+                <div class='col-md-3'>
+                Investigation End:{{allegation.end_date}}
+                {{allegation.final_finding}}
+                </div>
+              </div>
+              <div class='row'>
+                <div class='col-md-3'><strong>Disciplinary Action</strong></div>
+                <div class='col-md-9'>{{allegation.final_outcome}}</div>
+              </div>
+              <div class='row'>
+                <div class='col-md-3'><strong>Investigators</strong></div>
+                <div class='col-md-9'>{{allegation.investigator}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endblock %}
