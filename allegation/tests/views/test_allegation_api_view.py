@@ -1,22 +1,14 @@
 import datetime
 import json
 
-from django.test.testcases import TestCase
 from django.utils import timezone
 
-from allegation.factories import AllegationFactory, AreaFactory
-from common.models import Allegation, Area
+from allegation.factories import AreaFactory
+from allegation.tests.views.base import AllegationApiTestBase
+from common.models import Allegation
 
 
-class AllegationApiViewTestCase(TestCase):
-    _overridden_settings = {
-        'ALLEGATION_LIST_ITEM_COUNT': 10,
-    }
-
-    def setUp(self):
-        self.allegations = []
-        for i in range(400):
-            self.allegations.append(AllegationFactory())
+class AllegationApiViewTestCase(AllegationApiTestBase):
 
     def fetch_allegations(self, **params):
         response = self.client.get('/api/allegations/', params)
@@ -24,14 +16,9 @@ class AllegationApiViewTestCase(TestCase):
         allegations = data['allegations']
         return allegations
 
-    def fetch_gis_allegations(self, **params):
-        response = self.client.get('/api/allegations/gis/', params)
-        data = json.loads(response.content.decode())
-        return data
-
     def test_area_data_filter(self):
         area = AreaFactory()
-        response = self.client.get('/api/areas/',{'type':area.type})
+        response = self.client.get('/api/areas/', {'type': area.type})
         data = json.loads(response.content.decode())
         data.should.contain('features')
 
@@ -39,34 +26,18 @@ class AllegationApiViewTestCase(TestCase):
         for ret_area in features:
             ret_area['properties']['type'].should.equal(area.type)
 
-    def test_return_markers(self):
-        area = Area.objects.filter()[0]
-        num_markers = area.allegation_set.all().count()
-        allegations = self.fetch_gis_allegations(areas__id=area.id)
-        num_returned = len(allegations['features'])
-        num_markers.should.equal(num_returned)
-
-    def test_multiple_areas(self):
-        areas = Area.objects.filter()
-        num_markers = Allegation.objects.filter(areas=areas).count()
-        allegations = self.fetch_gis_allegations(areas__id=list(areas.values_list('pk',flat=True)))
-        num_returned = len(allegations['features'])
-        num_markers.should.equal(num_returned)
-
     def test_fetch_allegation(self):
         data = self.fetch_allegations()
         isinstance(data, list).should.be.true
         len(data).should.equal(10)
 
     def test_fetch_allegation_paging(self):
-
         allegations = self.fetch_allegations()
         ids = [d['allegation']['id'] for d in allegations]
-        response = self.client.get('/api/allegations/', {
-            'start': 2
-        })
+
         allegations = self.fetch_allegations(start=2)
         ids2 = [d['allegation']['id'] for d in allegations]
+
         ids2[0].should.equal(ids[2])
 
     def test_filter_by_crid(self):
@@ -80,6 +51,12 @@ class AllegationApiViewTestCase(TestCase):
         data = self.fetch_allegations(cat=cat.cat_id)
         for row in data:
             row['category']['allegation_name'].should.equal(cat.allegation_name)
+
+    def test_filter_by_main_category(self):
+        cat = self.allegations[0].cat
+        data = self.fetch_allegations(category=cat.category)
+        for row in data:
+            row['category']['category'].should.equal(cat.category)
 
     def test_filter_by_officer_id(self):
         pk = self.allegations[0].officer.id
@@ -96,11 +73,31 @@ class AllegationApiViewTestCase(TestCase):
     def test_filter_by_date_range(self):
         start_date = timezone.now().date()
         end_date = start_date + datetime.timedelta(days=3)
-        data = self.fetch_allegations(incident_date__range="%s,%s"  % (start_date.strftime("%Y-%m-%d"), end_date.strftime("%Y-%m-%d")))
+        response_format = "%Y-%m-%d %H:%M:%S"
 
-        def happen_between(allegation):
-            incident_date = datetime.datetime.strptime(allegation['allegation']['incident_date'], "%Y-%m-%d %H:%M:%S").date()
+        def happen_between(row):
+            incident_date = datetime.datetime.strptime(row['allegation']['incident_date'], response_format).date()
             return end_date >= incident_date >= start_date
 
-        for row in data:
-            happen_between(row).should.be.true
+        start_date_str = start_date.strftime("%Y-%m-%d")
+        end_date_str = end_date.strftime("%Y-%m-%d")
+
+        allegations = self.fetch_allegations(incident_date_only__range="%s,%s" % (start_date_str, end_date_str))
+        for allegation in allegations:
+            happen_between(allegation).should.be.true
+
+        allegations = self.fetch_allegations(incident_date_only__year=start_date.year)
+        for allegation in allegations:
+            year = datetime.datetime.strptime(allegation['allegation']['incident_date'], response_format).year
+            year.should.equal(start_date.year)
+
+        allegations = self.fetch_allegations(incident_date_only__year_month=start_date.strftime("%Y-%m"))
+        for allegation in allegations:
+            date = datetime.datetime.strptime(allegation['allegation']['incident_date'], response_format)
+            date.year.should.equal(start_date.year)
+            date.month.should.equal(start_date.month)
+
+        allegations = self.fetch_allegations(incident_date_only=start_date.strftime("%Y-%m-%d"))
+        for allegation in allegations:
+            date = datetime.datetime.strptime(allegation['allegation']['incident_date'], response_format).date()
+            date.should.equal(start_date)
