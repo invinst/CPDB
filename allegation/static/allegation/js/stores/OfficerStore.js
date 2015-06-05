@@ -116,7 +116,7 @@ AppDispatcher.register(function(action) {
 
       }
       else{
-        _state.active_officers.splice(index,1);
+        _state.active_officers.splice(index, 1);
       }
       OfficerStore.emitChange()
       break;
