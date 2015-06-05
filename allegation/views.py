@@ -18,19 +18,6 @@ class AllegationListView(TemplateView):
     template_name = 'allegation/home.html'
 
 
-class FilterAPIView(View):
-    def get(self, request):
-        filters = {
-            'category': AllegationCategory.objects.all(),
-            'area_types': Area.objects.distinct().values_list('type', flat=True)
-        }
-        for field in ['final_outcome', 'final_finding', 'recc_finding', 'recc_outcome']:
-            filters[field] = Allegation.objects.exclude(**{field: None}).values_list(field, flat=True).distinct()
-
-        content = JSONSerializer().serialize(filters)
-        return HttpResponse(content)
-
-
 class AreaAPIView(View):
     def get(self, request):
         areas = Area.objects.filter()
@@ -66,31 +53,72 @@ class AllegationAPIView(View):
     def __init__(self, *args, **kwargs):
         super(AllegationAPIView, self).__init__(*args, **kwargs)
         self.filters = {}
+        self.conditions = []
+        self.years = []
+        self.months = []
+        self.days = []
 
     def add_filter(self, field):
-        value = self.request.GET.getlist(field, None)
+        value = self.request.GET.getlist(field)
         if len(value) > 1:
             self.filters["%s__in" % field] = value
 
         elif value:
             self.filters[field] = value[0]
 
+    def add_date_filter(self, field):
+        condition = Q()
+
+        field_name = '%s__range' % field
+        date_ranges = self.request.GET.getlist(field_name)
+
+        field_name = '%s__year' % field
+        years = self.request.GET.getlist(field_name)
+
+        field_name = '%s__month_year' % field
+        year_months = self.request.GET.getlist(field_name)
+
+        dates = self.request.GET.getlist(field)
+        for date_range in date_ranges:
+            date_range = date_range.split(',')
+            condition = condition | Q(**{'%s__range' % field: date_range})
+        for year in years:
+            condition = condition | Q(**{"%s__year" % field: year})
+
+        for year_month in year_months:
+            year, month = year_month.split('-')
+            condition = condition | Q(Q(**{"%s__year" % field: year}) & Q(**{"%s__month" % field: month}))
+
+        formatted_dates = []
+        for date in dates:
+            formatted_dates.append(date.replace('/','-'))
+        if dates:
+            condition = condition | Q(**{"%s__in" % field: formatted_dates})
+
+        self.conditions.append(condition)
+
     def add_icontains_filter(self, field):
-        value = self.request.GET.get(field, None)
+        value = self.request.GET.get(field)
         if value:
             self.filters["%s__icontains" % field] = value
 
     def get_allegations(self):
-        filters = ['crid', 'areas__id', 'cat', 'final_outcome', 'neighborhood_id', 'recc_finding',
-                   'final_outcome', 'recc_outcome', 'final_finding', 'officer_id', 'officer__star',
-                   'investigator']
+        filters = ['crid', 'areas__id', 'cat', 'neighborhood_id', 'recc_finding', 'final_outcome',
+                   'recc_outcome', 'final_finding', 'officer_id', 'officer__star', 'investigator',
+                   ]
+
+        date_filters = ['incident_date','date_range']
+
         for filter_field in filters:
             self.add_filter(filter_field)
+
+        for date_filter in date_filters:
+            self.add_date_filter(date_filter)
 
         if 'category' in self.request.GET:
             self.filters['cat__category'] = self.request.GET['category']
 
-        allegations = Allegation.objects.filter(**self.filters)
+        allegations = Allegation.objects.filter(*self.conditions, **self.filters)
 
         if 'start_date' in self.request.GET:
             allegations = allegations.filter(start_date__gte=self.request.GET.get('start_date'))
