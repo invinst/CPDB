@@ -28,8 +28,12 @@ var Officer = React.createClass({
     }
 
     var className = 'well officer ' + officerComplaintAvgStatus;
+    var selection_state = '';
+    if(this.props.active){
+      className += " selected";
+      selection_state = 'selected';
+    }
 
-    var selection_state = this.props.active ? 'selected' : '';
     return <div className={className} data-state={selection_state} onClick={this.onClick}>
             <div className='officer_name'>
               <strong>
@@ -40,6 +44,9 @@ var Officer = React.createClass({
             <div>
               <div><strong>{officer.allegations_count}</strong> complaints</div>
               <div><strong>{officer.discipline_count}</strong> disciplines</div>
+            </div>
+            <div className='checkmark'>
+              <i className='fa fa-check'></i>
             </div>
            </div>
 
