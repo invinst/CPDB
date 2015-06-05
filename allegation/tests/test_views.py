@@ -2,7 +2,7 @@ import datetime
 import json
 
 from django.test.testcases import TestCase
-from allegation.factories import AllegationFactory, AreaFactory
+from allegation.factories import AllegationFactory, AreaFactory, OfficerFactory
 from common.models import Allegation
 
 
@@ -83,3 +83,22 @@ class AllegationApiViewTestCase(TestCase):
 
         for row in data:
             happen_between(row).should.be.true
+
+    def test_filter_by_officer_name(self):
+        a = AllegationFactory(officer=OfficerFactory(officer_last='ABC'))
+        b = AllegationFactory(officer=OfficerFactory(officer_first='ABC'))
+
+        data = self.fetch_allegations(officer_name='ab')
+
+        contains_a = False
+        contains_b = False
+        for row in data:
+            if row['allegation']['id'] == a.id:
+                contains_a = True
+                break
+        for row in data:
+            if row['allegation']['id'] == b.id:
+                contains_b = True
+                break
+        contains_a.should.be(True)
+        contains_b.should.be(True)
