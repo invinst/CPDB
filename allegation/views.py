@@ -18,19 +18,6 @@ class AllegationListView(TemplateView):
     template_name = 'allegation/home.html'
 
 
-class FilterAPIView(View):
-    def get(self, request):
-        filters = {
-            'category': AllegationCategory.objects.all(),
-            'area_types': Area.objects.distinct().values_list('type', flat=True)
-        }
-        for field in ['final_outcome', 'final_finding', 'recc_finding', 'recc_outcome']:
-            filters[field] = Allegation.objects.exclude(**{field: None}).values_list(field, flat=True).distinct()
-
-        content = JSONSerializer().serialize(filters)
-        return HttpResponse(content)
-
-
 class AreaAPIView(View):
     def get(self, request):
         areas = Area.objects.filter()
