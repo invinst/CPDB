@@ -93,7 +93,7 @@ class AllegationAPIView(View):
         allegations = Allegation.objects.filter(**self.filters)
         if 'officer_name' in self.request.GET:
             name = self.request.GET.get('officer_name')
-            cond = Q(officer__officer_first__icontains=name) | Q(officer__officer_last__icontains=name)
+            cond = Q(officer__officer_first__istartswith=name) | Q(officer__officer_last__istartswith=name)
             allegations = allegations.filter(cond)
 
         if 'start_date' in self.request.GET:
