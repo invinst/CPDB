@@ -119,9 +119,22 @@ footer {
     background-color: #ebebeb;
     border-top: 3px solid red;
     padding: 15px;
+    padding-bottom:25px;
     font-size: 12px;
+    position:relative;
 }
+.well.officer > .checkmark{
+    position:absolute;
+    padding:3px;
+    left:0;
+    bottom:0;
+    background-color: #cbcbcb;
+    color:white;
+}
+.well.officer.selected > .checkmark{
+    background-color: #709dc0;
 
+}
 .well.officer.middle {
     border-top-color: yellow;
 }
