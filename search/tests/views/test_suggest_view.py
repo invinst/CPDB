@@ -57,6 +57,6 @@ class SuggestViewTestCase(SimpleTestCase):
             'term': '8908'
         })
         data = json.loads(response.content.decode())
-        len(data['crid']).should.equal(0)
+        data.shouldnt.contain('crid')
 
 

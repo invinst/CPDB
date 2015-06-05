@@ -2,6 +2,8 @@ import datetime
 import json
 
 from django.test.testcases import TestCase
+from django.utils import timezone
+
 from allegation.factories import AllegationFactory, AreaFactory
 from common.models import Allegation
 
@@ -73,12 +75,12 @@ class AllegationApiViewTestCase(TestCase):
             Allegation.objects.filter(pk=row['allegation']['id'], final_outcome=600).exists().should.be.true
 
     def test_filter_by_date_range(self):
-        start_date = datetime.datetime.now().date()
+        start_date = timezone.now().date()
         end_date = start_date + datetime.timedelta(days=3)
-        data = self.fetch_allegations(start_date=start_date, end_date=end_date)
+        data = self.fetch_allegations(incident_date__range="%s,%s"  % (start_date.strftime("%Y-%m-%d"), end_date.strftime("%Y-%m-%d")))
 
         def happen_between(allegation):
-            incident_date = datetime.datetime.strptime(allegation[3], "%Y-%m-%d").date()
+            incident_date = datetime.datetime.strptime(allegation['allegation']['incident_date'], "%Y-%m-%d %H:%M:%S").date()
             return end_date >= incident_date >= start_date
 
         for row in data:

@@ -26,11 +26,26 @@ class SuggestView(View):
     }
 
     def get(self, request):
+        months_choices = []
+        current_year = datetime.datetime.now().year
+        date_format = "%Y-%m-%d"
+
         q = request.GET.get('term', '')
         if not q:
             return HttpResponseBadRequest()
 
         ret = OrderedDict()
+
+        for i in range(1, 13):
+            months_choices.append((i, datetime.date(2011, i, 1).strftime('%B')))
+        results = []
+        for month in months_choices:
+            if month[1].startswith(q):
+                for year in range(2010, current_year):
+                    results.append(["%s %s" % (month[1], year),"%s-%s" % (year, month[0])])
+        if results:
+            ret['incident_date__month_year'] = results
+
         if q[0].isnumeric():
             condition = Q(star__icontains=q)
             results = self.query_suggestions(Officer, condition, ['star'], order_bys=['star'])
@@ -61,7 +76,6 @@ class SuggestView(View):
                         if(len(results)):
                             ret['incident_date__month_year'] = results
             else: # only the year
-                current_year = datetime.datetime.now().year
                 results = [x for x in range(2010, current_year) if str(x).startswith(q)]
                 if len(results):
                     ret['incident_date__year'] = results
