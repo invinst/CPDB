@@ -1,3 +1,6 @@
+function prettyLabels(label){
+    return label.replace(/-/g," ");
+}
 (function() {
     var AUTOCOMPLETE_CAT_CLASS = 'ui-autocomplete-category';
 
@@ -22,7 +25,8 @@
             });
         },
         _renderItem: function(ul, item) {
-            return $( "<li>").addClass('autocomplete-'+item.category).text( item.label ).appendTo( ul );
+            var label = item.type ? item.type + ": " + item.label : item.label;
+            return $( "<li>").addClass('autocomplete-'+item.category).text( prettyLabels(label) ).appendTo( ul );
         }
     });
 })();
@@ -75,7 +79,7 @@ function cpdbAutocomplete($input){
         },
         select: function(event, ui){
             $('#cpdb-search').tagsinput("add", {
-                text: ui.item.category_name + ": " + ui.item.label,
+                text: (('type' in ui.item) ? ui.item.type : ui.item.category_name )+ ": " + ui.item.label,
                 value: [ui.item.category,  ui.item.value]
             });
             $($input).val('');

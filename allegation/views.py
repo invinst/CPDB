@@ -19,7 +19,7 @@ class AllegationListView(TemplateView):
 
 class AreaAPIView(View):
     def get(self, request):
-        areas = Area.objects.filter()
+        areas = Area.objects.all().exclude(type='school-grounds')
         type_filter = request.GET.get('type')
 
         if type_filter:
