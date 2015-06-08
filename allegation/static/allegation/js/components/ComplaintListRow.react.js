@@ -22,7 +22,10 @@ var ComplaintListRow = React.createClass({
   render: function(){
     var icon = 'fa fa-caret-down';
     var show_more = 'hidden';
-    var allegation = this.props.complaint.allegation;
+    var allegation = this.props.complaint;
+    if('allegation' in this.props.complaint) {
+        allegation = this.props.complaint.allegation;
+    }
     var map_image = '';
     if(this.state.show){
       icon = 'fa fa-caret-up';
@@ -36,8 +39,8 @@ var ComplaintListRow = React.createClass({
       }
     }
     var officer_name = "";
-    if(this.props.complaint.officer){
-        officer_name = this.props.complaint.officer.officer_first + " " + this.props.complaint.officer.officer_last;
+    if(this.props.officer){
+        officer_name = this.props.officer.officer_first + " " + this.props.officer.officer_last;
     }
     category = {};
     if(this.props.complaint.category){
@@ -87,7 +90,7 @@ var ComplaintListRow = React.createClass({
                     </div>
                     <div>
                       <div className='col-md-2'>
-                        <Officer officer={this.props.complaint.officer} />
+                        <Officer officer={this.props.officer} />
                       </div>
                     </div>
                   </div>

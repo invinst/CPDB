@@ -21,23 +21,6 @@ var _state = {
     'complaints':[]
 }
 
-/**
- * Update a TODO item.
- * @param  {string} id
- * @param {object} updates An object literal containing only the data to be
- *     updated.
- */
-function update(id, updates) {
-  _officers[id] = assign({}, _complaints[id], updates);
-}
-
-
-function create(id, officer){
-  _officers[id] = {
-
-  };
-}
-
 
 var ComplaintListStore = assign({}, EventEmitter.prototype, {
   update: function(){
@@ -53,8 +36,13 @@ var ComplaintListStore = assign({}, EventEmitter.prototype, {
     _state[key] = value;
     this.emitChange();
   },
-  init: function(){
-    this.update();
+  init: function(initial){
+    if(!initial){
+        this.update();
+    }
+    else{
+        _state = initial;
+    }
     return _state;
   },
   getAll : function(type){

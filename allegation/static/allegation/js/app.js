@@ -11,15 +11,19 @@ var React = require('react');
 
 
 var CPDBApp = require('./components/CPDBApp.react');
-var Filters = require('./components/Filters.react');
+var OfficerPage = require('./components/OfficerPage.react');
 
-
-React.render(
-  <CPDBApp />,
-  document.getElementById('cpdbapp')
-);
-
-React.render(
-  <Filters />,
-  document.getElementById('search-wrapper')
-);
+var cpdb_el = document.getElementById('cpdbapp');
+if(cpdb_el) {
+    React.render(
+        <CPDBApp />,
+        cpdb_el
+    );
+}
+var officer_profile = document.getElementById('officer-profile');
+if(officer_profile) {
+    React.render(
+        <OfficerPage officer={officer} />,
+        officer_profile
+    );
+}

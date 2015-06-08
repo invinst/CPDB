@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.contrib.gis.db import models
+from django.forms.models import model_to_dict
 
 
 class User(AbstractUser):
@@ -17,6 +18,12 @@ class Officer(models.Model):
     star = models.FloatField(null=True)
     allegations_count = models.IntegerField(default=0)
     discipline_count = models.IntegerField(default=0)
+
+    def for_json(self):
+        ret = model_to_dict(self, fields=[field.name for field in self._meta.fields])
+        ret['allegations'] = self.allegation_set.all()
+        return ret
+
 
     def __str__(self):
         return "%(last)s %(first)s" % {'last': self.officer_last, 'first': self.officer_first}

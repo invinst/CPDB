@@ -1,45 +1,16 @@
 {% extends 'base.html' %}
+{% load staticfiles %}
 
 {% block content %}
-  <div class="complaint_list">
-    <div class='row'>
-      <div class='col-md-2'>
-        <h3 class="margin-top-0">Complaints</h3>
-      </div>
-    </div>
+    <div id='officer-profile'></div>
+{% endblock %}
 
-    {% for allegation in allegations %}
-      <div class="complaint-row">
-        <div onclick="console.log('Fix me')" class='row'>
-          <div class='col-md-1'>
-            <i class='fa fa-check'></i>
-          </div>
-          <div class='col-md-3'>
-            <div class='title'>Misconduct</div>
-            {{ allegation.allegation.category }}
-          </div>
-          <div class='col-md-1'>
-            <div class='title'>CRID</div>
-            {{ allegation.crid }}
-          </div>
-          <div class='col-md-2'>
-            <div class='title'>Incident Date</div>
-            {{allegation.incident_date}}
-          </div>
-          <div class='col-md-3'>
-            <div class='title'>Officer</div>
-            {{officer.officer_first}} {{officer.officer_last}}
-          </div>
-          <div class='col-md-1'>
-            <a class='btn btn-sm btn-request'>
-              <i class='fa fa-file-pdf-o'></i>&nbsp;&nbsp;&nbsp;Request
-            </a>
-          </div>
-          <div class='col-md-1 text-center' >
-            <a onclick="console.log('Fix me')" href="#" class="show_more"><i class="icon"></i></a>
-          </div>
-        </div>
-      </div>
-    {% endfor %}
-  </div>
+{% block footerjs %}
+{{ block.super }}
+  <script>
+    var officer = {{officer|safe}};
+  </script>
+  <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.js'></script>
+  <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-heat/v0.1.3/leaflet-heat.js'></script>
+  <script src="{% static 'allegation/js/bundle.js' %}"></script>
 {% endblock %}
