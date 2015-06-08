@@ -15,6 +15,7 @@ class Officer(models.Model):
     appt_date = models.DateField(null=True)
     unit = models.CharField(max_length=5, null=True)
     rank = models.CharField(max_length=5, null=True)
+    rank_display = models.CharField(max_length=50, null=True)
     star = models.FloatField(null=True)
     allegations_count = models.IntegerField(default=0)
     discipline_count = models.IntegerField(default=0)

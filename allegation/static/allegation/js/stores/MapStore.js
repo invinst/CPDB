@@ -41,12 +41,17 @@ var _baseLayers = {};
 function update(id, updates) {
   _todos[id] = assign({}, _todos[id], updates);
 }
-function create(){
+function create(dom_id, opts){
+    dom_id = dom_id ? dom_id : 'map';
+    opts = opts ? opts : {'maxZoom': 14,'minZoom': 10}
+
+    defaultZoom = 'defaultZoom' in opts ? opts['defaultZoom'] : 12;
+
     L.mapbox.accessToken = MBX;
     var southWest = L.latLng(41.143501411390766,-88.53057861328125)
     var northEast = L.latLng(42.474122772511485,-85.39947509765625)
     var maxBounds = L.LatLngBounds(southWest,northEast)
-    _map = L.mapbox.map('map', MAP_TYPE, {'maxZoom':14,'minZoom':10}).setView([41.85677, -87.6024055], 12);
+    _map = L.mapbox.map(dom_id, MAP_TYPE, opts).setView([41.85677, -87.6024055], defaultZoom);
     _map.on('click',function(event){
 
     }).setMaxBounds(maxBounds)
@@ -186,8 +191,8 @@ var MapStore = assign({}, EventEmitter.prototype, {
   getPolygons: function(){
     return _polygons;
   },
-  init: function(){
-      return create();
+  init: function(dom_id,opts){
+      return create(dom_id,opts);
   }
 });
 

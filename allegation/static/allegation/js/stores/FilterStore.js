@@ -48,6 +48,11 @@ var FilterStore = assign({}, EventEmitter.prototype, {
           return _filters;
       }
   },
+  update: function(id,updates){
+    update(id, updates);
+    console.log(updates)
+    this.emit(CHANGE_EVENT);
+  },
   emitChange: function() {
     this.emit(CHANGE_EVENT);
   },
@@ -77,6 +82,7 @@ var FilterStore = assign({}, EventEmitter.prototype, {
   },
   getQueryString: function(){
     var query = ""
+    console.log(_filters)
     for(var filterName in _filters){
       var filter = _filters[filterName];
 
