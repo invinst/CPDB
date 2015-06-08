@@ -20,9 +20,9 @@ class SuggestView(View):
         'recc_finding': 'Recommended Finding',
         'final_outcome': 'Final Outcome',
         'final_finding': 'Final Finding',
-        'incident_date__year': 'Incident Year',
-        'incident_date__month_year': 'Incident Month/Year',
-        'incident_date': 'Incident Date',
+        'incident_date_only__year': 'Incident Year',
+        'incident_date_only__year_month': 'Incident Year/Month',
+        'incident_date_only': 'Incident Date',
     }
 
     def get(self, request):
@@ -39,24 +39,25 @@ class SuggestView(View):
         for i in range(1, 13):
             months_choices.append((i, datetime.date(2011, i, 1).strftime('%B')))
         results = []
+        lower_q = q.lower()
         for month in months_choices:
-            if month[1].startswith(q):
+            if month[1].lower().startswith(lower_q):
                 for year in range(2010, current_year):
                     results.append(["%s %s" % (month[1], year),"%s-%s" % (year, month[0])])
         if results:
-            ret['incident_date__month_year'] = results
+            ret['incident_date_only__year_month'] = results
 
         if q[0].isnumeric():
             condition = Q(star__icontains=q)
             results = self.query_suggestions(Officer, condition, ['star'], order_bys=['star'])
             results = [int(x) for x in results]
-            if(len(results)):
+            if results:
                 ret['officer__star'] = results
 
             if len(q) >= 4:
                 condition = Q(crid__icontains=q)
                 results = self.query_suggestions(Allegation, condition, ['crid'], order_bys=['crid'])
-                if len(results):
+                if results:
                     ret['crid'] = results
 
             if '/' in q:
@@ -66,19 +67,19 @@ class SuggestView(View):
                     if year.isnumeric() and month.isnumeric():
                         days = ["%02d" % x for x in range(1, 32)]
                         results = ["%s/%s/%s" % (year, month, x) for x in days if x.startswith(day)]
-                        if len(results):
-                            ret['incident_date'] = results
+                        if results:
+                            ret['incident_date_only'] = results
                 elif count == 1: # month/year
                     year, month = q.split("/")
                     if year.isnumeric():
                         months = ["%02d" % x for x in range(1, 13)]
                         results = ["%s/%s" % (year, x) for x in months if x.startswith(month)]
-                        if(len(results)):
-                            ret['incident_date__month_year'] = results
+                        if results:
+                            ret['incident_date_only__year_month'] = results
             else: # only the year
                 results = [x for x in range(2010, current_year) if str(x).startswith(q)]
-                if len(results):
-                    ret['incident_date__year'] = results
+                if results:
+                    ret['incident_date_only__year'] = results
         else:
             # suggestion for officer name
             parts = q.split(' ')
@@ -89,23 +90,23 @@ class SuggestView(View):
             results = self.query_suggestions(Officer, condition, ['officer_first', 'officer_last', 'allegations_count', 'id'],
                                              order_bys=('-allegations_count', 'officer_first', 'officer_last'))
             results = [["%s %s (%s)" % (x[0], x[1], x[2]), x[3] ] for x in results]
-            if len(results):
+            if results:
                 ret['officer_id'] = results
 
             condition = Q(category__icontains=q)
             results = self.query_suggestions(AllegationCategory, condition, ['category'], order_bys=['-category_count'])
-            if len(results):
+            if results:
                 ret['category'] = results
 
             condition = Q(allegation_name__icontains=q)
             results = self.query_suggestions(AllegationCategory, condition, ['allegation_name', 'cat_id'],
                                              order_bys=['-allegation_count'])
-            if len(results):
+            if results:
                 ret['cat'] = results
 
             condition = Q(investigator__icontains=q)
             results = self.query_suggestions(Allegation, condition, ['investigator'])
-            if len(results):
+            if results:
                 ret['investigator'] = results
 
         results = []

@@ -1,4 +1,3 @@
-import re
 import json
 
 from django.conf import settings
@@ -37,9 +36,9 @@ class AreaAPIView(View):
             area_json = {
                 "type": "Feature",
                 "properties": {
-                  'id':area.id,
-                  "name":area.name,
-                  'type':area.type,
+                    'id': area.id,
+                    'name': area.name,
+                    'type': area.type,
                 },
                 'geometry': polygon
             }
@@ -50,8 +49,8 @@ class AreaAPIView(View):
 
 
 class AllegationAPIView(View):
-    def __init__(self, *args, **kwargs):
-        super(AllegationAPIView, self).__init__(*args, **kwargs)
+    def __init__(self, **kwargs):
+        super(AllegationAPIView, self).__init__(**kwargs)
         self.filters = {}
         self.conditions = []
         self.years = []
@@ -75,7 +74,7 @@ class AllegationAPIView(View):
         field_name = '%s__year' % field
         years = self.request.GET.getlist(field_name)
 
-        field_name = '%s__month_year' % field
+        field_name = '%s__year_month' % field
         year_months = self.request.GET.getlist(field_name)
 
         dates = self.request.GET.getlist(field)
@@ -92,22 +91,18 @@ class AllegationAPIView(View):
         formatted_dates = []
         for date in dates:
             formatted_dates.append(date.replace('/','-'))
+
         if dates:
             condition = condition | Q(**{"%s__in" % field: formatted_dates})
 
         self.conditions.append(condition)
-
-    def add_icontains_filter(self, field):
-        value = self.request.GET.get(field)
-        if value:
-            self.filters["%s__icontains" % field] = value
 
     def get_allegations(self):
         filters = ['crid', 'areas__id', 'cat', 'neighborhood_id', 'recc_finding', 'final_outcome',
                    'recc_outcome', 'final_finding', 'officer_id', 'officer__star', 'investigator',
                    ]
 
-        date_filters = ['incident_date','date_range']
+        date_filters = ['incident_date_only']
 
         for filter_field in filters:
             self.add_filter(filter_field)
@@ -119,11 +114,6 @@ class AllegationAPIView(View):
             self.filters['cat__category'] = self.request.GET['category']
 
         allegations = Allegation.objects.filter(*self.conditions, **self.filters)
-
-        if 'start_date' in self.request.GET:
-            allegations = allegations.filter(start_date__gte=self.request.GET.get('start_date'))
-        if 'end_date' in self.request.GET:
-            allegations = allegations.filter(end_date__lte=self.request.GET.get('end_date'))
 
         if 'latlng' in self.request.GET:
             latlng = self.request.GET['latlng'].split(',')
@@ -146,7 +136,6 @@ class AllegationAPIView(View):
             length = int(request.GET.get('length', length))
         except ValueError:
             pass
-
 
         allegations = allegations.select_related('officer','cat')
 
