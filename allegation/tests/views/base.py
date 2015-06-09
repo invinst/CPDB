@@ -1,5 +1,6 @@
 from django.test.testcases import TestCase
-from allegation.factories import AllegationFactory
+
+from allegation.factories import ComplaintFactory
 
 
 class AllegationApiTestBase(TestCase):
@@ -10,4 +11,4 @@ class AllegationApiTestBase(TestCase):
     def setUp(self):
         self.allegations = []
         for i in range(400):
-            self.allegations.append(AllegationFactory())
+            self.allegations.append(ComplaintFactory())
