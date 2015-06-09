@@ -147,6 +147,11 @@ class AllegationAPIView(View):
                 category = allegation.cat
             witness = ComplainingWitness.objects.filter(crid=allegation.crid)
             police_witness = PoliceWitness.objects.filter(crid=allegation.crid)
+            allegation.final_finding = allegation.get_final_finding_display()
+            allegation.final_outcome = allegation.get_final_outcome_display()
+            allegation.recc_finding = allegation.get_recc_finding_display()
+            allegation.recc_outcome = allegation.get_recc_outcome_display()
+
             ret = {
                 'allegation': allegation,
                 'officers': allegation.officers.all(),
@@ -180,7 +185,7 @@ class AllegationGISApiView(AllegationAPIView):
             allegation_json = {
                 "type": "Feature",
                 "properties": {
-                  "name":allegation.crid,
+                    "name": allegation.crid,
                 },
                 'geometry': point
             }
@@ -260,4 +265,19 @@ class OfficerListAPIView(AllegationAPIView):
         content = JSONSerializer().serialize({
             'officers': officers
         })
+        return HttpResponse(content, content_type="application/json")
+
+class InvestigationAPIView(View):
+    def get(self, request):
+        crid = request.GET.get('crid')
+        ret = {}
+        if crid:
+            complaint = Complaint.objects.get(crid=crid)
+            investigator = complaint.investigator
+            ret['investigation'] = []
+            for officer in complaint.officers.all():
+                num_investigated = Complaint.objects.filter(officers=officer, investigator=investigator).count()
+                no_action_taken_count = Complaint.objects.filter(officers=officer, investigator=investigator, final_outcome='600').count()
+                ret['investigation'].append({'count': num_investigated,'no_action_taken_count': no_action_taken_count,'officer': officer})
+        content = JSONSerializer().serialize(ret)
         return HttpResponse(content, content_type="application/json")

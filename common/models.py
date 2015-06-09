@@ -188,4 +188,3 @@ class Allegation(models.Model):
 
     def __str__(self):
         return "%s" % self.crid
-
