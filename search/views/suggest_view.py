@@ -5,7 +5,7 @@ import json
 from django.db.models.query_utils import Q
 from django.http.response import HttpResponseBadRequest, HttpResponse
 from django.views.generic.base import View
-from common.models import Officer, AllegationCategory, Complaint, OUTCOMES, FINDINGS
+from common.models import Officer, AllegationCategory, Complaint, OUTCOMES, FINDINGS, Investigator
 
 
 class SuggestView(View):
@@ -43,7 +43,7 @@ class SuggestView(View):
         for month in months_choices:
             if month[1].lower().startswith(lower_q):
                 for year in range(2010, current_year):
-                    results.append(["%s %s" % (month[1], year),"%s-%s" % (year, month[0])])
+                    results.append(["%s %s" % (month[1], year), "%s-%s" % (year, month[0])])
         if results:
             ret['incident_date_only__year_month'] = results
 
@@ -104,8 +104,10 @@ class SuggestView(View):
             if results:
                 ret['cat'] = results
 
-            condition = Q(investigator__icontains=q)
-            results = self.query_suggestions(Complaint, condition, ['investigator'])
+            condition = Q(name__icontains=q)
+            results = self.query_suggestions(Investigator, condition, ['name', 'complaint_count', 'id'],
+                                             order_bys=['-complaint_count'])
+            results = [["%s (%s)" % (x[0], x[1]), x[2]] for x in results]
             if results:
                 ret['investigator'] = results
 
