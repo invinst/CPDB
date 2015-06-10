@@ -89,7 +89,7 @@ class SuggestView(View):
                 condition = Q(officer_first__icontains=q) | Q(officer_last__icontains=q)
             results = self.query_suggestions(Officer, condition, ['officer_first', 'officer_last', 'allegations_count', 'id'],
                                              order_bys=('-allegations_count', 'officer_first', 'officer_last'))
-            results = [["%s %s (%s)" % (x[0], x[1], x[2]), x[3] ] for x in results]
+            results = [["%s %s (%s)" % (x[0], x[1], x[2]), x[3]] for x in results]
             if results:
                 ret['officer_id'] = results
 
@@ -140,11 +140,8 @@ class SuggestView(View):
         return list(queryset)
 
     def to_jquery_ui_autocomplete_format(self, data):
-        new_dict = {
-            'categories': {
-
-            }
-        }
+        new_dict = OrderedDict()
+        new_dict['categories'] = {}
         for category in data:
             new_dict[category] = []
             new_dict['categories'][category] = self.autocomplete_category_names[category]

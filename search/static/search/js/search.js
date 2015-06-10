@@ -52,13 +52,14 @@ function cpdbAutocomplete($input){
 
                     var newData = [];
                     $.each(data, function(i, subdata) {
-                        if (['start', 'crid', 'officer__star'].indexOf(i) != -1) {
+                        if (['start', 'crid', 'officer__star', 'officer_id'].indexOf(i) != -1) {
                             // if request.term is found in the suggestion then we dont need to add this
                             if(!suggestionExists(request.term, subdata)){
                                 var freeTextData = {
-                                    category: i,
+                                    category: i == 'officer_id' ? 'officer_name' : i,
                                     category_name: categories[i],
-                                    label: request.term
+                                    label: request.term,
+                                    value: request.term
                                 };
                                 newData = newData.concat([freeTextData]);
                             }
