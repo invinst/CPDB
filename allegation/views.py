@@ -154,8 +154,8 @@ class AllegationAPIView(View):
             category = None
             if allegation.cat:
                 category = allegation.cat
-            witness = ComplainingWitness.objects.filter(crid=allegation.crid)
-            police_witness = PoliceWitness.objects.filter(crid=allegation.crid)
+            witness = allegation.complainingwitness_set.all()
+            police_witness = allegation.policewitness_set.all()
             ret = {
                 'allegation': allegation,
                 'officers': allegation.officers.all(),

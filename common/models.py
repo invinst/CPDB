@@ -32,7 +32,7 @@ class OfficerHistory(models.Model):
 
 class PoliceWitness(models.Model):
     pwit_id = models.IntegerField(primary_key=True)
-    crid = models.CharField(max_length=30, null=True)
+    complaint = models.ForeignKey('Complaint', null=True)
     gender = models.CharField(max_length=1, null=True)
     race = models.CharField(max_length=50, null=True)
     officer = models.ForeignKey(Officer, null=True)
@@ -40,7 +40,7 @@ class PoliceWitness(models.Model):
 
 class ComplainingWitness(models.Model):
     cwit_id = models.IntegerField(primary_key=True)
-    crid = models.CharField(max_length=30, null=True)
+    complaint = models.ForeignKey('Complaint', null=True)
     gender = models.CharField(max_length=1, null=True)
     race = models.CharField(max_length=50, null=True)
 
