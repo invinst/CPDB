@@ -4,7 +4,7 @@ body {
     font-family: 'Source Sans Pro', serif;
 }
 
-h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4 {
+h1, h2, h3,  .h1, .h2, .h3 {
     font-family: 'Vollkorn', serif;
 }
 
@@ -60,6 +60,7 @@ footer {
 .site-title {
     font-style: italic;
     font-size: 30px;
+    font-family: 'Vollkorn', serif;
 }
 
 #summary {
@@ -155,6 +156,7 @@ footer {
     text-transform: capitalize;
     font-size: 16px;
     font-style: italic;
+    font-family: 'Vollkorn';
 
 }
 
@@ -164,26 +166,80 @@ footer {
 
 .complaint-row {
     padding:  0.5em 0;
+    font-family: 'Vollkorn';
 }
 
 .complaint-row .title {
     color: gray;
     font-size: 12px;
+    font-family: 'Source Sans Pro';
 }
+.complaint-row .btn-request{
 
+}
 .complaint-row .show_more {
     font-size: 34px;
 }
-
+.timeline-title{
+    color: grey;
+    font-size: 12px;
+}
+.timeline-date{
+    color: black;
+    font-size: 14px;
+}
+.investigation .progress-bar.discipline{
+    background-color:red;
+}
+.investigation .progress.complaint{
+    background-color:blue;
+}
+.investigation .results{
+    width:30%;
+    background-color:white;
+    padding:15px;
+}
+.investigation .investigator-name{
+    color:blue;
+}
+.investigation .line{
+    display:inline-block;
+    width:20px;
+    height:3px;
+    margin-right:5px;
+}
+.investigation .blue.line{
+    background-color:blue;
+}
+.investigation .red.line{
+    background-color:red;
+}
+.timeline-date.start{
+    color: blue;
+}
+.timeline-date.end{
+    color: red;
+}
+.complaint_detail .row.margin-top{
+    margin-top: 20px;
+}
 .complaint_detail {
     background-color: #f7f7ed;
-    padding: 0 7.1% 1em;
+    padding: 1em 7.1% 1em;
     border-bottom: 1px solid black;
+    border-top: 1px solid black;
 }
-
+.complaint_detail .title{
+    padding-left:5px;
+    border-left:3px solid black;
+    font-size:18px;
+    color:black;
+}
 .btn.btn-request:not(.btn-link):not(.btn-flat) {
     background-color: #0079af;
     color: white;
+    font-family: 'Source Sans Pro';
+    text-transform: none;
 }
 .btn.btn-request:hover:not(.btn-link):not(.btn-flat) {
     background-color: #0a90cb;

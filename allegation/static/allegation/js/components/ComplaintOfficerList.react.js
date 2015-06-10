@@ -25,7 +25,7 @@ var ComplaintOfficerList = React.createClass({
     var counter = 0;
 
     for(i = 0; i < officers.length; i++){
-      if(counter++ == 6) {
+      if(counter++ == 4) {
         counter = 1;
         current_row = [];
         officer_rows.push(current_row);

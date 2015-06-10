@@ -47,7 +47,7 @@ var OfficerStore = assign({}, EventEmitter.prototype, {
   getQueryString: function(){
     var queryString = FilterStore.getQueryString();
     for(var i=0;i<_state['active_officers'].length;i++){
-      queryString += "officer_id=" + _state['active_officers'][i] + "&"
+      queryString += "officers__id=" + _state['active_officers'][i] + "&"
     }
     if(_state.complaints_count_start){
       queryString += "&allegations_count_start=" + _state.complaints_count_start;

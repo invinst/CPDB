@@ -33,11 +33,12 @@ var ComplaintOfficer = React.createClass({
       className += " selected";
       selection_state = 'selected';
     }
-
+    /* fixme: merge with officer.react.js */
+    var officer_link = "/officer/view/?id=" + officer.id;
     return <div className={className} data-state={selection_state}>
             <div className='officer_name'>
               <strong>
-                {this.props.officer.officer_first.toLowerCase()} {officer.officer_last.toLowerCase()}
+                {this.props.officer.officer_first.toLowerCase()} {officer.officer_last.toLowerCase()} <a href={officer_link}><i className='fa fa-arrow-right'></i></a>
               </strong>
             </div>
             <div>Unit {officer.unit}</div>

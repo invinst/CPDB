@@ -8,6 +8,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('common', '0019_investigator'),
+        ('common', '0019_auto_20150610_0535'),
     ]
 
     operations = [

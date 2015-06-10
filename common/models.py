@@ -190,6 +190,7 @@ class Allegation(models.Model):
     def __str__(self):
         return "%s" % self.crid
 
+
 class Investigator(models.Model):
     raw_name = models.CharField(max_length=160)
     name = models.CharField(max_length=160)
