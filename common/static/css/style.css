@@ -195,6 +195,9 @@ footer {
     background-color:white;
     padding:15px;
 }
+.investigation .investigator-name{
+    color:blue;
+}
 .investigation .line{
     display:inline-block;
     width:20px;
