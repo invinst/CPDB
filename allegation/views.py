@@ -217,7 +217,7 @@ class AllegationSummaryApiView(AllegationAPIView):
         discipline_allegations = allegations.exclude(final_outcome=600)
         discipline_count_query = discipline_allegations.values_list('cat').annotate(dcount=Count('id'))
         discipline_count_by_category = dict(discipline_count_query)
-        categories = AllegationCategory.objects.filter(cat_id__in=allegations.values('cat')).order_by('category')
+        categories = AllegationCategory.objects.all().order_by('category')
 
         summary = []
         summary_map_by_name = {}
