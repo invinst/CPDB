@@ -31,6 +31,7 @@ var ComplaintList = React.createClass({
 
             </div>
             {rows}
+            <div className='pull-right'><a href='#' className='btn btn-primary'>Download Table</a></div>
           </div>
   },
 
