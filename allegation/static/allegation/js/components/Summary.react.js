@@ -26,7 +26,7 @@ var Summary = React.createClass({
         var category = this.state.rows[i];
         category.tagValue = {
           text: "Category: " + category.name,
-          value: ['category',  category.name]
+          value: ['cat__category',  category.name]
         };
         rows.push(<SummaryRow key={i} category={category} />);
       }
