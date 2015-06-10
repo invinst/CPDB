@@ -62,7 +62,7 @@ var Filters = React.createClass({
     if(_ajax_req){
       _ajax_req.abort();
     }
-    ajax_req = $.getJSON("/api/allegations/gis/?" + query_string,function(data){
+    _ajax_req = $.getJSON("/api/allegations/gis/?" + query_string,function(data){
       MapStore.setMarkers(data);
 
     })
