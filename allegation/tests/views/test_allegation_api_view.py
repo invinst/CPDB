@@ -54,7 +54,7 @@ class AllegationApiViewTestCase(AllegationApiTestBase):
 
     def test_filter_by_main_category(self):
         cat = self.allegations[0].cat
-        data = self.fetch_allegations(category=cat.category)
+        data = self.fetch_allegations(cat__category=cat.category)
         for row in data:
             row['category']['category'].should.equal(cat.category)
 
