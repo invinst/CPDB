@@ -201,3 +201,33 @@ footer {
 .margin-top{
     margin-top:1em;
 }
+.padding-left{
+    padding-left:5px;
+}
+/* leaflet controller overrides */
+.leaflet-control-layers label.active {
+    color:blue;
+}
+.leaflet-control-layers-expanded {
+    border:0px;
+    padding:0px;
+}
+.leaflet-control-layers-base {
+    float:left;
+}
+.leaflet-control-layers-separator {
+    display:none;
+}
+.leaflet-control-layers-overlays {
+    float:right;
+}
+.leaflet-control-layers label {
+    display:inline-block;
+    padding: 2px 5px;
+}
+.leaflet-control-layers label:not(:last) {
+    border-right:1px solid grey;
+}
+.leaflet-control-layers label input{
+    display:none;
+}

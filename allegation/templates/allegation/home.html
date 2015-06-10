@@ -2,8 +2,8 @@
 {% load staticfiles %}
 
 {% block head-link %}
-  {{ block.super }}
   <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
+    {{ block.super }}
   <link rel="stylesheet" href="{% static 'jquery-ui/themes/base/all.css' %}" />
   <link rel="stylesheet" href="{% static 'bootstrap-tagsinput/dist/bootstrap-tagsinput.css' %}" />
   <link rel="stylesheet" href="{% static 'search/css/search.css' %}" />
