@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from django.views.decorators.cache import cache_page
 
-from allegation.views import AllegationAPIView, AllegationGISApiView, AreaAPIView, FilterAPIView
+from allegation.views import AllegationAPIView, AllegationGISApiView, AreaAPIView
 from allegation.views import AllegationSummaryApiView, AllegationListView, OfficerListAPIView
 
 
@@ -14,7 +14,6 @@ urlpatterns = [
     url(r'^api/allegations/summary/$', cache_view(AllegationSummaryApiView.as_view()), name='allegation-api-summary'),
     url(r'^api/allegations/officers/$', cache_view(OfficerListAPIView.as_view()), name='allegation-api-summary'),
     url(r'^api/areas/$', cache_view(AreaAPIView.as_view()), name='area-api'),
-    url(r'^api/filters/$', FilterAPIView.as_view(), name='filter-api'),
     url(r'^allegations/$', AllegationListView.as_view(template_name='allegation/allegation_list.html'),
         name='allegations'),
 ]

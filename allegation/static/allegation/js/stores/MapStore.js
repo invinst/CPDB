@@ -155,7 +155,8 @@ var MapStore = assign({}, EventEmitter.prototype, {
 
     var marker_length = markers.features.length;
     var start = 0;
-    var count = 3000;
+    var count = 1500;
+    var max_markers_to_add = 8000;
 
     function addMarkers(){
       if (current_markers != markers) {
@@ -163,21 +164,24 @@ var MapStore = assign({}, EventEmitter.prototype, {
       }
       var features = markers.features.slice(start, start + count)
       start += count;
-      var coords = [];
-      featuresMarkers = L.geoJson({features: features}, {
+      var featuresMarkers = L.geoJson({features: features}, {
             pointToLayer: L.mapbox.marker.style,
             style: function(feature) { return feature.properties; },
-            onEachFeature: function(feature,layer){
+            onEachFeature: function(feature, layer){
               if(feature.geometry.coordinates && feature.geometry.coordinates[0]){
                 _heat.addLatLng([feature.geometry.coordinates[1],feature.geometry.coordinates[0]])
               }
             }
-          })
+          });
       _markers.addLayer(featuresMarkers);
 
       if(start > marker_length){
         return;
       }
+      if(count < max_markers_to_add){
+        count += 1000;
+      }
+
       setTimeout(function(){
         addMarkers();
       }, 0.5);

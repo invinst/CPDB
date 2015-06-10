@@ -5,6 +5,7 @@ var Filters = require('./Filters.react');
 var ComplaintListStore = require('../stores/ComplaintListStore');
 var MapStore = require('../stores/MapStore');
 var Officer = require("./Officer.react");
+var ComplaintOfficerList = require("./ComplaintOfficerList.react");
 
 var ComplaintListRow = React.createClass({
   getInitialState: function() {
@@ -20,13 +21,12 @@ var ComplaintListRow = React.createClass({
   },
 
   render: function(){
+    var complaint = this.props.complaint;
     var icon = 'fa fa-caret-down';
     var show_more = 'hidden';
-    var allegation = this.props.complaint;
-    if('allegation' in this.props.complaint) {
-        allegation = this.props.complaint.allegation;
-    }
+    var allegation = complaint.allegation;
     var map_image = '';
+    var category = {};
     if(this.state.show){
       icon = 'fa fa-caret-up';
       show_more = 'col-md-12 complaint_detail';
@@ -38,16 +38,18 @@ var ComplaintListRow = React.createClass({
         map_image = 'http://api.tiles.mapbox.com/v4/mapbox.streets/pin-l-park+482('+lng+','+lat+')/'+lng+','+lat+',13/489x300.png?access_token=' + token;
       }
     }
-    var officer_name = "";
-    if(this.props.officer){
-        officer_name = this.props.officer.officer_first + " " + this.props.officer.officer_last;
+    var officerName = [];
+    for(var i = 0; i < complaint.officers.length; i++){
+      var officer = complaint.officers[i];
+      officerName.push(officer.officer_first + " " + officer.officer_last);
     }
-    category = {};
+    officerName = officerName.join(", ");
+
     if(this.props.complaint.category){
       category = this.props.complaint.category;
     }
     return <div className="complaint-row">
-            <div onClick={this.toggleComplaint} className='row'>
+            <div className='row'>
               <div className='col-md-1'>
                 <i className='fa fa-check'></i>
               </div>
@@ -65,7 +67,7 @@ var ComplaintListRow = React.createClass({
               </div>
               <div className='col-md-3'>
                 <div className='title'>Officer</div>
-                {officer_name}
+                {officerName}
               </div>
               <div className='col-md-1'>
                 <a className='btn btn-sm btn-request'>
@@ -89,8 +91,8 @@ var ComplaintListRow = React.createClass({
                       <h4>Officers Involved</h4>
                     </div>
                     <div>
-                      <div className='col-md-2'>
-                        <Officer officer={this.props.officer} />
+                      <div className='col-md-12'>
+                        <ComplaintOfficerList officers={complaint.officers} />
                       </div>
                     </div>
                   </div>

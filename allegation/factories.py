@@ -1,8 +1,8 @@
 from django.utils import timezone
 import factory
 from faker import Faker
-from common.models import Allegation, AllegationCategory, Officer, Area
 
+from common.models import AllegationCategory, Officer, Area, Complaint
 
 fake = Faker()
 
@@ -32,26 +32,40 @@ class AllegationCategoryFactory(factory.django.DjangoModelFactory):
 
     cat_id = factory.Sequence(lambda n: ['12A', '34B'][n % 2])
     allegation_name = factory.Sequence(lambda n: fake.name())
+    category = factory.Sequence(lambda n: fake.name())
 
 
-class AllegationFactory(factory.django.DjangoModelFactory):
+class ComplaintFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = Allegation
+        model = Complaint
 
     crid = factory.Sequence(lambda n: fake.random_int(min=1000))
     cat = factory.SubFactory(AllegationCategoryFactory)
-    officer = factory.SubFactory(OfficerFactory)
     final_outcome = factory.Sequence(lambda n: fake.random_element(['600', '601']))
     incident_date = factory.Sequence(lambda n: timezone.now())
+    incident_date_only = factory.LazyAttribute(lambda o: o.incident_date.date())
+    investigator = factory.Sequence(lambda n: fake.name())
+
     @factory.post_generation
     def areas(self, create, extracted, **kwargs):
 
         if Area.objects.all().count() == 0:
             for i in range(2):
-                area = AreaFactory()
+                AreaFactory()
             extracted = Area.objects.all()
 
         if extracted:
-            # A list of groups were passed in, use them
             for area in extracted:
                 self.areas.add(area)
+
+    @factory.post_generation
+    def officers(self, create, extracted, **kwargs):
+
+        if not extracted and Officer.objects.all().count() == 0:
+            for i in range(2):
+                OfficerFactory()
+            extracted = Officer.objects.all()
+
+        if extracted:
+            for officer in extracted:
+                self.officers.add(officer)
