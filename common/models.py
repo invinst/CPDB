@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.contrib.gis.db import models
+from django.forms.models import model_to_dict
 
 
 class User(AbstractUser):
@@ -14,7 +15,7 @@ class Officer(models.Model):
     appt_date = models.DateField(null=True)
     unit = models.CharField(max_length=5, null=True)
     rank = models.CharField(max_length=5, null=True)
-    star = models.FloatField(null=True, db_index=True)
+    star = models.FloatField(null=True)
     allegations_count = models.IntegerField(default=0)
     discipline_count = models.IntegerField(default=0)
 

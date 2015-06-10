@@ -38,6 +38,10 @@ footer {
   width:100%;
   height:650px;
 }
+#officer-complaint-map{
+    width:100%;
+    height:200px;
+}
 
 .navbar.navbar, .navbar-default.navbar {
     background: #ffffff;
