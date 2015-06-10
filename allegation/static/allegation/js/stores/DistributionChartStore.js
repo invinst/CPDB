@@ -117,9 +117,16 @@ var DistributionChartStore = assign({}, EventEmitter.prototype, {
     rotate = !rotate;
     drawChart(col, rotate);
   },
+  listen: function(element){
+    this.set('element', element);
+    this.update();
+  },
   update: function(){
-    query_string = FilterStore.getQueryString();
-    $.get('/officer/count/?by=num_complaints&' + query_string, function(data) {
+    if(!('element' in _state)){
+      return;
+    }
+    var queryString = FilterStore.getQueryString();
+    $.get('/officer/count/?by=num_complaints&' + queryString, function(data) {
         drawChart(data);
     });
   },

@@ -5,14 +5,14 @@ from common.models import User, Officer, OfficerHistory, Allegation, Complaining
 
 
 class PoliceWitnessAdmin(admin.ModelAdmin):
-    search_fields = ['crid', 'officer__officer_first', 'officer__officer_last']
-    list_display = ['crid', 'race', 'gender', 'officer']
+    search_fields = ['complaint', 'officer__officer_first', 'officer__officer_last']
+    list_display = ['complaint', 'race', 'gender', 'officer']
     list_filter = ['race', 'gender']
 
 
 class ComplainingWitnessAdmin(admin.ModelAdmin):
-    search_fields = ['crid']
-    list_display = ['crid', 'race', 'gender']
+    search_fields = ['complaint']
+    list_display = ['complaint', 'race', 'gender']
     list_filter = ['race', 'gender']
 
 

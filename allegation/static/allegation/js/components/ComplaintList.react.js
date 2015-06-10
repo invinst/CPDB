@@ -8,7 +8,15 @@ var ComplaintListRow = require('./ComplaintListRow.react');
 
 var ComplaintList = React.createClass({
   getInitialState: function() {
-     return ComplaintListStore.init();
+      var ret = {};
+      if(this.props.allegations){
+          console.log(this.props)
+          ret = ComplaintListStore.init({'complaints':this.props.allegations,'officer':this.props.officer})
+      }
+      else {
+          ret = ComplaintListStore.init();
+      }
+      return ret;
   },
   componentDidMount: function() {
     ComplaintListStore.addChangeListener(this._onChange);
@@ -17,10 +25,18 @@ var ComplaintList = React.createClass({
     return rows[rowIndex];
   },
   render: function(){
-    var rows=[]
+    var rows=[];
+    var officer = null;
+    if(this.props.officer){
+        officer = this.props.officer
+    }
+
     for(var i=0; i<this.state.complaints.length; i++){
       var complaint = this.state.complaints[i];
-      rows.push(<ComplaintListRow key={i} complaint={complaint} />)
+      if(!officer){
+          officer = complaint.officer;
+      }
+      rows.push(<ComplaintListRow key={i} complaint={complaint} officer={officer} />)
     }
 
     return <div className="complaint_list">
@@ -31,6 +47,7 @@ var ComplaintList = React.createClass({
 
             </div>
             {rows}
+            <div className='pull-right'><a href='#' className='btn btn-primary'>Download Table</a></div>
           </div>
   },
 

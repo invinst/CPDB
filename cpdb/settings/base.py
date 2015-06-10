@@ -45,6 +45,7 @@ INSTALLED_APPS = (
 
     'common',
     'allegation',
+    'officer',
     'corsheaders',
     'search',
     'graph',

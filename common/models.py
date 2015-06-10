@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.contrib.gis.db import models
+from django.forms.models import model_to_dict
 
 
 class User(AbstractUser):
@@ -14,7 +15,7 @@ class Officer(models.Model):
     appt_date = models.DateField(null=True)
     unit = models.CharField(max_length=5, null=True)
     rank = models.CharField(max_length=5, null=True)
-    star = models.FloatField(null=True, db_index=True)
+    star = models.FloatField(null=True)
     allegations_count = models.IntegerField(default=0)
     discipline_count = models.IntegerField(default=0)
 
@@ -32,7 +33,7 @@ class OfficerHistory(models.Model):
 
 class PoliceWitness(models.Model):
     pwit_id = models.IntegerField(primary_key=True)
-    crid = models.CharField(max_length=30, null=True)
+    complaint = models.ForeignKey('Complaint', null=True)
     gender = models.CharField(max_length=1, null=True)
     race = models.CharField(max_length=50, null=True)
     officer = models.ForeignKey(Officer, null=True)
@@ -40,7 +41,7 @@ class PoliceWitness(models.Model):
 
 class ComplainingWitness(models.Model):
     cwit_id = models.IntegerField(primary_key=True)
-    crid = models.CharField(max_length=30, null=True)
+    complaint = models.ForeignKey('Complaint', null=True)
     gender = models.CharField(max_length=1, null=True)
     race = models.CharField(max_length=50, null=True)
 
@@ -137,7 +138,8 @@ class Complaint(models.Model):
     incident_date_only = models.DateField(null=True, db_index=True)
     start_date = models.DateField(null=True)
     end_date = models.DateField(null=True)
-    investigator = models.CharField(max_length=255, null=True, db_index=True)
+    investigator_name = models.CharField(max_length=255, null=True, db_index=True)
+    investigator = models.ForeignKey('common.Investigator', null=True)
     point = models.PointField(srid=4326, null=True, blank=True)
     objects = models.GeoManager()
 
@@ -161,7 +163,7 @@ class Allegation(models.Model):
     incident_date_only = models.DateField(null=True, db_index=True)
     start_date = models.DateField(null=True)
     end_date = models.DateField(null=True)
-    investigator = models.CharField(max_length=255, null=True, db_index=True)
+    investigator_name = models.CharField(max_length=255, null=True, db_index=True)
     point = models.PointField(srid=4326, null=True, blank=True)
     objects = models.GeoManager()
 
@@ -179,7 +181,6 @@ class Allegation(models.Model):
             return n[0]
         return False
 
-
     def save(self,*args,**kwargs):
         if self.location and not self.point:
             # geolocate
@@ -188,3 +189,9 @@ class Allegation(models.Model):
 
     def __str__(self):
         return "%s" % self.crid
+
+
+class Investigator(models.Model):
+    raw_name = models.CharField(max_length=160)
+    name = models.CharField(max_length=160)
+    complaint_count = models.IntegerField(default=0)

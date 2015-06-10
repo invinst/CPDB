@@ -41,3 +41,7 @@
 .bootstrap-tagsinput .tag,.bootstrap-tagsinput input{
     font-size: 1em;
 }
+
+.ui-menu .ui-menu-item{
+    text-transform: capitalize;
+}
