@@ -14,9 +14,9 @@
             var widget = this;
             var currentCategory = "";
             $.each(items, function (index, item) {
-                if (item.category != currentCategory) {
+                if (item.category_name != currentCategory) {
                     ul.append(category_elem(item.category_name));
-                    currentCategory = item.category;
+                    currentCategory = item.category_name;
                 }
                 widget._renderItemData(ul, item);
             });

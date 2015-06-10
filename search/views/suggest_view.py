@@ -5,13 +5,13 @@ import json
 from django.db.models.query_utils import Q
 from django.http.response import HttpResponseBadRequest, HttpResponse
 from django.views.generic.base import View
-from common.models import Officer, AllegationCategory, Complaint, OUTCOMES, FINDINGS
+from common.models import Officer, AllegationCategory, Complaint, OUTCOMES, FINDINGS, Investigator
 
 
 class SuggestView(View):
     autocomplete_category_names = {
         'crid': 'Complaint ID',
-        'category': 'Complaint type',
+        'cat__category': 'Complaint type',
         'cat': 'Allegation type',
         'investigator': 'Investigator',
         'officer_id': 'Officer name',
@@ -43,7 +43,7 @@ class SuggestView(View):
         for month in months_choices:
             if month[1].lower().startswith(lower_q):
                 for year in range(2010, current_year):
-                    results.append(["%s %s" % (month[1], year),"%s-%s" % (year, month[0])])
+                    results.append(["%s %s" % (month[1], year), "%s-%s" % (year, month[0])])
         if results:
             ret['incident_date_only__year_month'] = results
 
@@ -89,14 +89,14 @@ class SuggestView(View):
                 condition = Q(officer_first__icontains=q) | Q(officer_last__icontains=q)
             results = self.query_suggestions(Officer, condition, ['officer_first', 'officer_last', 'allegations_count', 'id'],
                                              order_bys=('-allegations_count', 'officer_first', 'officer_last'))
-            results = [["%s %s (%s)" % (x[0], x[1], x[2]), x[3] ] for x in results]
+            results = [["%s %s (%s)" % (x[0], x[1], x[2]), x[3]] for x in results]
             if results:
                 ret['officer_id'] = results
 
             condition = Q(category__icontains=q)
             results = self.query_suggestions(AllegationCategory, condition, ['category'], order_bys=['-category_count'])
             if results:
-                ret['category'] = results
+                ret['cat__category'] = results
 
             condition = Q(allegation_name__icontains=q)
             results = self.query_suggestions(AllegationCategory, condition, ['allegation_name', 'cat_id'],
@@ -104,8 +104,10 @@ class SuggestView(View):
             if results:
                 ret['cat'] = results
 
-            condition = Q(investigator__icontains=q)
-            results = self.query_suggestions(Complaint, condition, ['investigator'])
+            condition = Q(name__icontains=q)
+            results = self.query_suggestions(Investigator, condition, ['name', 'complaint_count', 'id'],
+                                             order_bys=['-complaint_count'])
+            results = [["%s (%s)" % (x[0], x[1]), x[2]] for x in results]
             if results:
                 ret['investigator'] = results
 
@@ -140,11 +142,8 @@ class SuggestView(View):
         return list(queryset)
 
     def to_jquery_ui_autocomplete_format(self, data):
-        new_dict = {
-            'categories': {
-
-            }
-        }
+        new_dict = OrderedDict()
+        new_dict['categories'] = {}
         for category in data:
             new_dict[category] = []
             new_dict['categories'][category] = self.autocomplete_category_names[category]
