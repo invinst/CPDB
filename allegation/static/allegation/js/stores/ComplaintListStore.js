@@ -79,7 +79,6 @@ AppDispatcher.register(function(action) {
       break;
 
     case MapConstants.SET_ACTIVE_OFFICER:
-
       ComplaintListStore.update();
       break;
     default:

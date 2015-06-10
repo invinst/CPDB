@@ -18,16 +18,19 @@ var React = require('react');
 var ComplaintList = require('./ComplaintList.react');
 var OfficerDetail = require('./OfficerDetail.react');
 var Filters = require('./Filters.react');
-/**
- * Retrieve the current TODO data from the MapStore
- */
-
+var FilterActions = require("../actions/FilterActions");
 
 
 var OfficerPage = React.createClass({
 
   getInitialState: function() {
-    return {}
+    return {};
+  },
+
+  componentWillMount: function(){
+    FilterActions.replaceFilters([{
+      value: ['officers__id', this.props.officer.id]
+    }]);
   },
 
   componentDidMount: function() {
@@ -41,9 +44,7 @@ var OfficerPage = React.createClass({
    * @return {object}
    */
   render: function() {
-    console.log(this.props.officer)
   	return <div>
-        <Filters doNotAutLoad={true} />
         <OfficerDetail officer={this.props.officer} />
         <ComplaintList allegations={this.props.officer.allegations} officer={this.props.officer} />
       </div>;

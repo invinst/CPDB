@@ -16,7 +16,6 @@ var ComplaintList = React.createClass({
       else {
           ret = ComplaintListStore.init();
       }
-      console.log(ret);
       return ret;
   },
   componentDidMount: function() {

@@ -1,42 +1,44 @@
 var React = require('react');
 var MapStore = require("../stores/MapStore");
-var FilterStore = require("../stores/FilterStore");
+var FilterActions = require("../actions/FilterActions");
+
+var ranks = {
+    'PO': 'Police Officer',
+    'LT': 'Lieutenant',
+    'ET': 'Evidence Technician',
+    'DET': 'Detective',
+    'FTO': 'Field Training Officer',
+    'Cpt': 'Captain',
+    'SGT': 'Sergeant',
+    'CMDR': 'Commander',
+    'Agent': 'Agent',
+    'Chief': 'Chief',
+    '': 'N/A'
+};
 
 
-var OfficerDetail = React.createClass({
-  getInitialState: function() {
-     return {}
-  },
-  componentDidMount: function() {
-    FilterStore.update('officer_id',{'value':[this.props.officer.id]})
-    MapStore.init('officer-complaint-map',{'maxZoom': 14,'minZoom': 8,'defaultZoom': 8});
-
-    var data = [
-        [1, 5],
-        [1, 14],
-        [0, 22]
-    ];
+function donutChart(data){
 
     var layout = function(original) {
         var complaintLayout = d3.layout.pie()
             .value(function(d) { return d[0] + d[1]; })
             .sort(null);
-            
+
         var data = complaintLayout(original);
-        
+
         for (var i in data) {
             var thisComplaintType = data[i];
-            
+
             var disciplineLayout = d3.layout.pie()
                 .value(function(d) { return d; })
                 .sort(null)
                 .startAngle(thisComplaintType.startAngle)
                 .endAngle(thisComplaintType.endAngle);
-                    
+
             thisComplaintType.disciplined = disciplineLayout(thisComplaintType.data)[0];
             thisComplaintType.undisciplined = disciplineLayout(thisComplaintType.data)[1];
         }
-        
+
         return data;
     };
 
@@ -46,7 +48,7 @@ var OfficerDetail = React.createClass({
             .outerRadius(outerR)
             .startAngle(data.startAngle)
             .endAngle(data.endAngle);
-        
+
         return arcFunc(data);
     };
 
@@ -82,6 +84,18 @@ var OfficerDetail = React.createClass({
     disciplineG.append("path")
             .attr("d", function(d) { return arc(d.undisciplined, 75, 89); })
             .attr("class", "undisciplined");
+}
+
+
+var OfficerDetail = React.createClass({
+  getInitialState: function() {
+     return {}
+  },
+  componentDidMount: function() {
+    FilterActions.replaceFilters([{
+        value: ['officers__id', this.props.officer.id]
+    }]);
+
   },
   render: function(){
     var officer = this.props.officer;
@@ -90,37 +104,31 @@ var OfficerDetail = React.createClass({
     if(officer.allegations_count > 20){
       complaintRate = 'above';
     }
-    return <div id='OfficerDetail'>
+
+    var rank_display = ranks[officer.rank];
+    var gender_display = officer.gender == 'M' ? 'Male' : 'Female';
+    return <div id='OfficerDetail' className={complaintRate}>
               <div className='row'>
-                <div className='col-sm-1'>
-                  <div className={complaintRate}>{officer.star}</div>
-                </div>
-                <h3 className='col-sm-9'>{officer.officer_first} {officer.officer_last}</h3>
-                <div className='col-sm-2'>{complaintRateLabel}</div>
+                  <div className="col-md-9 h3">
+                      <span className="star">{officer.star}</span>
+                      {officer.officer_first} {officer.officer_last}
+                  </div>
+                  <div className='col-md-3 complaint-rate-label'>{complaintRateLabel}</div>
               </div>
 
               <div className='row'>
-                <span>{officer.unit}</span>
-                <span>{officer.rank_display}</span>
-                <span>{officer.star}</span>
-                <span>{officer.appt_date}</span>
-                <span>{officer.gender_display}</span>
-                <span>{officer.race}</span>
-              </div>
-
-             <div className='row'>
-                <div className='col-sm-3'>
-                  <div id='officer-complaint-map'>
+                  <div className="col-md-12 row information">
+                      <table className="pull-right">
+                          <tr>
+                              <td><span className="title">Unit</span> {officer.unit}</td>
+                              <td><span className="title">Rank</span> {rank_display}</td>
+                              <td><span className="title">Star</span> {officer.star}</td>
+                              <td><span className="title">Joined</span> {officer.appt_date}</td>
+                              <td><span className="title">Gender</span> {gender_display}</td>
+                              <td><span className="title">Race</span> {officer.race}</td>
+                          </tr>
+                      </table>
                   </div>
-                </div>
-                <div className='col-sm-offset-1 col-sm-4'>
-                  Timeline
-                </div>
-                <div className='col-sm-offset-1 col-sm-3'>
-                  <div id='dis-compl'>
-                    <div className='chart'></div>
-                  </div>
-                </div>
               </div>
           </div>
   },

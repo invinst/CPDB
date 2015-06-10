@@ -13,7 +13,7 @@ class OfficerDetailView(View):
         officer = Officer.objects.get(id=officer_id)
         allegations = Allegation.objects.filter(officer=officer)
 
-        officer_dict = JSONSerializer().serialize(officer.for_json());
+        officer_dict = JSONSerializer().serialize(officer)
 
         return render(request, 'officer/officer_detail.html', {
             'officer': officer_dict,
