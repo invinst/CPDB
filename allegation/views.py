@@ -97,10 +97,12 @@ class AllegationAPIView(View):
 
         self.conditions.append(condition)
 
-    def get_allegations(self):
+    def get_allegations(self, ignore_filters=None):
         filters = ['crid', 'areas__id', 'cat', 'neighborhood_id', 'recc_finding', 'final_outcome',
                    'recc_outcome', 'final_finding', 'officers__id', 'officer__star', 'investigator',
-                   ]
+                   'cat__category']
+        if ignore_filters:
+            filters = [x for x in filters if x not in ignore_filters]
 
         date_filters = ['incident_date_only']
 
@@ -109,9 +111,6 @@ class AllegationAPIView(View):
 
         for date_filter in date_filters:
             self.add_date_filter(date_filter)
-
-        if 'category' in self.request.GET:
-            self.filters['cat__category'] = self.request.GET['category']
 
         allegations = Complaint.objects.filter(*self.conditions, **self.filters)
         if 'officer_name' in self.request.GET:
@@ -124,11 +123,6 @@ class AllegationAPIView(View):
                 else:
                     cond = Q(officer__officer_first__istartswith=name) | Q(officer__officer_last__istartswith=name)
                 allegations = allegations.filter(cond)
-
-        if 'start_date' in self.request.GET:
-            allegations = allegations.filter(start_date__gte=self.request.GET.get('start_date'))
-        if 'end_date' in self.request.GET:
-            allegations = allegations.filter(end_date__lte=self.request.GET.get('end_date'))
 
         if 'latlng' in self.request.GET:
             latlng = self.request.GET['latlng'].split(',')
@@ -209,7 +203,7 @@ class AllegationGISApiView(AllegationAPIView):
 
 class AllegationSummaryApiView(AllegationAPIView):
     def get(self, request):
-        allegations = self.get_allegations()
+        allegations = self.get_allegations(ignore_filters=['cat', 'cat__category'])
 
         count_query = allegations.values_list('cat').annotate(dcount=Count('id'))
         count_by_category = dict(count_query)

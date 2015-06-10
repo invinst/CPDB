@@ -11,7 +11,7 @@ from common.models import Officer, AllegationCategory, Complaint, OUTCOMES, FIND
 class SuggestView(View):
     autocomplete_category_names = {
         'crid': 'Complaint ID',
-        'category': 'Complaint type',
+        'cat__category': 'Complaint type',
         'cat': 'Allegation type',
         'investigator': 'Investigator',
         'officer_id': 'Officer name',
@@ -96,7 +96,7 @@ class SuggestView(View):
             condition = Q(category__icontains=q)
             results = self.query_suggestions(AllegationCategory, condition, ['category'], order_bys=['-category_count'])
             if results:
-                ret['category'] = results
+                ret['cat__category'] = results
 
             condition = Q(allegation_name__icontains=q)
             results = self.query_suggestions(AllegationCategory, condition, ['allegation_name', 'cat_id'],
