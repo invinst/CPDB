@@ -53,6 +53,7 @@ function create(dom_id, opts){
 
     }).setMaxBounds(maxBounds);
     createAreas();
+    MapStore.update();
 }
 function createAreas(){
     if(_geo_json_layer){
