@@ -258,6 +258,9 @@ footer {
     border-bottom: 2px solid black;
 }
 
-.margin-top{
-    margin-top:1em;
+.margin-top {
+    margin-top: 1em;
+}
+.cursor {
+    cursor: pointer;
 }

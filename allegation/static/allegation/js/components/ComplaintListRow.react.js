@@ -29,6 +29,9 @@ var ComplaintListRow = React.createClass({
     }
     var allegation = complaint.allegation;
     var category = {};
+    if(this.props.complaint.category){
+      category = this.props.complaint.category;
+    }
     var officerName = [];
     for(var i = 0; i < complaint.officers.length; i++){
       var officer = complaint.officers[i];
@@ -38,7 +41,7 @@ var ComplaintListRow = React.createClass({
 
 
     return <div className="complaint-row">
-            <div className='row'>
+            <div className='row cursor' onClick={this.toggleComplaint}>
               <div className='col-md-1'>
                 <i className='fa fa-check'></i>
               </div>
@@ -64,7 +67,7 @@ var ComplaintListRow = React.createClass({
                 </a>
               </div>
               <div className='col-md-1 text-center' >
-                <a onClick={this.toggleComplaint} href="#" className="show_more"><i className={icon}></i></a>
+                <a href='#' className='show_more'><i className={icon}></i></a>
               </div>
             </div>
           {showMore}
