@@ -59,6 +59,14 @@ class AllegationAPIView(View):
 
     def add_filter(self, field):
         value = self.request.GET.getlist(field)
+        if field == 'cat' and 'cat__category' in self.request.GET:
+            cats = list(AllegationCategory.objects.filter(category=self.request.GET['cat__category']).values_list('cat_id',flat=True))
+            value = value + cats
+
+        if field == 'cat__category':
+            if 'cat' in self.request.GET:
+                return
+
         if len(value) > 1:
             self.filters["%s__in" % field] = value
 
@@ -130,6 +138,7 @@ class AllegationAPIView(View):
                 radius = self.request.GET.get('radius', 500)
                 point = Point(float(latlng[1]), float(latlng[0]))
                 allegations = allegations.filter(point__distance_lt=(point, D(m=radius)))
+
         return allegations
 
     def get(self, request):
