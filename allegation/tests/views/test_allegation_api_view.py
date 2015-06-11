@@ -9,7 +9,7 @@ from common.models import Complaint
 
 
 class AllegationApiViewTestCase(AllegationApiTestBase):
-
+    # TODO: Add more tests to confirm about the number of results
     def fetch_allegations(self, **params):
         response = self.client.get('/api/allegations/', params)
         data = json.loads(response.content.decode())
@@ -65,6 +65,25 @@ class AllegationApiViewTestCase(AllegationApiTestBase):
         for row in data:
             officer_ids = [o['id'] for o in row['officers']]
             officer_ids.should.contain(pk)
+
+    def test_filter_by_officer_first(self):
+        officer = self.allegations[0].officers.all()[0]
+        officer_part = officer.officer_first[0:2]
+        data = self.fetch_allegations(officer_name=officer_part)
+
+        for row in data:
+            check_names = ""
+            for o in row['officers']:
+                check_names += "%s %s" % (o['officer_first'], o['officer_last'])
+            check_names.should.contain(officer_part)
+
+    def test_filter_by_investigator(self):
+        investigator = self.allegations[0].investigator
+        data = self.fetch_allegations(investigator=investigator.id)
+
+        for row in data:
+            row['allegation']['investigator']['pk'].should.equal(investigator.pk)
+
 
     def test_filter_by_final_outcome(self):
         data = self.fetch_allegations(final_outcome=600)

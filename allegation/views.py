@@ -118,10 +118,10 @@ class AllegationAPIView(View):
             for name in names:
                 parts = name.split(' ')
                 if len(parts) > 1:
-                    cond = Q(officer__officer_first__istartswith=parts[0])
+                    cond = Q(officers__officer_first__istartswith=parts[0])
                     cond = cond | Q(officer__officer_last__istartswith=" ".join(parts[1:]))
                 else:
-                    cond = Q(officer__officer_first__istartswith=name) | Q(officer__officer_last__istartswith=name)
+                    cond = Q(officers__officer_first__istartswith=name) | Q(officers__officer_last__istartswith=name)
                 allegations = allegations.filter(cond)
 
         if 'latlng' in self.request.GET:
