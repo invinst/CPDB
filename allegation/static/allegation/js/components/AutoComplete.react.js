@@ -12,11 +12,24 @@ var FilterStore = require('../stores/FilterStore');
 var FilterActions = require('../actions/FilterActions');
 var cx = require('react/lib/cx');
 
+function isDuplicateTag(current, other) {
+  if(current.value[0] == other.value[0] && current.value[1] == other.value[1])
+    return true;
+  return false;
+}
+
+function removeTagIfDuplicate(tags, tag) {
+  for(var i = 0; i < tags.length; i++) {
+    if (isDuplicateTag(tags[i], tag)) {
+      $('#cpdb-search').tagsinput("remove", tags[i]);
+      break;
+    }
+  }
+}
 
 var AutoComplete = React.createClass({
 
   tagsChanged: function(event){
-    console.log(event);
     if (event.item.layer) {
       event.item.layer.toggleStyle();
     }
@@ -28,6 +41,13 @@ var AutoComplete = React.createClass({
     $(element).tagsinput({
       itemValue: 'value',
       itemText: 'text'
+    });
+
+    $(element).on('beforeItemAdd', function(event) {
+      tags = $(this).tagsinput('items');
+      tag = event.item;
+
+      removeTagIfDuplicate(tags, tag)
     });
 
     var input = $(element).tagsinput("input");
