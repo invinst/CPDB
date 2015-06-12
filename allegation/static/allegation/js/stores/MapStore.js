@@ -40,7 +40,7 @@ var current_markers = null;
 
 function create(dom_id, opts){
     dom_id = dom_id ? dom_id : 'map';
-    opts = opts ? opts : {'maxZoom': 17,'minZoom': 10}
+    opts = opts ? opts : {'maxZoom': 17,'minZoom': 10,'scrollWheelZoom': false}
     defaultZoom = 'defaultZoom' in opts ? opts['defaultZoom'] : 12;
 
     L.mapbox.accessToken = MBX;
