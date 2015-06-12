@@ -14,7 +14,7 @@ class SuggestView(View):
         'cat__category': 'Complaint type',
         'cat': 'Allegation type',
         'investigator': 'Investigator',
-        'officer_id': 'Officer name',
+        'officers__id': 'Officer name',
         'officer__star': 'Badge number',
         'recc_outcome': 'Recommended Outcome',
         'recc_finding': 'Recommended Finding',
@@ -92,7 +92,7 @@ class SuggestView(View):
                                          order_bys=('-allegations_count', 'officer_first', 'officer_last'))
         results = [["%s %s (%s)" % (x[0], x[1], x[2]), x[3] ] for x in results]
         if results:
-            ret['officer_id'] = results
+            ret['officers__id'] = results
 
         condition = Q(category__icontains=q)
         results = self.query_suggestions(AllegationCategory, condition, ['category'], order_bys=['-category_count'])
