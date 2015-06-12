@@ -41,9 +41,8 @@ var ComplaintListRowDetail = React.createClass({
         _timeline = new vis.Timeline(container, items, options);
       }
     }
-
-
-    if(!('investigation' in this.state) && allegation.investigator.length){
+    
+    if(!('investigation' in this.state)){
       var that = this;
       $.getJSON('/api/investigation/', {'crid':allegation.crid}, function(data){
 
@@ -148,6 +147,61 @@ var ComplaintListRowDetail = React.createClass({
     }
     return investigation;
   },
+  renderPoliceWitness: function() {
+    if(this.state.police_witness) {
+      var rows = [];
+
+      for(var i = 0; i < this.state.police_witness.length; i++) {
+        var officer = this.state.police_witness[i];
+        var style = {
+            'width': (officer.discipline_count / officer.allegations_count) * 100 + "%"
+        };
+        var progressStyle = {
+          width: 100 + "%"
+        };
+        rows.push(<div>
+                    <div>{officer.officer_first} {officer.officer_last} ({officer.allegations_count} cases)</div>
+                    <div className="progress complaint" style={progressStyle}>
+                      <div className="progress-bar discipline" role="progressbar" aria-valuenow="60" aria-valuemin="0"
+                           aria-valuemax="100" style={style}>
+                        <span className="sr-only"></span>
+                      </div>
+                    </div>
+                  </div>)
+      }
+
+      return <div className='row margin-top'>
+               <div className='col-md-3 investigation'>
+                  <strong className='title'>Police Witness</strong>
+                  <div><span className='red line'></span>No Punishment</div>
+                  <div><span className='blue line'></span>Discipline Applied</div>
+               </div>
+               <div className="col-md-9 investigation">
+                  <div className='results'>{rows}</div>
+               </div>
+             </div>
+    }
+    return <div></div>;
+  },
+  renderWitness: function() {
+    if(this.state.complaint_witness) {
+      var rows = [];
+
+      for(var i = 0; i < this.state.complaint_witness.length; i++) {
+        var num = i+1;
+        rows.push(<div>Witness {num}: Race {this.state.complaint_witness[i].race} Gender {this.state.complaint_witness[i].gender}</div>);
+      }
+
+      return <div className='row margin-top'>
+               <div className='col-md-3 investigation'>
+                 <strong className='title'>Complaining Witness</strong>
+               </div>
+               <div className="col-md-9">
+                 {rows}
+               </div>
+             </div>
+    }
+  },
   render: function(){
     var complaint = this.props.complaint;
     var allegation = complaint.allegation;
@@ -156,13 +210,14 @@ var ComplaintListRowDetail = React.createClass({
     var map_div = this.renderMap(allegation);
     var timeline = this.renderTimeline(allegation);
     var investigation = this.renderInvestigation(allegation);
+    var police_witness = this.renderPoliceWitness();
+    var witness = this.renderWitness();
 
     if(this.props.complaint.category){
       category = this.props.complaint.category;
     }
 
     var final_outcome = allegation.final_outcome ? allegation.final_outcome : "N/A";
-
 
     return  <div className="col-md-12 complaint_detail">
               <div className="row-fluid">
@@ -198,7 +253,8 @@ var ComplaintListRowDetail = React.createClass({
                     <div className='col-md-9'>{final_outcome}</div>
                   </div>
                   {investigation}
-
+                  {police_witness}
+                  {witness}
                 </div>
               </div>
             </div>
