@@ -21,15 +21,19 @@ var ComplaintListRowDetail = React.createClass({
       if(container) {
 
         var items = [];
+        var dateFormat = 'MMM DD, YYYY';
+
         if (allegation.incident_date) {
-          incident_date = allegation.incident_date.split(" ")[0];
-          items.push({id: 1, content: '<div class="timeline-title">Incident Date</div><div class="timeline-date">' + incident_date + '</div>', start: incident_date});
+          incidentDate = moment(allegation.incident_date).format(dateFormat);
+          items.push({id: 1, content: '<div class="timeline-title">Incident Date</div><div class="timeline-date">' + incidentDate + '</div>', start: incidentDate });
         }
         if (allegation.start_date) {
-          items.push({id: 2, content: '<div class="timeline-title">Investigation Start</div><div class="timeline-date start">' + allegation.start_date + '</div>', start: allegation.start_date});
+          startDate = moment(allegation.start_date).format(dateFormat);
+          items.push({id: 2, content: '<div class="timeline-title">Investigation Start</div><div class="timeline-date start">' + startDate + '</div>', start: allegation.start_date });
         }
         if (allegation.end_date) {
-          items.push({id: 3, content: '<div class="timeline-title">Investigation End</div><div class="timeline-date end">' + allegation.end_date + '</div>', start: allegation.end_date});
+          endDate = moment(allegation.end_date).format(dateFormat);
+          items.push({id: 3, content: '<div class="timeline-title">Investigation End</div><div class="timeline-date end">' + endDate + '</div>', start: allegation.end_date, className: 'end'});
         }
 
         items = new vis.DataSet(items);

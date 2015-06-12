@@ -181,7 +181,7 @@ footer {
     font-size: 34px;
 }
 .timeline-title{
-    color: grey;
+    color: #989898;
     font-size: 12px;
 }
 .timeline-date{
@@ -215,10 +215,11 @@ footer {
     background-color:red;
 }
 .timeline-date.start{
-    color: blue;
+    color: #709dc0;
 }
 .timeline-date.end{
-    color: red;
+    color: #c0272d;
+    font-size: 17px;
 }
 .complaint_detail .row.margin-top{
     margin-top: 20px;
@@ -263,4 +264,23 @@ footer {
 }
 .cursor {
     cursor: pointer;
+}
+
+/* vis.js style customization for timeline */
+.vis-item {
+    background: #f7f7ed;
+    border-width: 0px;
+}
+.vis-line, .vis-dot {
+    border-color: #0079ae;
+}
+.vis-line.end, .vis-dot.end {
+    border-color: #c0272d;
+}
+.vis-item.vis-box {
+    border: none;
+}
+
+.vis-panel.vis-center {
+    border-color: #0079ae;
 }
