@@ -106,7 +106,11 @@ var OfficerDetail = React.createClass({
     }
 
     var rank_display = ranks[officer.rank];
-    var gender_display = officer.gender == 'M' ? 'Male' : 'Female';
+    var gender_display = '';
+    if (officer.gender){
+      gender_display = officer.gender == 'M' ? 'Male' : 'Female';
+      gender_display = <td><span className="title">Gender</span> {gender_display}</td>
+    }
     return <div id='OfficerDetail' className={complaintRate}>
               <div className='row'>
                   <div className="col-md-9 h3">
@@ -124,7 +128,7 @@ var OfficerDetail = React.createClass({
                               <td><span className="title">Rank</span> {rank_display}</td>
                               <td><span className="title">Star</span> {officer.star}</td>
                               <td><span className="title">Joined</span> {officer.appt_date}</td>
-                              <td><span className="title">Gender</span> {gender_display}</td>
+                              {gender_display}
                               <td><span className="title">Race</span> {officer.race}</td>
                           </tr>
                       </table>
