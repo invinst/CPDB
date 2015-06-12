@@ -119,7 +119,7 @@ class SuggestView(View):
 
         results = []
         for outcome in OUTCOMES:
-            if outcome[1].startswith(q):
+            if outcome[1].lower().startswith(lower_q):
                 results.append([outcome[1], outcome[0]])
 
         if results:
@@ -128,7 +128,7 @@ class SuggestView(View):
 
         results = []
         for finding in FINDINGS:
-            if finding[1].startswith(q):
+            if finding[1].lower().startswith(lower_q):
                 results.append([finding[1], finding[0]])
 
         if results:
