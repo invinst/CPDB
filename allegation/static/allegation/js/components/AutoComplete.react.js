@@ -12,19 +12,17 @@ var FilterStore = require('../stores/FilterStore');
 var FilterActions = require('../actions/FilterActions');
 var cx = require('react/lib/cx');
 
-function isDuplicateTag(current, other) {
-  if(current.value[0] == other.value[0] && current.value[1] == other.value[1])
-    return true;
-  return false;
+function isSameTag(current, other) {
+  return (current.value[0] == other.value[0] && current.value[1] == other.value[1])
 }
 
-function removeTagIfDuplicate(tags, tag) {
+function isDuplicatedTag(tags, tag) {
   for(var i = 0; i < tags.length; i++) {
-    if (isDuplicateTag(tags[i], tag)) {
-      $('#cpdb-search').tagsinput("remove", tags[i]);
-      break;
+    if (isSameTag(tags[i], tag)) {
+      return true;
     }
   }
+  return false;
 }
 
 var AutoComplete = React.createClass({
@@ -44,10 +42,9 @@ var AutoComplete = React.createClass({
     });
 
     $(element).on('beforeItemAdd', function(event) {
-      tags = $(this).tagsinput('items');
-      tag = event.item;
-
-      removeTagIfDuplicate(tags, tag)
+      var tags = $(this).tagsinput('items');
+      var tag = event.item;
+      event.cancel = isDuplicatedTag(tags, tag)
     });
 
     var input = $(element).tagsinput("input");
