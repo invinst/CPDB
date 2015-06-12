@@ -41,9 +41,7 @@ var ComplaintListRowDetail = React.createClass({
         _timeline = new vis.Timeline(container, items, options);
       }
     }
-
-
-    if(!('investigation' in this.state) && allegation.investigator.length){
+    if(!('investigation' in this.state) && allegation.investigator_name){
       var that = this;
       $.getJSON('/api/investigation/', {'crid':allegation.crid}, function(data){
 
