@@ -2,7 +2,7 @@ from django.utils import timezone
 import factory
 from faker import Faker
 
-from common.models import AllegationCategory, Officer, Area, Complaint, Investigator
+from common.models import AllegationCategory, Officer, Area, Allegation, Investigator
 
 fake = Faker()
 
@@ -44,9 +44,9 @@ class AllegationCategoryFactory(factory.django.DjangoModelFactory):
     category = factory.Sequence(lambda n: fake.name())
 
 
-class ComplaintFactory(factory.django.DjangoModelFactory):
+class AllegationFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = Complaint
+        model = Allegation
 
     crid = factory.Sequence(lambda n: fake.random_int(min=1000))
     cat = factory.SubFactory(AllegationCategoryFactory)
@@ -54,6 +54,7 @@ class ComplaintFactory(factory.django.DjangoModelFactory):
     incident_date = factory.Sequence(lambda n: timezone.now())
     incident_date_only = factory.LazyAttribute(lambda o: o.incident_date.date())
     investigator = factory.SubFactory(InvestigatorFactory)
+    officer = factory.SubFactory(OfficerFactory)
 
     @factory.post_generation
     def areas(self, create, extracted, **kwargs):
@@ -66,15 +67,3 @@ class ComplaintFactory(factory.django.DjangoModelFactory):
         if extracted:
             for area in extracted:
                 self.areas.add(area)
-
-    @factory.post_generation
-    def officers(self, create, extracted, **kwargs):
-
-        if not extracted and Officer.objects.all().count() == 0:
-            for i in range(2):
-                OfficerFactory()
-            extracted = Officer.objects.all()
-
-        if extracted:
-            for officer in extracted:
-                self.officers.add(officer)

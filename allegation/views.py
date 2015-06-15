@@ -10,7 +10,7 @@ from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import D
 
 from common.json_serializer import JSONSerializer
-from common.models import Complaint, Area, AllegationCategory, Officer, PoliceWitness, ComplainingWitness
+from common.models import Allegation, Area, AllegationCategory, Officer, ComplainingWitness, PoliceWitness
 
 
 class AllegationListView(TemplateView):
@@ -100,7 +100,7 @@ class AllegationAPIView(View):
 
     def get_allegations(self, ignore_filters=None):
         filters = ['crid', 'areas__id', 'cat', 'neighborhood_id', 'recc_finding', 'final_outcome',
-                   'recc_outcome', 'final_finding', 'officers__id', 'officer__star', 'investigator',
+                   'recc_outcome', 'final_finding', 'officer', 'officer__star', 'investigator',
                    'cat__category']
 
         if ignore_filters:
@@ -125,16 +125,16 @@ class AllegationAPIView(View):
         for date_filter in date_filters:
             self.add_date_filter(date_filter)
 
-        allegations = Complaint.objects.filter(*self.conditions, **self.filters)
+        allegations = Allegation.objects.filter(*self.conditions, **self.filters)
         if 'officer_name' in self.request.GET:
             names = self.request.GET.getlist('officer_name')
             for name in names:
                 parts = name.split(' ')
                 if len(parts) > 1:
-                    cond = Q(officers__officer_first__istartswith=parts[0])
+                    cond = Q(officer__officer_first__istartswith=parts[0])
                     cond = cond | Q(officer__officer_last__istartswith=" ".join(parts[1:]))
                 else:
-                    cond = Q(officers__officer_first__istartswith=name) | Q(officers__officer_last__istartswith=name)
+                    cond = Q(officer__officer_first__istartswith=name) | Q(officer__officer_last__istartswith=name)
                 allegations = allegations.filter(cond)
 
         if 'latlng' in self.request.GET:
@@ -169,16 +169,19 @@ class AllegationAPIView(View):
             if allegation.cat:
                 category = allegation.cat
 
-            witness = allegation.complainingwitness_set.all()
-            police_witness = allegation.policewitness_set.all()
+            witness = ComplainingWitness.objects.filter(crid=allegation.crid)
+            police_witness = PoliceWitness.objects.filter(crid=allegation.crid)
             allegation.final_finding = allegation.get_final_finding_display()
             allegation.final_outcome = allegation.get_final_outcome_display()
             allegation.recc_finding = allegation.get_recc_finding_display()
             allegation.recc_outcome = allegation.get_recc_outcome_display()
 
+            officer_ids = Allegation.objects.filter(crid=allegation.crid).values('officer')
+            officers = Officer.objects.filter(pk__in=officer_ids)
+
             ret = {
                 'allegation': allegation,
-                'officers': allegation.officers.all(),
+                'officers': officers,
                 'category': category,
                 'complaining_witness': witness,
                 'police_witness': police_witness,
@@ -187,7 +190,7 @@ class AllegationAPIView(View):
 
         content = JSONSerializer().serialize({
             'allegations': allegations_list,
-            'iTotalRecords': Complaint.objects.all().count(),
+            'iTotalRecords': Allegation.objects.all().count(),
             'iTotalDisplayRecords': allegations.count(),
         })
         return HttpResponse(content)
@@ -272,7 +275,7 @@ class AllegationSummaryApiView(AllegationAPIView):
 class OfficerListAPIView(AllegationAPIView):
     def get(self, request):
         allegations = self.get_allegations()
-        officers = allegations.values_list('officers__id', flat=True).distinct()
+        officers = allegations.values_list('officer', flat=True).distinct()
         officers = Officer.objects.filter(pk__in=officers).order_by('-allegations_count')
 
         if 'allegations_count_start' in request.GET:
@@ -297,12 +300,12 @@ class InvestigationAPIView(View):
         crid = request.GET.get('crid')
         ret = {}
         if crid:
-            complaint = Complaint.objects.get(crid=crid)
+            complaint = Allegation.objects.get(crid=crid)
             investigator = complaint.investigator
 
             ret['investigation'] = []
             for officer in complaint.officers.all():
-                complaints = Complaint.objects.filter(officers=officer, investigator=investigator)
+                complaints = Allegation.objects.filter(officers=officer, investigator=investigator)
                 num_investigated = complaints.count()
                 no_action_taken_count = complaints.filter(final_outcome='600').count()
                 ret['investigation'].append({
@@ -316,7 +319,7 @@ class InvestigationAPIView(View):
                 officers = []
                 witness.officer_name = "%s %s" % (witness.officer.officer_first, witness.officer.officer_last)
                 for officer in complaint.officers.all():
-                    complaints = Complaint.objects.filter(officers__in=(officer.id, witness.officer_id))
+                    complaints = Allegation.objects.filter(officers__in=(officer.id, witness.officer_id))
                     num_complaints = complaints.count()
                     no_action_taken_count = complaints.filter(final_outcome='600').count()
                     officers.append({

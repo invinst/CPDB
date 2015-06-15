@@ -29,7 +29,7 @@ var OfficerPage = React.createClass({
 
   componentWillMount: function(){
     FilterActions.replaceFilters([{
-      value: ['officers__id', this.props.officer.id]
+      value: ['officer', this.props.officer.id]
     }]);
   },
 

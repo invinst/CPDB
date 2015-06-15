@@ -5,7 +5,7 @@ import json
 from django.db.models.query_utils import Q
 from django.http.response import HttpResponseBadRequest, HttpResponse
 from django.views.generic.base import View
-from common.models import Officer, AllegationCategory, Complaint, OUTCOMES, FINDINGS, Investigator, Area
+from common.models import Officer, AllegationCategory, Allegation, OUTCOMES, FINDINGS, Investigator, Area
 
 
 class SuggestView(View):
@@ -14,7 +14,7 @@ class SuggestView(View):
         'cat__category': 'Complaint type',
         'cat': 'Allegation type',
         'investigator': 'Investigator',
-        'officers__id': 'Officer name',
+        'officer': 'Officer name',
         'officer__star': 'Badge number',
         'recc_outcome': 'Recommended Outcome',
         'recc_finding': 'Recommended Finding',
@@ -29,7 +29,6 @@ class SuggestView(View):
     def get(self, request):
         months_choices = []
         current_year = datetime.datetime.now().year
-        date_format = "%Y-%m-%d"
 
         q = request.GET.get('term', '')
         if not q:
@@ -57,7 +56,7 @@ class SuggestView(View):
 
             if len(q) >= 4:
                 condition = Q(crid__icontains=q)
-                results = self.query_suggestions(Complaint, condition, ['crid'], order_bys=['crid'])
+                results = self.query_suggestions(Allegation, condition, ['crid'], order_bys=['crid'])
                 if results:
                     ret['crid'] = results
 
@@ -92,7 +91,7 @@ class SuggestView(View):
                                          order_bys=('-allegations_count', 'officer_first', 'officer_last'))
         results = [["%s %s (%s)" % (x[0], x[1], x[2]), x[3] ] for x in results]
         if results:
-            ret['officers__id'] = results
+            ret['officer'] = results
 
         condition = Q(category__icontains=q)
         results = self.query_suggestions(AllegationCategory, condition, ['category'], order_bys=['-category_count'])

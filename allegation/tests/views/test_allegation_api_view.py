@@ -5,7 +5,7 @@ from django.utils import timezone
 
 from allegation.factories import AreaFactory
 from allegation.tests.views.base import AllegationApiTestBase
-from common.models import Complaint
+from common.models import Allegation
 
 
 class AllegationApiViewTestCase(AllegationApiTestBase):
@@ -59,15 +59,15 @@ class AllegationApiViewTestCase(AllegationApiTestBase):
             row['category']['category'].should.equal(cat.category)
 
     def test_filter_by_officer_id(self):
-        pk = self.allegations[0].officers.all()[0].id
-        data = self.fetch_allegations(officers__id=pk)
+        pk = self.allegations[0].officer.pk
+        data = self.fetch_allegations(officer=pk)
 
         for row in data:
             officer_ids = [o['id'] for o in row['officers']]
             officer_ids.should.contain(pk)
 
     def test_filter_by_officer_first(self):
-        officer = self.allegations[0].officers.all()[0]
+        officer = self.allegations[0].officer
         officer_part = officer.officer_first[0:2]
         data = self.fetch_allegations(officer_name=officer_part)
 
@@ -84,11 +84,10 @@ class AllegationApiViewTestCase(AllegationApiTestBase):
         for row in data:
             row['allegation']['investigator']['pk'].should.equal(investigator.pk)
 
-
     def test_filter_by_final_outcome(self):
         data = self.fetch_allegations(final_outcome=600)
         for row in data:
-            Complaint.objects.filter(pk=row['allegation']['id'], final_outcome=600).exists().should.be.true
+            Allegation.objects.filter(pk=row['allegation']['id'], final_outcome=600).exists().should.be.true
 
     def test_filter_by_date_range(self):
         start_date = timezone.now().date()
