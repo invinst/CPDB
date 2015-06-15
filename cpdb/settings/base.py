@@ -147,7 +147,7 @@ BOWER_INSTALLED_APPS = (
     'jquery-cookie#1.4.1',
     'c3',
     'components-font-awesome',
-    'moment'
+    'moment',
 )
 
 MEDIA_URL = '/media/'
