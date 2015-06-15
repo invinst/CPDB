@@ -238,6 +238,10 @@ footer {
     font-size:18px;
     color:black;
 }
+.complaint_detail .allegation-name{
+    color: #989898;
+    font-style: italic;
+}
 .btn.btn-request:not(.btn-link):not(.btn-flat) {
     background-color: #0079af;
     color: white;
