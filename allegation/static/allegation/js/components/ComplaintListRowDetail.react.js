@@ -39,7 +39,7 @@ var ComplaintListRowDetail = React.createClass({
         items = new vis.DataSet(items);
 
         // Configuration for the Timeline
-        var options = {};
+        var options = {'moveable': false, 'zoomable': false};
 
         // Create a Timeline
         _timeline = new vis.Timeline(container, items, options);
