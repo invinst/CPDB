@@ -100,12 +100,28 @@ var OfficerDetail = React.createClass({
   render: function(){
     var officer = this.props.officer;
     var complaintRate = 'below';
-    var complaintRateLabel = 'Below the average complaints rate';
+    var complaintRateLabel = 'Below the average complaint rate';
     if(officer.allegations_count > 20){
       complaintRate = 'above';
+      complaintRateLabel = 'Above the average complaint rate';
     }
-
+    var rank = "";
     var rank_display = ranks[officer.rank];
+    if(rank_display){
+        rank = <td><span className="title">Rank</span> {rank_display}</td>;
+    }
+    var star = "";
+    if(officer.star){
+      star = <td><span className="title">Star</span> {officer.star}</td>;
+    }
+    var appt_date = "";
+    if(officer.appt_date) {
+      appt_date = <td><span className="title">Joined</span> {officer.appt_date}</td>;
+    }
+    var race = "";
+    if(officer.rage){
+      race = <td><span className="title">Race</span> {officer.race}</td>;
+    }
     var gender_display = '';
     if (officer.gender){
       gender_display = officer.gender == 'M' ? 'Male' : 'Female';
@@ -125,11 +141,11 @@ var OfficerDetail = React.createClass({
                       <table className="pull-right">
                           <tr>
                               <td><span className="title">Unit</span> {officer.unit}</td>
-                              <td><span className="title">Rank</span> {rank_display}</td>
-                              <td><span className="title">Star</span> {officer.star}</td>
-                              <td><span className="title">Joined</span> {officer.appt_date}</td>
+                              {rank}
+                              {star}
+                              {appt_date}
                               {gender_display}
-                              <td><span className="title">Race</span> {officer.race}</td>
+                              {race}
                           </tr>
                       </table>
                   </div>
