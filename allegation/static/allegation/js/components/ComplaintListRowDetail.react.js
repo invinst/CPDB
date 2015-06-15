@@ -138,7 +138,7 @@ var ComplaintListRowDetail = React.createClass({
         var investigator = "";
         var legend = "";
         if(rows.length){
-          investigator = <div className='results'>{rows}</div>;
+          investigator = <div className='results'><div><span className='investigator-name'>{allegation.investigator_name}</span></div>{rows}</div>;
           legend = <div>
                       <div>
                         <span className='red line'></span>No Punishment
@@ -156,8 +156,8 @@ var ComplaintListRowDetail = React.createClass({
             {legend}
 
           </div>
-          <div className='col-md-9 investigation'><span className='investigator-name'>{allegation.investigator_name}</span>
-            {investigator}
+          <div className='col-md-9 investigation'>
+            <div class='row-fluid'>{investigator}</div>
           </div>
         </div>
       }
@@ -166,31 +166,36 @@ var ComplaintListRowDetail = React.createClass({
   },
   renderPoliceWitness: function() {
     if(this.state.police_witness) {
-      var rows = [];
 
+      var witness_rows = []
       for(var i = 0; i < this.state.police_witness.length; i++) {
-        var officer = this.state.police_witness[i];
-        var style = {
-            'width': (officer.discipline_count / officer.allegations_count) * 100 + "%"
-        };
-        var progressStyle = {
-          width: 100 + "%"
-        };
+        var witness_obj = this.state.police_witness[i];
+        var rows = [];
+        for(var j = 0; j < witness_obj.officers.length; j++){
+          var officer_data = witness_obj.officers[j];
+          var style = {
+            'width': ((officer_data.num_complaints - officer_data.no_action_taken) / officer_data.num_complaints) * 100 + "%"
+          };
+          var progressStyle = {
+            width: 100 + "%"
+          };
 
-        rows.push(<div>
-                    <div>{officer.officer_first} {officer.officer_last} ({officer.allegations_count} cases)</div>
-                    <div className="progress complaint" style={progressStyle}>
-                      <div className="progress-bar discipline" role="progressbar" aria-valuenow="60" aria-valuemin="0"
-                           aria-valuemax="100" style={style}>
-                        <span className="sr-only"></span>
+          rows.push(<div>
+                      <div>{officer_data.officer.officer_first} {officer_data.officer.officer_last} ({officer_data.num_complaints} cases)</div>
+                      <div className="progress complaint" style={progressStyle}>
+                        <div className="progress-bar discipline" role="progressbar" aria-valuenow="60" aria-valuemin="0"
+                             aria-valuemax="100" style={style}>
+                          <span className="sr-only"></span>
+                        </div>
                       </div>
-                    </div>
-                  </div>)
+                    </div>)
+        }
+        witness_rows.push(<div><div className='results'><div className='investigator-name'>{witness_obj.witness_officer.officer_first} {witness_obj.witness_officer.officer_last}</div>{rows}</div></div>)
       }
       var witness = <div>N/A</div>;
       var legend = "";
-      if(rows.length) {
-        witness = <div><div className='results'>{rows}</div></div>
+      if(witness_rows.length) {
+        witness = <div className='row-fluid'>{witness_rows}</div>
         legend = <div>
                   <div>
                     <span className='red line'></span>No Punishment

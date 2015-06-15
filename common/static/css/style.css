@@ -192,12 +192,14 @@ footer {
     background-color:#709dc0;
 }
 .investigation .progress.complaint{
-    background-color:#709dc0;
+    background-color:#c0272d;
 }
 .investigation .results{
     width:30%;
     background-color:white;
     padding:15px;
+    float:left;
+    margin-right:3%;
 }
 .investigation .investigator-name{
     color:#709dc0;
