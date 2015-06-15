@@ -298,5 +298,14 @@ class InvestigationAPIView(View):
                 num_investigated = Complaint.objects.filter(officers=officer, investigator=investigator).count()
                 no_action_taken_count = Complaint.objects.filter(officers=officer, investigator=investigator, final_outcome='600').count()
                 ret['investigation'].append({'count': num_investigated,'no_action_taken_count': no_action_taken_count,'officer': officer})
+
+            ret['police_witness'] = []
+            for witness in complaint.policewitness_set.all():
+                officer = witness.officer
+                ret['police_witness'].append(officer)
+
+            ret['complaint_witness'] = []
+            for witness in complaint.complainingwitness_set.all():
+                ret['complaint_witness'].append(witness)
         content = JSONSerializer().serialize(ret)
         return HttpResponse(content, content_type="application/json")
