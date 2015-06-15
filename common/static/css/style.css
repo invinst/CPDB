@@ -189,10 +189,10 @@ footer {
     font-size: 14px;
 }
 .investigation .progress-bar.discipline{
-    background-color:red;
+    background-color:#709dc0;
 }
 .investigation .progress.complaint{
-    background-color:blue;
+    background-color:#709dc0;
 }
 .investigation .results{
     width:30%;
@@ -200,7 +200,7 @@ footer {
     padding:15px;
 }
 .investigation .investigator-name{
-    color:blue;
+    color:#709dc0;
 }
 .investigation .line{
     display:inline-block;
@@ -209,10 +209,10 @@ footer {
     margin-right:5px;
 }
 .investigation .blue.line{
-    background-color:blue;
+    background-color:#709dc0;
 }
 .investigation .red.line{
-    background-color:red;
+    background-color:#c0272d;
 }
 .timeline-date.start{
     color: #709dc0;

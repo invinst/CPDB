@@ -135,13 +135,26 @@ var ComplaintListRowDetail = React.createClass({
           </div>)
         }
 
-        var investigator = <div className='results'>{rows}</div>
+        var investigator = "";
+        var legend = "";
+        if(rows.length){
+          investigator = <div className='results'>{rows}</div>;
+          legend = <div>
+                      <div>
+                        <span className='red line'></span>No Punishment
+                      </div>
+                      <div>
+                        <span className='blue line'></span>Discipline Applied
+                      </div>
+                    </div>;
+        }
+
+
         investigation = <div className='row margin-top'>
           <div className='col-md-3 investigation'>
             <strong className='title'>Investigator</strong>
+            {legend}
 
-            <div><span className='red line'></span>No Punishment</div>
-            <div><span className='blue line'></span>Discipline Applied</div>
           </div>
           <div className='col-md-9 investigation'><span className='investigator-name'>{allegation.investigator_name}</span>
             {investigator}
@@ -163,6 +176,7 @@ var ComplaintListRowDetail = React.createClass({
         var progressStyle = {
           width: 100 + "%"
         };
+
         rows.push(<div>
                     <div>{officer.officer_first} {officer.officer_last} ({officer.allegations_count} cases)</div>
                     <div className="progress complaint" style={progressStyle}>
@@ -173,15 +187,26 @@ var ComplaintListRowDetail = React.createClass({
                     </div>
                   </div>)
       }
-
+      var witness = <div>N/A</div>;
+      var legend = "";
+      if(rows.length) {
+        witness = <div><div className='results'>{rows}</div></div>
+        legend = <div>
+                  <div>
+                    <span className='red line'></span>No Punishment
+                  </div>
+                  <div>
+                    <span className='blue line'></span>Discipline Applied
+                  </div>
+                </div>
+      }
       return <div className='row margin-top'>
                <div className='col-md-3 investigation'>
                   <strong className='title'>Police Witness</strong>
-                  <div><span className='red line'></span>No Punishment</div>
-                  <div><span className='blue line'></span>Discipline Applied</div>
+                 {legend}
                </div>
                <div className="col-md-9 investigation">
-                  <div className='results'>{rows}</div>
+                 {witness}
                </div>
              </div>
     }
