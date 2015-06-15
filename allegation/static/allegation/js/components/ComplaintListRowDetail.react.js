@@ -41,7 +41,7 @@ var ComplaintListRowDetail = React.createClass({
         _timeline = new vis.Timeline(container, items, options);
       }
     }
-    
+
     if(!('investigation' in this.state)){
       var that = this;
       $.getJSON('/api/investigation/', {'crid':allegation.crid}, function(data){
@@ -139,7 +139,7 @@ var ComplaintListRowDetail = React.createClass({
             <div><span className='red line'></span>No Punishment</div>
             <div><span className='blue line'></span>Discipline Applied</div>
           </div>
-          <div className='col-md-9 investigation'><span className='investigator-name'>{allegation.investigator}</span>
+          <div className='col-md-9 investigation'><span className='investigator-name'>{allegation.investigator_name}</span>
             {investigator}
           </div>
         </div>

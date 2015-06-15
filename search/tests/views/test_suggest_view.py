@@ -20,13 +20,13 @@ class SuggestViewTestCase(SimpleTestCase):
         OfficerFactory(officer_first='Jerry', officer_last="Dao")
 
         data = self.get_suggestion('je')
-        data.should.contain('officer_id')
+        data.should.contain('officers__id')
 
         data = self.get_suggestion('je da')
-        data.should.contain('officer_id')
+        data.should.contain('officers__id')
 
         data = self.get_suggestion('genie')
-        data.shouldnt.contain('officer_id')
+        data.shouldnt.contain('officers__id')
 
     def test_detect_suggest_type_officer_badge_number(self):
         OfficerFactory(star=123456)
