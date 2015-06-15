@@ -58,7 +58,7 @@ function createAreas(){
     if(_geo_json_layer){
         _map.removeLayer(_geo_json_layer);
     }
-    var normalStyle = {"fillColor": "#eeffee", "fillOpacity": 0.5,'weight': 2};
+    var normalStyle = {"fillColor": "#eeffee", "fillOpacity": 0.0,'weight': 2};
     $.get("/api/areas/",function(data){
         var first_layer_added = false;
         _geo_json_layer = L.geoJson(data, {
@@ -149,12 +149,11 @@ var MapStore = assign({}, EventEmitter.prototype, {
     _markers = L.markerClusterGroup();
     _controls['markers'] = _markers;
     _controls['heat-map'] = _heat;
-    _map.addLayer(_markers);
+    _map.addLayer(_heat);
 
     var marker_length = markers.features.length;
     var start = 0;
-    var count = 1500;
-    var max_markers_to_add = 8000;
+    var count = 3000;
 
     function addMarkers(){
       if (current_markers != markers) {
@@ -176,9 +175,7 @@ var MapStore = assign({}, EventEmitter.prototype, {
       if(start > marker_length){
         return;
       }
-      if(count < max_markers_to_add){
-        count += 1000;
-      }
+
 
       setTimeout(function(){
         addMarkers();

@@ -290,3 +290,8 @@ footer {
 .vis-panel.vis-center {
     border-color: #0079ae;
 }
+
+/* leaflet heatmap */
+canvas.leaflet-heatmap-layer{
+    z-index:-1;
+}
