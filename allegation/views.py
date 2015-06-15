@@ -286,6 +286,7 @@ class OfficerListAPIView(AllegationAPIView):
         })
         return HttpResponse(content, content_type="application/json")
 
+
 class InvestigationAPIView(View):
     def get(self, request):
         crid = request.GET.get('crid')
@@ -293,19 +294,38 @@ class InvestigationAPIView(View):
         if crid:
             complaint = Complaint.objects.get(crid=crid)
             investigator = complaint.investigator
+
             ret['investigation'] = []
             for officer in complaint.officers.all():
-                num_investigated = Complaint.objects.filter(officers=officer, investigator=investigator).count()
-                no_action_taken_count = Complaint.objects.filter(officers=officer, investigator=investigator, final_outcome='600').count()
-                ret['investigation'].append({'count': num_investigated,'no_action_taken_count': no_action_taken_count,'officer': officer})
+                complaints = Complaint.objects.filter(officers=officer, investigator=investigator)
+                num_investigated = complaints.count()
+                no_action_taken_count = complaints.filter(final_outcome='600').count()
+                ret['investigation'].append({
+                    'count': num_investigated,
+                    'no_action_taken_count': no_action_taken_count,
+                    'officer': officer,
+                })
 
             ret['police_witness'] = []
             for witness in complaint.policewitness_set.all():
-                officer = witness.officer
-                ret['police_witness'].append(officer)
+                officers = []
+                witness.officer_name = "%s %s" % (witness.officer.officer_first, witness.officer.officer_last)
+                for officer in complaint.officers.all():
+                    complaints = Complaint.objects.filter(officers__in=(officer.id, witness.officer_id))
+                    num_complaints = complaints.count()
+                    no_action_taken_count = complaints.filter(final_outcome='600').count()
+                    officers.append({
+                        'num_complaints': num_complaints,
+                        'no_action_taken': no_action_taken_count,
+                        'officer': officer,
+                    })
+                ret['police_witness'].append({
+                    'witness': witness,
+                    'witness_officer': witness.officer,
+                    'officers': officers,
+                })
 
-            ret['complaint_witness'] = []
-            for witness in complaint.complainingwitness_set.all():
-                ret['complaint_witness'].append(witness)
+            ret['complaint_witness'] = complaint.complainingwitness_set.all()
+
         content = JSONSerializer().serialize(ret)
         return HttpResponse(content, content_type="application/json")
