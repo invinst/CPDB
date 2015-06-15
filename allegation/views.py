@@ -59,13 +59,6 @@ class AllegationAPIView(View):
 
     def add_filter(self, field):
         value = self.request.GET.getlist(field)
-        if field == 'cat' and 'cat__category' in self.request.GET:
-            cats = list(AllegationCategory.objects.filter(category=self.request.GET['cat__category']).values_list('cat_id',flat=True))
-            value = value + cats
-
-        if field == 'cat__category':
-            if 'cat' in self.request.GET:
-                return
 
         if len(value) > 1:
             self.filters["%s__in" % field] = value
@@ -109,8 +102,20 @@ class AllegationAPIView(View):
         filters = ['crid', 'areas__id', 'cat', 'neighborhood_id', 'recc_finding', 'final_outcome',
                    'recc_outcome', 'final_finding', 'officers__id', 'officer__star', 'investigator',
                    'cat__category']
+
         if ignore_filters:
             filters = [x for x in filters if x not in ignore_filters]
+
+        if 'cat' in filters and 'cat__category' in filters:
+            if 'cat__category' in self.request.GET:
+                if 'cat' in self.request.GET:
+                    category_names = self.request.GET.getlist('cat__category')
+                    categories = AllegationCategory.objects.filter(category__in=category_names)
+                    cats = list(categories.values_list('cat_id', flat=True))
+                    value = self.request.GET.getlist('cat') + cats
+                    self.filters['cat__in'] = value
+                    filters.remove('cat')
+                    filters.remove('cat__category')
 
         date_filters = ['incident_date_only']
 
