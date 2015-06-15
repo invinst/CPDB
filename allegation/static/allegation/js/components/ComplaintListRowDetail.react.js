@@ -41,6 +41,7 @@ var ComplaintListRowDetail = React.createClass({
         _timeline = new vis.Timeline(container, items, options);
       }
     }
+
     if(!('investigation' in this.state)){
       var that = this;
       $.getJSON('/api/investigation/', {'crid':allegation.crid}, function(data){
@@ -217,7 +218,7 @@ var ComplaintListRowDetail = React.createClass({
     }
 
     var final_outcome = allegation.final_outcome ? allegation.final_outcome : "N/A";
-    
+
     return  <div className="col-md-12 complaint_detail">
               <div className="row-fluid">
                 <div className="col-md-12">
