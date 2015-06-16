@@ -1,5 +1,8 @@
-function prettyLabels(label){
-    return label.replace(/-/g," ");
+function prettyLabels(label, term){
+    var re = new RegExp(term, 'i');
+    var result = label.replace(/-/g," ");
+    result = result.replace(re, "<span class='term'>" + term + "</span>");
+    return result;
 }
 (function() {
     var AUTOCOMPLETE_CAT_CLASS = 'ui-autocomplete-category';
@@ -26,7 +29,7 @@ function prettyLabels(label){
         },
         _renderItem: function(ul, item) {
             var label = item.type ? item.type + ": " + item.label : item.label;
-            return $( "<li>").addClass('autocomplete-'+item.category).text( prettyLabels(label) ).appendTo( ul );
+            return $( "<li>").addClass('autocomplete-'+item.category).html( prettyLabels(label, $(this.element).val()) ).appendTo( ul );
         }
     });
 })();
