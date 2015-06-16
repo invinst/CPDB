@@ -163,7 +163,20 @@ footer {
 .complaint_list {
     margin-top: 2em;
 }
-
+.complaint_list .filters > span {
+    display: inline-block;
+    padding: 5px 0;
+    border-bottom: 2px solid transparent;
+    margin: 0 14px;
+    cursor: pointer;
+}
+.complaint_list .filters > span.active {
+    border-bottom: 2px solid black;
+}
+.complaint_list .filters > span i{
+    margin-right: 5px;
+    display: inline-block;
+}
 .complaint-row {
     padding:  0.5em 0;
     font-family: 'Vollkorn';
@@ -294,4 +307,17 @@ footer {
 /* leaflet heatmap */
 canvas.leaflet-heatmap-layer{
     z-index:-1;
+}
+
+.open-investigation {
+    color: #58a59d;
+}
+.sustained {
+    color: #bd5059;
+}
+.not-sustained {
+    color: #f29f55;
+}
+.disciplined {
+    color: #2b8aab;
 }

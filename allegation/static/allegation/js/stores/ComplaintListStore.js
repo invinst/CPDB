@@ -18,7 +18,8 @@ var ComplaintListStore = require('./ComplaintListStore');
 var CHANGE_EVENT = 'change';
 
 var _state = {
-    'complaints':[]
+    'complaints':[],
+    'activeFilter': 'all'
 }
 
 
@@ -80,6 +81,9 @@ AppDispatcher.register(function(action) {
 
     case MapConstants.SET_ACTIVE_OFFICER:
       ComplaintListStore.update();
+      break;
+    case MapConstants.SET_ACTIVE_COMPLAINT_LIST_FILTER:
+      ComplaintListStore.set('activeFilter',action.filter);
       break;
     default:
       break;

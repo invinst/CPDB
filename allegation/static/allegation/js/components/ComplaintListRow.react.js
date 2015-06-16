@@ -38,12 +38,15 @@ var ComplaintListRow = React.createClass({
       officerName.push(officer.officer_first + " " + officer.officer_last);
     }
     officerName = officerName.join(", ");
-
+    var finding = "fa fa-circle fa-stack-2x " + this.props.finding;
 
     return <div className="complaint-row">
             <div className='row cursor' onClick={this.toggleComplaint}>
               <div className='col-md-1'>
-                <i className='fa fa-check'></i>
+                <span className="fa-stack fa-lg">
+                  <i className={finding}></i>
+                  <i className="fa fa-check fa-stack-1x fa-inverse"></i>
+                </span>
               </div>
               <div className='col-md-3'>
                 <div className='title'>Misconduct</div>

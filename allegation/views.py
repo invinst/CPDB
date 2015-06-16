@@ -198,13 +198,16 @@ class AllegationAPIView(View):
 
 class AllegationGISApiView(AllegationAPIView):
     def get(self, request):
-
+        seen_crids = {}
         allegations = self.get_allegations()
         allegation_dict = {
             "type": "FeatureCollection",
             "features": [],
         }
         for allegation in allegations:
+            if allegation.crid in seen_crids:
+                continue
+            seen_crids[allegation.crid] = True
             point = None
             if allegation.point:
                 point = json.loads(allegation.point.geojson)
