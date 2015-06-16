@@ -1,6 +1,8 @@
 var React = require('react');
 var MapStore = require("../stores/MapStore");
 var FilterActions = require("../actions/FilterActions");
+var Timeline = require("./Timeline.react");
+
 
 var ranks = {
     'PO': 'Police Officer',
@@ -137,7 +139,7 @@ var OfficerDetail = React.createClass({
               </div>
 
               <div className='row'>
-                  <div className="col-md-12 row information">
+                  <div className="col-md-12 information">
                       <table className="pull-right">
                           <tr>
                               <td><span className="title">Unit</span> {officer.unit}</td>
@@ -149,6 +151,11 @@ var OfficerDetail = React.createClass({
                           </tr>
                       </table>
                   </div>
+              </div>
+              <div className="row">
+                <div className="col-md-4">
+                  <Timeline officer={officer} />
+                </div>
               </div>
           </div>
   },

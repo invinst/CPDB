@@ -167,7 +167,7 @@ var ComplaintListRowDetail = React.createClass({
   renderPoliceWitness: function() {
     if(this.state.police_witness) {
 
-      var witness_rows = []
+      var witness_rows = [];
       for(var i = 0; i < this.state.police_witness.length; i++) {
         var witness_obj = this.state.police_witness[i];
         var rows = [];
