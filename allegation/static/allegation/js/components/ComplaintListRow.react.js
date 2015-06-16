@@ -32,12 +32,11 @@ var ComplaintListRow = React.createClass({
     if(this.props.complaint.category){
       category = this.props.complaint.category;
     }
-    var officerName = [];
-    for(var i = 0; i < complaint.officers.length; i++){
-      var officer = complaint.officers[i];
-      officerName.push(officer.officer_first + " " + officer.officer_last);
+    var officerName = "";
+    if(complaint.officer){
+      officerName =  complaint.officer.officer_first + " " + complaint.officer.officer_last;
     }
-    officerName = officerName.join(", ");
+
     var finding = "fa fa-circle fa-stack-2x " + this.props.finding;
 
     return <div className="complaint-row">

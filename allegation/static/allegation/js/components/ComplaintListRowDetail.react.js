@@ -239,7 +239,6 @@ var ComplaintListRowDetail = React.createClass({
   render: function(){
     var complaint = this.props.complaint;
     var allegation = complaint.allegation;
-    var map_image = '';
     var category = {};
     var map_div = this.renderMap(allegation);
     var timeline = this.renderTimeline(allegation);
@@ -247,8 +246,33 @@ var ComplaintListRowDetail = React.createClass({
     var police_witness = this.renderPoliceWitness();
     var witness = this.renderWitness();
 
-    if(this.props.complaint.category){
-      category = this.props.complaint.category;
+    if(complaint.category){
+      category = complaint.category;
+    }
+    var officersInvolved = '';
+    if (complaint.officers){
+      officersInvolved = <div className="row">
+                          <div className='col-md-12'>
+                            <h4>Officers Involved</h4>
+                          </div>
+                          <div>
+                            <div className='col-md-12'>
+                              <ComplaintOfficerList officers={complaint.officers} />
+                            </div>
+                          </div>
+                        </div>
+    }
+
+    var againstOfficer = '';
+    if (complaint.officer){
+      againstOfficer = <div className="row">
+                        <div className='col-md-12'>
+                          <h4>Officer</h4>
+                        </div>
+                        <div className='col-md-12'>
+                          <ComplaintOfficerList officers={[complaint.officer]} />
+                        </div>
+                      </div>
     }
 
     var final_outcome = allegation.final_outcome ? allegation.final_outcome : "N/A";
@@ -261,15 +285,9 @@ var ComplaintListRowDetail = React.createClass({
                       <h3>{category.category}</h3>
                       {category.cat_id} <span className='allegation-name'>{category.allegation_name}</span>
                     </div>
-                    <div className='col-md-12'>
-                      <h4>Officers Involved</h4>
-                    </div>
-                    <div>
-                      <div className='col-md-12'>
-                        <ComplaintOfficerList officers={complaint.officers} />
-                      </div>
-                    </div>
                   </div>
+                  {againstOfficer}
+                  {officersInvolved}
                   <div className='row'>
                       <div className='col-md-12'>
                         <strong className='title'>Where</strong>

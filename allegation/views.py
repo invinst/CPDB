@@ -164,6 +164,7 @@ class AllegationAPIView(View):
 
         display_allegations = allegations[start:start + length]
         allegations_list = []
+
         for allegation in display_allegations:
             category = None
             if allegation.cat:
@@ -171,6 +172,7 @@ class AllegationAPIView(View):
 
             witness = ComplainingWitness.objects.filter(crid=allegation.crid)
             police_witness = PoliceWitness.objects.filter(crid=allegation.crid)
+
             allegation.final_finding = allegation.get_final_finding_display()
             allegation.final_outcome = allegation.get_final_outcome_display()
             allegation.recc_finding = allegation.get_recc_finding_display()
@@ -178,11 +180,15 @@ class AllegationAPIView(View):
 
             officer_ids = Allegation.objects.filter(crid=allegation.crid).values('officer')
             officers = Officer.objects.filter(pk__in=officer_ids)
+            if allegation.officer:
+                officers = officers.exclude(pk=allegation.officer.pk)
+            officers = officers.order_by('-allegations_count')
 
             ret = {
                 'allegation': allegation,
                 'officers': officers,
                 'category': category,
+                'officer': allegation.officer,
                 'complaining_witness': witness,
                 'police_witness': police_witness,
             }
@@ -303,12 +309,14 @@ class InvestigationAPIView(View):
         crid = request.GET.get('crid')
         ret = {}
         if crid:
-            complaint = Allegation.objects.get(crid=crid)
-            investigator = complaint.investigator
+            allegations = Allegation.objects.filter(crid=crid)
+            allegation_officers = Officer.objects.filter(pk__in=allegations.values('officer'))
+            allegation = allegations[0]
+            investigator = allegation.investigator
 
             ret['investigation'] = []
-            for officer in complaint.officers.all():
-                complaints = Allegation.objects.filter(officers=officer, investigator=investigator)
+            for officer in allegation_officers:
+                complaints = Allegation.objects.filter(officer=officer, investigator=investigator)
                 num_investigated = complaints.count()
                 no_action_taken_count = complaints.filter(final_outcome='600').count()
                 ret['investigation'].append({
@@ -318,11 +326,11 @@ class InvestigationAPIView(View):
                 })
 
             ret['police_witness'] = []
-            for witness in complaint.policewitness_set.all():
+            for witness in PoliceWitness.objects.filter(crid=crid):
                 officers = []
                 witness.officer_name = "%s %s" % (witness.officer.officer_first, witness.officer.officer_last)
-                for officer in complaint.officers.all():
-                    complaints = Allegation.objects.filter(officers__in=(officer.id, witness.officer_id))
+                for officer in allegation_officers:
+                    complaints = Allegation.objects.filter(officer__in=(officer.id, witness.officer_id))
                     num_complaints = complaints.count()
                     no_action_taken_count = complaints.filter(final_outcome='600').count()
                     officers.append({
@@ -336,7 +344,7 @@ class InvestigationAPIView(View):
                     'officers': officers,
                 })
 
-            ret['complaint_witness'] = complaint.complainingwitness_set.all()
+            ret['complaint_witness'] = ComplainingWitness.objects.filter(crid=crid)
 
         content = JSONSerializer().serialize(ret)
         return HttpResponse(content, content_type="application/json")
