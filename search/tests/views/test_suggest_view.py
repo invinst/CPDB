@@ -1,6 +1,6 @@
 import json
 
-from allegation.factories import OfficerFactory, AllegationCategoryFactory, ComplaintFactory
+from allegation.factories import OfficerFactory, AllegationCategoryFactory, AllegationFactory
 from common.models import AllegationCategory, Officer
 from common.tests.core import SimpleTestCase
 
@@ -20,13 +20,13 @@ class SuggestViewTestCase(SimpleTestCase):
         OfficerFactory(officer_first='Jerry', officer_last="Dao")
 
         data = self.get_suggestion('je')
-        data.should.contain('officers__id')
+        data.should.contain('officer')
 
         data = self.get_suggestion('je da')
-        data.should.contain('officers__id')
+        data.should.contain('officer')
 
         data = self.get_suggestion('genie')
-        data.shouldnt.contain('officers__id')
+        data.shouldnt.contain('officer')
 
     def test_detect_suggest_type_officer_badge_number(self):
         OfficerFactory(star=123456)
@@ -47,13 +47,13 @@ class SuggestViewTestCase(SimpleTestCase):
         data.should.contain('cat__category')
 
     def test_detect_suggest_type_investigator(self):
-        ComplaintFactory(investigator__name='Someone Name')
+        AllegationFactory(investigator__name='Someone Name')
 
         data = self.get_suggestion('Some')
         data.should.contain('investigator')
 
     def test_detect_suggest_type_complaint_id_number(self):
-        ComplaintFactory(crid=123456)
+        AllegationFactory(crid=123456)
 
         data = self.get_suggestion('1234')
         data.should.contain('crid')

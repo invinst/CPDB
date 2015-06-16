@@ -33,7 +33,7 @@ class OfficerHistory(models.Model):
 
 class PoliceWitness(models.Model):
     pwit_id = models.IntegerField(primary_key=True)
-    complaint = models.ForeignKey('Complaint', null=True)
+    crid = models.CharField(max_length=30, null=True, db_index=True)
     gender = models.CharField(max_length=1, null=True)
     race = models.CharField(max_length=50, null=True)
     officer = models.ForeignKey(Officer, null=True)
@@ -41,7 +41,7 @@ class PoliceWitness(models.Model):
 
 class ComplainingWitness(models.Model):
     cwit_id = models.IntegerField(primary_key=True)
-    complaint = models.ForeignKey('Complaint', null=True)
+    crid = models.CharField(max_length=30, null=True, db_index=True)
     gender = models.CharField(max_length=1, null=True)
     race = models.CharField(max_length=50, null=True)
 
@@ -119,31 +119,6 @@ FINDINGS = [
 ]
 
 
-class Complaint(models.Model):
-    record_id = models.IntegerField(null=True)
-    crid = models.CharField(max_length=30, null=True, db_index=True)
-    officers = models.ManyToManyField(Officer)
-    cat = models.ForeignKey(AllegationCategory, null=True)
-    recc_finding = models.CharField(choices=FINDINGS, max_length=2, null=True, db_index=True)
-    recc_outcome = models.CharField(choices=OUTCOMES, max_length=3, null=True, db_index=True)
-    final_finding = models.CharField(choices=FINDINGS, max_length=2, null=True, db_index=True)
-    final_outcome = models.CharField(choices=OUTCOMES, max_length=3, null=True, db_index=True)
-
-    areas = models.ManyToManyField('Area', blank=True)
-    location = models.CharField(max_length=20, null=True)
-    add1 = models.IntegerField(null=True)
-    add2 = models.CharField(max_length=255, null=True)
-    city = models.CharField(max_length=255, null=True)
-    incident_date = models.DateTimeField(null=True)
-    incident_date_only = models.DateField(null=True, db_index=True)
-    start_date = models.DateField(null=True)
-    end_date = models.DateField(null=True)
-    investigator_name = models.CharField(max_length=255, null=True, db_index=True)
-    investigator = models.ForeignKey('common.Investigator', null=True)
-    point = models.PointField(srid=4326, null=True, blank=True)
-    objects = models.GeoManager()
-
-
 class Allegation(models.Model):
     record_id = models.IntegerField(null=True)
     crid = models.CharField(max_length=30, null=True, db_index=True)
@@ -164,6 +139,7 @@ class Allegation(models.Model):
     start_date = models.DateField(null=True)
     end_date = models.DateField(null=True)
     investigator_name = models.CharField(max_length=255, null=True, db_index=True)
+    investigator = models.ForeignKey('common.Investigator', null=True)
     point = models.PointField(srid=4326, null=True, blank=True)
     objects = models.GeoManager()
 
