@@ -1,4 +1,6 @@
 function prettyLabels(label, term){
+    label = label.toLowerCase();
+    term = term.toLowerCase();
     var re = new RegExp(term, 'i');
     var result = label.replace(/-/g," ");
     result = result.replace(re, "<span class='term'>" + term + "</span>");
