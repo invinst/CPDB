@@ -40,7 +40,7 @@ var Timeline = React.createClass({
           style: style
         });
       }
-      console.log(timeLineItems);
+
       timeLineItems = new vis.DataSet(timeLineItems);
 
       // Configuration for the Timeline

@@ -2,6 +2,7 @@ var React = require('react');
 var MapStore = require("../stores/MapStore");
 var FilterActions = require("../actions/FilterActions");
 var Timeline = require("./Timeline.react");
+var Map = require("./Map.react");
 
 
 var ranks = {
@@ -129,6 +130,11 @@ var OfficerDetail = React.createClass({
       gender_display = officer.gender == 'M' ? 'Male' : 'Female';
       gender_display = <td><span className="title">Gender</span> {gender_display}</td>
     }
+
+    var mapStyle = {
+      height: '200px'
+    };
+
     return <div id='OfficerDetail' className={complaintRate}>
               <div className='row'>
                   <div className="col-md-9 h3">
@@ -153,6 +159,9 @@ var OfficerDetail = React.createClass({
                   </div>
               </div>
               <div className="row">
+                <div className="col-md-4">
+                  <Map officer={officer} style={mapStyle} />
+                </div>
                 <div className="col-md-4">
                   <Timeline officer={officer} />
                 </div>

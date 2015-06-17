@@ -71,7 +71,7 @@ var Summary = React.createClass({
 
   },
   goBack: function(e){
-    e.preventDefault()
+    e.preventDefault();
     SummaryActions.setSummary(false);
   },
   _onChange: function(){
@@ -80,6 +80,6 @@ var Summary = React.createClass({
   _changeView: function(){
     this.setState(SummaryStore.getAll())
   }
-})
+});
 
-module.exports = Summary
+module.exports = Summary;
