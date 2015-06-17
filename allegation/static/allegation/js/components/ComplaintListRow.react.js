@@ -35,6 +35,9 @@ var ComplaintListRow = React.createClass({
     var officerName = "";
     if(complaint.officer){
       officerName =  complaint.officer.officer_first + " " + complaint.officer.officer_last;
+      if(complaint.officers.length > 0){
+        officerName += " and " + complaint.officers.length + " more"
+      }
     }
     var date_label = "Incident Date"
     var date = allegation.incident_date;
