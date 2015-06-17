@@ -1,6 +1,4 @@
 var React = require('react');
-var MBX = 'pk.eyJ1Ijoic3RlZmFuZ2VvcmciLCJhIjoiVnBNOEp4byJ9.7i2N7gTV-t_QtAA-kAAlFA';
-var MAP_TYPE = 'mapbox.streets';
 var _map = null;
 
 
@@ -13,7 +11,6 @@ var Map = React.createClass({
     var opts = {'maxZoom': 17,'minZoom': 10,'scrollWheelZoom': false};
     var defaultZoom = 'defaultZoom' in opts ? opts['defaultZoom'] : 12;
 
-    L.mapbox.accessToken = MBX;
     var southWest = L.latLng(41.143501411390766,-88.53057861328125);
     var northEast = L.latLng(42.474122772511485,-85.39947509765625);
     var maxBounds = L.LatLngBounds(southWest,northEast);
