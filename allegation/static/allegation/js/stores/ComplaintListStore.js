@@ -18,24 +18,8 @@ var ComplaintListStore = require('./ComplaintListStore');
 var CHANGE_EVENT = 'change';
 
 var _state = {
-    'complaints':[]
-}
-
-/**
- * Update a TODO item.
- * @param  {string} id
- * @param {object} updates An object literal containing only the data to be
- *     updated.
- */
-function update(id, updates) {
-  _officers[id] = assign({}, _complaints[id], updates);
-}
-
-
-function create(id, officer){
-  _officers[id] = {
-
-  };
+    'complaints':[],
+    'activeFilter': 'all'
 }
 
 
@@ -53,8 +37,13 @@ var ComplaintListStore = assign({}, EventEmitter.prototype, {
     _state[key] = value;
     this.emitChange();
   },
-  init: function(){
-    this.update();
+  init: function(initial){
+    if(!initial){
+        this.update();
+    }
+    else{
+        _state = initial;
+    }
     return _state;
   },
   getAll : function(type){
@@ -91,8 +80,10 @@ AppDispatcher.register(function(action) {
       break;
 
     case MapConstants.SET_ACTIVE_OFFICER:
-
       ComplaintListStore.update();
+      break;
+    case MapConstants.SET_ACTIVE_COMPLAINT_LIST_FILTER:
+      ComplaintListStore.set('activeFilter',action.filter);
       break;
     default:
       break;

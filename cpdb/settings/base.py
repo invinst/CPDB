@@ -45,6 +45,7 @@ INSTALLED_APPS = (
 
     'common',
     'allegation',
+    'officer',
     'corsheaders',
     'search',
     'graph',
@@ -147,6 +148,7 @@ BOWER_INSTALLED_APPS = (
     'jquery-cookie#1.4.1',
     'c3',
     'components-font-awesome',
+    'moment',
 )
 
 MEDIA_URL = '/media/'
@@ -164,3 +166,6 @@ CACHES = {
         ]
     }
 }
+
+GRAPH_DISTCURVE_NUM_X_TICKS = 6
+GRAPH_DISTCURVE_NUM_Y_TICKS = 4

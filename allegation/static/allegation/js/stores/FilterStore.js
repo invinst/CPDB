@@ -48,6 +48,11 @@ var FilterStore = assign({}, EventEmitter.prototype, {
           return _filters;
       }
   },
+  update: function(id, updates){
+    update(id, updates);
+    console.log(updates)
+    this.emit(CHANGE_EVENT);
+  },
   emitChange: function() {
     this.emit(CHANGE_EVENT);
   },
@@ -55,7 +60,7 @@ var FilterStore = assign({}, EventEmitter.prototype, {
     this.emit(CHANGE_EVENT);
   },
   replaceFilters: function(filters){
-    _filters = {}
+    _filters = {};
     $.each(filters,function(){
         if(this.value[0] in _filters){
           _filters[this.value[0]]['value'].push(this.value[1])
@@ -63,7 +68,7 @@ var FilterStore = assign({}, EventEmitter.prototype, {
         else{
           _filters[this.value[0]] = {'value':[this.value[1]]};
         }
-    })
+    });
     this.emit(CHANGE_EVENT);
   },
   /**
@@ -76,7 +81,7 @@ var FilterStore = assign({}, EventEmitter.prototype, {
     this.on(CREATE_EVENT, callback);
   },
   getQueryString: function(){
-    var query = ""
+    var query = "";
     for(var filterName in _filters){
       var filter = _filters[filterName];
 
@@ -97,23 +102,23 @@ var FilterStore = assign({}, EventEmitter.prototype, {
 
 // Register callback to handle all updates
 AppDispatcher.register(function(action) {
-
-
   switch(action.actionType){
     case MapConstants.MAP_REPLACE_FILTERS:
       FilterStore.replaceFilters(action.filters)
       break;
-    case MapConstants.MAP_CHANGE_FILTER:
 
+    case MapConstants.MAP_CHANGE_FILTER:
       update(action.key,action.value);
-      FilterStore.emitChange()
+      FilterStore.emitChange();
       break;
+
     case MapConstants.MAP_ADD_FILTER:
-      create(action.key,action.value)
+      create(action.key, action.value);
       FilterStore.emitCreate();
       break;
+
     default:
-      // no op
+      break;
   }
 });
 

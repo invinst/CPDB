@@ -12,6 +12,7 @@ var MapFilter = require('./MapFilter.react');
 var AutoComplete = require('./AutoComplete.react');
 var FilterStore = require('../stores/FilterStore');
 var MapStore = require('../stores/MapStore');
+var _ajax_req = null;
 function getFilterState(){
   return{
     'filters':FilterStore.getAll()
@@ -26,7 +27,9 @@ var Filters = React.createClass({
   componentDidMount: function() {
     FilterStore.addChangeListener(this._onChange);
     FilterStore.addCreateListener(this._onCreate);
-    this._onChange();
+    if(!this.props.doNotAutLoad){
+      this._onChange();
+    }
   },
   /**
    * @return {object}
@@ -55,13 +58,7 @@ var Filters = React.createClass({
   },
   _onChange: function() {
     this.setState(getFilterState());
-    var query_string = FilterStore.getQueryString();
-
-    $.getJSON("/api/allegations/gis/?" + query_string,function(data){
-      MapStore.setMarkers(data);
-
-    })
-
+    MapStore.update();
   }
 
 });

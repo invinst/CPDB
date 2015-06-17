@@ -27,12 +27,31 @@
 
 .ui-autocomplete {
     z-index: 100000;
+    padding: 1em 0;
 }
+
+.ui-autocomplete-category {
+    font-size: 0.9em;
+    padding: 0.5em 0;
+    color: #989898;
+}
+
+.ui-autocomplete > li, .ui-menu .ui-menu-item {
+    padding: 0 1em;
+    border-left: 4px solid transparent;
+}
+
+
 .ui-widget{
     font-family: 'Source Sans Pro', serif;
 }
 .ui-state-focus, .ui-widget-content .ui-state-focus{
     font-weight: 300;
+    background: none;
+    border: none;
+    border-left: 4px solid #107ac0;
+    color: #107ac0;
+    margin: 0;
 }
 #search-wrapper {
     width: 1000px;
@@ -40,4 +59,13 @@
 }
 .bootstrap-tagsinput .tag,.bootstrap-tagsinput input{
     font-size: 1em;
+}
+
+.ui-menu .ui-menu-item{
+    text-transform: capitalize;
+    padding: 0.2em 1.76em;
+}
+
+span.term{
+    font-weight: 400;
 }

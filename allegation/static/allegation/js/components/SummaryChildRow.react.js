@@ -21,6 +21,7 @@ var SummaryChildRow = React.createClass({
     e.preventDefault();
 
     $(e.target).toggleClass('active');
+    $("#cpdb-search").off("itemRemoved");
     $('#cpdb-search').tagsinput("remove", this.props.category.tagValue);
     var tagValue = this.props.subcategory.tagValue;
     if(this.state.selected) {
@@ -36,7 +37,7 @@ var SummaryChildRow = React.createClass({
     } else {
       $('#cpdb-search').tagsinput("add", tagValue);
     }
-
+    $("#cpdb-search").on("itemRemoved", $("#cpdb-search").data("itemRemovedListener"));
     this.state.selected = !this.state.selected;
   },
   render: function(){

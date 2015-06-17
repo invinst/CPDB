@@ -9,7 +9,7 @@ var DistributionChart = React.createClass({
      return {'selected':false}
   },
   componentDidMount: function() {
-    DistributionChartStore.update();
+    DistributionChartStore.listen(this);
   },
   rotateChart: function(){
     DistributionChartStore.rotateChart();

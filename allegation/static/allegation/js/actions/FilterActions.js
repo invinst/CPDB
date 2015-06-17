@@ -32,7 +32,13 @@ var FilterActions = {
       key: key,
       value: value
     });
-  }
+  },
+  setActiveFilter: function(val) {
+    AppDispatcher.dispatch({
+      actionType: MapConstants.SET_ACTIVE_COMPLAINT_LIST_FILTER,
+      filter: val
+    })
+  },
 
 };
 

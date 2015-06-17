@@ -28,18 +28,25 @@ var Officer = React.createClass({
     }
 
     var className = 'well officer ' + officerComplaintAvgStatus;
-
-    var selection_state = this.props.active ? 'selected' : '';
+    var selection_state = '';
+    if(this.props.active){
+      className += " selected";
+      selection_state = 'selected';
+    }
+    var officer_link = "/officer/view/?id=" + this.props.officer.id;
     return <div className={className} data-state={selection_state} onClick={this.onClick}>
             <div className='officer_name'>
               <strong>
-                {this.props.officer.officer_first.toLowerCase()} {officer.officer_last.toLowerCase()}
+                {this.props.officer.officer_first.toLowerCase()} {officer.officer_last.toLowerCase()} <a href={officer_link}><i className='fa fa-arrow-right'></i></a>
               </strong>
             </div>
             <div>Unit {officer.unit}</div>
             <div>
               <div><strong>{officer.allegations_count}</strong> complaints</div>
               <div><strong>{officer.discipline_count}</strong> disciplines</div>
+            </div>
+            <div className='checkmark'>
+              <i className='fa fa-check'></i>
             </div>
            </div>
 

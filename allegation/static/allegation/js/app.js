@@ -8,18 +8,26 @@
  */
 
 var React = require('react');
-
-
 var CPDBApp = require('./components/CPDBApp.react');
 var Filters = require('./components/Filters.react');
-
-
-React.render(
-  <CPDBApp />,
-  document.getElementById('cpdbapp')
-);
+var OfficerPage = require('./components/OfficerPage.react');
 
 React.render(
-  <Filters />,
-  document.getElementById('search-wrapper')
+    <Filters />,
+    document.getElementById('search-wrapper')
 );
+
+var cpdbElement = document.getElementById('cpdbapp');
+if(cpdbElement) {
+    React.render(
+        <CPDBApp />,
+        cpdbElement
+    );
+}
+var officerProfile = document.getElementById('officer-profile');
+if(officerProfile) {
+    React.render(
+        <OfficerPage officer={officer} />,
+        officerProfile
+    );
+}

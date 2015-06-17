@@ -17,3 +17,10 @@ CACHES = {
         'LOCATION': '/var/tmp/django_cache',
     }
 }
+
+if len(sys.argv) > 1 and sys.argv[1] == 'test':
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
+        }
+    }
