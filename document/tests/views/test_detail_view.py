@@ -5,10 +5,12 @@ from common.tests.core import SimpleTestCase
 
 class DetailViewTestCase(SimpleTestCase):
     def setUp(self):
-        AllegationFactory()
+        self.allegation = AllegationFactory()
 
     def test_valid_request(self):
-        response = self.client.get('%s?id=%s' % (reverse('document:view'), 1))
+        response = self.client.get(reverse('document:view'), {
+            'id': self.allegation.id
+        })
 
         self.assertEqual(response.status_code, 200)
 
