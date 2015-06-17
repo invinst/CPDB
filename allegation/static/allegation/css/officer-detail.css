@@ -65,3 +65,10 @@
 #OfficerDetail .information table td + td {
     border-left: 1px solid black;
 }
+
+.vis-timeline {
+    border: none;
+}
+.vis-current-time {
+    display: none;
+}
