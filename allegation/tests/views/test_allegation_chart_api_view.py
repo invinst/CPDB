@@ -5,9 +5,9 @@ from allegation.tests.views.base import AllegationApiTestBase
 
 class AllegationSummaryApiViewTestCase(AllegationApiTestBase):
     def test_get_summary(self):
-        response = self.client.get('/api/allegations/summary/')
+        response = self.client.get('/api/allegations/chart/')
 
         data = json.loads(response.content.decode())
-        data.should.contain("summary")
+        data.should.contain("data")
 
-        isinstance(data['summary'], list).should.be.true
+        isinstance(data['data'], list).should.be.true

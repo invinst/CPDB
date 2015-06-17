@@ -3,6 +3,7 @@ var MapStore = require("../stores/MapStore");
 var FilterActions = require("../actions/FilterActions");
 var Timeline = require("./Timeline.react");
 var Map = require("./Map.react");
+var DonutChart = require("./DonutChart.react");
 
 
 var ranks = {
@@ -165,10 +166,13 @@ var OfficerDetail = React.createClass({
                 <div className="col-md-4">
                   <Timeline officer={officer} />
                 </div>
+                <div className="col-md-4">
+                  <DonutChart officer={officer} />
+                </div>
               </div>
           </div>
   },
 
 });
 
-module.exports = OfficerDetail
+module.exports = OfficerDetail;

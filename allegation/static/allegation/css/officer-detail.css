@@ -72,3 +72,7 @@
 .vis-current-time {
     display: none;
 }
+
+.donut-chart {
+    height: 200px;
+}
