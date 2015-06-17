@@ -76,3 +76,9 @@
 .donut-chart {
     height: 200px;
 }
+.donut-summary{
+    margin-left: 97px;
+    margin-bottom: 10px;
+    padding: 0 10px;
+    border-left: 4px solid black;
+}
