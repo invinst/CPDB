@@ -18,10 +18,15 @@ var Timeline = React.createClass({
 
     $.getJSON('/officer/timeline/', {'officer': officer.id}, function (data) {
       var timeLineItems = [];
+
       var items = data.items;
       for (var i = 0; i < items.length; i++) {
         var style = 'display: none';
         var start = formatDate(items[i]);
+        if(start == "Invalid date"){
+          continue
+        }
+
         var content = '';
         if (i == 0 || i == 1 || i == 20) {
           style = '';
@@ -40,7 +45,6 @@ var Timeline = React.createClass({
           style: style
         });
       }
-
       timeLineItems = new vis.DataSet(timeLineItems);
 
       // Configuration for the Timeline
