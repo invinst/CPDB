@@ -31,7 +31,7 @@ var Officer = React.createClass({
       className += " selected";
       selection_state = 'selected';
     }
-    var officer_link = "/officer/view/?id=" + this.props.officer.id;
+    var officer_link = officer.absolute_url;
     return <div className={className} data-state={selection_state} onClick={this.onClick}>
       <div className='officer_name'>
         <strong>

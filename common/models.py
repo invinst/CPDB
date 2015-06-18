@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.contrib.gis.db import models
+from django.core.urlresolvers import reverse
 from django.forms.models import model_to_dict
+from django.template.defaultfilters import slugify
 
 
 class User(AbstractUser):
@@ -18,6 +20,15 @@ class Officer(models.Model):
     star = models.FloatField(null=True)
     allegations_count = models.IntegerField(default=0)
     discipline_count = models.IntegerField(default=0)
+
+    def get_absolute_url(self):
+        return reverse("officer:detail",
+                       kwargs={
+                           'first_name': slugify(self.officer_first),
+                           'last_name': slugify(self.officer_last),
+                           'badge': slugify(self.star),
+                           'pk': self.pk
+                       })
 
     def __str__(self):
         return "%(last)s %(first)s" % {'last': self.officer_last, 'first': self.officer_first}
