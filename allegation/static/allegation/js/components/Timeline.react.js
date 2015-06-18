@@ -26,7 +26,7 @@ var Timeline = React.createClass({
         if (i == 0 || i == 1 || i == 20) {
           style = '';
           if (i == 1) {
-            content = '1st complaint<br /><span>' + start + '</span>';
+            content = '<span>' + start + '</span>';
           } else if (i == 20) {
             content = 'Exceeed avg rate<br /><span>' + start + '</span>';
           } else {
