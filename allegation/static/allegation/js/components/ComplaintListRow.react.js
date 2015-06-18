@@ -39,6 +39,18 @@ var ComplaintListRow = React.createClass({
     }
     officerName = officerName.join(", ");
     var finding = "fa fa-circle fa-stack-2x " + this.props.finding;
+    var documentLabel = "Request";
+    var documentLink = <a className='btn btn-sm btn-request' href="#">
+      <i className='fa fa-file-pdf-o'></i> {documentLabel}
+    </a>;
+    if (allegation.document_id) {
+      documentLabel = "Download";
+      var link = "http://s3.documentcloud.org/documents/" +
+                  allegation.document_id + "/" + allegation.document_normalized_title +".pdf";
+      documentLink = <a className='btn btn-sm btn-request' href={link}>
+        <i className='fa fa-file-pdf-o'></i> {documentLabel}
+      </a>
+    }
 
     return <div className="complaint-row">
             <div className='row cursor' onClick={this.toggleComplaint}>
@@ -65,9 +77,7 @@ var ComplaintListRow = React.createClass({
                 {officerName}
               </div>
               <div className='col-md-1'>
-                <a className='btn btn-sm btn-request'>
-                  <i className='fa fa-file-pdf-o'></i>&nbsp;&nbsp;&nbsp;Request
-                </a>
+                {documentLink}
               </div>
               <div className='col-md-1 text-center' >
                 <a href='#' className='show_more'><i className={icon}></i></a>
@@ -80,6 +90,9 @@ var ComplaintListRow = React.createClass({
   },
 
   toggleComplaint: function(e){
+    if (e.target.tagName.toLowerCase() == 'span' && $(e.target).text().toLowerCase() == 'download') {
+      return;
+    }
     e.preventDefault();
     this.setState({'show':!this.state.show});
   },
