@@ -1,4 +1,3 @@
-
 var HOST = 'http://localhost:8000';
 var React = require('react');
 var Filters = require('./Filters.react');
@@ -10,7 +9,7 @@ var ComplaintListRowDetail = require("./ComplaintListRowDetail.react");
 var _timeline = false;
 
 var ComplaintListRow = React.createClass({
-  getInitialState: function() {
+  getInitialState: function () {
     // TODO: save state of show in a store
     return {
       'show': false,
@@ -19,27 +18,28 @@ var ComplaintListRow = React.createClass({
 
   },
 
-  render: function(){
+  render: function () {
     var complaint = this.props.complaint;
     var icon = 'fa fa-caret-down';
     var showMore = '';
-    if(this.state.show) {
-      showMore = <ComplaintListRowDetail complaint={complaint} />
+    if (this.state.show) {
+      showMore = <ComplaintListRowDetail complaint={complaint}/>
       icon = 'fa fa-caret-up';
     }
     var allegation = complaint.allegation;
     var category = {};
-    if(this.props.complaint.category){
+    if (this.props.complaint.category) {
       category = this.props.complaint.category;
     }
     var officerName = "";
-    if(complaint.officer){
-      officerName =  complaint.officer.officer_first + " " + complaint.officer.officer_last;
+    if (complaint.officer) {
+      officerName = complaint.officer.officer_first + " " + complaint.officer.officer_last;
       if(complaint.officers.length > 0){
-        officerName += " and " + complaint.officers.length + " more"
+        officerName += " and " + complaint.officers.length + " more";
       }
     }
-    var date_label = "Incident Date"
+
+    var date_label = "Incident Date";
     var date = allegation.incident_date;
     if(!allegation.incident_date && allegation.start_date) {
       date = allegation.start_date;
@@ -48,48 +48,48 @@ var ComplaintListRow = React.createClass({
     var finding = "fa fa-circle fa-stack-2x " + this.props.finding;
 
     return <div className="complaint-row">
-            <div className='row cursor' onClick={this.toggleComplaint}>
-              <div className='col-md-1'>
+      <div className='row cursor' onClick={this.toggleComplaint}>
+        <div className='col-md-1'>
                 <span className="fa-stack fa-lg">
                   <i className={finding}></i>
                   <i className="fa fa-check fa-stack-1x fa-inverse"></i>
                 </span>
-              </div>
-              <div className='col-md-3'>
-                <div className='title'>Misconduct</div>
-                {category.category}
-              </div>
-              <div className='col-md-1'>
-                <div className='title'>CRID</div>
-                {allegation.crid}
-              </div>
-              <div className='col-md-2'>
-                <div className='title'>{date_label}</div>
-                {date}
-              </div>
-              <div className='col-md-3'>
-                <div className='title'>Officer</div>
-                {officerName}
-              </div>
-              <div className='col-md-1'>
-                <a className='btn btn-sm btn-request'>
-                  <i className='fa fa-file-pdf-o'></i>&nbsp;&nbsp;&nbsp;Request
-                </a>
-              </div>
-              <div className='col-md-1 text-center' >
-                <a href='#' className='show_more'><i className={icon}></i></a>
-              </div>
-            </div>
-          {showMore}
-          </div>
+        </div>
+        <div className='col-md-3'>
+          <div className='title'>Misconduct</div>
+          {category.category}
+        </div>
+        <div className='col-md-1'>
+          <div className='title'>CRID</div>
+          {allegation.crid}
+        </div>
+        <div className='col-md-2'>
+          <div className='title'>{date_label}</div>
+          {date}
+        </div>
+        <div className='col-md-3'>
+          <div className='title'>Officer</div>
+          {officerName}
+        </div>
+        <div className='col-md-1'>
+          <a className='btn btn-sm btn-request'>
+            <i className='fa fa-file-pdf-o'></i>&nbsp;&nbsp;&nbsp;Request
+          </a>
+        </div>
+        <div className='col-md-1 text-center'>
+          <a href='#' className='show_more'><i className={icon}></i></a>
+        </div>
+      </div>
+      {showMore}
+    </div>
 
 
   },
 
-  toggleComplaint: function(e){
+  toggleComplaint: function (e) {
     e.preventDefault();
-    this.setState({'show':!this.state.show});
-  },
+    this.setState({'show': !this.state.show});
+  }
 });
 
-module.exports = ComplaintListRow
+module.exports = ComplaintListRow;

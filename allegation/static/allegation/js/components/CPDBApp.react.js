@@ -28,31 +28,29 @@ var DistributionChart = require('./DistributionChart.react');
  */
 
 function getMapState() {
-  return {
-
-  };
+  return {};
 }
 
 var CPDBApp = React.createClass({
 
-  getInitialState: function() {
+  getInitialState: function () {
     return getMapState();
   },
 
-  componentDidMount: function() {
+  componentDidMount: function () {
     //MapStore.addChangeListener(this._onChange);
     MapStore.init();
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount: function () {
     //MapStore.removeChangeListener(this._onChange);
   },
 
   /**
    * @return {object}
    */
-  render: function() {
-  	return <div>
+  render: function () {
+    return <div>
       <div id='map' className='pin-top pin-bottom'></div>
       <div className='container'>
         <div className="row">
@@ -72,7 +70,7 @@ var CPDBApp = React.createClass({
   /**
    * Event handler for 'change' events coming from the MapStore
    */
-  _onChange: function() {
+  _onChange: function () {
 
   }
 

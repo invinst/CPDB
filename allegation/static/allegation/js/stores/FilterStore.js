@@ -16,8 +16,7 @@ var assign = require('object-assign');
 
 var CHANGE_EVENT = 'change';
 var CREATE_EVENT = 'change';
-var _filters = {
-      }
+var _filters = {}
 
 
 /**
@@ -30,64 +29,65 @@ function update(id, updates) {
   _filters[id] = assign({}, _filters[id], updates);
 }
 
-function create(id,filter){
+
+function create(id, filter) {
   _filters[id] = {
-    'items':filter,
-    'value':"Select a " + id
+    'items': filter,
+    'value': "Select a " + id
   };
 }
 
 
 var FilterStore = assign({}, EventEmitter.prototype, {
 
-  getAll : function(type){
-      if(type in _filters){
-        return _filters[type];
-      }
-      else{
-          return _filters;
-      }
+  getAll: function (type) {
+    if (type in _filters) {
+      return _filters[type];
+    }
+    else {
+      return _filters;
+    }
   },
-  update: function(id, updates){
+  update: function (id, updates) {
     update(id, updates);
     console.log(updates)
     this.emit(CHANGE_EVENT);
   },
-  emitChange: function() {
+  emitChange: function () {
     this.emit(CHANGE_EVENT);
   },
-  emitCreate: function() {
+  emitCreate: function () {
     this.emit(CHANGE_EVENT);
   },
-  replaceFilters: function(filters){
+  replaceFilters: function (filters) {
     _filters = {};
-    $.each(filters,function(){
-        if(this.value[0] in _filters){
-          _filters[this.value[0]]['value'].push(this.value[1])
-        }
-        else{
-          _filters[this.value[0]] = {'value':[this.value[1]]};
-        }
+    $.each(filters, function () {
+      if (this.value[0] in _filters) {
+        _filters[this.value[0]]['value'].push(this.value[1])
+      }
+      else {
+        _filters[this.value[0]] = {'value': [this.value[1]]};
+      }
     });
     this.emit(CHANGE_EVENT);
   },
   /**
    * @param {function} callback
    */
-  addChangeListener: function(callback) {
+  addChangeListener: function (callback) {
     this.on(CHANGE_EVENT, callback);
   },
-  addCreateListener: function(callback) {
+  addCreateListener: function (callback) {
     this.on(CREATE_EVENT, callback);
   },
-  getQueryString: function(){
+  getQueryString: function () {
     var query = "";
-    for(var filterName in _filters){
+    for (var filterName in _filters) {
       var filter = _filters[filterName];
 
-      if(filter['value']){
-        for(var i=0;i<filter['value'].length; i++){
-          if(typeof(filter['value'][i]) == 'object'){
+      if (filter['value']) {
+        for (var i = 0; i < filter['value'].length; i++) {
+          if (typeof(filter['value'][i]) == 'object') {
             query += filterName + "=" + filter['value'][i][1] + "&";
           } else {
             query += filterName + "=" + filter['value'][i] + "&";
@@ -101,14 +101,14 @@ var FilterStore = assign({}, EventEmitter.prototype, {
 });
 
 // Register callback to handle all updates
-AppDispatcher.register(function(action) {
-  switch(action.actionType){
+AppDispatcher.register(function (action) {
+  switch (action.actionType) {
     case MapConstants.MAP_REPLACE_FILTERS:
       FilterStore.replaceFilters(action.filters)
       break;
 
     case MapConstants.MAP_CHANGE_FILTER:
-      update(action.key,action.value);
+      update(action.key, action.value);
       FilterStore.emitChange();
       break;
 

@@ -3,27 +3,27 @@ var MapStore = require("../stores/MapStore");
 
 
 var dateFormat = 'MMM DD, YYYY';
-function formatDate(date){
+function formatDate(date) {
   return moment(date).format(dateFormat);
 }
 
 
 var Timeline = React.createClass({
-  getInitialState: function() {
-     return {}
+  getInitialState: function () {
+    return {}
   },
-  componentDidMount: function() {
+  componentDidMount: function () {
     var officer = this.props.officer;
     var container = this.getDOMNode();
 
-    $.getJSON('/officer/timeline/', {'officer': officer.id}, function(data){
+    $.getJSON('/officer/timeline/', {'officer': officer.id}, function (data) {
       var timeLineItems = [];
       var items = data.items;
-      for(var i = 0; i < items.length; i++){
+      for (var i = 0; i < items.length; i++) {
         var style = 'display: none';
         var start = formatDate(items[i]);
         var content = '';
-        if(i == 0 || i == 1 || i == 20) {
+        if (i == 0 || i == 1 || i == 20) {
           style = '';
           if (i == 1) {
             content = '1st complaint<br /><span>' + start + '</span>';
@@ -49,10 +49,10 @@ var Timeline = React.createClass({
       new vis.Timeline(container, timeLineItems, options);
     });
   },
-  render: function(){
+  render: function () {
     return <div></div>
-  },
+  }
 
 });
 
-module.exports = Timeline
+module.exports = Timeline;
