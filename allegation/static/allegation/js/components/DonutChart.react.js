@@ -21,12 +21,12 @@ var DonutChart = React.createClass({
         dataLen,
         drillDataLen,
         brightness,
-        totalComplaints=0,
-        disciplineCount=0;
+        totalComplaints = 0,
+        disciplineCount = 0;
 
       categories = categories.data;
 
-      for(i = 0; i < categories.length; i++){
+      for (i = 0; i < categories.length; i++) {
         var category = categories[i];
         totalComplaints += category.total;
         disciplineCount += category.drilldown.data[0];
@@ -51,7 +51,7 @@ var DonutChart = React.createClass({
           y: data[i].y,
           color: colors[i],
           events: {
-            mouseOver: function(){
+            mouseOver: function () {
               //that.setState({'series': this})
             }
           }
@@ -67,17 +67,17 @@ var DonutChart = React.createClass({
             y: data[i].drilldown.data[j],
             color: Highcharts.Color(colors[i]).brighten(brightness).get(),
             events: {
-              mouseOver: function(){
+              mouseOver: function () {
                 that.setState({
                   'series': this,
                 })
               },
-              mouseOut: function(){
+              mouseOut: function () {
                 that.setState({
                   'series': false,
                 })
               }
-          }
+            }
           });
         }
       }
@@ -129,24 +129,25 @@ var DonutChart = React.createClass({
   render: function () {
     var summary = "";
     var percent = "";
-    if(this.state.series){
+    if (this.state.series) {
       percent = (this.state.series.y / this.state.totalComplaints * 100).toFixed(1);
       summary = <div>
-                  <h4>{this.state.series.name}</h4>
-                  <strong>{this.state.series.y}</strong> out of <strong>{this.state.totalComplaints}</strong> complaints <strong>({percent}%)</strong>
-              </div>
+        <h4>{this.state.series.name}</h4>
+        <strong>{this.state.series.y}</strong> out of <strong>{this.state.totalComplaints}</strong> complaints
+        <strong>({percent}%)</strong>
+      </div>
     }
-    else if(this.state.disciplineCount){
-       percent = (this.state.disciplineCount/this.state.totalComplaints * 100).toFixed(1);
-       summary = <div>
-                  <h4><strong>{this.state.totalComplaints}</strong> Complaints Total</h4>
-                  <strong>{percent}%</strong> of <strong>{this.state.totalComplaints}</strong> resulted in disciplinary action
-                </div>
+    else if (this.state.disciplineCount) {
+      percent = (this.state.disciplineCount / this.state.totalComplaints * 100).toFixed(1);
+      summary = <div>
+        <h4><strong>{this.state.totalComplaints}</strong> Complaints Total</h4>
+        <strong>{percent}%</strong> of <strong>{this.state.totalComplaints}</strong> resulted in disciplinary action
+      </div>
     }
     return <div>
-              <div className="donut-chart"></div>
-              <div className='donut-summary'>{summary}</div>
-           </div>
+      <div className="donut-chart"></div>
+      <div className='donut-summary'>{summary}</div>
+    </div>
   }
 });
 

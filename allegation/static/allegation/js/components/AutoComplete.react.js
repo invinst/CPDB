@@ -17,7 +17,7 @@ function isSameTag(current, other) {
 }
 
 function isDuplicatedTag(tags, tag) {
-  for(var i = 0; i < tags.length; i++) {
+  for (var i = 0; i < tags.length; i++) {
     if (isSameTag(tags[i], tag)) {
       return true;
     }
@@ -27,21 +27,21 @@ function isDuplicatedTag(tags, tag) {
 
 var AutoComplete = React.createClass({
 
-  tagsChanged: function(event){
+  tagsChanged: function (event) {
     if (event.item.layer) {
       event.item.layer.toggleStyle();
     }
     var tags = $(this.getDOMNode()).tagsinput("items");
     FilterActions.replaceFilters(tags);
   },
-  componentDidMount: function() {
+  componentDidMount: function () {
     var element = this.getDOMNode();
     $(element).tagsinput({
       itemValue: 'value',
       itemText: 'text'
     });
 
-    $(element).on('beforeItemAdd', function(event) {
+    $(element).on('beforeItemAdd', function (event) {
       var tags = $(this).tagsinput('items');
       var tag = event.item;
       event.cancel = isDuplicatedTag(tags, tag)
@@ -50,19 +50,19 @@ var AutoComplete = React.createClass({
     var input = $(element).tagsinput("input");
     cpdbAutocomplete(input);
     $(element).on('itemAdded', this.tagsChanged)
-              .on('itemRemoved', this.tagsChanged);
+      .on('itemRemoved', this.tagsChanged);
   },
-  getInitialState: function() {
+  getInitialState: function () {
     return {
-      filters:FilterStore.getAll(this.props.filterkey)
+      filters: FilterStore.getAll(this.props.filterkey)
     }
   },
   /**
    * Event handler for 'change' events coming from the TodoStore
    */
-  _onChange: function(event) {
-    if(event){
-      FilterActions.changeFilter(this.props.filterkey,event.target.value);
+  _onChange: function (event) {
+    if (event) {
+      FilterActions.changeFilter(this.props.filterkey, event.target.value);
     }
     this.setState(this.getInitialState())
   },
@@ -70,11 +70,11 @@ var AutoComplete = React.createClass({
   /**
    * @return {object}
    */
-  render: function() {
+  render: function () {
 
-    return <input id="cpdb-search" className="form-control" placeholder="Search..." />
+    return <input id="cpdb-search" className="form-control" placeholder="Search..."/>
 
-  },
+  }
 
 });
 

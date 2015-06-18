@@ -1,4 +1,4 @@
 module.exports = {
   AVG_COMPLAINTS_NUMBER_GREEN: 20,
   AVG_COMPLAINTS_NUMBER_YELLOW: 60
-}
+};

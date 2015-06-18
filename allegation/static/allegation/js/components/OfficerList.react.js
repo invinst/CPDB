@@ -1,4 +1,3 @@
-
 var HOST = 'http://localhost:8000';
 var React = require('react');
 var Filters = require('./Filters.react');
@@ -8,19 +7,19 @@ var OfficerStore = require("../stores/OfficerStore");
 
 
 var OfficerList = React.createClass({
-  getInitialState: function() {
+  getInitialState: function () {
     return OfficerStore.init();
   },
-  componentDidMount: function() {
+  componentDidMount: function () {
     OfficerStore.addChangeListener(this._onChange);
   },
-  filterByComplaintCount: function(count_start, count_end, e){
+  filterByComplaintCount: function (count_start, count_end, e) {
     e.preventDefault();
     $(".filter_links a").removeClass("active");
     $(e.target).addClass("active");
     OfficerActions.setComplaintsCount(count_start, count_end);
   },
-  render: function(){
+  render: function () {
     var officers = []
     var counter = 0;
     var showMore = this.state.show_more;
@@ -32,10 +31,10 @@ var OfficerList = React.createClass({
       showMore = true;
     }
 
-    for(var id in this.state.officers){
+    for (var id in this.state.officers) {
       var officer = this.state.officers[id];
 
-      if(counter++ >= 12 && !showMore){
+      if (counter++ >= 12 && !showMore) {
         break;
       }
 
@@ -48,8 +47,8 @@ var OfficerList = React.createClass({
     current_row = []
     officer_rows.push(current_row);
     counter = 0;
-    for(var i = 0; i < officers.length; i++){
-      if(counter++ == 6) {
+    for (var i = 0; i < officers.length; i++) {
+      if (counter++ == 6) {
         counter = 1;
         current_row = [];
         officer_rows.push(current_row);
@@ -59,28 +58,28 @@ var OfficerList = React.createClass({
 
     // prepare output
     officer_output = []
-    for(var i = 0; i < officer_rows.length; i++){
+    for (var i = 0; i < officer_rows.length; i++) {
       officer_output.push(<div className="row officers" key={i}>{officer_rows[i]}</div>)
     }
 
     return <div id="officer_list">
-              <div className='row'>
-                <div className='col-md-2'>
-                  <h3 className="margin-top-0">Officers</h3>
-                </div>
-              </div>
-              {officer_output}
-              <a className='pull-right' href="#" onClick={this.showMore}>{showMoreText}</a>
-          </div>
+      <div className='row'>
+        <div className='col-md-2'>
+          <h3 className="margin-top-0">Officers</h3>
+        </div>
+      </div>
+      {officer_output}
+      <a className='pull-right' href="#" onClick={this.showMore}>{showMoreText}</a>
+    </div>
 
   },
-  _onChange: function(){
+  _onChange: function () {
     this.setState(OfficerStore.getAll());
   },
-  showMore: function(e){
+  showMore: function (e) {
     e.preventDefault();
     OfficerActions.setViewMore();
-  },
+  }
 
 })
 
