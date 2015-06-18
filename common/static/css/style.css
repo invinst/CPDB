@@ -328,3 +328,7 @@ a.officer-link {
     color:black;
     text-decoration: none;
 }
+.btn-full-width{
+    display: inline-block;
+    width: 100%;
+}
