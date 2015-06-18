@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^', include('allegation.urls', namespace='allegation')),
     url(r'^search/', include('search.urls', namespace='search')),
     url(r'^officer/', include('officer.urls', namespace='officer')),
+    url(r'^document/', include('document.urls', namespace='document')),
 ]

@@ -49,6 +49,7 @@ INSTALLED_APPS = (
     'corsheaders',
     'search',
     'graph',
+    'document',
 )
 
 MIDDLEWARE_CLASSES = (
