@@ -175,14 +175,12 @@ class Allegation(models.Model):
             return n[0]
         return False
 
-    def save(self,*args,**kwargs):
-        if self.location and not self.point:
-            # geolocate
-            pass
-        super(Allegation, self).save(*args, **kwargs)
 
     def __str__(self):
         return "%s" % self.crid
+
+    class Meta:
+        ordering = ['-incident_date','-start_date']
 
 
 class Investigator(models.Model):
