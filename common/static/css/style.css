@@ -321,3 +321,7 @@ canvas.leaflet-heatmap-layer{
 .disciplined {
     color: #2b8aab;
 }
+.btn-black {
+    color: white;
+    background-color: white;
+}
