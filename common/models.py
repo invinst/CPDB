@@ -108,6 +108,9 @@ OUTCOMES = [
     ['800', 'Resigned'],
     ['900', 'Penalty Not Served'],
 ]
+
+NO_DISCIPLINE_CODES = ('600', '000', '500', '700', '800', '900',' ', None)
+
 FINDINGS = [
     ['UN', 'Unfounded'],
     ['EX', 'Exonerated'],
