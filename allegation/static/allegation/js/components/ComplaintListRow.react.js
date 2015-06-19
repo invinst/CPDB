@@ -54,9 +54,9 @@ var ComplaintListRow = React.createClass({
       <i className='fa fa-file-pdf-o'></i> {documentLabel}
     </a>;
     if (allegation.document_id) {
-      documentLabel = "Download";
-      var link = "http://s3.documentcloud.org/documents/" +
-                  allegation.document_id + "/" + allegation.document_normalized_title +".pdf";
+      documentLabel = "View Document";
+      var link = "http://documentcloud.org/documents/" +
+                  allegation.document_id + "-" + allegation.document_normalized_title +".html";
       documentLink = <a className='btn btn-sm btn-request btn-full-width' href={link}>
         <i className='fa fa-file-pdf-o'></i> {documentLabel}
       </a>
@@ -98,7 +98,7 @@ var ComplaintListRow = React.createClass({
   },
 
   toggleComplaint: function (e) {
-    if (e.target.tagName.toLowerCase() == 'span' && $(e.target).text().toLowerCase() == 'download') {
+    if (e.target.tagName.toLowerCase() == 'span' && $(e.target).text().toLowerCase() == 'view document') {
       return;
     }
     e.preventDefault();
