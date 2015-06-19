@@ -95,7 +95,7 @@ var ComplaintListRow = React.createClass({
 
   },
 
-  toggleComplaint: function(e){
+  toggleComplaint: function (e) {
     if (e.target.tagName.toLowerCase() == 'span' && $(e.target).text().toLowerCase() == 'download') {
       return;
     }
