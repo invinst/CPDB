@@ -119,6 +119,9 @@ OUTCOMES = [
     ['800', 'Resigned'],
     ['900', 'Penalty Not Served'],
 ]
+
+NO_DISCIPLINE_CODES = ('600', '000', '500', '700', '800', '900',' ', None)
+
 FINDINGS = [
     ['UN', 'Unfounded'],
     ['EX', 'Exonerated'],
@@ -171,12 +174,6 @@ class Allegation(models.Model):
         if n:
             return n[0]
         return False
-
-    def save(self,*args,**kwargs):
-        if self.location and not self.point:
-            # geolocate
-            pass
-        super(Allegation, self).save(*args, **kwargs)
 
     def __str__(self):
         return "%s" % self.crid

@@ -10,7 +10,8 @@ from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import D
 
 from common.json_serializer import JSONSerializer
-from common.models import Allegation, Area, AllegationCategory, Officer, ComplainingWitness, PoliceWitness
+from common.models import Allegation, Area, AllegationCategory, Officer
+from common.models import NO_DISCIPLINE_CODES, ComplainingWitness, PoliceWitness
 
 
 class AllegationListView(TemplateView):
@@ -148,6 +149,7 @@ class AllegationAPIView(View):
 
     def get(self, request):
         allegations = self.get_allegations()
+        allegations = allegations.order_by('-incident_date', '-start_date', 'crid')
 
         try:
             start = int(request.GET.get('start', 0))
@@ -240,7 +242,7 @@ class AllegationSummaryApiView(AllegationAPIView):
         count_query = allegations.values_list('cat').annotate(dcount=Count('id'))
         count_by_category = dict(count_query)
 
-        discipline_allegations = allegations.exclude(final_outcome=600)
+        discipline_allegations = allegations.exclude(final_outcome__in=NO_DISCIPLINE_CODES)
         discipline_count_query = discipline_allegations.values_list('cat').annotate(dcount=Count('id'))
         discipline_count_by_category = dict(discipline_count_query)
         categories = AllegationCategory.objects.all().order_by('category')
@@ -271,7 +273,7 @@ class AllegationSummaryApiView(AllegationAPIView):
 
         summary = sorted(summary, key=lambda x: -x['total'])
 
-        maximum = summary[0]['total']
+        maximum = summary[0]['total'] or 1
         for value in summary:
             value['percentToMax'] = value['total'] * 100.0 / maximum
 
@@ -318,7 +320,7 @@ class InvestigationAPIView(View):
             for officer in allegation_officers:
                 complaints = Allegation.objects.filter(officer=officer, investigator=investigator)
                 num_investigated = complaints.count()
-                no_action_taken_count = complaints.filter(final_outcome='600').count()
+                no_action_taken_count = complaints.filter(final_outcome__in=NO_DISCIPLINE_CODES).count()
                 ret['investigation'].append({
                     'count': num_investigated,
                     'no_action_taken_count': no_action_taken_count,
@@ -332,7 +334,7 @@ class InvestigationAPIView(View):
                 for officer in allegation_officers:
                     complaints = Allegation.objects.filter(officer__in=(officer.id, witness.officer_id))
                     num_complaints = complaints.count()
-                    no_action_taken_count = complaints.filter(final_outcome='600').count()
+                    no_action_taken_count = complaints.filter(final_outcome__in=NO_DISCIPLINE_CODES).count()
                     officers.append({
                         'num_complaints': num_complaints,
                         'no_action_taken': no_action_taken_count,
@@ -357,7 +359,7 @@ class AllegationChartApiView(AllegationAPIView):
         count_query = allegations.values_list('cat__category').annotate(dcount=Count('id'))
         count_by_category = dict(count_query)
 
-        discipline_allegations = allegations.exclude(final_outcome=600)
+        discipline_allegations = allegations.exclude(final_outcome__in=NO_DISCIPLINE_CODES)
         discipline_count_query = discipline_allegations.values_list('cat__category').annotate(dcount=Count('id'))
         discipline_count_by_category = dict(discipline_count_query)
 

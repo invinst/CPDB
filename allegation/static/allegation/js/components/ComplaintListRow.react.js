@@ -20,11 +20,12 @@ var ComplaintListRow = React.createClass({
 
   render: function () {
     var complaint = this.props.complaint;
-    var icon = 'fa fa-caret-down';
+    var caretClasses = 'fa fa-caret-down fa-stack-1x fa-inverse';
+
     var showMore = '';
     if (this.state.show) {
       showMore = <ComplaintListRowDetail complaint={complaint}/>
-      icon = 'fa fa-caret-up';
+      caretClasses = 'fa fa-caret-right fa-stack-1x fa-inverse';
     }
     var allegation = complaint.allegation;
     var category = {};
@@ -38,7 +39,9 @@ var ComplaintListRow = React.createClass({
         officerName += " and " + complaint.officers.length + " more";
       }
     }
-
+    if(allegation.incident_date == '1969-12-31 16:00:00'){
+      allegation.incident_date = false;
+    }
     var date_label = "Incident Date";
     var date = allegation.incident_date;
     if(!allegation.incident_date && allegation.start_date) {
@@ -47,14 +50,14 @@ var ComplaintListRow = React.createClass({
     }
     var finding = "fa fa-circle fa-stack-2x " + this.props.finding;
     var documentLabel = "Request";
-    var documentLink = <a className='btn btn-sm btn-request' href="#">
+    var documentLink = <a className='btn btn-sm btn-request btn-full-width' href="#">
       <i className='fa fa-file-pdf-o'></i> {documentLabel}
     </a>;
     if (allegation.document_id) {
       documentLabel = "Download";
       var link = "http://s3.documentcloud.org/documents/" +
                   allegation.document_id + "/" + allegation.document_normalized_title +".pdf";
-      documentLink = <a className='btn btn-sm btn-request' href={link}>
+      documentLink = <a className='btn btn-sm btn-request btn-full-width' href={link}>
         <i className='fa fa-file-pdf-o'></i> {documentLabel}
       </a>
     }
@@ -64,7 +67,7 @@ var ComplaintListRow = React.createClass({
         <div className='col-md-1'>
                 <span className="fa-stack fa-lg">
                   <i className={finding}></i>
-                  <i className="fa fa-check fa-stack-1x fa-inverse"></i>
+                  <i className={caretClasses}></i>
                 </span>
         </div>
         <div className='col-md-3'>
@@ -83,12 +86,10 @@ var ComplaintListRow = React.createClass({
           <div className='title'>Officer</div>
           {officerName}
         </div>
-        <div className='col-md-1'>
+        <div className='col-md-2'>
           {documentLink}
         </div>
-        <div className='col-md-1 text-center'>
-          <a href='#' className='show_more'><i className={icon}></i></a>
-        </div>
+
       </div>
       {showMore}
     </div>

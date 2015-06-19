@@ -31,20 +31,22 @@ var Officer = React.createClass({
       className += " selected";
       selection_state = 'selected';
     }
-    var officer_link = officer.absolute_url;
-    return <div className={className} data-state={selection_state} onClick={this.onClick}>
-      <div className='officer_name'>
-        <strong>
-          {this.props.officer.officer_first.toLowerCase()} {officer.officer_last.toLowerCase()} <a
-          href={officer_link}><i className='fa fa-arrow-right'></i></a>
-        </strong>
-      </div>
-      <div>Unit {officer.unit}</div>
-      <div>
-        <div><strong>{officer.allegations_count}</strong> complaints</div>
-        <div><strong>{officer.discipline_count}</strong> disciplines</div>
-      </div>
-      <div className='checkmark'>
+    var officerLink = officer.absolute_url;
+    return <div className={className} data-state={selection_state}>
+      <a className='officer-link' href={officerLink}>
+
+        <div className='officer_name' onClick={this.openOfficerProfile}>
+          <strong>
+            {this.props.officer.officer_first.toLowerCase()} {officer.officer_last.toLowerCase()}
+          </strong>
+        </div>
+        <div>Unit {officer.unit}</div>
+        <div>
+          <div><strong>{officer.allegations_count}</strong> complaints</div>
+          <div><strong>{officer.discipline_count}</strong> disciplines</div>
+        </div>
+      </a>
+      <div onClick={this.onClick} className='checkmark cursor'>
         <i className='fa fa-check'></i>
       </div>
     </div>
@@ -52,7 +54,8 @@ var Officer = React.createClass({
   },
   onClick: function () {
     OfficerActions.setActiveOfficer(this.props.officer);
-  }
+  },
+
 
 });
 

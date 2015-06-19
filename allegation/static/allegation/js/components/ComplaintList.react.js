@@ -64,7 +64,20 @@ var ComplaintList = React.createClass({
 
       var finding = "";
       var allegation = complaint.allegation;
-      if (allegation.final_outcome && allegation.final_outcome != 'No Action Taken') {
+      noDisciplineOutcomes = [
+          'No Action Taken',
+          'Penalty Not Served',
+          'Reinstated by Court Action',
+          'Resigned',
+          'Reinstated by Police Board',
+          '',
+          'Violation Noted',
+      ]
+      if(allegation.crid =='300536'){
+        console.log(allegation);
+        console.log(noDisciplineOutcomes.indexOf(allegation.final_outcome))
+      }
+      if (allegation.final_outcome && noDisciplineOutcomes.indexOf(allegation.final_outcome) == -1 ) {
         finding = 'disciplined';
       }
       else if (allegation.final_finding == 'Sustained') {
@@ -94,7 +107,7 @@ var ComplaintList = React.createClass({
         </div>
       </div>
       {rows}
-      <div className='pull-right'><a href='#' className='btn btn-primary'>Download Table</a></div>
+      <div className='pull-right'><a href='#' className='btn btn-black'>Download Table</a></div>
     </div>
   },
 
