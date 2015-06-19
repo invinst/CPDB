@@ -1,4 +1,5 @@
 import json
+
 from allegation.tests.views.base import AllegationApiTestBase
 
 

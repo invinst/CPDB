@@ -19,7 +19,6 @@ var MapActions = {
    */
 
 
-
 };
 
 module.exports = MapActions;

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block head-link %}
+	{{block.super}}
+	<link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
+    <link rel="stylesheet" href="{% static 'allegation/css/officer-detail.css' %}" />
+{% endblock %}
+{% block content %}
+    <div id='officer-profile'></div>
+{% endblock %}
+
+{% block footerjs %}
+{{ block.super }}
+  <script>
+    var officer = {{officer|safe}};
+  </script>
+
+  <script src="{% static 'jquery-ui/jquery-ui.min.js' %}"></script>
+  <script src="{% static 'bootstrap-tagsinput/src/bootstrap-tagsinput.js' %}"></script>
+  <script src="{% static 'search/js/search.js' %}"></script>
+  <script src="{% static 'highcharts-release/highcharts.js' %}"></script>
+  <script src="{% static 'allegation/js/bundle.js' %}"></script>
+{% endblock %}

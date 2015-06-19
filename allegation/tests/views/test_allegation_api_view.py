@@ -5,11 +5,11 @@ from django.utils import timezone
 
 from allegation.factories import AreaFactory
 from allegation.tests.views.base import AllegationApiTestBase
-from common.models import Complaint
+from common.models import Allegation, Officer
 
 
 class AllegationApiViewTestCase(AllegationApiTestBase):
-
+    # TODO: Add more tests to confirm about the number of results
     def fetch_allegations(self, **params):
         response = self.client.get('/api/allegations/', params)
         data = json.loads(response.content.decode())
@@ -59,17 +59,40 @@ class AllegationApiViewTestCase(AllegationApiTestBase):
             row['category']['category'].should.equal(cat.category)
 
     def test_filter_by_officer_id(self):
-        pk = self.allegations[0].officers.all()[0].id
-        data = self.fetch_allegations(officers__id=pk)
+        pk = self.allegations[0].officer.pk
+        data = self.fetch_allegations(officer=pk)
 
         for row in data:
-            officer_ids = [o['id'] for o in row['officers']]
-            officer_ids.should.contain(pk)
+            row['officer']['id'].should.equal(pk)
+
+    def test_filter_by_officer_first(self):
+        officer = self.allegations[0].officer
+        officer_part = officer.officer_first[0:2]
+        data = self.fetch_allegations(officer_name=officer_part)
+
+        for row in data:
+            check_names = "%s %s" % (row['officer']['officer_first'], row['officer']['officer_last'])
+            check_names.should.contain(officer_part)
+
+    def test_officer_profile_url(self):
+        cat = self.allegations[0].cat
+        data = self.fetch_allegations(cat=cat.cat_id)
+        for allegation in data:
+            officer_json = allegation['officer']
+            officer = Officer.objects.get(pk=officer_json['id'])
+            officer_json['absolute_url'].should.equal(officer.get_absolute_url())
+
+    def test_filter_by_investigator(self):
+        investigator = self.allegations[0].investigator
+        data = self.fetch_allegations(investigator=investigator.id)
+
+        for row in data:
+            row['allegation']['investigator']['pk'].should.equal(investigator.pk)
 
     def test_filter_by_final_outcome(self):
         data = self.fetch_allegations(final_outcome=600)
         for row in data:
-            Complaint.objects.filter(pk=row['allegation']['id'], final_outcome=600).exists().should.be.true
+            Allegation.objects.filter(pk=row['allegation']['id'], final_outcome=600).exists().should.be.true
 
     def test_filter_by_date_range(self):
         start_date = timezone.now().date()

@@ -1,5 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.contrib.gis.db import models
+from django.core.urlresolvers import reverse
+from django.forms.models import model_to_dict
+from django.template.defaultfilters import slugify
 
 
 class User(AbstractUser):
@@ -14,9 +17,18 @@ class Officer(models.Model):
     appt_date = models.DateField(null=True)
     unit = models.CharField(max_length=5, null=True)
     rank = models.CharField(max_length=5, null=True)
-    star = models.FloatField(null=True, db_index=True)
+    star = models.FloatField(null=True)
     allegations_count = models.IntegerField(default=0)
     discipline_count = models.IntegerField(default=0)
+
+    def get_absolute_url(self):
+        return reverse("officer:detail",
+                       kwargs={
+                           'first_name': slugify(self.officer_first),
+                           'last_name': slugify(self.officer_last),
+                           'badge': slugify(self.star),
+                           'pk': self.pk
+                       })
 
     def __str__(self):
         return "%(last)s %(first)s" % {'last': self.officer_last, 'first': self.officer_first}
@@ -32,7 +44,7 @@ class OfficerHistory(models.Model):
 
 class PoliceWitness(models.Model):
     pwit_id = models.IntegerField(primary_key=True)
-    crid = models.CharField(max_length=30, null=True)
+    crid = models.CharField(max_length=30, null=True, db_index=True)
     gender = models.CharField(max_length=1, null=True)
     race = models.CharField(max_length=50, null=True)
     officer = models.ForeignKey(Officer, null=True)
@@ -40,7 +52,7 @@ class PoliceWitness(models.Model):
 
 class ComplainingWitness(models.Model):
     cwit_id = models.IntegerField(primary_key=True)
-    crid = models.CharField(max_length=30, null=True)
+    crid = models.CharField(max_length=30, null=True, db_index=True)
     gender = models.CharField(max_length=1, null=True)
     race = models.CharField(max_length=50, null=True)
 
@@ -107,6 +119,9 @@ OUTCOMES = [
     ['800', 'Resigned'],
     ['900', 'Penalty Not Served'],
 ]
+
+NO_DISCIPLINE_CODES = ('600', '000', '500', '700', '800', '900',' ', None)
+
 FINDINGS = [
     ['UN', 'Unfounded'],
     ['EX', 'Exonerated'],
@@ -116,31 +131,6 @@ FINDINGS = [
     ['NA', 'No Affidavit'],
     ['DS', 'Discharged']
 ]
-
-
-class Complaint(models.Model):
-    record_id = models.IntegerField(null=True)
-    crid = models.CharField(max_length=30, null=True, db_index=True)
-    officers = models.ManyToManyField(Officer)
-    cat = models.ForeignKey(AllegationCategory, null=True)
-    recc_finding = models.CharField(choices=FINDINGS, max_length=2, null=True, db_index=True)
-    recc_outcome = models.CharField(choices=OUTCOMES, max_length=3, null=True, db_index=True)
-    final_finding = models.CharField(choices=FINDINGS, max_length=2, null=True, db_index=True)
-    final_outcome = models.CharField(choices=OUTCOMES, max_length=3, null=True, db_index=True)
-
-    areas = models.ManyToManyField('Area', blank=True)
-    location = models.CharField(max_length=20, null=True)
-    add1 = models.IntegerField(null=True)
-    add2 = models.CharField(max_length=255, null=True)
-    city = models.CharField(max_length=255, null=True)
-    incident_date = models.DateTimeField(null=True)
-    incident_date_only = models.DateField(null=True, db_index=True)
-    start_date = models.DateField(null=True)
-    end_date = models.DateField(null=True)
-    investigator_name = models.CharField(max_length=255, null=True, db_index=True)
-    investigator = models.ForeignKey('common.Investigator', null=True)
-    point = models.PointField(srid=4326, null=True, blank=True)
-    objects = models.GeoManager()
 
 
 class Allegation(models.Model):
@@ -163,8 +153,13 @@ class Allegation(models.Model):
     start_date = models.DateField(null=True)
     end_date = models.DateField(null=True)
     investigator_name = models.CharField(max_length=255, null=True, db_index=True)
+    investigator = models.ForeignKey('common.Investigator', null=True)
     point = models.PointField(srid=4326, null=True, blank=True)
     objects = models.GeoManager()
+
+    document_id = models.IntegerField(null=True)
+    document_normalized_title = models.CharField(max_length=255, null=True)
+    document_title = models.CharField(max_length=255, null=True)
 
     @property
     def beat(self):
@@ -180,14 +175,9 @@ class Allegation(models.Model):
             return n[0]
         return False
 
-    def save(self,*args,**kwargs):
-        if self.location and not self.point:
-            # geolocate
-            pass
-        super(Allegation, self).save(*args, **kwargs)
-
     def __str__(self):
         return "%s" % self.crid
+
 
 class Investigator(models.Model):
     raw_name = models.CharField(max_length=160)

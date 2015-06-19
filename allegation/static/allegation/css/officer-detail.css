@@ -1,0 +1,85 @@
+.complaint-0 {
+    fill: #7BB4FF;
+}
+.complaint-1 {
+    fill: #628FCA;
+}
+.complaint-2 {
+    fill: #4A6C96;
+}
+.disciplined {
+    fill: #0F70A8;
+}
+.undisciplined {
+    fill: #9FAEB9;
+}
+
+.complaint-rate-label {
+    color: green;
+    font-weight: 400;
+    font-style: italic;
+    padding-top: 1.5em;
+    font-family: 'Vollkorn';
+}
+
+.above .complaint-rate-label {
+    color: red;
+}
+
+.middle .complaint-rate-label {
+    color: yellow;
+}
+
+.star {
+    border-top: 3px solid green;
+    margin-right: 1em;
+}
+
+.above .star {
+    border-top-color: red;
+}
+
+.middle .start {
+    border-top-color: yellow;
+}
+
+#OfficerDetail > .row {
+    background: #f7f7ed;
+}
+
+#OfficerDetail .information {
+    border-top: 1px solid black;
+}
+
+#OfficerDetail .information .title {
+    color: gray;
+}
+
+#OfficerDetail .information table {
+}
+
+#OfficerDetail .information table td {
+    padding: 0 1em;
+    text-align: center;
+}
+
+#OfficerDetail .information table td + td {
+    border-left: 1px solid black;
+}
+
+.vis-timeline {
+    border: none;
+}
+.vis-current-time {
+    display: none;
+}
+
+.donut-chart {
+    height: 200px;
+}
+.donut-summary{
+    margin-left: 97px;
+    margin-bottom: 10px;
+    padding: 0 10px;
+    border-left: 4px solid black;
+}

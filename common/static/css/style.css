@@ -4,7 +4,7 @@ body {
     font-family: 'Source Sans Pro', serif;
 }
 
-h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4 {
+h1, h2, h3,  .h1, .h2, .h3 {
     font-family: 'Vollkorn', serif;
 }
 
@@ -38,6 +38,10 @@ footer {
   width:100%;
   height:650px;
 }
+#officer-complaint-map{
+    width:100%;
+    height:200px;
+}
 
 .navbar.navbar, .navbar-default.navbar {
     background: #ffffff;
@@ -56,6 +60,7 @@ footer {
 .site-title {
     font-style: italic;
     font-size: 30px;
+    font-family: 'Vollkorn', serif;
 }
 
 #summary {
@@ -151,35 +156,109 @@ footer {
     text-transform: capitalize;
     font-size: 16px;
     font-style: italic;
+    font-family: 'Vollkorn';
 
 }
 
 .complaint_list {
     margin-top: 2em;
 }
-
+.complaint_list .filters > span {
+    display: inline-block;
+    padding: 5px 0;
+    border-bottom: 2px solid transparent;
+    margin: 0 14px;
+    cursor: pointer;
+}
+.complaint_list .filters > span.active {
+    border-bottom: 2px solid black;
+}
+.complaint_list .filters > span i{
+    margin-right: 5px;
+    display: inline-block;
+}
 .complaint-row {
     padding:  0.5em 0;
+    font-family: 'Vollkorn';
 }
 
 .complaint-row .title {
     color: gray;
     font-size: 12px;
+    font-family: 'Source Sans Pro';
 }
+.complaint-row .btn-request{
 
+}
 .complaint-row .show_more {
     font-size: 34px;
 }
-
+.timeline-title{
+    color: #989898;
+    font-size: 12px;
+}
+.timeline-date{
+    color: black;
+    font-size: 14px;
+}
+.investigation .progress-bar.discipline{
+    background-color:#709dc0;
+}
+.investigation .progress.complaint{
+    background-color:#c0272d;
+}
+.investigation .results{
+    width:30%;
+    background-color:white;
+    padding:15px;
+    float:left;
+    margin-right:3%;
+}
+.investigation .investigator-name{
+    color:#709dc0;
+}
+.investigation .line{
+    display:inline-block;
+    width:20px;
+    height:3px;
+    margin-right:5px;
+}
+.investigation .blue.line{
+    background-color:#709dc0;
+}
+.investigation .red.line{
+    background-color:#c0272d;
+}
+.timeline-date.start{
+    color: #709dc0;
+}
+.timeline-date.end{
+    color: #c0272d;
+    font-size: 17px;
+}
+.complaint_detail .row.margin-top{
+    margin-top: 20px;
+}
 .complaint_detail {
     background-color: #f7f7ed;
-    padding: 0 7.1% 1em;
+    padding: 1em 7.1% 1em;
     border-bottom: 1px solid black;
 }
-
+.complaint_detail .title{
+    padding-left:5px;
+    border-left:3px solid black;
+    font-size:18px;
+    color:black;
+}
+.complaint_detail .allegation-name{
+    color: #989898;
+    font-style: italic;
+}
 .btn.btn-request:not(.btn-link):not(.btn-flat) {
     background-color: #0079af;
     color: white;
+    font-family: 'Source Sans Pro';
+    text-transform: none;
 }
 .btn.btn-request:hover:not(.btn-link):not(.btn-flat) {
     background-color: #0a90cb;
@@ -193,14 +272,68 @@ footer {
     margin-right: 1.5em;
     color: #9a9a9a;
 }
+
 .filter_links a.active {
     color: black;
     border-bottom: 2px solid black;
 }
 
-.margin-top{
-    margin-top:1em;
+.margin-top {
+    margin-top: 1em;
 }
+.cursor {
+    cursor: pointer;
+}
+
+/* vis.js style customization for timeline */
+.vis-item {
+    background: #f7f7ed;
+    border-width: 0px;
+}
+.vis-line, .vis-dot {
+    border-color: #0079ae;
+}
+.vis-line.end, .vis-dot.end {
+    border-color: #c0272d;
+}
+.vis-item.vis-box {
+    border: none;
+}
+
+.vis-panel.vis-center {
+    border-color: #0079ae;
+}
+
+/* leaflet heatmap */
+canvas.leaflet-heatmap-layer{
+    z-index:-1;
+}
+
+.open-investigation {
+    color: #58a59d;
+}
+.sustained {
+    color: #bd5059;
+}
+.not-sustained {
+    color: #f29f55;
+}
+.disciplined {
+    color: #2b8aab;
+}
+.btn-black {
+    color: white;
+    background-color: white;
+}
+a.officer-link {
+    color:black;
+    text-decoration: none;
+}
+.btn-full-width{
+    display: inline-block;
+    width: 100%;
+}
+
 .padding-left{
     padding-left:5px;
 }

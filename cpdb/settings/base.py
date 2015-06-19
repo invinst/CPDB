@@ -45,9 +45,11 @@ INSTALLED_APPS = (
 
     'common',
     'allegation',
+    'officer',
     'corsheaders',
     'search',
     'graph',
+    'document',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -146,6 +148,8 @@ BOWER_INSTALLED_APPS = (
     'jquery-cookie#1.4.1',
     'c3',
     'components-font-awesome',
+    'moment',
+    'highcharts-release#4.1.6',
 )
 
 MEDIA_URL = '/media/'

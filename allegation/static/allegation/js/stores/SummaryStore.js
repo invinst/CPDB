@@ -17,9 +17,11 @@ var FilterStore = require('./FilterStore');
 var CHANGE_EVENT = 'change';
 var SUMMARY_CHANGE = 'summary-change';
 var _state = {
-  'rows':[],
-  'current':false
-}
+  'rows': [],
+  'current': false
+};
+var _complaints = {};
+
 
 /**
  * Update a TODO item.
@@ -32,56 +34,56 @@ function update(id, updates) {
 }
 
 
-function create(id,complaint){
+function create(id, complaint) {
   _complaints[id] = {
-    'items':filter,
-    'value':"Select a " + id
+    'items': filter,
+    'value': "Select a " + id
   };
 }
 
 
 var SummaryStore = assign({}, EventEmitter.prototype, {
-  update: function(){
+  update: function () {
     var query_string = FilterStore.getQueryString();
-    $.getJSON('/api/allegations/summary/?' + query_string, function(data){
-        _state['rows'] = data.summary;
-        SummaryStore.emitChange();
+    $.getJSON('/api/allegations/summary/?' + query_string, function (data) {
+      _state['rows'] = data.summary;
+      SummaryStore.emitChange();
     })
   },
-  set: function(key, value){
+  set: function (key, value) {
     _state[key] = value;
   },
-  init: function(){
+  init: function () {
     _state = {
-    'rows': [],
-    'current': false
-    }
+      'rows': [],
+      'current': false
+    };
     this.update();
     return _state;
   },
-  getAll : function(type){
-      return _state;
+  getAll: function (type) {
+    return _state;
   },
-  emitChange: function() {
+  emitChange: function () {
     this.emit(CHANGE_EVENT);
   },
-  emitSummaryChange: function() {
+  emitSummaryChange: function () {
     this.emit(SUMMARY_CHANGE);
   },
 
-  addChangeListener: function(callback) {
+  addChangeListener: function (callback) {
     this.on(CHANGE_EVENT, callback);
   },
-  addSummaryListener: function(callback) {
+  addSummaryListener: function (callback) {
     this.on(SUMMARY_CHANGE, callback);
-  },
+  }
 
 });
 
 // Register callback to handle all updates
-AppDispatcher.register(function(action) {
+AppDispatcher.register(function (action) {
 
-  switch(action.actionType){
+  switch (action.actionType) {
     case MapConstants.MAP_REPLACE_FILTERS:
     case MapConstants.MAP_CHANGE_FILTER:
     case MapConstants.MAP_ADD_FILTER:
@@ -89,9 +91,9 @@ AppDispatcher.register(function(action) {
       break;
 
     case MapConstants.SET_SUMMARY:
-
       SummaryStore.set('current', action.type);
       SummaryStore.emitSummaryChange();
+      break;
 
     default:
       break;

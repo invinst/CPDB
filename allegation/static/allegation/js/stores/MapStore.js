@@ -12,103 +12,104 @@ var LeafletClusters = require("leaflet.markercluster");
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var MapConstants = require('../constants/MapConstants');
+var FilterStore = require('./FilterStore');
+
 var assign = require('object-assign');
-var MBX = 'pk.eyJ1Ijoic3RlZmFuZ2VvcmciLCJhIjoiVnBNOEp4byJ9.7i2N7gTV-t_QtAA-kAAlFA';
-var MAP_TYPE = 'mapbox.streets';
 var highlightStyle = {
-    color: '#2262CC',
-    weight: 3,
-    opacity: 0.6,
-    fillOpacity: 0.65,
-    fillColor: '#2262CC'
+  color: '#2262CC',
+  weight: 3,
+  opacity: 0.6,
+  fillOpacity: 0.65,
+  fillColor: '#2262CC'
 };
 var CHANGE_EVENT = 'change';
-var _markers = {}
+var _markers = {};
 var _map = null;
 var _polygons = null;
 var _geo_json_layer = null;
 var _heat = null;
-var _areas = {}
+var _areas = {};
 var _controls = {};
 var _layers = {};
 var _baseLayers = {};
 var _controlDiv = null;
-/**
- * Update a TODO item.
- * @param  {string} id
- * @param {object} updates An object literal containing only the data to be
- *     updated.
- */
+var _ajax_req = null;
+var current_markers = null;
 
 // FIXME: Move it to proper destination
 String.prototype.capitalize = function() {
     return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
 };
 
-function update(id, updates) {
-  _todos[id] = assign({}, _todos[id], updates);
-}
-function create(){
-    L.mapbox.accessToken = MBX;
-    var southWest = L.latLng(41.143501411390766,-88.53057861328125)
-    var northEast = L.latLng(42.474122772511485,-85.39947509765625)
-    var maxBounds = L.LatLngBounds(southWest,northEast)
-    _map = L.mapbox.map('map', MAP_TYPE, {'maxZoom':14,'minZoom':10}).setView([41.85677, -87.6024055], 12);
-    _map.on('click',function(event){
 
-    }).setMaxBounds(maxBounds)
-    createAreas();
-}
-function createAreas(){
-    if(_geo_json_layer){
-        _map.removeLayer(_geo_json_layer);
-    }
-    var normalStyle = {"fillColor": "#eeffee", "fillOpacity": 0.5,'weight': 2};
-    $.get("/api/areas/",function(data){
-        var first_layer_added = false;
-        _geo_json_layer = L.geoJson(data, {
-          pointToLayer: L.mapbox.marker.style,
-          style: function(feature) {
-           return normalStyle
-          },
-          onEachFeature: function(feature, layer){
+function create(dom_id, opts) {
+  dom_id = dom_id ? dom_id : 'map';
+  opts = opts ? opts : {'maxZoom': 17, 'minZoom': 10, 'scrollWheelZoom': false};
+  defaultZoom = 'defaultZoom' in opts ? opts['defaultZoom'] : 12;
 
+  var southWest = L.latLng(41.143501411390766, -88.53057861328125);
+  var northEast = L.latLng(42.474122772511485, -85.39947509765625);
+  var maxBounds = L.LatLngBounds(southWest, northEast);
+  _map = L.mapbox.map(dom_id, MAP_TYPE, opts).setView([41.85677, -87.6024055], defaultZoom);
+  _map.on('click', function (event) {
+
+  }).setMaxBounds(maxBounds);
+  createAreas();
+  MapStore.update();
+}
+
+
+function createAreas() {
+  if (_geo_json_layer) {
+    _map.removeLayer(_geo_json_layer);
+  }
+  var normalStyle = {"fillColor": "#eeffee", "fillOpacity": 0.0, 'weight': 2};
+  $.get("/api/areas/", function (data) {
+    var first_layer_added = false;
+    _geo_json_layer = L.geoJson(data, {
+      pointToLayer: L.mapbox.marker.style,
+      style: function (feature) {
+        return normalStyle
+      },
+      onEachFeature: function (feature, layer) {
+
+        layer.selected = false;
+        var area_type = feature.properties.type;
+        layer.on('mouseover', function () {
+          layer.setStyle(highlightStyle);
+        });
+
+        layer.on('mouseout', function () {
+          if (!layer.selected) {
+            layer.setStyle(normalStyle);
+          }
+        });
+
+        var tagValue = {
+          text: area_type + ": " + feature.properties.name,
+          value: ['areas__id', feature.properties.id],
+          layer: layer
+        };
+
+        layer.toggleStyle = function () {
+          if (!layer.selected) {
+            layer.selected = true;
+            layer.setStyle(highlightStyle);
+          }
+          else {
             layer.selected = false;
-            var area_type = feature.properties.type;
-            layer.on('mouseover',function(){
-              layer.setStyle(highlightStyle);
-            })
-            layer.on('mouseout',function(){
-              if(!layer.selected){
-                layer.setStyle(normalStyle);
-              }
-            })
+            layer.setStyle(normalStyle);
+          }
+        };
 
-            var tagValue = {
-              text: area_type + ": " + feature.properties.name,
-              value: ['areas__id',  feature.properties.id],
-              layer: layer
-            };
-
-            layer.toggleStyle = function(){
-              if(!layer.selected){
-                layer.selected = true;
-                layer.setStyle(highlightStyle);
-              }
-              else{
-                layer.selected = false;
-                layer.setStyle(normalStyle);
-              }
-            }
-
-            layer.on('click', function(){
-              if(!layer.selected){
-                $('#cpdb-search').tagsinput("add", tagValue);
-              }
-              else{
-                $('#cpdb-search').tagsinput("remove", tagValue);
-              }
-            });
+        layer.on('click', function () {
+          if (!layer.selected) {
+            $('#cpdb-search').tagsinput("add", tagValue);
+          }
+          else {
+            $('#cpdb-search').tagsinput("remove", tagValue);
+          }
+        });
 
             if(!(area_type in _layers)){
               _layers[area_type] = L.layerGroup();
@@ -118,14 +119,14 @@ function createAreas(){
                 _map.addLayer(_layers[area_type]);
               }
             }
-            _layers[area_type].addLayer(layer);
+            layers[area_type].addLayer(layer);
           }
-        })
+        });
         // FIXME: Make this code to be better, maybe we should try to customize leaflet control directly instead of
         // using this tricky way
         // We trying create a div then append leaflet control to it, this lead to there's 2 duplicate controls, one in
         // our div and other one in map, so, we try to hide that one on the map
-        var controller = L.control.layers(_baseLayers,_controls,{collapsed:false}).addTo(_map);
+        var controller = L.control.layers(_baseLayers,_controls, {collapsed: false}).addTo(_map);
         var leafletMapController = controller._container;
 
         var _controlDiv = controller.onAdd(_map);
@@ -162,94 +163,108 @@ function createAreas(){
               $(that).removeClass('active');
             }
         })
-    },'json').fail(function(jqxhr, textStatus, error) {
+    }, 'json').fail(function(jqxhr, textStatus, error) {
       var err = textStatus + ", " + error;
-      console.log( "Request Failed: " + err );
+      console.log("Request Failed: " + err);
     })
 }
 
 
 var MapStore = assign({}, EventEmitter.prototype, {
-  getToken: function(){
+  getToken: function () {
     return MBX;
   },
-  getMarkers: function(){
+  getMarkers: function () {
     return _markers;
   },
-  setMarkers: function(markers){
-    current_markers = markers
-    if(_markers){
-        _map.removeLayer(_markers);
+  setMarkers: function (markers) {
+    current_markers = markers;
+    if (_markers) {
+      _map.removeLayer(_markers);
     }
-    if(_heat){
-        _map.removeLayer(_heat);
+    if (_heat) {
+      _map.removeLayer(_heat);
     }
-    if(_markers){
-        _map.removeLayer(_markers)
+    if (_markers) {
+      _map.removeLayer(_markers)
     }
 
-    _heat = L.heatLayer([], {radius: 8})
+    _heat = L.heatLayer([], {radius: 8});
     _markers = L.markerClusterGroup();
     _controls['markers'] = _markers;
     _controls['heat-map'] = _heat;
-    _map.addLayer(_markers)
+    _map.addLayer(_heat);
 
     var marker_length = markers.features.length;
     var start = 0;
-    var count = 1500;
-    var max_markers_to_add = 8000;
+    var count = 3000;
 
-    function addMarkers(){
+    function addMarkers() {
       if (current_markers != markers) {
         return;
       }
       var features = markers.features.slice(start, start + count)
       start += count;
       var featuresMarkers = L.geoJson({features: features}, {
-            pointToLayer: L.mapbox.marker.style,
-            style: function(feature) { return feature.properties; },
-            onEachFeature: function(feature, layer){
-              if(feature.geometry.coordinates && feature.geometry.coordinates[0]){
-                _heat.addLatLng([feature.geometry.coordinates[1],feature.geometry.coordinates[0]])
-              }
-            }
-          });
+        pointToLayer: L.mapbox.marker.style,
+        style: function (feature) {
+          return feature.properties;
+        },
+        onEachFeature: function (feature, layer) {
+          if (feature.geometry.coordinates && feature.geometry.coordinates[0]) {
+            _heat.addLatLng([feature.geometry.coordinates[1], feature.geometry.coordinates[0]])
+          }
+        }
+      });
       _markers.addLayer(featuresMarkers);
 
-      if(start > marker_length){
+      if (start > marker_length) {
         return;
       }
-      if(count < max_markers_to_add){
-        count += 1000;
-      }
 
-      setTimeout(function(){
+
+      setTimeout(function () {
         addMarkers();
       }, 0.5);
     }
+
     addMarkers();
 
   },
-  getMap: function(){
+  getMap: function () {
     return _map;
   },
-  getPolygons: function(){
+  getPolygons: function () {
     return _polygons;
   },
-  init: function(){
-      return create();
+  update: function () {
+    if (!this.getMap()) {
+      return;
+    }
+    var store = this;
+    var query_string = FilterStore.getQueryString();
+    if (_ajax_req) {
+      _ajax_req.abort();
+    }
+    _ajax_req = $.getJSON("/api/allegations/gis/?" + query_string, function (data) {
+      store.setMarkers(data);
+    });
+  },
+  init: function (dom_id, opts) {
+    return create(dom_id, opts);
   }
 });
 
+
 // Register callback to handle all updates
-AppDispatcher.register(function(action) {
-  switch(action.actionType){
+AppDispatcher.register(function (action) {
+  switch (action.actionType) {
     case MapConstants.INIT:
       create(action);
       break;
 
     case MapConstants.MAP_CHANGE_FILTER:
-      if(action.key == 'area_types'){
+      if (action.key == 'area_types') {
         setArea(action.value.value)
       }
       break;
