@@ -68,8 +68,8 @@ var ComplaintListRowDetail = React.createClass({
     }
   },
   renderMap: function (allegation) {
-    var map_div = <div>{address}</div>
-    var address = <div>Exact Address Not Available</div>
+    var map_div = <div>{address}</div>;
+    var address = <div>Exact Address Not Available</div>;
     var hasLatlng = false;
 
     if (allegation.point.lat) {
@@ -95,15 +95,13 @@ var ComplaintListRowDetail = React.createClass({
         <div className='col-md-5 col-md-offset-1'>
           {address}
         </div>
-      </div>
-
-
+      </div>;
     }
-    return map_div
+    return map_div;
 
   },
   renderTimeline: function (allegation) {
-    var timeline = <div></div>
+    var timeline = '';
     if (allegation.start_date || allegation.incident_date || allegation.end_date) {
       var timeline_dom_id = "timeline-" + allegation.crid;
       var timeline_div = <div id={timeline_dom_id}></div>
@@ -119,10 +117,10 @@ var ComplaintListRowDetail = React.createClass({
 
       </div>
     }
-    return timeline
+    return timeline;
   },
   renderInvestigation: function (allegation) {
-    var investigation = <div></div>;
+    var investigation = '';
     var rows = [];
     if (allegation.investigator) {
       if (this.state.investigation) {
@@ -132,7 +130,7 @@ var ComplaintListRowDetail = React.createClass({
 
           var style = {
             'width': ( (investigation.count - investigation.no_action_taken_count) / investigation.count ) * 100 + "%"
-          }
+          };
           var progressStyle = {
             width: 100 + "%"
           };
@@ -180,7 +178,7 @@ var ComplaintListRowDetail = React.createClass({
     return investigation;
   },
   renderPoliceWitness: function () {
-    if (this.state.police_witness) {
+    if (this.state.police_witness && this.state.police_witness.length) {
 
       var witness_rows = [];
       for (var i = 0; i < this.state.police_witness.length; i++) {
@@ -214,19 +212,17 @@ var ComplaintListRowDetail = React.createClass({
             {rows}</div>
         </div>)
       }
-      var witness = <div>N/A</div>;
-      var legend = "";
-      if (witness_rows.length) {
-        witness = <div className='row-fluid'>{witness_rows}</div>
-        legend = <div>
-          <div>
-            <span className='red line'></span>No Punishment
-          </div>
-          <div>
-            <span className='blue line'></span>Discipline Applied
-          </div>
+
+      var witness = <div className='row-fluid'>{witness_rows}</div>
+      var legend = <div>
+        <div>
+          <span className='red line'></span>No Punishment
         </div>
-      }
+        <div>
+          <span className='blue line'></span>Discipline Applied
+        </div>
+      </div>;
+
       return <div className='row margin-top'>
         <div className='col-md-3 investigation'>
           <strong className='title'>Police Witness</strong>
@@ -237,10 +233,10 @@ var ComplaintListRowDetail = React.createClass({
         </div>
       </div>
     }
-    return <div></div>;
+    return '';
   },
   renderWitness: function () {
-    if (this.state.complaint_witness) {
+    if (this.state.complaint_witness && this.state.complaint_witness.length) {
       var rows = [];
 
       for (var i = 0; i < this.state.complaint_witness.length; i++) {
@@ -258,6 +254,7 @@ var ComplaintListRowDetail = React.createClass({
         </div>
       </div>
     }
+    return '';
   },
   render: function () {
     var complaint = this.props.complaint;
@@ -293,7 +290,22 @@ var ComplaintListRowDetail = React.createClass({
       </div>
     }
 
-    var final_outcome = allegation.final_outcome ? allegation.final_outcome : "N/A";
+    var final_outcome = '';
+    if (allegation.final_outcome) {
+      final_outcome = <div className='row margin-top'>
+        <div className='col-md-3'><strong className='title'>Disciplinary Action</strong></div>
+        <div className='col-md-9'>{allegation.final_outcome}</div>
+      </div>
+    }
+
+    var investigationHeader = '';
+    if (timeline || final_outcome || investigation || police_witness || witness ) {
+      investigationHeader = <div className='row margin-top'>
+        <div className='col-md-12'>
+          <h4>Investigation</h4>
+        </div>
+      </div>;
+    }
 
     return <div className="col-md-12 complaint_detail">
       <div className="row-fluid">
@@ -310,16 +322,9 @@ var ComplaintListRowDetail = React.createClass({
             </div>
           </div>
           {map_div}
-          <div className='row margin-top'>
-            <div className='col-md-12'>
-              <h4>Investigation</h4>
-            </div>
-          </div>
+          {investigationHeader}
           {timeline}
-          <div className='row margin-top'>
-            <div className='col-md-3'><strong className='title'>Disciplinary Action</strong></div>
-            <div className='col-md-9'>{final_outcome}</div>
-          </div>
+          {final_outcome}
           {investigation}
           {police_witness}
           {witness}
