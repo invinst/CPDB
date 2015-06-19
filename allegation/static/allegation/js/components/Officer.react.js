@@ -33,7 +33,7 @@ var Officer = React.createClass({
     }
     var officerLink = officer.absolute_url;
     return <div className={className} data-state={selection_state}>
-      <a className='officer-link' href={officerLink} target="_blank">
+      <a className='officer-link' href={officerLink}>
 
         <div className='officer_name' onClick={this.openOfficerProfile}>
           <strong>

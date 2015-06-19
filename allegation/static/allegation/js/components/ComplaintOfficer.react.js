@@ -35,7 +35,7 @@ var ComplaintOfficer = React.createClass({
     /* fixme: merge with officer.react.js */
     var officer_link = officer.absolute_url;
     return <div className={className} data-state={selection_state}>
-      <a className='officer-link' href={officerLink} target="_blank">
+      <a className='officer-link' href={officerLink}>
         <div className='officer_name'>
           <strong>
             {this.props.officer.officer_first.toLowerCase()} {officer.officer_last.toLowerCase()}
