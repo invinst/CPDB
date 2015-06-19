@@ -149,6 +149,7 @@ class AllegationAPIView(View):
 
     def get(self, request):
         allegations = self.get_allegations()
+        allegations = allegations.order_by('-incident_date', '-start_date', 'crid')
 
         try:
             start = int(request.GET.get('start', 0))
