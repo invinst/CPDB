@@ -161,7 +161,12 @@ class JSONSerializer():
             if self.selectedFields is None or field.attname in self.selectedFields:
                 if self.ignoredFields is None or self.currentLoc + field.attname not in self.ignoredFields:
                     self.handle_m2m_field(mod, field)
-        self.stream.seek(self.stream.tell() - 2)
+        if hasattr(mod, 'get_absolute_url'):
+            self.handle_simple('absolute_url')
+            self.stream.write(u': ')
+            self.handle_simple(mod.get_absolute_url())
+        else:
+            self.stream.seek(self.stream.tell() - 2)
         self.end_object()
 
     def handle_queryset(self, queryset):

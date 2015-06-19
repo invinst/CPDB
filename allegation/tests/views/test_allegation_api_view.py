@@ -5,7 +5,7 @@ from django.utils import timezone
 
 from allegation.factories import AreaFactory
 from allegation.tests.views.base import AllegationApiTestBase
-from common.models import Allegation
+from common.models import Allegation, Officer
 
 
 class AllegationApiViewTestCase(AllegationApiTestBase):
@@ -73,6 +73,14 @@ class AllegationApiViewTestCase(AllegationApiTestBase):
         for row in data:
             check_names = "%s %s" % (row['officer']['officer_first'], row['officer']['officer_last'])
             check_names.should.contain(officer_part)
+
+    def test_officer_profile_url(self):
+        cat = self.allegations[0].cat
+        data = self.fetch_allegations(cat=cat.cat_id)
+        for allegation in data:
+            officer_json = allegation['officer']
+            officer = Officer.objects.get(pk=officer_json['id'])
+            officer_json['absolute_url'].should.equal(officer.get_absolute_url())
 
     def test_filter_by_investigator(self):
         investigator = self.allegations[0].investigator

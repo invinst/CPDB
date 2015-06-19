@@ -34,8 +34,17 @@ var ComplaintListRow = React.createClass({
     var officerName = "";
     if (complaint.officer) {
       officerName = complaint.officer.officer_first + " " + complaint.officer.officer_last;
+      if(complaint.officers.length > 0){
+        officerName += " and " + complaint.officers.length + " more";
+      }
     }
 
+    var date_label = "Incident Date";
+    var date = allegation.incident_date;
+    if(!allegation.incident_date && allegation.start_date) {
+      date = allegation.start_date;
+      date_label = "Investigation Start";
+    }
     var finding = "fa fa-circle fa-stack-2x " + this.props.finding;
     var documentLabel = "Request";
     var documentLink = <a className='btn btn-sm btn-request' href="#">
@@ -67,8 +76,8 @@ var ComplaintListRow = React.createClass({
           {allegation.crid}
         </div>
         <div className='col-md-2'>
-          <div className='title'>Incident Date</div>
-          {allegation.incident_date}
+          <div className='title'>{date_label}</div>
+          {date}
         </div>
         <div className='col-md-3'>
           <div className='title'>Officer</div>

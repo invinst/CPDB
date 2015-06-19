@@ -4,6 +4,7 @@ var Filters = require('./Filters.react');
 var ComplaintListStore = require('../stores/ComplaintListStore');
 var MapStore = require('../stores/MapStore');
 var Officer = require("./Officer.react");
+var ComplaintOfficer = require("./ComplaintOfficer.react");
 var ComplaintOfficerList = require("./ComplaintOfficerList.react");
 
 var _timeline = false;
@@ -271,28 +272,23 @@ var ComplaintListRowDetail = React.createClass({
     if (complaint.category) {
       category = complaint.category;
     }
-    var officersInvolved = '';
-    if (complaint.officers) {
-      officersInvolved = <div className="row">
-        <div className='col-md-12'>
-          <h4>Officers Involved</h4>
-        </div>
-        <div>
-          <div className='col-md-12'>
-            <ComplaintOfficerList officers={complaint.officers}/>
-          </div>
-        </div>
-      </div>
+    var officerLabel = "Officer Involved";
+    var officersInvolved = [];
+    if (complaint.officers.length > 0){
+      officerLabel = "Officers Involved";
+      for(var i=0; i < complaint.officers.length; i++) {
+        officersInvolved.push(<div className='col-md-4'><ComplaintOfficer key={i} officer={complaint.officers[i]}/></div>)
+      }
     }
 
     var againstOfficer = '';
     if (complaint.officer) {
       againstOfficer = <div className="row">
         <div className='col-md-12'>
-          <h4>Officer</h4>
+          <h4>{officerLabel}</h4>
         </div>
         <div className='col-md-12'>
-          <ComplaintOfficerList officers={[complaint.officer]}/>
+          <div className='col-md-4'><ComplaintOfficer officer={complaint.officer} /></div> {officersInvolved}
         </div>
       </div>
     }
@@ -309,7 +305,6 @@ var ComplaintListRowDetail = React.createClass({
             </div>
           </div>
           {againstOfficer}
-          {officersInvolved}
           <div className='row'>
             <div className='col-md-12'>
               <strong className='title'>Where</strong>
