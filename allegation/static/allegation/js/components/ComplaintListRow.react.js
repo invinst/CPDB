@@ -98,10 +98,9 @@ var ComplaintListRow = React.createClass({
   },
 
   toggleComplaint: function (e) {
-    if (e.target.tagName.toLowerCase() == 'span' && $(e.target).text().toLowerCase() == 'download') {
+    if ($(e.target).text().toLowerCase().trim() == 'download') {
       return;
     }
-    e.preventDefault();
     this.setState({'show': !this.state.show});
   }
 });
