@@ -36,11 +36,6 @@ var _controlDiv = null;
 var _ajax_req = null;
 var current_markers = null;
 
-// FIXME: Move it to proper destination
-String.prototype.capitalize = function() {
-    return this.replace(/(?:^|\s)\S/g, function(a) { return a.toUpperCase(); });
-};
-
 
 function create(dom_id, opts) {
   dom_id = dom_id ? dom_id : 'map';
