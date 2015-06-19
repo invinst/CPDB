@@ -273,7 +273,7 @@ class AllegationSummaryApiView(AllegationAPIView):
 
         summary = sorted(summary, key=lambda x: -x['total'])
 
-        maximum = summary[0]['total']
+        maximum = summary[0]['total'] or 1
         for value in summary:
             value['percentToMax'] = value['total'] * 100.0 / maximum
 
