@@ -14,19 +14,19 @@ var MapConstants = require('../constants/MapConstants');
 
 var OfficerActions = {
 
-  setViewMore: function(value){
+  setViewMore: function (value) {
     AppDispatcher.dispatch({
       actionType: MapConstants.OFFICER_VIEW_MORE,
-      value:value
+      value: value
     });
   },
-  setActiveOfficer: function(officer){
+  setActiveOfficer: function (officer) {
     AppDispatcher.dispatch({
       actionType: MapConstants.SET_ACTIVE_OFFICER,
-      officer:officer
+      officer: officer
     })
   },
-  setComplaintsCount: function(start, end) {
+  setComplaintsCount: function (start, end) {
     AppDispatcher.dispatch({
       actionType: MapConstants.SET_OFFICER_LIST_FILTER,
       start: start,

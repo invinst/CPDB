@@ -13,30 +13,30 @@ var FilterActions = require('../actions/FilterActions');
 var cx = require('react/lib/cx');
 
 var MapFilterItem = React.createClass({
-  render: function(){
-    return(<option value={this.props.key}>{this.props.label}</option>);
+  render: function () {
+    return (<option value={this.props.key}>{this.props.label}</option>);
   }
-})
+});
 
 
 var MapFilter = React.createClass({
 
-  componentDidMount: function() {
+  componentDidMount: function () {
     //FilterStore.addChangeListener();
     //this.render()
   },
-  getInitialState: function() {
+  getInitialState: function () {
     return {
-      filters:FilterStore.getAll(this.props.filterkey)
+      filters: FilterStore.getAll(this.props.filterkey)
     }
   },
   /**
    * Event handler for 'change' events coming from the TodoStore
    */
-  _onChange: function(event) {
+  _onChange: function (event) {
 
-    if(event){
-      FilterActions.changeFilter(this.props.filterkey,event.target.value);
+    if (event) {
+      FilterActions.changeFilter(this.props.filterkey, event.target.value);
     }
     this.setState(this.getInitialState())
   },
@@ -44,23 +44,22 @@ var MapFilter = React.createClass({
   /**
    * @return {object}
    */
-  render: function() {
+  render: function () {
 
     var options = []
-    for(var key in this.props.options){
-      options.push(<MapFilterItem key={key} label={this.props.options[key]} />)
+    for (var key in this.props.options) {
+      options.push(<MapFilterItem key={key} label={this.props.options[key]}/>)
     }
 
     return <span>{this.props.filterkey}:
-              <select key={this.props.filterkey} onChange={this._onChange} name={this.props.filterkey} value={this.state.value}>
-              <option>Select a {this.props.filterkey}</option>
-              {options}
+              <select key={this.props.filterkey} onChange={this._onChange} name={this.props.filterkey}
+                      value={this.state.value}>
+                <option>Select a {this.props.filterkey}</option>
+                {options}
               </select>
             </span>
 
-  },
-
-
+  }
 
 });
 
