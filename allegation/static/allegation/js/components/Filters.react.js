@@ -13,50 +13,55 @@ var AutoComplete = require('./AutoComplete.react');
 var FilterStore = require('../stores/FilterStore');
 var MapStore = require('../stores/MapStore');
 var _ajax_req = null;
-function getFilterState(){
-  return{
-    'filters':FilterStore.getAll()
+
+
+function getFilterState() {
+  return {
+    'filters': FilterStore.getAll()
   }
 }
 
+
 var Filters = React.createClass({
-  getInitialState: function(){
+  getInitialState: function () {
     return getFilterState()
   },
 
-  componentDidMount: function() {
+  componentDidMount: function () {
     FilterStore.addChangeListener(this._onChange);
     FilterStore.addCreateListener(this._onCreate);
-    if(!this.props.doNotAutLoad){
+    if (!this.props.doNotAutLoad) {
       this._onChange();
     }
   },
   /**
    * @return {object}
    */
-  render: function() {
+  render: function () {
     // This section should be hidden by default
     // and shown when there are todos.
     var allFilters = [];
-    for(var key in this.state.filters){
+    for (var key in this.state.filters) {
 
-      allFilters.push(<MapFilter filterkey={key} key={key} options={this.state.filters[key].items} value={this.state.filters[key].value} />)
+      allFilters.push(<MapFilter filterkey={key} key={key} options={this.state.filters[key].items}
+                                 value={this.state.filters[key].value}/>)
       //FilterStore.addFilter()
     }
 
     return <div>
-                <AutoComplete />
-            <div className='hidden'>
-              {allFilters}
-            </div>
-          </div>
+      <AutoComplete />
+
+      <div className='hidden'>
+        {allFilters}
+      </div>
+    </div>
 
   },
 
-  _onCreate: function() {
+  _onCreate: function () {
     this.setState(getFilterState());
   },
-  _onChange: function() {
+  _onChange: function () {
     this.setState(getFilterState());
     MapStore.update();
   }

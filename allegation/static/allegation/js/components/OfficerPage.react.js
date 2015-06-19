@@ -23,37 +23,37 @@ var FilterActions = require("../actions/FilterActions");
 
 var OfficerPage = React.createClass({
 
-  getInitialState: function() {
+  getInitialState: function () {
     return {};
   },
 
-  componentWillMount: function(){
+  componentWillMount: function () {
     FilterActions.replaceFilters([{
       value: ['officer', this.props.officer.id]
     }]);
   },
 
-  componentDidMount: function() {
+  componentDidMount: function () {
 
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount: function () {
   },
 
   /**
    * @return {object}
    */
-  render: function() {
-  	return <div>
-        <OfficerDetail officer={this.props.officer} />
-        <ComplaintList allegations={this.props.officer.allegations} officer={this.props.officer} />
-      </div>;
+  render: function () {
+    return <div>
+      <OfficerDetail officer={this.props.officer}/>
+      <ComplaintList allegations={this.props.officer.allegations} officer={this.props.officer}/>
+    </div>;
   },
 
   /**
    * Event handler for 'change'  events coming from the MapStore
    */
-  _onChange: function() {
+  _onChange: function () {
 
   }
 

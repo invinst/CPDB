@@ -149,6 +149,7 @@ BOWER_INSTALLED_APPS = (
     'c3',
     'components-font-awesome',
     'moment',
+    'highcharts-release#4.1.6',
 )
 
 MEDIA_URL = '/media/'

@@ -1,4 +1,3 @@
-
 var HOST = 'http://localhost:8000';
 var React = require('react');
 var Filters = require('./Filters.react');
@@ -6,7 +5,7 @@ var MapStore = require('../stores/MapStore');
 var SummaryActions = require('../actions/SummaryActions');
 
 
-function getChildRowState(){
+function getChildRowState() {
   return {
     selected: false
   };
@@ -14,22 +13,22 @@ function getChildRowState(){
 
 
 var SummaryChildRow = React.createClass({
-  getInitialState: function(){
+  getInitialState: function () {
     return getChildRowState();
   },
-  onClick: function(e){
+  onClick: function (e) {
     e.preventDefault();
 
     $(e.target).toggleClass('active');
     $("#cpdb-search").off("itemRemoved");
     $('#cpdb-search').tagsinput("remove", this.props.category.tagValue);
     var tagValue = this.props.subcategory.tagValue;
-    if(this.state.selected) {
+    if (this.state.selected) {
       // normal removal not work
       var items = $('#cpdb-search').tagsinput("items");
-      for(var i = 0; i < items.length; i++){
+      for (var i = 0; i < items.length; i++) {
         var item = items[i];
-        if(item.value[0] == tagValue.value[0] && item.value[1] == tagValue.value[1]) {
+        if (item.value[0] == tagValue.value[0] && item.value[1] == tagValue.value[1]) {
           $('#cpdb-search').tagsinput("remove", item);
           break;
         }
@@ -40,19 +39,19 @@ var SummaryChildRow = React.createClass({
     $("#cpdb-search").on("itemRemoved", $("#cpdb-search").data("itemRemovedListener"));
     this.state.selected = !this.state.selected;
   },
-  render: function(){
+  render: function () {
     return <div className='col-md-6'>
-              <div className="row">
-                <div className="col-md-2">
-                  <strong>{this.props.subcategory.count}</strong>
-                </div>
-                <div className="col-md-10">
-                  <a href="#" className="category-name" onClick={this.onClick}>{this.props.subcategory.name}</a>
-                </div>
-              </div>
-            </div>
+      <div className="row">
+        <div className="col-md-2">
+          <strong>{this.props.subcategory.count}</strong>
+        </div>
+        <div className="col-md-10">
+          <a href="#" className="category-name" onClick={this.onClick}>{this.props.subcategory.name}</a>
+        </div>
+      </div>
+    </div>
 
-  },
-})
+  }
+});
 
-module.exports = SummaryChildRow
+module.exports = SummaryChildRow;

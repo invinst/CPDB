@@ -14,10 +14,10 @@ var MapConstants = require('../constants/MapConstants');
 
 var SummaryActions = {
 
-  setSummary: function(type){
+  setSummary: function (type) {
     AppDispatcher.dispatch({
       actionType: MapConstants.SET_SUMMARY,
-      type:type
+      type: type
     });
   }
 

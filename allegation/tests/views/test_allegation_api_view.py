@@ -63,8 +63,7 @@ class AllegationApiViewTestCase(AllegationApiTestBase):
         data = self.fetch_allegations(officer=pk)
 
         for row in data:
-            officer_ids = [o['id'] for o in row['officers']]
-            officer_ids.should.contain(pk)
+            row['officer']['id'].should.equal(pk)
 
     def test_filter_by_officer_first(self):
         officer = self.allegations[0].officer
@@ -72,9 +71,7 @@ class AllegationApiViewTestCase(AllegationApiTestBase):
         data = self.fetch_allegations(officer_name=officer_part)
 
         for row in data:
-            check_names = ""
-            for o in row['officers']:
-                check_names += "%s %s" % (o['officer_first'], o['officer_last'])
+            check_names = "%s %s" % (row['officer']['officer_first'], row['officer']['officer_last'])
             check_names.should.contain(officer_part)
 
     def test_filter_by_investigator(self):

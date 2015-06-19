@@ -18,6 +18,7 @@
     color: green;
     font-weight: 400;
     font-style: italic;
+    padding-top: 1.5em;
 }
 
 .above .complaint-rate-label {
@@ -41,6 +42,10 @@
     border-top-color: yellow;
 }
 
+#OfficerDetail > .row {
+    background: #f7f7ed;
+}
+
 #OfficerDetail .information {
     border-top: 1px solid black;
 }
@@ -59,4 +64,21 @@
 
 #OfficerDetail .information table td + td {
     border-left: 1px solid black;
+}
+
+.vis-timeline {
+    border: none;
+}
+.vis-current-time {
+    display: none;
+}
+
+.donut-chart {
+    height: 200px;
+}
+.donut-summary{
+    margin-left: 97px;
+    margin-bottom: 10px;
+    padding: 0 10px;
+    border-left: 4px solid black;
 }
