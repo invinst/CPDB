@@ -175,12 +175,8 @@ class Allegation(models.Model):
             return n[0]
         return False
 
-
     def __str__(self):
         return "%s" % self.crid
-
-    class Meta:
-        ordering = ['-incident_date','-start_date']
 
 
 class Investigator(models.Model):
