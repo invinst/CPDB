@@ -38,7 +38,7 @@ var ComplaintListRow = React.createClass({
       allegation.incident_date = false;
     }
     var date_label = "Incident Date";
-    var date = allegation.incident_date;
+    var date = allegation.incident_date_only;
     if(!allegation.incident_date && allegation.start_date) {
       date = allegation.start_date;
       date_label = "Investigation Start";
