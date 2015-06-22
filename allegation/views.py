@@ -17,6 +17,11 @@ from common.models import NO_DISCIPLINE_CODES, ComplainingWitness, PoliceWitness
 class AllegationListView(TemplateView):
     template_name = 'allegation/home.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(AllegationListView, self).get_context_data(**kwargs)
+        context['show_site_title'] = True
+        return context
+
 
 class AreaAPIView(View):
     def get(self, request):
@@ -273,7 +278,7 @@ class AllegationSummaryApiView(AllegationAPIView):
 
         summary = sorted(summary, key=lambda x: -x['total'])
 
-        maximum = summary[0]['total']
+        maximum = summary[0]['total'] or 1
         for value in summary:
             value['percentToMax'] = value['total'] * 100.0 / maximum
 

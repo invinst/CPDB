@@ -28,11 +28,9 @@ var Timeline = React.createClass({
         }
 
         var content = '';
-        if (i == 0 || i == 1 || i == 20) {
+        if (i == 0 || i == 20) {
           style = '';
-          if (i == 1) {
-            content = '<span>' + start + '</span>';
-          } else if (i == 20) {
+          if (i == 20) {
             content = 'Exceeed avg rate<br /><span>' + start + '</span>';
           } else {
             content = 'Joined force<br /><span>' + start + '</span>';
