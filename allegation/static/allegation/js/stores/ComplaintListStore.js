@@ -24,13 +24,19 @@ var _state = {
 
 var ComplaintListStore = assign({}, EventEmitter.prototype, {
   update: function () {
-
-    var query_string = OfficerStore.getQueryString();
-
-    $.getJSON('/api/allegations/?' + query_string, function (data) {
-      _state['complaints'] = data.allegations;
-      ComplaintListStore.emitChange();
+    var queryString = OfficerStore.getQueryString();
+    if (!queryString) {
+      this.changeComplaintList([]);
+      return;
+    }
+    var that = this;
+    $.getJSON('/api/allegations/?' + queryString, function (data) {
+      that.changeComplaintList(data.allegations);
     })
+  },
+  changeComplaintList: function(complaints) {
+    _state['complaints'] = complaints;
+    this.emitChange();
   },
   set: function (key, value) {
     _state[key] = value;

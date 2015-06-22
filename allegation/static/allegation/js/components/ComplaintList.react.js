@@ -7,15 +7,16 @@ var FilterActions = require('../actions/FilterActions');
 
 var ComplaintList = React.createClass({
   getInitialState: function () {
-    var ret = {};
+    var ret = {
+      'complaints': []
+    };
     if (this.props.allegations) {
       ret = ComplaintListStore.init({
         'complaints': this.props.allegations,
         'officer': this.props.officer,
         'activeFilter': 'all'
-      })
-    }
-    else {
+      });
+    } else {
       ret = ComplaintListStore.init();
     }
     return ret;
@@ -27,6 +28,10 @@ var ComplaintList = React.createClass({
     return rows[rowIndex];
   },
   render: function () {
+    if (!this.state.complaints.length) {
+      return <div></div>;
+    }
+
     var rows = [];
     var officer = null;
     if (this.props.officer) {
@@ -40,12 +45,12 @@ var ComplaintList = React.createClass({
       'sustained': 'Sustained',
       'not-sustained': 'Not Sustained',
       'open-investigation': 'Open Investigation'
-    }
+    };
     var filters = [];
     for (var filter in filterNames) {
       var filterClass = "fa fa-circle " + filter;
       var filterIcon = <span><i className={filterClass}></i>{filterNames[filter]}</span>;
-      var active = ""
+      var active = "";
       if (filter == this.state.activeFilter) {
         active = "active";
       }

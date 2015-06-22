@@ -72,7 +72,7 @@ var AutoComplete = React.createClass({
    */
   render: function () {
 
-    return <input id="cpdb-search" className="form-control" placeholder="Search..."/>
+    return <input id="cpdb-search" className="form-control" placeholder="Search by name, neighborhood, or complaint"/>
 
   }
 

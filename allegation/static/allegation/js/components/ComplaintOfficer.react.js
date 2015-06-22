@@ -33,7 +33,7 @@ var ComplaintOfficer = React.createClass({
       selection_state = 'selected';
     }
     /* fixme: merge with officer.react.js */
-    var officer_link = officer.absolute_url;
+    var officerLink = officer.absolute_url;
     return <div className={className} data-state={selection_state}>
       <a className='officer-link' href={officerLink}>
         <div className='officer_name'>

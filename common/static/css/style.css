@@ -176,7 +176,14 @@ footer {
 .complaint_list .filters > span i{
     margin-right: 5px;
     display: inline-block;
+    font-size: 0.7em;
 }
+
+.complaint-row-outcome {
+    font-size: 2em;
+    margin-top: 0.3em;
+}
+
 .complaint-row {
     padding:  0.5em 0;
     font-family: 'Vollkorn';
@@ -240,6 +247,7 @@ footer {
     margin-top: 20px;
 }
 .complaint_detail {
+    display: none;
     background-color: #f7f7ed;
     padding: 1em 7.1% 1em;
     border-bottom: 1px solid black;
@@ -272,6 +280,7 @@ footer {
     margin-right: 1.5em;
     color: #9a9a9a;
 }
+
 .filter_links a.active {
     color: black;
     border-bottom: 2px solid black;
@@ -309,16 +318,16 @@ canvas.leaflet-heatmap-layer{
 }
 
 .open-investigation {
-    color: #58a59d;
+    color: #d39037;
 }
 .sustained {
-    color: #bd5059;
+    color: #c0272d;
 }
 .not-sustained {
-    color: #f29f55;
+    color: #989898;
 }
 .disciplined {
-    color: #2b8aab;
+    color: #0079ae;
 }
 .btn-black {
     color: white;
@@ -331,4 +340,35 @@ a.officer-link {
 .btn-full-width{
     display: inline-block;
     width: 100%;
+}
+
+.padding-left{
+    padding-left:5px;
+}
+/* leaflet controller overrides */
+.leaflet-control-layers label.active {
+    color:blue;
+}
+.leaflet-control-layers-expanded {
+    border:0px;
+    padding:0px;
+}
+.leaflet-control-layers-base {
+    float:left;
+}
+.leaflet-control-layers-separator {
+    display:none;
+}
+.leaflet-control-layers-overlays {
+    float:right;
+}
+.leaflet-control-layers label {
+    display:inline-block;
+    padding: 2px 5px;
+}
+.leaflet-control-layers label:not(:last) {
+    border-right:1px solid grey;
+}
+.leaflet-control-layers label input{
+    display:none;
 }
