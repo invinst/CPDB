@@ -176,7 +176,14 @@ footer {
 .complaint_list .filters > span i{
     margin-right: 5px;
     display: inline-block;
+    font-size: 0.7em;
 }
+
+.complaint-row-outcome {
+    font-size: 2em;
+    margin-top: 0.3em;
+}
+
 .complaint-row {
     padding:  0.5em 0;
     font-family: 'Vollkorn';
@@ -240,6 +247,7 @@ footer {
     margin-top: 20px;
 }
 .complaint_detail {
+    display: none;
     background-color: #f7f7ed;
     padding: 1em 7.1% 1em;
     border-bottom: 1px solid black;
