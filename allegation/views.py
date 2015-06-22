@@ -17,6 +17,11 @@ from common.models import NO_DISCIPLINE_CODES, ComplainingWitness, PoliceWitness
 class AllegationListView(TemplateView):
     template_name = 'allegation/home.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(AllegationListView, self).get_context_data(**kwargs)
+        context['show_site_title'] = True
+        return context
+
 
 class AreaAPIView(View):
     def get(self, request):
