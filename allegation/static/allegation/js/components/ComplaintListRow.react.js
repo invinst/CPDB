@@ -20,13 +20,8 @@ var ComplaintListRow = React.createClass({
 
   render: function () {
     var complaint = this.props.complaint;
-    var caretClasses = 'fa fa-chevron-right fa-stack-1x fa-inverse';
+    var caretClasses = 'fa fa-chevron-right';
 
-    var showMore = '';
-    if (this.state.show) {
-      showMore = <ComplaintListRowDetail complaint={complaint}/>
-      caretClasses = 'fa fa-chevron-down fa-stack-1x fa-inverse';
-    }
     var allegation = complaint.allegation;
     var category = {};
     if (this.props.complaint.category) {
@@ -48,15 +43,15 @@ var ComplaintListRow = React.createClass({
       date = allegation.start_date;
       date_label = "Investigation Start";
     }
-    var finding = "fa fa-circle fa-stack-2x " + this.props.finding;
+    caretClasses = caretClasses + " complaint-row-outcome " + this.props.finding;
     var documentLabel = "Request";
     var documentLink = <a className='btn btn-sm btn-request btn-full-width' href="#">
       <i className='fa fa-file-pdf-o'></i> {documentLabel}
     </a>;
     if (allegation.document_id) {
-      documentLabel = "Download";
-      var link = "http://s3.documentcloud.org/documents/" +
-                  allegation.document_id + "/" + allegation.document_normalized_title +".pdf";
+      documentLabel = "View Document";
+      var link = "http://documentcloud.org/documents/" +
+                  allegation.document_id + "-" + allegation.document_normalized_title +".html";
       documentLink = <a className='btn btn-sm btn-request btn-full-width' href={link} target="_blank">
         <i className='fa fa-file-pdf-o'></i> {documentLabel}
       </a>
@@ -64,11 +59,8 @@ var ComplaintListRow = React.createClass({
 
     return <div className="complaint-row">
       <div className='row cursor' onClick={this.toggleComplaint}>
-        <div className='col-md-1'>
-                <span className="fa-stack fa-lg">
-                  <i className={finding}></i>
-                  <i className={caretClasses}></i>
-                </span>
+        <div className='col-md-1 text-center'>
+          <i className={caretClasses}></i>
         </div>
         <div className='col-md-3'>
           <div className='title'>Misconduct</div>
@@ -91,17 +83,16 @@ var ComplaintListRow = React.createClass({
         </div>
 
       </div>
-      {showMore}
+      <ComplaintListRowDetail complaint={complaint}/>
     </div>
 
 
   },
 
   toggleComplaint: function (e) {
-    if ($(e.target).text().toLowerCase().trim() == 'download') {
-      return;
-    }
-    this.setState({'show': !this.state.show});
+    var row = $(e.target).parents('.complaint-row');
+    row.find('.complaint_detail').slideToggle();
+    row.find('.complaint-row-outcome').toggleClass('fa-chevron-right').toggleClass('fa-chevron-down');
   }
 });
 
