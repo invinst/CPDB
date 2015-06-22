@@ -310,16 +310,16 @@ canvas.leaflet-heatmap-layer{
 }
 
 .open-investigation {
-    color: #58a59d;
+    color: #d39037;
 }
 .sustained {
-    color: #bd5059;
+    color: #c0272d;
 }
 .not-sustained {
-    color: #f29f55;
+    color: #989898;
 }
 .disciplined {
-    color: #2b8aab;
+    color: #0079ae;
 }
 .btn-black {
     color: white;

@@ -20,12 +20,12 @@ var ComplaintListRow = React.createClass({
 
   render: function () {
     var complaint = this.props.complaint;
-    var caretClasses = 'fa fa-caret-down fa-stack-1x fa-inverse';
+    var caretClasses = 'fa fa-chevron-right fa-stack-1x fa-inverse';
 
     var showMore = '';
     if (this.state.show) {
       showMore = <ComplaintListRowDetail complaint={complaint}/>
-      caretClasses = 'fa fa-caret-right fa-stack-1x fa-inverse';
+      caretClasses = 'fa fa-chevron-down fa-stack-1x fa-inverse';
     }
     var allegation = complaint.allegation;
     var category = {};
