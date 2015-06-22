@@ -52,7 +52,7 @@ var ComplaintListRow = React.createClass({
       documentLabel = "View Document";
       var link = "http://documentcloud.org/documents/" +
                   allegation.document_id + "-" + allegation.document_normalized_title +".html";
-      documentLink = <a className='btn btn-sm btn-request btn-full-width' href={link}>
+      documentLink = <a className='btn btn-sm btn-request btn-full-width' href={link} target="_blank">
         <i className='fa fa-file-pdf-o'></i> {documentLabel}
       </a>
     }
