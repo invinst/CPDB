@@ -72,8 +72,8 @@ var ComplaintListRowDetail = React.createClass({
       var that = this;
       $.getJSON('/api/investigation/', {'crid': allegation.crid}, function (data) {
 
-        that.setState(data)
-      })
+        that.setState(data);
+      });
     }
   },
   renderMap: function (allegation) {

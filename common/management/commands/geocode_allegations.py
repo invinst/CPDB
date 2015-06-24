@@ -27,10 +27,9 @@ class Command(BaseCommand):
                 return Point(*feature['geometry']['coordinates'])
         return False
 
-
     def handle(self, *args, **options):
         counter = 0
-        for allegation in Allegation.objects.filter(point=None):
+        for allegation in Allegation.objects.filter():
             city = 'Chicago'
             add1 = ""
             add2 = ""
@@ -40,12 +39,13 @@ class Command(BaseCommand):
                 add2 = allegation.add2
             if allegation.city:
                 city = allegation.city
-            point = False
-            if add1 or add2:
-                address_lookup = "%s %s, %s" % (add1, add2, city)
-                point = self.geocode_address(address_lookup, allegation.beat)
-            elif allegation.beat and allegation.beat.polygon:
-                point = allegation.beat.polygon.centroid
+            point = allegation.point
+            if not point:
+                if add1 or add2:
+                    address_lookup = "%s %s, %s" % (add1, add2, city)
+                    point = self.geocode_address(address_lookup, allegation.beat)
+                elif allegation.beat and allegation.beat.polygon:
+                    point = allegation.beat.polygon.centroid
 
             if point:
                 print(point.y, point.x)

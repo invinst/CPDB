@@ -67,7 +67,6 @@ function createAreas() {
         return normalStyle
       },
       onEachFeature: function (feature, layer) {
-
         layer.selected = false;
         var area_type = feature.properties.type;
         layer.on('mouseover', function () {
@@ -105,59 +104,20 @@ function createAreas() {
             $('#cpdb-search').tagsinput("remove", tagValue);
           }
         });
-
-            if(!(area_type in _layers)){
-              _layers[area_type] = L.layerGroup();
-              _baseLayers[prettyLabels(area_type).capitalize()] = _layers[area_type];
-              if(!first_layer_added && area_type == 'police-districts'){
-                first_layer_added = true;
-                _map.addLayer(_layers[area_type]);
-              }
-            }
-            layers[area_type].addLayer(layer);
+        if(!(area_type in _layers)){
+          _layers[area_type] = L.layerGroup();
+          _baseLayers[prettyLabels(area_type).capitalize()] = _layers[area_type];
+          if(!first_layer_added && area_type == 'police-districts'){
+            first_layer_added = true;
+            _map.addLayer(_baseLayers[prettyLabels(area_type).capitalize()]);
           }
-        });
-        // FIXME: Make this code to be better, maybe we should try to customize leaflet control directly instead of
-        // using this tricky way
-        // We trying create a div then append leaflet control to it, this lead to there's 2 duplicate controls, one in
-        // our div and other one in map, so, we try to hide that one on the map
-        var controller = L.control.layers(_baseLayers,_controls, {collapsed: false}).addTo(_map);
-        var leafletMapController = controller._container;
 
-        var _controlDiv = controller.onAdd(_map);
-        controller._container.remove();
-        $(leafletMapController).hide();
-
-        document.getElementById("controller-div").appendChild(_controlDiv);
-
-        $('.leaflet-control-layers-base label input:checked').each(function(){
-          $(this).closest("label").addClass('active');
-        });
-        $("body").on('mouseup', '.leaflet-control-layers-base label', function(e){
-          $('.leaflet-control-layers-base label:not(checked)').removeClass('active');
-          var that = this;
-
-          if($(that).children('input:checked')){
-            $(that).addClass('active')
-          }
-          else{
-            $(that).removeClass('active');
-          }
-        })
-        $('.leaflet-control-layers-overlays label input:checked').each(function(){
-            $(this).closest("label").addClass('active');
-          });
-        $("body").on('mouseup', '.leaflet-control-layers-overlays label', function(e){
-
-            var that = this;
-            console.log(this,$(that).children('input:checked'));
-            if($(that).children('input:checked')){
-              $(that).addClass('active')
-            }
-            else{
-              $(that).removeClass('active');
-            }
-        })
+        }
+        _layers[area_type].addLayer(layer);
+      }
+    });
+    L.control.layers(_baseLayers,_controls, {collapsed: false}).addTo(_map);
+    console.log(_baseLayers)
     }, 'json').fail(function(jqxhr, textStatus, error) {
       var err = textStatus + ", " + error;
       console.log("Request Failed: " + err);
@@ -166,6 +126,12 @@ function createAreas() {
 
 
 var MapStore = assign({}, EventEmitter.prototype, {
+  getSession: function () {
+    return {'map': {} }
+  },
+  setSession: function () {
+
+  },
   getToken: function () {
     return MBX;
   },
@@ -184,7 +150,7 @@ var MapStore = assign({}, EventEmitter.prototype, {
       _map.removeLayer(_markers)
     }
 
-    _heat = L.heatLayer([], {radius: 8});
+    _heat = L.heatLayer([], {radius: 10});
     _markers = L.markerClusterGroup();
     _controls['markers'] = _markers;
     _controls['heat-map'] = _heat;

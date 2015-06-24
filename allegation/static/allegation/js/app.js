@@ -11,6 +11,8 @@ var React = require('react');
 var CPDBApp = require('./components/CPDBApp.react');
 var Filters = require('./components/Filters.react');
 var OfficerPage = require('./components/OfficerPage.react');
+var SiteTitle = require('./components/SiteTitle.react');
+
 
 React.render(
     <Filters />,
@@ -31,3 +33,7 @@ if(officerProfile) {
         officerProfile
     );
 }
+React.render(
+  <SiteTitle />,
+  document.getElementById('site-title')
+)

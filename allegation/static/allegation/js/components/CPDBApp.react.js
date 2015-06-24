@@ -31,19 +31,28 @@ function getMapState() {
   return {};
 }
 
+HOME_URL = location.pathname;
+
+
 var CPDBApp = React.createClass({
 
   getInitialState: function () {
     return getMapState();
   },
-
+  initShare: function () {
+    if (location.pathname == '/') {
+      $.getJSON('/share/init/', function (data) {
+        HOME_URL = "/" + data.session.hash_id + "/";
+        history.pushState({}, '', HOME_URL);
+      });
+    }
+  },
   componentDidMount: function () {
-    //MapStore.addChangeListener(this._onChange);
     MapStore.init();
+    this.initShare();
   },
 
   componentWillUnmount: function () {
-    //MapStore.removeChangeListener(this._onChange);
   },
 
   /**

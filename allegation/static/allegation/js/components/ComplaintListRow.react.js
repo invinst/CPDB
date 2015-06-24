@@ -3,16 +3,18 @@ var React = require('react');
 var Filters = require('./Filters.react');
 var ComplaintListStore = require('../stores/ComplaintListStore');
 var MapStore = require('../stores/MapStore');
+var FilterStore = require('../stores/FilterStore');
 var Officer = require("./Officer.react");
 var ComplaintOfficerList = require("./ComplaintOfficerList.react");
 var ComplaintListRowDetail = require("./ComplaintListRowDetail.react");
 var _timeline = false;
 
+
 var ComplaintListRow = React.createClass({
   getInitialState: function () {
-    // TODO: save state of show in a store
+    INIT_DATA['opened_complaints'] =  INIT_DATA['opened_complaints'] || [];
     return {
-      'show': false,
+      'show': INIT_DATA['opened_complaints'].indexOf(this.props.complaint.allegation.id) != -1,
       'detail': {}
     }
 
@@ -21,6 +23,12 @@ var ComplaintListRow = React.createClass({
   render: function () {
     var complaint = this.props.complaint;
     var caretClasses = 'fa fa-chevron-right';
+
+    var showMore = '';
+    if (this.state.show) {
+      showMore = <ComplaintListRowDetail complaint={complaint}/>
+      caretClasses = 'fa fa-chevron-down';
+    }
 
     var allegation = complaint.allegation;
     var category = {};
@@ -83,16 +91,28 @@ var ComplaintListRow = React.createClass({
         </div>
 
       </div>
-      <ComplaintListRowDetail complaint={complaint}/>
+      {showMore}
     </div>
 
 
   },
 
   toggleComplaint: function (e) {
-    var row = $(e.target).parents('.complaint-row');
-    row.find('.complaint_detail').slideToggle();
-    row.find('.complaint-row-outcome').toggleClass('fa-chevron-right').toggleClass('fa-chevron-down');
+    var openedComplaints = INIT_DATA['opened_complaints'];
+    var id = this.props.complaint.allegation.id
+    if (this.state.show) {
+      openedComplaints.splice(openedComplaints.indexOf(id), 1);
+    } else {
+      openedComplaints.push(id);
+    }
+    this.setState({
+      show: !this.state.show
+    });
+
+
+    FilterStore.saveSession({
+      opened_complaints: INIT_DATA['opened_complaints']
+    })
   }
 });
 

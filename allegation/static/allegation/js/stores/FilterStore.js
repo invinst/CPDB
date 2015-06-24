@@ -13,10 +13,9 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var MapConstants = require('../constants/MapConstants');
 var assign = require('object-assign');
-
 var CHANGE_EVENT = 'change';
 var CREATE_EVENT = 'change';
-var _filters = {}
+var _filters = {};
 
 
 /**
@@ -27,6 +26,7 @@ var _filters = {}
  */
 function update(id, updates) {
   _filters[id] = assign({}, _filters[id], updates);
+
 }
 
 
@@ -39,7 +39,15 @@ function create(id, filter) {
 
 
 var FilterStore = assign({}, EventEmitter.prototype, {
-
+  getSession: function () {
+    return {
+      filters: _filters
+    };
+  },
+  setSession: function (session) {
+    _filters = session.filters || {};
+    return _filters;
+  },
   getAll: function (type) {
     if (type in _filters) {
       return _filters[type];
@@ -50,14 +58,27 @@ var FilterStore = assign({}, EventEmitter.prototype, {
   },
   update: function (id, updates) {
     update(id, updates);
-    console.log(updates)
     this.emit(CHANGE_EVENT);
   },
   emitChange: function () {
     this.emit(CHANGE_EVENT);
+    this.saveSession(this.getSession());
+  },
+  saveSession: function (sessionData) {
+    $.ajax({
+      url: HOME_URL,
+      data: JSON.stringify(sessionData),
+      success: function (returnData) {
+        console.log(returnData);
+      },
+      contentType: "application/json; charset=utf-8",
+      dataType: 'json',
+      type: 'POST'
+    });
   },
   emitCreate: function () {
     this.emit(CHANGE_EVENT);
+
   },
   replaceFilters: function (filters) {
     _filters = {};
@@ -69,7 +90,7 @@ var FilterStore = assign({}, EventEmitter.prototype, {
         _filters[this.value[0]] = {'value': [this.value[1]]};
       }
     });
-    this.emit(CHANGE_EVENT);
+    this.emitChange();
   },
   /**
    * @param {function} callback
@@ -97,7 +118,7 @@ var FilterStore = assign({}, EventEmitter.prototype, {
       }
     }
     return query;
-  },
+  }
 });
 
 // Register callback to handle all updates
