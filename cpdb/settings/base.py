@@ -50,6 +50,7 @@ INSTALLED_APPS = (
     'search',
     'graph',
     'document',
+    'share',
 )
 
 MIDDLEWARE_CLASSES = (

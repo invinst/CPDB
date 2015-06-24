@@ -247,7 +247,6 @@ footer {
     margin-top: 20px;
 }
 .complaint_detail {
-    display: none;
     background-color: #f7f7ed;
     padding: 1em 7.1% 1em;
     border-bottom: 1px solid black;
@@ -344,31 +343,4 @@ a.officer-link {
 
 .padding-left{
     padding-left:5px;
-}
-/* leaflet controller overrides */
-.leaflet-control-layers label.active {
-    color:blue;
-}
-.leaflet-control-layers-expanded {
-    border:0px;
-    padding:0px;
-}
-.leaflet-control-layers-base {
-    float:left;
-}
-.leaflet-control-layers-separator {
-    display:none;
-}
-.leaflet-control-layers-overlays {
-    float:right;
-}
-.leaflet-control-layers label {
-    display:inline-block;
-    padding: 2px 5px;
-}
-.leaflet-control-layers label:not(:last) {
-    border-right:1px solid grey;
-}
-.leaflet-control-layers label input{
-    display:none;
 }
