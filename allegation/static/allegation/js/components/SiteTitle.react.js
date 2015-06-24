@@ -37,8 +37,6 @@ var SiteTitle = React.createClass({
     }
   },
 
-
-
   enableEditing: function(){
     // contenteditable field set to edit mode.
     this.setState({ editing: true });
