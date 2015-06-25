@@ -6,7 +6,7 @@ from officer.views.officer_detail_view import OfficerDetailView
 from officer.views.timeline_view import TimelineView
 
 
-cache_one_hour = cache_page(3600)
+cache_one_hour = cache_page(86400)
 
 
 urlpatterns = [

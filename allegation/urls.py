@@ -6,7 +6,7 @@ from allegation.views import AllegationAPIView, AllegationGISApiView, AreaAPIVie
 from allegation.views import AllegationSummaryApiView, AllegationListView, OfficerListAPIView
 
 
-cache_view = cache_page(86400)
+cache_view = cache_page(86400 * 90)
 
 
 urlpatterns = [
