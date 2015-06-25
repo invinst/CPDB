@@ -40,10 +40,14 @@ var Officer = React.createClass({
             {this.props.officer.officer_first.toLowerCase()} {officer.officer_last.toLowerCase()}
           </strong>
         </div>
-        <div>Unit {officer.unit}</div>
-        <div>
-          <div><strong>{officer.allegations_count}</strong> complaints</div>
-          <div><strong>{officer.discipline_count}</strong> disciplines</div>
+        <div className='row'>
+          <div className='col-md-12'>
+            <div className='thirty-five  unit'>Unit {officer.unit}</div>
+            <div className='sixty disciplines'>
+              <div>{officer.allegations_count} complaints</div>
+              <div>{officer.discipline_count} disciplines</div>
+            </div>
+          </div>
         </div>
       </a>
       <div onClick={this.onClick} className='checkmark cursor'>
