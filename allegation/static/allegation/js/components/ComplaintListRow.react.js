@@ -8,14 +8,14 @@ var Officer = require("./Officer.react");
 var ComplaintOfficerList = require("./ComplaintOfficerList.react");
 var ComplaintListRowDetail = require("./ComplaintListRowDetail.react");
 var _timeline = false;
-var INIT_DATA = INIT_DATA || {};
+var init_data = typeof(INIT_DATA) == 'undefined' ? {} : INIT_DATA;
 
 
 var ComplaintListRow = React.createClass({
   getInitialState: function () {
-    INIT_DATA['opened_complaints'] =  INIT_DATA['opened_complaints'] || [];
+    init_data['opened_complaints'] =  init_data['opened_complaints'] || [];
     return {
-      'show': INIT_DATA['opened_complaints'].indexOf(this.props.complaint.allegation.id) != -1,
+      'show': init_data['opened_complaints'].indexOf(this.props.complaint.allegation.id) != -1,
       'detail': {}
     }
 
@@ -99,7 +99,7 @@ var ComplaintListRow = React.createClass({
   },
 
   toggleComplaint: function (e) {
-    var openedComplaints = INIT_DATA['opened_complaints'];
+    var openedComplaints = init_data['opened_complaints'];
     var id = this.props.complaint.allegation.id
     if (this.state.show) {
       openedComplaints.splice(openedComplaints.indexOf(id), 1);
@@ -112,7 +112,7 @@ var ComplaintListRow = React.createClass({
 
 
     FilterStore.saveSession({
-      opened_complaints: INIT_DATA['opened_complaints']
+      opened_complaints: init_data['opened_complaints']
     })
   }
 });

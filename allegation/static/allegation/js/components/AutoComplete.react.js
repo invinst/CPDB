@@ -14,8 +14,8 @@ var OfficerStore = require('../stores/OfficerStore');
 var FilterActions = require('../actions/FilterActions');
 var cx = require('react/lib/cx');
 var _sessionData = {};
-var INIT_DATA = INIT_DATA || {};
-var INIT_FILTERS = INIT_FILTERS || {};
+var init_data = typeof(INIT_DATA) == 'undefined' ? {} : INIT_DATA;
+var init_filters = typeof(INIT_FILTERS) == 'undefined' ? {} : INIT_FILTERS;
 
 AUTOCOMPLETE_CATEGORY_NAMES = {
     'crid': 'Complaint ID',
@@ -101,9 +101,9 @@ var AutoComplete = React.createClass({
   getInitialState: function () {
     var filters = {};
     if (INIT_DATA){
-      filters = FilterStore.setSession(INIT_FILTERS);
-      MapStore.setSession(INIT_DATA);
-      OfficerStore.setSession(INIT_DATA);
+      filters = FilterStore.setSession(init_filters);
+      MapStore.setSession(init_data);
+      OfficerStore.setSession(init_data);
     } else {
       filters = FilterStore.getAll(this.props.filterkey);
     }

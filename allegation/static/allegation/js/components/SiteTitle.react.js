@@ -9,12 +9,13 @@
 
 var React = require('react');
 var FilterStore = require("../stores/FilterStore");
-var INIT_DATA = INIT_DATA || {};
+var init_data = typeof(INIT_DATA) == 'undefined' ? {} : INIT_DATA;
+
 
 var SiteTitle = React.createClass({
 
   getInitialState: function () {
-    var initial = INIT_DATA['title'] || "Police Misconduct in Chicago";
+    var initial = init_data['title'] || "Police Misconduct in Chicago";
     return {
       text: initial,
       editing: false
