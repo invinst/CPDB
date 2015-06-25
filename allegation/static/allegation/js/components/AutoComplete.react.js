@@ -14,7 +14,7 @@ var OfficerStore = require('../stores/OfficerStore');
 var FilterActions = require('../actions/FilterActions');
 var cx = require('react/lib/cx');
 var _sessionData = {};
-var init_data = typeof(INIT_DATA) == 'undefined' ? {} : INIT_DATA;
+var init_data = typeof(INIT_DATA) == 'undefined' ? false : INIT_DATA;
 var init_filters = typeof(INIT_FILTERS) == 'undefined' ? {} : INIT_FILTERS;
 
 AUTOCOMPLETE_CATEGORY_NAMES = {
@@ -100,7 +100,7 @@ var AutoComplete = React.createClass({
   },
   getInitialState: function () {
     var filters = {};
-    if (INIT_DATA){
+    if (init_data){
       filters = FilterStore.setSession(init_filters);
       MapStore.setSession(init_data);
       OfficerStore.setSession(init_data);
