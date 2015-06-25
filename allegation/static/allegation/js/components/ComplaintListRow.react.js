@@ -34,7 +34,7 @@ var ComplaintListRow = React.createClass({
         officerName += " and " + complaint.officers.length + " more";
       }
     }
-    if(allegation.incident_date == '1969-12-31 16:00:00'){
+    if(allegation.incident_date && moment(allegation.incident_date).year() <= 1970){
       allegation.incident_date = false;
     }
     var date_label = "Incident Date";
