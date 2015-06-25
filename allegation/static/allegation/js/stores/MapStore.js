@@ -35,6 +35,7 @@ var _baseLayers = {};
 var _controlDiv = null;
 var _ajax_req = null;
 var current_markers = null;
+var _queryString = null;
 
 
 function create(dom_id, opts) {
@@ -203,11 +204,15 @@ var MapStore = assign({}, EventEmitter.prototype, {
       return;
     }
     var store = this;
-    var query_string = FilterStore.getQueryString();
+    var queryString = FilterStore.getQueryString(['areas__id']);
+    if (queryString == _queryString) {
+      return;
+    }
+    _queryString = queryString;
     if (_ajax_req) {
       _ajax_req.abort();
     }
-    _ajax_req = $.getJSON("/api/allegations/gis/?" + query_string, function (data) {
+    _ajax_req = $.getJSON("/api/allegations/gis/?" + queryString, function (data) {
       store.setMarkers(data);
     });
   },
