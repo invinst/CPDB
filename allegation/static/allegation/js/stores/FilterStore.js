@@ -65,11 +65,14 @@ var FilterStore = assign({}, EventEmitter.prototype, {
     this.saveSession(this.getSession());
   },
   saveSession: function (sessionData) {
+    if (!SAVE_STATE) {
+      return;
+    }
     $.ajax({
       url: HOME_URL,
       data: JSON.stringify(sessionData),
       success: function (returnData) {
-        console.log(returnData);
+
       },
       contentType: "application/json; charset=utf-8",
       dataType: 'json',
