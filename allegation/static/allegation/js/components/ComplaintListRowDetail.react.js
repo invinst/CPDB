@@ -23,7 +23,7 @@ var ComplaintListRowDetail = React.createClass({
 
         var items = [];
         var dateFormat = 'MMM DD, YYYY';
-        if(allegation.incident_date == '1969-12-31 16:00:00' || allegation.incident_date == '1970-01-01 00:00:00-05'){
+        if(allegation.incident_date && moment(allegation.incident_date).year() <= 1970){
           allegation.incident_date = false;
         }
         var startDate, endDate;
