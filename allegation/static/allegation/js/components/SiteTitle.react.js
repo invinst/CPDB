@@ -9,6 +9,7 @@
 
 var React = require('react');
 var FilterStore = require("../stores/FilterStore");
+var INIT_DATA = INIT_DATA || {};
 
 var SiteTitle = React.createClass({
 

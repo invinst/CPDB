@@ -14,6 +14,8 @@ var OfficerStore = require('../stores/OfficerStore');
 var FilterActions = require('../actions/FilterActions');
 var cx = require('react/lib/cx');
 var _sessionData = {};
+var INIT_DATA = INIT_DATA || {};
+var INIT_FILTERS = INIT_FILTERS || {};
 
 AUTOCOMPLETE_CATEGORY_NAMES = {
     'crid': 'Complaint ID',
@@ -121,7 +123,6 @@ var AutoComplete = React.createClass({
     $.extend(tempSessionData, MapStore.getSession());
     $.extend(tempSessionData, OfficerStore.getSession());
 
-    console.log(tempSessionData, _sessionData, _.isEqual(tempSessionData, _sessionData));
     if (! _.isEqual(tempSessionData, _sessionData)) {
       _sessionData = _.clone(tempSessionData);
       FilterStore.saveSession(_sessionData);

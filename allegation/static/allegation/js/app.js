@@ -33,7 +33,12 @@ if(officerProfile) {
         officerProfile
     );
 }
-React.render(
-  <SiteTitle />,
-  document.getElementById('site-title')
-)
+
+var siteTitle = document.getElementById('site-title');
+if (siteTitle) {
+    React.render(
+      <SiteTitle />,
+      siteTitle
+    );
+}
+
