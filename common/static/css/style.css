@@ -121,8 +121,8 @@ footer {
 }
 
 .well.officer {
-    background-color: #ebebeb;
-    border-top: 3px solid red;
+    background-color: #f1f1f1;
+    border-top: 5px solid red;
     padding: 15px;
     padding-bottom:25px;
     font-size: 12px;
@@ -141,15 +141,15 @@ footer {
 
 }
 .well.officer.middle {
-    border-top-color: yellow;
+    border-top-color: #d8b421;
 }
 
 .well.officer.bellow {
-    border-top-color: green;
+    border-top-color: #62b28c;
 }
 
 .well.officer.above {
-    border-top-color: red;
+    border-top-color: #c0272d;
 }
 
 .officer_name {
