@@ -1,14 +1,14 @@
 .c3-region.light {
-    fill: green;
+    fill: #a4c683;
 }
 .c3-region.medium {
-    fill: yellow;
+    fill: #ffee84;
 }
 .c3-region.heavy {
-    fill: red;
+    fill: #ff4647;
 }
 .c3-xgrid-focus line {
-    stroke: white;
+    stroke: #0079ae;
 }
 .c3-tooltip-container {
     width: 200px;
@@ -22,6 +22,10 @@
 }
 .tick text {
     font-weight: bold;
+}
+
+.c3-area {
+    opacity: 1
 }
 
 #complained-officers .graph {
