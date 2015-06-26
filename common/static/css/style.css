@@ -49,7 +49,7 @@ footer {
 }
 
 .navbar .navbar-brand, .navbar .navbar-brand:hover, .navbar .navbar-brand:focus {
-    background: #0079af;
+    background: #0079ae;
     color: #ffffff;
     font-family: Helvetica Neue, sans-serif;
     font-size: 20px;
@@ -62,11 +62,15 @@ footer {
     font-size: 30px;
     font-family: 'Vollkorn', serif;
 }
+.navbar .navbar-nav>li.site-title >a {
+    color: #333333;
+}
 
 #summary {
     min-height: 400px;
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 12px;
+    background-color: #f6f6ec;
 }
 
 #summary .progress {
@@ -75,7 +79,7 @@ footer {
 }
 
 #summary .category-name {
-   color: #0079af;
+   color: #0079ae;
 }
 
 #summary .category-name.active{
@@ -96,11 +100,11 @@ footer {
 }
 
 #summary .discipline {
-    background: #709ec1;
+    background: #709dc0;
 }
 
 #summary .complaint {
-    background: #a6b5bf;
+    background: #a5b4be;
 }
 
 #summary .type {
@@ -109,11 +113,11 @@ footer {
 }
 
 #summary .discipline-text {
-    color: #709ec1;
+    color: #709dc0;
 }
 
 #summary .complaint-text {
-    color: #a6b5bf;
+    color: #a5b4be;
 }
 
 #officer_list .officers .col-sm-2 {
@@ -127,6 +131,14 @@ footer {
     padding-bottom:25px;
     font-size: 12px;
     position:relative;
+    color: #989898;
+}
+.well.officer a.officer-link{
+    color: #989898;
+}
+.well.officer.selected a.officer-link {
+    color:#333;
+    text-decoration: none;
 }
 .well.officer > .checkmark{
     position:absolute;
@@ -262,13 +274,16 @@ footer {
     font-style: italic;
 }
 .btn.btn-request:not(.btn-link):not(.btn-flat) {
-    background-color: #0079af;
-    color: white;
+    background-color: #fff;
+    color: #0079ae;
     font-family: 'Source Sans Pro';
     text-transform: none;
+    border: 1px solid #0a90cb;
+    width:140px;
 }
 .btn.btn-request:hover:not(.btn-link):not(.btn-flat) {
     background-color: #0a90cb;
+    color:white;
 }
 
 .complaint-row + .complaint-row {
@@ -317,7 +332,7 @@ canvas.leaflet-heatmap-layer{
 }
 
 .open-investigation {
-    color: #d39037;
+    color: #d8b421;
 }
 .sustained {
     color: #c0272d;
@@ -332,10 +347,7 @@ canvas.leaflet-heatmap-layer{
     color: white;
     background-color: white;
 }
-a.officer-link {
-    color:black;
-    text-decoration: none;
-}
+
 .btn-full-width{
     display: inline-block;
     width: 100%;
