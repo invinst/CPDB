@@ -24,14 +24,8 @@ class AllegationGisApiViewTestCase(AllegationApiTestBase):
 
     def test_return_markers(self):
         area = Area.objects.filter()[0]
-        num_markers = area.allegation_set.all().count()
-        allegations = self.fetch_gis_allegations(areas__id=area.id)
-        num_returned = len(allegations['features'])
-        num_markers.should.equal(num_returned)
-
-    def test_multiple_areas(self):
-        areas = Area.objects.filter()
-        num_markers = len(Allegation.objects.filter(areas=areas).values('crid').distinct())
-        allegations = self.fetch_gis_allegations(areas__id=list(areas.values_list('pk', flat=True)))
+        officer = area.allegation_set.all()[0].officer
+        num_markers = area.allegation_set.filter(officer=officer).count()
+        allegations = self.fetch_gis_allegations(officer=officer.id)
         num_returned = len(allegations['features'])
         num_markers.should.equal(num_returned)

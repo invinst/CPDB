@@ -5,7 +5,7 @@ from django.utils import timezone
 
 from allegation.factories import AreaFactory
 from allegation.tests.views.base import AllegationApiTestBase
-from common.models import Allegation, Officer
+from common.models import Allegation, Officer, Area
 
 
 class AllegationApiViewTestCase(AllegationApiTestBase):
@@ -125,3 +125,10 @@ class AllegationApiViewTestCase(AllegationApiTestBase):
         for allegation in allegations:
             date = datetime.datetime.strptime(allegation['allegation']['incident_date'], response_format).date()
             date.should.equal(start_date)
+
+    def test_multiple_areas(self):
+        areas = Area.objects.filter()
+        num_allegations = len(Allegation.objects.filter(areas=areas).values('crid'))
+        allegations = self.fetch_allegations(areas__id=list(areas.values_list('pk', flat=True)))
+        num_returned = len(allegations)
+        num_allegations.should.equal(num_returned)
