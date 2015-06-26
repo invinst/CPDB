@@ -14,7 +14,7 @@
     font-family: "Glyphicons Halflings";
     line-height: 1;
     display: inline-block;
-    color: #107ac0;
+    color: #0079ae;
 
     position: absolute;
     right: 0;
@@ -23,6 +23,22 @@
 
 .bootstrap-tagsinput input {
     font-family: 'Source Sans Pro', sans-serif;
+}
+
+::-webkit-input-placeholder {
+   color: #989898;
+}
+
+:-moz-placeholder { /* Firefox 18- */
+   color: #989898;
+}
+
+::-moz-placeholder {  /* Firefox 19+ */
+   color: #989898;
+}
+
+:-ms-input-placeholder {
+   color: #989898;
 }
 
 .ui-autocomplete {
