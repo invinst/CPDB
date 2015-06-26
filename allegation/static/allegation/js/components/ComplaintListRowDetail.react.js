@@ -7,22 +7,26 @@ var Officer = require("./Officer.react");
 var ComplaintOfficer = require("./ComplaintOfficer.react");
 var ComplaintOfficerList = require("./ComplaintOfficerList.react");
 
-var _timeline = false;
 
 var ComplaintListRowDetail = React.createClass({
   getInitialState: function () {
-    return {}
+    return {
+      timeline: null
+    }
 
   },
   componentDidMount: function () {
     var allegation = this.props.complaint.allegation;
-    if (!_timeline) {
-      var container = document.getElementById('timeline-' + allegation.crid);
+    if (!this.state.timeline) {
+      var container = document.getElementById("timeline-" + allegation.id);
       if (container) {
 
         var items = [];
         var dateFormat = 'MMM DD, YYYY';
-
+        if(allegation.incident_date && moment(allegation.incident_date).year() <= 1970){
+          allegation.incident_date = false;
+        }
+        var startDate, endDate;
         if (allegation.incident_date) {
           var incidentDate = moment(allegation.incident_date);
           var incidentDateHumanFormat = incidentDate.format(dateFormat);
@@ -33,38 +37,70 @@ var ComplaintListRowDetail = React.createClass({
             content: content,
             start: incidentDate
           });
+          startDate = incidentDate;
+          endDate = incidentDate;
         }
         if (allegation.start_date) {
-          var startDate = moment(allegation.start_date);
+          if(startDate){
+            endDate = moment(allegation.start_date);
+          }
+
+          startDate = moment(allegation.start_date);
           var startDateHumanFormat = startDate.format(dateFormat);
           var content = '<div class="timeline-title">Investigation Start</div><div class="timeline-date start">' +
                         startDateHumanFormat + '</div>';
           items.push({
             id: 2,
             content: content,
-            start: allegation.start_date
+            start: startDate
           });
+
         }
         if (allegation.end_date) {
-          var endDate = moment(allegation.end_date);
+          if(!startDate){
+            startDate = moment(allegation.end_date);
+          }
+          endDate = moment(allegation.end_date);
           var endDateHumanFormat = endDate.format(dateFormat);
           var content = '<div class="timeline-title">Investigation End</div><div class="timeline-date end">' +
                         endDateHumanFormat + '</div>';
           items.push({
             id: 3,
             content: content,
-            start: content,
+            start: endDate,
             className: 'end'
           });
         }
-
+        if (items)
         items = new vis.DataSet(items);
 
         // Configuration for the Timeline
-        var options = {'moveable': false, 'zoomable': false};
-
+        var options = {
+          moveable: false,
+          zoomable: false,
+          margin: 15,
+          showMinorLabels: false,
+          format: {
+            majorLabels: {
+              millisecond: 'MMMM YYYY',
+              second: 'MMMM YYYY',
+              minute: 'MMMM YYYY',
+              hour: 'MMMM YYYY',
+              weekday: 'MMMM YYYY',
+              day: 'MMMM YYYY',
+              month: 'YYYY',
+              year: ''
+            }
+          }
+        };
+        if(startDate && endDate) {
+          options.start = moment(startDate).subtract(1, 'months');
+          options.end = moment(endDate).add(1, 'months');
+        }
         // Create a Timeline
-        _timeline = new vis.Timeline(container, items, options);
+       this.setState({
+         timeline: new vis.Timeline(container, items, options)
+       });
       }
     }
 
@@ -77,7 +113,7 @@ var ComplaintListRowDetail = React.createClass({
     }
   },
   renderMap: function (allegation) {
-    var map_div = <div>{address}</div>;
+    var map_div = "";
     var address = <div>Exact Address Not Available</div>;
     var hasLatlng = false;
 
@@ -97,14 +133,26 @@ var ComplaintListRowDetail = React.createClass({
       else {
         map_image = 'http://api.tiles.mapbox.com/v4/mapbox.streets/url-http%3A%2F%2Fdata.invisible.institute%2Fstatic%2F64x_map_marker.png(' + lng + ',' + lat + ')/' + lng + ',' + lat + ',13/489x300.png?access_token=' + token;
       }
-      map_div = <div className='row'>
-        <div className='map col-md-6'>
-          <img src={map_image}/>
+      map_div = (
+        <div className='row'>
+          <div className='map col-md-6'>
+            <img src={map_image}/>
+          </div>
+          <div className='col-md-5 col-md-offset-1'>
+            {address}
+          </div>
         </div>
-        <div className='col-md-5 col-md-offset-1'>
-          {address}
+      );
+    }
+    if(map_div){
+      map_div = <div>
+        <div className='row'>
+          <div className='col-md-12'>
+            <strong className='title'>Where</strong>
+          </div>
         </div>
-      </div>;
+        {map_div}
+      </div>
     }
     return map_div;
 
@@ -112,7 +160,7 @@ var ComplaintListRowDetail = React.createClass({
   renderTimeline: function (allegation) {
     var timeline = '';
     if (allegation.start_date || allegation.incident_date || allegation.end_date) {
-      var timeline_dom_id = "timeline-" + allegation.crid;
+      var timeline_dom_id = "timeline-" + allegation.id;
       var timeline_div = <div id={timeline_dom_id}></div>
       timeline = <div className='row'>
         <div className='col-md-3 '>
@@ -325,11 +373,6 @@ var ComplaintListRowDetail = React.createClass({
             </div>
           </div>
           {againstOfficer}
-          <div className='row'>
-            <div className='col-md-12'>
-              <strong className='title'>Where</strong>
-            </div>
-          </div>
           {map_div}
           {investigationHeader}
           {timeline}
