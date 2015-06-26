@@ -212,7 +212,7 @@ class AllegationAPIView(View):
 class AllegationGISApiView(AllegationAPIView):
     def get(self, request):
         seen_crids = {}
-        allegations = self.get_allegations()
+        allegations = self.get_allegations(ignore_filters=['areas__id'])
         allegation_dict = {
             "type": "FeatureCollection",
             "features": [],

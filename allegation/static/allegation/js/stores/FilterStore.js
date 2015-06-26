@@ -80,9 +80,12 @@ var FilterStore = assign({}, EventEmitter.prototype, {
   addCreateListener: function (callback) {
     this.on(CREATE_EVENT, callback);
   },
-  getQueryString: function () {
+  getQueryString: function (ignoreFilters) {
     var query = "";
     for (var filterName in _filters) {
+      if (ignoreFilters && ignoreFilters.indexOf(filterName) > -1) {
+        continue;
+      }
       var filter = _filters[filterName];
 
       if (filter['value']) {
