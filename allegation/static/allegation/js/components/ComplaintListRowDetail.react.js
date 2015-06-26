@@ -133,14 +133,16 @@ var ComplaintListRowDetail = React.createClass({
       else {
         map_image = 'http://api.tiles.mapbox.com/v4/mapbox.streets/url-http%3A%2F%2Fdata.invisible.institute%2Fstatic%2F64x_map_marker.png(' + lng + ',' + lat + ')/' + lng + ',' + lat + ',13/489x300.png?access_token=' + token;
       }
-      map_div = <div className='row'>
-        <div className='map col-md-6'>
-          <img src={map_image}/>
+      map_div = (
+        <div className='row'>
+          <div className='map col-md-6'>
+            <img src={map_image}/>
+          </div>
+          <div className='col-md-5 col-md-offset-1'>
+            {address}
+          </div>
         </div>
-        <div className='col-md-5 col-md-offset-1'>
-          {address}
-        </div>
-      </div>;
+      );
     }
     if(map_div){
       map_div = <div>
