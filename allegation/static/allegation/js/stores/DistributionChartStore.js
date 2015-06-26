@@ -38,24 +38,27 @@ function drawChart(col, rotated) {
         label: {
           text: 'Loading data...'
         }
+      },
+      colors: {
+        'No. officers': '#a5b4bd'
       }
     },
     regions: [
       {
         end: AppConstants.AVG_COMPLAINTS_NUMBER_GREEN,
         class: 'light',
-        opacity: .5
+        opacity: 1
       },
       {
         start: AppConstants.AVG_COMPLAINTS_NUMBER_GREEN,
         end: AppConstants.AVG_COMPLAINTS_NUMBER_YELLOW,
         class: 'medium',
-        opacity: .5
+        opacity: 1
       },
       {
         start: AppConstants.AVG_COMPLAINTS_NUMBER_YELLOW,
         class: 'heavy',
-        opacity: .5
+        opacity: 1
       }
     ],
     point: {

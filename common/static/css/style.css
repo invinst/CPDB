@@ -49,7 +49,7 @@ footer {
 }
 
 .navbar .navbar-brand, .navbar .navbar-brand:hover, .navbar .navbar-brand:focus {
-    background: #0079af;
+    background: #0079ae;
     color: #ffffff;
     font-family: Helvetica Neue, sans-serif;
     font-size: 20px;
@@ -62,11 +62,15 @@ footer {
     font-size: 30px;
     font-family: 'Vollkorn', serif;
 }
+.navbar .navbar-nav>li.site-title >a {
+    color: #333333;
+}
 
 #summary {
     min-height: 400px;
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 12px;
+    background-color: #f6f6ec;
 }
 
 #summary .progress {
@@ -75,7 +79,7 @@ footer {
 }
 
 #summary .category-name {
-   color: #0079af;
+   color: #0079ae;
 }
 
 #summary .category-name.active{
@@ -96,11 +100,11 @@ footer {
 }
 
 #summary .discipline {
-    background: #709ec1;
+    background: #709dc0;
 }
 
 #summary .complaint {
-    background: #a6b5bf;
+    background: #a5b4be;
 }
 
 #summary .type {
@@ -109,11 +113,11 @@ footer {
 }
 
 #summary .discipline-text {
-    color: #709ec1;
+    color: #709dc0;
 }
 
 #summary .complaint-text {
-    color: #a6b5bf;
+    color: #a5b4be;
 }
 
 #officer_list .officers .col-sm-2 {
@@ -121,12 +125,20 @@ footer {
 }
 
 .well.officer {
-    background-color: #ebebeb;
-    border-top: 3px solid red;
+    background-color: #f1f1f1;
+    border-top: 5px solid red;
     padding: 15px;
     padding-bottom:25px;
     font-size: 12px;
     position:relative;
+    color: #989898;
+}
+.well.officer a.officer-link{
+    color: #989898;
+}
+.well.officer.selected a.officer-link {
+    color:#333;
+    text-decoration: none;
 }
 .well.officer > .checkmark{
     position:absolute;
@@ -141,15 +153,15 @@ footer {
 
 }
 .well.officer.middle {
-    border-top-color: yellow;
+    border-top-color: #d8b421;
 }
 
 .well.officer.bellow {
-    border-top-color: green;
+    border-top-color: #62b28c;
 }
 
 .well.officer.above {
-    border-top-color: red;
+    border-top-color: #c0272d;
 }
 
 .officer_name {
@@ -262,13 +274,16 @@ footer {
     font-style: italic;
 }
 .btn.btn-request:not(.btn-link):not(.btn-flat) {
-    background-color: #0079af;
-    color: white;
+    background-color: #fff;
+    color: #0079ae;
     font-family: 'Source Sans Pro';
     text-transform: none;
+    border: 1px solid #0a90cb;
+    width:140px;
 }
 .btn.btn-request:hover:not(.btn-link):not(.btn-flat) {
     background-color: #0a90cb;
+    color:white;
 }
 
 .complaint-row + .complaint-row {
@@ -317,7 +332,7 @@ canvas.leaflet-heatmap-layer{
 }
 
 .open-investigation {
-    color: #d39037;
+    color: #d8b421;
 }
 .sustained {
     color: #c0272d;
@@ -332,10 +347,7 @@ canvas.leaflet-heatmap-layer{
     color: white;
     background-color: white;
 }
-a.officer-link {
-    color:black;
-    text-decoration: none;
-}
+
 .btn-full-width{
     display: inline-block;
     width: 100%;
@@ -343,4 +355,56 @@ a.officer-link {
 
 .padding-left{
     padding-left:5px;
+}
+/* leaflet controller overrides */
+.leaflet-control-layers label.active {
+    color:blue;
+}
+.leaflet-control-layers-expanded {
+    border:0px;
+    padding:0px;
+}
+.leaflet-control-layers-base {
+    float:left;
+}
+.leaflet-control-layers-separator {
+    display:none;
+}
+.leaflet-control-layers-overlays {
+    float:right;
+}
+.leaflet-control-layers label {
+    display:inline-block;
+    padding: 2px 5px;
+}
+.leaflet-control-layers label:not(:last) {
+    border-right:1px solid #989898;
+}
+.leaflet-control-layers label input{
+    display:none;
+}
+.tright{
+    text-align: right;
+}
+.fourty{
+    width: 40%;
+    float: left;
+}
+.sixty{
+    width: 60%;
+    float: left;
+}
+.officer-link .unit{
+    padding-right:5px;
+    color: #989898;
+    font-weight: bold;
+}
+.officer-link .disciplines{
+    padding-left: 5px;
+    border-left: 1px solid #989898;
+    font-weight: 400;
+}
+.thirty-five{
+    width: 35%;
+    float: left;
 }

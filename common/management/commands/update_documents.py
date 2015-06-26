@@ -39,4 +39,8 @@ class Command(BaseCommand):
                 allegation.document_id = doc_id
                 allegation.document_normalized_title = normalized_title
                 allegation.document_title = title
-                allegation.save()
+            else:
+                allegation.document_id = 0
+                allegation.document_normalized_title = ''
+                allegation.document_title = ''
+            allegation.save()
