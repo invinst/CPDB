@@ -15,6 +15,9 @@ var Timeline = React.createClass({
 
       var items = data.items;
       for (var i = 0; i < items.length; i++) {
+        if (!items[i]) {
+          continue;
+        }
         var style = 'display: none';
         var start = moment(items[i]);
         if(start == "Invalid date"){
