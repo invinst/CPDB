@@ -8,7 +8,7 @@ var Officer = require("./Officer.react");
 var ComplaintOfficerList = require("./ComplaintOfficerList.react");
 var ComplaintListRowDetail = require("./ComplaintListRowDetail.react");
 var _timeline = false;
-var init_data = typeof(INIT_DATA) == 'undefined' ? {'opened_complaints':[]} : INIT_DATA;
+var init_data = !INIT_DATA ? {'opened_complaints':[]} : INIT_DATA;
 
 
 var ComplaintListRow = React.createClass({
