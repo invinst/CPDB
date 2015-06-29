@@ -310,7 +310,7 @@ footer {
 
 /* vis.js style customization for timeline */
 .vis-item {
-    background: #f7f7ed;
+    background-color: transparent;
     border-width: 0px;
 }
 .vis-line, .vis-dot {

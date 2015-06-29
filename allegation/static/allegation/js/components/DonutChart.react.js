@@ -11,119 +11,73 @@ var DonutChart = React.createClass({
   componentDidMount: function () {
     var container = this.getDOMNode();
     var that = this;
-    $.getJSON('/api/allegations/chart/', {'officer': officer.id}, function (categories) {
-      var colors = Highcharts.getOptions().colors,
-        data = [],
-        browserData = [],
-        versionsData = [],
-        i,
-        j,
-        dataLen,
-        drillDataLen,
-        brightness,
-        totalComplaints = 0,
-        disciplineCount = 0;
+    var colors = ["#a5b4be", '#0079ae'],
+      browserData = [],
+      i,
+      dataLen,
+      totalComplaints = 0,
+      disciplineCount = 0;
 
-      categories = categories.data;
+    var data = [{
+      name: "Disciplined",
+      y: officer.discipline_count,
+      color: "#a5b4be"
+    }, {
+      name: "Not disciplined",
+      y: officer.allegations_count - officer.discipline_count,
+      color: '#0079ae'
+    }];
 
-      for (i = 0; i < categories.length; i++) {
-        var category = categories[i];
-        totalComplaints += category.total;
-        disciplineCount += category.drilldown.data[0];
-        var row = {
-          name: category.name,
-          y: category.total,
-          color: colors[i],
-          drilldown: category.drilldown
-        };
-        data.push(row);
-      }
-      console.log(data);
+    dataLen = data.length;
 
-      dataLen = data.length;
+    // Build the data arrays
+    for (i = 0; i < dataLen; i += 1) {
 
-      // Build the data arrays
-      for (i = 0; i < dataLen; i += 1) {
-
-        // add browser data
-        browserData.push({
-          name: data[i].name,
-          y: data[i].y,
-          color: colors[i],
-          events: {
-            mouseOver: function () {
-              //that.setState({'series': this})
-            }
+      // add browser data
+      browserData.push({
+        name: data[i].name,
+        y: data[i].y,
+        color: colors[i],
+        events: {
+          mouseOver: function () {
+            //that.setState({'series': this})
           }
-        });
-
-        // add version data
-        drillDataLen = data[i].drilldown.data.length;
-        for (j = 0; j < drillDataLen; j += 1) {
-          brightness = 0.2 - (j / drillDataLen) / 5;
-          var seriesData = data[i];
-          versionsData.push({
-            name: data[i].drilldown.categories[j],
-            y: data[i].drilldown.data[j],
-            color: Highcharts.Color(colors[i]).brighten(brightness).get(),
-            events: {
-              mouseOver: function () {
-                that.setState({
-                  'series': this,
-                })
-              },
-              mouseOut: function () {
-                that.setState({
-                  'series': false,
-                })
-              }
-            }
-          });
         }
-      }
-      that.setState({
-        'totalComplaints': totalComplaints,
-        'disciplineCount': disciplineCount,
-      })
-
-      // Create the chart
-      $(container).find(".donut-chart").highcharts({
-        chart: {
-          type: 'pie',
-          backgroundColor: 'transparent'
-        },
-        credits: false,
-        title: {
-          text: ''
-        },
-        plotOptions: {
-          pie: {
-            shadow: false,
-            center: ['50%', '50%']
-          }
-        },
-        tooltip: {
-          valueSuffix: ''
-        },
-        series: [{
-          name: 'Result',
-          data: versionsData,
-          size: '80%',
-          innerSize: '78%',
-          dataLabels: {
-            enabled: false
-          }
-        }, {
-          name: 'Category',
-          size: '100%',
-          innerSize: '80%',
-          data: browserData,
-          dataLabels: {
-            enabled: false
-          }
-        }]
       });
+    }
+    that.setState({
+      'totalComplaints': totalComplaints,
+      'disciplineCount': disciplineCount
+    });
 
+    // Create the chart
+    $(container).find(".donut-chart").highcharts({
+      chart: {
+        type: 'pie',
+        backgroundColor: 'transparent'
+      },
+      credits: false,
+      title: {
+        text: ''
+      },
+      plotOptions: {
+        pie: {
+          shadow: false,
+          center: ['50%', '50%']
+        }
+      },
+      tooltip: {
+        valueSuffix: ''
+      },
+      series: [{
+        name: 'Category',
+        size: '100%',
+        innerSize: '70%',
+        data: browserData,
+        dataLabels: {
+          enabled: false
+        }
+      }]
     });
   },
   render: function () {
