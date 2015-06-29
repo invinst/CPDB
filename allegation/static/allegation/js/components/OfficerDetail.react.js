@@ -172,13 +172,11 @@ var OfficerDetail = React.createClass({
         </div>
       </div>
       <div className="row">
-        <div className="col-md-4">
-          <Map officer={officer} style={mapStyle}/>
-        </div>
-        <div className="col-md-4">
+
+        <div className="col-md-6">
           <Timeline officer={officer}/>
         </div>
-        <div className="col-md-4">
+        <div className="col-md-6">
           <DonutChart officer={officer}/>
         </div>
       </div>
