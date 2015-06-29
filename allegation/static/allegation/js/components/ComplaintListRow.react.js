@@ -8,9 +8,12 @@ var Officer = require("./Officer.react");
 var ComplaintOfficerList = require("./ComplaintOfficerList.react");
 var ComplaintListRowDetail = require("./ComplaintListRowDetail.react");
 var _timeline = false;
+var init_data = !INIT_DATA ? {'opened_complaints':[]} : INIT_DATA;
+
 
 var ComplaintListRow = React.createClass({
   getInitialState: function () {
+    init_data['opened_complaints'] =  init_data['opened_complaints'] || [];
     return {
       'show': init_data['opened_complaints'].indexOf(this.props.complaint.allegation.id) != -1,
       'detail': {}
