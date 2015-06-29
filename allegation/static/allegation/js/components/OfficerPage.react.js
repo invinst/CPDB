@@ -17,6 +17,7 @@ var HOST = 'http://localhost:8000';
 var React = require('react');
 var ComplaintList = require('./ComplaintList.react');
 var OfficerDetail = require('./OfficerDetail.react');
+var Officer = require('./Officer.react');
 var Filters = require('./Filters.react');
 var FilterActions = require("../actions/FilterActions");
 
@@ -44,8 +45,24 @@ var OfficerPage = React.createClass({
    * @return {object}
    */
   render: function () {
+    var related = [];
+    var relatedOfficers = "";
+    if (this.props.related.length > 0) {
+      for(var i = 0; i <= this.props.related.length; i++) {
+        var officer = this.props.related[i];
+        related.push(<div className='col-md-2'><Officer officer={officer} noClick={true} /></div>)
+      }
+    }
+    if(related){
+      relatedOfficers = <div>
+        <div className='row'><h3 className='col-md-12'>Related Officers</h3></div>
+        <div className='row'>{related}</div>
+      </div>
+    }
+    console.log(related, this.props.related)
     return <div>
       <OfficerDetail officer={this.props.officer}/>
+      {relatedOfficers}
       <ComplaintList allegations={this.props.officer.allegations} officer={this.props.officer}/>
     </div>;
   },
