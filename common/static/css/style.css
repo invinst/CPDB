@@ -408,3 +408,13 @@ canvas.leaflet-heatmap-layer{
     width: 35%;
     float: left;
 }
+.absolute{
+    position:absolute;
+}
+.relative{
+    position:relative;
+}
+.top-left{
+    top:0px;
+    left:0px;
+}
