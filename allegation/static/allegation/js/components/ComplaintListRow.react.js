@@ -53,6 +53,7 @@ var ComplaintListRow = React.createClass({
       date_label = "Investigation Start";
     }
     caretClasses = caretClasses + " complaint-row-outcome " + this.props.finding;
+    var rowClassName = 'complaint-row ' + this.props.finding;
     var documentLabel = "Request";
     var documentLink = <a className='btn btn-sm btn-request ' href="#">
       <i className='fa fa-file-pdf-o'></i> {documentLabel}
@@ -66,7 +67,7 @@ var ComplaintListRow = React.createClass({
       </a>
     }
 
-    return <div className="complaint-row">
+    return <div className={rowClassName}>
       <div className='row cursor' onClick={this.toggleComplaint}>
         <div className='col-md-1 text-center'>
           <i className={caretClasses}></i>

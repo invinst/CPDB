@@ -331,18 +331,23 @@ canvas.leaflet-heatmap-layer{
     z-index:-1;
 }
 
-.open-investigation {
+.fa.open-investigation {
     color: #d8b421;
 }
-.sustained {
+.fa.sustained {
     color: #c0272d;
 }
-.not-sustained {
+.fa.not-sustained {
     color: #989898;
 }
-.disciplined {
+.fa.disciplined {
     color: #0079ae;
 }
+
+.complaint-row.disciplined {
+    background: #ffe3e7;
+}
+
 .btn-black {
     color: white;
     background-color: white;
