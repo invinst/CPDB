@@ -14,10 +14,14 @@ var Timeline = React.createClass({
       var timeLineItems = [];
 
       var items = data.items;
+
       for (var i = 0; i < items.length; i++) {
+        if (!items[i]) {
+          continue;
+        }
         var style = 'display: none';
         var start = moment(items[i]);
-        if(start == "Invalid date"){
+        if (start == "Invalid date") {
           continue
         }
 
@@ -33,6 +37,11 @@ var Timeline = React.createClass({
           style: style
         });
       }
+
+      if (!timeLineItems.length) {
+        return;
+      }
+
       timeLineItems = new vis.DataSet(timeLineItems);
 
       // Configuration for the Timeline
