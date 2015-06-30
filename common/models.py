@@ -33,6 +33,13 @@ class Officer(models.Model):
     def __str__(self):
         return "%(last)s %(first)s" % {'last': self.officer_last, 'first': self.officer_first}
 
+    @property
+    def tag_value(self):
+        return {
+            'text': 'Officer: %s' % self,
+            'value': self.pk
+        }
+
 
 class OfficerHistory(models.Model):
     officer = models.ForeignKey(Officer, null=True)
@@ -66,6 +73,13 @@ class AllegationCategory(models.Model):
 
     def __str__(self):
         return str(self.allegation_name)
+
+    @property
+    def tag_value(self):
+        return {
+            'text': 'Allegation type: %s' % self,
+            'value': self.pk
+        }
 
 
 class Area(models.Model):

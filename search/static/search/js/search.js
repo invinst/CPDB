@@ -22,9 +22,9 @@ function prettyLabels(label, term){
             var widget = this;
             var currentCategory = "";
             $.each(items, function (index, item) {
-                if (item.category_name != currentCategory) {
-                    ul.append(category_elem(item.category_name));
-                    currentCategory = item.category_name;
+                if (item.category != currentCategory) {
+                    ul.append(category_elem(AUTOCOMPLETE_CATEGORY_NAMES[item.category]));
+                    currentCategory = item.category;
                 }
                 widget._renderItemData(ul, item);
             });
@@ -56,9 +56,6 @@ function cpdbAutocomplete($input){
                     term: request.term
                 },
                 success: function( data ) {
-                    var categories = data.categories;
-                    delete data.categories;
-
                     var newData = [];
                     $.each(data, function(i, subdata) {
                         if (['start', 'crid', 'officer__star', 'officer_id'].indexOf(i) != -1) {
@@ -66,7 +63,6 @@ function cpdbAutocomplete($input){
                             if(!suggestionExists(request.term, subdata)){
                                 var freeTextData = {
                                     category: i == 'officer_id' ? 'officer_name' : i,
-                                    category_name: categories[i],
                                     label: request.term,
                                     value: request.term
                                 };
@@ -84,8 +80,15 @@ function cpdbAutocomplete($input){
             $($input).val('');
         },
         select: function(event, ui){
+            var text;
+            if (ui.item.type) {
+                text = ui.item.type
+            } else {
+                text = AUTOCOMPLETE_CATEGORY_NAMES[ui.item.category]
+            }
+            text = text + ": " + ui.item.label;
             $('#cpdb-search').tagsinput("add", {
-                text: (('type' in ui.item) ? ui.item.type : ui.item.category_name )+ ": " + ui.item.label,
+                text: text,
                 value: [ui.item.category,  ui.item.value]
             });
             $($input).val('');
