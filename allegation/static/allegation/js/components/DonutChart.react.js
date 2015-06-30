@@ -35,12 +35,7 @@ var DonutChart = React.createClass({
       browserData.push({
         name: data[i].name,
         y: data[i].y,
-        color: colors[i],
-        events: {
-          mouseOver: function () {
-            //that.setState({'series': this})
-          }
-        }
+        color: colors[i]
       });
     }
 
@@ -79,14 +74,15 @@ var DonutChart = React.createClass({
         var textY = chart.plotTop  + (chart.plotHeight * 0.5);
 
         var span = '<span id="pieChartInfoText" style="position:absolute; text-align:center;">';
-        span += '<span style="font-size: 32px"><strong>' + that.props.officer.allegations_count + '</strong><br /></span>';
-        span += '<span style="font-size: 16px;">complaints</span>';
+        span += '<span style="font-size: 28px"><strong>' + that.props.officer.discipline_count +
+                " / " + that.props.officer.allegations_count + '</strong><br /></span>';
+        span += '<span style="font-size: 16px;">complaints disciplined</span>';
         span += '</span>';
 
         $("#addText").append(span);
         span = $('#pieChartInfoText');
 
-        span.css('left', textX + (span.width() * -0.35));
+        span.css('left', textX + (span.width() * -0.5));
         span.css('top', textY + (span.height() * -0.5));
       }
     );
@@ -95,23 +91,10 @@ var DonutChart = React.createClass({
 
   },
   render: function () {
-    var summary = "";
-    var percent = "";
-    console.log(this.state,this.props.officer);
-    if (this.state.totalComplaints) {
-      percent = (this.state.disciplineCount / this.state.totalComplaints * 100).toFixed(1);
-      summary = <div>
-        <h4><strong>{this.state.totalComplaints}</strong> Complaints Total</h4>
-        <strong>{this.state.disciplineCount}</strong> complaints out of <strong>{this.state.totalComplaints}</strong> resulted in disciplinary action
-      </div>
-    }
-    return <div className='row-fluid'>
-      <div className="col-md-8 relative">
+    return <div className="relative">
         <div className='donut-chart' id='donut-chart'></div>
         <div id="addText" className='top-left absolute' ></div>
       </div>
-      <div className='donut-summary col-md-4'>{summary}</div>
-    </div>
   }
 });
 

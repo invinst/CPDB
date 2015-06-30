@@ -82,3 +82,11 @@
     margin-top: 25px;
     padding: 0 10px;
 }
+
+.vis-item.vis-background .vis-item-content {
+  word-break: break-all;
+  word-wrap: break-word;
+  position: initial;
+  width: 100%;
+  white-space: initial;
+}

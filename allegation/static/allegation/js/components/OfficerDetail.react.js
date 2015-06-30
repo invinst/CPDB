@@ -21,88 +21,6 @@ var ranks = {
 };
 
 
-function donutChart(data) {
-
-  var layout = function (original) {
-    var complaintLayout = d3.layout.pie()
-      .value(function (d) {
-        return d[0] + d[1];
-      })
-      .sort(null);
-
-    var data = complaintLayout(original);
-
-    for (var i in data) {
-      var thisComplaintType = data[i];
-
-      var disciplineLayout = d3.layout.pie()
-        .value(function (d) {
-          return d;
-        })
-        .sort(null)
-        .startAngle(thisComplaintType.startAngle)
-        .endAngle(thisComplaintType.endAngle);
-
-      thisComplaintType.disciplined = disciplineLayout(thisComplaintType.data)[0];
-      thisComplaintType.undisciplined = disciplineLayout(thisComplaintType.data)[1];
-    }
-
-    return data;
-  };
-
-  var arc = function (data, innerR, outerR) {
-    var arcFunc = d3.svg.arc()
-      .innerRadius(innerR)
-      .outerRadius(outerR)
-      .startAngle(data.startAngle)
-      .endAngle(data.endAngle);
-
-    return arcFunc(data);
-  };
-
-  // Prepare to draw
-  var preparedData = layout(data);
-  var canvas = d3.select("#dis-compl .chart").append("svg")
-    .attr("width", 400)
-    .attr("height", 400);
-  var chart = canvas.append("g")
-    .attr("transform", "translate(" + canvas.attr("width") / 2 + "," + canvas.attr("height") / 2 + ")");
-
-  // Each 'sector' is a circular sector that binds data associated with a type of complaint
-  // Each sector is grouped under a <g>
-  var sector = chart.selectAll("g")
-    .data(preparedData)
-    .enter().append("g")
-    .attr("class", "sector");
-
-  // Complaint group
-  var complaintG = sector.append("g").attr("class", "complaint");
-  // Draw the outer circular sector that represents the number of complaints per type
-  complaintG.append("path")
-    .attr("d", function (d) {
-      return arc(d, 90, 120);
-    })
-    .attr("class", function (d, i) {
-      return "complaint-" + i;
-    });
-
-  // Discipline group
-  var disciplineG = sector.append("g").attr("class", "discipline");
-  // Draw the inner circular sector that represents the number of disciplined complaints per type
-  disciplineG.append("path")
-    .attr("d", function (d) {
-      return arc(d.disciplined, 75, 89);
-    })
-    .attr("class", "disciplined");
-  // Draw the inner circular sector that represents the number of undisciplined complaints per type
-  disciplineG.append("path")
-    .attr("d", function (d) {
-      return arc(d.undisciplined, 75, 89);
-    })
-    .attr("class", "undisciplined");
-}
-
-
 var OfficerDetail = React.createClass({
   getInitialState: function () {
     return {}
@@ -145,9 +63,19 @@ var OfficerDetail = React.createClass({
     }
 
     var mapStyle = {
-      height: '200px'
+      height: '240px'
     };
-
+    var columnClass = showMap ? "col-md-4" : "col-md-6";
+    var mapDiv = "";
+    var radius = 8;
+    if(showMap){
+      var options = {
+        defaultZoom: 10,
+        maxZoom: 15,
+        minZoom: 8,
+      }
+      mapDiv = <div className={columnClass}><Map officer={officer} style={mapStyle} radius={radius} options={options} /></div>
+    }
     return <div id='OfficerDetail' className={complaintRate}>
       <div className='row'>
         <div className="col-md-9 h3">
@@ -172,11 +100,11 @@ var OfficerDetail = React.createClass({
         </div>
       </div>
       <div className="row">
-
-        <div className="col-md-6">
+        {mapDiv}
+        <div className={columnClass}>
           <Timeline officer={officer}/>
         </div>
-        <div className="col-md-6">
+        <div className={columnClass}>
           <DonutChart officer={officer}/>
         </div>
       </div>
