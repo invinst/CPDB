@@ -2,12 +2,6 @@ var React = require('react');
 var MapStore = require("../stores/MapStore");
 
 
-var dateFormat = 'MMM DD, YYYY';
-function formatDate(date) {
-  return moment(date).format(dateFormat);
-}
-
-
 var Timeline = React.createClass({
   getInitialState: function () {
     return {}
@@ -30,7 +24,7 @@ var Timeline = React.createClass({
         var content = '';
         if (i == 0) {
           style = '';
-          content = 'Joined force<br /><span>' + start + '</span>';
+          content = 'Joined force<br /><span>' + start.format('MMM DD, YYYY'); + '</span>';
         }
 
         var timeLineItem = {
@@ -73,5 +67,6 @@ var Timeline = React.createClass({
   }
 
 });
+
 
 module.exports = Timeline;

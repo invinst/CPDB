@@ -6,12 +6,13 @@ from officer.views.officer_detail_view import OfficerDetailView
 from officer.views.timeline_view import TimelineView
 
 
-cache_one_hour = cache_page(3600)
+cache_view = cache_page(86400)
 
 
 urlpatterns = [
-    url(r'^count/$', CountView.as_view(), name='count'),
-    url(r'^timeline/$', TimelineView.as_view(), name='timeline'),
-    url(r'^(?P<first_name>[\w-]+)/(?P<last_name>[\w-]+)/(?P<badge>[\w-]+)/(?P<pk>\d+)$', OfficerDetailView.as_view(),
+    url(r'^count/$', cache_view(CountView.as_view()), name='count'),
+    url(r'^timeline/$', cache_view(TimelineView.as_view()), name='timeline'),
+    url(r'^(?P<first_name>[\w-]+)-(?P<last_name>[\w-]+)/(?P<badge>[\w-]+)/(?P<pk>\d+)$',
+        cache_view(OfficerDetailView.as_view()),
         name='detail'),
 ]
