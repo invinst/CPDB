@@ -121,7 +121,7 @@ OUTCOMES = [
 ]
 
 NO_DISCIPLINE_CODES = ('600', '000', '500', '700', '800', '900',' ', None)
-
+DISCIPLINE_CODES = [x[0] for x in OUTCOMES if x[0] not in NO_DISCIPLINE_CODES]
 FINDINGS = [
     ['UN', 'Unfounded'],
     ['EX', 'Exonerated'],
@@ -142,6 +142,7 @@ class Allegation(models.Model):
     recc_outcome = models.CharField(choices=OUTCOMES, max_length=3, null=True, db_index=True)
     final_finding = models.CharField(choices=FINDINGS, max_length=2, null=True, db_index=True)
     final_outcome = models.CharField(choices=OUTCOMES, max_length=3, null=True, db_index=True)
+    final_outcome_class = models.CharField(max_length=20, null=True)
 
     areas = models.ManyToManyField('Area', blank=True)
     location = models.CharField(max_length=20, null=True)
