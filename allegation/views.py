@@ -395,7 +395,7 @@ class AllegationCSVView(AllegationAPIView):
         allegations = self.get_allegations()
         output = io.StringIO()
         writer = csv.writer(output, dialect='excel')
-        writer.writerow(["Unique id", "Observation date", "Location"])
+        writer.writerow(["Unique id", "Observation date", "Latitude", "Longitude"])
         for allegation in allegations:
 
             date = allegation.incident_date
@@ -405,11 +405,9 @@ class AllegationCSVView(AllegationAPIView):
                 date = date.date()
 
             location = False
-            if allegation.point:
-                location = "%s, %s" % (allegation.point.y,allegation.point.x)
-
-            if not date or not location:
+            if not allegation.point or not date:
                 continue
-            writer.writerow([allegation.pk,date,location])
+                
+            writer.writerow([allegation.pk, date, allegation.point.y, allegation.point.x])
         output.seek(0)
         return HttpResponse(output.read(), content_type='text/csv')
