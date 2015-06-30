@@ -13,6 +13,12 @@ class HomepageViewTestCase(SimpleTestCase):
         response.status_code.should.equal(302)
         Session.objects.all().count().should.equal(session_count + 1)  # 1 new session created
 
-        response = self.client.get(response['location'])
+        location = response['location']
+        new_hash_id = location.split("/")[-2]
+        new_session_id = Session.id_from_hash(new_hash_id)[0]
+        new_session = Session.objects.get(pk=new_session_id)
+        dict(new_session.query).should.equal(dict(session.query))
+
+        response = self.client.get(location)
         response.status_code.should.equal(200)
         Session.objects.all().count().should.equal(session_count + 1)  # 0 new session created

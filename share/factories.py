@@ -12,3 +12,4 @@ class SessionFactory(factory.django.DjangoModelFactory):
         model = Session
 
     title = lambda: fake.name()
+    query = factory.Sequence(lambda n: {'title': fake.name()})
