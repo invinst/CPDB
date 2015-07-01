@@ -56,7 +56,10 @@ var Timeline = React.createClass({
           timeLineItems.push(timeLineItem);
         }
       }
-      console.log(timeLineItems);
+
+      if (!timeLineItems.length) {
+        return;
+      }
       timeLineItems = new vis.DataSet(timeLineItems);
 
       // Configuration for the Timeline
