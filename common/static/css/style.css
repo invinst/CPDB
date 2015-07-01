@@ -169,7 +169,11 @@ footer {
     font-size: 16px;
     font-style: italic;
     font-family: 'Vollkorn';
-
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    height: 20px;
+    white-space: nowrap;
 }
 
 .complaint_list {
@@ -407,4 +411,14 @@ canvas.leaflet-heatmap-layer{
 .thirty-five{
     width: 35%;
     float: left;
+}
+.absolute{
+    position:absolute;
+}
+.relative{
+    position:relative;
+}
+.top-left{
+    top:0px;
+    left:0px;
 }

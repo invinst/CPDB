@@ -4,8 +4,8 @@ var React = require('react');
 var DonutChart = React.createClass({
   getInitialState: function () {
     return {
-      'disciplineCount': false,
-      'totalComplaints': false
+      'disciplineCount': this.props.officer.discipline_count,
+      'totalComplaints': this.props.officer.allegations_count
     }
   },
   componentDidMount: function () {
@@ -14,17 +14,15 @@ var DonutChart = React.createClass({
     var colors = ["#a5b4be", '#0079ae'],
       browserData = [],
       i,
-      dataLen,
-      totalComplaints = 0,
-      disciplineCount = 0;
+      dataLen;
 
     var data = [{
       name: "Disciplined",
-      y: officer.discipline_count,
+      y: this.props.officer.discipline_count,
       color: "#a5b4be"
     }, {
       name: "Not disciplined",
-      y: officer.allegations_count - officer.discipline_count,
+      y: this.props.officer.allegations_count - this.props.officer.discipline_count,
       color: '#0079ae'
     }];
 
@@ -37,71 +35,66 @@ var DonutChart = React.createClass({
       browserData.push({
         name: data[i].name,
         y: data[i].y,
-        color: colors[i],
-        events: {
-          mouseOver: function () {
-            //that.setState({'series': this})
-          }
-        }
+        color: colors[i]
       });
     }
-    that.setState({
-      'totalComplaints': totalComplaints,
-      'disciplineCount': disciplineCount
-    });
 
     // Create the chart
-    $(container).find(".donut-chart").highcharts({
-      chart: {
-        type: 'pie',
-        backgroundColor: 'transparent'
+    var chart = new Highcharts.Chart({
+        chart: {
+          type: 'pie',
+          backgroundColor: 'transparent',
+          renderTo: 'donut-chart',
+        },
+        credits: false,
+        title: {
+          text: ''
+        },
+        plotOptions: {
+          pie: {
+            shadow: false,
+            center: ['50%', '50%']
+          }
+        },
+        tooltip: {
+          valueSuffix: ''
+        },
+        series: [{
+          name: 'Category',
+          size: '100%',
+          innerSize: '70%',
+          data: browserData,
+          dataLabels: {
+            enabled: false
+          }
+        }]
       },
-      credits: false,
-      title: {
-        text: ''
-      },
-      plotOptions: {
-        pie: {
-          shadow: false,
-          center: ['50%', '50%']
-        }
-      },
-      tooltip: {
-        valueSuffix: ''
-      },
-      series: [{
-        name: 'Category',
-        size: '100%',
-        innerSize: '70%',
-        data: browserData,
-        dataLabels: {
-          enabled: false
-        }
-      }]
-    });
+      function (chart) {
+        var textX = chart.plotLeft + (chart.plotWidth  * 0.5);
+        var textY = chart.plotTop  + (chart.plotHeight * 0.5);
+
+        var span = '<span id="pieChartInfoText" style="position:absolute; text-align:center;">';
+        span += '<span style="font-size: 28px"><strong>' + that.props.officer.discipline_count +
+                " / " + that.props.officer.allegations_count + '</strong><br /></span>';
+        span += '<span style="font-size: 16px;">complaints disciplined</span>';
+        span += '</span>';
+
+        $("#addText").append(span);
+        span = $('#pieChartInfoText');
+
+        span.css('left', textX + (span.width() * -0.5));
+        span.css('top', textY + (span.height() * -0.5));
+      }
+    );
+    //http://stackoverflow.com/questions/9732205/place-text-in-center-of-pie-chart-highcharts
+
+
   },
   render: function () {
-    var summary = "";
-    var percent = "";
-    if (this.state.series) {
-      percent = (this.state.series.y / this.state.totalComplaints * 100).toFixed(1);
-      summary = <div>
-        <h4>{this.state.series.name}</h4>
-        <strong>{this.state.series.y}</strong> out of <strong>{this.state.totalComplaints}</strong> complaints
-        <strong>({percent}%)</strong>
+    return <div className="relative">
+        <div className='donut-chart' id='donut-chart'></div>
+        <div id="addText" className='top-left absolute' ></div>
       </div>
-    }
-    else if (this.state.disciplineCount) {
-      percent = (this.state.disciplineCount / this.state.totalComplaints * 100).toFixed(1);
-      summary = <div>
-        <h4><strong>{this.state.totalComplaints}</strong> Complaints Total</h4>
-        <strong>{percent}%</strong> of <strong>{this.state.totalComplaints}</strong> resulted in disciplinary action
-      </div>
-    }
-    return <div>
-      <div className="donut-chart"></div>
-      <div className='donut-summary'>{summary}</div>
-    </div>
   }
 });
 
