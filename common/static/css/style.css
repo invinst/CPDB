@@ -309,7 +309,7 @@ footer {
 
 /* vis.js style customization for timeline */
 .vis-item {
-    background: #f7f7ed;
+    background-color: transparent;
     border-width: 0px;
 }
 .vis-line, .vis-dot {
@@ -407,4 +407,14 @@ canvas.leaflet-heatmap-layer{
 .thirty-five{
     width: 35%;
     float: left;
+}
+.absolute{
+    position:absolute;
+}
+.relative{
+    position:relative;
+}
+.top-left{
+    top:0px;
+    left:0px;
 }

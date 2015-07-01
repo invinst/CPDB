@@ -15,7 +15,7 @@
 }
 
 .complaint-rate-label {
-    color: green;
+    color: #62b28c;
     font-weight: 400;
     font-style: italic;
     padding-top: 1.5em;
@@ -23,24 +23,24 @@
 }
 
 .above .complaint-rate-label {
-    color: red;
+    color: #c0272d;
 }
 
 .middle .complaint-rate-label {
-    color: yellow;
+    color: #d8b421;
 }
 
 .star {
-    border-top: 3px solid green;
+    border-top: 3px solid #62b28c;
     margin-right: 1em;
 }
 
 .above .star {
-    border-top-color: red;
+    border-top-color: #c0272d;
 }
 
 .middle .start {
-    border-top-color: yellow;
+    border-top-color: #d8b421;
 }
 
 #OfficerDetail > .row {
@@ -52,7 +52,7 @@
 }
 
 #OfficerDetail .information .title {
-    color: gray;
+    color: #989898;
 }
 
 #OfficerDetail .information table {
@@ -75,11 +75,18 @@
 }
 
 .donut-chart {
-    height: 200px;
+    height: 260px;
 }
 .donut-summary{
-    margin-left: 97px;
     margin-bottom: 10px;
+    margin-top: 25px;
     padding: 0 10px;
-    border-left: 4px solid black;
+}
+
+.vis-item.vis-background .vis-item-content {
+  word-break: break-all;
+  word-wrap: break-word;
+  position: initial;
+  width: 100%;
+  white-space: initial;
 }

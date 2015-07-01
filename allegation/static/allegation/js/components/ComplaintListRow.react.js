@@ -18,7 +18,6 @@ var ComplaintListRow = React.createClass({
       'show': init_data['opened_complaints'].indexOf(this.props.complaint.allegation.id) != -1,
       'detail': {}
     }
-
   },
 
   render: function () {
