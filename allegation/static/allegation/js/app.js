@@ -29,7 +29,7 @@ if(cpdbElement) {
 var officerProfile = document.getElementById('officer-profile');
 if(officerProfile) {
     React.render(
-        <OfficerPage officer={officer} />,
+        <OfficerPage officer={officer} related={relatedOfficers} />,
         officerProfile
     );
 }
