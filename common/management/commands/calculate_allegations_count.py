@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.db.models import Count
 
-from common.models import Officer, AllegationCategory, Allegation
+from common.models import Officer, AllegationCategory, Allegation, NO_DISCIPLINE_CODES
 
 
 class Command(BaseCommand):
@@ -11,7 +11,7 @@ class Command(BaseCommand):
         officers = Officer.objects.all().annotate(count=Count('allegation'))
         for officer in officers:
             officer.allegations_count = officer.count
-            officer.discipline_count = officer.allegation_set.exclude(final_outcome='600').count()
+            officer.discipline_count = officer.allegation_set.filter(final_outcome_class='disciplined').count()
             officer.save()
 
         for allegation_cat in AllegationCategory.objects.all():
