@@ -94,8 +94,9 @@ var ComplaintListRowDetail = React.createClass({
           }
         };
         if(startDate && endDate) {
-          options.start = moment(startDate).subtract(1, 'months');
-          options.end = moment(endDate).add(1, 'months');
+          var duration = endDate.year() * 12 + endDate.month() - startDate.year() * 12 - startDate.month();
+          options.start = moment(startDate).subtract(duration / 8, 'months');
+          options.end = moment(endDate).add(duration / 8, 'months');
         }
         // Create a Timeline
        this.setState({
