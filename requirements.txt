@@ -34,3 +34,4 @@ testtools==1.8.0
 traceback2==1.4.0
 unittest2==1.0.1
 whitenoise==1.0.6
+hashids==1.1.0

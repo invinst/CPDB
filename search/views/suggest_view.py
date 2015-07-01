@@ -9,22 +9,6 @@ from common.models import Officer, AllegationCategory, Allegation, OUTCOMES, FIN
 
 
 class SuggestView(View):
-    autocomplete_category_names = {
-        'crid': 'Complaint ID',
-        'cat__category': 'Complaint type',
-        'cat': 'Allegation type',
-        'investigator': 'Investigator',
-        'officer': 'Officer name',
-        'officer__star': 'Badge number',
-        'recc_outcome': 'Recommended Outcome',
-        'recc_finding': 'Recommended Finding',
-        'final_outcome': 'Final Outcome',
-        'final_finding': 'Final Finding',
-        'incident_date_only__year': 'Incident Year',
-        'incident_date_only__year_month': 'Incident Year/Month',
-        'incident_date_only': 'Incident Date',
-        'areas__id': 'Area',
-    }
 
     def get(self, request):
         months_choices = []
@@ -148,10 +132,8 @@ class SuggestView(View):
 
     def to_jquery_ui_autocomplete_format(self, data):
         new_dict = OrderedDict()
-        new_dict['categories'] = {}
         for category in data:
             new_dict[category] = []
-            new_dict['categories'][category] = self.autocomplete_category_names[category]
             other = None
             for label in data[category]:
                 if isinstance(label, (list, tuple)):
@@ -164,13 +146,10 @@ class SuggestView(View):
 
                 info = {
                     'category': category,
-                    'category_name': self.autocomplete_category_names[category],
                     'label': label,
                     'value': value,
                 }
                 if other:
                     info['type'] = other
-                    if other not in new_dict['categories']:
-                        new_dict['categories'][other] = self.autocomplete_category_names[category]
                 new_dict[category].append(info)
         return new_dict

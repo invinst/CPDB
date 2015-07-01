@@ -22,7 +22,8 @@ var _state = {
   'show_more': false,
   'active_officers': [],
   'complaints_count_start': 0,
-  'complaints_count_end': 0
+  'complaints_count_end': 0,
+  first_call: true
 };
 var _officers = {};
 
@@ -43,6 +44,12 @@ function create(id, officer) {
 
 
 var OfficerStore = assign({}, EventEmitter.prototype, {
+  getSession: function () {
+    return {'active_officers': _.clone(_state['active_officers'])};
+  },
+  setSession: function (data) {
+    this.set('active_officers', data.active_officers || []);
+  },
   getQueryString: function () {
     var queryString = FilterStore.getQueryString();
     for (var i = 0; i < _state['active_officers'].length; i++) {
@@ -57,11 +64,10 @@ var OfficerStore = assign({}, EventEmitter.prototype, {
     return queryString;
   },
   update: function () {
-    _state['active_officers'] = [];
-    $.getJSON('/api/allegations/officers/?' + OfficerStore.getQueryString(), function (data) {
+    $.getJSON('/api/allegations/officers/?' + FilterStore.getQueryString(), function (data) {
       _state['officers'] = data.officers;
       OfficerStore.emitChange();
-    })
+    });
   },
   set: function (key, value) {
     _state[key] = value;
@@ -96,6 +102,11 @@ AppDispatcher.register(function (action) {
     case MapConstants.MAP_REPLACE_FILTERS:
     case MapConstants.MAP_CHANGE_FILTER:
     case MapConstants.MAP_ADD_FILTER:
+      if (!_state['first_call']) {
+        OfficerStore.set('active_officers', []);
+
+      }
+      _state['first_call'] = false;
       OfficerStore.update();
       break;
 

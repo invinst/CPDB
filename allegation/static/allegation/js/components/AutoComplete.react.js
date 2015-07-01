@@ -9,8 +9,31 @@
 
 var React = require('react');
 var FilterStore = require('../stores/FilterStore');
+var MapStore = require('../stores/MapStore');
+var OfficerStore = require('../stores/OfficerStore');
 var FilterActions = require('../actions/FilterActions');
 var cx = require('react/lib/cx');
+var _sessionData = {};
+var init_data = typeof(INIT_DATA) == 'undefined' ? false : INIT_DATA;
+var init_filters = typeof(INIT_FILTERS) == 'undefined' ? {} : INIT_FILTERS;
+
+AUTOCOMPLETE_CATEGORY_NAMES = {
+    'crid': 'Complaint ID',
+    'cat__category': 'Complaint type',
+    'cat': 'Allegation type',
+    'investigator': 'Investigator',
+    'officer': 'Officer name',
+    'officer__star': 'Badge number',
+    'recc_outcome': 'Recommended Outcome',
+    'recc_finding': 'Recommended Finding',
+    'final_outcome': 'Final Outcome',
+    'final_finding': 'Final Finding',
+    'incident_date_only__year': 'Incident Year',
+    'incident_date_only__year_month': 'Incident Year/Month',
+    'incident_date_only': 'Incident Date',
+    'areas__id': 'Area'
+};
+
 
 function isSameTag(current, other) {
   return (current.value[0] == other.value[0] && current.value[1] == other.value[1])
@@ -28,7 +51,7 @@ function isDuplicatedTag(tags, tag) {
 var AutoComplete = React.createClass({
 
   tagsChanged: function (event) {
-    if (event.item.layer) {
+    if (event.item && event.item.layer) {
       event.item.layer.toggleStyle();
     }
     var tags = $(this.getDOMNode()).tagsinput("items");
@@ -40,6 +63,23 @@ var AutoComplete = React.createClass({
       itemValue: 'value',
       itemText: 'text'
     });
+    var filters = this.state.filters;
+    for (var key in filters) {
+      var filter = filters[key];
+      for (var i = 0; i < filter.length; i++) {
+        if (filter[i].value) {
+          $(element).tagsinput("add", {
+            text: filter[i].text,
+            value: [key, filter[i].value]
+          });
+        } else {
+          $(element).tagsinput("add", {
+            text: AUTOCOMPLETE_CATEGORY_NAMES[key] + ": " + filter[i],
+            value: [key, filter[i]]
+          });
+        }
+      }
+    }
 
     $(element).on('beforeItemAdd', function (event) {
       var tags = $(this).tagsinput('items');
@@ -51,11 +91,25 @@ var AutoComplete = React.createClass({
     cpdbAutocomplete(input);
     $(element).on('itemAdded', this.tagsChanged)
       .on('itemRemoved', this.tagsChanged);
+
+    if (filters) {
+      $(element).trigger("itemAdded");
+    }
+    FilterStore.addChangeListener(this._onChange);
+    OfficerStore.addChangeListener(this._onChange);
   },
   getInitialState: function () {
-    return {
-      filters: FilterStore.getAll(this.props.filterkey)
+    var filters = {};
+    if (init_data){
+      filters = FilterStore.setSession(init_filters);
+      MapStore.setSession(init_data);
+      OfficerStore.setSession(init_data);
+    } else {
+      filters = FilterStore.getAll(this.props.filterkey);
     }
+    return {
+      filters: filters
+    };
   },
   /**
    * Event handler for 'change' events coming from the TodoStore
@@ -64,7 +118,15 @@ var AutoComplete = React.createClass({
     if (event) {
       FilterActions.changeFilter(this.props.filterkey, event.target.value);
     }
-    this.setState(this.getInitialState())
+    var tempSessionData = {};
+    $.extend(tempSessionData, FilterStore.getSession());
+    $.extend(tempSessionData, MapStore.getSession());
+    $.extend(tempSessionData, OfficerStore.getSession());
+
+    if (! _.isEqual(tempSessionData, _sessionData)) {
+      _sessionData = _.clone(tempSessionData);
+      FilterStore.saveSession(_sessionData);
+    }
   },
 
   /**

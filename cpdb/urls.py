@@ -15,13 +15,17 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.views.decorators.csrf import ensure_csrf_cookie
+
 from allegation.views import AllegationListView
 
 urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^$', AllegationListView.as_view(), name='homepage'),
     url(r'^', include('allegation.urls', namespace='allegation')),
     url(r'^search/', include('search.urls', namespace='search')),
+    url(r'^share/', include('share.urls', namespace='share')),
     url(r'^officer/', include('officer.urls', namespace='officer')),
     url(r'^document/', include('document.urls', namespace='document')),
+    url(r'^$', ensure_csrf_cookie(AllegationListView.as_view()), name='homepage'),
+    url(r'^(?P<hash_id>[\w-]+)/$', ensure_csrf_cookie(AllegationListView.as_view()), name='homepage-share'),
 ]

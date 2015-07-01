@@ -19,6 +19,10 @@
 
 {% block footerjs %}
   {{ block.super }}
+  <script>
+    var INIT_DATA = {% if session %}{{ session.query|safe }}{% else %}false{% endif %};
+    var INIT_FILTERS = {filters: {% if filters %}{{ filters|safe }}{% else %}false{% endif %}};
+  </script>
   <script src="{% static 'jquery-ui/jquery-ui.min.js' %}"></script>
   <script src="{% static 'bootstrap-tagsinput/src/bootstrap-tagsinput.js' %}"></script>
   <script src="{% static 'search/js/search.js' %}"></script>

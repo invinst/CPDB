@@ -13,7 +13,8 @@
 {{ block.super }}
   <script>
     var officer = {{officer|safe}};
-    var relatedOfficers = {{ related_officers|safe }}
+    var showMap = {{ has_map|lower }};
+    var relatedOfficers = {{ related_officers|safe }};
   </script>
 
   <script src="{% static 'jquery-ui/jquery-ui.min.js' %}"></script>

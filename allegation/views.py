@@ -1,9 +1,14 @@
+import csv
 import json
+import io
 
 from django.conf import settings
 from django.db.models import Count
 from django.db.models.query_utils import Q
-from django.http.response import HttpResponse
+from django.http.response import HttpResponse, Http404
+from django.shortcuts import get_object_or_404, redirect
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_protect
 from django.views.generic import View
 from django.views.generic import TemplateView
 from django.contrib.gis.geos import Point
@@ -12,16 +17,87 @@ from django.contrib.gis.measure import D
 from common.json_serializer import JSONSerializer
 from common.models import Allegation, Area, AllegationCategory, Officer
 from common.models import NO_DISCIPLINE_CODES, ComplainingWitness, PoliceWitness
+from share.models import Session
 
 
 class AllegationListView(TemplateView):
     template_name = 'allegation/home.html'
+    session = None
+
+    def get_filters(self, key, values):
+        if key == 'officer':
+            values = Officer.objects.filter(pk__in=values['value'])
+            values = [o.tag_value for o in values]
+        elif key == 'cat':
+            values = AllegationCategory.objects.filter(pk__in=values['value'])
+            values = [o.tag_value for o in values]
+        elif key == 'areas__id':
+            return False
+        else:
+            values = values['value']
+        return values
 
     def get_context_data(self, **kwargs):
         context = super(AllegationListView, self).get_context_data(**kwargs)
         context['show_site_title'] = True
+        if self.session:
+            filters = {}
+            save_filters = self.session.query.get('filters', {})
+            for key in save_filters:
+                values = save_filters[key]
+                values = self.get_filters(key, values)
+                if values:
+                    filters.update({
+                        key: values
+                    })
+            context['filters'] = filters
+        context['session'] = self.session
         return context
 
+    def get(self, request, hash_id=None, *args, **kwargs):
+        if hash_id:
+            ints = Session.id_from_hash(hash_id)
+            owned_sessions = request.session.get('owned_sessions', [])
+            if ints:
+                session_id = ints[0]
+                session = get_object_or_404(Session, pk=session_id)
+                if session_id not in owned_sessions:
+                    new_session = session.clone()
+                    self.session = new_session
+
+                    owned_sessions.append(new_session.id)
+                    request.session['owned_sessions'] = owned_sessions
+                    request.session.modified = True
+
+                    return redirect(new_session)
+                else:
+                    self.session = session
+            else:
+                raise Http404()
+
+        return super(AllegationListView, self).get(request, *args, **kwargs)
+
+    def post(self, request, hash_id):
+        ints = Session.id_from_hash(hash_id)
+        session_id = ints[0]
+
+        owned_sessions = request.session.get('owned_sessions', [])
+        if session_id not in owned_sessions:
+            raise Http404()
+
+        session = get_object_or_404(Session, pk=session_id)
+
+        data = json.loads(request.body.decode())
+        query = session.query or {}
+        query.update(data)
+
+        session.query = query
+
+        session.save()
+
+        return HttpResponse(JSONSerializer().serialize({
+            'success': True
+        }), content_type='application/json')
 
 class AreaAPIView(View):
     def get(self, request):
@@ -39,6 +115,8 @@ class AreaAPIView(View):
             polygon = None
             if area.polygon:
                 polygon = json.loads(area.polygon.geojson)
+            if not polygon:
+                continue
             area_json = {
                 "type": "Feature",
                 "properties": {
@@ -387,3 +465,25 @@ class AllegationChartApiView(AllegationAPIView):
             'data': data
         })
         return HttpResponse(content, content_type="application/json")
+
+class AllegationCSVView(AllegationAPIView):
+    def get(self, request):
+        allegations = self.get_allegations()
+        output = io.StringIO()
+        writer = csv.writer(output, dialect='excel')
+        writer.writerow(["Unique id", "Observation date", "Latitude", "Longitude"])
+        for allegation in allegations:
+
+            date = allegation.incident_date
+            if not date or date.year <= 1970:
+                date = allegation.start_date
+            else:
+                date = date.date()
+
+            location = False
+            if not allegation.point or not date:
+                continue
+                
+            writer.writerow([allegation.pk, date, allegation.point.y, allegation.point.x])
+        output.seek(0)
+        return HttpResponse(output.read(), content_type='text/csv')

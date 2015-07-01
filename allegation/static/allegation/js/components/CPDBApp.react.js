@@ -31,19 +31,29 @@ function getMapState() {
   return {};
 }
 
+HOME_URL = location.pathname;
+SAVE_STATE = false;
+
 var CPDBApp = React.createClass({
 
   getInitialState: function () {
     return getMapState();
   },
-
+  initShare: function () {
+    SAVE_STATE = true;
+    if (location.pathname == '/') {
+      $.getJSON('/share/init/', function (data) {
+        HOME_URL = "/" + data.session.hash_id + "/";
+        history.pushState({}, '', HOME_URL);
+      });
+    }
+  },
   componentDidMount: function () {
-    //MapStore.addChangeListener(this._onChange);
     MapStore.init();
+    this.initShare();
   },
 
   componentWillUnmount: function () {
-    //MapStore.removeChangeListener(this._onChange);
   },
 
   /**
@@ -51,16 +61,6 @@ var CPDBApp = React.createClass({
    */
   render: function () {
     return <div>
-      <div className="row">
-        <div className='col-md-2'>
-          Neighborhood
-              <i className="fa fa-caret-left padding-left"></i>
-
-        </div>
-        <div className='col-md-10'>
-          <span id='controller-div'></span>
-        </div>
-      </div>
       <div id='map' className='pin-top pin-bottom'></div>
       <div className='container'>
         <div className="row">
