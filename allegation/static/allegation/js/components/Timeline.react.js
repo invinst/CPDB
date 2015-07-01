@@ -14,14 +14,13 @@ var Timeline = React.createClass({
       var timeLineItems = [];
 
       var items = data.items;
-
       for (var i = 0; i < items.length; i++) {
         if (!items[i]) {
           continue;
         }
         var style = 'display: none';
         var start = moment(items[i]);
-        if (start == "Invalid date") {
+        if(start == "Invalid date"){
           continue
         }
 
@@ -30,22 +29,41 @@ var Timeline = React.createClass({
           style = '';
           content = 'Joined force<br /><span>' + start.format('MMM DD, YYYY'); + '</span>';
         }
-        timeLineItems.push({
+
+        var timeLineItem = {
           id: i + 1,
-          content: content,
+          content: "",
           start: start,
           style: style
-        });
+        };
+        if (i == 0) {
+          timeLineItem.style = '';
+          timeLineItem.content = 'Joined force<br /><span>' + start.format('MMM DD, YYYY') + '</span>';
+          timeLineItems.push(timeLineItem);
+          if(i + 1 <= items.length) {
+            var rangeItem = {
+              id: "range" - (i + 1),
+              content: "No data available",
+              start: start,
+              end: moment(items[i + 1]),
+              type: 'background'
+            }
+            timeLineItems.push(rangeItem);
+          }
+
+        }
+        else {
+          timeLineItems.push(timeLineItem);
+        }
       }
 
       if (!timeLineItems.length) {
         return;
       }
-
       timeLineItems = new vis.DataSet(timeLineItems);
 
       // Configuration for the Timeline
-      var options = {'moveable': false, 'zoomable': false};
+      var options = {'moveable': false, 'zoomable': false, height: '260px'};
 
       new vis.Timeline(container, timeLineItems, options);
     });

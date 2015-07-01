@@ -31,6 +31,12 @@ var Officer = React.createClass({
       className += " selected";
       selection_state = 'selected';
     }
+    var selectableArea = "";
+    if (!this.props.noClick) {
+      selectableArea = <div onClick={this.onClick} className='checkmark cursor'>
+        <i className='fa fa-check'></i>
+      </div>
+    }
     var officerLink = officer.absolute_url;
     return <div className={className} data-state={selection_state}>
       <a className='officer-link' href={officerLink}>
@@ -50,9 +56,7 @@ var Officer = React.createClass({
           </div>
         </div>
       </a>
-      <div onClick={this.onClick} className='checkmark cursor'>
-        <i className='fa fa-check'></i>
-      </div>
+      {selectableArea}
     </div>
 
   },

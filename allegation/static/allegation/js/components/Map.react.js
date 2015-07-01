@@ -6,9 +6,9 @@ var Map = React.createClass({
   getInitialState: function () {
     return {};
   },
-  initMap: function () {
+  initMap: function (opts) {
     var element = this.getDOMNode();
-    var opts = {'maxZoom': 17, 'minZoom': 10, 'scrollWheelZoom': false};
+    var opts = opts || {'maxZoom': 17, 'minZoom': 10, 'scrollWheelZoom': false};
     var defaultZoom = 'defaultZoom' in opts ? opts['defaultZoom'] : 12;
 
     var southWest = L.latLng(41.143501411390766, -88.53057861328125);
@@ -22,7 +22,7 @@ var Map = React.createClass({
   },
   drawHeatMap: function (query_string) {
     $.getJSON("/api/allegations/gis/?" + query_string, function (markers) {
-      var _heat = L.heatLayer([], {radius: 8});
+      var _heat = L.heatLayer([], {radius: 8, blur: 16, maxZoom: 10});
       var _markers = L.markerClusterGroup();
       var _controls = {};
       _controls['markers'] = _markers;
@@ -62,7 +62,7 @@ var Map = React.createClass({
     });
   },
   componentDidMount: function () {
-    this.initMap();
+    this.initMap(this.props.options);
     this.drawHeatMap('officer=' + this.props.officer.id);
   },
   render: function () {
