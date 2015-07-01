@@ -11,7 +11,7 @@ class Command(BaseCommand):
         officers = Officer.objects.all().annotate(count=Count('allegation'))
         for officer in officers:
             officer.allegations_count = officer.count
-            officer.discipline_count = officer.allegation_set.exclude(final_outcome__in=NO_DISCIPLINE_CODES).count()
+            officer.discipline_count = officer.allegation_set.filter(final_outcome_class='disciplined').count()
             officer.save()
 
         for allegation_cat in AllegationCategory.objects.all():
