@@ -28,6 +28,10 @@ var Officer = React.createClass({
     var className = 'well officer ' + officerComplaintAvgStatus;
     var selection_state = '';
     if (this.props.active) {
+      className += " active";
+      selection_state = 'selected';
+    }
+    if (this.props.selected) {
       className += " selected";
       selection_state = 'selected';
     }
