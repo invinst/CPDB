@@ -8,7 +8,7 @@ class Command(BaseCommand):
     help = 'Update complaint documents info'
 
     id_delim = '-'
-    search_syntax = 'projectID:15317-cpd-complaint-register-cr-files title:CR %s'
+    search_syntax = 'title:CR %s'
 
     def add_arguments(self, parser):
         parser.add_argument('--start')
