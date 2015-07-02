@@ -73,6 +73,7 @@
 }
 .bootstrap-tagsinput .tag,.bootstrap-tagsinput input{
     font-size: 1em;
+    font-weight: 300;
 }
 
 .ui-menu .ui-menu-item{
