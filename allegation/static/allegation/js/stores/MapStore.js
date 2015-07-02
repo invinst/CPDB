@@ -23,7 +23,6 @@ var highlightStyle = {
   fillColor: '#2262CC'
 };
 var CHANGE_EVENT = 'change';
-var _markers = {};
 var _map = null;
 var _polygons = null;
 var _geo_json_layer = null;
@@ -34,7 +33,6 @@ var _layers = {};
 var _baseLayers = {};
 var _controlDiv = null;
 var _ajax_req = null;
-var current_markers = null;
 var _queryString = null;
 
 
@@ -71,10 +69,12 @@ function createAreas() {
         layer.selected = false;
         var area_type = feature.properties.type;
         layer.on('mouseover', function () {
+          $(".leaflet-control-command-interior").text(feature.properties.name);
           layer.setStyle(highlightStyle);
         });
 
         layer.on('mouseout', function () {
+          $(".leaflet-control-command-interior").text(" ");
           if (!layer.selected) {
             layer.setStyle(normalStyle);
           }
@@ -117,7 +117,32 @@ function createAreas() {
         _layers[area_type].addLayer(layer);
       }
     });
-    L.control.layers(_baseLayers,_controls, {collapsed: false}).addTo(_map);
+    L.control.layers(_baseLayers,{}, {collapsed: false}).addTo(_map);
+
+
+    L.Control.Command = L.Control.extend({
+      options: {
+          position: 'topright',
+      },
+
+      onAdd: function (map) {
+          var controlDiv = L.DomUtil.create('div', 'leaflet-control-command');
+          L.DomEvent
+              .addListener(controlDiv, 'click', L.DomEvent.stopPropagation)
+              .addListener(controlDiv, 'click', L.DomEvent.preventDefault)
+          .addListener(controlDiv, 'click', function () { MapShowCommand(); });
+
+          var controlUI = L.DomUtil.create('div', 'leaflet-control-command-interior', controlDiv);
+          controlUI.title = '';
+          return controlDiv;
+      }
+    });
+    L.control.command = function (options) {
+        return new L.Control.Command(options);
+    };
+    var areaHover = new L.Control.Command();
+    _map.addControl(areaHover);
+
     console.log(_baseLayers)
     }, 'json').fail(function(jqxhr, textStatus, error) {
       var err = textStatus + ", " + error;
@@ -140,21 +165,13 @@ var MapStore = assign({}, EventEmitter.prototype, {
     return _markers;
   },
   setMarkers: function (markers) {
-    current_markers = markers;
-    if (_markers) {
-      _map.removeLayer(_markers);
-    }
+
     if (_heat) {
       _map.removeLayer(_heat);
     }
-    if (_markers) {
-      _map.removeLayer(_markers)
-    }
+
 
     _heat = L.heatLayer([], {radius: 10});
-    _markers = L.markerClusterGroup();
-    _controls['markers'] = _markers;
-    _controls['heat-map'] = _heat;
     _map.addLayer(_heat);
 
     var marker_length = markers.features.length;
@@ -162,9 +179,7 @@ var MapStore = assign({}, EventEmitter.prototype, {
     var count = 3000;
 
     function addMarkers() {
-      if (current_markers != markers) {
-        return;
-      }
+
       var features = markers.features.slice(start, start + count)
       start += count;
       var featuresMarkers = L.geoJson({features: features}, {
@@ -178,11 +193,7 @@ var MapStore = assign({}, EventEmitter.prototype, {
           }
         }
       });
-      _markers.addLayer(featuresMarkers);
 
-      if (start > marker_length) {
-        return;
-      }
 
 
       setTimeout(function () {
