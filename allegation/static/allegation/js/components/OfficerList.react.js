@@ -30,7 +30,7 @@ var OfficerList = React.createClass({
       showMoreText = '';
       showMore = true;
     }
-
+    var active = this.state.active_officers.length == 0;
     for (var id in this.state.officers) {
       var officer = this.state.officers[id];
 
@@ -38,8 +38,12 @@ var OfficerList = React.createClass({
         break;
       }
 
-      var active = this.state.active_officers.indexOf(officer.id) > -1;
-      officers.push(<div className='col-sm-2' key={officer.id}><Officer officer={officer} active={active}/></div>)
+      var selected = this.state.active_officers.indexOf(officer.id) > -1;
+      officers.push(
+        <div className='col-sm-2' key={officer.id}>
+          <Officer officer={officer} active={active} selected={selected} />
+        </div>
+      );
     }
 
     // 6 items per row
