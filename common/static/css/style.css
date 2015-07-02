@@ -455,10 +455,15 @@ canvas.leaflet-heatmap-layer {
     width: 150px;
     min-height: 40px;
     background-color: #fff;
+    display: none;
 }
 .leaflet-control-command-interior:hover {
     background-color: #F4F4F4;
 }
 .leaflet-bar, .leaflet-control-layers{
     border-radius: 0;
+}
+
+form.navbar-form.navbar-right {
+    width: 50%;
 }
