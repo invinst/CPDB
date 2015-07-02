@@ -61,7 +61,8 @@ var AutoComplete = React.createClass({
     var element = this.getDOMNode();
     $(element).tagsinput({
       itemValue: 'value',
-      itemText: 'text'
+      itemText: 'text',
+      tagClass: 'tag label label-info-autocomplete'
     });
     var filters = this.state.filters;
     for (var key in filters) {
@@ -87,8 +88,8 @@ var AutoComplete = React.createClass({
       event.cancel = isDuplicatedTag(tags, tag)
     });
 
-    var input = $(element).tagsinput("input");
-    cpdbAutocomplete(input);
+    $(element).tagsinput("input").hide();
+
     $(element).on('itemAdded', this.tagsChanged)
       .on('itemRemoved', this.tagsChanged);
 
@@ -134,7 +135,7 @@ var AutoComplete = React.createClass({
    */
   render: function () {
 
-    return <input id="cpdb-search" className="form-control" placeholder="Search by name, neighborhood, or complaint"/>
+    return <input id="cpdb-search" />
 
   }
 
