@@ -61,6 +61,7 @@ var CPDBApp = React.createClass({
    */
   render: function () {
     return <div>
+      <Filters />
       <div id='map' className='pin-top pin-bottom'></div>
       <div className='container'>
         <div className="row">
