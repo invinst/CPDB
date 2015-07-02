@@ -69,12 +69,12 @@ function createAreas() {
         layer.selected = false;
         var area_type = feature.properties.type;
         layer.on('mouseover', function () {
-          $(".leaflet-control-command-interior").text(feature.properties.name);
+          $(".leaflet-control-command-interior").show().text(feature.properties.name);
           layer.setStyle(highlightStyle);
         });
 
         layer.on('mouseout', function () {
-          $(".leaflet-control-command-interior").text(" ");
+          $(".leaflet-control-command-interior").hide().text("");
           if (!layer.selected) {
             layer.setStyle(normalStyle);
           }
