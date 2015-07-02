@@ -331,7 +331,7 @@ footer {
 }
 
 /* leaflet heatmap */
-canvas.leaflet-heatmap-layer{
+canvas.leaflet-heatmap-layer {
     z-index:-1;
 }
 
@@ -357,12 +357,12 @@ canvas.leaflet-heatmap-layer{
     background-color: white;
 }
 
-.btn-full-width{
+.btn-full-width {
     display: inline-block;
     width: 100%;
 }
 
-.padding-left{
+.padding-left {
     padding-left:5px;
 }
 /* leaflet controller overrides */
@@ -392,44 +392,44 @@ canvas.leaflet-heatmap-layer{
 .leaflet-control-layers label input{
     display:none;
 }
-.tright{
+.tright {
     text-align: right;
 }
-.fourty{
+.fourty {
     width: 40%;
     float: left;
 }
-.sixty{
+.sixty {
     width: 60%;
     float: left;
 }
-.officer-link .unit{
+.officer-link .unit {
     padding-right:5px;
     color: #989898;
     font-weight: bold;
 }
-.officer-link .disciplines{
+.officer-link .disciplines {
     padding-left: 5px;
     border-left: 1px solid #989898;
     font-weight: 400;
 }
-.thirty-five{
+.thirty-five {
     width: 35%;
     float: left;
 }
-.absolute{
+.absolute {
     position:absolute;
 }
-.relative{
+.relative {
     position:relative;
 }
-.top-left{
+.top-left {
     top:0px;
     left:0px;
 }
 /* leaflet */
 
-.leaflet-control-layers-base label{
+.leaflet-control-layers-base label {
     display: block;
     width: 150px;
     padding: 5px;
@@ -440,7 +440,7 @@ canvas.leaflet-heatmap-layer{
     background-color: #0079ae;
     color: white;
 }
-.leaflet-control-layers-base label span{
+.leaflet-control-layers-base label span {
     display: block;
     padding: 2px;
     padding-left: 15px;
@@ -450,15 +450,15 @@ canvas.leaflet-heatmap-layer{
     border-top: 2px solid #000;
     clear: none;
 }
-.leaflet-control-command-interior
-{
-    padding:10px;
+.leaflet-control-command-interior {
+    padding: 10px;
     width: 150px;
     min-height: 40px;
     background-color: #fff;
 }
-
-.leaflet-control-command-interior:hover
-{
+.leaflet-control-command-interior:hover {
     background-color: #F4F4F4;
+}
+.leaflet-bar, .leaflet-control-layers{
+    border-radius: 0;
 }
