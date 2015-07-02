@@ -464,6 +464,10 @@ canvas.leaflet-heatmap-layer {
     border-radius: 0;
 }
 
+.leaflet-container {
+    font-family: 'Source Sans Pro', serif;
+}
+
 form.navbar-form.navbar-right {
     width: 50%;
 }
