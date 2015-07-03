@@ -136,7 +136,7 @@ footer {
 .well.officer a.officer-link{
     color: #989898;
 }
-.well.officer.selected a.officer-link {
+.well.officer.selected a.officer-link, .well.officer.active a.officer-link {
     color:#333;
     text-decoration: none;
 }
