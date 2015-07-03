@@ -89,3 +89,9 @@
   width: 100%;
   white-space: initial;
 }
+
+.vis-item.missing-data {
+    background: #e5e5e5;
+    color: #989898;
+    font-size: 12px;
+}
