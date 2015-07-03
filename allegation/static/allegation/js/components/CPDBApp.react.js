@@ -60,22 +60,27 @@ var CPDBApp = React.createClass({
    * @return {object}
    */
   render: function () {
-    return <div>
-      <Filters />
-      <div id='map' className='pin-top pin-bottom'></div>
-      <div className='container'>
+    return (
+      <div className='container-fluid'>
         <div className="row">
-          <div className="col-md-6">
-            <DistributionChart />
-          </div>
-          <div className="col-md-6">
-            <Summary />
-          </div>
+           <div className="col-md-12">
+              <Filters />
+           </div>
         </div>
-        <OfficerList />
-        <ComplaintList />
+        <Filters />
+        <div className='row map-row'>
+          <div className='col-md-7 map-column'>
+            <div id='map' className='pin-top pin-bottom'></div>
+          </div>
+          <div className='col-md-5'><Summary /></div>
+        </div>
+        <div className='container'>
+
+          <OfficerList />
+          <ComplaintList />
+        </div>
       </div>
-    </div>;
+    );
   },
 
   /**
