@@ -67,7 +67,6 @@ var CPDBApp = React.createClass({
               <Filters />
            </div>
         </div>
-        <Filters />
         <div className='row map-row'>
           <div className='col-md-7 map-column'>
             <div id='map' className='pin-top pin-bottom'></div>
