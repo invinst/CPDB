@@ -30,7 +30,6 @@ var SummaryChildRow = React.createClass({
   onClick: function (e) {
     e.preventDefault();
 
-    $(e.target).toggleClass('active');
     console.log(this.props.category.tagValue);
     tagsInputRemoveItemObject(this.props.category.tagValue);
     var tagValue = this.props.subcategory.tagValue;
@@ -48,6 +47,10 @@ var SummaryChildRow = React.createClass({
     if ('cat' in filters && filters['cat'].value.indexOf(this.props.subcategory.cat_id) > -1) {
       className += " active";
     }
+    if ('cat__category' in filters && filters['cat__category'].value.indexOf(this.props.category.name) > -1) {
+      className += " active";
+    }
+
     return (
       <div className="row">
         <div className="col-md-2">
