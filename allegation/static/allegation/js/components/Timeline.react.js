@@ -47,7 +47,7 @@ var Timeline = React.createClass({
               start: start,
               end: moment(items[i + 1]),
               type: 'background',
-              style: 'background: #e5e5e5; color: #989898'
+              className: 'missing-data'
             };
             timeLineItems.push(rangeItem);
           }
