@@ -43,11 +43,12 @@ var Timeline = React.createClass({
           if(i + 1 <= items.length) {
             var rangeItem = {
               id: "range" - (i + 1),
-              content: "No data available",
+              content: "Data missing for this timeframe",
               start: start,
               end: moment(items[i + 1]),
-              type: 'background'
-            }
+              type: 'background',
+              className: 'missing-data'
+            };
             timeLineItems.push(rangeItem);
           }
 
