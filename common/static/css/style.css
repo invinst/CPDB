@@ -1,9 +1,16 @@
 body {
-    padding-top: 50px;
+    padding-top: 72px;
     background-color: white;
     font-family: 'Source Sans Pro', serif;
 }
 
+#content {
+
+}
+.navbar {
+    min-height: 72px;
+    border-bottom: 1px solid #989898
+}
 h1, h2, h3,  .h1, .h2, .h3 {
     font-family: 'Vollkorn', serif;
 }
@@ -49,12 +56,12 @@ footer {
 }
 
 .navbar .navbar-brand, .navbar .navbar-brand:hover, .navbar .navbar-brand:focus {
-    background: #0079ae;
     color: #ffffff;
     font-family: Helvetica Neue, sans-serif;
     font-size: 20px;
     font-weight: bold;
     font-stretch: condensed;
+    padding: 0;
 }
 
 .site-title {
@@ -114,7 +121,7 @@ footer {
 #summary .child-row-container {
     overflow: hidden;
     height: 300px;
-    border-left: 2px solid #666;
+    border-left: 1px solid #989898;
 }
 
 #summary .progress {
@@ -168,49 +175,55 @@ footer {
     color: #a5b4be;
 }
 
+#officer_list {
+    margin-top: 28px;
+}
+
 #officer_list .officers .col-sm-2 {
     padding-right: 5px;
 }
 
-.well.officer {
+.officer {
     background-color: #f1f1f1;
     border: none;
     border-radius: 0;
     border-top: 5px solid red;
+    border-bottom: 1px solid #464646;
     padding: 15px;
-    padding-bottom:25px;
+    padding-bottom: 25px;
     font-size: 12px;
-    position:relative;
+    position: relative;
+    color: #989898;
+    margin-bottom: 20px;
+}
+.officer a.officer-link{
     color: #989898;
 }
-.well.officer a.officer-link{
-    color: #989898;
-}
-.well.officer.selected a.officer-link, .well.officer.active a.officer-link {
-    color:#333;
+.officer.selected a.officer-link, .officer.active a.officer-link {
+    color: #333;
     text-decoration: none;
 }
-.well.officer > .checkmark{
-    position:absolute;
-    padding:3px;
-    left:0;
-    bottom:0;
+.officer > .checkmark{
+    position: absolute;
+    padding: 4px 6px 3px 6px;
+    left: 0;
+    bottom: 0;
     background-color: #cbcbcb;
-    color:white;
+    color: white;
 }
-.well.officer.selected > .checkmark{
+.officer.selected > .checkmark{
     background-color: #709dc0;
 
 }
-.well.officer.middle {
+.officer.middle {
     border-top-color: #d8b421;
 }
 
-.well.officer.bellow {
+.officer.bellow {
     border-top-color: #62b28c;
 }
 
-.well.officer.above {
+.officer.above {
     border-top-color: #c0272d;
 }
 
@@ -253,6 +266,7 @@ footer {
 .complaint-row {
     padding:  0.5em 0;
     font-family: 'Vollkorn';
+    clear: both;
 }
 
 .complaint-row .title {
@@ -309,12 +323,18 @@ footer {
     color: #c0272d;
     font-size: 17px;
 }
+.complaint_detail .uppercase{
+    font-weight: bold;
+    font-size: 18px;
+    font-family: 'Source Sans Pro', serif;
+}
+
 .complaint_detail .row.margin-top{
     margin-top: 20px;
 }
 .complaint_detail {
     background-color: #f7f7ed;
-    padding: 1em 7.1% 1em;
+    padding: 1em 7.1% 40px 1em;
     border-bottom: 1px solid black;
 }
 .complaint_detail .title{
@@ -327,15 +347,27 @@ footer {
     color: #989898;
     font-style: italic;
 }
-.btn.btn-request:not(.btn-link):not(.btn-flat) {
-    background-color: #fff;
-    color: #0079ae;
+.btn.btn-view:not(.btn-link):not(.btn-flat) {
+    background-color: #0079ae;
+    color: white;
     font-family: 'Source Sans Pro';
     text-transform: none;
     border: 1px solid #0a90cb;
-    width:140px;
+    width: 151px;
+    font-size: 16px;
+    padding: 5px 10px;
 }
-.btn.btn-request:hover:not(.btn-link):not(.btn-flat) {
+.btn.btn-request:not(.btn-link):not(.btn-flat) {
+    background-color: white;
+    color: #0a90cb;
+    font-family: 'Source Sans Pro';
+    text-transform: none;
+    border: 1px solid #0a90cb;
+    width: 151px;
+    font-size: 16px;
+    padding: 5px 10px;
+}
+.btn.btn-view:hover:not(.btn-link):not(.btn-flat) {
     background-color: #0a90cb;
     color:white;
 }
@@ -483,7 +515,8 @@ canvas.leaflet-heatmap-layer {
     display: block;
     width: 150px;
     padding: 5px;
-    margin: 0px;
+    margin: 0;
+    font-weight: 400;
 }
 
 .leaflet-control-layers-base label input:checked + span {
@@ -506,6 +539,9 @@ canvas.leaflet-heatmap-layer {
     min-height: 40px;
     background-color: #fff;
     display: none;
+    font-size: 18px;
+    font-family: 'Vollkorn';
+    border-top: 3px solid #333;
 }
 .leaflet-control-command-interior:hover {
     background-color: #F4F4F4;
@@ -518,6 +554,16 @@ canvas.leaflet-heatmap-layer {
     font-family: 'Source Sans Pro', serif;
 }
 
+.leaflet-control {
+    font-size: 14px;
+    border: 1px solid #b2b2b2;
+    box-shadow: 1px ;
+}
+
 form.navbar-form.navbar-right {
     width: 50%;
 }
+.uppercase{
+    text-transform: uppercase;
+}
+

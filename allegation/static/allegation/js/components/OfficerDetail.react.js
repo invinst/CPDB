@@ -61,7 +61,10 @@ var OfficerDetail = React.createClass({
       gender_display = officer.gender == 'M' ? 'Male' : 'Female';
       gender_display = <td><span className="title">Gender</span> {gender_display}</td>
     }
-
+    var unit = "";
+    if (officer.unit) {
+      unit = <td><span className="title">Unit</span> {officer.unit}</td>
+    }
     var mapStyle = {
       height: '240px'
     };
@@ -82,14 +85,14 @@ var OfficerDetail = React.createClass({
           <span className="star">{officer.star}</span>
           {officer.officer_first} {officer.officer_last}
         </div>
-        <div className='col-md-3 complaint-rate-label'>{complaintRateLabel}</div>
+        <div className='col-md-3 tright complaint-rate-label'>{complaintRateLabel}</div>
       </div>
 
       <div className='row'>
         <div className="col-md-12 information">
           <table className="pull-right">
             <tr>
-              <td><span className="title">Unit</span> {officer.unit}</td>
+              {unit}
               {rank}
               {star}
               {appt_date}
