@@ -376,7 +376,7 @@ var ComplaintListRowDetail = React.createClass({
         <div className="col-md-12">
           <div className='row'>
             <div className="col-md-12">
-              <h3 className='uppercase'>{category.cat_id} {category.allegation_name}</h3>
+              <h3>{category.cat_id} {category.allegation_name}</h3>
             </div>
           </div>
           {againstOfficer}
