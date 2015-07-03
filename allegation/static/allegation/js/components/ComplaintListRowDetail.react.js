@@ -95,8 +95,14 @@ var ComplaintListRowDetail = React.createClass({
         };
         if(startDate && endDate) {
           var duration = endDate.year() * 12 + endDate.month() - startDate.year() * 12 - startDate.month();
-          options.start = moment(startDate).subtract(duration / 8, 'months');
-          options.end = moment(endDate).add(duration / 8, 'months');
+          var subtract = 1;
+          var add = 1;
+          if (duration > 3){
+            subtract = duration / 8;
+            add = duration / 6;
+          }
+          options.start = moment(startDate).subtract(subtract, 'months');
+          options.end = moment(endDate).add(add, 'months');
         }
         // Create a Timeline
        this.setState({
@@ -149,7 +155,7 @@ var ComplaintListRowDetail = React.createClass({
       map_div = <div>
         <div className='row'>
           <div className='col-md-12'>
-            <strong className='title'>Where</strong>
+            <strong className='title uppercase'>Where</strong>
           </div>
         </div>
         {map_div}
@@ -332,7 +338,7 @@ var ComplaintListRowDetail = React.createClass({
     if (complaint.officers.length > 0){
       officerLabel = "Officers Involved";
       for(var i=0; i < complaint.officers.length; i++) {
-        officersInvolved.push(<div className='col-md-4'><ComplaintOfficer key={i} officer={complaint.officers[i]}/></div>)
+        officersInvolved.push(<div className='col-md-3'><ComplaintOfficer key={i} officer={complaint.officers[i]}/></div>)
       }
     }
 
@@ -340,10 +346,10 @@ var ComplaintListRowDetail = React.createClass({
     if (complaint.officer) {
       againstOfficer = <div className="row">
         <div className='col-md-12'>
-          <h4>{officerLabel}</h4>
+          <h4 className='uppercase'>{officerLabel}</h4>
         </div>
         <div className='col-md-12'>
-          <div className='col-md-4'><ComplaintOfficer officer={complaint.officer} /></div> {officersInvolved}
+          <div className='col-md-3'><ComplaintOfficer officer={complaint.officer} /></div> {officersInvolved}
         </div>
       </div>
     }
@@ -360,7 +366,7 @@ var ComplaintListRowDetail = React.createClass({
     if (timeline || final_outcome || investigation || police_witness || witness ) {
       investigationHeader = <div className='row margin-top'>
         <div className='col-md-12'>
-          <h4>Investigation</h4>
+          <h4 className='uppercase'>Investigation</h4>
         </div>
       </div>;
     }
@@ -370,7 +376,7 @@ var ComplaintListRowDetail = React.createClass({
         <div className="col-md-12">
           <div className='row'>
             <div className="col-md-12">
-              <h3>{category.cat_id} {category.allegation_name}</h3>
+              <h3 className='uppercase'>{category.cat_id} {category.allegation_name}</h3>
             </div>
           </div>
           {againstOfficer}

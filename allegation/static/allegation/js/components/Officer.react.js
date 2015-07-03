@@ -25,7 +25,7 @@ var Officer = React.createClass({
       officerComplaintAvgStatus = 'above';
     }
 
-    var className = 'well officer ' + officerComplaintAvgStatus;
+    var className = 'officer ' + officerComplaintAvgStatus;
     var selection_state = '';
     if (this.props.active) {
       className += " active";
