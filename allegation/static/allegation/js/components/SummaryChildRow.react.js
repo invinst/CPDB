@@ -3,12 +3,23 @@ var React = require('react');
 var Filters = require('./Filters.react');
 var MapStore = require('../stores/MapStore');
 var SummaryActions = require('../actions/SummaryActions');
-
+var FilterStore = require('../stores/FilterStore');
 
 function getChildRowState() {
   return {
     selected: false
   };
+}
+
+function tagsInputRemoveItemObject(tagValue) {
+  var items = $('#cpdb-search').tagsinput("items");
+  for (var i = 0; i < items.length; i++) {
+    var item = items[i];
+    if (item.value[0] == tagValue.value[0] && item.value[1] == tagValue.value[1]) {
+      $('#cpdb-search').tagsinput("remove", item);
+      break;
+    }
+  }
 }
 
 
@@ -20,37 +31,33 @@ var SummaryChildRow = React.createClass({
     e.preventDefault();
 
     $(e.target).toggleClass('active');
-    $("#cpdb-search").off("itemRemoved");
-    $('#cpdb-search').tagsinput("remove", this.props.category.tagValue);
+    console.log(this.props.category.tagValue);
+    tagsInputRemoveItemObject(this.props.category.tagValue);
     var tagValue = this.props.subcategory.tagValue;
     if (this.state.selected) {
-      // normal removal not work
-      var items = $('#cpdb-search').tagsinput("items");
-      for (var i = 0; i < items.length; i++) {
-        var item = items[i];
-        if (item.value[0] == tagValue.value[0] && item.value[1] == tagValue.value[1]) {
-          $('#cpdb-search').tagsinput("remove", item);
-          break;
-        }
-      }
+      tagsInputRemoveItemObject(tagValue);
     } else {
       $('#cpdb-search').tagsinput("add", tagValue);
     }
-    $("#cpdb-search").on("itemRemoved", $("#cpdb-search").data("itemRemovedListener"));
+
     this.state.selected = !this.state.selected;
   },
   render: function () {
-    return <div className='col-md-6'>
+    var className = "category-name";
+    var filters = FilterStore.getAll();
+    if ('cat' in filters && filters['cat'].value.indexOf(this.props.subcategory.cat_id) > -1) {
+      className += " active";
+    }
+    return (
       <div className="row">
         <div className="col-md-2">
-          <strong>{this.props.subcategory.count}</strong>
+          {this.props.subcategory.count}
         </div>
         <div className="col-md-10">
-          <a href="#" className="category-name" onClick={this.onClick}>{this.props.subcategory.name}</a>
+          <a href="#" className={className} onClick={this.onClick}>{this.props.subcategory.name}</a>
         </div>
       </div>
-    </div>
-
+    );
   }
 });
 

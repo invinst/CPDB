@@ -35,12 +35,12 @@ footer {
 }
 
 #map{
-  width:100%;
-  height:650px;
+  width: 100%;
+  height: 350px;
 }
 #officer-complaint-map{
-    width:100%;
-    height:200px;
+    width: 100%;
+    height: 200px;
 }
 
 .navbar.navbar, .navbar-default.navbar {
@@ -66,11 +66,55 @@ footer {
     color: #333333;
 }
 
+.map-row {
+    background-color: #f6f6ec;
+}
+.map-row .map-column{
+    padding: 0px;
+}
+
+#summary-container {
+    overflow: hidden;
+}
+
 #summary {
-    min-height: 400px;
+    width: 150%;
+    min-height: 350px;
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 12px;
+    padding-top: 10px;
     background-color: #f6f6ec;
+    transition: left 1s;
+    position: relative;
+    left: 0;
+}
+#summary.selected {
+    left: -50%;
+}
+
+#summary .child-rows {
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: left 1s;
+    left: 100%;
+    position: absolute;
+    width: calc(100% - 1em);
+    background: #f6f6ec;
+}
+
+#summary .child-rows .row + .row {
+    margin-top: 7px;
+}
+
+#summary .child-rows.active {
+    left: 1em;
+}
+
+#summary .child-row-container {
+    overflow: hidden;
+    height: 300px;
+    border-left: 2px solid #666;
 }
 
 #summary .progress {
@@ -78,8 +122,12 @@ footer {
     margin-bottom: 7px;
 }
 
+#summary .category:hover, #summary .category.active {
+    font-weight: 700;
+}
+
 #summary .category-name {
-   color: #0079ae;
+    color: #0079ae;
 }
 
 #summary .category-name.active{
