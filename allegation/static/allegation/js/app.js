@@ -9,15 +9,9 @@
 
 var React = require('react');
 var CPDBApp = require('./components/CPDBApp.react');
-var Filters = require('./components/Filters.react');
 var OfficerPage = require('./components/OfficerPage.react');
 var SiteTitle = require('./components/SiteTitle.react');
 
-
-React.render(
-    <Filters />,
-    document.getElementById('search-wrapper')
-);
 
 var cpdbElement = document.getElementById('cpdbapp');
 if(cpdbElement) {
@@ -26,6 +20,7 @@ if(cpdbElement) {
         cpdbElement
     );
 }
+
 var officerProfile = document.getElementById('officer-profile');
 if(officerProfile) {
     React.render(
