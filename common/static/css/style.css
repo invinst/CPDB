@@ -36,7 +36,7 @@ footer {
 
 #map{
   width: 100%;
-  height: 350px;
+  height: 500px;
 }
 #officer-complaint-map{
     width: 100%;
@@ -118,8 +118,8 @@ footer {
 }
 
 #summary .progress {
-    height: 20px;
-    margin-bottom: 7px;
+    height: 25px;
+    margin-bottom: 15px;
 }
 
 #summary .category:hover, #summary .category.active {
@@ -128,6 +128,7 @@ footer {
 
 #summary .category-name {
     color: #0079ae;
+    font-size:1.2em;
 }
 
 #summary .category-name.active{
@@ -433,6 +434,7 @@ canvas.leaflet-heatmap-layer {
 .leaflet-control-layers label {
     display:inline-block;
     padding: 2px 5px;
+    cursor: pointer;
 }
 .leaflet-control-layers label:not(:last) {
     border-right:1px solid #989898;
