@@ -35,6 +35,9 @@ var SiteTitle = React.createClass({
     if (e.which == 13 || e.keyCode == 12) {
       e.preventDefault();
       this.setState({'text': $(e.target).text(), 'editing': false});
+    }
+    else if ($(e.target).text()) {
+      this.setState({'text': $(e.target).text()});
       FilterStore.saveSession({'title': $(e.target).text()});
     }
   },
