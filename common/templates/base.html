@@ -39,13 +39,15 @@
 <div class="container">
     {% include '_top_banner.html' %}
     {% block slider %}{% endblock %}
-    <div id="content" class="hfeed">
-        {% include '_notification.html' %}
+</div>
+<div id="content" class="hfeed">
+    {% include '_notification.html' %}
 
-        {% block content %}
+    {% block content %}
 
-        {% endblock %}
-    </div>
+    {% endblock %}
+</div>
+<div class="container">
     <footer>
         <div class="row">
             <div class="col-lg-12">

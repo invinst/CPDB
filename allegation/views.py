@@ -341,7 +341,8 @@ class AllegationSummaryApiView(AllegationAPIView):
                     'name': category.category,
                     'total': 0,
                     'count': 0,
-                    'subcategories': []
+                    'subcategories': [],
+                    'id': len(summary) + 1,
                 }
                 summary.append(summary_value)
 
@@ -351,10 +352,12 @@ class AllegationSummaryApiView(AllegationAPIView):
             summary_value['subcategories'].append({
                 'name': category.allegation_name,
                 'cat_id': category.cat_id,
-                'count': count
+                'count': count,
             })
 
         summary = sorted(summary, key=lambda x: -x['total'])
+        for summary_row in summary:
+            summary_row['subcategories'] = sorted(summary_row['subcategories'], key=lambda x: -x['count'])
 
         maximum = summary[0]['total'] or 1
         for value in summary:
@@ -483,7 +486,7 @@ class AllegationCSVView(AllegationAPIView):
             location = False
             if not allegation.point or not date:
                 continue
-                
+
             writer.writerow([allegation.pk, date, allegation.point.y, allegation.point.x])
         output.seek(0)
         return HttpResponse(output.read(), content_type='text/csv')

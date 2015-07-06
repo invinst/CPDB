@@ -35,12 +35,12 @@ footer {
 }
 
 #map{
-  width:100%;
-  height:650px;
+  width: 100%;
+  height: 350px;
 }
 #officer-complaint-map{
-    width:100%;
-    height:200px;
+    width: 100%;
+    height: 200px;
 }
 
 .navbar.navbar, .navbar-default.navbar {
@@ -66,11 +66,55 @@ footer {
     color: #333333;
 }
 
+.map-row {
+    background-color: #f6f6ec;
+}
+.map-row .map-column{
+    padding: 0px;
+}
+
+#summary-container {
+    overflow: hidden;
+}
+
 #summary {
-    min-height: 400px;
+    width: 150%;
+    min-height: 350px;
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 12px;
+    padding-top: 10px;
     background-color: #f6f6ec;
+    transition: left 1s;
+    position: relative;
+    left: 0;
+}
+#summary.selected {
+    left: -50%;
+}
+
+#summary .child-rows {
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    transition: left 1s;
+    left: 100%;
+    position: absolute;
+    width: calc(100% - 1em);
+    background: #f6f6ec;
+}
+
+#summary .child-rows .row + .row {
+    margin-top: 7px;
+}
+
+#summary .child-rows.active {
+    left: 1em;
+}
+
+#summary .child-row-container {
+    overflow: hidden;
+    height: 300px;
+    border-left: 2px solid #666;
 }
 
 #summary .progress {
@@ -78,8 +122,12 @@ footer {
     margin-bottom: 7px;
 }
 
+#summary .category:hover, #summary .category.active {
+    font-weight: 700;
+}
+
 #summary .category-name {
-   color: #0079ae;
+    color: #0079ae;
 }
 
 #summary .category-name.active{
@@ -138,7 +186,7 @@ footer {
 .well.officer a.officer-link{
     color: #989898;
 }
-.well.officer.selected a.officer-link {
+.well.officer.selected a.officer-link, .well.officer.active a.officer-link {
     color:#333;
     text-decoration: none;
 }
@@ -333,7 +381,7 @@ footer {
 }
 
 /* leaflet heatmap */
-canvas.leaflet-heatmap-layer{
+canvas.leaflet-heatmap-layer {
     z-index:-1;
 }
 
@@ -359,12 +407,12 @@ canvas.leaflet-heatmap-layer{
     background-color: white;
 }
 
-.btn-full-width{
+.btn-full-width {
     display: inline-block;
     width: 100%;
 }
 
-.padding-left{
+.padding-left {
     padding-left:5px;
 }
 /* leaflet controller overrides */
@@ -394,38 +442,78 @@ canvas.leaflet-heatmap-layer{
 .leaflet-control-layers label input{
     display:none;
 }
-.tright{
+.tright {
     text-align: right;
 }
-.fourty{
+.fourty {
     width: 40%;
     float: left;
 }
-.sixty{
+.sixty {
     width: 60%;
     float: left;
 }
-.officer-link .unit{
+.officer-link .unit {
     padding-right:5px;
     color: #989898;
     font-weight: bold;
 }
-.officer-link .disciplines{
+.officer-link .disciplines {
     padding-left: 5px;
     border-left: 1px solid #989898;
     font-weight: 400;
 }
-.thirty-five{
+.thirty-five {
     width: 35%;
     float: left;
 }
-.absolute{
+.absolute {
     position:absolute;
 }
-.relative{
+.relative {
     position:relative;
 }
-.top-left{
+.top-left {
     top:0px;
     left:0px;
+}
+/* leaflet */
+
+.leaflet-control-layers-base label {
+    display: block;
+    width: 150px;
+    padding: 5px;
+    margin: 0px;
+}
+
+.leaflet-control-layers-base label input:checked + span {
+    background-color: #0079ae;
+    color: white;
+}
+.leaflet-control-layers-base label span {
+    display: block;
+    padding: 2px;
+    padding-left: 15px;
+    color: #0079ae;
+}
+.leaflet-control-command{
+    border-top: 2px solid #000;
+    clear: none;
+}
+.leaflet-control-command-interior {
+    padding: 10px;
+    width: 150px;
+    min-height: 40px;
+    background-color: #fff;
+    display: none;
+}
+.leaflet-control-command-interior:hover {
+    background-color: #F4F4F4;
+}
+.leaflet-bar, .leaflet-control-layers{
+    border-radius: 0;
+}
+
+form.navbar-form.navbar-right {
+    width: 50%;
 }
