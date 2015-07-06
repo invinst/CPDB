@@ -15,6 +15,18 @@ var SummaryRow = React.createClass({
   getInitialState: function () {
     return getSummaryRowState();
   },
+  hasActiveChildren: function (filters) {
+    var category = this.props.category;
+    for (var i = 0; i < filters['cat'].value.length; i++) {
+      for (var j = 0; j < category.subcategories.length; j++) {
+        var childCategoryName = category.subcategories[j].cat_id;
+        if (filters['cat'].value[i].indexOf(childCategoryName) > -1) {
+         return true;
+        }
+      }
+    }
+    return false;
+  },
   render: function () {
     var category = this.props.category;
     var style = {
@@ -24,12 +36,16 @@ var SummaryRow = React.createClass({
       width: category.percentToMax + "%"
     };
     var className = "category-name";
+    var parentClassName = 'row';
     var filters = FilterStore.getAll();
     if ('cat__category' in filters && filters['cat__category'].value.indexOf(category.name) > -1) {
       className += " active";
     }
+    if ('cat' in filters && this.hasActiveChildren(filters)) {
+      parentClassName += ' child-active';
+    }
     return (
-      <div className='row category main-category'>
+      <div className="row category main-category">
         <div className='col-md-6'>
           <div className="progress complaint" style={progressStyle}>
             <div className="progress-bar discipline" role="progressbar" aria-valuenow="60" aria-valuemin="0"
@@ -38,11 +54,15 @@ var SummaryRow = React.createClass({
             </div>
           </div>
         </div>
-        <div className='col-md-1'>
-          {category.total}
-        </div>
-        <div className='col-md-5'>
-          <a onClickCapture={this.onClick} href='#' className={className}>{category.name}</a>
+        <div className='col-md-6'>
+          <div className={parentClassName}>
+            <div className='col-md-2'>
+              {category.total}
+            </div>
+            <div className='col-md-10'>
+              <a onClickCapture={this.onClick} href='#' className={className}>{category.name}</a>
+            </div>
+          </div>
         </div>
       </div>
     );
