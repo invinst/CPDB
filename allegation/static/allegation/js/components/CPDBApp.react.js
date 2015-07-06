@@ -60,8 +60,10 @@ var CPDBApp = React.createClass({
    * @return {object}
    */
   render: function () {
+
     return (
       <div className='container-fluid'>
+        <Filters />
         <div className='row map-row'>
           <div className='col-md-7 map-column'>
             <div id='map' className='pin-top pin-bottom'></div>
@@ -69,7 +71,6 @@ var CPDBApp = React.createClass({
           <div className='col-md-5'><Summary /></div>
         </div>
         <div className='container'>
-
           <OfficerList />
           <ComplaintList />
         </div>

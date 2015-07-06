@@ -352,7 +352,7 @@ class AllegationSummaryApiView(AllegationAPIView):
             summary_value['subcategories'].append({
                 'name': category.allegation_name,
                 'cat_id': category.cat_id,
-                'count': count
+                'count': count,
             })
 
         summary = sorted(summary, key=lambda x: -x['total'])
