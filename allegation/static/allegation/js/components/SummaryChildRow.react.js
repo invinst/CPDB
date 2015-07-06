@@ -31,7 +31,6 @@ var SummaryChildRow = React.createClass({
     e.preventDefault();
 
     $(e.target).toggleClass('active');
-    console.log(this.props.category.tagValue);
     tagsInputRemoveItemObject(this.props.category.tagValue);
     var tagValue = this.props.subcategory.tagValue;
     if (this.state.selected) {

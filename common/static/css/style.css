@@ -130,8 +130,16 @@ footer {
     color: #0079ae;
 }
 
-#summary .category-name.active{
+#summary .category-name.active {
     font-weight: 700;
+}
+
+#summary .category-name.active:focus {
+    text-decoration: none;
+}
+
+#summary .child-active {
+    background-color: #bed4df;
 }
 
 #summary .main-category-name {
