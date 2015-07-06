@@ -18,7 +18,13 @@
             <ul class="nav navbar-nav">
                 {% if show_site_title %}
                 <li class="site-title">
-                    <a id="site-title">Police Misconduct in Chicago</a>
+                    <a id="site-title">
+                        {% if session.query.title %}
+                            {{ session.query.title }}
+                        {% else %}
+                            Police Misconduct in Chicago
+                        {%  endif %}
+                    </a>
                 </li>
                 {% endif %}
             </ul>
