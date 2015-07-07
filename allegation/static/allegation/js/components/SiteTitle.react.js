@@ -23,30 +23,33 @@ var SiteTitle = React.createClass({
   },
 
   render: function(){
-    var button = "";
     return <div>
-        <div onClick={this.enableEditing} onKeyDown={this.keyDown} contentEditable={this.state.editing}>{this.state.text}</div>
-
+        <div onClick={this.enableEditing} onKeyDown={this.keyDown}
+             contentEditable={this.state.editing}
+             onKeyUp={this.keyUp}>{this.state.text}</div>
       </div>
 
-  },
-
-  keyDown: function (e) {
-    if (e.which == 13 || e.keyCode == 12) {
-      e.preventDefault();
-      this.setState({'text': $(e.target).text(), 'editing': false});
-    }
-    else if ($(e.target).text()) {
-      this.setState({'text': $(e.target).text()});
-      FilterStore.saveSession({'title': $(e.target).text()});
-    }
   },
 
   enableEditing: function(){
     // contenteditable field set to edit mode.
     this.setState({ editing: true });
-  }
+  },
 
+  keyUp: function (e) {
+    var text = $(e.target).text();
+    this.setState({'text': text});
+    FilterStore.saveSession({'title': text});
+  },
+
+  keyDown: function (e) {
+    if (e.which == 13 || e.keyCode == 12) {
+      e.preventDefault();
+      var text = $(e.target).text();
+      this.setState({'text': text, 'editing': false});
+      FilterStore.saveSession({'title': text});
+    }
+  }
 });
 
 module.exports = SiteTitle;
