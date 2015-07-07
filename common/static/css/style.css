@@ -498,10 +498,14 @@ canvas.leaflet-heatmap-layer {
     color: #989898;
     font-weight: bold;
 }
+
 .officer-link .disciplines {
+    font-weight: 400;
+}
+
+.officer-link .disciplines:not(.no-border) {
     padding-left: 5px;
     border-left: 1px solid #989898;
-    font-weight: 400;
 }
 .thirty-five {
     width: 35%;
