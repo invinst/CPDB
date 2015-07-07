@@ -37,15 +37,17 @@ var SiteTitle = React.createClass({
   },
 
   keyUp: function (e) {
-    this.setState({'text': $(e.target).text()});
-    FilterStore.saveSession({'title': $(e.target).text()});
+    var text = $(e.target).text();
+    this.setState({'text': text});
+    FilterStore.saveSession({'title': text});
   },
 
   keyDown: function (e) {
     if (e.which == 13 || e.keyCode == 12) {
       e.preventDefault();
-      this.setState({'text': $(e.target).text(), 'editing': false});
-      FilterStore.saveSession({'title': $(e.target).text()});
+      var text = $(e.target).text();
+      this.setState({'text': text, 'editing': false});
+      FilterStore.saveSession({'title': text});
     }
   }
 });
