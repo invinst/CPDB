@@ -22,6 +22,11 @@ var SiteTitle = React.createClass({
     }
   },
 
+  updateTitle: function(tilte) {
+    this.setState({'text': tilte});
+    FilterStore.saveSession({'title': tilte});
+    document.title = tilte;
+  },
   render: function(){
     return <div>
         <div onClick={this.enableEditing} onKeyDown={this.keyDown}
@@ -37,17 +42,13 @@ var SiteTitle = React.createClass({
   },
 
   keyUp: function (e) {
-    var text = $(e.target).text();
-    this.setState({'text': text});
-    FilterStore.saveSession({'title': text});
+    this.updateTitle($(e.target).text());
   },
 
   keyDown: function (e) {
     if (e.which == 13 || e.keyCode == 12) {
       e.preventDefault();
-      var text = $(e.target).text();
-      this.setState({'text': text, 'editing': false});
-      FilterStore.saveSession({'title': text});
+      this.updateTitle($(e.target).text());
     }
   }
 });

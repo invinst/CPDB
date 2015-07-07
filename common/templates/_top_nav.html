@@ -16,11 +16,7 @@
                 {% if show_site_title %}
                 <li class="site-title">
                     <a id="site-title">
-                        {% if session.query.title %}
-                            {{ session.query.title }}
-                        {% else %}
-                            Police Misconduct in Chicago
-                        {%  endif %}
+                        {% include "common/site_title.html" %}
                     </a>
                 </li>
                 {% endif %}
