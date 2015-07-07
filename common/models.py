@@ -36,7 +36,7 @@ class Officer(models.Model):
     @property
     def tag_value(self):
         return {
-            'text': 'Officer: %s' % self,
+            'text': str(self),
             'value': self.pk
         }
 
@@ -77,7 +77,7 @@ class AllegationCategory(models.Model):
     @property
     def tag_value(self):
         return {
-            'text': 'Allegation type: %s' % self,
+            'text': str(self),
             'value': self.pk
         }
 
@@ -198,3 +198,10 @@ class Investigator(models.Model):
     raw_name = models.CharField(max_length=160)
     name = models.CharField(max_length=160)
     complaint_count = models.IntegerField(default=0)
+
+    @property
+    def tag_value(self):
+        return {
+            'text': self.name,
+            'value': self.pk,
+        }

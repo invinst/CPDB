@@ -19,7 +19,7 @@ var init_filters = typeof(INIT_FILTERS) == 'undefined' ? {} : INIT_FILTERS;
 
 AUTOCOMPLETE_CATEGORY_NAMES = {
     'crid': 'Complaint ID',
-    'cat__category': 'Complaint type',
+    'cat__category': 'Category',
     'cat': 'Allegation type',
     'investigator': 'Investigator',
     'officer': 'Officer name',
@@ -75,7 +75,7 @@ var AutoComplete = React.createClass({
           });
         } else {
           $(element).tagsinput("add", {
-            text: AUTOCOMPLETE_CATEGORY_NAMES[key] + ": " + filter[i],
+            text: filter[i],
             value: [key, filter[i]]
           });
         }
