@@ -23,13 +23,19 @@ var ComplaintListRowDetail = React.createClass({
 
         var items = [];
         var dateFormat = 'MMM DD, YYYY';
+        var dateFormatHour = 'MMM DD, YYYY HH:mm'
         if(allegation.incident_date && moment(allegation.incident_date).year() <= 1970){
           allegation.incident_date = false;
         }
-        var startDate, endDate;
+        var firstDate, lastDate, incidentDate;
         if (allegation.incident_date) {
-          var incidentDate = moment(allegation.incident_date);
-          var incidentDateHumanFormat = incidentDate.format(dateFormat);
+          incidentDate = moment(allegation.incident_date);
+          if (incidentDate.get('hour') == 0 && incidentDate.get('minute') == 0) {
+            var incidentDateHumanFormat = incidentDate.format(dateFormat);
+          }
+          else {
+            var incidentDateHumanFormat = incidentDate.format(dateFormatHour);
+          }
           var content = '<div class="timeline-title">Incident Date</div><div class="timeline-date">' +
                         incidentDateHumanFormat + '</div>';
           items.push({
@@ -37,15 +43,19 @@ var ComplaintListRowDetail = React.createClass({
             content: content,
             start: incidentDate
           });
-          startDate = incidentDate;
-          endDate = incidentDate;
+          firstDate = incidentDate;
+          lastDate = incidentDate;
         }
         if (allegation.start_date) {
-          if(startDate){
-            endDate = moment(allegation.start_date);
+          var startDate = moment(allegation.start_date);
+          if (firstDate) {
+            lastDate = startDate;
+            if (firstDate.format(dateFormat) == startDate.format(dateFormat)) {
+              startDate = startDate.add(23, 'hours').add('59', 'minutes');
+            }
           }
 
-          startDate = moment(allegation.start_date);
+
           var startDateHumanFormat = startDate.format(dateFormat);
           var content = '<div class="timeline-title">Investigation Start</div><div class="timeline-date start">' +
                         startDateHumanFormat + '</div>';
@@ -57,10 +67,11 @@ var ComplaintListRowDetail = React.createClass({
 
         }
         if (allegation.end_date) {
-          if(!startDate){
-            startDate = moment(allegation.end_date);
+          if(!firstDate){
+            firstDate = moment(allegation.end_date);
           }
           endDate = moment(allegation.end_date);
+          lastDate = endDate;
           var endDateHumanFormat = endDate.format(dateFormat);
           var content = '<div class="timeline-title">Investigation End</div><div class="timeline-date end">' +
                         endDateHumanFormat + '</div>';
@@ -93,10 +104,10 @@ var ComplaintListRowDetail = React.createClass({
             }
           }
         };
-        if(startDate && endDate) {
-          var duration = endDate.year() * 12 + endDate.month() - startDate.year() * 12 - startDate.month();
-          options.start = moment(startDate).subtract(duration / 8, 'months');
-          options.end = moment(endDate).add(duration / 8, 'months');
+        if(firstDate && lastDate) {
+          var duration = lastDate.year() * 12 + lastDate.month() - firstDate.year() * 12 - firstDate.month();
+          options.start = moment(firstDate).subtract(duration / 8, 'months');
+          options.end = moment(lastDate).add(duration / 8, 'months');
         }
         // Create a Timeline
        this.setState({
