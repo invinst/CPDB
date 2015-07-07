@@ -47,27 +47,31 @@ var Officer = React.createClass({
       unit = "Unit " + officer.unit;
       disciplineClass = 'sixty disciplines';
     }
-    var officerLink = officer.absolute_url;
-    return <div className={className} data-state={selection_state}>
-      <a className='officer-link' href={officerLink}>
 
-        <div className='officer_name' onClick={this.openOfficerProfile}>
-          <strong>
-            {this.props.officer.officer_first.toLowerCase()} {officer.officer_last.toLowerCase()}
-          </strong>
-        </div>
-        <div className='row'>
-          <div className='col-md-12'>
-            <div className='thirty-five unit'>{unit}</div>
-            <div className={disciplineClass}>
-              <div>{officer.allegations_count} complaints</div>
-              <div>{officer.discipline_count} disciplines</div>
+    var officerLink = officer.absolute_url;
+    var officerId = 'officer_' + officer.id;
+
+    return (
+      <div className={className} data-state={selection_state} id={officerId}>
+        <a className='officer-link' href={officerLink}>
+          <div className='officer_name' onClick={this.openOfficerProfile}>
+            <strong>
+              {this.props.officer.officer_first.toLowerCase()} {officer.officer_last.toLowerCase()}
+            </strong>
+          </div>
+          <div className='row'>
+            <div className='col-md-12'>
+              <div className='thirty-five unit'>{unit}</div>
+              <div className={disciplineClass}>
+                <div>{officer.allegations_count} complaints</div>
+                <div>{officer.discipline_count} disciplines</div>
+              </div>
             </div>
           </div>
-        </div>
-      </a>
-      {selectableArea}
-    </div>
+        </a>
+        {selectableArea}
+      </div>
+    )
 
   },
   onClick: function () {
