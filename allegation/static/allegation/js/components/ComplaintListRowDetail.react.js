@@ -343,7 +343,7 @@ var ComplaintListRowDetail = React.createClass({
           <h4>{officerLabel}</h4>
         </div>
         <div className='col-md-12'>
-          <div className='col-md-4'><ComplaintOfficer officer={complaint.officer} /></div> {officersInvolved}
+          <div className='col-md-4'><ComplaintOfficer officer={complaint.officer} active="1" /></div> {officersInvolved}
         </div>
       </div>
     }
