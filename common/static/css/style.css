@@ -520,7 +520,7 @@ canvas.leaflet-heatmap-layer {
     left:0px;
 }
 /* leaflet */
-.leaflet-bottom.leaflet-right{
+.leaflet-container .leaflet-control-attribution{
     display: none;
 }
 .leaflet-control-layers-base label {
