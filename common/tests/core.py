@@ -159,6 +159,14 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
                     f.write(self.browser.page_source)
             raise
 
+    def fill_in(self, selector, value):
+        try:
+            selector_input = self.find(selector)
+            selector_input.clear()
+            selector_input.send_keys(value)
+        except:
+            raise
+
     def sleep(self, seconds):
         time.sleep(seconds)
 
