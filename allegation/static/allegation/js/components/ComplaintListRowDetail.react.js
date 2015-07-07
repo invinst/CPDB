@@ -112,8 +112,8 @@ var ComplaintListRowDetail = React.createClass({
             subtract = duration / 8;
             add = duration / 6;
           }
-          options.start = moment(firstDate).subtract(duration / 8, 'months');
-          options.end = moment(lastDate).add(duration / 8, 'months');
+          options.start = moment(firstDate).subtract(subtract, 'months');
+          options.end = moment(lastDate).add(add, 'months');
         }
         // Create a Timeline
        this.setState({
