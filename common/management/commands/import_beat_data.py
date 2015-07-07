@@ -1,20 +1,27 @@
 import os
+import csv
 
 from django.core.management.base import BaseCommand
-from django.db import connection
-
-from cpdb.settings.base import BASE_DIR
-
+from common.models import Area, Allegation
 
 class Command(BaseCommand):
     help = 'Import csv data'
 
+    def add_arguments(self, parser):
+        parser.add_argument('--file')
+
     def handle(self, *args, **options):
-        cursor = connection.cursor()
-        dir_path = BASE_DIR + "/import_sql"
-        files = os.listdir(dir_path)
-        for file_name in files:
-            with open(dir_path + "/" + file_name) as f:
-                content = f.readlines()
-                content = "".join(content)
-                cursor.execute(content)
+        with open(options['file']) as f:
+            c = csv.reader(f)
+            BEAT_COL = 9
+            for row in c:
+                try:
+                    allegation = Allegation.objects.get(pk=row[0])
+                    if not allegation.beat:
+                        beat = Area.objects.get(extra3="%s" % row[BEAT_COL],type='new_beat')
+                        allegation.areas.add(beat)
+                        allegation.save()
+                except Exception as inst:
+                    print(inst)
+                    print(row[BEAT_COL])
+
