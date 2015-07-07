@@ -22,12 +22,10 @@ var Map = React.createClass({
   },
   drawHeatMap: function (query_string) {
     $.getJSON("/api/allegations/gis/?" + query_string, function (markers) {
-      var _heat = L.heatLayer([], {radius: 8, blur: 16, maxZoom: 10});
       var _markers = L.markerClusterGroup();
       var _controls = {};
       _controls['markers'] = _markers;
-      _controls['heat-map'] = _heat;
-      _map.addLayer(_heat);
+      _map.addLayer(_markers);
 
       var marker_length = markers.features.length;
       var start = 0;
@@ -41,11 +39,7 @@ var Map = React.createClass({
           style: function (feature) {
             return feature.properties;
           },
-          onEachFeature: function (feature, layer) {
-            if (feature.geometry.coordinates && feature.geometry.coordinates[0]) {
-              _heat.addLatLng([feature.geometry.coordinates[1], feature.geometry.coordinates[0]])
-            }
-          }
+
         });
         _markers.addLayer(featuresMarkers);
 
