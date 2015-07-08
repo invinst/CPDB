@@ -20,6 +20,9 @@ from common.models import NO_DISCIPLINE_CODES, ComplainingWitness, PoliceWitness
 from share.models import Session
 
 
+DEFAULT_SITE_TITLE = 'Citizens’ Police Database'
+
+
 class AllegationListView(TemplateView):
     template_name = 'allegation/home.html'
     session = None
