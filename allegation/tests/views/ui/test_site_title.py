@@ -1,8 +1,5 @@
 from common.tests.core import BaseLiveTestCase
-
-
-DEFAULT_SITE_TITLE = 'Police Misconduct in Chicago'
-
+from common.models import DEFAULT_SITE_TITLE
 
 class SiteTitleTestCase(BaseLiveTestCase):
     def test_site_title(self):
