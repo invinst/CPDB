@@ -53,6 +53,11 @@ var CPDBApp = React.createClass({
   componentDidMount: function () {
     MapStore.init();
     this.initShare();
+    $('.smooth-scroll').click(function() {
+      var target = $(this).data('target');
+      var top = $(target).offset().top - 100;
+      $("html, body").animate({scrollTop: top}, 500);
+    })
   },
 
   componentWillUnmount: function () {
@@ -71,14 +76,19 @@ var CPDBApp = React.createClass({
              </div>
           </div>
         <div className='row map-row'>
-          <div className='col-md-7 map-column'>
+          <div className='col-md-7 map-column relative'>
             <div id='map' className='pin-top pin-bottom'></div>
+            <div id='map-arrow-down' data-target='#officer-cards' className='pointer smooth-scroll'><i className='fa fa-chevron-down fa-3x'></i></div>
           </div>
           <div className='col-md-5'><Summary /></div>
         </div>
         <div className='container'>
-          <OfficerList />
-          <ComplaintList />
+          <div id='officer-cards'><OfficerList /></div>
+          <div className='row tcenter'>
+            <i className='fa fa-chevron-up fa-3x smooth-scroll pointer' data-target="#map"></i>
+            <i className='fa fa-chevron-down fa-3x smooth-scroll pointer' data-target="#complaint-list"></i>
+          </div>
+          <div id='complaint-list'><ComplaintList /></div>
         </div>
       </div>
     );
