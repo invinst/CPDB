@@ -15,7 +15,7 @@ from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import D
 
 from common.json_serializer import JSONSerializer
-from common.models import Allegation, Area, AllegationCategory, Officer
+from common.models import Allegation, Area, AllegationCategory, Officer, Investigator
 from common.models import NO_DISCIPLINE_CODES, ComplainingWitness, PoliceWitness
 from share.models import Session
 
@@ -30,6 +30,9 @@ class AllegationListView(TemplateView):
             values = [o.tag_value for o in values]
         elif key == 'cat':
             values = AllegationCategory.objects.filter(pk__in=values['value'])
+            values = [o.tag_value for o in values]
+        elif key == 'investigator':
+            values = Investigator.objects.filter(pk__in=values['value'])
             values = [o.tag_value for o in values]
         elif key == 'areas__id':
             return False

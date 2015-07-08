@@ -24,7 +24,7 @@ var Summary = React.createClass({
     for (i = 0; i < this.state.rows.length; i++) {
       category = this.state.rows[i];
       category.tagValue = {
-        text: "Category: " + category.name,
+        text: category.name,
         value: ['cat__category', category.name]
       };
       rows.push(<SummaryRow key={i} category={category}/>);
@@ -35,7 +35,7 @@ var Summary = React.createClass({
       for (i = 0; i < category.subcategories.length; i++) {
         var subcategory = category.subcategories[i];
         subcategory.tagValue = {
-          text: "Allegation Type: " + subcategory.name,
+          text: subcategory.name,
           value: ['cat', subcategory.cat_id]
         };
         childRows.push(<SummaryChildRow category={category} key={subcategory.cat_id}
