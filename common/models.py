@@ -89,10 +89,6 @@ class Area(models.Model):
                                                     ['police-districts', 'Police District']], db_index=True)
     polygon = models.MultiPolygonField(srid=4326, null=True, blank=True)
     objects = models.GeoManager()
-    extra1 = models.CharField(max_length=30, null=True)
-    extra2 = models.CharField(max_length=30, null=True)
-    extra3 = models.CharField(max_length=30, null=True)
-    extra4 = models.CharField(max_length=30, null=True)
 
 OUTCOMES = [
     ['000', 'Violation Noted'],
