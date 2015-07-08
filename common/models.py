@@ -1,7 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.contrib.gis.db import models
 from django.core.urlresolvers import reverse
-from django.forms.models import model_to_dict
 from django.template.defaultfilters import slugify
 
 

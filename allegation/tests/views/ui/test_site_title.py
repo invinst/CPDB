@@ -1,7 +1,5 @@
 from common.tests.core import BaseLiveTestCase
-
-
-DEFAULT_SITE_TITLE = 'Police Misconduct in Chicago'
+from allegation.views import DEFAULT_SITE_TITLE
 
 
 class SiteTitleTestCase(BaseLiveTestCase):
