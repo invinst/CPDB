@@ -68,7 +68,14 @@ footer {
     font-style: italic;
     font-size: 30px;
     font-family: 'Vollkorn', serif;
+    margin: 10px 0 0 10px;
 }
+
+.site-title input {
+    border: none;
+    width: 500px;
+}
+
 .navbar .navbar-nav>li.site-title >a {
     color: #333333;
 }
