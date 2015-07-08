@@ -1,3 +1,4 @@
+from django.template.defaultfilters import slugify
 from common.tests.core import SimpleTestCase
 from share.factories import SessionFactory
 from share.models import Session
@@ -8,8 +9,9 @@ class HomepageViewTestCase(SimpleTestCase):
     def test_home_page_generate_new_share_when_access_a_share(self):
         session = SessionFactory()
         session_count = Session.objects.all().count()
+        title_slug = slugify(session.title)
 
-        response = self.client.get("/%s/" % session.hash_id)
+        response = self.client.get("/%s/%s" % (session.hash_id, title_slug))
         response.status_code.should.equal(302)
         Session.objects.all().count().should.equal(session_count + 1)  # 1 new session created
 
