@@ -1,5 +1,6 @@
 from common.tests.core import BaseLiveTestCase
-from common.models import DEFAULT_SITE_TITLE
+from allegation.views import DEFAULT_SITE_TITLE
+
 
 class SiteTitleTestCase(BaseLiveTestCase):
     def test_site_title(self):

@@ -4,9 +4,6 @@ from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 
 
-DEFAULT_SITE_TITLE = 'Citizens’ Police Database'
-
-
 class User(AbstractUser):
     pass
 

@@ -5,7 +5,7 @@ Created on Jul 29, 2013
 """
 from django import template
 from django.core.urlresolvers import reverse
-from common.models import DEFAULT_SITE_TITLE
+from allegation.views import DEFAULT_SITE_TITLE
 
 
 register = template.Library()
