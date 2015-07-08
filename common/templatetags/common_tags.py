@@ -11,12 +11,19 @@ register = template.Library()
 
 css_files = []
 js_files = []
+DEFAULT_SITE_TITLE = 'Police Misconduct in Chicago'
 
 
 @register.tag
 def current_as_back_url(_, token):
     return CurrentBackUrlNode()
 
+@register.filter('default_site_title')
+def default_site_title(title):
+    if title:
+        return title
+    else:
+        return DEFAULT_SITE_TITLE
 
 class CurrentBackUrlNode(template.Node):
     def render(self, context):

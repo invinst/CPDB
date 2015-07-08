@@ -2,33 +2,26 @@
 {% load common_tags %}
 
 <div class="navbar navbar-default navbar-fixed-top">
-
-        <div class="navbar-header">
-            <a href="/" class="navbar-brand">{% trans "CPDB" %}</a>
-            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-        </div>
-        <div class="navbar-collapse collapse" id="navbar-main">
-            <ul class="nav navbar-nav">
-                {% if show_site_title %}
-                <li class="site-title">
-                    <a id="site-title">
-                        {% if session.query.title %}
-                            {{ session.query.title }}
-                        {% else %}
-                            Police Misconduct in Chicago
-                        {%  endif %}
-                    </a>
+    <div class="navbar-header">
+        <a href="/" class="navbar-brand">{% trans "CPDB" %}</a>
+        <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+    </div>
+    <div class="navbar-collapse collapse" id="navbar-main">
+        <ul class="nav navbar-nav">
+            {% if show_site_title %}
+                <li class='site-title'>
+                    <span id='site-title'>{{ session.query.title | default_site_title }}</span>
                 </li>
-                {% endif %}
-            </ul>
-            <form class="navbar-form navbar-right" role="search">
-              <div id="search-wrapper">
-                  <input type="text" id="autocomplete" placeholder="Search by name, neighborhood, or complaint" />
-              </div>
-            </form>
-        </div>
+            {% endif %}
+        </ul>
+        <form class="navbar-form navbar-right" role="search">
+            <div id="search-wrapper">
+                <input type="text" id="autocomplete" placeholder="Search by name, neighborhood, or complaint"/>
+            </div>
+        </form>
+    </div>
 </div>

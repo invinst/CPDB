@@ -17,39 +17,22 @@ var SiteTitle = React.createClass({
   getInitialState: function () {
     var initial = init_data['title'] || "Police Misconduct in Chicago";
     return {
-      text: initial,
-      editing: false
+      text: initial
     }
   },
 
-  render: function(){
-    return <div>
-        <div onClick={this.enableEditing} onKeyDown={this.keyDown}
-             contentEditable={this.state.editing}
-             onKeyUp={this.keyUp}>{this.state.text}</div>
-      </div>
-
+  render: function() {
+    return (
+      <input className='site-title-input' type='text' value={this.state.text} onChange={this.change} />
+    )
   },
 
-  enableEditing: function(){
-    // contenteditable field set to edit mode.
-    this.setState({ editing: true });
+  change: function (e) {
+    newTitle = $(e.target).val()
+    this.setState({ 'text': newTitle });
+    FilterStore.saveSession({'title': newTitle});
+    document.title = newTitle;
   },
-
-  keyUp: function (e) {
-    var text = $(e.target).text();
-    this.setState({'text': text});
-    FilterStore.saveSession({'title': text});
-  },
-
-  keyDown: function (e) {
-    if (e.which == 13 || e.keyCode == 12) {
-      e.preventDefault();
-      var text = $(e.target).text();
-      this.setState({'text': text, 'editing': false});
-      FilterStore.saveSession({'title': text});
-    }
-  }
 });
 
 module.exports = SiteTitle;
