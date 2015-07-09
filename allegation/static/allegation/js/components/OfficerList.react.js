@@ -136,9 +136,10 @@ var OfficerList = React.createClass({
           </div>
         </div>
         <div className="row">
-          <div className="col-md-12">
+          <div className="col-md-12 overview-container">
             <div className="overview-box">
-            {overview}
+              {overview}
+              <div className="clearfix"></div>
             </div>
             <div id="overview-slider"></div>
           </div>

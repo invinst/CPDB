@@ -204,26 +204,39 @@ footer {
     overflow: hidden;
 }
 
+.overview-box {
+    border-bottom: 3px solid #cbcbcb;
+    padding: 3px 0;
+    border-top: 3px solid #cbcbcb;
+}
+
 .overview {
-    height: 2em;
+    height: 49px;
     background: green;
-    margin-bottom: 1em;
     float: left;
 }
 
+.overview-container {
+    height: 64px;
+    margin-bottom: 20px;
+}
+
 #overview-slider {
-    width: calc(100% - 3em);
+    width: calc(100% - 64px);
     margin: auto;
-    height: 2em;
+    height: 49px;
+    position: relative;
+    top: -55px;
 }
 
 #overview-slider.ui-slider .ui-slider-handle {
-    border: 2px solid #000000;
+    border: 3px solid #333333;
     border-left: none;
     border-right: none;
-    height: 2.6em;
-    width: 3em;
-    margin-left: -1.5em;
+    height: 61px;
+    width: 64px;
+    margin-left: -32px;
+    top: -6px;
 }
 
 .overview-0 {
