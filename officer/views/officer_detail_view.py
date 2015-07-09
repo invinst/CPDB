@@ -8,7 +8,7 @@ from common.models import Officer, Allegation
 
 class OfficerDetailView(View):
     def get(self, request, *args, **kwargs):
-        
+
         officer_id = kwargs['pk']
         officer = Officer.objects.get(id=officer_id)
         allegations = Allegation.objects.filter(officer=officer)
@@ -28,7 +28,7 @@ class OfficerDetailView(View):
                     if officers[related_allegation.officer.pk] > 1:
                         related_officers.append(related_allegation.officer.pk)
 
-        related_officers = JSONSerializer().serialize(Officer.objects.filter(pk__in=related_officers))
+        related_officers = JSONSerializer().serialize(Officer.objects.filter(pk__in=related_officers).order_by('-allegations_count'))
 
         return render(request, 'officer/officer_detail.html', {
             'officer': officer_dict,
