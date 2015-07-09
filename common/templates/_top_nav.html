@@ -1,9 +1,12 @@
 {% load i18n %}
 {% load common_tags %}
+{% load staticfiles %}
 
 <div class="navbar navbar-default navbar-fixed-top">
     <div class="navbar-header">
-        <a href="/" class="navbar-brand">{% trans "CPDB" %}</a>
+        <a href="/" class="navbar-brand">
+            <img src="{% static 'img/logo.png' %}" alt="{% trans "CPDB" %}" />
+        </a>
         <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>

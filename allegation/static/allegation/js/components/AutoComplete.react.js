@@ -55,6 +55,11 @@ var AutoComplete = React.createClass({
       event.item.layer.toggleStyle();
     }
     var tags = $(this.getDOMNode()).tagsinput("items");
+    if (tags.length) {
+      $(".bootstrap-tagsinput").show();
+    } else {
+      $(".bootstrap-tagsinput").hide();
+    }
     FilterActions.replaceFilters(tags);
   },
   componentDidMount: function () {

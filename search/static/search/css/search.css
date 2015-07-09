@@ -70,6 +70,7 @@
 .bootstrap-tagsinput {
     border: none;
     box-shadow: none;
+    margin: 10px 0;
 }
 .bootstrap-tagsinput .tag,.bootstrap-tagsinput input{
     font-size: 1em;
