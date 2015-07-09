@@ -228,6 +228,7 @@ footer {
     position: relative;
     top: -55px;
     border: none;
+    background: none;
 }
 
 #overview-slider.ui-slider .ui-slider-handle {
