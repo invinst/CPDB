@@ -305,16 +305,25 @@ footer {
     background-color: #709dc0;
 
 }
-.officer.middle {
+
+.officer.avg-0 {
+    border-top-color: #c0272d;
+}
+
+.officer.avg-1 {
+    border-top-color: #ed9429;
+}
+
+.officer.avg-2 {
     border-top-color: #d8b421;
 }
 
-.officer.bellow {
-    border-top-color: #62b28c;
+.officer.avg-3 {
+    border-top-color: #83b247;
 }
 
-.officer.above {
-    border-top-color: #c0272d;
+.officer.avg-4 {
+    border-top-color: #41996d;
 }
 
 .officer_name {

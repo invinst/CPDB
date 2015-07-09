@@ -12,18 +12,19 @@ var Officer = React.createClass({
   componentDidMount: function () {
 
   },
+  getAvgClass: function() {
+    for (var i = 0; i < OFFICER_COMPLAINT_COUNT_RANGE.length; i++) {
+      if (this.props.officer.allegations_count >= OFFICER_COMPLAINT_COUNT_RANGE[i][0]) {
+        return 'avg-' + i;
+      }
+    }
+  },
   render: function () {
     var officer = this.props.officer;
     if (!officer) {
       return <div></div>
     }
-    var officerComplaintAvgStatus = 'bellow';
-    if (officer.allegations_count > AppConstants.AVG_COMPLAINTS_NUMBER_GREEN) {
-      officerComplaintAvgStatus = 'middle';
-    }
-    if (officer.allegations_count > AppConstants.AVG_COMPLAINTS_NUMBER_YELLOW) {
-      officerComplaintAvgStatus = 'above';
-    }
+    var officerComplaintAvgStatus = this.getAvgClass();
 
     var className = 'officer ' + officerComplaintAvgStatus;
     var selection_state = '';
