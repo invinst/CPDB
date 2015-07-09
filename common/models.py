@@ -4,6 +4,9 @@ from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 
 
+from allegation.models.allegation_manager import AllegationManager
+
+
 class User(AbstractUser):
     pass
 
@@ -170,6 +173,7 @@ class Allegation(models.Model):
     investigator = models.ForeignKey('common.Investigator', null=True)
     point = models.PointField(srid=4326, null=True, blank=True)
     objects = models.GeoManager()
+    allegations = AllegationManager()
 
     document_id = models.IntegerField(null=True)
     document_normalized_title = models.CharField(max_length=255, null=True)
