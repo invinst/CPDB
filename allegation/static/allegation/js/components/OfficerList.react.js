@@ -48,7 +48,7 @@ var OfficerList = React.createClass({
     var display = this.getDisplaying();
     var left = display[0] - view;
     if (left) {
-      left = left / 2;  // 2 items in a col
+      left = left / OFFICER_PER_COL;  // 2 items in a col
       left = parseInt(left);  // convert to int
       left = OFFICER_WIDTH * left;
     }
@@ -60,12 +60,12 @@ var OfficerList = React.createClass({
         .css('transition', 'none')
         .css('left', 0);
       this.setState({
-          current_view: value * 2
+          current_view: value * OFFICER_PER_COL
       });
   },
 
   slideToDisplay: function (value) {
-    var left = this.getInitDisplay(value * 2);
+    var left = this.getInitDisplay(value * OFFICER_PER_COL);
     $(".officers-container").css('left', left + 'px');
   },
 
