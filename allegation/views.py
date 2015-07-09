@@ -398,7 +398,6 @@ class OfficerListAPIView(AllegationAPIView):
         content = JSONSerializer().serialize({
             'officers': officers,
             'overview': overview,
-            'OFFICER_COMPLAINT_COUNT_RANGE': OFFICER_COMPLAINT_COUNT_RANGE,
         })
         return HttpResponse(content, content_type="application/json")
 

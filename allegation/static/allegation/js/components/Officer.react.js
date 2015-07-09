@@ -5,6 +5,15 @@ var OfficerActions = require('../actions/OfficerActions');
 var AppConstants = require("../constants/AppConstants");
 
 
+var OFFICER_COMPLAINT_COUNT_RANGE = [
+    [20, 0],
+    [9, 20],
+    [3, 9],
+    [2, 3],
+    [0, 2]
+];
+
+
 var Officer = React.createClass({
   getInitialState: function () {
     return {'selected': false}

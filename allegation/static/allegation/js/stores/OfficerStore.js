@@ -66,7 +66,6 @@ var OfficerStore = assign({}, EventEmitter.prototype, {
       _state.officers = data.officers;
       _state.overview = data.overview;
       _state.current_view = 0;
-      OFFICER_COMPLAINT_COUNT_RANGE = data.OFFICER_COMPLAINT_COUNT_RANGE;
       OfficerStore.emitChange();
     });
   },
