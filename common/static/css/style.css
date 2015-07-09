@@ -235,6 +235,7 @@ footer {
     height: 49px;
     position: relative;
     top: -55px;
+    border: none;
 }
 
 #overview-slider.ui-slider .ui-slider-handle {
@@ -245,6 +246,9 @@ footer {
     width: 64px;
     margin-left: -32px;
     top: -6px;
+    background: none;
+    border-radius: 0;
+    font-size: 1em;
 }
 
 .overview-0 {
