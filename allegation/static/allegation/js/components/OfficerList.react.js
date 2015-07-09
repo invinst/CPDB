@@ -200,6 +200,7 @@ var OfficerList = React.createClass({
     $("#overview-slider").slider({
       min: 0,
       max: max,
+      value: 0,
       slide: this.slideHandle,
       start: this.slideHandle
     });
