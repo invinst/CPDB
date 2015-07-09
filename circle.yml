@@ -8,7 +8,7 @@ database:
   post:
     - psql -c "CREATE EXTENSION postgis;" -d circle_test
 dependencies:
-  pre:
+  post:
     - npm install -g bower
     - npm run circleci
   override:
