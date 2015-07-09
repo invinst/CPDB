@@ -199,6 +199,66 @@ footer {
     padding-right: 5px;
 }
 
+.officer-vertical-scroll {
+    width: 100%;
+    overflow: hidden;
+}
+
+.overview {
+    height: 2em;
+    background: green;
+    margin-bottom: 1em;
+    float: left;
+}
+
+#overview-slider {
+    width: calc(100% - 3em);
+    margin: auto;
+    height: 2em;
+}
+
+#overview-slider.ui-slider .ui-slider-handle {
+    border: 2px solid #000000;
+    border-left: none;
+    border-right: none;
+    height: 2.6em;
+    width: 3em;
+    margin-left: -1.5em;
+}
+
+.overview-0 {
+    background-color: #ff4647;
+}
+.overview-1 {
+    background-color: #f3b272;
+}
+.overview-2 {
+    background-color: #f2db6d;
+}
+.overview-3 {
+    background-color: #a4c683;
+}
+.overview-4 {
+    background-color: #62b28c;
+}
+
+.officers-container {
+    width: 400%;
+    transition: 1s left;
+    left: 0;
+    position: relative;
+}
+
+.officers-container > div:first-child {
+    margin-left: 0;
+}
+
+.officer-block {
+    width: 3.714%;
+    float: left;
+    margin-left: 0.535%;
+}
+
 .officer {
     background-color: #f1f1f1;
     border: none;
@@ -210,8 +270,9 @@ footer {
     font-size: 12px;
     position: relative;
     color: #989898;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
 }
+
 .officer a.officer-link{
     color: #989898;
 }

@@ -18,14 +18,15 @@ var CHANGE_EVENT = 'change';
 var SUMMARY_CHANGE = 'summary-change';
 var SET_ACTIVE_OFFICER = 'set-active-officer';
 var _state = {
-  'officers': {},
-  'show_more': false,
-  'active_officers': [],
-  'complaints_count_start': 0,
-  'complaints_count_end': 0,
+  officers: [],
+  show_more: false,
+  active_officers: [],
+  overview: [],
+  current_view: 0,
   first_call: true
 };
 var _officers = {};
+var ajax = null;
 
 /**
  * Update a TODO item.
@@ -55,17 +56,16 @@ var OfficerStore = assign({}, EventEmitter.prototype, {
     for (var i = 0; i < _state['active_officers'].length; i++) {
       queryString += "officer=" + _state['active_officers'][i] + "&"
     }
-    if (_state.complaints_count_start) {
-      queryString += "&allegations_count_start=" + _state.complaints_count_start;
-    }
-    if (_state.complaints_count_end) {
-      queryString += "&allegations_count_end=" + _state.complaints_count_end;
-    }
     return queryString;
   },
   update: function () {
-    $.getJSON('/api/allegations/officers/?' + FilterStore.getQueryString(), function (data) {
-      _state['officers'] = data.officers;
+    if (ajax) {
+      ajax.abort();
+    }
+    ajax = $.getJSON('/api/allegations/officers/?' + FilterStore.getQueryString(), function (data) {
+      _state.officers = data.officers;
+      _state.overview = data.overview;
+      _state.current_view = 0;
       OfficerStore.emitChange();
     });
   },
