@@ -41,7 +41,7 @@ var OfficerList = React.createClass({
 
   isDisplaying: function (value) {
     var display = this.getDisplaying();
-    return value >= display[0]/2 && value < display[1]/2 - OFFICER_PER_PAGE/2;
+    return value >= display[0]/OFFICER_PER_COL && value < display[1]/OFFICER_PER_COL - OFFICER_PER_PAGE/OFFICER_PER_COL;
   },
 
   getInitDisplay: function(view){
@@ -189,14 +189,13 @@ var OfficerList = React.createClass({
   },
   _onChange: function () {
     this.setState(OfficerStore.getAll());
-    var that = this;
     var container = $(".officers-container");
 
     var max = this.state.officers.length - OFFICER_PER_PAGE;
-    if (max % 2){
-      max = max / 2;
+    if (max % OFFICER_PER_COL){
+      max = max / OFFICER_PER_COL;
     } else {
-      max = (max + 1) / 2;
+      max = parseInt(max / OFFICER_PER_COL) + 1;
     }
     $("#overview-slider").slider({
       min: 0,
