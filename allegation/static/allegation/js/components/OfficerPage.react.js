@@ -61,9 +61,15 @@ var OfficerPage = React.createClass({
     }
     console.log(related, this.props.related)
     return <div>
-      <OfficerDetail officer={this.props.officer}/>
-      {relatedOfficers}
-      <ComplaintList allegations={this.props.officer.allegations} officer={this.props.officer}/>
+      <div className="map-row">
+        <div className="container">
+          <OfficerDetail officer={this.props.officer}/>
+        </div>
+      </div>
+      <div className="container">
+        {relatedOfficers}
+        <ComplaintList allegations={this.props.officer.allegations} officer={this.props.officer}/>
+      </div>
     </div>;
   },
 
