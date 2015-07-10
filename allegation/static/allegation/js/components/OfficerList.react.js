@@ -46,7 +46,7 @@ var OfficerList = React.createClass({
 
   isDisplaying: function (value) {
     var display = this.getDisplaying();
-    return value >= display[0]/OFFICER_PER_COL && value < display[1]/OFFICER_PER_COL - OFFICER_PER_PAGE/OFFICER_PER_COL;
+    return value >= display[0]/OFFICER_PER_COL && value <= display[1]/OFFICER_PER_COL - OFFICER_PER_PAGE/OFFICER_PER_COL;
   },
 
   getInitDisplay: function(view){
@@ -110,7 +110,7 @@ var OfficerList = React.createClass({
       if (colOfficerCount == OFFICER_PER_COL) {
         colOfficerCount = 0;
         officerCols.push(
-          <div className="officer-block">
+          <div className="officer-block" key={i}>
             {officerCol}
             <div className="clearfix"></div>
           </div>
@@ -172,9 +172,9 @@ var OfficerList = React.createClass({
     var left = this.getInitDisplay(this.state.current_view);
     if (left) {
       if (OLD_DISPLAY > this.state.current_view) {
-        container.css('left', left - OFFICER_WIDTH / 9 + 'px');
+        container.css('left', left - OFFICER_WIDTH * 2 + 'px');
       } else {
-        container.css('left', left + OFFICER_WIDTH / 9 + 'px');
+        container.css('left', left + OFFICER_WIDTH * 2 + 'px');
       }
     }
     OLD_DISPLAY = this.state.current_view;
@@ -199,12 +199,11 @@ var OfficerList = React.createClass({
     } else {
       this.setState(newState);
       var container = $(".officers-container");
-
       var max = this.state.officers.length - OFFICER_PER_PAGE;
       if (max % OFFICER_PER_COL){
-        max = max / OFFICER_PER_COL;
-      } else {
         max = parseInt(max / OFFICER_PER_COL) + 1;
+      } else {
+        max = max / OFFICER_PER_COL;
       }
       $("#overview-slider").slider({
         min: 0,
