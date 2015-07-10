@@ -17,31 +17,11 @@ var FilterStore = require('./FilterStore');
 var CHANGE_EVENT = 'change';
 var SUMMARY_CHANGE = 'summary-change';
 var SET_ACTIVE_OFFICER = 'set-active-officer';
-var _state = {
-  officers: [],
-  show_more: false,
-  active_officers: [],
-  overview: [],
-  current_view: 0,
-  first_call: true
-};
-var _officers = {};
+var firstCall = true;
 var ajax = null;
-
-/**
- * Update a TODO item.
- * @param  {string} id
- * @param {object} updates An object literal containing only the data to be
- *     updated.
- */
-function update(id, updates) {
-  _officers[id] = assign({}, _complaints[id], updates);
-}
-
-
-function create(id, officer) {
-  _officers[id] = {};
-}
+var _state = {
+  active_officers: []
+};
 
 
 var OfficerStore = assign({}, EventEmitter.prototype, {
@@ -65,7 +45,6 @@ var OfficerStore = assign({}, EventEmitter.prototype, {
     ajax = $.getJSON('/api/allegations/officers/?' + FilterStore.getQueryString(), function (data) {
       _state.officers = data.officers;
       _state.overview = data.overview;
-      _state.current_view = 0;
       OfficerStore.emitChange();
     });
   },
@@ -75,10 +54,10 @@ var OfficerStore = assign({}, EventEmitter.prototype, {
   },
   init: function () {
     this.update();
-    return _state;
+    return _.clone(_state);
   },
-  getAll: function (type) {
-    return _state;
+  getAll: function () {
+    return _.clone(_state);
   },
   emitChange: function () {
     this.emit(CHANGE_EVENT);
@@ -102,11 +81,11 @@ AppDispatcher.register(function (action) {
     case MapConstants.MAP_REPLACE_FILTERS:
     case MapConstants.MAP_CHANGE_FILTER:
     case MapConstants.MAP_ADD_FILTER:
-      if (!_state['first_call']) {
+      if (!firstCall) {
         OfficerStore.set('active_officers', []);
 
       }
-      _state['first_call'] = false;
+      firstCall = false;
       OfficerStore.update();
       break;
 
