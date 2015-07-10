@@ -26,6 +26,28 @@ var OfficerList = React.createClass({
   },
   componentDidMount: function () {
     OfficerStore.addChangeListener(this._onChange);
+    var that = this;
+    var slider = $("#overview-slider");
+
+    $(".officer-vertical-scroll").swipeleft(function(){
+      var value = slider.slider("value");
+      value = value + 1;
+      if (value > slider.slider("option", "max")) {
+        return;
+      }
+      slider.slider("value", value);
+      that.display(value);
+    });
+
+    $(".officer-vertical-scroll").swiperight(function(){
+      var value = slider.slider("value");
+      value = value - 1;
+      if (value < 0) {
+        return;
+      }
+      slider.slider("value", value);
+      that.display(value);
+    });
   },
 
   getDisplaying: function () {
@@ -46,7 +68,7 @@ var OfficerList = React.createClass({
 
   isDisplaying: function (value) {
     var display = this.getDisplaying();
-    return value >= display[0]/OFFICER_PER_COL && value <= display[1]/OFFICER_PER_COL - OFFICER_PER_PAGE/OFFICER_PER_COL;
+    return value >= display[0]/OFFICER_PER_COL && value < display[1]/OFFICER_PER_COL - OFFICER_PER_PAGE/OFFICER_PER_COL;
   },
 
   getInitDisplay: function(view){
@@ -172,9 +194,9 @@ var OfficerList = React.createClass({
     var left = this.getInitDisplay(this.state.current_view);
     if (left) {
       if (OLD_DISPLAY > this.state.current_view) {
-        container.css('left', left - OFFICER_WIDTH * 2 + 'px');
+        container.css('left', left - OFFICER_WIDTH + 'px');
       } else {
-        container.css('left', left + OFFICER_WIDTH * 2 + 'px');
+        container.css('left', left + OFFICER_WIDTH + 'px');
       }
     }
     OLD_DISPLAY = this.state.current_view;
@@ -184,13 +206,16 @@ var OfficerList = React.createClass({
         .css('left', left + 'px');
     }, 10);
   },
-  slideHandle: function(e, ui){
-    var value = ui.value;
+  display: function(value) {
     if (this.isDisplaying(value)) {
       this.slideToDisplay(value)
     } else {
       this.renderNewDisplay(value);
     }
+  },
+  slideHandle: function(e, ui){
+    var value = ui.value;
+    this.display(value);
   },
   _onChange: function () {
     var newState = OfficerStore.getAll();
