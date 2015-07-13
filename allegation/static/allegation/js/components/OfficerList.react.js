@@ -24,30 +24,42 @@ var OfficerList = React.createClass({
       current_view: 0
     };
   },
+  slideToLeft: function (e) {
+    if (e) {
+      e.preventDefault();
+    }
+    var slider = $("#overview-slider");
+    var value = slider.slider("value");
+    value = value + 1;
+    if (value > slider.slider("option", "max")) {
+      return;
+    }
+    slider.slider("value", value);
+    this.display(value);
+  },
+  slideToRight: function (e) {
+    if (e) {
+      e.preventDefault();
+    }
+    var slider = $("#overview-slider");
+    var value = slider.slider("value");
+    value = value - 1;
+    if (value < 0) {
+      return;
+    }
+    slider.slider("value", value);
+    this.display(value);
+  },
+  prevent: function (e) {
+    e.preventDefault();
+  },
   componentDidMount: function () {
     OfficerStore.addChangeListener(this._onChange);
-    var that = this;
-    var slider = $("#overview-slider");
 
-    $(".officer-vertical-scroll").swipeleft(function(){
-      var value = slider.slider("value");
-      value = value + 1;
-      if (value > slider.slider("option", "max")) {
-        return;
-      }
-      slider.slider("value", value);
-      that.display(value);
-    });
+    $(".officer-vertical-scroll").swipeleft(this.slideToLeft);
+    $(".officer-vertical-scroll").swiperight(this.slideToRight);
 
-    $(".officer-vertical-scroll").swiperight(function(){
-      var value = slider.slider("value");
-      value = value - 1;
-      if (value < 0) {
-        return;
-      }
-      slider.slider("value", value);
-      that.display(value);
-    });
+    $(".officer-control").disableSelection();
   },
 
   getDisplaying: function () {
@@ -173,11 +185,17 @@ var OfficerList = React.createClass({
         </div>
         <div className="row">
           <div className="col-md-12">
+            <div className="officer-control officer-control-left" onClick={this.slideToRight} onDbClick={this.prevent}>
+              <i className="fa fa-angle-left" />
+            </div>
             <div className="officer-vertical-scroll">
               <div className="officers-container">
                 {officerCols}
                 <div className="clearfix"></div>
               </div>
+            </div>
+            <div className="officer-control officer-control-right" onClick={this.slideToLeft} onDbClick={this.prevent}>
+              <i className="fa fa-angle-right" />
             </div>
           </div>
         </div>
