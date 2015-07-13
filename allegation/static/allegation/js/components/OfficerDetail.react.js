@@ -4,6 +4,7 @@ var FilterActions = require("../actions/FilterActions");
 var Timeline = require("./Timeline.react");
 var Map = require("./Map.react");
 var DonutChart = require("./DonutChart.react");
+var OfficerMixin = require("./OfficerMixin.react");
 
 
 var ranks = {
@@ -22,6 +23,7 @@ var ranks = {
 
 
 var OfficerDetail = React.createClass({
+  mixins: [OfficerMixin],
   getInitialState: function () {
     return {}
   },
@@ -33,10 +35,9 @@ var OfficerDetail = React.createClass({
   },
   render: function () {
     var officer = this.props.officer;
-    var complaintRate = 'below';
+    var complaintRate = this.getAvgClass();
     var complaintRateLabel = 'Below the average complaint rate';
     if (officer.allegations_count > 20) {
-      complaintRate = 'above';
       complaintRateLabel = 'Above the average complaint rate';
     }
     var rank = "";
@@ -65,10 +66,6 @@ var OfficerDetail = React.createClass({
     if (officer.unit) {
       unit = <td><span className="title">Unit</span> {officer.unit}</td>
     }
-    var unit = "";
-    if (officer.unit) {
-      unit = <td><span className="title">Unit</span> {officer.unit}</td>
-    }
     var mapStyle = {
       height: '240px'
     };
@@ -79,43 +76,49 @@ var OfficerDetail = React.createClass({
       var options = {
         defaultZoom: 10,
         maxZoom: 15,
-        minZoom: 8,
-      }
-      mapDiv = <div className={columnClass}><Map officer={officer} style={mapStyle} radius={radius} options={options} /></div>
+        minZoom: 8
+      };
+      mapDiv = (
+        <div className={columnClass}>
+          <Map officer={officer} style={mapStyle} radius={radius} options={options} />
+        </div>
+      );
     }
-    return <div id='OfficerDetail' className={complaintRate}>
-      <div className='row'>
-        <div className="col-md-9 h3">
-          <span className="star">{officer.star}</span>
-          {officer.officer_first} {officer.officer_last}
+    return (
+      <div id='OfficerDetail' className={complaintRate}>
+        <div className='row'>
+          <div className="col-md-9 h3">
+            <span className="star">{officer.star}</span>
+            {officer.officer_first} {officer.officer_last}
+          </div>
+          <div className='col-md-3 tright complaint-rate-label'>{complaintRateLabel}</div>
         </div>
-        <div className='col-md-3 tright complaint-rate-label'>{complaintRateLabel}</div>
-      </div>
 
-      <div className='row'>
-        <div className="col-md-12 information">
-          <table className="pull-right">
-            <tr>
-              {unit}
-              {rank}
-              {star}
-              {appt_date}
-              {gender_display}
-              {race}
-            </tr>
-          </table>
+        <div className='row'>
+          <div className="col-md-12 information">
+            <table className="pull-right">
+              <tr>
+                {unit}
+                {rank}
+                {star}
+                {appt_date}
+                {gender_display}
+                {race}
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div className="row">
+          {mapDiv}
+          <div className={columnClass}>
+            <Timeline officer={officer}/>
+          </div>
+          <div className={columnClass}>
+            <DonutChart officer={officer}/>
+          </div>
         </div>
       </div>
-      <div className="row">
-        {mapDiv}
-        <div className={columnClass}>
-          <Timeline officer={officer}/>
-        </div>
-        <div className={columnClass}>
-          <DonutChart officer={officer}/>
-        </div>
-      </div>
-    </div>
+    );
   }
 
 });
