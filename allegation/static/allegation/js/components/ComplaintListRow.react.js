@@ -52,9 +52,12 @@ var ComplaintListRow = React.createClass({
       date = allegation.start_date;
       date_label = "Investigation Start";
     }
-    var finding = this.props.finding ? this.props.finding.replace(/ /,"-") : 'unknown';
-    caretClasses = caretClasses + " complaint-row-outcome " + finding.toLowerCase();
-    var rowClassName = 'complaint-row ' + finding.toLowerCase();
+    var finding = this.props.finding ? this.props.finding.replace(/ /,"-").toLowerCase() : 'unknown';
+    caretClasses = caretClasses + " complaint-row-outcome " + finding;
+    var rowClassName = 'complaint-row ' + finding;
+    if (allegation.final_outcome_class == 'disciplined') {
+      rowClassName += ' disciplined';
+    }
     var documentLabel = "Request";
     var documentLink = <a className='btn btn-sm btn-request ' href="#">
       <i className='fa fa-file-pdf-o'></i> {documentLabel}
