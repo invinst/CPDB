@@ -95,9 +95,7 @@ var OfficerList = React.createClass({
   },
 
   renderNewDisplay: function (value) {
-      $(".officers-container")
-        .css('transition', 'none')
-        .css('left', 0);
+      $(".officers-container").addClass("off");
       this.setState({
           current_view: value * OFFICER_PER_COL
       });
@@ -220,7 +218,7 @@ var OfficerList = React.createClass({
     OLD_DISPLAY = this.state.current_view;
     setTimeout(function(){
       container
-        .css('transition', '0.5s left')
+        .removeClass("off")
         .css('left', left + 'px');
     }, 10);
   },

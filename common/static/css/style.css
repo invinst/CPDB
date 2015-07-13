@@ -262,9 +262,13 @@ footer {
 
 .officers-container {
     width: 400%;
-    transition: 1s left;
+    transition: 0.5s left ease;
     left: 0;
     position: relative;
+}
+.officers-container.off {
+    transition: none;
+    left: 0;
 }
 
 .officers-container > div:first-child {
