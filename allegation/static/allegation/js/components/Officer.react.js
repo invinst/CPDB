@@ -2,31 +2,16 @@ var HOST = 'http://localhost:8000';
 var React = require('react');
 var Filters = require('./Filters.react');
 var OfficerActions = require('../actions/OfficerActions');
-var AppConstants = require("../constants/AppConstants");
-
-
-var OFFICER_COMPLAINT_COUNT_RANGE = [
-    [20, 0],
-    [9, 20],
-    [3, 9],
-    [2, 3],
-    [0, 2]
-];
+var OfficerMixin = require("./OfficerMixin.react");
 
 
 var Officer = React.createClass({
+  mixins: [OfficerMixin],
   getInitialState: function () {
     return {'selected': false}
   },
   componentDidMount: function () {
 
-  },
-  getAvgClass: function() {
-    for (var i = 0; i < OFFICER_COMPLAINT_COUNT_RANGE.length; i++) {
-      if (this.props.officer.allegations_count >= OFFICER_COMPLAINT_COUNT_RANGE[i][0]) {
-        return 'avg-' + i;
-      }
-    }
   },
   render: function () {
     var officer = this.props.officer;

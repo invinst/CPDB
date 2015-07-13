@@ -1,12 +1,11 @@
 var HOST = 'http://localhost:8000';
 var React = require('react');
 var Filters = require('./Filters.react');
-var OfficerActions = require('../actions/OfficerActions');
-var Officer = require("./Officer.react");
-var AppConstants = require("../constants/AppConstants");
+var OfficerMixin = require("./OfficerMixin.react");
 
 
 var ComplaintOfficer = React.createClass({
+  mixins: [OfficerMixin],
   getInitialState: function () {
     return {};
   },
@@ -18,13 +17,7 @@ var ComplaintOfficer = React.createClass({
     if (!officer) {
       return <div></div>
     }
-    var officerComplaintAvgStatus = 'bellow';
-    if (officer.allegations_count > AppConstants.AVG_COMPLAINTS_NUMBER_GREEN) {
-      officerComplaintAvgStatus = 'middle';
-    }
-    if (officer.allegations_count > AppConstants.AVG_COMPLAINTS_NUMBER_YELLOW) {
-      officerComplaintAvgStatus = 'above';
-    }
+    var officerComplaintAvgStatus = this.getAvgClass();
 
     var className = 'officer ' + officerComplaintAvgStatus;
     var selection_state = '';
