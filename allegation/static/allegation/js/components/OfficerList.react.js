@@ -102,9 +102,6 @@ var OfficerList = React.createClass({
   },
 
   render: function () {
-    if (this.state.officers.length == 1) {
-      return <div></div>;
-    }
     var displayCount = OFFICER_PER_DISPLAY;  // 2 time need for view port
     var officers = [];
     var count = 0, i;
