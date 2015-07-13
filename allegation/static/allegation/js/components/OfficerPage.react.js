@@ -50,7 +50,10 @@ var OfficerPage = React.createClass({
     if (this.props.related.length > 0) {
       for(var i = 0; i <= this.props.related.length; i++) {
         var officer = this.props.related[i];
-        related.push(<div className='col-md-2' key={i}><Officer officer={officer} noClick={true} /></div>)
+        related.push(
+          <div className='col-md-2' key={i}>
+            <Officer officer={officer} noClick={true} active={true} />
+          </div>)
       }
     }
     if(related){
