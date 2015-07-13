@@ -285,13 +285,44 @@ footer {
     margin-left: 0.535%;
 }
 
+.officer-control {
+    background-color: #999999;
+    width: 46px;
+    height: 66px;
+    position: absolute;
+    font-size: 85px;
+    text-align: center;
+    color: white;
+    line-height: 0;
+    top: 73px;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 1024px){
+    .officer-control {
+        display: none;
+    }
+}
+
+.officer-control i {
+    margin-top: -13px;
+}
+
+.officer-control-left {
+    left: -43px;
+}
+
+.officer-control-right {
+    right: -43px;
+}
+
 .officer {
     background-color: #f1f1f1;
     border: none;
     border-radius: 0;
     border-top: 5px solid red;
     border-bottom: 1px solid #464646;
-    padding: 15px;
+    padding: 10px;
     padding-bottom: 25px;
     font-size: 12px;
     position: relative;

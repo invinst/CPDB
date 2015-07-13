@@ -81,14 +81,12 @@ var Officer = React.createClass({
         </a>
         {selectableArea}
       </div>
-    )
+    );
 
   },
   onClick: function () {
     OfficerActions.setActiveOfficer(this.props.officer);
-  },
-
-
+  }
 });
 
 module.exports = Officer;

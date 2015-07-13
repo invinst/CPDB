@@ -17,10 +17,49 @@ var OFFICER_WIDTH = null;
 
 var OfficerList = React.createClass({
   getInitialState: function () {
-    return OfficerStore.init();
+    return {
+      officers: [],
+      active_officers: [],
+      overview: [],
+      current_view: 0
+    };
+  },
+  slideToLeft: function (e) {
+    if (e) {
+      e.preventDefault();
+    }
+    var slider = $("#overview-slider");
+    var value = slider.slider("value");
+    value = value + 1;
+    if (value > slider.slider("option", "max")) {
+      return;
+    }
+    slider.slider("value", value);
+    this.display(value);
+  },
+  slideToRight: function (e) {
+    if (e) {
+      e.preventDefault();
+    }
+    var slider = $("#overview-slider");
+    var value = slider.slider("value");
+    value = value - 1;
+    if (value < 0) {
+      return;
+    }
+    slider.slider("value", value);
+    this.display(value);
+  },
+  prevent: function (e) {
+    e.preventDefault();
   },
   componentDidMount: function () {
     OfficerStore.addChangeListener(this._onChange);
+
+    $(".officer-vertical-scroll").swipeleft(this.slideToLeft);
+    $(".officer-vertical-scroll").swiperight(this.slideToRight);
+
+    $(".officer-control").disableSelection();
   },
 
   getDisplaying: function () {
@@ -105,7 +144,7 @@ var OfficerList = React.createClass({
       if (colOfficerCount == OFFICER_PER_COL) {
         colOfficerCount = 0;
         officerCols.push(
-          <div className="officer-block">
+          <div className="officer-block" key={i}>
             {officerCol}
             <div className="clearfix"></div>
           </div>
@@ -146,11 +185,17 @@ var OfficerList = React.createClass({
         </div>
         <div className="row">
           <div className="col-md-12">
+            <div className="officer-control officer-control-left" onClick={this.slideToRight} onDbClick={this.prevent}>
+              <i className="fa fa-angle-left" />
+            </div>
             <div className="officer-vertical-scroll">
               <div className="officers-container">
                 {officerCols}
                 <div className="clearfix"></div>
               </div>
+            </div>
+            <div className="officer-control officer-control-right" onClick={this.slideToLeft} onDbClick={this.prevent}>
+              <i className="fa fa-angle-right" />
             </div>
           </div>
         </div>
@@ -167,9 +212,9 @@ var OfficerList = React.createClass({
     var left = this.getInitDisplay(this.state.current_view);
     if (left) {
       if (OLD_DISPLAY > this.state.current_view) {
-        container.css('left', left - OFFICER_WIDTH / 9 + 'px');
+        container.css('left', left - OFFICER_WIDTH + 'px');
       } else {
-        container.css('left', left + OFFICER_WIDTH / 9 + 'px');
+        container.css('left', left + OFFICER_WIDTH + 'px');
       }
     }
     OLD_DISPLAY = this.state.current_view;
@@ -179,31 +224,37 @@ var OfficerList = React.createClass({
         .css('left', left + 'px');
     }, 10);
   },
-  slideHandle: function(e, ui){
-    var value = ui.value;
+  display: function(value) {
     if (this.isDisplaying(value)) {
       this.slideToDisplay(value)
     } else {
       this.renderNewDisplay(value);
     }
   },
+  slideHandle: function(e, ui){
+    var value = ui.value;
+    this.display(value);
+  },
   _onChange: function () {
-    this.setState(OfficerStore.getAll());
-    var container = $(".officers-container");
-
-    var max = this.state.officers.length - OFFICER_PER_PAGE;
-    if (max % OFFICER_PER_COL){
-      max = max / OFFICER_PER_COL;
+    var newState = OfficerStore.getAll();
+    if (newState.officers == this.state.officers) {
+      this.setState(newState);
     } else {
-      max = parseInt(max / OFFICER_PER_COL) + 1;
+      this.setState(newState);
+      var container = $(".officers-container");
+      var max = this.state.officers.length - OFFICER_PER_PAGE;
+      if (max % OFFICER_PER_COL){
+        max = parseInt(max / OFFICER_PER_COL) + 1;
+      } else {
+        max = max / OFFICER_PER_COL;
+      }
+      $("#overview-slider").slider({
+        min: 0,
+        max: max,
+        slide: this.slideHandle,
+        start: this.slideHandle
+      });
     }
-    $("#overview-slider").slider({
-      min: 0,
-      max: max,
-      value: 0,
-      slide: this.slideHandle,
-      start: this.slideHandle
-    });
   },
   showMore: function (e) {
     e.preventDefault();

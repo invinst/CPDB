@@ -43,7 +43,7 @@ var Summary = React.createClass({
       }
       var id = "child-rows-" + category.id;
       childRowGroup.push(
-        <div className="child-rows" id={id}>
+        <div className="child-rows" id={id} key={id}>
           {childRows}
         </div>
       );
