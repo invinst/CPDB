@@ -55,11 +55,6 @@ var OfficerList = React.createClass({
   },
   componentDidMount: function () {
     OfficerStore.addChangeListener(this._onChange);
-
-    $(".officer-vertical-scroll").swipeleft(this.slideToLeft);
-    $(".officer-vertical-scroll").swiperight(this.slideToRight);
-
-    $(".officer-control").disableSelection();
   },
 
   getDisplaying: function () {
@@ -107,6 +102,9 @@ var OfficerList = React.createClass({
   },
 
   render: function () {
+    if (this.state.officers.length == 1) {
+      return <div></div>;
+    }
     var displayCount = OFFICER_PER_DISPLAY;  // 2 time need for view port
     var officers = [];
     var count = 0, i;
@@ -147,7 +145,17 @@ var OfficerList = React.createClass({
             <div className="clearfix"></div>
           </div>
         );
+        officerCol = null;
       }
+    }
+
+    if (officerCol) {
+      officerCols.push(
+        <div className="officer-block" key={i}>
+          {officerCol}
+          <div className="clearfix"></div>
+        </div>
+      )
     }
 
     var overview = [];
@@ -202,6 +210,12 @@ var OfficerList = React.createClass({
 
   },
   componentDidUpdate: function(){
+
+    $(".officer-vertical-scroll").swipeleft(this.slideToLeft);
+    $(".officer-vertical-scroll").swiperight(this.slideToRight);
+
+    $(".officer-control").disableSelection();
+
     var container = $(".officers-container");
 
     var officerBlock = $(".officer-block").slice(1, 2);
