@@ -1,23 +1,25 @@
-#autocomplete {
-    width: 100%;
-    border: none;
-    box-shadow: none;
-    border-bottom: solid 1px #66aad7;
-    border-radius: 0;
+#search-wrapper {
+    width: 96%;
     padding: 0;
     font-family: 'Source Sans Pro', sans-serif;
-    position: relative;
+    border-bottom: solid 1px #66aad7;
+}
+#search-wrapper input {
+    border: none;
+    box-shadow: none;
+    border-radius: 0;
+    width: 100%;
 }
 
-#autocomplete:after {
+#search-wrapper:after {
     content: "\e003";
     font-family: "Glyphicons Halflings";
     line-height: 1;
     display: inline-block;
     color: #0079ae;
     position: absolute;
-    right: 0;
-    top: 5px;
+    right: 2%;
+    top: 18px;
 }
 
 ::-webkit-input-placeholder {
@@ -64,9 +66,7 @@
     color: #107ac0;
     margin: 0;
 }
-#search-wrapper {
-    margin-right: 50px;
-}
+
 .bootstrap-tagsinput {
     border: none;
     box-shadow: none;
