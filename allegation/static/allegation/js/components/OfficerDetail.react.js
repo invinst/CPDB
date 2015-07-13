@@ -62,6 +62,10 @@ var OfficerDetail = React.createClass({
       gender_display = officer.gender == 'M' ? 'Male' : 'Female';
       gender_display = <td><span className="title">Gender</span> {gender_display}</td>
     }
+    var unit = "";
+    if (officer.unit) {
+      unit = <td><span className="title">Unit</span> {officer.unit}</td>
+    }
     var mapStyle = {
       height: '240px'
     };
