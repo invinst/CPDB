@@ -67,7 +67,7 @@ var ComplaintList = React.createClass({
     if (this.props.officer) {
       officer = this.props.officer
     }
-    
+
     var filters = [];
     for (var filter in FILTER_NAMES) {
       var filterClass = "fa fa-circle " + filter;
@@ -80,7 +80,7 @@ var ComplaintList = React.createClass({
         filterIcon = FILTER_NAMES[filter];
       }
       filters.push(
-        <span className={active} onClick={this.setFilter.bind(this, filter)}>{filterIcon}</span>
+        <span className={active} key={filter} onClick={this.setFilter.bind(this, filter)}>{filterIcon}</span>
       )
     }
 
