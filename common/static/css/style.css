@@ -118,9 +118,9 @@ footer {
 }
 .arrow-container {
     position: absolute;
-    right: 0px;
+    right: -1px;
     color: grey;
-    top:-2px;
+    top: -2px;
 }
 
 #summary .child-rows .row + .row {
