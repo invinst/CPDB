@@ -145,7 +145,7 @@ var OfficerList = React.createClass({
         officerCol = null;
       }
     }
-
+    console.log(officerCol);
     if (officerCol) {
       officerCols.push(
         <div className="officer-block" key={i}>
@@ -154,6 +154,8 @@ var OfficerList = React.createClass({
         </div>
       )
     }
+
+    console.log(officerCols);
 
     var overview = [];
     var total = 0;
@@ -169,6 +171,7 @@ var OfficerList = React.createClass({
         <div className={className} key={i} style={style} />
       );
     }
+
 
     return (
       <div id="officer_list">
@@ -249,6 +252,7 @@ var OfficerList = React.createClass({
     if (newState.officers == this.state.officers) {
       this.setState(newState);
     } else {
+      newState.current_view = 0;
       this.setState(newState);
       var container = $(".officers-container");
       var max = this.state.officers.length - OFFICER_PER_PAGE;
@@ -257,12 +261,23 @@ var OfficerList = React.createClass({
       } else {
         max = max / OFFICER_PER_COL;
       }
-      $("#overview-slider").slider({
-        min: 0,
-        max: max,
-        slide: this.slideHandle,
-        start: this.slideHandle
-      });
+
+      var overview = $(".overview-container");
+      var controller = $(".officer-control");
+      if (max <= 1) {
+        overview.hide();
+        controller.hide();
+      } else {
+        controller.show();
+        overview.show();
+        $("#overview-slider").slider({
+          min: 0,
+          max: max,
+          value: 0,
+          slide: this.slideHandle,
+          start: this.slideHandle
+        });
+      }
     }
   },
   showMore: function (e) {
