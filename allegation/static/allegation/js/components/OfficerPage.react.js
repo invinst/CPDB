@@ -59,7 +59,6 @@ var OfficerPage = React.createClass({
         <div className='row'>{related}</div>
       </div>
     }
-    console.log(related, this.props.related)
     return <div>
       <div className="map-row">
         <div className="container">
