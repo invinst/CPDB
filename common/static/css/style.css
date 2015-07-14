@@ -294,11 +294,11 @@ footer {
     width: 46px;
     height: 66px;
     position: absolute;
-    font-size: 85px;
+    font-size: 64px;
     text-align: center;
     color: white;
     line-height: 0;
-    top: 73px;
+    top: 94px;
     cursor: pointer;
 }
 
@@ -306,10 +306,6 @@ footer {
     .officer-control {
         display: none;
     }
-}
-
-.officer-control i {
-    margin-top: -13px;
 }
 
 .officer-control-left {
