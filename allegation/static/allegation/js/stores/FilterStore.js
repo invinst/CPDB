@@ -69,10 +69,9 @@ var FilterStore = assign({}, EventEmitter.prototype, {
       return;
     }
     $.ajax({
-      url: HOME_URL,
+      url: document.location.href,
       data: JSON.stringify(sessionData),
       success: function (returnData) {
-
       },
       contentType: "application/json; charset=utf-8",
       dataType: 'json',
