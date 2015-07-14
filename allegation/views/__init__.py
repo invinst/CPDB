@@ -82,8 +82,8 @@ class AllegationListView(TemplateView):
 
         return super(AllegationListView, self).get(request, *args, **kwargs)
 
-    def post(self, request, hash_id):
-        ints = Session.id_from_hash(hash_id)
+    def post(self, request, **kwargs):
+        ints = Session.id_from_hash(kwargs.get('hash_id'))
         session_id = ints[0]
 
         owned_sessions = request.session.get('owned_sessions', [])

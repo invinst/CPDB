@@ -92,7 +92,6 @@ class Area(models.Model):
     polygon = models.MultiPolygonField(srid=4326, null=True, blank=True)
     objects = models.GeoManager()
 
-
 OUTCOMES = [
     ['000', 'Violation Noted'],
     ['001', '1 Day Suspension'],
