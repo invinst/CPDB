@@ -3,6 +3,8 @@ var React = require('react');
 var Filters = require('./Filters.react');
 var MapStore = require('../stores/MapStore');
 var FilterStore = require('../stores/FilterStore');
+var SummaryStore = require('../stores/SummaryStore');
+
 var SummaryActions = require('../actions/SummaryActions');
 
 function getSummaryRowState() {
@@ -47,9 +49,13 @@ var SummaryRow = React.createClass({
     var arrow = "";
     if (this.isActive(category)) {
       className += " active";
+
     }
     if (this.hasActiveChildren()) {
-      parentClassName += ' child-active';
+      
+
+    }
+    if (this.props.isCurrentActive) {
       arrow = (
         <div className='arrow-container'>
           <i className='fa fa-caret-left fa-2x'></i>
@@ -89,8 +95,9 @@ var SummaryRow = React.createClass({
     } else {
 
       $('#cpdb-search').tagsinput("add", current.tagValue);
-    }
 
+    }
+    SummaryStore.setCurrentActive(current.name)
     $(".child-rows.active").removeClass('active');
     $("#child-rows-" + current.id).addClass('active');
   }

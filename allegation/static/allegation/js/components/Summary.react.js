@@ -27,7 +27,10 @@ var Summary = React.createClass({
         text: category.name,
         value: ['cat__category', category.name]
       };
-      rows.push(<SummaryRow key={i} category={category}/>);
+      var isCurrentActive = category.name == SummaryStore.getCurrentActive();
+      console.log(SummaryStore.getCurrentActive(), category.name)
+
+      rows.push(<SummaryRow key={i} category={category} isCurrentActive={isCurrentActive}/>);
     }
     var childRowGroup = [];
     for (j = 0; j < this.state.rows.length; j++) {
