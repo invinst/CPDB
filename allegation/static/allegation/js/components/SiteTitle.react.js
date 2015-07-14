@@ -1,10 +1,36 @@
+var DEFAULT_SITE_TITLE = "Citizens’ Police Database";
 var React = require('react');
 var FilterStore = require("../stores/FilterStore");
 var init_data = typeof(INIT_DATA) == 'undefined' ? {} : INIT_DATA;
 
+function removeMultipleSpace(str) {
+  return str.replace(/\s{2,}/g, ' ');
+}
+
+function removeNonAlphaNumeric(str) {
+  return str.replace(/[^\w\s]/gi, '');
+}
+
+function slugify(title) {
+  var asciiTitle = removeNonAlphaNumeric(title);
+  var singleSpaceTitle = removeMultipleSpace(asciiTitle).trim();
+  var lowerCaseTitle  = singleSpaceTitle.toLowerCase();
+
+  return lowerCaseTitle.replace(/\s/g, '-').trim();
+}
+
+function updateUrlWithSlugifiedTitle(title) {
+  var slugifiedTitle = slugify(title);
+  var pathName = window.location.pathname;
+  var newPathName = pathName.replace(/\/(.+?)\/(.+)?$/, "/$1/" + slugifiedTitle);
+
+  window.history.pushState([], "", newPathName)
+}
+
 var SiteTitle = React.createClass({
   getInitialState: function () {
-    var initial = init_data['title'] || "Citizens’ Police Database";
+    var initial = init_data['title'] || DEFAULT_SITE_TITLE;
+
     return {
       text: initial
     }
@@ -17,10 +43,12 @@ var SiteTitle = React.createClass({
   },
 
   change: function (e) {
-    newTitle = $(e.target).val()
+    var newTitle = $(e.target).val();
+
     this.setState({ 'text': newTitle });
     FilterStore.saveSession({'title': newTitle});
     document.title = newTitle;
+    updateUrlWithSlugifiedTitle(newTitle);
   },
 });
 

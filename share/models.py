@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.template.defaultfilters import slugify
 from django_extensions.db.fields.json import JSONField
 from hashids import Hashids
 
@@ -23,7 +24,11 @@ class Session(models.Model):
         return hash_obj.decode(hash_id)
 
     def get_absolute_url(self):
-        return reverse('homepage-share', kwargs={'hash_id': self.hash_id})
+        kw = {'hash_id': self.hash_id}
+        if self.title:
+            kw['slugified_url'] = slugify(self.title)
+
+        return reverse('homepage-share', kwargs=kw)
 
     def clone(self):
         session = Session()
