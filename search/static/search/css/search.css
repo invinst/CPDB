@@ -8,18 +8,16 @@
     border: none;
     box-shadow: none;
     border-radius: 0;
-    width: 100%;
+    width: 96%;
+    padding-left: 4px;
 }
 
-#search-wrapper:after {
+#search-wrapper:before {
     content: "\e003";
     font-family: "Glyphicons Halflings";
     line-height: 1;
     display: inline-block;
     color: #0079ae;
-    position: absolute;
-    right: 2%;
-    top: 18px;
 }
 
 ::-webkit-input-placeholder {
