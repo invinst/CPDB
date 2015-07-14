@@ -1,4 +1,5 @@
 import json
+from django.template.defaultfilters import slugify
 
 from common.tests.core import SimpleTestCase
 from share.factories import SessionFactory
@@ -17,11 +18,14 @@ class InitViewTestCase(SimpleTestCase):
         response = self.client.get('/share/init/')
         data = json.loads(response.content.decode())
         hash_id = data['session']['hash_id']
-
+        title = "A super title"
+        title_slug = slugify(title)
         query = {
-            'something': ['1', '2']
+            'something': ['1', '2'],
+            'title': title
         }
-        response = self.client.post('/%s/' % hash_id, content_type='application/json', data=json.dumps(query))
+        response = self.client.post('/%s/%s' % (hash_id, title_slug),
+                                    content_type='application/json', data=json.dumps(query))
         response.status_code.should.equal(200)
 
         session_id = Session.id_from_hash(hash_id=hash_id)[0]

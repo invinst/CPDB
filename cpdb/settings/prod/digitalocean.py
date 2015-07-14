@@ -18,8 +18,10 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'cpdb',
-        'USER': 'eastagile',
+        'USER': os.environ.get('DB_USER'),
         ***REMOVED***
+        'PASSWORD': os.environ.get('DB_PASS'),
+        'HOST': os.environ.get('DB_HOST'),
     }
 }
 
