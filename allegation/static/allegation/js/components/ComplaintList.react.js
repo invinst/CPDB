@@ -1,5 +1,6 @@
 var HOST = 'http://localhost:8000';
 var React = require('react');
+var Infinite = require('react-infinite');
 var Filters = require('./Filters.react');
 var ComplaintListStore = require('../stores/ComplaintListStore');
 var ComplaintListRow = require('./ComplaintListRow.react');
@@ -107,7 +108,9 @@ var ComplaintList = React.createClass({
             {filters}
           </div>
         </div>
-        {rows}
+        <Infinite containerHeight={500} elementHeight={50}>
+          {rows}
+        </Infinite>
         <div className='pull-right'><a href='#' className='btn btn-black'>Download Table</a></div>
       </div>
     )
