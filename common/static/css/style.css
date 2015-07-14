@@ -309,10 +309,8 @@ footer {
     cursor: pointer;
 }
 
-@media screen and (max-width: 1024px){
-    .officer-control {
-        display: none;
-    }
+.officer-control.off {
+    display: none;
 }
 
 .officer-control-left {
@@ -388,6 +386,25 @@ footer {
     width: 100%;
     height: 20px;
     white-space: nowrap;
+}
+
+@media only screen and (max-width: 1024px){
+    .officer-control {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    .officer-block {
+        width: 12%;
+    }
+    .officer-control {
+        display: none;
+    }
+    .officer {
+        padding: 2px;
+        padding-bottom: 11px;
+    }
 }
 
 .complaint_list {
