@@ -82,6 +82,31 @@ var FilterStore = assign({}, EventEmitter.prototype, {
     this.emit(CHANGE_EVENT);
 
   },
+  tagsInputRemoveItemObject: function (tagValue) {
+    var items = $('#cpdb-search').tagsinput("items");
+    for (var i = 0; i < items.length; i++) {
+      var item = items[i];
+      if (item.value[0] == tagValue.value[0] && item.value[1] == tagValue.value[1]) {
+        $('#cpdb-search').tagsinput("remove", item);
+        break;
+      }
+    }
+  },
+  removeFilter: function (filterName, filterValue) {
+    $.each(_filters, function (i) {
+
+      if (i == filterName) {
+        var index = _filters[filterName].value.indexOf(filterValue);
+        if (index > -1) {
+          _filters[filterName].value.splice(index, 1);
+
+          return;
+        }
+      }
+
+    });
+    this.emitChange();
+  },
   replaceFilters: function (filters) {
     _filters = {};
     $.each(filters, function () {

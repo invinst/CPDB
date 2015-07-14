@@ -21,6 +21,7 @@ var _state = {
   'current': false
 };
 var _complaints = {};
+var _currentActive = false;
 
 
 /**
@@ -52,6 +53,13 @@ var SummaryStore = assign({}, EventEmitter.prototype, {
   },
   set: function (key, value) {
     _state[key] = value;
+  },
+  setCurrentActive: function(val){
+    _currentActive = val;
+    SummaryStore.emitChange();
+  },
+  getCurrentActive: function(){
+    return _currentActive;
   },
   init: function () {
     _state = {

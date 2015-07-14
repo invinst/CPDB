@@ -115,14 +115,20 @@ footer {
 }
 
 #summary .child-rows {
-    max-height: 300px;
-    overflow-y: auto;
+    max-height: 480px;
+    overflow-y: scroll;
     overflow-x: hidden;
     transition: left 1s;
     left: 100%;
     position: absolute;
     width: calc(100% - 1em);
     background: #f6f6ec;
+}
+.arrow-container {
+    position: absolute;
+    right: 0px;
+    color: grey;
+    top:-2px;
 }
 
 #summary .child-rows .row + .row {
@@ -134,8 +140,9 @@ footer {
 }
 
 #summary .child-row-container {
-    overflow: hidden;
-    height: 300px;
+    overflow-y: scroll;
+    overflow-x:hidden;
+    height: 480px;
     border-left: 1px solid #989898;
 }
 
