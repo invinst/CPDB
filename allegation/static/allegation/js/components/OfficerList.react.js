@@ -8,11 +8,18 @@ var OfficerStore = require("../stores/OfficerStore");
 
 var VIEW_PORT_COUNT = 6;
 var OFFICER_PER_COL = 2;
-var OFFICER_PER_PAGE = VIEW_PORT_COUNT * OFFICER_PER_COL;
-var OFFICER_PER_DISPLAY = OFFICER_PER_PAGE * 3;
 
 var OLD_DISPLAY = 0;
 var OFFICER_WIDTH = null;
+
+var windowWidth = $(window).width();
+
+if (windowWidth <= 320) {
+  VIEW_PORT_COUNT = 2;
+}
+
+var OFFICER_PER_PAGE = VIEW_PORT_COUNT * OFFICER_PER_COL;
+var OFFICER_PER_DISPLAY = OFFICER_PER_PAGE * 3;
 
 
 var OfficerList = React.createClass({
@@ -55,6 +62,11 @@ var OfficerList = React.createClass({
   },
   componentDidMount: function () {
     OfficerStore.addChangeListener(this._onChange);
+
+    $(".officer-vertical-scroll").swipeleft(this.slideToLeft);
+    $(".officer-vertical-scroll").swiperight(this.slideToRight);
+
+    $(".officer-control").disableSelection();
   },
 
   getDisplaying: function () {
@@ -211,11 +223,6 @@ var OfficerList = React.createClass({
   },
   componentDidUpdate: function(){
 
-    $(".officer-vertical-scroll").swipeleft(this.slideToLeft);
-    $(".officer-vertical-scroll").swiperight(this.slideToRight);
-
-    $(".officer-control").disableSelection();
-
     var container = $(".officers-container");
 
     var officerBlock = $(".officer-block").slice(1, 2);
@@ -266,9 +273,9 @@ var OfficerList = React.createClass({
       var controller = $(".officer-control");
       if (max <= 1) {
         overview.hide();
-        controller.hide();
+        controller.addClass('off');
       } else {
-        controller.show();
+        controller.removeClass('off');
         overview.show();
         $("#overview-slider").slider({
           min: 0,
