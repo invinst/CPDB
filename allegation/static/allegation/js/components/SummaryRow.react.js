@@ -16,16 +16,23 @@ var SummaryRow = React.createClass({
     return getSummaryRowState();
   },
   hasActiveChildren: function (filters) {
-    var category = this.props.category;
-    for (var i = 0; i < filters['cat'].value.length; i++) {
-      for (var j = 0; j < category.subcategories.length; j++) {
-        var childCategoryName = category.subcategories[j].cat_id;
-        if (filters['cat'].value[i].indexOf(childCategoryName) > -1) {
-         return true;
+    var filters = FilterStore.getAll();
+    if ('cat' in filters) {
+      var category = this.props.category;
+      for (var i = 0; i < filters['cat'].value.length; i++) {
+        for (var j = 0; j < category.subcategories.length; j++) {
+          var childCategoryName = category.subcategories[j].cat_id;
+          if (filters['cat'].value[i].indexOf(childCategoryName) > -1) {
+            return true;
+          }
         }
       }
     }
     return false;
+  },
+  isActive: function (category){
+    var filters = FilterStore.getAll();
+    return 'cat__category' in filters && filters['cat__category'].value.indexOf(category.name) > -1
   },
   render: function () {
     var category = this.props.category;
@@ -37,12 +44,17 @@ var SummaryRow = React.createClass({
     };
     var className = "category-name";
     var parentClassName = 'row';
-    var filters = FilterStore.getAll();
-    if ('cat__category' in filters && filters['cat__category'].value.indexOf(category.name) > -1) {
+    var arrow = "";
+    if (this.isActive(category)) {
       className += " active";
     }
-    if ('cat' in filters && this.hasActiveChildren(filters)) {
+    if (this.hasActiveChildren()) {
       parentClassName += ' child-active';
+      arrow = (
+        <div className='arrow-container'>
+          <i className='fa fa-caret-left fa-2x'></i>
+        </div>
+      )
     }
     return (
       <div className="row category main-category">
@@ -59,7 +71,8 @@ var SummaryRow = React.createClass({
             <div className='col-md-2'>
               {category.total}
             </div>
-            <div className='col-md-10'>
+            <div className='col-md-10 relative'>
+              {arrow}
               <a onClickCapture={this.onClick} href='#' className={className}>{category.name}</a>
             </div>
           </div>
@@ -71,9 +84,12 @@ var SummaryRow = React.createClass({
   onClick: function (e) {
     e.preventDefault();
     var current = this.props.category;
-    $('#cpdb-search').tagsinput("add", current.tagValue);
+    if (this.isActive(current)) {
+      FilterStore.tagsInputRemoveItemObject(current.tagValue);
+    } else {
 
-    //SummaryActions.setSummary(current);
+      $('#cpdb-search').tagsinput("add", current.tagValue);
+    }
 
     $(".child-rows.active").removeClass('active');
     $("#child-rows-" + current.id).addClass('active');

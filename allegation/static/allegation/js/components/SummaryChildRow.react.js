@@ -11,16 +11,7 @@ function getChildRowState() {
   };
 }
 
-function tagsInputRemoveItemObject(tagValue) {
-  var items = $('#cpdb-search').tagsinput("items");
-  for (var i = 0; i < items.length; i++) {
-    var item = items[i];
-    if (item.value[0] == tagValue.value[0] && item.value[1] == tagValue.value[1]) {
-      $('#cpdb-search').tagsinput("remove", item);
-      break;
-    }
-  }
-}
+
 
 
 var SummaryChildRow = React.createClass({
@@ -29,11 +20,12 @@ var SummaryChildRow = React.createClass({
   },
   onClick: function (e) {
     e.preventDefault();
-    tagsInputRemoveItemObject(this.props.category.tagValue);
+
+    FilterStore.tagsInputRemoveItemObject(this.props.category.tagValue);
     var tagValue = this.props.subcategory.tagValue;
 
     if (this.state.selected) {
-      tagsInputRemoveItemObject(tagValue);
+      FilterStore.tagsInputRemoveItemObject(tagValue);
     } else {
       $('#cpdb-search').tagsinput("add", tagValue);
     }
