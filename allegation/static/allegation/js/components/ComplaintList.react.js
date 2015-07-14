@@ -8,9 +8,9 @@ var FilterActions = require('../actions/FilterActions');
 var UNKNOWN_FINDINGS = ['No data', 'Unfounded', 'No Cooperation', 'No Affidavit', 'Discharged'];
 var FILTER_NAMES = {
   'all': 'All',
-  'exonerated': 'Exonerated',
   'sustained': 'Sustained',
   'not-sustained': 'Not Sustained',
+  'exonerated': 'Exonerated',
   'unknown': 'Unknown'
 };
 
@@ -67,7 +67,7 @@ var ComplaintList = React.createClass({
     if (this.props.officer) {
       officer = this.props.officer
     }
-    
+
     var filters = [];
     for (var filter in FILTER_NAMES) {
       var filterClass = "fa fa-circle " + filter;
