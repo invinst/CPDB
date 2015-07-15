@@ -37,9 +37,7 @@ class InvestigatorFactory(factory.django.DjangoModelFactory):
 class AllegationCategoryFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = AllegationCategory
-        django_get_or_create = ('cat_id',)
-
-    cat_id = factory.Sequence(lambda n: ['12A', '34B'][n % 2])
+    cat_id = factory.Sequence(lambda n: "cat_%d" % n)
     allegation_name = factory.Sequence(lambda n: fake.name())
     category = factory.Sequence(lambda n: fake.name())
 
