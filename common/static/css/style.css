@@ -581,6 +581,13 @@ footer {
 }
 
 /* leaflet heatmap */
+.leaflet-container .marker-cluster-large {
+    border-radius: 30px;
+}
+.leaflet-container .marker-cluster-small {
+    border-radius: 10px;
+}
+
 canvas.leaflet-heatmap-layer {
     z-index:-1;
 }
