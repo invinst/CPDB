@@ -10,9 +10,18 @@ var Officer = React.createClass({
   getInitialState: function () {
     return {'selected': false}
   },
-  componentDidMount: function () {
 
+  componentDidMount: function () {
   },
+
+  onMouseDown: function(e) {
+    $(e.currentTarget).addClass('no-box-shadow')
+  },
+
+  onMouseUp: function(e) {
+    $(e.currentTarget).removeClass('no-box-shadow')
+  },
+
   render: function () {
     var officer = this.props.officer;
     if (!officer) {
@@ -46,7 +55,7 @@ var Officer = React.createClass({
     var officerLink = officer.absolute_url;
     var officerId = 'officer_' + officer.id;
     return (
-      <div className={className} data-state={selection_state} id={officerId}>
+      <div className={className} data-state={selection_state} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp}>
         <a className='officer-link' href={officerLink}>
           <div className='officer_name'>
             <strong>
