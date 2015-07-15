@@ -5,8 +5,12 @@ body {
 }
 
 #content {
-
 }
+
+a:hover {
+    opacity: 0.3;
+}
+
 .navbar {
     min-height: 72px;
     border-bottom: 1px solid #989898
@@ -143,6 +147,10 @@ footer {
 #summary .category-name {
     color: #0079ae;
     font-size:1.2em;
+}
+
+#summary .category-name:hover {
+    text-decoration: none;
 }
 
 #summary .category-name.active {
@@ -317,15 +325,42 @@ footer {
     color: #989898;
     margin-bottom: 24px;
     font-family: "Source Sans Pro", sans-serif;
+    margin-bottom: 20px;
+    box-shadow: 3px 3px 3px #cbcbcb;
+    -moz-box-shadow: 3px 3px 3px #cbcbcb;
+    -webkit-box-shadow: 3px 3px 3px #cbcbcb;
+}
+
+.no-box-shadow {
+    box-shadow: none !important;
+    -moz-box-shadow: none !important;
+    -webkit-box-shadow: none !important;
+}
+
+.officer {
+    box-shadow: 3px 3px 3px #cbcbcb;
+    -moz-box-shadow: 3px 3px 3px #cbcbcb;
+    -webkit-box-shadow: 3px 3px 3px #cbcbcb;
+}
+
+.officer:hover {
+    box-shadow: 7px 7px 7px #cbcbcb;
+    -moz-box-shadow: 7px 7px 7px #cbcbcb;
+    -webkit-box-shadow: 7px 7px 7px #cbcbcb;
 }
 
 .officer a.officer-link{
     color: #989898;
 }
+
 .officer.selected a.officer-link, .officer.active a.officer-link {
     color: #333;
     text-decoration: none;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
 }
+
 .officer > .checkmark{
     position: absolute;
     padding: 4px 6px 3px 6px;
@@ -334,9 +369,17 @@ footer {
     background-color: #cbcbcb;
     color: white;
 }
+
 .officer.selected > .checkmark{
     background-color: #709dc0;
+}
 
+.officer.selected:hover > .checkmark{
+    background-color: #cbcbcb;
+}
+
+.officer:hover > .checkmark{
+    background-color: #709dc0;
 }
 
 .officer.avg-0 {
@@ -376,7 +419,9 @@ footer {
     padding-right: 10px;
     padding-bottom: 25px;
 }
-
+.officer-control:hover {
+    opacity: .6;
+}
 @media only screen and (max-width: 1024px){
     .officer-control {
         display: none;
@@ -399,14 +444,14 @@ footer {
 .complaint_list {
     margin-top: 2em;
 }
-.complaint_list .filters > span {
+.complaint_list .filters > span  {
     display: inline-block;
     padding: 5px 0;
     border-bottom: 2px solid transparent;
     margin: 0 14px;
     cursor: pointer;
 }
-.complaint_list .filters > span.active {
+.complaint_list .filters > span.active, .complaint_list .filters > span:hover {
     border-bottom: 2px solid black;
 }
 .complaint_list .filters > span i{
@@ -431,8 +476,8 @@ footer {
     font-size: 12px;
     font-family: 'Source Sans Pro';
 }
-.complaint-row .btn-request{
-
+.complaint-row .btn:hover{
+    opacity: .6;
 }
 .complaint-row .show_more {
     font-size: 34px;
@@ -682,7 +727,7 @@ canvas.leaflet-heatmap-layer {
     font-weight: 400;
 }
 
-.leaflet-control-layers-base label input:checked + span {
+.leaflet-control-layers-base label input:checked + span, .leaflet-control-layers-base label:hover input + span  {
     background-color: #0079ae;
     color: white;
 }
@@ -723,6 +768,9 @@ canvas.leaflet-heatmap-layer {
     box-shadow: 1px ;
 }
 
+.leaflet-control-zoom > a:hover {
+    opacity: .3;
+}
 form.navbar-form.navbar-right {
     width: 50%;
 }
