@@ -30,3 +30,6 @@ urlpatterns = [
     url(r'^(?P<hash_id>[\w-]+)/$', ensure_csrf_cookie(AllegationListView.as_view()), name='homepage-share'),
     url(r'^(?P<hash_id>[\w-]+)/(?P<slugified_url>[\w-]+)$', ensure_csrf_cookie(AllegationListView.as_view()), name='homepage-share'),
 ]
+
+
+handler404 = 'common.views.handler404'

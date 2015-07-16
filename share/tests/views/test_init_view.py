@@ -36,5 +36,5 @@ class InitViewTestCase(SimpleTestCase):
         hash_id = SessionFactory().hash_id
         response = self.client.post('/%s/' % hash_id)
 
-        response.status_code.should.equal(404)
+        response.status_code.shouldnt.equal(200)
 
