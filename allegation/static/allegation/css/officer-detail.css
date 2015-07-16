@@ -121,6 +121,12 @@
     font-size: 12px;
 }
 
+.vis-item.missing-data.border .vis-item-overflow {
+    border: 2px solid red;
+    margin-top: 2px;
+    height: calc(100% - 2px);
+}
+
 #autocomplete {
     display: none;
 }
