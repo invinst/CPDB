@@ -1,4 +1,7 @@
 var HOST = 'http://localhost:8000';
+var SIMPLE_DATE_FORMAT = 'MMM DD, YYYY';
+var DETAIL_DATE_FORMAT = 'MMM DD, YYYY HH:mm';
+
 var React = require('react');
 var Filters = require('./Filters.react');
 var ComplaintListStore = require('../stores/ComplaintListStore');
@@ -7,6 +10,40 @@ var Officer = require("./Officer.react");
 var ComplaintOfficer = require("./ComplaintOfficer.react");
 var ComplaintOfficerList = require("./ComplaintOfficerList.react");
 
+function hasNoHourAndMinutes(date) {
+  return date.get('hour') == 0 && date.get('minute') == 0
+}
+
+function displayDateFormat(date, useSimpleFormat) {
+  var displayFormat = (useSimpleFormat || hasNoHourAndMinutes(date)) ? SIMPLE_DATE_FORMAT : DETAIL_DATE_FORMAT;
+  return date.format(displayFormat);
+}
+
+function createTimelineItem(title, date, klass) {
+  var useSimpleFormat = klass ? true : false;
+  var displayDate = displayDateFormat(date, useSimpleFormat);
+  var klass = klass || '';
+
+  var timelimeTitle = '<div class="timeline-title">' + title + '</div>';
+  var timelineDisplay = '<div class="timeline-date' + klass + '">' + displayDate + '</div>';
+  return timelimeTitle + timelineDisplay;
+}
+
+// We don't care about incident that happens before 1970
+function normalizeIncidentDate(incidentDate) {
+  if(incidentDate && moment(incidentDate).year() <= 1970) {
+    return false;
+  }
+  return incidentDate;
+}
+
+// Set startDate hour to 23:59 if incidentDate and startDate is the same
+function normalizeStartDate(incidentDate, startDate) {
+  if (incidentDate.format(SIMPLE_DATE_FORMAT) == startDate.format(SIMPLE_DATE_FORMAT)) {
+    return startDate.add(23, 'hours').add('59', 'minutes');
+  }
+  return startDate;
+}
 
 var ComplaintListRowDetail = React.createClass({
   getInitialState: function () {
@@ -19,60 +56,43 @@ var ComplaintListRowDetail = React.createClass({
     var allegation = this.props.complaint.allegation;
     if (!this.state.timeline) {
       var container = document.getElementById("timeline-" + allegation.id);
+
       if (container) {
-
+        var firstDate, lastDate, incidentDate;
         var items = [];
-        var dateFormat = 'MMM DD, YYYY';
-        if(allegation.incident_date && moment(allegation.incident_date).year() <= 1970){
-          allegation.incident_date = false;
-        }
-        var startDate, endDate;
+
+        allegation.incident_date = normalizeIncidentDate(allegation.incident_date);
+
         if (allegation.incident_date) {
-          var incidentDate = moment(allegation.incident_date);
-          var incidentDateHumanFormat = incidentDate.format(dateFormat);
-          var content = '<div class="timeline-title">Incident Date</div><div class="timeline-date">' +
-                        incidentDateHumanFormat + '</div>';
-          items.push({
-            id: 1,
-            content: content,
-            start: incidentDate
-          });
-          startDate = incidentDate;
-          endDate = incidentDate;
+          incidentDate = moment(allegation.incident_date);
+          firstDate = incidentDate;
+          lastDate = incidentDate;
+
+          items.push({ id: 1, content: createTimelineItem('Incident Date', incidentDate), start: incidentDate });
         }
+
         if (allegation.start_date) {
-          if(startDate){
-            endDate = moment(allegation.start_date);
+          var startDate = moment(allegation.start_date);
+
+          if (firstDate) {
+            lastDate = startDate;
+            startDate = normalizeStartDate(incidentDate, startDate);
           }
 
-          startDate = moment(allegation.start_date);
-          var startDateHumanFormat = startDate.format(dateFormat);
-          var content = '<div class="timeline-title">Investigation Start</div><div class="timeline-date start">' +
-                        startDateHumanFormat + '</div>';
-          items.push({
-            id: 2,
-            content: content,
-            start: startDate
-          });
-
+          items.push({ id: 2, content: createTimelineItem('Investigation Start', startDate, 'start'),
+                       start: startDate });
         }
+
         if (allegation.end_date) {
-          if(!startDate){
-            startDate = moment(allegation.end_date);
-          }
-          endDate = moment(allegation.end_date);
-          var endDateHumanFormat = endDate.format(dateFormat);
-          var content = '<div class="timeline-title">Investigation End</div><div class="timeline-date end">' +
-                        endDateHumanFormat + '</div>';
-          items.push({
-            id: 3,
-            content: content,
-            start: endDate,
-            className: 'end'
-          });
+          var endDate = moment(allegation.end_date);
+          firstDate = firstDate || endDate;
+          lastDate = endDate;
+
+          items.push({ id: 3, content: createTimelineItem('Investigation End', endDate, 'end'), start: endDate,
+                       className: 'end' });
         }
-        if (items)
-        items = new vis.DataSet(items);
+
+        items = items || new vis.DataSet(items);
 
         // Configuration for the Timeline
         var options = {
@@ -93,16 +113,16 @@ var ComplaintListRowDetail = React.createClass({
             }
           }
         };
-        if(startDate && endDate) {
-          var duration = endDate.year() * 12 + endDate.month() - startDate.year() * 12 - startDate.month();
+        if(firstDate && lastDate) {
+          var duration = lastDate.year() * 12 + lastDate.month() - firstDate.year() * 12 - firstDate.month();
           var subtract = 1;
           var add = 1;
           if (duration > 3){
             subtract = duration / 8;
             add = duration / 6;
           }
-          options.start = moment(startDate).subtract(subtract, 'months');
-          options.end = moment(endDate).add(add, 'months');
+          options.start = moment(firstDate).subtract(subtract, 'months');
+          options.end = moment(lastDate).add(add, 'months');
         }
         // Create a Timeline
        this.setState({

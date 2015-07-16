@@ -8,9 +8,9 @@ var FilterActions = require('../actions/FilterActions');
 var UNKNOWN_FINDINGS = ['No data', 'Unfounded', 'No Cooperation', 'No Affidavit', 'Discharged'];
 var FILTER_NAMES = {
   'all': 'All',
-  'exonerated': 'Exonerated',
   'sustained': 'Sustained',
   'not-sustained': 'Not Sustained',
+  'exonerated': 'Exonerated',
   'unknown': 'Unknown'
 };
 
