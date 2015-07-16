@@ -15,6 +15,7 @@
 {% endblock %}
 
 {% block content %}
+  {% include 'allegation/disclaimer.html' %}
   <section id='cpdbapp'></section>
 {% endblock %}
 
@@ -23,6 +24,14 @@
   <script>
     var INIT_DATA = {% if session %}{{ session.query|safe }}{% else %}false{% endif %};
     var INIT_FILTERS = {filters: {% if filters %}{{ filters|safe }}{% else %}false{% endif %}};
+  </script>
+  <script>
+    jQuery(document).ready(function() {
+      if (!jQuery.cookie('visited')) {
+        jQuery('#disclaimer').modal('show');
+        jQuery.cookie('visited', true, { expires: 365, path: '/' });
+      }
+    });
   </script>
   <script src="{% static 'jquery-ui/jquery-ui.min.js' %}"></script>
   <script src="{% static 'bootstrap-tagsinput/src/bootstrap-tagsinput.js' %}"></script>
