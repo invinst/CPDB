@@ -58,8 +58,8 @@ var Officer = React.createClass({
             <div className='col-md-12'>
               <div className='thirty-five unit'>{unit}</div>
               <div className={disciplineClass}>
-                <div>{officer.allegations_count} complaints</div>
-                <div>{officer.discipline_count} disciplines</div>
+              <div>{officer.allegations_count} {pluralize('complaint', officer.allegations_count)}</div>
+              <div>{officer.discipline_count} {pluralize('discipline', officer.discipline_count)}</div>
               </div>
             </div>
           </div>
