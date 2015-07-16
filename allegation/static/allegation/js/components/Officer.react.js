@@ -2,10 +2,11 @@ var HOST = 'http://localhost:8000';
 var React = require('react');
 var Filters = require('./Filters.react');
 var OfficerActions = require('../actions/OfficerActions');
-var AppConstants = require("../constants/AppConstants");
+var OfficerMixin = require("./OfficerMixin.react");
 
 
 var Officer = React.createClass({
+  mixins: [OfficerMixin],
   getInitialState: function () {
     return {'selected': false}
   },
@@ -17,13 +18,7 @@ var Officer = React.createClass({
     if (!officer) {
       return <div></div>
     }
-    var officerComplaintAvgStatus = 'bellow';
-    if (officer.allegations_count > AppConstants.AVG_COMPLAINTS_NUMBER_GREEN) {
-      officerComplaintAvgStatus = 'middle';
-    }
-    if (officer.allegations_count > AppConstants.AVG_COMPLAINTS_NUMBER_YELLOW) {
-      officerComplaintAvgStatus = 'above';
-    }
+    var officerComplaintAvgStatus = this.getAvgClass();
 
     var className = 'officer ' + officerComplaintAvgStatus;
     var selection_state = '';
@@ -42,33 +37,32 @@ var Officer = React.createClass({
       </div>
     }
     var officerLink = officer.absolute_url;
-    return <div className={className} data-state={selection_state}>
-      <a className='officer-link' href={officerLink}>
-
-        <div className='officer_name' onClick={this.openOfficerProfile}>
-          <strong>
-            {this.props.officer.officer_first.toLowerCase()} {officer.officer_last.toLowerCase()}
-          </strong>
-        </div>
-        <div className='row'>
-          <div className='col-md-12'>
-            <div className='thirty-five  unit'>Unit {officer.unit}</div>
-            <div className='sixty disciplines'>
-              <div>{officer.allegations_count} complaints</div>
-              <div>{officer.discipline_count} disciplines</div>
+    return (
+      <div className={className} data-state={selection_state}>
+        <a className='officer-link' href={officerLink}>
+          <div className='officer_name'>
+            <strong>
+              {this.props.officer.officer_first.toLowerCase()} {officer.officer_last.toLowerCase()}
+            </strong>
+          </div>
+          <div className='row'>
+            <div className='col-md-12'>
+              <div className='thirty-five  unit'>Unit {officer.unit}</div>
+              <div className='sixty disciplines'>
+                <div>{officer.allegations_count} complaints</div>
+                <div>{officer.discipline_count} disciplines</div>
+              </div>
             </div>
           </div>
-        </div>
-      </a>
-      {selectableArea}
-    </div>
+        </a>
+        {selectableArea}
+      </div>
+    );
 
   },
   onClick: function () {
     OfficerActions.setActiveOfficer(this.props.officer);
-  },
-
-
+  }
 });
 
 module.exports = Officer;

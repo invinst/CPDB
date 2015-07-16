@@ -50,7 +50,10 @@ var OfficerPage = React.createClass({
     if (this.props.related.length > 0) {
       for(var i = 0; i <= this.props.related.length; i++) {
         var officer = this.props.related[i];
-        related.push(<div className='col-md-2'><Officer officer={officer} noClick={true} /></div>)
+        related.push(
+          <div className='col-md-2' key={i}>
+            <Officer officer={officer} noClick={true} active={true} />
+          </div>)
       }
     }
     if(related){
@@ -59,17 +62,19 @@ var OfficerPage = React.createClass({
         <div className='row'>{related}</div>
       </div>
     }
-    return <div>
-      <div className="map-row">
+    return (
+      <div>
+        <div className="map-row">
+          <div className="container">
+            <OfficerDetail officer={this.props.officer}/>
+          </div>
+        </div>
         <div className="container">
-          <OfficerDetail officer={this.props.officer}/>
+          {relatedOfficers}
+          <ComplaintList allegations={this.props.officer.allegations} officer={this.props.officer}/>
         </div>
       </div>
-      <div className="container">
-        {relatedOfficers}
-        <ComplaintList allegations={this.props.officer.allegations} officer={this.props.officer}/>
-      </div>
-    </div>;
+    );
   },
 
   /**

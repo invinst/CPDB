@@ -40,12 +40,14 @@ var CPDBApp = React.createClass({
     return getMapState();
   },
   initShare: function () {
-    SAVE_STATE = true;
     if (location.pathname == '/') {
       $.getJSON('/share/init/', function (data) {
         HOME_URL = "/" + data.session.hash_id + "/";
         history.pushState({}, '', HOME_URL);
+        SAVE_STATE = true;
       });
+    } else {
+      SAVE_STATE = true;
     }
   },
   componentDidMount: function () {

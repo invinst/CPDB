@@ -17,30 +17,11 @@ var FilterStore = require('./FilterStore');
 var CHANGE_EVENT = 'change';
 var SUMMARY_CHANGE = 'summary-change';
 var SET_ACTIVE_OFFICER = 'set-active-officer';
+var firstCall = true;
+var ajax = null;
 var _state = {
-  'officers': {},
-  'show_more': false,
-  'active_officers': [],
-  'complaints_count_start': 0,
-  'complaints_count_end': 0,
-  first_call: true
+  active_officers: []
 };
-var _officers = {};
-
-/**
- * Update a TODO item.
- * @param  {string} id
- * @param {object} updates An object literal containing only the data to be
- *     updated.
- */
-function update(id, updates) {
-  _officers[id] = assign({}, _complaints[id], updates);
-}
-
-
-function create(id, officer) {
-  _officers[id] = {};
-}
 
 
 var OfficerStore = assign({}, EventEmitter.prototype, {
@@ -55,17 +36,15 @@ var OfficerStore = assign({}, EventEmitter.prototype, {
     for (var i = 0; i < _state['active_officers'].length; i++) {
       queryString += "officer=" + _state['active_officers'][i] + "&"
     }
-    if (_state.complaints_count_start) {
-      queryString += "&allegations_count_start=" + _state.complaints_count_start;
-    }
-    if (_state.complaints_count_end) {
-      queryString += "&allegations_count_end=" + _state.complaints_count_end;
-    }
     return queryString;
   },
   update: function () {
-    $.getJSON('/api/allegations/officers/?' + FilterStore.getQueryString(), function (data) {
-      _state['officers'] = data.officers;
+    if (ajax) {
+      ajax.abort();
+    }
+    ajax = $.getJSON('/api/allegations/officers/?' + FilterStore.getQueryString(), function (data) {
+      _state.officers = data.officers;
+      _state.overview = data.overview;
       OfficerStore.emitChange();
     });
   },
@@ -75,10 +54,10 @@ var OfficerStore = assign({}, EventEmitter.prototype, {
   },
   init: function () {
     this.update();
-    return _state;
+    return _.clone(_state);
   },
-  getAll: function (type) {
-    return _state;
+  getAll: function () {
+    return _.clone(_state);
   },
   emitChange: function () {
     this.emit(CHANGE_EVENT);
@@ -102,11 +81,11 @@ AppDispatcher.register(function (action) {
     case MapConstants.MAP_REPLACE_FILTERS:
     case MapConstants.MAP_CHANGE_FILTER:
     case MapConstants.MAP_ADD_FILTER:
-      if (!_state['first_call']) {
+      if (!firstCall) {
         OfficerStore.set('active_officers', []);
 
       }
-      _state['first_call'] = false;
+      firstCall = false;
       OfficerStore.update();
       break;
 

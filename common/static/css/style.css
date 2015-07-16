@@ -199,19 +199,126 @@ footer {
     padding-right: 5px;
 }
 
+.officer-vertical-scroll {
+    width: 100%;
+    overflow: hidden;
+}
+
+.overview-box {
+    border-bottom: 3px solid #cbcbcb;
+    padding: 3px 0;
+    border-top: 3px solid #cbcbcb;
+}
+
+.overview {
+    height: 49px;
+    background: green;
+    float: left;
+}
+
+.overview-container {
+    height: 64px;
+    margin-bottom: 20px;
+}
+
+#overview-slider {
+    width: calc(100% - 64px);
+    margin: auto;
+    height: 49px;
+    position: relative;
+    top: -55px;
+    border: none;
+    background: none;
+}
+
+#overview-slider.ui-slider .ui-slider-handle {
+    border: 3px solid #333333;
+    border-left: none;
+    border-right: none;
+    height: 61px;
+    width: 64px;
+    margin-left: -32px;
+    top: -6px;
+    background: none;
+    border-radius: 0;
+    font-size: 1em;
+}
+
+.overview-0 {
+    background-color: #ff4647;
+}
+.overview-1 {
+    background-color: #f3b272;
+}
+.overview-2 {
+    background-color: #f2db6d;
+}
+.overview-3 {
+    background-color: #a4c683;
+}
+.overview-4 {
+    background-color: #62b28c;
+}
+
+.officers-container {
+    width: 400%;
+    transition: 0.5s left ease;
+    left: 0;
+    position: relative;
+}
+.officers-container.off {
+    transition: none;
+    left: 0;
+}
+
+.officers-container > div:first-child {
+    margin-left: 0;
+}
+
+.officer-block {
+    width: 3.714%;
+    float: left;
+    margin-left: 0.535%;
+}
+
+.officer-control {
+    background-color: #999999;
+    width: 46px;
+    height: 66px;
+    position: absolute;
+    font-size: 64px;
+    text-align: center;
+    color: white;
+    line-height: 0;
+    top: 72px;
+    cursor: pointer;
+}
+
+.officer-control.off {
+    display: none;
+}
+
+.officer-control-left {
+    left: -43px;
+}
+
+.officer-control-right {
+    right: -43px;
+}
+
 .officer {
     background-color: #f1f1f1;
     border: none;
     border-radius: 0;
     border-top: 5px solid red;
     border-bottom: 1px solid #464646;
-    padding: 15px;
-    padding-bottom: 25px;
     font-size: 12px;
     position: relative;
     color: #989898;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
+    font-family: "Source Sans Pro", sans-serif;
 }
+
 .officer a.officer-link{
     color: #989898;
 }
@@ -231,16 +338,25 @@ footer {
     background-color: #709dc0;
 
 }
-.officer.middle {
+
+.officer.avg-0 {
+    border-top-color: #c0272d;
+}
+
+.officer.avg-1 {
+    border-top-color: #ed9429;
+}
+
+.officer.avg-2 {
     border-top-color: #d8b421;
 }
 
-.officer.bellow {
-    border-top-color: #62b28c;
+.officer.avg-3 {
+    border-top-color: #83b247;
 }
 
-.officer.above {
-    border-top-color: #c0272d;
+.officer.avg-4 {
+    border-top-color: #41996d;
 }
 
 .officer_name {
@@ -251,8 +367,33 @@ footer {
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%;
-    height: 20px;
     white-space: nowrap;
+    padding: 10px 10px 0 10px
+}
+
+.officer .officer_name + .row {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 25px;
+}
+
+@media only screen and (max-width: 1024px){
+    .officer-control {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    .officer-block {
+        width: 12%;
+    }
+    .officer-control {
+        display: none;
+    }
+    .officer {
+        padding: 2px;
+        padding-bottom: 11px;
+    }
 }
 
 .complaint_list {

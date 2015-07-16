@@ -80,7 +80,7 @@ var ComplaintList = React.createClass({
         filterIcon = FILTER_NAMES[filter];
       }
       filters.push(
-        <span className={active} onClick={this.setFilter.bind(this, filter)}>{filterIcon}</span>
+        <span className={active} key={filter} onClick={this.setFilter.bind(this, filter)}>{filterIcon}</span>
       )
     }
 
