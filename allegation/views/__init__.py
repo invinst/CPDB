@@ -1,21 +1,18 @@
 import csv
-import json
 import io
+import json
 
 from django.conf import settings
 from django.db.models import Count
-from django.db.models.query_utils import Q
 from django.http.response import HttpResponse, Http404
 from django.shortcuts import get_object_or_404, redirect
-from django.views.generic import View
 from django.views.generic import TemplateView
-from django.contrib.gis.geos import Point
-from django.contrib.gis.measure import D
+from django.views.generic import View
 
-from common.json_serializer import JSONSerializer
-from common.models import Allegation, Area, AllegationCategory, Officer, Investigator
-from common.models import NO_DISCIPLINE_CODES, ComplainingWitness, PoliceWitness
 from allegation.views.allegation_api_view import AllegationAPIView
+from common.json_serializer import JSONSerializer
+from common.models import Allegation, Area, AllegationCategory, Investigator, Officer
+from common.models import ComplainingWitness, NO_DISCIPLINE_CODES, PoliceWitness
 from share.models import Session
 
 

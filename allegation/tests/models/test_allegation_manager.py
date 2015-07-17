@@ -7,9 +7,6 @@ from common.models import Allegation
 
 
 class AllegationManager(SimpleTestCase):
-    def setUp(self):
-        pass
-
     def test_by_officer_names(self):
         self.create_allegation_with_officer_name('Kevin')
         self.create_allegation_with_officer_name('SomeThingNotKevin')
