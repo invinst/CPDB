@@ -1,9 +1,10 @@
-from common.tests.core import SimpleTestCase
-from allegation.factories import AllegationFactory, OfficerFactory
-from common.models import Allegation
 from django.contrib.gis.geos import Point
-from allegation.views.allegation_query_filter import AllegationQueryFilter
 from mock import patch
+
+from allegation.factories import AllegationFactory, OfficerFactory
+from common.tests.core import SimpleTestCase
+from common.models import Allegation
+
 
 class AllegationManager(SimpleTestCase):
     def setUp(self):

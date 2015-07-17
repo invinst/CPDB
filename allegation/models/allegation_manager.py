@@ -1,5 +1,5 @@
-from allegation.models.query_set_manager import QuerySetManager
 from allegation.models.allegation_query_set import AllegationQuerySet
+from allegation.models.query_set_manager import QuerySetManager
 
 
 class AllegationManager(QuerySetManager):
