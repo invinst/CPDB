@@ -27,6 +27,12 @@ var ComplaintOfficer = React.createClass({
     }
     /* fixme: merge with officer.react.js */
     var officerLink = officer.absolute_url;
+    var unit = "";
+    var disciplineClass = 'sixty disciplines no-border';
+    if (officer.unit){
+      unit = "Unit "+ officer.unit;
+      disciplineClass = 'sixty disciplines';
+    }
     return <div className={className} data-state={selection_state}>
       <a className='officer-link' href={officerLink}>
         <div className='officer_name'>
@@ -36,8 +42,8 @@ var ComplaintOfficer = React.createClass({
         </div>
         <div className='row'>
           <div className='col-md-12'>
-            <div className='thirty-five  unit'>Unit {officer.unit}</div>
-            <div className='sixty disciplines'>
+            <div className='thirty-five  unit'>{unit}</div>
+            <div className={disciplineClass}>
               <div>{officer.allegations_count} complaints</div>
               <div>{officer.discipline_count} disciplines</div>
             </div>
