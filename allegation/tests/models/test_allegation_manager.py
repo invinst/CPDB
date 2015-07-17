@@ -1,14 +1,12 @@
-from common.tests.core import SimpleTestCase
-from allegation.factories import AllegationFactory, OfficerFactory
-from common.models import Allegation
 from django.contrib.gis.geos import Point
-from allegation.views.allegation_query_filter import AllegationQueryFilter
 from mock import patch
 
-class AllegationManager(SimpleTestCase):
-    def setUp(self):
-        pass
+from allegation.factories import AllegationFactory, OfficerFactory
+from common.tests.core import SimpleTestCase
+from common.models import Allegation
 
+
+class AllegationManager(SimpleTestCase):
     def test_by_officer_names(self):
         self.create_allegation_with_officer_name('Kevin')
         self.create_allegation_with_officer_name('SomeThingNotKevin')
