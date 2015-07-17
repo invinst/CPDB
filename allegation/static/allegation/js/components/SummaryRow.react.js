@@ -52,6 +52,7 @@ var SummaryRow = React.createClass({
 
     // Currently do nothing but keep it here for later styling
     if (this.hasActiveChildren()) {
+      className += " active";
     }
 
     if (this.props.isCurrentActive) {
