@@ -16,10 +16,12 @@ var Location = React.createClass({
       var lat = allegation.point.lat;
       var lng = allegation.point.lng;
 
+      var centerLng = lng - 0.02;
+
       if (allegation.add1 && allegation.add2) {
         map_image = (
           'http://api.tiles.mapbox.com/v4/mapbox.streets/pin-l-cross+482(' +
-          lng + ',' + lat + ')/' + lng + ',' + lat + ',13/' + this.getSize() +
+          lng + ',' + lat + ')/' + centerLng + ',' + lat + ',13/' + this.getSize() +
           '.png?access_token=' + token
         );
         address = (
@@ -37,7 +39,7 @@ var Location = React.createClass({
       else {
         map_image = (
           'http://api.tiles.mapbox.com/v4/mapbox.streets/url-http%3A%2F%2Fdata.invisible' +
-          '.institute%2Fstatic%2F64x_map_marker.png(' + lng + ',' + lat + ')/' + lng + ',' + lat + ',13/' +
+          '.institute%2Fstatic%2F64x_map_marker.png(' + lng + ',' + lat + ')/' + centerLng + ',' + lat + ',13/' +
           this.getSize() +
           '.png?access_token=' + token
         );
