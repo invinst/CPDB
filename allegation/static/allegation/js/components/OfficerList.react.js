@@ -157,7 +157,6 @@ var OfficerList = React.createClass({
         officerCol = null;
       }
     }
-    console.log(officerCol);
     if (officerCol) {
       officerCols.push(
         <div className="officer-block" key={i}>
@@ -166,8 +165,6 @@ var OfficerList = React.createClass({
         </div>
       )
     }
-
-    console.log(officerCols);
 
     var overview = [];
     var total = 0;

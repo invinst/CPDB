@@ -505,34 +505,59 @@ footer {
     color: black;
     font-size: 14px;
 }
-.investigation .progress-bar.discipline{
+
+.witness {
+    margin-bottom: 24px;
+}
+
+.progress-bar.discipline{
     background-color:#709dc0;
 }
-.investigation .progress.complaint{
+
+.progress.complaint{
     background-color:#c0272d;
 }
-.investigation .results{
-    width:30%;
-    background-color:white;
-    padding:15px;
-    float:left;
-    margin-right:3%;
+
+.results {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #cbcbcb;
 }
+
+.investigation .results{
+    width: 60%;
+    float: left;
+}
+
+.legend {
+    font-size: 14px;
+    color: #989898;
+    font-family: "Source Sans Pro", sans-serif;
+}
+
+.investigation .legend {
+    float: left;
+    width: 40%;
+    padding-left: 10px;
+}
+
 .investigation .investigator-name{
     color:#709dc0;
 }
-.investigation .line{
+
+.line {
     display:inline-block;
     width:20px;
     height:3px;
     margin-right:5px;
 }
-.investigation .blue.line{
+.line.blue {
     background-color:#709dc0;
 }
-.investigation .red.line{
+.line.red {
     background-color:#c0272d;
 }
+
 .timeline-date.start{
     color: #709dc0;
 }
@@ -540,6 +565,38 @@ footer {
     color: #c0272d;
     font-size: 17px;
 }
+
+.complaint_detail .summary {
+    border-bottom: 1px solid #333333;
+    padding: 20px 0;
+}
+
+.complaint_detail .summary > div + div {
+    border-left: 1px solid #333333;
+}
+
+.complaint_detail > div > .row {
+    margin-bottom: 10px;
+}
+
+.address {
+    background-color: #fff;
+    padding: 15px;
+}
+
+.location .address {
+    position: absolute;
+    top: 50px;
+    left: 50px;
+}
+
+.section-title {
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 16px;
+    color: #333333;
+    font-weight: 700;
+}
+
 .complaint_detail .uppercase{
     font-weight: bold;
     font-size: 18px;
@@ -549,17 +606,11 @@ footer {
 .complaint_detail .row.margin-top{
     margin-top: 20px;
 }
+
 .complaint_detail {
     background-color: #f7f7ed;
-    padding: 1em 7.1% 40px 1em;
-    border-bottom: 1px solid black;
 }
-.complaint_detail .title{
-    padding-left:5px;
-    border-left:3px solid black;
-    font-size:18px;
-    color:black;
-}
+
 .complaint_detail .allegation-name{
     color: #989898;
     font-style: italic;
