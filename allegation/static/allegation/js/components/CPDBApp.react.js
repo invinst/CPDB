@@ -76,10 +76,10 @@ var CPDBApp = React.createClass({
              </div>
           </div>
         <div className='row map-row'>
-          <div className='col-md-7 map-column relative'>
+          <div className='col-md-6 map-column relative'>
             <div id='map' className='pin-top pin-bottom'></div>
           </div>
-          <div className='col-md-5'><Summary /></div>
+          <div className='col-md-6'><Summary /></div>
         </div>
         <div className='container'>
           <div id='officer-cards'><OfficerList /></div>
