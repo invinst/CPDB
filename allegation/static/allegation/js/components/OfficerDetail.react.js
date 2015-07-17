@@ -66,10 +66,12 @@ var OfficerDetail = React.createClass({
     if (officer.unit) {
       unit = <td><span className="title">Unit</span> {officer.unit}</td>
     }
+
     var unit = "";
     if (officer.unit) {
       unit = <td><span className="title">Unit</span> {officer.unit}</td>
     }
+
     var mapStyle = {
       height: '240px'
     };

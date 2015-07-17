@@ -1,8 +1,7 @@
 import random
 
-
-from common.tests.core import *
-from allegation.factories import AllegationFactory, AllegationCategoryFactory
+from allegation.factories import AllegationCategoryFactory, AllegationFactory
+from common.tests.core import BaseLiveTestCase
 from common.models import Allegation
 
 
@@ -30,7 +29,7 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         # Check all
         self.link(self.allegation_category.category).click()
         self.until(lambda : self.element_exist('.complaint-row'))
-        self.number_of_complaints().should.equal(7)
+        self.number_of_complaints().should.equal(self.number_of_all_created_complaints())
 
         # On each filter
         for filter in FILTERS:
@@ -44,3 +43,6 @@ class AllegationFilterTestCase(BaseLiveTestCase):
 
     def number_of_complaints(self):
         return len(self.find_all('.complaint-row'))
+
+    def number_of_all_created_complaints(self):
+        return sum(len(x) for x in FILTERS.values())
