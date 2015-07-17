@@ -94,7 +94,6 @@ var FilterStore = assign({}, EventEmitter.prototype, {
   },
   removeFilter: function (filterName, filterValue) {
     $.each(_filters, function (i) {
-
       if (i == filterName) {
         var index = _filters[filterName].value.indexOf(filterValue);
         if (index > -1) {
@@ -144,7 +143,6 @@ var FilterStore = assign({}, EventEmitter.prototype, {
             query += filterName + "=" + filter['value'][i] + "&";
           }
         }
-
       }
     }
     return query;

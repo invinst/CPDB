@@ -11,9 +11,6 @@ function getChildRowState() {
   };
 }
 
-
-
-
 var SummaryChildRow = React.createClass({
   getInitialState: function () {
     return getChildRowState();

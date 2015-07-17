@@ -4,7 +4,6 @@ var Filters = require('./Filters.react');
 var MapStore = require('../stores/MapStore');
 var FilterStore = require('../stores/FilterStore');
 var SummaryStore = require('../stores/SummaryStore');
-
 var SummaryActions = require('../actions/SummaryActions');
 
 function getSummaryRowState() {
@@ -49,12 +48,12 @@ var SummaryRow = React.createClass({
     var arrow = "";
     if (this.isActive(category)) {
       className += " active";
-
     }
+
+    // Currently do nothing but keep it here for later styling
     if (this.hasActiveChildren()) {
-      
-
     }
+
     if (this.props.isCurrentActive) {
       arrow = (
         <div className='arrow-container'>
@@ -62,6 +61,7 @@ var SummaryRow = React.createClass({
         </div>
       )
     }
+
     return (
       <div className="row category main-category">
         <div className='col-md-6'>
@@ -90,14 +90,15 @@ var SummaryRow = React.createClass({
   onClick: function (e) {
     e.preventDefault();
     var current = this.props.category;
+
     if (this.isActive(current)) {
       FilterStore.tagsInputRemoveItemObject(current.tagValue);
     } else {
-
       $('#cpdb-search').tagsinput("add", current.tagValue);
-
     }
+
     SummaryStore.setCurrentActive(current.name)
+
     $(".child-rows.active").removeClass('active');
     $("#child-rows-" + current.id).addClass('active');
   }
