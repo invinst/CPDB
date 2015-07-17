@@ -90,7 +90,15 @@ footer {
 .map-row .map-column{
     padding: 0px;
 }
-
+#map-arrow-down{
+    position: absolute;
+    bottom: 20px;
+    right: 3%;
+    z-index: 1000;
+    color: #fff;
+    width: 32px;
+    height: 32px;
+}
 #summary-container {
     overflow: hidden;
 }
@@ -591,7 +599,7 @@ footer {
 .margin-top {
     margin-top: 1em;
 }
-.cursor {
+.cursor, .pointer {
     cursor: pointer;
 }
 
@@ -623,18 +631,20 @@ canvas.leaflet-heatmap-layer {
     color: #d8b421;
 }
 .fa.sustained {
-    color: #c0272d;
+    color: #d8b421;
 }
 .fa.not.sustained, .fa.not-sustained {
-    color: #989898;
-}
-.fa.disciplined {
     color: #0079ae;
 }
-.fa.exonerated {
-    color: #64AF8E;
+.fa.disciplined {
+    color: #c0272d;
 }
-
+.fa.exonerated {
+    color: #62b28c;
+}
+.fa.unknown {
+    color: #989898;
+}
 .complaint-row.disciplined {
     background: #ffe3e7;
 }
@@ -696,10 +706,14 @@ canvas.leaflet-heatmap-layer {
     color: #989898;
     font-weight: bold;
 }
+
 .officer-link .disciplines {
+    font-weight: 400;
+}
+
+.officer-link .disciplines:not(.no-border) {
     padding-left: 5px;
     border-left: 1px solid #989898;
-    font-weight: 400;
 }
 .thirty-five {
     width: 35%;
@@ -751,9 +765,11 @@ canvas.leaflet-heatmap-layer {
     font-family: 'Vollkorn';
     border-top: 3px solid #333;
 }
+
 .leaflet-control-command-interior:hover {
     background-color: #F4F4F4;
 }
+
 .leaflet-bar, .leaflet-control-layers{
     border-radius: 0;
 }
@@ -774,7 +790,11 @@ canvas.leaflet-heatmap-layer {
 form.navbar-form.navbar-right {
     width: 50%;
 }
+
 .uppercase{
     text-transform: uppercase;
 }
 
+.tcenter {
+    text-align: center;
+}
