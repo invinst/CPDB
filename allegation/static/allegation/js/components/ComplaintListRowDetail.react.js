@@ -3,7 +3,6 @@ var Summary = require('./Complaint/Summary.react');
 var OfficerList = require('./Complaint/OfficerList.react');
 var TimelineAndLocation = require('./Complaint/TimelineAndLocation.react');
 var PoliceWitness = require('./Complaint/PoliceWitness.react');
-var Witness = require('./Complaint/Witness.react');
 
 
 var ComplaintListRowDetail = React.createClass({
@@ -28,10 +27,6 @@ var ComplaintListRowDetail = React.createClass({
 
     if (this.state.police_witness && this.state.police_witness.length) {
       infor.push(<PoliceWitness key="police-witness" complaint={complaint} witnesses={this.state.police_witness} />)
-    }
-
-    if (this.state.complaint_witness && this.state.complaint_witness.length) {
-      infor.push(<Witness key="complaint-witness" complaint={complaint} witnesses={this.state.complaint_witness} />);
     }
 
     return (
