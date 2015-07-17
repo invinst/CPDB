@@ -586,18 +586,20 @@ canvas.leaflet-heatmap-layer {
     color: #d8b421;
 }
 .fa.sustained {
-    color: #c0272d;
+    color: #d8b421;
 }
 .fa.not.sustained, .fa.not-sustained {
-    color: #989898;
-}
-.fa.disciplined {
     color: #0079ae;
 }
-.fa.exonerated {
-    color: #64AF8E;
+.fa.disciplined {
+    color: #c0272d;
 }
-
+.fa.exonerated {
+    color: #62b28c;
+}
+.fa.unknown {
+    color: #989898;
+}
 .complaint-row.disciplined {
     background: #ffe3e7;
 }
