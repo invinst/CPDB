@@ -36,9 +36,17 @@ var Officer = React.createClass({
         <i className='fa fa-check'></i>
       </div>
     }
+    var unit = "";
+    var disciplineClass = 'sixty disciplines no-border';
+    if (officer.unit){
+      unit = "Unit " + officer.unit;
+      disciplineClass = 'sixty disciplines';
+    }
+
     var officerLink = officer.absolute_url;
+    var officerId = 'officer_' + officer.id;
     return (
-      <div className={className} data-state={selection_state}>
+      <div className={className} data-state={selection_state} id={officerId}>
         <a className='officer-link' href={officerLink}>
           <div className='officer_name'>
             <strong>
@@ -47,8 +55,8 @@ var Officer = React.createClass({
           </div>
           <div className='row'>
             <div className='col-md-12'>
-              <div className='thirty-five  unit'>Unit {officer.unit}</div>
-              <div className='sixty disciplines'>
+              <div className='thirty-five unit'>{unit}</div>
+              <div className={disciplineClass}>
                 <div>{officer.allegations_count} {pluralize('complaint', officer.allegations_count)}</div>
                 <div>{officer.discipline_count} {pluralize('discipline', officer.discipline_count)}</div>
               </div>
