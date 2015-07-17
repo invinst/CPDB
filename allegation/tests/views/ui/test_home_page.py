@@ -34,27 +34,22 @@ class HomePageTestCase(BaseLiveTestCase):
         for i in range(0, 10):
             AllegationCategoryFactory(category=category)
 
-        # First, we click a category
+        # First, we click a category, we should see the arrow beside the category
         self.visit('/')
+        self.element_exist('.row .arrow-container').should.equal(False)
         self.link(self.allegation_category.category).click()
+        # TODO: We should have another test to check which main category this arrow belong to?
+        self.element_exist('.row .arrow-container').should.equal(True)
 
+        # And it should have a an arrow on the category
         self.number_of_active_subcategories().should.equal(AllegationCategory.objects.filter(category=category).count())
 
-        # Then we click to a subcategory
-        self.number_of_child_active_categories().should.equal(0)
-
         self.link(self.allegation_category.allegation_name).click()
-
         self.number_of_active_subcategories().should.equal(1)
-        self.number_of_child_active_categories().should.equal(1)
 
     def number_of_active_subcategories(self):
         active_subcategories = self.find_all('.child-rows .category-name.active')
         return len(active_subcategories)
-
-    def number_of_child_active_categories(self):
-        categories_with_child_active = self.find_all(".row.child-active")
-        return len(categories_with_child_active)
 
     def number_of_officers(self):
         officers = self.find_all('.officer')
