@@ -10,7 +10,7 @@ from django.contrib.gis.geos import Point
 class Command(BaseCommand):
     help = 'GeoCode Allegations'
 
-    def geocode_address(self, address, beat):
+    def geocode_address(self, address, beat=False):
         proximity = ""
         if beat and beat.polygon:
             proximity = "&proximity=%(lng)s,%(lat)s" % {'lng': beat.polygon.centroid.x, 'lat': beat.polygon.centroid.y}
@@ -39,22 +39,22 @@ class Command(BaseCommand):
                 add2 = allegation.add2
             if allegation.city:
                 city = allegation.city
-            point = allegation.point
-            if not point:
-                if add1 or add2:
-                    address_lookup = "%s %s, %s" % (add1, add2, city)
-                    point = self.geocode_address(address_lookup, allegation.beat)
-                elif allegation.beat and allegation.beat.polygon:
-                    point = allegation.beat.polygon.centroid
 
+            allegation.point = None
+            allegation.areas.all().delete()
+            if add1 or add2:
+                address_lookup = "%s %s, %s" % (add1, add2, city)
+                point = self.geocode_address(address_lookup)
+            elif allegation.beat:
+                point = allegation.beat.centroid
             if point:
                 print(point.y, point.x)
                 areas = Area.objects.filter(polygon__intersects=point)
                 for area in areas:
                     allegation.areas.add(area)
 
-                allegation.point = point
-                allegation.save()
+                    allegation.point = point
+            allegation.save()
             counter += 1
             if counter % 100 == 0:
                 print("Geocoded %d" % counter)

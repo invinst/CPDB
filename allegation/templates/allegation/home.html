@@ -5,6 +5,7 @@
   <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
     {{ block.super }}
   <link rel="stylesheet" href="{% static 'jquery-ui/themes/base/all.css' %}" />
+  <link rel="stylesheet" href="{% static 'jquery-ui/themes/base/slider.css' %}" />
   <link rel="stylesheet" href="{% static 'bootstrap-tagsinput/dist/bootstrap-tagsinput.css' %}" />
   <link rel="stylesheet" href="{% static 'search/css/search.css' %}" />
   <link rel="stylesheet" href="{% static 'allegation/css/MarkerCluster.Default.css' %}" />
@@ -28,5 +29,6 @@
   <script src="{% static 'search/js/search.js' %}"></script>
   <script src="{% static 'd3/d3.min.js' %}"></script>
   <script src="{% static 'c3/c3.min.js' %}"></script>
+  <script src="{% static 'pluralize/pluralize.js' %}"></script>
   <script src="{% static 'allegation/js/bundle.js' %}"></script>
 {% endblock %}

@@ -1,52 +1,55 @@
-/**
- * Copyright (c) 2014-2015, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- */
-
+var DEFAULT_SITE_TITLE = "Citizens’ Police Database";
 var React = require('react');
 var FilterStore = require("../stores/FilterStore");
 var init_data = typeof(INIT_DATA) == 'undefined' ? {} : INIT_DATA;
 
+function removeMultipleSpace(str) {
+  return str.replace(/\s{2,}/g, ' ');
+}
+
+function removeNonAlphaNumeric(str) {
+  return str.replace(/[^\w\s]/gi, '');
+}
+
+function slugify(title) {
+  var asciiTitle = removeNonAlphaNumeric(title);
+  var singleSpaceTitle = removeMultipleSpace(asciiTitle).trim();
+  var lowerCaseTitle  = singleSpaceTitle.toLowerCase();
+
+  return lowerCaseTitle.replace(/\s/g, '-').trim();
+}
+
+function updateUrlWithSlugifiedTitle(title) {
+  var slugifiedTitle = slugify(title);
+  var pathName = window.location.pathname;
+  var newPathName = pathName.replace(/\/(.+?)\/(.+)?$/, "/$1/" + slugifiedTitle);
+
+  window.history.pushState([], "", newPathName)
+}
 
 var SiteTitle = React.createClass({
-
   getInitialState: function () {
-    var initial = init_data['title'] || "Police Misconduct in Chicago";
+    var initial = init_data['title'] || DEFAULT_SITE_TITLE;
+
     return {
-      text: initial,
-      editing: false
+      text: initial
     }
   },
 
-  render: function(){
-    var button = "";
-    return <div>
-        <div onClick={this.enableEditing} onKeyDown={this.keyDown} contentEditable={this.state.editing}>{this.state.text}</div>
-
-      </div>
-
+  render: function() {
+    return (
+      <input className='site-title-input' type='text' value={this.state.text} onChange={this.change} />
+    )
   },
 
-  keyDown: function (e) {
-    if (e.which == 13 || e.keyCode == 12) {
-      e.preventDefault();
-      this.setState({'text': $(e.target).text(), 'editing': false});
-    }
-    else if ($(e.target).text()) {
-      this.setState({'text': $(e.target).text()});
-      FilterStore.saveSession({'title': $(e.target).text()});
-    }
+  change: function (e) {
+    var newTitle = $(e.target).val();
+
+    this.setState({ 'text': newTitle });
+    FilterStore.saveSession({'title': newTitle});
+    document.title = newTitle;
+    updateUrlWithSlugifiedTitle(newTitle);
   },
-
-  enableEditing: function(){
-    // contenteditable field set to edit mode.
-    this.setState({ editing: true });
-  }
-
 });
 
 module.exports = SiteTitle;

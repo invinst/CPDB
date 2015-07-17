@@ -56,9 +56,7 @@ var DonutChart = React.createClass({
             center: ['50%', '50%']
           }
         },
-        tooltip: {
-          valueSuffix: ''
-        },
+        tooltip: false,
         series: [{
           name: 'Category',
           size: '100%',

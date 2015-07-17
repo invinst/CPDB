@@ -7,17 +7,26 @@ from django.db.models import Count
 from django.db.models.query_utils import Q
 from django.http.response import HttpResponse, Http404
 from django.shortcuts import get_object_or_404, redirect
-from django.utils.decorators import method_decorator
-from django.views.decorators.csrf import csrf_protect
 from django.views.generic import View
 from django.views.generic import TemplateView
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import D
 
 from common.json_serializer import JSONSerializer
-from common.models import Allegation, Area, AllegationCategory, Officer
+from common.models import Allegation, Area, AllegationCategory, Officer, Investigator
 from common.models import NO_DISCIPLINE_CODES, ComplainingWitness, PoliceWitness
 from share.models import Session
+
+
+DEFAULT_SITE_TITLE = 'Citizens’ Police Database'
+OFFICER_COMPLAINT_COUNT_RANGE = [
+    [20, 0],  # x >= 9
+    [9, 20],  # 3 <= x < 9
+    [3, 9],  # 2 <= x < 3
+    [2, 3],  # 1 <= x < 2
+    [0, 2],  # x == 0
+]
+OFFICER_COMPLAINT_COUNT_RANGE = getattr(settings, 'OFFICER_COMPLAINT_COUNT_RANGE', OFFICER_COMPLAINT_COUNT_RANGE)
 
 
 class AllegationListView(TemplateView):
@@ -30,6 +39,9 @@ class AllegationListView(TemplateView):
             values = [o.tag_value for o in values]
         elif key == 'cat':
             values = AllegationCategory.objects.filter(pk__in=values['value'])
+            values = [o.tag_value for o in values]
+        elif key == 'investigator':
+            values = Investigator.objects.filter(pk__in=values['value'])
             values = [o.tag_value for o in values]
         elif key == 'areas__id':
             return False
@@ -77,8 +89,8 @@ class AllegationListView(TemplateView):
 
         return super(AllegationListView, self).get(request, *args, **kwargs)
 
-    def post(self, request, hash_id):
-        ints = Session.id_from_hash(hash_id)
+    def post(self, request, **kwargs):
+        ints = Session.id_from_hash(kwargs.get('hash_id'))
         session_id = ints[0]
 
         owned_sessions = request.session.get('owned_sessions', [])
@@ -98,6 +110,7 @@ class AllegationListView(TemplateView):
         return HttpResponse(JSONSerializer().serialize({
             'success': True
         }), content_type='application/json')
+
 
 class AreaAPIView(View):
     def get(self, request):
@@ -375,19 +388,16 @@ class OfficerListAPIView(AllegationAPIView):
         officers = allegations.values_list('officer', flat=True).distinct()
         officers = Officer.objects.filter(pk__in=officers).order_by('-allegations_count')
 
-        if 'allegations_count_start' in request.GET:
-            officers = officers.filter(allegations_count__gt=int(request.GET['allegations_count_start']))
-        if 'allegations_count_end' in request.GET:
-            officers = officers.filter(allegations_count__lte=int(request.GET['allegations_count_end']))
-
-        officer_list_length = officers.count()
-
-        num_to_send = settings.OFFICER_LIST_SEND_LENGTH
-        if officer_list_length > num_to_send:
-            officers = officers[0:num_to_send]
+        overview = []
+        for r in OFFICER_COMPLAINT_COUNT_RANGE:
+            range_officers = officers.filter(allegations_count__gte=r[0])
+            if r[1]:
+                range_officers = range_officers.filter(allegations_count__lt=r[1])
+            overview.append(range_officers.count())
 
         content = JSONSerializer().serialize({
-            'officers': officers
+            'officers': officers,
+            'overview': overview,
         })
         return HttpResponse(content, content_type="application/json")
 
@@ -468,6 +478,7 @@ class AllegationChartApiView(AllegationAPIView):
             'data': data
         })
         return HttpResponse(content, content_type="application/json")
+
 
 class AllegationCSVView(AllegationAPIView):
     def get(self, request):

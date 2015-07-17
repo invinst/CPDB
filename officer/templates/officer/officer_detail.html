@@ -1,8 +1,10 @@
 {% extends 'base.html' %}
 {% load staticfiles %}
 {% block head-link %}
-	{{block.super}}
-	<link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
+    {{block.super}}
+    <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
+    <link rel="stylesheet" href="{% static 'allegation/css/MarkerCluster.Default.css' %}" />
+    <link rel="stylesheet" href="{% static 'allegation/css/MarkerCluster.css' %}" />
     <link rel="stylesheet" href="{% static 'allegation/css/officer-detail.css' %}" />
 {% endblock %}
 {% block content %}

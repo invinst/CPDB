@@ -40,12 +40,14 @@ var CPDBApp = React.createClass({
     return getMapState();
   },
   initShare: function () {
-    SAVE_STATE = true;
     if (location.pathname == '/') {
       $.getJSON('/share/init/', function (data) {
         HOME_URL = "/" + data.session.hash_id + "/";
         history.pushState({}, '', HOME_URL);
+        SAVE_STATE = true;
       });
+    } else {
+      SAVE_STATE = true;
     }
   },
   componentDidMount: function () {
@@ -63,7 +65,11 @@ var CPDBApp = React.createClass({
 
     return (
       <div className='container-fluid'>
-        <Filters />
+          <div className="row">
+             <div className="col-md-10 col-md-offset-1">
+                <Filters />
+             </div>
+          </div>
         <div className='row map-row'>
           <div className='col-md-7 map-column'>
             <div id='map' className='pin-top pin-bottom'></div>

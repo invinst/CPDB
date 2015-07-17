@@ -151,6 +151,7 @@ BOWER_INSTALLED_APPS = (
     'components-font-awesome',
     'moment',
     'highcharts-release#4.1.6',
+    'pluralize',
 )
 
 MEDIA_URL = '/media/'

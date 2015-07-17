@@ -22,25 +22,50 @@
     font-family: 'Vollkorn';
 }
 
-.above .complaint-rate-label {
+.avg-0 .complaint-rate-label {
     color: #c0272d;
 }
 
-.middle .complaint-rate-label {
+.avg-1 .complaint-rate-label {
+    color: #ed9429;
+}
+
+.avg-2 .complaint-rate-label {
     color: #d8b421;
 }
+
+.avg-3 .complaint-rate-label {
+    color: #83b247;
+}
+
+.avg-4 .complaint-rate-label {
+    color: #41996d;
+}
+
 
 .star {
     border-top: 3px solid #62b28c;
     margin-right: 1em;
 }
 
-.above .star {
+.avg-0 .star {
     border-top-color: #c0272d;
 }
 
-.middle .start {
+.avg-1 .star {
+    border-top-color: #ed9429;
+}
+
+.avg-2 .star {
     border-top-color: #d8b421;
+}
+
+.avg-3 .star {
+    border-top-color: #83b247;
+}
+
+.avg-4 .star {
+    border-top-color: #41996d;
 }
 
 #OfficerDetail > .row {

@@ -1,7 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.contrib.gis.db import models
 from django.core.urlresolvers import reverse
-from django.forms.models import model_to_dict
 from django.template.defaultfilters import slugify
 
 
@@ -36,7 +35,7 @@ class Officer(models.Model):
     @property
     def tag_value(self):
         return {
-            'text': 'Officer: %s' % self,
+            'text': str(self),
             'value': self.pk
         }
 
@@ -77,7 +76,7 @@ class AllegationCategory(models.Model):
     @property
     def tag_value(self):
         return {
-            'text': 'Allegation type: %s' % self,
+            'text': str(self),
             'value': self.pk
         }
 
@@ -89,7 +88,6 @@ class Area(models.Model):
                                                     ['police-districts', 'Police District']], db_index=True)
     polygon = models.MultiPolygonField(srid=4326, null=True, blank=True)
     objects = models.GeoManager()
-
 
 OUTCOMES = [
     ['000', 'Violation Noted'],
@@ -198,3 +196,10 @@ class Investigator(models.Model):
     raw_name = models.CharField(max_length=160)
     name = models.CharField(max_length=160)
     complaint_count = models.IntegerField(default=0)
+
+    @property
+    def tag_value(self):
+        return {
+            'text': self.name,
+            'value': self.pk,
+        }
