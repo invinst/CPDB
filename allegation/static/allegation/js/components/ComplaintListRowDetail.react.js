@@ -30,7 +30,7 @@ var ComplaintListRowDetail = React.createClass({
     }
 
     return (
-      <div className="row complaint_detail">
+      <div className="row-fluid complaint_detail clearfix">
         <div className="col-md-12">
           {infor}
         </div>
