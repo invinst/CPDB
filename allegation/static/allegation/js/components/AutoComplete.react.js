@@ -59,6 +59,8 @@ var AutoComplete = React.createClass({
       $(".bootstrap-tagsinput").show();
     } else {
       $(".bootstrap-tagsinput").hide();
+      $(this.getDOMNode()).parent().addClass('closed');
+      $(this.getDOMNode()).parent().removeClass('closed');
     }
     FilterActions.replaceFilters(tags);
   },
@@ -139,9 +141,9 @@ var AutoComplete = React.createClass({
    * @return {object}
    */
   render: function () {
-
-    return <input id="cpdb-search" />
-
+    return (
+      <input id="cpdb-search" />
+    )
   }
 
 });

@@ -48,14 +48,15 @@ var Filters = React.createClass({
       //FilterStore.addFilter()
     }
 
-    return <div>
-      <AutoComplete />
+    return (
+      <div className='slide-down'>
+        <AutoComplete />
 
-      <div className='hidden'>
-        {allFilters}
+        <div className='hidden'>
+          {allFilters}
+        </div>
       </div>
-    </div>
-
+    )
   },
 
   _onCreate: function () {
