@@ -879,5 +879,18 @@ form.navbar-form.navbar-right {
 }
 
 .slide-down.closed {
-	max-height: 0;
+    max-height: 0;
+}
+
+#disclaimer .modal-content {
+    padding: 10px 0 30px 30px;
+}
+
+#disclaimer .modal-footer {
+    text-align: left;
+    padding: 0 0 20px 25px;
+}
+
+#disclaimer p {
+    font-size: 16px;
 }
