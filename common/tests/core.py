@@ -64,10 +64,6 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     source = 0
     source_dir = os.environ.get('CIRCLE_ARTIFACTS')
 
-    def setUp(self):
-        # We should add this to ensure all the tests should not be annoyed by the `Disclaimer`
-        self.browser.add_cookie({'visited': True})
-
     def tearDown(self):
         if world.browser is not None:
             world.browser.quit()
