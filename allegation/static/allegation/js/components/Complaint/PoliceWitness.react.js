@@ -64,7 +64,7 @@ var PoliceWitness = React.createClass({
       }
 
       var legend = (
-        <div>
+        <div className="legend">
           <div>
             <span className='red line'></span>No Punishment
           </div>
@@ -87,8 +87,8 @@ var PoliceWitness = React.createClass({
                   {witnesses_rows}
                 </div>
               </div>
-              <div className='col-md-3 investigation'>
-                <div className='section-title'>Police witnesses</div>
+              <div className='col-md-3'>
+                <div className='section-title'><br /></div>
                 {legend}
               </div>
             </div>
