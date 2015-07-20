@@ -26,7 +26,7 @@ var Location = React.createClass({
         );
         address = (
           <div>
-            <div>Location: {allegation.location}</div>
+            <div>Location Type: {allegation.location}</div>
             <div>Address: {allegation.add1} {allegation.add2}</div>
             <div>City: {allegation.city}</div>
           </div>
