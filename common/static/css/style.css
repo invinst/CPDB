@@ -77,7 +77,7 @@ footer {
 
 .site-title input {
     border: none;
-    width: 500px;
+    width: 100%;
 }
 
 .navbar .navbar-nav>li.site-title >a {
@@ -863,4 +863,17 @@ form.navbar-form.navbar-right {
 
 .tcenter {
     text-align: center;
+}
+
+.slide-down {
+	overflow-y: hidden;
+	max-height: 500px; /* approximate max height */
+
+	transition-property: all;
+	transition-duration: .5s;
+	transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+}
+
+.slide-down.closed {
+	max-height: 0;
 }
