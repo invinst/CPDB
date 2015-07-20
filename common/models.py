@@ -3,6 +3,8 @@ from django.contrib.gis.db import models
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import slugify
 
+from allegation.models.allegation_manager import AllegationManager
+
 
 from allegation.models.allegation_manager import AllegationManager
 

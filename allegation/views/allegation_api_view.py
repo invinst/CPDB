@@ -1,11 +1,10 @@
 from django.conf import settings
-from django.views.generic import View
 from django.http.response import HttpResponse
+from django.views.generic import View
 
-from common.json_serializer import JSONSerializer
 from common.models import Allegation, Officer
 from common.models import ComplainingWitness, PoliceWitness
-
+from common.json_serializer import JSONSerializer
 
 from allegation.views.allegation_query_filter import AllegationQueryFilter
 

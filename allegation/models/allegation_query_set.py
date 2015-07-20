@@ -1,7 +1,7 @@
-from django.db import models
-from django.db.models.query_utils import Q
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import D
+from django.db import models
+from django.db.models.query_utils import Q
 
 
 class AllegationQuerySet(models.query.QuerySet):
