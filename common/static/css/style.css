@@ -299,9 +299,9 @@ footer {
 }
 
 .officer-block {
-    width: 3.714%;
+    width: 169px;
     float: left;
-    margin-left: 0.535%;
+    margin-left: 25px;
 }
 
 .officer-control {
@@ -444,8 +444,12 @@ footer {
 }
 
 @media only screen and (max-width: 320px) {
+    .officers-container {
+        width: 600%;
+    }
     .officer-block {
-        width: 12%;
+        width: 16.666666%;
+        margin: 0;
     }
     .officer-control {
         display: none;
