@@ -43,7 +43,7 @@ var Timeline = React.createClass({
           if(items.length >= 1) {
             var rangeItem = {
               id: "range-1",
-              content: "Data missing for this timeframe",
+              content: "data withheld for this period",
               start: start,
               end: moment(items[i + 1]),
               type: 'background',
@@ -63,7 +63,7 @@ var Timeline = React.createClass({
       }
       timeLineItems.push({
         id: "range-2",
-        content: "no data for this timeframe",
+        content: "data withheld for this period",
         start: moment("2006-01-01"),
         end: moment("2011-01-01"),
         type: 'background',
