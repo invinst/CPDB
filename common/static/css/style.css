@@ -77,7 +77,7 @@ footer {
 
 .site-title input {
     border: none;
-    width: 500px;
+    width: 100%;
 }
 
 .navbar .navbar-nav>li.site-title >a {
