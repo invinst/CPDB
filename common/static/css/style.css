@@ -5,7 +5,7 @@ body {
 }
 
 #content {
-}
+g}
 
 a:hover {
     opacity: 0.3;
@@ -380,10 +380,6 @@ footer {
 
 .officer.selected > .checkmark{
     background-color: #709dc0;
-}
-
-.officer.selected:hover > .checkmark{
-    background-color: #cbcbcb;
 }
 
 .officer:hover > .checkmark{
