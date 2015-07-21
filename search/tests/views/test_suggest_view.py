@@ -34,6 +34,14 @@ class SuggestViewTestCase(SimpleTestCase):
         data = self.get_suggestion('12')
         data.should.contain('officer__star')
 
+    def test_detect_suggest_type_officer_unit(self):
+        self.get_suggestion('71').should.contain('officer__unit')
+        self.get_suggestion('99').shouldnt.contain('officer__unit')
+
+    def test_detect_suggest_type_officer_unit_name(self):
+        self.get_suggestion('Vio').should.contain('officer__unit')
+        self.get_suggestion('Viot').shouldnt.contain('officer__unit')
+
     def test_detect_suggest_type_complaint_category(self):
         AllegationCategoryFactory(allegation_name='Bonding category')
 
