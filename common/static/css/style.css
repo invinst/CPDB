@@ -858,6 +858,14 @@ form.navbar-form.navbar-right {
     text-align: center;
 }
 
+#disclaimer .modal-backdrop.in {
+    opacity: .9;
+}
+
+#disclaimer .modal-backdrop {
+  background: rgba(0,0,0,.7);
+}
+
 #disclaimer .modal-content {
     padding: 10px 0 30px 30px;
 }
