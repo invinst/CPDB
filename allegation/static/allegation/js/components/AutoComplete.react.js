@@ -56,11 +56,14 @@ var AutoComplete = React.createClass({
     }
     var tags = $(this.getDOMNode()).tagsinput("items");
     if (tags.length) {
-      $(".bootstrap-tagsinput").show();
+      //$(".bootstrap-tagsinput").show();'
+      //$(this.getDOMNode()).parent().removeClass('closed');
+      $(this.getDOMNode()).parent().slideDown('slow');
     } else {
-      $(".bootstrap-tagsinput").hide();
-      $(this.getDOMNode()).parent().addClass('closed');
-      $(this.getDOMNode()).parent().removeClass('closed');
+      //$(".bootstrap-tagsinput").hide();
+      //$(this.getDOMNode()).parent().addClass('closed');
+      $(this.getDOMNode()).parent().slideUp('slow');
+      //$(this.getDOMNode()).parent().removeClass('closed');
     }
     FilterActions.replaceFilters(tags);
   },
