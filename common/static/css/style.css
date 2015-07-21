@@ -490,6 +490,10 @@ footer {
     clear: both;
 }
 
+.complaint-row > .row:first-child {
+    font-size: 18px;
+}
+
 .complaint-row .title {
     color: gray;
     font-size: 12px;
