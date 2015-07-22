@@ -13,9 +13,10 @@ a:hover {
 
 .navbar {
     min-height: 72px;
-    border-bottom: 1px solid #989898
+    border-bottom: 1px solid #989898;
 }
-h1, h2, h3,  .h1, .h2, .h3 {
+
+h1, h2, h3, .h1, .h2, .h3 {
     font-family: 'Vollkorn', serif;
 }
 
@@ -45,11 +46,12 @@ footer {
     margin: 3em 0;
 }
 
-#map{
-  width: 100%;
-  height: 500px;
+#map {
+    width: 100%;
+    height: 500px;
 }
-#officer-complaint-map{
+
+#officer-complaint-map {
     width: 100%;
     height: 200px;
 }
@@ -80,17 +82,19 @@ footer {
     width: 100%;
 }
 
-.navbar .navbar-nav>li.site-title >a {
+.navbar .navbar-nav > li.site-title > a {
     color: #333333;
 }
 
 .map-row {
     background-color: #f6f6ec;
 }
-.map-row .map-column{
-    padding: 0px;
+
+.map-row .map-column {
+    padding: 0;
 }
-#map-arrow-down{
+
+#map-arrow-down {
     position: absolute;
     bottom: 20px;
     right: 3%;
@@ -99,6 +103,7 @@ footer {
     width: 32px;
     height: 32px;
 }
+
 #summary-container {
     overflow: hidden;
 }
@@ -114,6 +119,7 @@ footer {
     position: relative;
     left: 0;
 }
+
 #summary.selected {
     left: -50%;
 }
@@ -128,6 +134,7 @@ footer {
     width: calc(100% - 1em);
     background: #f6f6ec;
 }
+
 .arrow-container {
     position: absolute;
     right: -1px;
@@ -145,7 +152,7 @@ footer {
 
 #summary .child-row-container {
     overflow-y: scroll;
-    overflow-x:hidden;
+    overflow-x: hidden;
     height: 480px;
     border-left: 1px solid #989898;
 }
@@ -161,7 +168,7 @@ footer {
 
 #summary .category-name {
     color: #0079ae;
-    font-size:1.2em;
+    font-size: 1.2em;
 }
 
 #summary .category-name:hover {
@@ -270,15 +277,19 @@ footer {
 .overview-0 {
     background-color: #ff4647;
 }
+
 .overview-1 {
     background-color: #f3b272;
 }
+
 .overview-2 {
     background-color: #f2db6d;
 }
+
 .overview-3 {
     background-color: #a4c683;
 }
+
 .overview-4 {
     background-color: #62b28c;
 }
@@ -289,6 +300,7 @@ footer {
     left: 0;
     position: relative;
 }
+
 .officers-container.off {
     transition: none;
     left: 0;
@@ -364,7 +376,7 @@ footer {
     -webkit-box-shadow: 7px 7px 7px #cbcbcb;
 }
 
-.officer a.officer-link{
+.officer a.officer-link {
     color: #989898;
 }
 
@@ -376,7 +388,7 @@ footer {
     -webkit-box-shadow: none;
 }
 
-.officer > .checkmark{
+.officer > .checkmark {
     position: absolute;
     padding: 4px 6px 3px 6px;
     left: 0;
@@ -385,15 +397,11 @@ footer {
     color: white;
 }
 
-.officer.selected > .checkmark{
+.officer.selected > .checkmark {
     background-color: #709dc0;
 }
 
-.officer.selected:hover > .checkmark{
-    background-color: #cbcbcb;
-}
-
-.officer:hover > .checkmark{
+.officer:hover > .checkmark {
     background-color: #709dc0;
 }
 
@@ -434,10 +442,12 @@ footer {
     padding-right: 10px;
     padding-bottom: 25px;
 }
+
 .officer-control:hover {
     opacity: .6;
 }
-@media only screen and (max-width: 1024px){
+
+@media only screen and (max-width: 1024px) {
     .officer-control {
         display: none;
     }
@@ -451,9 +461,11 @@ footer {
         width: 16.666666%;
         margin: 0;
     }
+
     .officer-control {
         display: none;
     }
+
     .officer {
         padding: 2px;
         padding-bottom: 11px;
@@ -463,17 +475,20 @@ footer {
 .complaint_list {
     margin-top: 2em;
 }
-.complaint_list .filters > span  {
+
+.complaint_list .filters > span {
     display: inline-block;
     padding: 5px 0;
     border-bottom: 2px solid transparent;
     margin: 0 14px;
     cursor: pointer;
 }
+
 .complaint_list .filters > span.active, .complaint_list .filters > span:hover {
     border-bottom: 2px solid black;
 }
-.complaint_list .filters > span i{
+
+.complaint_list .filters > span i {
     margin-right: 5px;
     display: inline-block;
     font-size: 0.7em;
@@ -499,17 +514,21 @@ footer {
     font-size: 12px;
     font-family: 'Source Sans Pro';
 }
-.complaint-row .btn:hover{
+
+.complaint-row .btn:hover {
     opacity: .6;
 }
+
 .complaint-row .show_more {
     font-size: 34px;
 }
-.timeline-title{
+
+.timeline-title {
     color: #989898;
     font-size: 12px;
 }
-.timeline-date{
+
+.timeline-date {
     color: black;
     font-size: 14px;
 }
@@ -518,12 +537,12 @@ footer {
     margin-bottom: 24px;
 }
 
-.progress-bar.discipline{
-    background-color:#709dc0;
+.progress-bar.discipline {
+    background-color: #709dc0;
 }
 
-.progress.complaint{
-    background-color:#c0272d;
+.progress.complaint {
+    background-color: #c0272d;
 }
 
 .results {
@@ -532,7 +551,7 @@ footer {
     border: 1px solid #cbcbcb;
 }
 
-.investigation .results{
+.investigation .results {
     width: 60%;
     float: left;
 }
@@ -549,27 +568,30 @@ footer {
     padding-left: 10px;
 }
 
-.investigation .investigator-name{
-    color:#709dc0;
+.investigation .investigator-name {
+    color: #709dc0;
 }
 
 .line {
-    display:inline-block;
-    width:20px;
-    height:3px;
-    margin-right:5px;
-}
-.line.blue {
-    background-color:#709dc0;
-}
-.line.red {
-    background-color:#c0272d;
+    display: inline-block;
+    width: 20px;
+    height: 3px;
+    margin-right: 5px;
 }
 
-.timeline-date.start{
+.line.blue {
+    background-color: #709dc0;
+}
+
+.line.red {
+    background-color: #c0272d;
+}
+
+.timeline-date.start {
     color: #709dc0;
 }
-.timeline-date.end{
+
+.timeline-date.end {
     color: #c0272d;
     font-size: 17px;
 }
@@ -605,13 +627,13 @@ footer {
     font-weight: 700;
 }
 
-.complaint_detail .uppercase{
+.complaint_detail .uppercase {
     font-weight: bold;
     font-size: 18px;
     font-family: 'Source Sans Pro', serif;
 }
 
-.complaint_detail .row.margin-top{
+.complaint_detail .row.margin-top {
     margin-top: 20px;
 }
 
@@ -619,10 +641,11 @@ footer {
     background-color: #f7f7ed;
 }
 
-.complaint_detail .allegation-name{
+.complaint_detail .allegation-name {
     color: #989898;
     font-style: italic;
 }
+
 .btn.btn-view:not(.btn-link):not(.btn-flat) {
     background-color: #0079ae;
     color: white;
@@ -633,6 +656,7 @@ footer {
     font-size: 16px;
     padding: 5px 10px;
 }
+
 .btn.btn-request:not(.btn-link):not(.btn-flat) {
     background-color: white;
     color: #0a90cb;
@@ -643,9 +667,10 @@ footer {
     font-size: 16px;
     padding: 5px 10px;
 }
+
 .btn.btn-view:hover:not(.btn-link):not(.btn-flat) {
     background-color: #0a90cb;
-    color:white;
+    color: white;
 }
 
 .complaint-row + .complaint-row {
@@ -665,6 +690,7 @@ footer {
 .margin-top {
     margin-top: 1em;
 }
+
 .cursor, .pointer {
     cursor: pointer;
 }
@@ -672,14 +698,17 @@ footer {
 /* vis.js style customization for timeline */
 .vis-item {
     background-color: transparent;
-    border-width: 0px;
+    border-width: 0;
 }
+
 .vis-line, .vis-dot {
     border-color: #0079ae;
 }
+
 .vis-line.end, .vis-dot.end {
     border-color: #c0272d;
 }
+
 .vis-item.vis-box {
     border: none;
 }
@@ -697,27 +726,33 @@ footer {
 }
 
 canvas.leaflet-heatmap-layer {
-    z-index:-1;
+    z-index: -1;
 }
 
 .fa.open-investigation {
     color: #d8b421;
 }
+
 .fa.sustained {
     color: #d8b421;
 }
+
 .fa.not.sustained, .fa.not-sustained {
     color: #0079ae;
 }
+
 .fa.disciplined {
     color: #c0272d;
 }
+
 .fa.exonerated {
     color: #62b28c;
 }
+
 .fa.unknown {
     color: #989898;
 }
+
 .complaint-row.disciplined {
     background: #ffe3e7;
 }
@@ -733,49 +768,61 @@ canvas.leaflet-heatmap-layer {
 }
 
 .padding-left {
-    padding-left:5px;
+    padding-left: 5px;
 }
+
 /* leaflet controller overrides */
 .leaflet-control-layers label.active {
-    color:blue;
+    color: blue;
 }
+
 .leaflet-control-layers-expanded {
-    border:0px;
-    padding:0px;
+    border: 0;
+    padding: 0;
 }
+
 .leaflet-control-layers-base {
-    float:left;
+    float: left;
 }
+
 .leaflet-control-layers-separator {
-    display:none;
+    display: none;
 }
+
 .leaflet-control-layers-overlays {
-    float:right;
+    float: right;
 }
+
 .leaflet-control-layers label {
-    display:inline-block;
+    display: inline-block;
     padding: 2px 5px;
     cursor: pointer;
 }
+
 .leaflet-control-layers label:not(:last) {
-    border-right:1px solid #989898;
+    border-right: 1px solid #989898;
 }
-.leaflet-control-layers label input{
-    display:none;
+
+.leaflet-control-layers label input {
+    display: none;
 }
+
 .tright {
     text-align: right;
 }
+
 .fourty {
     width: 40%;
     float: left;
 }
+
 .sixty {
     width: 60%;
     float: left;
 }
+
 .officer-link .unit {
-    padding-right:5px;
+    padding-right: 5px;
     color: #989898;
     font-weight: bold;
 }
@@ -788,24 +835,30 @@ canvas.leaflet-heatmap-layer {
     padding-left: 5px;
     border-left: 1px solid #989898;
 }
+
 .thirty-five {
     width: 35%;
     float: left;
 }
+
 .absolute {
-    position:absolute;
+    position: absolute;
 }
+
 .relative {
-    position:relative;
+    position: relative;
 }
+
 .top-left {
-    top:0px;
-    left:0px;
+    top: 0;
+    left: 0;
 }
+
 /* leaflet */
-.leaflet-container .leaflet-control-attribution{
+.leaflet-container .leaflet-control-attribution {
     display: none;
 }
+
 .leaflet-control-layers-base label {
     display: block;
     width: 150px;
@@ -814,20 +867,23 @@ canvas.leaflet-heatmap-layer {
     font-weight: 400;
 }
 
-.leaflet-control-layers-base label input:checked + span, .leaflet-control-layers-base label:hover input + span  {
+.leaflet-control-layers-base label input:checked + span, .leaflet-control-layers-base label:hover input + span {
     background-color: #0079ae;
     color: white;
 }
+
 .leaflet-control-layers-base label span {
     display: block;
     padding: 2px;
     padding-left: 15px;
     color: #0079ae;
 }
-.leaflet-control-command{
+
+.leaflet-control-command {
     border-top: 2px solid #000;
     clear: none;
 }
+
 .leaflet-control-command-interior {
     padding: 10px;
     width: 150px;
@@ -843,7 +899,7 @@ canvas.leaflet-heatmap-layer {
     background-color: #F4F4F4;
 }
 
-.leaflet-bar, .leaflet-control-layers{
+.leaflet-bar, .leaflet-control-layers {
     border-radius: 0;
 }
 
@@ -854,7 +910,7 @@ canvas.leaflet-heatmap-layer {
 .leaflet-control {
     font-size: 14px;
     border: 1px solid #b2b2b2;
-    box-shadow: 1px ;
+    box-shadow: 1px;
 }
 
 .leaflet-control-zoom > a:hover {
