@@ -15,7 +15,10 @@
 {% endblock %}
 
 {% block content %}
-  {% include 'allegation/disclaimer.html' %}
+  {% if DJANGO_ENV != 'test' %}
+    {% include 'allegation/disclaimer.html' %}
+  {% endif %}
+
   <section id='cpdbapp'></section>
 {% endblock %}
 
