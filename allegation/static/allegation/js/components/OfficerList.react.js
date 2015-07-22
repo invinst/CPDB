@@ -220,6 +220,9 @@ var OfficerList = React.createClass({
   },
   componentDidUpdate: function(){
 
+    if (OLD_DISPLAY == this.state.current_view) {
+      return;
+    }
     var container = $(".officers-container");
 
     var officerBlock = $(".officer-block").slice(1, 2);

@@ -116,16 +116,12 @@
 }
 
 .vis-item.missing-data {
-    background: #e5e5e5;
     color: #989898;
     font-size: 12px;
-}
-
-.vis-item.missing-data.border {
     background: transparent;
 }
 
-.vis-item.missing-data.border .vis-item-overflow{
+.vis-item.missing-data .vis-item-overflow{
     background: #e5e5e5;
     margin-top: 50px;
     height: calc(100% - 50px);
