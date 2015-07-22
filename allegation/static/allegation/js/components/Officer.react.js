@@ -3,7 +3,7 @@ var React = require('react');
 var Filters = require('./Filters.react');
 var OfficerActions = require('../actions/OfficerActions');
 var OfficerMixin = require("./OfficerMixin.react");
-
+var pluralize = require('pluralize')
 
 var Officer = React.createClass({
   mixins: [OfficerMixin],
