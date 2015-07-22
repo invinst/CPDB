@@ -933,3 +933,25 @@ form.navbar-form.navbar-right {
 	max-height: 0;
     opacity: 0;
 }
+
+#disclaimer .modal-backdrop.in {
+    opacity: .9;
+}
+
+#disclaimer .modal-backdrop {
+  background: rgba(0,0,0,.7);
+}
+
+#disclaimer .modal-content {
+    padding: 10px 0 30px 30px;
+}
+
+#disclaimer .modal-footer {
+    text-align: left;
+    padding: 0 0 20px 25px;
+}
+
+#disclaimer p {
+    font-size: 16px;
+}
+
