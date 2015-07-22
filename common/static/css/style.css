@@ -1,5 +1,4 @@
 body {
-    padding-top: 72px;
     background-color: white;
     font-family: 'Source Sans Pro', serif;
 }
@@ -13,6 +12,7 @@ a:hover {
 
 .navbar {
     min-height: 72px;
+    margin-bottom: 0;
     border-bottom: 1px solid #989898;
 }
 
