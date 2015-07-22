@@ -44,7 +44,7 @@ var OfficerStore = assign({}, EventEmitter.prototype, {
     }
     ajax = $.getJSON('/api/allegations/officers/?' + FilterStore.getQueryString(), function (data) {
       _state.officers = data.officers;
-      _state.overview = data.overview;
+      _state.overview = data.overview || [];
       OfficerStore.emitChange();
     });
   },

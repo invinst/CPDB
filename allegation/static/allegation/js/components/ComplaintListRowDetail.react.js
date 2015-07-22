@@ -29,8 +29,9 @@ var ComplaintListRowDetail = React.createClass({
       infor.push(<PoliceWitness key="police-witness" complaint={complaint} witnesses={this.state.police_witness} />)
     }
 
+    var cssClasses = "row complaint_detail slide-down" + (this.props.hide ? ' closed' : '');
     return (
-      <div className="row complaint_detail">
+      <div className={cssClasses}>
         <div className="col-md-12">
           {infor}
         </div>
