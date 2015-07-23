@@ -75,6 +75,7 @@ footer {
     font-size: 30px;
     font-family: 'Vollkorn', serif;
     margin: 10px 0 0 10px;
+    width: 100%;
 }
 
 .site-title input {
@@ -82,6 +83,9 @@ footer {
     width: 100%;
 }
 
+ul.nav.navbar-nav {
+    width: 45%;
+}
 .navbar .navbar-nav > li.site-title > a {
     color: #333333;
 }
@@ -919,18 +923,18 @@ form.navbar-form.navbar-right {
 }
 
 .slide-down {
-	overflow-y: hidden;
+    overflow-y: hidden;
 
-	transition-property: all;
-	transition-duration: 0.4s;
-	transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+    transition-property: all;
+    transition-duration: 0.4s;
+    transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
 
     max-height: 1500px;
     opacity: 1;
 }
 
 .slide-down.closed {
-	max-height: 0;
+    max-height: 0;
     opacity: 0;
 }
 
