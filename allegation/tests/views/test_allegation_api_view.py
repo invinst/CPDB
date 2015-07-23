@@ -3,9 +3,9 @@ import json
 
 from django.utils import timezone
 
-from allegation.factories import AreaFactory
+from allegation.factories import AreaFactory, ComplainingWitnessFactory
 from allegation.tests.views.base import AllegationApiTestBase
-from common.models import Allegation, Officer, Area
+from common.models import Allegation, Officer, Area, RACES
 
 
 class AllegationApiViewTestCase(AllegationApiTestBase):
@@ -132,3 +132,22 @@ class AllegationApiViewTestCase(AllegationApiTestBase):
         allegations = self.fetch_allegations(areas__id=list(areas.values_list('pk', flat=True)))
         num_returned = len(allegations)
         num_allegations.should.equal(num_returned)
+
+    def test_filter_by_complaint_gender(self):
+        allegation = self.allegations[0]
+        for i in range(10):
+            ComplainingWitnessFactory(crid=allegation.crid)
+        data = self.fetch_allegations(complainant_gender='M')
+        for row in data:
+            genders = [x['gender'] for x in row['complaining_witness']]
+            genders.should.contain('M')
+
+    def test_filter_by_complaint_race(self):
+        allegation = self.allegations[0]
+        for i in range(10):
+            ComplainingWitnessFactory(crid=allegation.crid)
+        race = RACES[0][0]
+        data = self.fetch_allegations(complainant_race=race)
+        for row in data:
+            races = [x['race'] for x in row['complaining_witness']]
+            races.should.contain(race)

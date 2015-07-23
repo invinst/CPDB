@@ -95,3 +95,9 @@ class AllegationQueryFilter(object):
 
     def radius(self):
         return self.request.GET.get('radius', 500)
+
+    def complainant_gender(self):
+        return self.request.GET.getlist('complainant_gender', [])
+
+    def complainant_race(self):
+        return self.request.GET.getlist('complainant_race', [])
