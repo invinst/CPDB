@@ -3,7 +3,7 @@ from common.models import AllegationCategory
 
 
 FILTERS = ['crid', 'areas__id', 'cat', 'neighborhood_id', 'recc_finding', 'final_outcome',
-           'recc_outcome', 'final_finding', 'officer', 'officer__star', 'investigator',
+           'recc_outcome', 'final_finding', 'officer', 'officer__star', 'officer__unit', 'investigator',
            'cat__category']
 DATE_FILTERS = ['incident_date_only']
 
