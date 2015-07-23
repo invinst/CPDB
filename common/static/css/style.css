@@ -933,7 +933,7 @@ form.navbar-form.navbar-right {
 	overflow-y: hidden;
 
 	transition-property: all;
-	transition-duration: 0.5s;
+	transition-duration: 0.4s;
 	transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
 
     max-height: 1500px;
@@ -941,7 +941,16 @@ form.navbar-form.navbar-right {
 }
 
 .slide-down.closed {
-    max-height: 0;
+	max-height: 0;
+    opacity: 0;
+}
+
+#disclaimer .modal-backdrop.in {
+    opacity: .9;
+}
+
+#disclaimer .modal-backdrop {
+  background: rgba(0,0,0,.7);
 }
 
 #disclaimer .modal-content {
@@ -956,3 +965,4 @@ form.navbar-form.navbar-right {
 #disclaimer p {
     font-size: 16px;
 }
+

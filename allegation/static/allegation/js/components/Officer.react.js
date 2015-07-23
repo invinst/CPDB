@@ -56,7 +56,7 @@ var Officer = React.createClass({
     var officerId = 'officer_' + officer.id;
 
     return (
-      <div className={className} data-state={selection_state} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp} id={officerId}>
+      <div className={className} data-state={selection_state} id={officerId} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp}>
         <a className='officer-link' href={officerLink}>
           <div className='officer_name' onClick={this.openOfficerProfile}>
             <strong>
