@@ -925,18 +925,18 @@ form.navbar-form.navbar-right {
 }
 
 .slide-down {
-	overflow-y: hidden;
+    overflow-y: hidden;
 
-	transition-property: all;
-	transition-duration: 0.4s;
-	transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
+    transition-property: all;
+    transition-duration: 0.4s;
+    transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
 
     max-height: 1500px;
     opacity: 1;
 }
 
 .slide-down.closed {
-	max-height: 0;
+    max-height: 0;
     opacity: 0;
 }
 
@@ -961,3 +961,10 @@ form.navbar-form.navbar-right {
     font-size: 16px;
 }
 
+.back-to-top {
+    margin-top: 10px;
+}
+
+.rackspace-logo {
+    height: 20px;
+}
