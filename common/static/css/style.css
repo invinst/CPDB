@@ -346,7 +346,6 @@ footer {
     border: none;
     border-radius: 0;
     border-top: 5px solid red;
-    border-bottom: 1px solid #464646;
     font-size: 12px;
     position: relative;
     color: #989898;
@@ -398,10 +397,6 @@ footer {
 }
 
 .officer.selected > .checkmark {
-    background-color: #709dc0;
-}
-
-.officer:hover > .checkmark {
     background-color: #709dc0;
 }
 
