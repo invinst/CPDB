@@ -75,6 +75,7 @@ footer {
     font-size: 30px;
     font-family: 'Vollkorn', serif;
     margin: 10px 0 0 10px;
+    width: 100%;
 }
 
 .site-title input {
@@ -82,6 +83,9 @@ footer {
     width: 100%;
 }
 
+ul.nav.navbar-nav {
+    width: 45%;
+}
 .navbar .navbar-nav > li.site-title > a {
     color: #333333;
 }
