@@ -6,7 +6,11 @@ import xlsxwriter
 from django.http.response import FileResponse
 
 from allegation.views.allegation_api_view import AllegationAPIView
-from common.models import PoliceWitness, ComplainingWitness, Officer
+from common.models import PoliceWitness, ComplainingWitness, Officer, FINDINGS, OUTCOMES
+
+
+FINDINGS_DICT = dict(FINDINGS)
+OUTCOME_DICT = dict(OUTCOMES)
 
 
 class AllegationDownloadView(AllegationAPIView):
@@ -108,8 +112,8 @@ Investigator"""
             sheet.write(row_count, 9, allegation.recc_outcome)
             sheet.write(row_count, 10, allegation.final_finding)
             sheet.write(row_count, 11, allegation.final_outcome)
-            sheet.write(row_count, 12, "###")
-            sheet.write(row_count, 13, "###")
+            sheet.write(row_count, 12, FINDINGS_DICT.get(allegation.final_finding))
+            sheet.write(row_count, 13, OUTCOME_DICT.get(allegation.final_outcome))
 
             if allegation.beat:
                 sheet.write(row_count, 14, allegation.beat.name)
