@@ -123,7 +123,7 @@ var ComplaintList = React.createClass({
         {rows}
         <div className="row">
           <div className="col-md-2 col-md-offset-10">
-            <a href='#' className='btn btn-black btn-download'>Download Table</a>
+            <a href={downloadHref} className='btn btn-black btn-download'>Download Table</a>
           </div>
         </div>
       </div>
