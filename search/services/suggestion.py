@@ -11,6 +11,11 @@ class Suggestion():
     def make_suggestion_format(self, match):
         return [match[1], match[0]]
 
+    def suggest_rank(self, q):
+        ranks = Officer.objects.order_by().values_list('rank', flat=True).distinct()
+        # cast rank to str to ignore `None`
+        return [rank for rank in ranks if str(rank).lower().startswith(q)]
+
     def suggest_unit_number(self, q):
         results = []
         matches = filter(lambda x: x[0].startswith(q), UNITS)
@@ -140,6 +145,7 @@ class Suggestion():
         ret['incident_date_only__year'] = self.suggest_incident_date_only_year(q)
         ret['officer'] = self.suggest_office_name(q)
         ret['officer__unit'] = self.suggest_unit(q)
+        ret['officer__rank'] = self.suggest_rank(q)
         ret['cat__category'] = self.suggest_cat_category(q)
         ret['cat'] = self.suggest_cat(q)
         ret['investigator'] = self.suggest_investigator(q)
