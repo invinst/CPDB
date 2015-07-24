@@ -2,9 +2,23 @@ from django.db.models.query_utils import Q
 from common.models import AllegationCategory
 
 
-FILTERS = ['crid', 'areas__id', 'cat', 'neighborhood_id', 'recc_finding', 'final_outcome',
-           'recc_outcome', 'final_finding', 'officer', 'officer__star', 'officer__unit', 'investigator',
-           'cat__category']
+FILTERS = [
+    'crid',
+    'areas__id',
+    'cat',
+    'neighborhood_id',
+    'recc_finding',
+    'final_outcome',
+    'recc_outcome',
+    'final_finding',
+    'officer',
+    'officer__star',
+    'officer__unit',
+    'officer__gender',
+    'officer__race',
+    'investigator',
+    'cat__category',
+]
 DATE_FILTERS = ['incident_date_only']
 
 

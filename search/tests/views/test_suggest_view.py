@@ -112,3 +112,11 @@ class SuggestViewTestCase(SimpleTestCase):
     def test_suggest_complainant_race(self):
         data = self.get_suggestion('blac')
         data.should.contain('complainant_race')
+
+    def test_suggest_officer_gender(self):
+        data = self.get_suggestion('mal')
+        data.should.contain('officer__gender')
+
+    def test_suggest_officer_race(self):
+        data = self.get_suggestion('blac')
+        data.should.contain('officer__race')
