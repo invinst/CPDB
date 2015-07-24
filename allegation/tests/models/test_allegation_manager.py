@@ -31,10 +31,13 @@ class AllegationManager(SimpleTestCase):
         conditions = []
         filters = {'officer': officer.id}
 
-        mock_allegation_filter.return_value.allegation_filters.return_value = (conditions, filters)
+        instance = mock_allegation_filter.return_value
+        instance.allegation_filters.return_value = (conditions, filters)
+        instance.complainant_gender.return_value = []
+        instance.complainant_race.return_value = []
 
-        number_of_officer_by_allegation_filters = Allegation.allegations.by_allegation_filter(mock_allegation_filter([], [])).count()
-        self.assertEqual(number_of_officer_by_allegation_filters, 1)
+        number_of_officer = Allegation.allegations.by_allegation_filter(mock_allegation_filter([], [])).count()
+        self.assertEqual(number_of_officer, 1)
 
     def create_allegation_with_latlng(self, latlng):
         lat, lng = latlng
