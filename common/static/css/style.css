@@ -350,7 +350,6 @@ ul.nav.navbar-nav {
     border: none;
     border-radius: 0;
     border-top: 5px solid red;
-    border-bottom: 1px solid #464646;
     font-size: 12px;
     position: relative;
     color: #989898;
@@ -405,7 +404,8 @@ ul.nav.navbar-nav {
     background-color: #709dc0;
 }
 
-.officer:hover > .checkmark {
+
+.officer > .checkmark:hover {
     background-color: #709dc0;
 }
 
