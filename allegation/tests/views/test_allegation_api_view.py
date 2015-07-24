@@ -151,3 +151,14 @@ class AllegationApiViewTestCase(AllegationApiTestBase):
         for row in data:
             races = [x['race'] for x in row['complaining_witness']]
             races.should.contain(race)
+
+    def test_filter_by_officer_gender(self):
+        data = self.fetch_allegations(officer__gender='M')
+        for row in data:
+            row['officer']['gender'].should.equal('M')
+
+    def test_filter_by_officer_race(self):
+        race = RACES[0][0]
+        data = self.fetch_allegations(officer__race=race)
+        for row in data:
+            row['officer']['race'].should.equal(race)

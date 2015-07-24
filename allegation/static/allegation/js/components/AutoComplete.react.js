@@ -26,6 +26,8 @@ AUTOCOMPLETE_CATEGORY_NAMES = {
   'officer__star': 'Badge number',
   'officer__unit': 'Officer Unit',
   'officer__rank': 'Officer Rank',
+  'officer__gender': 'Officer Gender',
+  'officer__race': 'Officer Race',
   'recc_outcome': 'Recommended Outcome',
   'recc_finding': 'Recommended Finding',
   'final_outcome': 'Final Outcome',
