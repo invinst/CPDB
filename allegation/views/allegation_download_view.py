@@ -56,6 +56,12 @@ purport to be an accurate reflection of either the City's database or its veraci
             line_count += 1
             worksheet.write("A%s" % line_count, line)
 
+    def write_headers(self, sheet, headers):
+        col_count = 0
+        for header in headers:
+            sheet.write(0, col_count, header, self.header_format)
+            col_count += 1
+
     def write_allegations_columns(self, sheet):
         columns = """RecordID
 CRID
@@ -80,10 +86,7 @@ IncidentDate
 StartDate
 EndDate
 Investigator"""
-        col_count = 0
-        for column in columns.splitlines():
-            sheet.write(0, col_count, column, self.header_format)
-            col_count += 1
+        self.write_headers(sheet, columns.splitlines())
 
     def write_allegations_data(self, sheet):
         row_count = 1
@@ -137,10 +140,7 @@ Investigator"""
         sheet.name = "Police Witnesses"
         sheet.set_tab_color('#a8c06e')
 
-        col_count = 0
-        for header in headers.split(","):
-            sheet.write(0, col_count, header, self.header_format)
-            col_count += 1
+        self.write_headers(sheet, headers.split(","))
 
         row_count = 1
         for witness in witnesses:
@@ -157,11 +157,7 @@ Investigator"""
         sheet.name = "Complaining Witnesses"
         sheet.set_tab_color('#a8c06e')
 
-
-        col_count = 0
-        for header in headers.split(","):
-            sheet.write(0, col_count, header, self.header_format)
-            col_count += 1
+        self.write_headers(sheet, headers.split(","))
 
         witnesses = ComplainingWitness.objects.filter(crid__in=self.crids).order_by('crid')
 
@@ -179,10 +175,7 @@ Investigator"""
         sheet.name = "Officer Profile"
         sheet.set_tab_color('#a8c06e')
 
-        col_count = 0
-        for header in headers.split(","):
-            sheet.write(0, col_count, header, self.header_format)
-            col_count += 1
+        self.write_headers(sheet, headers.split(","))
 
         officer_ids = [o.officer_id for o in self.allegations]
         officers = Officer.objects.filter(id__in=officer_ids)
@@ -207,11 +200,8 @@ Investigator"""
 
         lines = data.splitlines()
         headers = lines[0]
-        218962763
-        col_count = 0
-        for header in headers.split("\t"):
-            sheet.write(0, col_count, header, self.header_format)
-            col_count += 1
+
+        self.write_headers(sheet, headers.split("\t"))
 
         line_count = len(lines)
         row_count = 1
