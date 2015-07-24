@@ -109,3 +109,11 @@ class SuggestViewTestCase(SimpleTestCase):
         OfficerFactory(rank='PO')
         self.get_suggestion('PO').should.contain('officer__rank')
         self.get_suggestion('SGT').shouldnt.contain('officer__rank')
+
+    def test_suggest_complainant_gender(self):
+        data = self.get_suggestion('mal')
+        data.should.contain('complainant_gender')
+
+    def test_suggest_complainant_race(self):
+        data = self.get_suggestion('blac')
+        data.should.contain('complainant_race')

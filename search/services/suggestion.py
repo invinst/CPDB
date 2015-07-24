@@ -2,7 +2,8 @@ from collections import OrderedDict
 
 from django.db.models.query_utils import Q
 
-from common.models import AllegationCategory, Allegation, Area, Investigator, Officer, FINDINGS, OUTCOMES, UNITS
+from common.models import AllegationCategory, Allegation, Area, Investigator, Officer, FINDINGS, OUTCOMES, UNITS, GENDER, \
+    RACES
 from search.utils.date import *
 
 # TODO: More test for this one, especially test for ensure the order, returned format
@@ -144,6 +145,7 @@ class Suggestion():
         ret['incident_date_only__year'] = self.suggest_incident_date_only_year(q)
         ret['officer'] = self.suggest_office_name(q)
         ret['officer__unit'] = self.suggest_unit(q)
+        ret['officer__rank'] = self.suggest_rank(q)
         ret['cat__category'] = self.suggest_cat_category(q)
         ret['cat'] = self.suggest_cat(q)
         ret['investigator'] = self.suggest_investigator(q)
@@ -152,7 +154,8 @@ class Suggestion():
         ret['final_finding'] = self.suggest_in(q, FINDINGS)
         ret['recc_finding'] = self.suggest_in(q, FINDINGS)
         ret['areas__id'] = self.suggest_areas(q)
-        ret['officer__rank'] = self.suggest_rank(q)
+        ret['complainant_gender'] = self.suggest_in(q, GENDER)
+        ret['complainant_race'] = self.suggest_in(q, RACES)
         ret = OrderedDict((k, v) for k, v in ret.items() if v)
 
         return ret
