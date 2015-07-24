@@ -104,3 +104,8 @@ class SuggestViewTestCase(SimpleTestCase):
         data = self.get_suggestion('Unfo')
         data.should.contain('final_finding')
         data.should.contain('recc_finding')
+
+    def test_suggest_officer_rank(self):
+        OfficerFactory(rank='PO')
+        self.get_suggestion('PO').should.contain('officer__rank')
+        self.get_suggestion('SGT').shouldnt.contain('officer__rank')
