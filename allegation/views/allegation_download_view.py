@@ -122,9 +122,12 @@ Investigator"""
             sheet.write(row_count, 16, allegation.add1)
             sheet.write(row_count, 17, allegation.add2)
             sheet.write(row_count, 18, allegation.city)
-            sheet.write(row_count, 19, allegation.incident_date.strftime("%Y-%m-%d %H:%M:%s"))
-            sheet.write(row_count, 20, allegation.start_date)
-            sheet.write(row_count, 21, allegation.end_date)
+            if allegation.incident_date and allegation.incident_date.year > 1970:
+                sheet.write(row_count, 19, allegation.incident_date.strftime("%Y-%m-%d %H:%M:%S"))
+            if allegation.start_date:
+                sheet.write(row_count, 20, allegation.start_date.strftime("%Y-%m-%d"))
+            if allegation.end_date:
+                sheet.write(row_count, 21, allegation.end_date.strftime("%Y-%m-%d"))
             sheet.write(row_count, 22, allegation.investigator_name)
 
             row_count += 1
