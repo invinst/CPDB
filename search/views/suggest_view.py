@@ -4,7 +4,7 @@ import json
 from django.http.response import HttpResponseBadRequest, HttpResponse
 from django.views.generic.base import View
 
-from search.service.suggestion import Suggestion
+from search.services.suggestion import Suggestion
 
 
 class SuggestView(View):
