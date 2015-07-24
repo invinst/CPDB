@@ -14,6 +14,7 @@ FILTERS = [
     'officer',
     'officer__star',
     'officer__unit',
+    'officer__rank',
     'officer__gender',
     'officer__race',
     'investigator',

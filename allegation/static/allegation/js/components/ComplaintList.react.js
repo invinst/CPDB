@@ -6,13 +6,14 @@ var ComplaintListRow = require('./ComplaintListRow.react');
 var FilterActions = require('../actions/FilterActions');
 var OfficerStore = require('../stores/OfficerStore');
 
-var UNKNOWN_FINDINGS = ['No data', 'Unfounded', 'No Cooperation', 'No Affidavit', 'Discharged'];
+var UNKNOWN_FINDINGS = ['No data', 'No Cooperation', 'No Affidavit', 'Discharged'];
 var FILTER_NAMES = {
   'all': 'All',
   'disciplined': 'Disciplined',
   'sustained': 'Sustained',
   'not-sustained': 'Not Sustained',
   'exonerated': 'Exonerated',
+  'unfounded': 'Unfounded',
   'unknown': 'Unknown'
 };
 

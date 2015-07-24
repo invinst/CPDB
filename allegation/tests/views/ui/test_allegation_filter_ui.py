@@ -6,7 +6,8 @@ from common.models import Allegation
 
 
 FILTERS = {
-    'Unknown': ['UN', 'NC', 'NA', 'DS'],
+    'Unknown': ['NC', 'NA', 'DS'],
+    'Unfounded': ['UN'],
     'Exonerated': ['EX'],
     'Sustained': ['SU'],
     'Not Sustained': ['NS']
