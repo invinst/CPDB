@@ -754,9 +754,9 @@ canvas.leaflet-heatmap-layer {
     background: #ffe3e7;
 }
 
-.btn-black {
-    color: white;
-    background-color: white;
+.btn-download {
+    width: 151px;
+    padding: 8px 0;
 }
 
 .btn-full-width {
