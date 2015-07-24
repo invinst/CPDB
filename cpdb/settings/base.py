@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os
+import os, sys
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -80,6 +80,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.core.context_processors.request',
+
+                'cpdb.context_precessors.env_settings',
             ],
         },
     },
@@ -152,6 +154,7 @@ BOWER_INSTALLED_APPS = (
     'moment',
     'highcharts-release#4.1.6',
     'pluralize',
+    'jqueryui-touch-punch#4bc0091452',
 )
 
 MEDIA_URL = '/media/'
@@ -173,3 +176,7 @@ CACHES = {
 GRAPH_DISTCURVE_NUM_X_TICKS = 6
 GRAPH_DISTCURVE_NUM_Y_TICKS = 4
 MAP_POINT_THRESHOLD = 3
+DJANGO_ENV = 'dev'
+
+if len(sys.argv) > 1 and sys.argv[1] == 'test':
+    DJANGO_ENV = 'test'

@@ -21,14 +21,23 @@ var ComplaintListRow = React.createClass({
     }
   },
 
+  detailRendered: function() {
+     return this.state.show || this.state.hasShown;
+  },
+
+  detailIsCurrentlyShown: function() {
+     return !this.state.show && this.state.hasShown;
+  },
+
   render: function () {
     var complaint = this.props.complaint;
     var caretClasses = 'fa fa-chevron-right';
-
+    var detailIsShown = this.detailIsCurrentlyShown()
     var showMore = '';
-    if (this.state.show) {
-      showMore = <ComplaintListRowDetail complaint={complaint}/>
-      caretClasses = 'fa fa-chevron-down';
+
+    if (this.detailRendered()) {
+      showMore = <ComplaintListRowDetail complaint={complaint} hide={detailIsShown}/>;
+      caretClasses = 'fa fa-chevron-' + (detailIsShown ? 'right' : 'down');
     }
 
     var allegation = complaint.allegation;
@@ -112,7 +121,8 @@ var ComplaintListRow = React.createClass({
       openedComplaints.push(id);
     }
     this.setState({
-      show: !this.state.show
+      show: !this.state.show,
+      hasShown: true
     });
 
 

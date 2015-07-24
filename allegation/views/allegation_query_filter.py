@@ -2,9 +2,24 @@ from django.db.models.query_utils import Q
 from common.models import AllegationCategory
 
 
-FILTERS = ['crid', 'areas__id', 'cat', 'neighborhood_id', 'recc_finding', 'final_outcome',
-           'recc_outcome', 'final_finding', 'officer', 'officer__star', 'investigator',
-           'cat__category']
+FILTERS = [
+    'crid',
+    'areas__id',
+    'cat',
+    'neighborhood_id',
+    'recc_finding',
+    'final_outcome',
+    'recc_outcome',
+    'final_finding',
+    'officer',
+    'officer__star',
+    'officer__unit',
+    'officer__rank',
+    'officer__gender',
+    'officer__race',
+    'investigator',
+    'cat__category',
+]
 DATE_FILTERS = ['incident_date_only']
 
 
@@ -95,3 +110,9 @@ class AllegationQueryFilter(object):
 
     def radius(self):
         return self.request.GET.get('radius', 500)
+
+    def complainant_gender(self):
+        return self.request.GET.getlist('complainant_gender', [])
+
+    def complainant_race(self):
+        return self.request.GET.getlist('complainant_race', [])
