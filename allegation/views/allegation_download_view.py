@@ -23,7 +23,7 @@ class AllegationDownloadView(AllegationAPIView):
         today_folder = "/tmp/%s" % today
         if not os.path.exists(today_folder):
             os.makedirs(today_folder)
-        self.filename = '%s/%s.xlsx' % (today_folder, uuid4())
+        self.filename = os.path.join(today_folder, '%s.xlsx' % uuid4())
         self.workbook = xlsxwriter.Workbook(self.filename)
         self.header_format = self.workbook.add_format({
             'bg_color': 'gray',
