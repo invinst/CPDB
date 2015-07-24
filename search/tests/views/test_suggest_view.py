@@ -104,3 +104,19 @@ class SuggestViewTestCase(SimpleTestCase):
         data = self.get_suggestion('Unfo')
         data.should.contain('final_finding')
         data.should.contain('recc_finding')
+
+    def test_suggest_complainant_gender(self):
+        data = self.get_suggestion('mal')
+        data.should.contain('complainant_gender')
+
+    def test_suggest_complainant_race(self):
+        data = self.get_suggestion('blac')
+        data.should.contain('complainant_race')
+
+    def test_suggest_officer_gender(self):
+        data = self.get_suggestion('mal')
+        data.should.contain('officer__gender')
+
+    def test_suggest_officer_race(self):
+        data = self.get_suggestion('blac')
+        data.should.contain('officer__race')

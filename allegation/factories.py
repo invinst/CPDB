@@ -2,7 +2,7 @@ from django.utils import timezone
 import factory
 from faker import Faker
 
-from common.models import AllegationCategory, Officer, Area, Allegation, Investigator
+from common.models import AllegationCategory, Officer, Area, Allegation, Investigator, ComplainingWitness, RACES
 
 fake = Faker()
 
@@ -40,6 +40,14 @@ class AllegationCategoryFactory(factory.django.DjangoModelFactory):
     cat_id = factory.Sequence(lambda n: "cat_%d" % n)
     allegation_name = factory.Sequence(lambda n: fake.name())
     category = factory.Sequence(lambda n: fake.name())
+
+
+class ComplainingWitnessFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = ComplainingWitness
+    crid = factory.Sequence(lambda n: fake.random_int(min=1000))
+    gender = factory.Sequence(lambda n: ['M', 'F'][n % 2])
+    race = factory.Sequence(lambda n: RACES[n % len(RACES)][0])
 
 
 class AllegationFactory(factory.django.DjangoModelFactory):

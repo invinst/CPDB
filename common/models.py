@@ -54,7 +54,7 @@ class OfficerHistory(models.Model):
 
 
 class PoliceWitness(models.Model):
-    pwit_id = models.IntegerField(primary_key=True)
+    pwit_id = models.AutoField(primary_key=True)
     crid = models.CharField(max_length=30, null=True, db_index=True)
     gender = models.CharField(max_length=1, null=True)
     race = models.CharField(max_length=50, null=True)
@@ -62,7 +62,7 @@ class PoliceWitness(models.Model):
 
 
 class ComplainingWitness(models.Model):
-    cwit_id = models.IntegerField(primary_key=True)
+    cwit_id = models.AutoField(primary_key=True)
     crid = models.CharField(max_length=30, null=True, db_index=True)
     gender = models.CharField(max_length=1, null=True)
     race = models.CharField(max_length=50, null=True)
@@ -261,6 +261,21 @@ UNITS = [
     ['711', 'Violence Reduction Initiative - North'],
     ['712', 'Violence Reduction Initiative - South'],
 ]
+
+GENDER = [
+    ['M', "Male"],
+    ['F', 'Female'],
+]
+
+RACES = [
+    'Black',
+    'Hispanic',
+    'White',
+    'Asian',
+    'Unknown',
+    'Native American',
+]
+RACES = [[x, x] for x in RACES]
 
 NO_DISCIPLINE_CODES = ('600', '000', '500', '700', '800', '900', ' ', None)
 DISCIPLINE_CODES = [x[0] for x in OUTCOMES if x[0] not in NO_DISCIPLINE_CODES]
