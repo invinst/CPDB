@@ -5,12 +5,14 @@ var ComplaintListStore = require('../stores/ComplaintListStore');
 var ComplaintListRow = require('./ComplaintListRow.react');
 var FilterActions = require('../actions/FilterActions');
 
-var UNKNOWN_FINDINGS = ['No data', 'Unfounded', 'No Cooperation', 'No Affidavit', 'Discharged'];
+var UNKNOWN_FINDINGS = ['No data', 'No Cooperation', 'No Affidavit', 'Discharged'];
 var FILTER_NAMES = {
   'all': 'All',
+  'disciplined': 'Disciplined',
   'sustained': 'Sustained',
   'not-sustained': 'Not Sustained',
   'exonerated': 'Exonerated',
+  'unfounded': 'Unfounded',
   'unknown': 'Unknown'
 };
 
@@ -26,11 +28,19 @@ function isUnknownFinding(finding) {
   return UNKNOWN_FINDINGS.indexOf(finding) > - 1;
 }
 
-function isActiveFilter(activeFilter, finding) {
+function isDisciplined(final_outcome_class) {
+  return final_outcome_class == 'disciplined';
+}
+
+function isActiveFilter(activeFilter, finding, final_outcome_class) {
   if (activeFilter == 'all') return true;
 
   if (activeFilter ==  'unknown') {
     return isUnknownFinding(finding);
+  }
+
+  if (activeFilter == 'disciplined') {
+    return isDisciplined(final_outcome_class);
   }
 
   return (finding == FILTER_NAMES[activeFilter]);
@@ -87,9 +97,10 @@ var ComplaintList = React.createClass({
     for (var i = 0; i < this.state.complaints.length; i++) {
       var complaint = this.state.complaints[i];
       var allegation = complaint.allegation;
+      var final_outcome_class = allegation.final_outcome_class;
       var final_finding = allegation.final_finding;
 
-      if (isActiveFilter(this.state.activeFilter, final_finding)) {
+      if (isActiveFilter(this.state.activeFilter, final_finding, final_outcome_class)) {
         if (!officer) {
           officer = complaint.officer;
         }
@@ -108,7 +119,11 @@ var ComplaintList = React.createClass({
           </div>
         </div>
         {rows}
-        <div className='pull-right'><a href='#' className='btn btn-black'>Download Table</a></div>
+        <div className="row">
+          <div className="col-md-2 col-md-offset-10">
+            <a href='#' className='btn btn-black btn-download'>Download Table</a>
+          </div>
+        </div>
       </div>
     )
   },

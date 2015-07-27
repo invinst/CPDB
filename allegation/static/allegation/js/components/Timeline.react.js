@@ -40,10 +40,10 @@ var Timeline = React.createClass({
           timeLineItem.style = '';
           timeLineItem.content = 'Joined force<br /><span>' + start.format('MMM DD, YYYY') + '</span>';
           timeLineItems.push(timeLineItem);
-          if(i + 1 <= items.length) {
+          if(items.length >= 1) {
             var rangeItem = {
-              id: "range" - (i + 1),
-              content: "Data missing for this timeframe",
+              id: "range-1",
+              content: "data withheld for this period",
               start: start,
               end: moment(items[i + 1]),
               type: 'background',
@@ -61,6 +61,14 @@ var Timeline = React.createClass({
       if (!timeLineItems.length) {
         return;
       }
+      timeLineItems.push({
+        id: "range-2",
+        content: "data withheld for this period",
+        start: moment("2006-01-01"),
+        end: moment("2011-01-01"),
+        type: 'background',
+        className: 'missing-data border'
+      });
       timeLineItems = new vis.DataSet(timeLineItems);
 
       // Configuration for the Timeline

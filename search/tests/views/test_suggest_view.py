@@ -34,6 +34,14 @@ class SuggestViewTestCase(SimpleTestCase):
         data = self.get_suggestion('12')
         data.should.contain('officer__star')
 
+    def test_detect_suggest_type_officer_unit(self):
+        self.get_suggestion('71').should.contain('officer__unit')
+        self.get_suggestion('99').shouldnt.contain('officer__unit')
+
+    def test_detect_suggest_type_officer_unit_name(self):
+        self.get_suggestion('Vio').should.contain('officer__unit')
+        self.get_suggestion('Viot').shouldnt.contain('officer__unit')
+
     def test_detect_suggest_type_complaint_category(self):
         AllegationCategoryFactory(allegation_name='Bonding category')
 
@@ -96,3 +104,24 @@ class SuggestViewTestCase(SimpleTestCase):
         data = self.get_suggestion('Unfo')
         data.should.contain('final_finding')
         data.should.contain('recc_finding')
+
+    def test_suggest_officer_rank(self):
+        OfficerFactory(rank='PO')
+        self.get_suggestion('PO').should.contain('officer__rank')
+        self.get_suggestion('SGT').shouldnt.contain('officer__rank')
+
+    def test_suggest_complainant_gender(self):
+        data = self.get_suggestion('mal')
+        data.should.contain('complainant_gender')
+
+    def test_suggest_complainant_race(self):
+        data = self.get_suggestion('blac')
+        data.should.contain('complainant_race')
+
+    def test_suggest_officer_gender(self):
+        data = self.get_suggestion('mal')
+        data.should.contain('officer__gender')
+
+    def test_suggest_officer_race(self):
+        data = self.get_suggestion('blac')
+        data.should.contain('officer__race')
