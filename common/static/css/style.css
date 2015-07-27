@@ -504,9 +504,13 @@ ul.nav.navbar-nav {
 }
 
 .complaint-row {
-    padding: 0.5em 0;
+    padding:  5px 0 0;
     font-family: 'Vollkorn';
     clear: both;
+}
+
+.complaint-row > .row:first-child {
+    font-size: 18px;
 }
 
 .complaint-row .title {
@@ -601,7 +605,12 @@ ul.nav.navbar-nav {
     padding: 20px 0;
 }
 
-.complaint_detail .summary > div + div {
+.complaint_detail .summary .col {
+    float: left;
+    padding: 0 15px;
+}
+
+.complaint_detail .summary .col + .col {
     border-left: 1px solid #333333;
 }
 
