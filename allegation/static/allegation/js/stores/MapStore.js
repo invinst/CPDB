@@ -39,7 +39,7 @@ var _queryString = null;
 function create(dom_id, opts) {
   dom_id = dom_id ? dom_id : 'map';
   opts = opts ? opts : {'maxZoom': 17, 'minZoom': 10, 'scrollWheelZoom': false};
-  defaultZoom = 'defaultZoom' in opts ? opts['defaultZoom'] : 12;
+  defaultZoom = 'defaultZoom' in opts ? opts['defaultZoom'] : 11;
 
   var southWest = L.latLng(41.143501411390766, -88.53057861328125);
   var northEast = L.latLng(42.474122772511485, -85.39947509765625);

@@ -6,6 +6,7 @@ from django.utils import timezone
 from allegation.factories import AreaFactory, ComplainingWitnessFactory
 from allegation.tests.views.base import AllegationApiTestBase
 from common.models import Allegation, Officer, Area, RACES
+from search.models import FilterLog
 
 
 class AllegationApiViewTestCase(AllegationApiTestBase):
@@ -162,3 +163,11 @@ class AllegationApiViewTestCase(AllegationApiTestBase):
         data = self.fetch_allegations(officer__race=race)
         for row in data:
             row['officer']['race'].should.equal(race)
+
+    def test_tracking_filter(self):
+        self.num_of_filter_logs().should.equal(0)
+        self.fetch_allegations(officer__gender='M')
+        self.num_of_filter_logs().should.equal(1)
+
+    def num_of_filter_logs(self):
+        return FilterLog.objects.count()
