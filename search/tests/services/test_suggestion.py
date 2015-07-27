@@ -5,6 +5,7 @@ from common.models import AllegationCategory, Officer
 from common.tests.core import SimpleTestCase
 from search.services.suggestion import Suggestion
 
+
 class SuggestViewTestCase(SimpleTestCase):
     def setUp(self):
         AllegationCategory.objects.all().delete()

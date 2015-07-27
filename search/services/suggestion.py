@@ -18,17 +18,14 @@ class Suggestion():
         return [rank for rank in ranks if str(rank).lower().startswith(q)]
 
     def suggest_zip_code(self, q):
-        results = []
-
         if not q.isdigit():
-            return results
+            return []
 
         condition = Q(city__icontains=q)
         cities = self.query_suggestions(Allegation, condition, ['city'])
-        for city in cities:
-            results.append([get_zipcode_from_city(city), city])
+        
+        return [[get_zipcode_from_city(x), x] for x in cities]
 
-        return results
 
     def suggest_unit_number(self, q):
         results = []
