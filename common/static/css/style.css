@@ -731,6 +731,13 @@ ul.nav.navbar-nav {
 }
 
 /* leaflet heatmap */
+.leaflet-container .marker-cluster-large {
+    border-radius: 30px;
+}
+.leaflet-container .marker-cluster-small {
+    border-radius: 10px;
+}
+
 canvas.leaflet-heatmap-layer {
     z-index: -1;
 }
@@ -974,6 +981,14 @@ form.navbar-form.navbar-right {
 
 #disclaimer p {
     font-size: 16px;
+}
+
+.back-to-top {
+    margin-top: 10px;
+}
+
+.rackspace-logo {
+    height: 20px;
 }
 
 .btn-close:not(.btn-link):not(.btn-flat) {
