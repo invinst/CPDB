@@ -617,6 +617,10 @@ ul.nav.navbar-nav {
     margin-bottom: 10px;
 }
 
+.complaint_detail > div > .row + .row{
+    margin-top: 36px;
+}
+
 .address {
     background-color: #fff;
     padding: 15px;
@@ -984,4 +988,20 @@ form.navbar-form.navbar-right {
 
 .rackspace-logo {
     height: 20px;
+}
+
+.btn-close:not(.btn-link):not(.btn-flat) {
+    background-color: #989898;
+    text-transform: none;
+    color: #fff;
+}
+
+.btn-close:hover:not(.btn-link):not(.btn-flat) {
+    color: #333;
+}
+.button-list .btn {
+    margin-left: 0;
+}
+.button-list .btn + .btn {
+    margin-left: 20px;
 }

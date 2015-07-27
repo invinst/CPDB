@@ -62,7 +62,7 @@ var OfficerList = React.createClass({
           <div>
             <div className={className}>
               <div className="section-title">
-                Officer Involved
+                {pluralize('Officer', complaint.officers.length + 1)} Involved
               </div>
               <div className="row">
                 {rows}
