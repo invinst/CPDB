@@ -604,7 +604,12 @@ ul.nav.navbar-nav {
     padding: 20px 0;
 }
 
-.complaint_detail .summary > div + div {
+.complaint_detail .summary .col {
+    float: left;
+    padding: 0 15px;
+}
+
+.complaint_detail .summary .col + .col {
     border-left: 1px solid #333333;
 }
 
