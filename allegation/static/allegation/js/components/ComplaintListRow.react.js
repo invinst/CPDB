@@ -7,6 +7,7 @@ var FilterStore = require('../stores/FilterStore');
 var Officer = require("./Officer.react");
 var ComplaintOfficerList = require("./ComplaintOfficerList.react");
 var ComplaintListRowDetail = require("./ComplaintListRowDetail.react");
+var RequestButton = require('./Complaint/RequestButton.react');
 var _timeline = false;
 var init_data = typeof(INIT_DATA) != 'undefined' && INIT_DATA ? INIT_DATA : {'opened_complaints':[]};
 
@@ -21,6 +22,10 @@ var ComplaintListRow = React.createClass({
     }
   },
 
+  componentDidMount: function () {
+    $(this.getDOMNode()).on("closeAction", this.toggleComplaint);
+  },
+
   detailRendered: function() {
      return this.state.show || this.state.hasShown;
   },
@@ -32,7 +37,7 @@ var ComplaintListRow = React.createClass({
   render: function () {
     var complaint = this.props.complaint;
     var caretClasses = 'fa fa-chevron-right';
-    var detailIsShown = this.detailIsCurrentlyShown()
+    var detailIsShown = this.detailIsCurrentlyShown();
     var showMore = '';
 
     if (this.detailRendered()) {
@@ -67,49 +72,37 @@ var ComplaintListRow = React.createClass({
     if (allegation.final_outcome_class == 'disciplined') {
       rowClassName += ' disciplined';
     }
-    var documentLabel = "Request";
-    var documentLink = <a className='btn btn-sm btn-request ' href="#">
-      <i className='fa fa-file-pdf-o'></i> {documentLabel}
-    </a>;
-    if (allegation.document_id) {
-      documentLabel = "View Document";
-      var link = "http://documentcloud.org/documents/" +
-                  allegation.document_id + "-" + allegation.document_normalized_title +".html";
-      documentLink = <a className='btn btn-sm btn-view ' href={link} target="_blank">
-        <i className='fa fa-download'></i> {documentLabel}
-      </a>
-    }
 
-    return <div className={rowClassName}>
-      <div className='row cursor' onClick={this.toggleComplaint}>
-        <div className='col-md-1 text-center'>
-          <i className={caretClasses}></i>
-        </div>
-        <div className='col-md-3'>
-          <div className='title'>Misconduct</div>
-          {category.category}
-        </div>
-        <div className='col-md-1'>
-          <div className='title'>CRID</div>
-          {allegation.crid}
-        </div>
-        <div className='col-md-2'>
-          <div className='title'>{date_label}</div>
-          {date}
-        </div>
-        <div className='col-md-3'>
-          <div className='title'>Officer</div>
-          {officerName}
-        </div>
-        <div className='col-md-2'>
-          {documentLink}
-        </div>
+    return (
+      <div className={rowClassName}>
+        <div className='row cursor' onClick={this.toggleComplaint}>
+          <div className='col-md-1 text-center'>
+            <i className={caretClasses}></i>
+          </div>
+          <div className='col-md-3'>
+            <div className='title'>Misconduct</div>
+            {category.category}
+          </div>
+          <div className='col-md-1'>
+            <div className='title'>CRID</div>
+            {allegation.crid}
+          </div>
+          <div className='col-md-2'>
+            <div className='title'>{date_label}</div>
+            {date}
+          </div>
+          <div className='col-md-3'>
+            <div className='title'>Officer</div>
+            {officerName}
+          </div>
+          <div className='col-md-2'>
+            <RequestButton complaint={complaint} />
+          </div>
 
+        </div>
+        {showMore}
       </div>
-      {showMore}
-    </div>
-
-
+    );
   },
 
   toggleComplaint: function (e) {
