@@ -5,6 +5,7 @@ from django.db.models.query_utils import Q
 from common.models import AllegationCategory, Allegation, Area, Investigator, Officer, FINDINGS, OUTCOMES, UNITS, GENDER, \
     RACES
 from search.utils.date import *
+from search.utils.zip_code import *
 
 # TODO: More test for this one, especially test for ensure the order, returned format
 class Suggestion():
@@ -15,6 +16,16 @@ class Suggestion():
         ranks = Officer.objects.order_by().values_list('rank', flat=True).distinct()
         # cast rank to str to ignore `None`
         return [rank for rank in ranks if str(rank).lower().startswith(q)]
+
+    def suggest_zip_code(self, q):
+        if not q.isdigit():
+            return []
+
+        condition = Q(city__icontains=q)
+        cities = self.query_suggestions(Allegation, condition, ['city'])
+        
+        return [[get_zipcode_from_city(x), x] for x in cities]
+
 
     def suggest_unit_number(self, q):
         results = []
@@ -145,7 +156,6 @@ class Suggestion():
         ret['incident_date_only__year'] = self.suggest_incident_date_only_year(q)
         ret['officer'] = self.suggest_office_name(q)
         ret['officer__unit'] = self.suggest_unit(q)
-        ret['officer__rank'] = self.suggest_rank(q)
         ret['cat__category'] = self.suggest_cat_category(q)
         ret['cat'] = self.suggest_cat(q)
         ret['investigator'] = self.suggest_investigator(q)
@@ -157,12 +167,14 @@ class Suggestion():
         ret['recc_finding'] = ret['final_finding']
 
         ret['areas__id'] = self.suggest_areas(q)
-
         ret['complainant_gender'] = self.suggest_in(q, GENDER)
         ret['complainant_race'] = self.suggest_in(q, RACES)
 
         ret['officer__gender'] = ret['complainant_gender']
         ret['officer__race'] = ret['complainant_race']
+
+        ret['officer__rank'] = self.suggest_rank(q)
+        ret['city'] = self.suggest_zip_code(q)
 
         ret = OrderedDict((k, v) for k, v in ret.items() if v)
 

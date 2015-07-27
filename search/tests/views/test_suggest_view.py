@@ -125,3 +125,10 @@ class SuggestViewTestCase(SimpleTestCase):
     def test_suggest_officer_race(self):
         data = self.get_suggestion('blac')
         data.should.contain('officer__race')
+
+    def test_suggest_finding(self):
+        AllegationFactory(city='Chicago IL 60616')
+        data = self.get_suggestion('616')
+        self.get_suggestion('616').should.contain('city')
+        self.get_suggestion('123').shouldnt.contain('city')
+        self.get_suggestion('Chi').shouldnt.contain('city')
