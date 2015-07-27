@@ -264,6 +264,8 @@ GENDER = [
     ['F', 'Female'],
 ]
 
+GENDER_DICT = dict(GENDER)
+
 RACES = [
     'Black',
     'Hispanic',
@@ -273,6 +275,7 @@ RACES = [
     'Native American',
 ]
 RACES = [[x, x] for x in RACES]
+RACES_DICT = dict(RACES)
 
 NO_DISCIPLINE_CODES = ('600', '000', '500', '700', '800', '900', ' ', None)
 DISCIPLINE_CODES = [x[0] for x in OUTCOMES if x[0] not in NO_DISCIPLINE_CODES]
