@@ -18,7 +18,8 @@ AUTOCOMPLETE_CATEGORY_NAMES = {
   'incident_date_only': 'Incident Date',
   'areas__id': 'Area',
   'complainant_gender': 'Complainant Gender',
-  'complainant_race': 'Complainant Race'
+  'complainant_race': 'Complainant Race',
+  'outcome_text': 'Outcome'
 };
 
 AUTOCOMPLETE_DISPLAY_CATEGORY_IN_TAG = [
