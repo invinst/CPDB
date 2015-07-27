@@ -404,6 +404,10 @@ ul.nav.navbar-nav {
     background-color: #709dc0;
 }
 
+.officer > .checkmark:hover {
+    background-color: #709dc0;
+}
+
 .officer.avg-0 {
     border-top-color: #c0272d;
 }

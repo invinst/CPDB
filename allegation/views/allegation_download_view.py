@@ -6,7 +6,11 @@ import xlsxwriter
 from django.http.response import FileResponse
 
 from allegation.views.allegation_api_view import AllegationAPIView
-from common.models import PoliceWitness, ComplainingWitness, Officer
+from common.models import PoliceWitness, ComplainingWitness, Officer, FINDINGS, OUTCOMES
+
+
+FINDINGS_DICT = dict(FINDINGS)
+OUTCOME_DICT = dict(OUTCOMES)
 
 
 class AllegationDownloadView(AllegationAPIView):
@@ -23,7 +27,7 @@ class AllegationDownloadView(AllegationAPIView):
         today_folder = "/tmp/%s" % today
         if not os.path.exists(today_folder):
             os.makedirs(today_folder)
-        self.filename = '%s/%s.xlsx' % (today_folder, uuid4())
+        self.filename = os.path.join(today_folder, '%s.xlsx' % uuid4())
         self.workbook = xlsxwriter.Workbook(self.filename)
         self.header_format = self.workbook.add_format({
             'bg_color': 'gray',
@@ -56,6 +60,12 @@ purport to be an accurate reflection of either the City's database or its veraci
             line_count += 1
             worksheet.write("A%s" % line_count, line)
 
+    def write_headers(self, sheet, headers):
+        col_count = 0
+        for header in headers:
+            sheet.write(0, col_count, header, self.header_format)
+            col_count += 1
+
     def write_allegations_columns(self, sheet):
         columns = """RecordID
 CRID
@@ -80,10 +90,7 @@ IncidentDate
 StartDate
 EndDate
 Investigator"""
-        col_count = 0
-        for column in columns.splitlines():
-            sheet.write(0, col_count, column, self.header_format)
-            col_count += 1
+        self.write_headers(sheet, columns.splitlines())
 
     def write_allegations_data(self, sheet):
         row_count = 1
@@ -105,8 +112,8 @@ Investigator"""
             sheet.write(row_count, 9, allegation.recc_outcome)
             sheet.write(row_count, 10, allegation.final_finding)
             sheet.write(row_count, 11, allegation.final_outcome)
-            sheet.write(row_count, 12, "###")
-            sheet.write(row_count, 13, "###")
+            sheet.write(row_count, 12, FINDINGS_DICT.get(allegation.final_finding))
+            sheet.write(row_count, 13, OUTCOME_DICT.get(allegation.final_outcome))
 
             if allegation.beat:
                 sheet.write(row_count, 14, allegation.beat.name)
@@ -115,9 +122,12 @@ Investigator"""
             sheet.write(row_count, 16, allegation.add1)
             sheet.write(row_count, 17, allegation.add2)
             sheet.write(row_count, 18, allegation.city)
-            sheet.write(row_count, 19, allegation.incident_date.strftime("%Y-%m-%d %H:%M:%s"))
-            sheet.write(row_count, 20, allegation.start_date)
-            sheet.write(row_count, 21, allegation.end_date)
+            if allegation.incident_date and allegation.incident_date.year > 1970:
+                sheet.write(row_count, 19, allegation.incident_date.strftime("%Y-%m-%d %H:%M:%S"))
+            if allegation.start_date:
+                sheet.write(row_count, 20, allegation.start_date.strftime("%Y-%m-%d"))
+            if allegation.end_date:
+                sheet.write(row_count, 21, allegation.end_date.strftime("%Y-%m-%d"))
             sheet.write(row_count, 22, allegation.investigator_name)
 
             row_count += 1
@@ -137,10 +147,7 @@ Investigator"""
         sheet.name = "Police Witnesses"
         sheet.set_tab_color('#a8c06e')
 
-        col_count = 0
-        for header in headers.split(","):
-            sheet.write(0, col_count, header, self.header_format)
-            col_count += 1
+        self.write_headers(sheet, headers.split(","))
 
         row_count = 1
         for witness in witnesses:
@@ -157,11 +164,7 @@ Investigator"""
         sheet.name = "Complaining Witnesses"
         sheet.set_tab_color('#a8c06e')
 
-
-        col_count = 0
-        for header in headers.split(","):
-            sheet.write(0, col_count, header, self.header_format)
-            col_count += 1
+        self.write_headers(sheet, headers.split(","))
 
         witnesses = ComplainingWitness.objects.filter(crid__in=self.crids).order_by('crid')
 
@@ -179,10 +182,7 @@ Investigator"""
         sheet.name = "Officer Profile"
         sheet.set_tab_color('#a8c06e')
 
-        col_count = 0
-        for header in headers.split(","):
-            sheet.write(0, col_count, header, self.header_format)
-            col_count += 1
+        self.write_headers(sheet, headers.split(","))
 
         officer_ids = [o.officer_id for o in self.allegations]
         officers = Officer.objects.filter(id__in=officer_ids)
@@ -207,11 +207,8 @@ Investigator"""
 
         lines = data.splitlines()
         headers = lines[0]
-        218962763
-        col_count = 0
-        for header in headers.split("\t"):
-            sheet.write(0, col_count, header, self.header_format)
-            col_count += 1
+
+        self.write_headers(sheet, headers.split("\t"))
 
         line_count = len(lines)
         row_count = 1
