@@ -958,6 +958,10 @@ form.navbar-form.navbar-right {
     opacity: 0;
 }
 
+#disclaimer {
+    font-family: Helvetica, sans-serif;
+}
+
 #disclaimer .modal-backdrop.in {
     opacity: .9;
 }
