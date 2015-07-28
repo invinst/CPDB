@@ -70,7 +70,7 @@ var CPDBApp = React.createClass({
 
     return (
       <div className='container-fluid'>
-          <div className="row">
+          <div className="row" id='filter-row'>
              <div className="col-md-10 col-md-offset-1">
                 <Filters />
              </div>
