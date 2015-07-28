@@ -30,7 +30,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         counter = 0
         for allegation in Allegation.objects.filter():
-            city = 'Chicago'
+            city = ''
             add1 = ""
             add2 = ""
             if allegation.add1:
@@ -39,14 +39,13 @@ class Command(BaseCommand):
                 add2 = allegation.add2
             if allegation.city:
                 city = allegation.city
-
+            point = None
             allegation.point = None
-            allegation.areas.all().delete()
             if add1 or add2:
                 address_lookup = "%s %s, %s" % (add1, add2, city)
                 point = self.geocode_address(address_lookup)
             elif allegation.beat:
-                point = allegation.beat.centroid
+                point = allegation.beat.polygon.centroid
             if point:
                 print(point.y, point.x)
                 areas = Area.objects.filter(polygon__intersects=point)
