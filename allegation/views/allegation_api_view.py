@@ -14,7 +14,7 @@ class AllegationAPIView(View):
     def __init__(self, **kwargs):
         super(AllegationAPIView, self).__init__(**kwargs)
 
-    def get_allegations(self, ignore_filters=[]):
+    def get_allegations(self, ignore_filters=None):
         allegation_query_filters = AllegationQueryFilter(self.request, ignore_filters)
         allegations = Allegation.allegations.by_allegation_filter(allegation_query_filters)
 

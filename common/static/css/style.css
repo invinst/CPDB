@@ -676,8 +676,16 @@ ul.nav.navbar-nav {
     text-transform: none;
     border: 1px solid #0a90cb;
     width: 151px;
+    max-width: 151px;
     font-size: 16px;
     padding: 5px 10px;
+}
+
+@media screen and (max-width: 1024px){
+    .btn.btn-request:not(.btn-link):not(.btn-flat) {
+        width: 100%;
+        max-width: 100%;
+    }
 }
 
 .btn.btn-view:hover:not(.btn-link):not(.btn-flat) {
@@ -963,7 +971,7 @@ form.navbar-form.navbar-right {
     transition-duration: 0.4s;
     transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
 
-    max-height: 1500px;
+    max-height: 10000px;
     opacity: 1;
 }
 

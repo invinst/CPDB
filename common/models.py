@@ -293,6 +293,13 @@ FINDINGS = [
 ]
 
 
+OUTCOME_TEXT = [
+    ['any discipline', 'Any discipline'],
+    ['no discipline', 'No discipline'],
+]
+OUTCOME_TEXT_DICT = dict(OUTCOME_TEXT)
+
+
 class Allegation(models.Model):
     record_id = models.IntegerField(null=True)
     crid = models.CharField(max_length=30, null=True, db_index=True)

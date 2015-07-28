@@ -3,7 +3,7 @@ from collections import OrderedDict
 from django.db.models.query_utils import Q
 
 from common.models import AllegationCategory, Allegation, Area, Investigator, Officer, FINDINGS, OUTCOMES, UNITS, GENDER, \
-    RACES
+    RACES, OUTCOME_TEXT
 from search.utils.date import *
 from search.utils.zip_code import *
 
@@ -24,7 +24,7 @@ class Suggestion(object):
 
         condition = Q(city__icontains=q)
         cities = self.query_suggestions(Allegation, condition, ['city'])
-        
+
         return [[get_zipcode_from_city(x), x] for x in cities]
 
 
@@ -173,9 +173,9 @@ class Suggestion(object):
 
         ret['officer__gender'] = ret['complainant_gender']
         ret['officer__race'] = ret['complainant_race']
-
         ret['officer__rank'] = self.suggest_rank(q)
         ret['city'] = self.suggest_zip_code(q)
+        ret['outcome_text'] = self.suggest_in(q, OUTCOME_TEXT)
 
         ret = OrderedDict((k, v) for k, v in ret.items() if v)
 
