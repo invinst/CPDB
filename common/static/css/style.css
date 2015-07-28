@@ -984,9 +984,14 @@ form.navbar-form.navbar-right {
     opacity:0;
     transition: all ease-in-out 1s;
 }
+
 .bootstrap-tagsinput > .tag.fadeIn {
     transition: all ease-in-out 1s;
-    opacity:1;
+    opacity: 1;
+}
+
+#disclaimer {
+    font-family: Helvetica, sans-serif;
 }
 
 #disclaimer .modal-backdrop.in {
