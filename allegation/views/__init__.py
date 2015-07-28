@@ -11,7 +11,7 @@ from django.views.generic import View
 
 from allegation.views.allegation_api_view import AllegationAPIView
 from common.json_serializer import JSONSerializer
-from common.models import Allegation, Area, AllegationCategory, Investigator, Officer
+from common.models import Allegation, Area, AllegationCategory, Investigator, Officer, GENDER_DICT
 from common.models import ComplainingWitness, NO_DISCIPLINE_CODES, PoliceWitness
 from share.models import Session
 
@@ -41,6 +41,11 @@ class AllegationListView(TemplateView):
         elif key == 'investigator':
             values = Investigator.objects.filter(pk__in=values['value'])
             values = [o.tag_value for o in values]
+        elif key == 'officer__gender' or key == 'complainant_gender':
+            values = [{
+                'text': GENDER_DICT.get(o),
+                'value': o
+            } for o in values['value']]
         elif key == 'areas__id':
             return False
         else:

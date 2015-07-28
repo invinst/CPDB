@@ -7,8 +7,9 @@ from common.models import AllegationCategory, Allegation, Area, Investigator, Of
 from search.utils.date import *
 from search.utils.zip_code import *
 
+
 # TODO: More test for this one, especially test for ensure the order, returned format
-class Suggestion():
+class Suggestion(object):
     def make_suggestion_format(self, match):
         return [match[1], match[0]]
 
