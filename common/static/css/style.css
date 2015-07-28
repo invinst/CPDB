@@ -699,6 +699,10 @@ ul.nav.navbar-nav {
     border-bottom: 2px solid black;
 }
 
+#filter-row {
+    min-height: 50px;
+}
+
 .margin-top {
     margin-top: 1em;
 }
@@ -945,6 +949,13 @@ form.navbar-form.navbar-right {
     text-align: center;
 }
 
+.fade {
+   opacity: 1;
+   transition: opacity 2s ease-in-out;
+   -moz-transition: opacity 2s ease-in-out;
+   -webkit-transition: opacity 2s ease-in-out;
+}
+
 .slide-down {
     overflow-y: hidden;
 
@@ -959,6 +970,15 @@ form.navbar-form.navbar-right {
 .slide-down.closed {
     max-height: 0;
     opacity: 0;
+}
+
+.bootstrap-tagsinput > .tag{
+    opacity:0;
+    transition: all ease-in-out 1s;
+}
+.bootstrap-tagsinput > .tag.fadeIn {
+    transition: all ease-in-out 1s;
+    opacity:1;
 }
 
 #disclaimer .modal-backdrop.in {
