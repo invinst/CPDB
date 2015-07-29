@@ -109,3 +109,26 @@ class SuggestViewTestCase(SimpleTestCase):
         OfficerFactory(rank='PO')
         self.get_suggestion('PO').should.contain('officer__rank')
         self.get_suggestion('SGT').shouldnt.contain('officer__rank')
+
+    def test_suggest_complainant_gender(self):
+        data = self.get_suggestion('mal')
+        data.should.contain('complainant_gender')
+
+    def test_suggest_complainant_race(self):
+        data = self.get_suggestion('blac')
+        data.should.contain('complainant_race')
+
+    def test_suggest_officer_gender(self):
+        data = self.get_suggestion('mal')
+        data.should.contain('officer__gender')
+
+    def test_suggest_officer_race(self):
+        data = self.get_suggestion('blac')
+        data.should.contain('officer__race')
+
+    def test_suggest_finding(self):
+        AllegationFactory(city='Chicago IL 60616')
+        data = self.get_suggestion('616')
+        self.get_suggestion('616').should.contain('city')
+        self.get_suggestion('123').shouldnt.contain('city')
+        self.get_suggestion('Chi').shouldnt.contain('city')

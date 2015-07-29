@@ -2,13 +2,25 @@ from collections import OrderedDict
 
 from django.db.models.query_utils import Q
 
-from common.models import AllegationCategory, Allegation, Area, Investigator, Officer, FINDINGS, OUTCOMES, UNITS, RANKS
+from common.models import AllegationCategory, Allegation, Area, Investigator, Officer, FINDINGS, OUTCOMES, UNITS, GENDER, \
+    RACES, OUTCOME_TEXT, RANKS
 from search.utils.date import *
+from search.utils.zip_code import *
+
 
 # TODO: More test for this one, especially test for ensure the order, returned format
-class Suggestion():
+class Suggestion(object):
     def make_suggestion_format(self, match):
         return [match[1], match[0]]
+
+    def suggest_zip_code(self, q):
+        if not q.isdigit():
+            return []
+
+        condition = Q(city__icontains=q)
+        cities = self.query_suggestions(Allegation, condition, ['city'])
+
+        return [[get_zipcode_from_city(x), x] for x in cities]
 
     def suggest_unit_number(self, q):
         results = []
@@ -142,12 +154,25 @@ class Suggestion():
         ret['cat__category'] = self.suggest_cat_category(q)
         ret['cat'] = self.suggest_cat(q)
         ret['investigator'] = self.suggest_investigator(q)
+
         ret['final_outcome'] = self.suggest_in(q, OUTCOMES)
-        ret['recc_outcome'] = self.suggest_in(q, OUTCOMES)
+        ret['recc_outcome'] = ret['final_outcome']
+
         ret['final_finding'] = self.suggest_in(q, FINDINGS)
-        ret['recc_finding'] = self.suggest_in(q, FINDINGS)
+        ret['recc_finding'] = ret['final_finding']
+
         ret['areas__id'] = self.suggest_areas(q)
+        ret['complainant_gender'] = self.suggest_in(q, GENDER)
+        ret['complainant_race'] = self.suggest_in(q, RACES)
+
+        ret['officer__gender'] = ret['complainant_gender']
+        ret['officer__race'] = ret['complainant_race']
         ret['officer__rank'] = self.suggest_in(q, RANKS)
+
+        ret['city'] = self.suggest_zip_code(q)
+
+        ret['outcome_text'] = self.suggest_in(q, OUTCOME_TEXT)
+
         ret = OrderedDict((k, v) for k, v in ret.items() if v)
 
         return ret

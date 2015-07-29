@@ -219,15 +219,16 @@ var OfficerList = React.createClass({
 
   },
   componentDidUpdate: function(){
-
-    if (OLD_DISPLAY == this.state.current_view) {
-      return;
-    }
     var container = $(".officers-container");
 
     var officerBlock = $(".officer-block").slice(1, 2);
     OFFICER_WIDTH = officerBlock.width() + parseFloat(officerBlock.css('margin-left')) +
                     parseFloat(officerBlock.css('padding-left')) + parseFloat(officerBlock.css('padding-right'));
+
+    if (OLD_DISPLAY == this.state.current_view) {
+      return;
+    }
+
     var left = this.getInitDisplay(this.state.current_view);
     if (left) {
       if (OLD_DISPLAY > this.state.current_view) {

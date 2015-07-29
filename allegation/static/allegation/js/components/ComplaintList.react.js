@@ -4,14 +4,16 @@ var Filters = require('./Filters.react');
 var ComplaintListStore = require('../stores/ComplaintListStore');
 var ComplaintListRow = require('./ComplaintListRow.react');
 var FilterActions = require('../actions/FilterActions');
+var OfficerStore = require('../stores/OfficerStore');
 
-var UNKNOWN_FINDINGS = ['No data', 'Unfounded', 'No Cooperation', 'No Affidavit', 'Discharged'];
+var UNKNOWN_FINDINGS = ['No data', 'No Cooperation', 'No Affidavit', 'Discharged'];
 var FILTER_NAMES = {
   'all': 'All',
   'disciplined': 'Disciplined',
   'sustained': 'Sustained',
   'not-sustained': 'Not Sustained',
   'exonerated': 'Exonerated',
+  'unfounded': 'Unfounded',
   'unknown': 'Unknown'
 };
 
@@ -107,6 +109,8 @@ var ComplaintList = React.createClass({
       }
     }
 
+    var downloadHref = '/allegations/download/?' + OfficerStore.getQueryString();
+
     return (
       <div className="complaint_list">
         <div className='row'>
@@ -118,7 +122,11 @@ var ComplaintList = React.createClass({
           </div>
         </div>
         {rows}
-        <div className='pull-right'><a href='#' className='btn btn-black'>Download Table</a></div>
+        <div className="row">
+          <div className="col-md-2 col-md-offset-10">
+            <a href={downloadHref} className='btn btn-black btn-download'>Download Table</a>
+          </div>
+        </div>
       </div>
     )
   },

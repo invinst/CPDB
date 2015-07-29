@@ -11,10 +11,9 @@ from django.views.generic import View
 
 from allegation.views.allegation_api_view import AllegationAPIView
 from common.json_serializer import JSONSerializer
-from common.models import Allegation, Area, AllegationCategory, Investigator, Officer
+from common.models import Allegation, Area, AllegationCategory, Investigator, Officer, GENDER_DICT, OUTCOME_TEXT_DICT
 from common.models import ComplainingWitness, NO_DISCIPLINE_CODES, PoliceWitness
 from share.models import Session
-
 
 DEFAULT_SITE_TITLE = 'Citizens’ Police Database'
 OFFICER_COMPLAINT_COUNT_RANGE = [
@@ -30,22 +29,32 @@ OFFICER_COMPLAINT_COUNT_RANGE = getattr(settings, 'OFFICER_COMPLAINT_COUNT_RANGE
 class AllegationListView(TemplateView):
     template_name = 'allegation/home.html'
     session = None
+    KEYS = {
+        'officer': Officer,
+        'cat': AllegationCategory,
+        'investigator': Investigator
+    }
+    OTHER_KEYS = {
+        'officer__gender': GENDER_DICT,
+        'complainant_gender': GENDER_DICT,
+        'outcome_text': OUTCOME_TEXT_DICT
+    }
 
     def get_filters(self, key, values):
-        if key == 'officer':
-            values = Officer.objects.filter(pk__in=values['value'])
-            values = [o.tag_value for o in values]
-        elif key == 'cat':
-            values = AllegationCategory.objects.filter(pk__in=values['value'])
-            values = [o.tag_value for o in values]
-        elif key == 'investigator':
-            values = Investigator.objects.filter(pk__in=values['value'])
-            values = [o.tag_value for o in values]
-        elif key == 'areas__id':
+        if key == 'areas__id':
             return False
-        else:
-            values = values['value']
-        return values
+
+        if key in self.KEYS:
+            values = self.KEYS[key].objects.filter(pk__in=values['value'])
+            return [o.tag_value for o in values]
+
+        if key in self.OTHER_KEYS:
+            return [{
+                'text': self.OTHER_KEYS[key].get(o),
+                'value': o,
+            } for o in values['value']]
+
+        return values['value']
 
     def get_context_data(self, **kwargs):
         context = super(AllegationListView, self).get_context_data(**kwargs)
@@ -142,6 +151,7 @@ class AreaAPIView(View):
         content = json.dumps(area_dict)
         return HttpResponse(content)
 
+
 class AllegationGISApiView(AllegationAPIView):
     def get(self, request):
         seen_crids = {}
@@ -228,6 +238,7 @@ class OfficerListAPIView(AllegationAPIView):
     def get(self, request):
         allegations = self.get_allegations()
         officers = allegations.values_list('officer', flat=True).distinct()
+        officers = list(officers)  # to solve multiple subquery problem
         officers = Officer.objects.filter(pk__in=officers).order_by('-allegations_count')
 
         overview = []
