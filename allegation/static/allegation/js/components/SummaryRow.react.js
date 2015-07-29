@@ -45,8 +45,10 @@ var SummaryRow = React.createClass({
     };
     var className = "category-name";
     var parentClassName = 'row';
+    var mainCategoryClassName = 'col-md-7 main-category-name-wrapper'
     var arrow = "";
     if (this.isActive(category)) {
+
       className += " active";
     }
 
@@ -56,16 +58,20 @@ var SummaryRow = React.createClass({
     }
 
     if (this.props.isCurrentActive) {
+      mainCategoryClassName += ' active'
       arrow = (
         <div className='arrow-container'>
-          <i className='fa fa-caret-left fa-2x'></i>
+          <i className='fa fa-caret-left fa-28px'></i>
         </div>
       )
     }
 
+    var count = parseInt( category.count ).toLocaleString();
+    var total = parseInt( category.total ).toLocaleString();
+
     return (
       <div className="row category main-category" onClickCapture={this.onClick}>
-        <div className='col-md-6'>
+        <div className='col-md-5'>
           <div className="progress complaint" style={progressStyle}>
             <div className="progress-bar discipline" role="progressbar" aria-valuenow="60" aria-valuemin="0"
                  aria-valuemax="100" style={style}>
@@ -73,12 +79,15 @@ var SummaryRow = React.createClass({
             </div>
           </div>
         </div>
-        <div className='col-md-6'>
+        <div className={mainCategoryClassName}>
           <div className={parentClassName}>
-            <div className='col-md-2'>
-              {category.total}
-            </div>
-            <div className='col-md-10 relative'>
+            <div className='col-md-2 category-anlytics'>
+              <span className='count'>{count}</span>
+              </div>
+              <div className='col-md-2 category-anlytics'>
+              <span className='total'>{total}</span>
+                </div>
+            <div className='col-md-8 relative category-name-wrapper'>
               {arrow}
               <a href='#' className={className}>{category.name}</a>
             </div>
