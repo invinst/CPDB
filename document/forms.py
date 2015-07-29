@@ -15,3 +15,7 @@ class RequestEmailForm(forms.ModelForm):
         if not Allegation.objects.filter(crid=crid).exists():
             raise Http404()
         return crid
+
+    def save(self, commit=True):
+        Allegation.objects.filter(crid=self.cleaned_data['crid']).update(document_requested=True)
+        super(RequestEmailForm, self).save(commit=commit)

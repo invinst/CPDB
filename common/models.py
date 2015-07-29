@@ -326,6 +326,7 @@ class Allegation(models.Model):
     document_id = models.IntegerField(null=True)
     document_normalized_title = models.CharField(max_length=255, null=True)
     document_title = models.CharField(max_length=255, null=True)
+    document_requested = models.BooleanField(default=False)
 
     @property
     def beat(self):

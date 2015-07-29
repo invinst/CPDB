@@ -3,6 +3,7 @@ var RequestDocumentDispatcher = require('../../dispatcher/RequestDocumentDispatc
 var RequestDocumentConstants = require('../../constants/RequestDocumentConstants');
 var RequestDocumentActions = require('../../actions/RequestDocumentActions');
 
+
 var RequestModal = (function () {
   var allegation = null;
 
@@ -38,9 +39,7 @@ var RequestModal = (function () {
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" className="btn btn-primary" onClick={this.onClick}>
-                  Save changes
-                </button>
+                <button type="button" className="btn btn-primary" onClick={this.onClick}>Submit</button>
               </div>
             </div>
           </div>
@@ -50,15 +49,37 @@ var RequestModal = (function () {
     email: function () {
       return $(this.getDOMNode()).find("input[name='email']").val();
     },
-    onClick: function (e) {
-      RequestDocumentActions.setRequested(allegation.crid);
-      this.hide();
+    onClick: function () {
+      $.ajax({
+        url: '/document/request/',
+        type: 'POST',
+        dataType: 'JSON',
+        data: {
+          crid: allegation.crid,
+          email: this.email()
+        },
+        success: function () {
+          RequestDocumentActions.setRequested(allegation.crid);
+        },
+        error: function(xhr) {
+          for (var key in xhr.responseJSON) {
+            var errors = xhr.responseJSON[key];
+            for (var i = 0; i < errors.length; i++) {
+              toastr.error(errors[i]);
+            }
+          }
+        }
+      });
     }
   });
 
   component.show = function (complaint) {
     allegation = complaint.allegation;
     mountedInstant.show();
+  };
+
+  component.hide = function () {
+    mountedInstant.hide();
   };
 
   return component;
@@ -68,6 +89,10 @@ RequestDocumentDispatcher.register(function (action) {
   switch (action.actionType) {
     case RequestDocumentConstants.REQUEST_DOCUMENT:
       RequestModal.show(action.value);
+      break;
+    case RequestDocumentConstants.DOCUMENT_REQUESTED:
+      toastr.success("We'll notify you when the document is made available.");
+      RequestModal.hide();
       break;
     default:
       break;

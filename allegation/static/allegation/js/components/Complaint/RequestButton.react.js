@@ -5,10 +5,20 @@ var RequestDocumentDispatcher = require('../../dispatcher/RequestDocumentDispatc
 var RequestDocumentConstants = require('../../constants/RequestDocumentConstants');
 
 
+function setRequestedCrid(crid){
+  $.cookie("requested_document_" + crid, "1", {path: '/'})
+}
+
+function isCridRequested(crid){
+  return $.cookie("requested_document_" + crid);
+}
+
+
 var RequestButton = React.createClass({
   getInitialState: function () {
     return {};
   },
+
   componentDidMount: function () {
     var that = this;
     RequestDocumentDispatcher.register(function (action) {
@@ -28,7 +38,7 @@ var RequestButton = React.createClass({
     var link = '#';
     var iconClassName = 'fa fa-file-pdf-o';
     var target = '';
-    if (this.state.requested || allegation.document_requested) {
+    if (this.state.requested || allegation.document_requested || isCridRequested(allegation.crid)) {
       documentLabel = 'Requested';
     }
     if (allegation.document_id) {
@@ -53,5 +63,13 @@ var RequestButton = React.createClass({
     }
   }
 });
+
+
+RequestDocumentDispatcher.register(function (action) {
+  if (action.actionType == RequestDocumentConstants.DOCUMENT_REQUESTED) {
+    setRequestedCrid(action.value);
+  }
+});
+
 
 module.exports = RequestButton;
