@@ -12,14 +12,6 @@ class SuggestViewTestCase(SimpleTestCase):
         Officer.objects.all().delete()
         self.suggestion = Suggestion()
 
-    def test_suggest_rank(self):
-        rank = 'PO'
-        unavailable_rank = 'SGT'
-        officer = OfficerFactory(rank=rank)
-
-        self.suggestion.suggest_rank(rank.lower()).should.be.equal([rank])
-        self.suggestion.suggest_rank(unavailable_rank.lower()).should.be.equal([])
-
     def test_suggest_zip_code(self):
         city = 'Chicago IL 60616'
         available_zip_code = '60616'
