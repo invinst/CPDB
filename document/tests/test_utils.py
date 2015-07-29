@@ -1,4 +1,5 @@
 from unittest import mock
+
 from django.core import management
 from django.test.testcases import TestCase
 

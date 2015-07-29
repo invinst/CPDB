@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
-
 from documentcloud import DocumentCloud
+
 from common.models import Allegation
 from document.utils import send_document_notification
 
