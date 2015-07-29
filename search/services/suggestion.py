@@ -2,18 +2,13 @@ from collections import OrderedDict
 
 from django.db.models.query_utils import Q
 
-from common.models import AllegationCategory, Allegation, Area, Investigator, Officer, FINDINGS, OUTCOMES, UNITS
+from common.models import AllegationCategory, Allegation, Area, Investigator, Officer, FINDINGS, OUTCOMES, UNITS, RANKS
 from search.utils.date import *
 
 # TODO: More test for this one, especially test for ensure the order, returned format
 class Suggestion():
     def make_suggestion_format(self, match):
         return [match[1], match[0]]
-
-    def suggest_rank(self, q):
-        ranks = Officer.objects.order_by().values_list('rank', flat=True).distinct()
-        # cast rank to str to ignore `None`
-        return [rank for rank in ranks if str(rank).lower().startswith(q)]
 
     def suggest_unit_number(self, q):
         results = []
@@ -152,7 +147,7 @@ class Suggestion():
         ret['final_finding'] = self.suggest_in(q, FINDINGS)
         ret['recc_finding'] = self.suggest_in(q, FINDINGS)
         ret['areas__id'] = self.suggest_areas(q)
-        ret['officer__rank'] = self.suggest_rank(q)
+        ret['officer__rank'] = self.suggest_in(q, RANKS)
         ret = OrderedDict((k, v) for k, v in ret.items() if v)
 
         return ret
