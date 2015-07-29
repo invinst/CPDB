@@ -34,7 +34,8 @@ var _baseLayers = {};
 var _controlDiv = null;
 var _ajax_req = null;
 var _queryString = null;
-
+var _types = ['police-districts','wards','beats','neighborhoods']
+var _normalStyle = {"fillColor": "#eeffee", "fillOpacity": 0.0, 'weight': 2};
 
 function create(dom_id, opts) {
   dom_id = dom_id ? dom_id : 'map';
@@ -51,19 +52,13 @@ function create(dom_id, opts) {
   createAreas();
   MapStore.update();
 }
-
-
-function createAreas() {
-  if (_geo_json_layer) {
-    _map.removeLayer(_geo_json_layer);
-  }
-  var normalStyle = {"fillColor": "#eeffee", "fillOpacity": 0.0, 'weight': 2};
-  $.get("/api/areas/", function (data) {
+function getAreaBoundaries(type) {
+  $.get("/api/areas/?type=" + type, function (data) {
     var first_layer_added = false;
     _geo_json_layer = L.geoJson(data, {
       pointToLayer: L.mapbox.marker.style,
       style: function (feature) {
-        return normalStyle
+        return _normalStyle
       },
       onEachFeature: function (feature, layer) {
         layer.selected = false;
@@ -76,7 +71,7 @@ function createAreas() {
         layer.on('mouseout', function () {
           $(".leaflet-control-command-interior").hide().text("");
           if (!layer.selected) {
-            layer.setStyle(normalStyle);
+            layer.setStyle(_normalStyle);
           }
         });
 
@@ -93,7 +88,7 @@ function createAreas() {
           }
           else {
             layer.selected = false;
-            layer.setStyle(normalStyle);
+            layer.setStyle(_normalStyle);
           }
         };
 
@@ -105,49 +100,70 @@ function createAreas() {
             $('#cpdb-search').tagsinput("remove", tagValue);
           }
         });
-        if(!(area_type in _layers)){
+        if (!(area_type in _layers)) {
           _layers[area_type] = L.layerGroup();
+          console.log(prettyLabels(area_type).capitalize())
           _baseLayers[prettyLabels(area_type).capitalize()] = _layers[area_type];
-          if(!first_layer_added && area_type == 'police-districts'){
+          if (!first_layer_added && area_type == 'police-districts') {
             first_layer_added = true;
             _map.addLayer(_baseLayers[prettyLabels(area_type).capitalize()]);
           }
 
         }
         _layers[area_type].addLayer(layer);
+
+
       }
     });
-    L.control.layers(_baseLayers,{}, {collapsed: false}).addTo(_map);
+    var nextTypeIndex = _types.indexOf(type) + 1;
+    console.log(nextTypeIndex,_types[nextTypeIndex]);
+    if (_types[nextTypeIndex]) {
+      getAreaBoundaries(_types[nextTypeIndex])
+    }
+    else {
+      L.control.layers(_baseLayers,{}, {collapsed: false}).addTo(_map);
+    }
+  }, 'json').fail(function(jqxhr, textStatus, error) {
+    var err = textStatus + ", " + error;
+    console.log("Request Failed: " + err);
+  })
+}
+
+function createAreas() {
+  if (_geo_json_layer) {
+    _map.removeLayer(_geo_json_layer);
+  }
+
+  getAreaBoundaries(_types[0]);
 
 
-    L.Control.Command = L.Control.extend({
-      options: {
-          position: 'topright',
-      },
 
-      onAdd: function (map) {
-          var controlDiv = L.DomUtil.create('div', 'leaflet-control-command');
-          L.DomEvent
-              .addListener(controlDiv, 'click', L.DomEvent.stopPropagation)
-              .addListener(controlDiv, 'click', L.DomEvent.preventDefault)
-          .addListener(controlDiv, 'click', function () { MapShowCommand(); });
 
-          var controlUI = L.DomUtil.create('div', 'leaflet-control-command-interior', controlDiv);
-          controlUI.title = '';
-          return controlDiv;
-      }
-    });
-    L.control.command = function (options) {
-        return new L.Control.Command(options);
-    };
-    var areaHover = new L.Control.Command();
-    _map.addControl(areaHover);
+  L.Control.Command = L.Control.extend({
+    options: {
+        position: 'topright',
+    },
 
-    console.log(_baseLayers)
-    }, 'json').fail(function(jqxhr, textStatus, error) {
-      var err = textStatus + ", " + error;
-      console.log("Request Failed: " + err);
-    })
+    onAdd: function (map) {
+        var controlDiv = L.DomUtil.create('div', 'leaflet-control-command');
+        L.DomEvent
+            .addListener(controlDiv, 'click', L.DomEvent.stopPropagation)
+            .addListener(controlDiv, 'click', L.DomEvent.preventDefault)
+        .addListener(controlDiv, 'click', function () { MapShowCommand(); });
+
+        var controlUI = L.DomUtil.create('div', 'leaflet-control-command-interior', controlDiv);
+        controlUI.title = '';
+        return controlDiv;
+    }
+  });
+  L.control.command = function (options) {
+      return new L.Control.Command(options);
+  };
+  var areaHover = new L.Control.Command();
+  _map.addControl(areaHover);
+
+  console.log(_baseLayers)
+
 }
 
 
@@ -177,11 +193,12 @@ var MapStore = assign({}, EventEmitter.prototype, {
     var marker_length = markers.features.length;
     var start = 0;
     var count = 3000;
-
+    var latLngs = []
     function addMarkers() {
 
-      var features = markers.features.slice(start, start + count)
+      var features = markers.features;
       start += count;
+
       var featuresMarkers = L.geoJson({features: features}, {
         pointToLayer: L.mapbox.marker.style,
         style: function (feature) {
@@ -189,19 +206,18 @@ var MapStore = assign({}, EventEmitter.prototype, {
         },
         onEachFeature: function (feature, layer) {
           if (feature.geometry.coordinates && feature.geometry.coordinates[0]) {
-            _heat.addLatLng([feature.geometry.coordinates[1], feature.geometry.coordinates[0]])
+            latLngs.push([feature.geometry.coordinates[1], feature.geometry.coordinates[0]])
           }
         }
       });
 
 
 
-      setTimeout(function () {
-        addMarkers();
-      }, 0.5);
+
     }
 
     addMarkers();
+    _heat.setLatLngs(latLngs);
 
   },
   getMap: function () {
