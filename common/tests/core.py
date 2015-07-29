@@ -1,3 +1,4 @@
+import json
 import os
 import threading
 import time
@@ -230,3 +231,6 @@ class SimpleTestCase(DjangoSimpleTestCase, UserTestBaseMixin):
 
     def should_not_see_text(self, text):
         self.soup.text.shouldnt.contain(text)
+
+    def json(self, response):
+        return json.loads(response.content.decode())

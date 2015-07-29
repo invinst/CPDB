@@ -1,6 +1,6 @@
 from django.conf.urls import url
-import document.views
+from document.views.request_view import RequestView
 
 urlpatterns = [
-    url(r'^view/$', document.views.detail_view, name='view'),
+    url(r'^request/$', RequestView.as_view(), name='request'),
 ]
