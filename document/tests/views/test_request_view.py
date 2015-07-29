@@ -2,6 +2,7 @@ import faker
 
 from allegation.factories import AllegationFactory
 from common.tests.core import SimpleTestCase
+from share.factories import SessionFactory
 
 
 class RequestViewTestCase(SimpleTestCase):
@@ -10,11 +11,12 @@ class RequestViewTestCase(SimpleTestCase):
 
     def test_request_document(self):
         allegation = AllegationFactory()
+        session = SessionFactory()
         response = self.client.post(self.URL, {
             'crid': allegation.crid,
             'email': faker.Faker().email(),
+            'session': session.hash_id,
         })
-
         response.status_code.should.equal(200)
         data = self.json(response)
 

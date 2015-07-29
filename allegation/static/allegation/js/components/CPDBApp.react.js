@@ -33,6 +33,7 @@ function getMapState() {
 
 HOME_URL = location.pathname;
 SAVE_STATE = false;
+SESSION_HASH = '';
 
 var CPDBApp = React.createClass({
 
@@ -42,7 +43,8 @@ var CPDBApp = React.createClass({
   initShare: function () {
     if (location.pathname == '/') {
       $.getJSON('/share/init/', function (data) {
-        HOME_URL = "/" + data.session.hash_id + "/";
+        SESSION_HASH = data.session.hash_id;
+        HOME_URL = "/" + SESSION_HASH + "/";
         history.pushState({}, '', HOME_URL);
         SAVE_STATE = true;
       });

@@ -56,7 +56,8 @@ var RequestModal = (function () {
         dataType: 'JSON',
         data: {
           crid: allegation.crid,
-          email: this.email()
+          email: this.email(),
+          session: SESSION_HASH // defined in CPDBApp.react
         },
         success: function () {
           RequestDocumentActions.setRequested(allegation.crid);
