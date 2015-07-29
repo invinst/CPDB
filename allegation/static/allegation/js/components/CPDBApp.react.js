@@ -49,6 +49,7 @@ var CPDBApp = React.createClass({
         SAVE_STATE = true;
       });
     } else {
+      SESSION_HASH = HOME_URL.substr(1, HOME_URL.length - 1);
       SAVE_STATE = true;
     }
   },
