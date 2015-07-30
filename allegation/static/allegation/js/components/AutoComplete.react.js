@@ -8,6 +8,7 @@
  */
 
 var React = require('react');
+var SessionStore = require('../stores/SessionStore');
 var FilterStore = require('../stores/FilterStore');
 var MapStore = require('../stores/MapStore');
 var OfficerStore = require('../stores/OfficerStore');
@@ -133,15 +134,7 @@ var AutoComplete = React.createClass({
     if (event) {
       FilterActions.changeFilter(this.props.filterkey, event.target.value);
     }
-    var tempSessionData = {};
-    $.extend(tempSessionData, FilterStore.getSession());
-    $.extend(tempSessionData, MapStore.getSession());
-    $.extend(tempSessionData, OfficerStore.getSession());
-
-    if (! _.isEqual(tempSessionData, _sessionData)) {
-      _sessionData = _.clone(tempSessionData);
-      FilterStore.saveSession(_sessionData);
-    }
+    SessionStore.saveSession();
   },
 
   /**
