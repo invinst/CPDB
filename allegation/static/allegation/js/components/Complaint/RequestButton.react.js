@@ -21,7 +21,7 @@ var RequestButton = React.createClass({
 
   componentDidMount: function () {
     var that = this;
-    RequestDocumentDispatcher.register(function (action) {
+    this.token = RequestDocumentDispatcher.register(function (action) {
       if (action.actionType == RequestDocumentConstants.DOCUMENT_REQUESTED) {
         if (that.props.complaint.allegation.crid == action.value) {
           that.setState({
@@ -31,6 +31,11 @@ var RequestButton = React.createClass({
       }
     });
   },
+
+  componentWillUnmount: function () {
+    RequestDocumentDispatcher.unregister(this.token);
+  },
+
   render: function () {
     var allegation = this.props.complaint.allegation;
     var documentLabel = 'Request';
