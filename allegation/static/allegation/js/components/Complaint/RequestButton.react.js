@@ -1,7 +1,7 @@
 var React = require('react');
 var RequestModal = require('./RequestModal.react');
 var RequestDocumentActions = require('../../actions/RequestDocumentActions');
-var RequestDocumentDispatcher = require('../../dispatcher/RequestDocumentDispatcher');
+var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var RequestDocumentConstants = require('../../constants/RequestDocumentConstants');
 
 
@@ -21,7 +21,7 @@ var RequestButton = React.createClass({
 
   componentDidMount: function () {
     var that = this;
-    this.token = RequestDocumentDispatcher.register(function (action) {
+    this.token = AppDispatcher.register(function (action) {
       if (action.actionType == RequestDocumentConstants.DOCUMENT_REQUESTED) {
         if (that.props.complaint.allegation.crid == action.value) {
           that.setState({
@@ -33,7 +33,7 @@ var RequestButton = React.createClass({
   },
 
   componentWillUnmount: function () {
-    RequestDocumentDispatcher.unregister(this.token);
+    AppDispatcher.unregister(this.token);
   },
 
   render: function () {
@@ -70,7 +70,7 @@ var RequestButton = React.createClass({
 });
 
 
-RequestDocumentDispatcher.register(function (action) {
+AppDispatcher.register(function (action) {
   if (action.actionType == RequestDocumentConstants.DOCUMENT_REQUESTED) {
     setRequestedCrid(action.value);
   }

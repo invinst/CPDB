@@ -1,5 +1,5 @@
 var React = require('react');
-var RequestDocumentDispatcher = require('../../dispatcher/RequestDocumentDispatcher');
+var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var RequestDocumentConstants = require('../../constants/RequestDocumentConstants');
 var RequestDocumentActions = require('../../actions/RequestDocumentActions');
 
@@ -86,7 +86,7 @@ var RequestModal = (function () {
   return component;
 })();
 
-RequestDocumentDispatcher.register(function (action) {
+AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case RequestDocumentConstants.REQUEST_DOCUMENT:
       RequestModal.show(action.value);
