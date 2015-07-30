@@ -20,7 +20,7 @@ var RequestDocumentActions = {
           session: SESSION_HASH // defined in CPDBApp.react
         },
         success: function () {
-          RequestDocumentActions.setRequested(allegation.crid);
+          RequestDocumentActions.setRequested(crid);
         },
         error: function(xhr) {
           for (var key in xhr.responseJSON) {
