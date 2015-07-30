@@ -984,7 +984,6 @@ form.navbar-form.navbar-right {
     opacity:0;
     transition: all ease-in-out 1s;
 }
-<<<<<<< HEAD
 
 .bootstrap-tagsinput > .tag.fadeIn {
     transition: all ease-in-out 1s;
@@ -993,11 +992,6 @@ form.navbar-form.navbar-right {
 
 #disclaimer {
     font-family: Helvetica, sans-serif;
-=======
-.bootstrap-tagsinput > .tag.fadeIn {
-    transition: all ease-in-out 1s;
-    opacity:1;
->>>>>>> feature/654-leave-a-row-of-empty-space
 }
 
 #disclaimer .modal-backdrop.in {
