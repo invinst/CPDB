@@ -20,12 +20,12 @@ var FilterStore = require('../stores/FilterStore')
 var _sessionData = {};
 
 var SessionStore = assign({}, EventEmitter.prototype, {
-  saveSession: function () {
+  saveSession: function (sessionData) {
     if (!SAVE_STATE) {
       return;
     }
 
-    var tempSessionData = {};
+    var tempSessionData = sessionData || {};
     $.extend(tempSessionData, FilterStore.getSession());
     $.extend(tempSessionData, MapStore.getSession());
     $.extend(tempSessionData, OfficerStore.getSession());
@@ -33,7 +33,6 @@ var SessionStore = assign({}, EventEmitter.prototype, {
     if (! _.isEqual(tempSessionData, _sessionData)) {
       _sessionData = _.clone(tempSessionData);
     }
-
     $.ajax({
       url: document.location.href,
       data: JSON.stringify(_sessionData),

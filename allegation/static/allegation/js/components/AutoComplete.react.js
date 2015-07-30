@@ -112,7 +112,7 @@ var AutoComplete = React.createClass({
     if (event) {
       FilterActions.changeFilter(this.props.filterkey, event.target.value);
     }
-    FilterActions.saveSession();
+    SessionStore.saveSession();
   },
 
   /**
