@@ -36,10 +36,10 @@ class AllegationApiViewTestCase(AllegationApiTestBase):
         allegations = self.fetch_allegations()
         ids = [d['allegation']['id'] for d in allegations]
 
-        allegations = self.fetch_allegations(start=2)
+        allegations = self.fetch_allegations(page=1)
         ids2 = [d['allegation']['id'] for d in allegations]
 
-        ids2[0].should.equal(ids[2])
+        ids2.shouldnt.contain(ids[0])
 
     def test_filter_by_crid(self):
         crid = self.allegations[0].crid
