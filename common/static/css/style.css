@@ -959,9 +959,9 @@ form.navbar-form.navbar-right {
 
 .fade {
    opacity: 1;
-   transition: opacity 2s ease-in-out;
-   -moz-transition: opacity 2s ease-in-out;
-   -webkit-transition: opacity 2s ease-in-out;
+   transition: opacity 1s ease-in-out;
+   -moz-transition: opacity 1s ease-in-out;
+   -webkit-transition: opacity 1s ease-in-out;
 }
 
 .slide-down {
@@ -984,6 +984,7 @@ form.navbar-form.navbar-right {
     opacity:0;
     transition: all ease-in-out 1s;
 }
+<<<<<<< HEAD
 
 .bootstrap-tagsinput > .tag.fadeIn {
     transition: all ease-in-out 1s;
@@ -992,6 +993,11 @@ form.navbar-form.navbar-right {
 
 #disclaimer {
     font-family: Helvetica, sans-serif;
+=======
+.bootstrap-tagsinput > .tag.fadeIn {
+    transition: all ease-in-out 1s;
+    opacity:1;
+>>>>>>> feature/654-leave-a-row-of-empty-space
 }
 
 #disclaimer .modal-backdrop.in {
