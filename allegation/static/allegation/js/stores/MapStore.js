@@ -35,9 +35,9 @@ var _baseLayers = {};
 var _controlDiv = null;
 var _ajax_req = null;
 var _queryString = null;
-var _types = ['police-districts','wards','beats','neighborhoods']
 var _normalStyle = {"fillColor": "#eeffee", "fillOpacity": 0.0, 'weight': 2};
-var _state = {}
+var _state = {};
+var _types = ['police-districts','wards','police-beats','neighborhoods'];
 
 function create(dom_id, opts) {
   dom_id = dom_id ? dom_id : 'map';
@@ -142,7 +142,6 @@ function createAreas() {
   }
 
   getAreaBoundaries(_types[0]);
-
 
   L.Control.Command = L.Control.extend({
     options: {
