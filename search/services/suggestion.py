@@ -8,19 +8,26 @@ from search.utils.date import *
 from search.utils.zip_code import *
 
 
-# TODO: More test for this one, especially test for ensure the order, returned format
+# TODO: More test for this one, especially tests for ensuring the order, returned format
 class Suggestion(object):
     def make_suggestion_format(self, match):
         return [match[1], match[0]]
 
     def suggest_zip_code(self, q):
+        results = {}
+
         if not q.isdigit():
             return []
 
         condition = Q(city__icontains=q)
         cities = self.query_suggestions(Allegation, condition, ['city'])
 
-        return [[get_zipcode_from_city(x), x] for x in cities]
+        # Ugly way to remove the duplicated zip code
+        for city in cities:
+            zip_code = get_zipcode_from_city(city)
+            results[zip_code] = city
+
+        return [[zip_code, results[zip_code]] for zip_code in results]
 
     def suggest_unit_number(self, q):
         results = []
