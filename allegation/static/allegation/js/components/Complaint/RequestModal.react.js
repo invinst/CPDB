@@ -50,27 +50,7 @@ var RequestModal = (function () {
       return $(this.getDOMNode()).find("input[name='email']").val();
     },
     onClick: function () {
-      $.ajax({
-        url: '/document/request/',
-        type: 'POST',
-        dataType: 'JSON',
-        data: {
-          crid: allegation.crid,
-          email: this.email(),
-          session: SESSION_HASH // defined in CPDBApp.react
-        },
-        success: function () {
-          RequestDocumentActions.setRequested(allegation.crid);
-        },
-        error: function(xhr) {
-          for (var key in xhr.responseJSON) {
-            var errors = xhr.responseJSON[key];
-            for (var i = 0; i < errors.length; i++) {
-              toastr.error(errors[i]);
-            }
-          }
-        }
-      });
+      RequestDocumentActions.registerEmail(allegation.crid, this.email());
     }
   });
 
@@ -85,6 +65,7 @@ var RequestModal = (function () {
 
   return component;
 })();
+
 
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
