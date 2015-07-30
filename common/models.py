@@ -12,6 +12,18 @@ from allegation.models.allegation_manager import AllegationManager
 class User(AbstractUser):
     pass
 
+RANKS = [
+    ['FTO', 'Field Training Officer'],
+    ['LT', 'Lieutenant'],
+    ['ET', 'Evidence Technician'],
+    ['DET', 'Detective'],
+    ['PO', 'Police Officer'],
+    ['Cpt', 'Captain'],
+    ['SGT', 'Sergeant'],
+    ['CMDR', 'Commander'],
+    ['Agent', 'Police Agent'],
+    ['Chief', 'Chief']
+]
 
 class Officer(models.Model):
     officer_first = models.CharField(max_length=255, null=True, db_index=True)
