@@ -48,7 +48,7 @@ class Suggestion(object):
 
         for month in month_choices():
             if month[1].lower().startswith(q):
-                results.append(generate_month_year_entry_from_2010(month))
+                results = results + generate_month_year_entry_from_2010(month)
 
         return results
 
