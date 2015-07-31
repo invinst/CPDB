@@ -165,43 +165,22 @@ var MapStore = assign({}, EventEmitter.prototype, {
     return _markers;
   },
   setMarkers: function (markers) {
+    var latLngs = []
+    var features = markers.features;
 
-    if (_heat) {
-      _map.removeLayer(_heat);
-    }
-
-
-    _heat = L.heatLayer([], {radius: 10});
-    _map.addLayer(_heat);
-
-    var marker_length = markers.features.length;
-    var start = 0;
-    var count = 3000;
-
-    function addMarkers() {
-
-      var features = markers.features.slice(start, start + count)
-      start += count;
-      var featuresMarkers = L.geoJson({features: features}, {
-        pointToLayer: L.mapbox.marker.style,
-        style: function (feature) {
-          return feature.properties;
-        },
-        onEachFeature: function (feature, layer) {
-          if (feature.geometry.coordinates && feature.geometry.coordinates[0]) {
-            _heat.addLatLng([feature.geometry.coordinates[1], feature.geometry.coordinates[0]])
-          }
+    var featuresMarkers = L.geoJson({features: features}, {
+      pointToLayer: L.mapbox.marker.style,
+      style: function (feature) {
+        return feature.properties;
+      },
+      onEachFeature: function (feature, layer) {
+        if (feature.geometry.coordinates && feature.geometry.coordinates[0]) {
+          latLngs.push([feature.geometry.coordinates[1], feature.geometry.coordinates[0]])
         }
-      });
-
-
-
-      setTimeout(function () {
-        addMarkers();
-      }, 0.5);
-    }
-
-    addMarkers();
+      }
+    });
+    _heat = L.heatLayer(latLngs, {radius: 10});
+    _map.addLayer(_heat);
 
   },
   getMap: function () {
@@ -222,6 +201,9 @@ var MapStore = assign({}, EventEmitter.prototype, {
     _queryString = queryString;
     if (_ajax_req) {
       _ajax_req.abort();
+    }
+    if (_heat) {
+      _map.removeLayer(_heat);
     }
     _ajax_req = $.getJSON("/api/allegations/gis/?" + queryString, function (data) {
       store.setMarkers(data);
