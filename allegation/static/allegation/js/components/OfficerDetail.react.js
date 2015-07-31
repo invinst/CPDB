@@ -76,7 +76,8 @@ var OfficerDetail = React.createClass({
       var options = {
         defaultZoom: 10,
         maxZoom: 15,
-        minZoom: 8
+        minZoom: 8,
+        scrollWheelZoom: false,
       };
       mapDiv = (
         <div className={columnClass}>
