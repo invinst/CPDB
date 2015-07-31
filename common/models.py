@@ -344,16 +344,9 @@ class Allegation(models.Model):
 
     @property
     def beat(self):
-        beats = self.areas.filter(type='beat')
+        beats = self.areas.filter(type='police-beats')
         if beats:
             return beats[0]
-        return False
-
-    @property
-    def neighborhood(self):
-        n = self.areas.filter(type='neighborhood')
-        if n:
-            return n[0]
         return False
 
     def __str__(self):
