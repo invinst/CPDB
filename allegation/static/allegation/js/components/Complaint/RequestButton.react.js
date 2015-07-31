@@ -1,39 +1,20 @@
 var React = require('react');
 var RequestModal = require('./RequestModal.react');
 var RequestDocumentActions = require('../../actions/RequestDocumentActions');
-var AppDispatcher = require('../../dispatcher/AppDispatcher');
-var RequestDocumentConstants = require('../../constants/RequestDocumentConstants');
-
-
-function setRequestedCrid(crid){
-  $.cookie("requested_document_" + crid, "1", {path: '/'})
-}
-
-function isCridRequested(crid){
-  return $.cookie("requested_document_" + crid);
-}
+var RequestButtonStore = require('../../stores/Complaint/RequestButtonStore');
 
 
 var RequestButton = React.createClass({
   getInitialState: function () {
-    return {};
+    return RequestButtonStore.init(this.props.complaint.allegation);
   },
 
   componentDidMount: function () {
-    var that = this;
-    this.token = AppDispatcher.register(function (action) {
-      if (action.actionType == RequestDocumentConstants.DOCUMENT_REQUESTED) {
-        if (that.props.complaint.allegation.crid == action.value) {
-          that.setState({
-            requested: true
-          });
-        }
-      }
-    });
+    RequestButtonStore.registerButton(this);
   },
 
   componentWillUnmount: function () {
-    AppDispatcher.unregister(this.token);
+    RequestButtonStore.unregisterButton(this);
   },
 
   render: function () {
@@ -43,7 +24,7 @@ var RequestButton = React.createClass({
     var link = '#';
     var iconClassName = 'fa fa-file-pdf-o';
     var target = '';
-    if (this.state.requested || allegation.document_requested || isCridRequested(allegation.crid)) {
+    if (this.state.requested) {
       documentLabel = 'Requested';
     }
     if (allegation.document_id) {
@@ -66,13 +47,6 @@ var RequestButton = React.createClass({
       e.preventDefault();
       RequestDocumentActions.request(this.props.complaint);
     }
-  }
-});
-
-
-AppDispatcher.register(function (action) {
-  if (action.actionType == RequestDocumentConstants.DOCUMENT_REQUESTED) {
-    setRequestedCrid(action.value);
   }
 });
 
