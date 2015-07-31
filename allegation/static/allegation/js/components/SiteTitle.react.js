@@ -1,4 +1,4 @@
-var DEFAULT_SITE_TITLE = "Citizens’ Police Database";
+var DEFAULT_SITE_TITLE = "Chicago Police Database";
 var React = require('react');
 var FilterStore = require("../stores/FilterStore");
 var init_data = typeof(INIT_DATA) == 'undefined' ? {} : INIT_DATA;
