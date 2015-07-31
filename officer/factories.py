@@ -15,5 +15,5 @@ class StoryFactory(factory.django.DjangoModelFactory):
     officer = factory.SubFactory(OfficerFactory)
     title = factory.Sequence(lambda n: fake.text(max_nb_chars=100))
     slug = "slug"
-    short_description = factory.Sequence(lambda n: fake.text(max_nb_chars=300))
+    short_description = factory.Sequence(lambda n: fake.text(max_nb_chars=200))
     content = factory.Sequence(lambda n: "\n".join(fake.paragraphs(nb=3)))

@@ -32,7 +32,10 @@ class Officer(models.Model):
                        })
 
     def __str__(self):
-        return "%(last)s %(first)s" % {'last': self.officer_last, 'first': self.officer_first}
+        return "{first} {last}".format(
+            last=self.officer_last,
+            first=self.officer_first
+        )
 
     @property
     def tag_value(self):
