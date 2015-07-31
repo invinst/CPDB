@@ -29,6 +29,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         counter = 0
+
         for allegation in Allegation.objects.filter(point=None):
             city = ''
             add1 = ""
@@ -38,6 +39,7 @@ class Command(BaseCommand):
             if allegation.add2:
                 add2 = allegation.add2
             if allegation.city:
+
                 splitted = allegation.city.split(' ')
                 if len(splitted) > 2:
                     city = allegation.city
