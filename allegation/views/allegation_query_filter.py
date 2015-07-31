@@ -18,6 +18,7 @@ FILTERS = [
     'officer__race',
     'investigator',
     'cat__category',
+    'city'
 ]
 DATE_FILTERS = ['incident_date_only']
 
