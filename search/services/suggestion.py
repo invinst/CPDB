@@ -8,7 +8,7 @@ from search.utils.date import *
 from search.utils.zip_code import *
 
 
-AREA_SORT_ORDERS = { 'beat': 0, 'neighborhoods': 1, 'ward': 2, 'police-districts': 3, 'school-grounds': 4 }
+AREA_SORT_ORDERS = { 'police-beats': 0, 'neighborhoods': 1, 'ward': 2, 'police-districts': 3, 'school-grounds': 5 }
 
 
 # TODO: More test for this one, especially test for ensure the order, returned format
@@ -140,7 +140,7 @@ class Suggestion(object):
         condition = Q(name__icontains=q)
 
         results = self.query_suggestions(Area, condition, ['name', 'id', 'type'], limit=20)
-        results.sort(key=lambda x: AREA_SORT_ORDERS.get(x[2], 0))
+        results.sort(key=lambda x: AREA_SORT_ORDERS.get(x[2], 4))
 
         return results[:5]
 
