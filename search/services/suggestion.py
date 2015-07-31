@@ -140,7 +140,7 @@ class Suggestion(object):
         condition = Q(name__icontains=q)
 
         results = self.query_suggestions(Area, condition, ['name', 'id', 'type'], limit=20)
-        results.sort(key=lambda x: AREA_SORT_ORDERS[x[2]])
+        results.sort(key=lambda x: AREA_SORT_ORDERS.get(x[2], 0))
 
         return results[:5]
 
