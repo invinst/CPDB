@@ -8,6 +8,8 @@ from search.utils.date import *
 from search.utils.zip_code import *
 
 
+AREA_SORT_ORDERS = { 'beat': 0, 'neighborhoods': 1, 'ward': 2, 'police-districts': 3, 'school-grounds': 4 }
+
 # TODO: More test for this one, especially test for ensure the order, returned format
 class Suggestion(object):
     def make_suggestion_format(self, match):
@@ -134,9 +136,11 @@ class Suggestion(object):
 
     def suggest_areas(self, q):
         condition = Q(name__icontains=q)
-        results = self.query_suggestions(Area, condition, ['name', 'id', 'type'])
 
-        return results
+        results = self.query_suggestions(Area, condition, ['name', 'id', 'type'], limit=20)
+        results.sort(key=lambda x: AREA_SORT_ORDERS.get(x[2], 0))
+
+        return results[:5]
 
     def query_suggestions(self, model_cls, cond, fields_to_get, limit=5, order_bys=None):
         flat = True if len(fields_to_get) == 1 else False
