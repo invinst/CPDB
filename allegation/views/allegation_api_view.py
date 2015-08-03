@@ -66,6 +66,8 @@ class AllegationAPIView(View):
             if allegation.officer:
                 officers = officers.exclude(pk=allegation.officer.pk)
             officers = officers.order_by('-allegations_count')
+            beat = allegation.beat
+            beat_name = beat.name if beat else ''
 
             ret = {
                 'allegation': allegation,
@@ -74,6 +76,7 @@ class AllegationAPIView(View):
                 'officer': allegation.officer,
                 'complaining_witness': witness,
                 'police_witness': police_witness,
+                'beat_name': beat_name,
             }
             allegations_list.append(ret)
 
