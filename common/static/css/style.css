@@ -959,9 +959,9 @@ form.navbar-form.navbar-right {
 
 .fade {
    opacity: 1;
-   transition: opacity 1s ease-in-out;
-   -moz-transition: opacity 1s ease-in-out;
-   -webkit-transition: opacity 1s ease-in-out;
+   transition: opacity 0.5s ease-in-out;
+   -moz-transition: opacity 0.5s ease-in-out;
+   -webkit-transition: opacity 0.5s ease-in-out;
 }
 
 .slide-down {
@@ -982,11 +982,11 @@ form.navbar-form.navbar-right {
 
 .bootstrap-tagsinput > .tag{
     opacity:0;
-    transition: all ease-in-out 1s;
+    transition: all ease-in-out 0.5s;
 }
 
 .bootstrap-tagsinput > .tag.fadeIn {
-    transition: all ease-in-out 1s;
+    transition: all ease-in-out 0.5s;
     opacity: 1;
 }
 
