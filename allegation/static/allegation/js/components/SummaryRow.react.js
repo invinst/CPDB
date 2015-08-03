@@ -80,7 +80,7 @@ var SummaryRow = React.createClass({
             </div>
             <div className='col-md-10 relative'>
               {arrow}
-              <a  href='#' className={className}>{category.name}</a>
+              <a href='#' className={className}>{category.name}</a>
             </div>
           </div>
         </div>
