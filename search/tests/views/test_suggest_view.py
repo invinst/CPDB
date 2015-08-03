@@ -107,9 +107,8 @@ class SuggestViewTestCase(SimpleTestCase):
         data.should.contain('recc_finding')
 
     def test_suggest_officer_rank(self):
-        OfficerFactory(rank='PO')
         self.get_suggestion('PO').should.contain('officer__rank')
-        self.get_suggestion('SGT').shouldnt.contain('officer__rank')
+        self.get_suggestion('invalidrank').shouldnt.contain('officer__rank')
 
     def test_suggest_complainant_gender(self):
         data = self.get_suggestion('mal')
