@@ -64,7 +64,7 @@ var SummaryRow = React.createClass({
     }
 
     return (
-      <div className="row category main-category">
+      <div className="row category main-category" onClickCapture={this.onClick}>
         <div className='col-md-6'>
           <div className="progress complaint" style={progressStyle}>
             <div className="progress-bar discipline" role="progressbar" aria-valuenow="60" aria-valuemin="0"
@@ -80,7 +80,7 @@ var SummaryRow = React.createClass({
             </div>
             <div className='col-md-10 relative'>
               {arrow}
-              <a onClickCapture={this.onClick} href='#' className={className}>{category.name}</a>
+              <a href='#' className={className}>{category.name}</a>
             </div>
           </div>
         </div>

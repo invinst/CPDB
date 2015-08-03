@@ -8,6 +8,7 @@
  */
 
 var React = require('react');
+var SessionStore = require('../stores/SessionStore');
 var FilterStore = require('../stores/FilterStore');
 var MapStore = require('../stores/MapStore');
 var OfficerStore = require('../stores/OfficerStore');
@@ -38,14 +39,11 @@ var AutoComplete = React.createClass({
     }
     var tags = $(this.getDOMNode()).tagsinput("items");
     if (tags.length) {
-      //$(".bootstrap-tagsinput").show();'
-      //$(this.getDOMNode()).parent().removeClass('closed');
-      $(this.getDOMNode()).parent().slideDown('slow');
+      setTimeout(function () {
+        $(".bootstrap-tagsinput .tag").addClass('fadeIn');
+      }, 100);
     } else {
-      //$(".bootstrap-tagsinput").hide();
-      //$(this.getDOMNode()).parent().addClass('closed');
-      $(this.getDOMNode()).parent().slideUp('slow');
-      //$(this.getDOMNode()).parent().removeClass('closed');
+      // Should be used
     }
     FilterActions.replaceFilters(tags);
   },
@@ -111,15 +109,7 @@ var AutoComplete = React.createClass({
     if (event) {
       FilterActions.changeFilter(this.props.filterkey, event.target.value);
     }
-    var tempSessionData = {};
-    $.extend(tempSessionData, FilterStore.getSession());
-    $.extend(tempSessionData, MapStore.getSession());
-    $.extend(tempSessionData, OfficerStore.getSession());
-
-    if (! _.isEqual(tempSessionData, _sessionData)) {
-      _sessionData = _.clone(tempSessionData);
-      FilterStore.saveSession(_sessionData);
-    }
+    SessionStore.saveSession();
   },
 
   /**

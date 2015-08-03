@@ -19,6 +19,7 @@ AUTOCOMPLETE_CATEGORY_NAMES = {
   'areas__id': 'Area',
   'complainant_gender': 'Complainant Gender',
   'complainant_race': 'Complainant Race',
+  'outcome_text': 'Outcome',
   'city': 'Zip Code'
 };
 

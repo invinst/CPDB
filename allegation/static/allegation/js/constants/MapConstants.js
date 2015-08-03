@@ -20,5 +20,6 @@ module.exports = keyMirror({
   SET_ACTIVE_OFFICER: null,
   SET_OFFICER_LIST_FILTER: null,
   SET_ACTIVE_COMPLAINT_LIST_FILTER: null,
-  INIT: null
+  INIT: null,
+  SAVE_SESSION:'SAVE_SESSION',
 });

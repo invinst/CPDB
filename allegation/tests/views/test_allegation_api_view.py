@@ -5,7 +5,8 @@ from django.utils import timezone
 
 from allegation.factories import AreaFactory, ComplainingWitnessFactory
 from allegation.tests.views.base import AllegationApiTestBase
-from common.models import Allegation, Officer, Area, RACES
+from common.models import Allegation, Officer, Area, RACES, DISCIPLINE_CODES, NO_DISCIPLINE_CODES
+from search.models import FilterLog
 
 
 class AllegationApiViewTestCase(AllegationApiTestBase):
@@ -162,3 +163,21 @@ class AllegationApiViewTestCase(AllegationApiTestBase):
         data = self.fetch_allegations(officer__race=race)
         for row in data:
             row['officer']['race'].should.equal(race)
+
+    def test_tracking_filter(self):
+        self.num_of_filter_logs().should.equal(0)
+        self.fetch_allegations(officer__gender='M')
+        self.num_of_filter_logs().should.equal(1)
+
+    def num_of_filter_logs(self):
+        return FilterLog.objects.count()
+
+    def test_filter_by_outcome_group(self):
+        data = self.fetch_allegations(outcome_text='any discipline')
+        for row in data:
+            allegation = Allegation.objects.get(pk=row['allegation']['id'])
+            allegation.final_outcome.should.be.within(DISCIPLINE_CODES)
+        data = self.fetch_allegations(outcome_text='no discipline')
+        for row in data:
+            allegation = Allegation.objects.get(pk=row['allegation']['id'])
+            allegation.final_outcome.should.be.within(NO_DISCIPLINE_CODES)

@@ -13,8 +13,9 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var MapConstants = require('../constants/MapConstants');
 var FilterStore = require('./FilterStore');
-
+var FilterActions = require('../actions/FilterActions');
 var assign = require('object-assign');
+
 var highlightStyle = {
   color: '#2262CC',
   weight: 3,
@@ -36,19 +37,25 @@ var _ajax_req = null;
 var _queryString = null;
 var _types = ['police-districts','wards','police-beats','neighborhoods']
 var _normalStyle = {"fillColor": "#eeffee", "fillOpacity": 0.0, 'weight': 2};
+var _state = {}
 
 function create(dom_id, opts) {
   dom_id = dom_id ? dom_id : 'map';
   opts = opts ? opts : {'maxZoom': 17, 'minZoom': 10, 'scrollWheelZoom': false};
-  defaultZoom = 'defaultZoom' in opts ? opts['defaultZoom'] : 12;
+  var defaultZoom = 'defaultZoom' in opts ? opts['defaultZoom'] : 11;
+  var center = 'center' in opts ? opts['center'] : [41.85677, -87.6024055];
 
   var southWest = L.latLng(41.143501411390766, -88.53057861328125);
   var northEast = L.latLng(42.474122772511485, -85.39947509765625);
   var maxBounds = L.LatLngBounds(southWest, northEast);
-  _map = L.mapbox.map(dom_id, MAP_TYPE, opts).setView([41.85677, -87.6024055], defaultZoom);
+  _map = L.mapbox.map(dom_id, MAP_TYPE, opts).setView(center, defaultZoom);
   _map.on('click', function (event) {
 
   }).setMaxBounds(maxBounds);
+    _map.on('move',function () {
+      console.log('on move');
+      FilterActions.saveSession();
+    });
   createAreas();
   MapStore.update();
 }
@@ -136,9 +143,6 @@ function createAreas() {
 
   getAreaBoundaries(_types[0]);
 
-
-
-
   L.Control.Command = L.Control.extend({
     options: {
         position: 'topright',
@@ -161,18 +165,22 @@ function createAreas() {
   };
   var areaHover = new L.Control.Command();
   _map.addControl(areaHover);
-
-  console.log(_baseLayers)
-
 }
 
 
 var MapStore = assign({}, EventEmitter.prototype, {
   getSession: function () {
-    return {'map': {} }
+    var center = _map.getCenter();
+    center = [center['lat'],center['lng']];
+    return {'map': {'bounds': _map.getBounds(), 'defaultZoom': _map.getZoom(), 'center': center, 'maxZoom': 17, 'minZoom': 10, 'scrollWheelZoom': false}}
   },
-  setSession: function () {
-
+  setSession: function (opts) {
+    if ('map' in opts) {
+      _state = opts['map'];
+    }
+  },
+  getState: function(){
+    return _state;
   },
   getToken: function () {
     return MBX;
@@ -181,43 +189,25 @@ var MapStore = assign({}, EventEmitter.prototype, {
     return _markers;
   },
   setMarkers: function (markers) {
+    var latLngs = []
+    var features = markers.features;
 
     if (_heat) {
       _map.removeLayer(_heat);
     }
-
-
-    _heat = L.heatLayer([], {radius: 10});
-    _map.addLayer(_heat);
-
-    var marker_length = markers.features.length;
-    var start = 0;
-    var count = 3000;
-    var latLngs = []
-    function addMarkers() {
-
-      var features = markers.features;
-      start += count;
-
-      var featuresMarkers = L.geoJson({features: features}, {
-        pointToLayer: L.mapbox.marker.style,
-        style: function (feature) {
-          return feature.properties;
-        },
-        onEachFeature: function (feature, layer) {
-          if (feature.geometry.coordinates && feature.geometry.coordinates[0]) {
-            latLngs.push([feature.geometry.coordinates[1], feature.geometry.coordinates[0]])
-          }
+    var featuresMarkers = L.geoJson({features: features}, {
+      pointToLayer: L.mapbox.marker.style,
+      style: function (feature) {
+        return feature.properties;
+      },
+      onEachFeature: function (feature, layer) {
+        if (feature.geometry.coordinates && feature.geometry.coordinates[0]) {
+          latLngs.push([feature.geometry.coordinates[1], feature.geometry.coordinates[0]])
         }
-      });
-
-
-
-
-    }
-
-    addMarkers();
-    _heat.setLatLngs(latLngs);
+      }
+    });
+    _heat = L.heatLayer(latLngs, {radius: 10});
+    _map.addLayer(_heat);
 
   },
   getMap: function () {
@@ -239,11 +229,15 @@ var MapStore = assign({}, EventEmitter.prototype, {
     if (_ajax_req) {
       _ajax_req.abort();
     }
+    if (_heat) {
+      _map.removeLayer(_heat);
+    }
     _ajax_req = $.getJSON("/api/allegations/gis/?" + queryString, function (data) {
       store.setMarkers(data);
     });
   },
   init: function (dom_id, opts) {
+    opts = opts || _state;
     return create(dom_id, opts);
   }
 });
