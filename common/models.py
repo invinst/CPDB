@@ -9,6 +9,18 @@ from allegation.models.allegation_manager import AllegationManager
 class User(AbstractUser):
     pass
 
+RANKS = [
+    ['FTO', 'Field Training Officer'],
+    ['LT', 'Lieutenant'],
+    ['ET', 'Evidence Technician'],
+    ['DET', 'Detective'],
+    ['PO', 'Police Officer'],
+    ['Cpt', 'Captain'],
+    ['SGT', 'Sergeant'],
+    ['CMDR', 'Commander'],
+    ['Agent', 'Police Agent'],
+    ['Chief', 'Chief']
+]
 
 class Officer(models.Model):
     officer_first = models.CharField(max_length=255, null=True, db_index=True)
@@ -32,7 +44,10 @@ class Officer(models.Model):
                        })
 
     def __str__(self):
-        return "%(last)s %(first)s" % {'last': self.officer_last, 'first': self.officer_first}
+        return "{first} {last}".format(
+            last=self.officer_last,
+            first=self.officer_first
+        )
 
     @property
     def tag_value(self):
@@ -326,6 +341,7 @@ class Allegation(models.Model):
     document_id = models.IntegerField(null=True)
     document_normalized_title = models.CharField(max_length=255, null=True)
     document_title = models.CharField(max_length=255, null=True)
+    document_requested = models.BooleanField(default=False)
 
     @property
     def beat(self):
