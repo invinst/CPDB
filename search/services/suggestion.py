@@ -155,6 +155,7 @@ class Suggestion(object):
         ret = OrderedDict()
         ret['incident_date_only__year_month'] = self.suggest_incident_year_month(q)
         ret['officer__star'] = self.suggest_officer_star(q)
+        ret['city'] = self.suggest_zip_code(q)
         ret['crid'] = self.suggest_crid(q)
         ret['incident_date_only'] = self.suggest_incident_date_only(q)
         if q.count('/') == 1:
@@ -180,7 +181,6 @@ class Suggestion(object):
         ret['officer__race'] = ret['complainant_race']
 
         ret['officer__rank'] = self.suggest_in(q, RANKS)
-        ret['city'] = self.suggest_zip_code(q)
 
         ret['outcome_text'] = self.suggest_in(q, OUTCOME_TEXT)
 
