@@ -1024,9 +1024,12 @@ form.navbar-form.navbar-right {
 }
 
 .btn-close:not(.btn-link):not(.btn-flat) {
-    background-color: #989898;
+    background-color: #cbcbcb;
     text-transform: none;
     color: #fff;
+    font-size: 16px;
+    font-family: "Source Sans Pro", sans-serif;
+    padding: 8px 20px;
 }
 
 .btn-close:hover:not(.btn-link):not(.btn-flat) {
