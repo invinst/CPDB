@@ -3,6 +3,7 @@ import json
 from allegation.factories import OfficerFactory, AllegationCategoryFactory, AllegationFactory
 from common.models import AllegationCategory, Officer
 from common.tests.core import SimpleTestCase
+from search.models import SuggestionLog
 
 
 class SuggestViewTestCase(SimpleTestCase):
@@ -125,6 +126,14 @@ class SuggestViewTestCase(SimpleTestCase):
     def test_suggest_officer_race(self):
         data = self.get_suggestion('blac')
         data.should.contain('officer__race')
+
+    def test_tracking_suggestion(self):
+        num = self.num_of_tracked_suggestions()
+        self.get_suggestion('anything')
+        self.num_of_tracked_suggestions().should.equal(num + 1)
+
+    def num_of_tracked_suggestions(self):
+        return SuggestionLog.objects.count()
 
     def test_suggest_finding(self):
         AllegationFactory(city='Chicago IL 60616')
