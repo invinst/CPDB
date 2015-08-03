@@ -7,21 +7,30 @@ from common.models import ComplainingWitness, PoliceWitness
 from common.json_serializer import JSONSerializer
 
 from allegation.views.allegation_query_filter import AllegationQueryFilter
+from search.models import FilterLog
 
 
 class AllegationAPIView(View):
     def __init__(self, **kwargs):
         super(AllegationAPIView, self).__init__(**kwargs)
 
-    def get_allegations(self, ignore_filters=[]):
+    def get_allegations(self, ignore_filters=None):
         allegation_query_filters = AllegationQueryFilter(self.request, ignore_filters)
         allegations = Allegation.allegations.by_allegation_filter(allegation_query_filters)
 
         return allegations
 
+    def track_filter(self, num_allegations):
+        querystring = self.request.META['QUERY_STRING']
+        if querystring:
+            FilterLog.objects.create(query=querystring,
+                                 session_id=self.request.session.session_key or "",
+                                 num_allegations=num_allegations)
+
     def get(self, request):
         allegations = self.get_allegations()
         allegations = allegations.order_by('-incident_date', '-start_date', 'crid')
+        self.track_filter(num_allegations=len(allegations))
 
         try:
             start = int(request.GET.get('start', 0))
@@ -57,6 +66,8 @@ class AllegationAPIView(View):
             if allegation.officer:
                 officers = officers.exclude(pk=allegation.officer.pk)
             officers = officers.order_by('-allegations_count')
+            beat = allegation.beat
+            beat_name = beat.name if beat else ''
 
             ret = {
                 'allegation': allegation,
@@ -65,6 +76,7 @@ class AllegationAPIView(View):
                 'officer': allegation.officer,
                 'complaining_witness': witness,
                 'police_witness': police_witness,
+                'beat_name': beat_name,
             }
             allegations_list.append(ret)
 

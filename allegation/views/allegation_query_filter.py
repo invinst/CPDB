@@ -1,6 +1,5 @@
 from django.db.models.query_utils import Q
-from common.models import AllegationCategory
-
+from common.models import AllegationCategory, DISCIPLINE_CODES, NO_DISCIPLINE_CODES
 
 FILTERS = [
     'crid',
@@ -27,13 +26,18 @@ DATE_FILTERS = ['incident_date_only']
 class AllegationQueryFilter(object):
     def __init__(self, request, ignore_filters):
         self.request = request
-        self.ignore_filters = ignore_filters
+        self.ignore_filters = ignore_filters or []
         self.raw_filters = []
         self.filters = {}
         self.conditions = []
 
     def add_filter(self, field):
-        value = self.request.GET.getlist(field)
+        value = self.request.GET.getlist(field, [])
+        if field == 'final_outcome':
+            text = self.request.GET.get('outcome_text')
+            if text:
+                added_value = DISCIPLINE_CODES if text == 'any discipline' else NO_DISCIPLINE_CODES
+                value += added_value
 
         if len(value) > 1:
             self.filters["%s__in" % field] = value

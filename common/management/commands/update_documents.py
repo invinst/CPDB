@@ -1,7 +1,8 @@
-import json
 from django.core.management.base import BaseCommand
 from documentcloud import DocumentCloud
+
 from common.models import Allegation
+from document.utils import send_document_notification
 
 
 class Command(BaseCommand):
@@ -14,6 +15,23 @@ class Command(BaseCommand):
         parser.add_argument('--start')
         parser.add_argument('--end')
 
+    document_by_crid = {}
+
+    def get_document(self, allegation):
+        client = DocumentCloud()
+        if allegation.crid not in self.document_by_crid:
+            results = client.documents.search(self.search_syntax % allegation.crid)
+            if results:
+                document = results[0]
+                self.document_by_crid[allegation.crid] = document
+
+                if document.title != allegation.document_title:  # new document found
+                    # send notification
+                    send_document_notification(allegation, document)
+            else:
+                self.document_by_crid[allegation.crid] = None
+        return self.document_by_crid[allegation.crid]
+
     def handle(self, *args, **options):
         start = options['start']
         if start is None:
@@ -25,16 +43,14 @@ class Command(BaseCommand):
         else:
             allegations = Allegation.objects.filter(id__gte=start)
 
-        client = DocumentCloud()
         for allegation in allegations:
-            objs = client.documents.search(self.search_syntax % allegation.crid)
-            if len(objs) > 0:
-                obj = objs[0]
+            document = self.get_document(allegation)
 
-                id_parts = obj.id.split(self.id_delim)
+            if document:
+                id_parts = document.id.split(self.id_delim)
                 doc_id = id_parts[0]
                 normalized_title = self.id_delim.join(id_parts[1:])
-                title = obj.title
+                title = document.title
 
                 allegation.document_id = doc_id
                 allegation.document_normalized_title = normalized_title
@@ -43,4 +59,5 @@ class Command(BaseCommand):
                 allegation.document_id = 0
                 allegation.document_normalized_title = ''
                 allegation.document_title = ''
+
             allegation.save()

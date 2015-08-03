@@ -12,11 +12,19 @@ class SuggestViewTestCase(SimpleTestCase):
         Officer.objects.all().delete()
         self.suggestion = Suggestion()
 
-    def test_suggest_rank(self):
-        rank = 'PO'
-        unavailable_rank = 'SGT'
-        officer = OfficerFactory(rank=rank)
+    def test_suggest_zip_code(self):
+        city = 'Chicago IL 60616'
+        available_zip_code = '60616'
+        unavailable_zip_code = '12345'
+        not_digit_term = 'somethingnotdigit'
+        AllegationFactory(city=city)
 
-        self.suggestion.suggest_rank(rank.lower()).should.be.equal([rank])
-        self.suggestion.suggest_rank(unavailable_rank.lower()).should.be.equal([])
+        self.suggestion.suggest_zip_code(available_zip_code).should.be.equal([['60616', city]])
+        self.suggestion.suggest_zip_code(unavailable_zip_code).should.be.equal([])
+        self.suggestion.suggest_zip_code(not_digit_term).should.be.equal([])
 
+    def test_month_year_suggestion_by_month_name(self):
+        self.suggestion.suggest_incident_year_month('feb').should.equal([
+            ['February 2010', '2010-2'], ['February 2011', '2011-2'], ['February 2012', '2012-2'],
+              ['February 2013', '2013-2'], ['February 2014', '2014-2']
+        ])

@@ -40,21 +40,11 @@ var Filters = React.createClass({
   render: function () {
     // This section should be hidden by default
     // and shown when there are todos.
-    var allFilters = [];
-    for (var key in this.state.filters) {
 
-      allFilters.push(<MapFilter filterkey={key} key={key} options={this.state.filters[key].items}
-                                 value={this.state.filters[key].value}/>)
-      //FilterStore.addFilter()
-    }
 
     return (
-      <div className='slide-down'>
+      <div className=''>
         <AutoComplete />
-
-        <div className='hidden'>
-          {allFilters}
-        </div>
       </div>
     )
   },
