@@ -143,7 +143,6 @@ function createAreas() {
 
   getAreaBoundaries(_types[0]);
 
-
   L.Control.Command = L.Control.extend({
     options: {
         position: 'topright',
@@ -166,7 +165,6 @@ function createAreas() {
   };
   var areaHover = new L.Control.Command();
   _map.addControl(areaHover);
-
 }
 
 
@@ -194,6 +192,9 @@ var MapStore = assign({}, EventEmitter.prototype, {
     var latLngs = []
     var features = markers.features;
 
+    if (_heat) {
+      _map.removeLayer(_heat);
+    }
     var featuresMarkers = L.geoJson({features: features}, {
       pointToLayer: L.mapbox.marker.style,
       style: function (feature) {
