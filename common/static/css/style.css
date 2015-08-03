@@ -131,13 +131,10 @@ ul.nav.navbar-nav {
     color: #709dc0;
 }
 
-<<<<<<< HEAD
-=======
 #summary-container .total {
     color: #a5b4be;
 }
 
->>>>>>> feature/484-categories-subcategories-mark-up
 #summary-container .count, .total  {
     text-align: right;
     font-weight: 500;
@@ -145,13 +142,10 @@ ul.nav.navbar-nav {
 
 #summary-container #summary.selected {
     margin-left: 0px;
-<<<<<<< HEAD
-=======
 }
 
 #summary.selected .extra-information {
     display: none;
->>>>>>> feature/484-categories-subcategories-mark-up
 }
 
 #summary {
