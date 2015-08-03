@@ -4,6 +4,7 @@ var Filters = require('./Filters.react');
 var ComplaintListStore = require('../stores/ComplaintListStore');
 var ComplaintListRow = require('./ComplaintListRow.react');
 var FilterStore = require('../stores/FilterStore');
+var RequestModal = require('./Complaint/RequestModal.react');
 var FilterActions = require('../actions/FilterActions');
 var OfficerStore = require('../stores/OfficerStore');
 
@@ -74,7 +75,7 @@ var ComplaintList = React.createClass({
     window.on('scroll',function(){
       if (window.scrollTop()/$(document).height() > .35 && !locked) {
         var qry = FilterStore.getQueryString();
-        
+
         $.get('/api/allegations/?' + qry + "page=" + x + "&length=25", function (data) {
           that.setState({'complaints': $.merge(that.state.complaints,data.allegations)});
           x++;
@@ -145,6 +146,7 @@ var ComplaintList = React.createClass({
             <a href={downloadHref} className='btn btn-black btn-download'>Download Table</a>
           </div>
         </div>
+        <RequestModal />
       </div>
     )
   },
