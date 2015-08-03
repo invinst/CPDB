@@ -1038,3 +1038,7 @@ form.navbar-form.navbar-right {
 .button-list .btn + .btn {
     margin-left: 20px;
 }
+
+#request_modal .modal-dialog {
+    width: 700px;
+}

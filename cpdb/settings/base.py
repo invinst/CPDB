@@ -181,3 +181,10 @@ DJANGO_ENV = 'dev'
 
 if len(sys.argv) > 1 and sys.argv[1] == 'test':
     DJANGO_ENV = 'test'
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.mailgun.org'
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'request@foia.cpdb.co')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = 587
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
