@@ -134,3 +134,10 @@ class SuggestViewTestCase(SimpleTestCase):
 
     def num_of_tracked_suggestions(self):
         return SuggestionLog.objects.count()
+
+    def test_suggest_finding(self):
+        AllegationFactory(city='Chicago IL 60616')
+        data = self.get_suggestion('616')
+        self.get_suggestion('616').should.contain('city')
+        self.get_suggestion('123').shouldnt.contain('city')
+        self.get_suggestion('Chi').shouldnt.contain('city')

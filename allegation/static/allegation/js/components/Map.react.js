@@ -22,7 +22,30 @@ var Map = React.createClass({
   },
   drawHeatMap: function (query_string) {
     $.getJSON("/api/allegations/gis/?" + query_string, function (markers) {
-      var _markers = L.markerClusterGroup();
+
+        function iconCreateFunction (cluster) {
+        var childCount = cluster.getChildCount();
+
+        var className = ' marker-cluster-';
+        var size = 40;
+        if (childCount < 10) {
+          className += 'small';
+          size = 20;
+        } else if (childCount < 30) {
+          className += 'medium';
+        } else {
+          className += 'large';
+          size = 60;
+        }
+
+        return new L.DivIcon({
+          html: '<div style="width:'+(size - 10)+'px;height:'+(size - 10)+'px;border-radius:'+(size/2)+'px;"><span></span></div>',
+          className: 'marker-cluster' + className,
+          iconSize: new L.Point(size, size)
+        });
+      }
+
+      var _markers = L.markerClusterGroup({spiderfyOnMaxZoom: false, iconCreateFunction: iconCreateFunction, singleMarkerMode: true});
       var _controls = {};
       _controls['markers'] = _markers;
       _map.addLayer(_markers);
@@ -38,10 +61,11 @@ var Map = React.createClass({
           pointToLayer: L.mapbox.marker.style,
           style: function (feature) {
             return feature.properties;
-          },
+          }
 
         });
         _markers.addLayer(featuresMarkers);
+        _map.fitBounds(_markers.getBounds());
 
         if (start > marker_length) {
           return;

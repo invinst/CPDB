@@ -3,6 +3,7 @@ var Summary = require('./Complaint/Summary.react');
 var OfficerList = require('./Complaint/OfficerList.react');
 var TimelineAndLocation = require('./Complaint/TimelineAndLocation.react');
 var PoliceWitness = require('./Complaint/PoliceWitness.react');
+var RequestButton = require('./Complaint/RequestButton.react');
 
 
 var ComplaintListRowDetail = React.createClass({
@@ -29,19 +30,24 @@ var ComplaintListRowDetail = React.createClass({
       infor.push(<PoliceWitness key="police-witness" complaint={complaint} witnesses={this.state.police_witness} />)
     }
 
-    var cssClasses = "row complaint_detail slide-down" + (this.props.hide ? ' closed' : '');
+    var cssClasses = "row-fluid complaint_detail clearfix slide-down" + (this.props.hide ? ' closed' : '');
     return (
       <div className={cssClasses}>
         <div className="col-md-12">
           {infor}
+        </div>
+        <div className="col-md-10 col-md-offset-1 button-list">
+          <RequestButton complaint={complaint} />
+          <button type="button" className="btn btn-close" onClick={this.toggleComplaint}>
+            <i className="fa fa-times" /> Close
+          </button>
         </div>
       </div>
     );
   },
 
   toggleComplaint: function (e) {
-    e.preventDefault();
-    this.setState({'show': !this.state.show});
+    $(e.target).parents(".complaint-row").trigger('closeAction');
   }
 });
 

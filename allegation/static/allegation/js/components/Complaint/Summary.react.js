@@ -9,14 +9,14 @@ var Summary = React.createClass({
     var category = this.props.complaint.category;
     if (category) {
       return (
-        <div className="col-md-3">
+        <div className="col">
           <div className="title">{category.category}</div>
           {category.allegation_name}
         </div>
       );
     } else {
       return (
-        <div className="col-md-3">
+        <div className="col">
           <div className="title">Category</div>
           Unknown
         </div>
@@ -26,7 +26,7 @@ var Summary = React.createClass({
   getFinalFinding: function () {
     var allegation = this.props.complaint.allegation;
     return (
-      <div className="col-md-2">
+      <div className="col">
         <div className="title">Final Outcome</div>
         {allegation.final_finding || 'Unknown'}
       </div>
@@ -35,7 +35,7 @@ var Summary = React.createClass({
   getAction: function () {
     var allegation = this.props.complaint.allegation;
     return (
-      <div className="col-md-2">
+      <div className="col">
         <div className="title">Disciplinary action</div>
         {allegation.final_outcome || 'Unknown'}
       </div>
@@ -55,7 +55,7 @@ var Summary = React.createClass({
       witnesses.push(person)
     }
     return (
-      <div className="col-md-2">
+      <div className="col">
         <div className="title">Complaining Witness</div>
         {witnesses.length ? witnesses : "Unknown"}
       </div>
