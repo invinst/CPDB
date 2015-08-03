@@ -39,14 +39,11 @@ var AutoComplete = React.createClass({
     }
     var tags = $(this.getDOMNode()).tagsinput("items");
     if (tags.length) {
-      //$(".bootstrap-tagsinput").show();'
-      //$(this.getDOMNode()).parent().removeClass('closed');
-      $(this.getDOMNode()).parent().slideDown('slow');
+      setTimeout(function () {
+        $(".bootstrap-tagsinput .tag").addClass('fadeIn');
+      }, 100);
     } else {
-      //$(".bootstrap-tagsinput").hide();
-      //$(this.getDOMNode()).parent().addClass('closed');
-      $(this.getDOMNode()).parent().slideUp('slow');
-      //$(this.getDOMNode()).parent().removeClass('closed');
+      // Should be used
     }
     FilterActions.replaceFilters(tags);
   },
