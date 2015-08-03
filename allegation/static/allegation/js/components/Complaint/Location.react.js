@@ -24,8 +24,10 @@ var Location = React.createClass({
           lng + ',' + lat + ')/' + centerLng + ',' + lat + ',13/' + this.getSize() +
           '.png?access_token=' + token
         );
+
         address = (
           <div>
+            <div>Beat: {this.props.complaint.beat_name}</div>
             <div>Location Type: {allegation.location}</div>
             <div>Address: {allegation.add1} {allegation.add2}</div>
             <div>City: {allegation.city}</div>

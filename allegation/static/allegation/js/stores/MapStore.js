@@ -40,7 +40,7 @@ var _normalStyle = {"fillColor": "#eeffee", "fillOpacity": 0.0, 'weight': 2};
 function create(dom_id, opts) {
   dom_id = dom_id ? dom_id : 'map';
   opts = opts ? opts : {'maxZoom': 17, 'minZoom': 10, 'scrollWheelZoom': false};
-  defaultZoom = 'defaultZoom' in opts ? opts['defaultZoom'] : 12;
+  defaultZoom = 'defaultZoom' in opts ? opts['defaultZoom'] : 11;
 
   var southWest = L.latLng(41.143501411390766, -88.53057861328125);
   var northEast = L.latLng(42.474122772511485, -85.39947509765625);
@@ -137,8 +137,6 @@ function createAreas() {
   getAreaBoundaries(_types[0]);
 
 
-
-
   L.Control.Command = L.Control.extend({
     options: {
         position: 'topright',
@@ -162,8 +160,6 @@ function createAreas() {
   var areaHover = new L.Control.Command();
   _map.addControl(areaHover);
 
-  console.log(_baseLayers)
-
 }
 
 
@@ -181,43 +177,22 @@ var MapStore = assign({}, EventEmitter.prototype, {
     return _markers;
   },
   setMarkers: function (markers) {
-
-    if (_heat) {
-      _map.removeLayer(_heat);
-    }
-
-
-    _heat = L.heatLayer([], {radius: 10});
-    _map.addLayer(_heat);
-
-    var marker_length = markers.features.length;
-    var start = 0;
-    var count = 3000;
     var latLngs = []
-    function addMarkers() {
+    var features = markers.features;
 
-      var features = markers.features;
-      start += count;
-
-      var featuresMarkers = L.geoJson({features: features}, {
-        pointToLayer: L.mapbox.marker.style,
-        style: function (feature) {
-          return feature.properties;
-        },
-        onEachFeature: function (feature, layer) {
-          if (feature.geometry.coordinates && feature.geometry.coordinates[0]) {
-            latLngs.push([feature.geometry.coordinates[1], feature.geometry.coordinates[0]])
-          }
+    var featuresMarkers = L.geoJson({features: features}, {
+      pointToLayer: L.mapbox.marker.style,
+      style: function (feature) {
+        return feature.properties;
+      },
+      onEachFeature: function (feature, layer) {
+        if (feature.geometry.coordinates && feature.geometry.coordinates[0]) {
+          latLngs.push([feature.geometry.coordinates[1], feature.geometry.coordinates[0]])
         }
-      });
-
-
-
-
-    }
-
-    addMarkers();
-    _heat.setLatLngs(latLngs);
+      }
+    });
+    _heat = L.heatLayer(latLngs, {radius: 10});
+    _map.addLayer(_heat);
 
   },
   getMap: function () {
@@ -238,6 +213,9 @@ var MapStore = assign({}, EventEmitter.prototype, {
     _queryString = queryString;
     if (_ajax_req) {
       _ajax_req.abort();
+    }
+    if (_heat) {
+      _map.removeLayer(_heat);
     }
     _ajax_req = $.getJSON("/api/allegations/gis/?" + queryString, function (data) {
       store.setMarkers(data);
