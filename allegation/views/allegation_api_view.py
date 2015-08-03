@@ -33,9 +33,9 @@ class AllegationAPIView(View):
         self.track_filter(num_allegations=len(allegations))
 
         try:
-            start = int(request.GET.get('start', 0))
+            page = int(request.GET.get('page', 0))
         except ValueError:
-            start = 0
+            page = 0
 
         length = getattr(settings, 'ALLEGATION_LIST_ITEM_COUNT', 200)
         try:
@@ -45,7 +45,10 @@ class AllegationAPIView(View):
 
         allegations = allegations.select_related('cat')
 
-        display_allegations = allegations[start:start + length]
+        start = page * length
+        end = page * length + length
+
+        display_allegations = allegations[start:end]
         allegations_list = []
 
         for allegation in display_allegations:
