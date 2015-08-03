@@ -190,9 +190,17 @@ var MapStore = assign({}, EventEmitter.prototype, {
   getMarkers: function () {
     return _markers;
   },
+  mapIntensity: function(markersLength) {
+    var intensity = 1;
+    if (markersLength < 15000 ) {
+       intensity = markersLength / 15000;
+    }
+    return intensity;
+  },
   setMarkers: function (markers) {
     var latLngs = []
     var features = markers.features;
+    var heatOpts = { radius: 10, max: this.mapIntensity(features.length) };
 
     var featuresMarkers = L.geoJson({features: features}, {
       pointToLayer: L.mapbox.marker.style,
@@ -205,7 +213,7 @@ var MapStore = assign({}, EventEmitter.prototype, {
         }
       }
     });
-    _heat = L.heatLayer(latLngs, {radius: 10});
+    _heat = L.heatLayer(latLngs, heatOpts);
     _map.addLayer(_heat);
 
   },
