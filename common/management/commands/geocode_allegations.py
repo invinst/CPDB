@@ -39,7 +39,6 @@ class Command(BaseCommand):
             if allegation.add2:
                 add2 = allegation.add2
             if allegation.city:
-
                 splitted = allegation.city.split(' ')
                 if len(splitted) > 2:
                     city = allegation.city
@@ -47,10 +46,11 @@ class Command(BaseCommand):
             point = None
             allegation.point = None
             if add1 or add2 or city:
+
                 address_lookup = "%s %s, %s" % (add1, add2, city)
                 point = self.geocode_address(address_lookup)
             elif allegation.beat:
-                point = allegation.beat.centroid
+                point = allegation.beat.polygon.centroid
             if point:
                 print(point.y, point.x)
                 areas = Area.objects.filter(polygon__intersects=point)
