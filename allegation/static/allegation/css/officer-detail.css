@@ -121,7 +121,7 @@
     background: transparent;
 }
 
-.vis-item.missing-data .vis-item-overflow{
+.vis-item.missing-data .vis-item-overflow {
     background: #e5e5e5;
     margin-top: 50px;
     height: calc(100% - 50px);
@@ -129,4 +129,26 @@
 
 #autocomplete {
     display: none;
+}
+
+.story {
+    border-bottom: 1px solid #333;
+    padding: 20px;
+}
+
+.story .title {
+    font-size: 16px;
+    font-family: 'Vollkorn', serif;
+}
+
+.story .date {
+    font-size: 14px;
+    color: #989898;
+    font-family: 'Vollkorn', serif;
+}
+
+.story .short-description {
+    height: 3em;
+    font-family: "Source Sans Pro", sans-serif;
+    font-style: 16px;
 }

@@ -510,7 +510,7 @@ ul.nav.navbar-nav {
 }
 
 .complaint-row > .row:first-child {
-    font-size: 18px;
+    font-size: 16px;
 }
 
 .complaint-row .title {
@@ -618,6 +618,10 @@ ul.nav.navbar-nav {
     margin-bottom: 10px;
 }
 
+.complaint_detail > div > .row + .row{
+    margin-top: 36px;
+}
+
 .address {
     background-color: #fff;
     padding: 15px;
@@ -673,8 +677,16 @@ ul.nav.navbar-nav {
     text-transform: none;
     border: 1px solid #0a90cb;
     width: 151px;
+    max-width: 151px;
     font-size: 16px;
     padding: 5px 10px;
+}
+
+@media screen and (max-width: 1024px){
+    .btn.btn-request:not(.btn-link):not(.btn-flat) {
+        width: 100%;
+        max-width: 100%;
+    }
 }
 
 .btn.btn-view:hover:not(.btn-link):not(.btn-flat) {
@@ -694,6 +706,10 @@ ul.nav.navbar-nav {
 .filter_links a.active {
     color: black;
     border-bottom: 2px solid black;
+}
+
+#filter-row {
+    min-height: 50px;
 }
 
 .margin-top {
@@ -942,6 +958,13 @@ form.navbar-form.navbar-right {
     text-align: center;
 }
 
+.fade {
+   opacity: 1;
+   transition: opacity 0.5s ease-in-out;
+   -moz-transition: opacity 0.5s ease-in-out;
+   -webkit-transition: opacity 0.5s ease-in-out;
+}
+
 .slide-down {
     overflow-y: hidden;
 
@@ -949,13 +972,22 @@ form.navbar-form.navbar-right {
     transition-duration: 0.4s;
     transition-timing-function: cubic-bezier(0, 1, 0.5, 1);
 
-    max-height: 1500px;
+    max-height: 10000px;
     opacity: 1;
 }
 
 .slide-down.closed {
     max-height: 0;
     opacity: 0;
+}
+
+.bootstrap-tagsinput > .tag{
+    opacity:0;
+    transition: all ease-in-out 1s;
+}
+.bootstrap-tagsinput > .tag.fadeIn {
+    transition: all ease-in-out 1s;
+    opacity:1;
 }
 
 #disclaimer .modal-backdrop.in {
@@ -985,4 +1017,27 @@ form.navbar-form.navbar-right {
 
 .rackspace-logo {
     height: 20px;
+}
+
+.btn-close:not(.btn-link):not(.btn-flat) {
+    background-color: #cbcbcb;
+    text-transform: none;
+    color: #fff;
+    font-size: 16px;
+    font-family: "Source Sans Pro", sans-serif;
+    padding: 8px 20px;
+}
+
+.btn-close:hover:not(.btn-link):not(.btn-flat) {
+    color: #333;
+}
+.button-list .btn {
+    margin-left: 0;
+}
+.button-list .btn + .btn {
+    margin-left: 20px;
+}
+
+#request_modal .modal-dialog {
+    width: 700px;
 }

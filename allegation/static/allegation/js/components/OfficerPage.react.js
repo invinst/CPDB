@@ -2,6 +2,7 @@ var HOST = 'http://localhost:8000';
 var React = require('react');
 var ComplaintList = require('./ComplaintList.react');
 var RelatedOfficers = require('./Officer/RelatedOfficers.react');
+var StoryList = require('./Officer/StoryList.react');
 var OfficerDetail = require('./OfficerDetail.react');
 var Officer = require('./Officer.react');
 var Filters = require('./Filters.react');
@@ -30,6 +31,7 @@ var OfficerPage = React.createClass({
         </div>
         <div className="container">
           <RelatedOfficers relatedOfficers={this.props.related}/>
+          <StoryList officer={this.props.officer} />
           <ComplaintList allegations={this.props.officer.allegations} officer={this.props.officer}/>
         </div>
       </div>

@@ -3,20 +3,16 @@ from collections import OrderedDict
 from django.db.models.query_utils import Q
 
 from common.models import AllegationCategory, Allegation, Area, Investigator, Officer, FINDINGS, OUTCOMES, UNITS, GENDER, \
-    RACES
+    RACES, OUTCOME_TEXT, RANKS
 from search.utils.date import *
 from search.utils.zip_code import *
 
 
-# TODO: More test for this one, especially tests for ensuring the order, returned format
+AREA_SORT_ORDERS = { 'police-beats': 0, 'neighborhoods': 1, 'ward': 2, 'police-districts': 3, 'school-grounds': 5 }
+
 class Suggestion(object):
     def make_suggestion_format(self, match):
         return [match[1], match[0]]
-
-    def suggest_rank(self, q):
-        ranks = Officer.objects.order_by().values_list('rank', flat=True).distinct()
-        # cast rank to str to ignore `None`
-        return [rank for rank in ranks if str(rank).lower().startswith(q)]
 
     def suggest_zip_code(self, q):
         results = {}
@@ -54,7 +50,7 @@ class Suggestion(object):
 
         for month in month_choices():
             if month[1].lower().startswith(q):
-                results.append(generate_month_year_entry_from_2010(month))
+                results = results + generate_month_year_entry_from_2010(month)
 
         return results
 
@@ -140,9 +136,11 @@ class Suggestion(object):
 
     def suggest_areas(self, q):
         condition = Q(name__icontains=q)
-        results = self.query_suggestions(Area, condition, ['name', 'id', 'type'])
 
-        return results
+        results = self.query_suggestions(Area, condition, ['name', 'id', 'type'], limit=20)
+        results.sort(key=lambda x: AREA_SORT_ORDERS.get(x[2], 4))
+
+        return results[:5]
 
     def query_suggestions(self, model_cls, cond, fields_to_get, limit=5, order_bys=None):
         flat = True if len(fields_to_get) == 1 else False
@@ -179,9 +177,11 @@ class Suggestion(object):
 
         ret['officer__gender'] = ret['complainant_gender']
         ret['officer__race'] = ret['complainant_race']
+        ret['officer__rank'] = self.suggest_in(q, RANKS)
 
-        ret['officer__rank'] = self.suggest_rank(q)
         ret['city'] = self.suggest_zip_code(q)
+
+        ret['outcome_text'] = self.suggest_in(q, OUTCOME_TEXT)
 
         ret = OrderedDict((k, v) for k, v in ret.items() if v)
 

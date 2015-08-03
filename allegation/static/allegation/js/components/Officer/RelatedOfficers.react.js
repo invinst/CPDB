@@ -12,7 +12,7 @@ var RelatedOfficers = React.createClass({
   renderRelatedOfficerList: function() {
     return _.map(this.props.relatedOfficers, function(officer) {
       return (
-        <div className='col-md-2'>
+        <div className='col-md-2' key={officer.id}>
           <Officer officer={officer} noClick={true} active={true}/>
         </div>
       );
@@ -21,7 +21,11 @@ var RelatedOfficers = React.createClass({
 
   renderTitle: function() {
     var title = this.props.relatedOfficers.length ? 'Related Officers' : '';
-    return (<div className='row'><h3 className='col-md-12'>{title}</h3></div>);
+    return (
+      <div className='row'>
+        <h3 className='col-md-12'>{title}</h3>
+      </div>
+    );
   },
 
   render: function () {
