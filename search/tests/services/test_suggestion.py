@@ -22,3 +22,9 @@ class SuggestViewTestCase(SimpleTestCase):
         self.suggestion.suggest_zip_code(available_zip_code).should.be.equal([['60616', city]])
         self.suggestion.suggest_zip_code(unavailable_zip_code).should.be.equal([])
         self.suggestion.suggest_zip_code(not_digit_term).should.be.equal([])
+
+    def test_month_year_suggestion_by_month_name(self):
+        self.suggestion.suggest_incident_year_month('feb').should.equal([
+            ['February 2010', '2010-2'], ['February 2011', '2011-2'], ['February 2012', '2012-2'],
+              ['February 2013', '2013-2'], ['February 2014', '2014-2']
+        ])
