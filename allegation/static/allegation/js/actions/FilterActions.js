@@ -38,6 +38,11 @@ var FilterActions = {
       actionType: MapConstants.SET_ACTIVE_COMPLAINT_LIST_FILTER,
       filter: val
     })
+  },
+  saveSession: function() {
+    AppDispatcher.dispatch({
+      actionType: MapConstants.SAVE_SESSION
+    })
   }
 
 };

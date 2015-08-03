@@ -981,6 +981,10 @@ form.navbar-form.navbar-right {
     opacity: 0;
 }
 
+#disclaimer {
+    font-family: Helvetica, sans-serif;
+}
+
 .bootstrap-tagsinput > .tag{
     opacity:0;
     transition: all ease-in-out 1s;

@@ -12,6 +12,7 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var MapConstants = require('../constants/MapConstants');
+var FilterActions = require('../actions/FilterActions');
 var assign = require('object-assign');
 var CHANGE_EVENT = 'change';
 var CREATE_EVENT = 'change';
@@ -62,22 +63,8 @@ var FilterStore = assign({}, EventEmitter.prototype, {
   },
   emitChange: function () {
     this.emit(CHANGE_EVENT);
-    this.saveSession(this.getSession());
   },
-  saveSession: function (sessionData) {
-    if (!SAVE_STATE) {
-      return;
-    }
-    $.ajax({
-      url: document.location.href,
-      data: JSON.stringify(sessionData),
-      success: function (returnData) {
-      },
-      contentType: "application/json; charset=utf-8",
-      dataType: 'json',
-      type: 'POST'
-    });
-  },
+
   emitCreate: function () {
     this.emit(CHANGE_EVENT);
 
