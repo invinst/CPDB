@@ -15,7 +15,8 @@ from common.models import Allegation, Area, AllegationCategory, Investigator, Of
 from common.models import ComplainingWitness, NO_DISCIPLINE_CODES, PoliceWitness
 from share.models import Session
 
-DEFAULT_SITE_TITLE = "Chicago's Police Database"
+DEFAULT_SITE_TITLE = "Chicago Police Database"
+
 OFFICER_COMPLAINT_COUNT_RANGE = [
     [20, 0],  # x >= 9
     [9, 20],  # 3 <= x < 9
