@@ -36,4 +36,3 @@ class SuggestViewTestCase(SimpleTestCase):
             ['February 2010', '2010-2'], ['February 2011', '2011-2'], ['February 2012', '2012-2'],
               ['February 2013', '2013-2'], ['February 2014', '2014-2']
         ])
-

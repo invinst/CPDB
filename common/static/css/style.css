@@ -992,6 +992,8 @@ form.navbar-form.navbar-right {
 
 #disclaimer {
     font-family: Helvetica, sans-serif;
+    transition: all ease-in-out 1s;
+    opacity:1;
 }
 
 #disclaimer .modal-backdrop.in {

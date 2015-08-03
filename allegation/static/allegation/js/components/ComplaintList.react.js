@@ -70,9 +70,12 @@ var ComplaintList = React.createClass({
     var x = 1;
     var locked = false;
     var that = this;
-    $(window).on('scroll',function(){
-      if($(window).scrollTop()/$(document).height() > .35 && !locked){
+    var window = $(window);
+
+    window.on('scroll',function(){
+      if (window.scrollTop()/$(document).height() > .35 && !locked) {
         var qry = FilterStore.getQueryString();
+
         $.get('/api/allegations/?' + qry + "page=" + x + "&length=25", function (data) {
           that.setState({'complaints': $.merge(that.state.complaints,data.allegations)});
           x++;

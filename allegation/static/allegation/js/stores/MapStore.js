@@ -42,9 +42,9 @@ var _types = ['police-districts','wards','police-beats','neighborhoods'];
 function create(dom_id, opts) {
   dom_id = dom_id ? dom_id : 'map';
   opts = opts ? opts : {'maxZoom': 17, 'minZoom': 10, 'scrollWheelZoom': false};
-  defaultZoom = 'defaultZoom' in opts ? opts['defaultZoom'] : 12;
-
+  var defaultZoom = 'defaultZoom' in opts ? opts['defaultZoom'] : 12;
   var center = 'center' in opts ? opts['center'] : [41.85677, -87.6024055];
+
   var southWest = L.latLng(41.143501411390766, -88.53057861328125);
   var northEast = L.latLng(42.474122772511485, -85.39947509765625);
   var maxBounds = L.LatLngBounds(southWest, northEast);
@@ -192,6 +192,10 @@ var MapStore = assign({}, EventEmitter.prototype, {
     var latLngs = []
     var features = markers.features;
 
+    if (_heat) {
+      _map.removeLayer(_heat);
+    }
+    
     var featuresMarkers = L.geoJson({features: features}, {
       pointToLayer: L.mapbox.marker.style,
       style: function (feature) {

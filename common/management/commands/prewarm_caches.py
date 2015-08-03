@@ -1,21 +1,22 @@
-import itertools
-from itertools import chain
 import urllib
-from common.models import AllegationCategory
+import string
+
+from itertools import chain, product
+
 from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.core.urlresolvers import reverse
-from django.db.models import Count
+
+from common.models import AllegationCategory
 
 class Command(BaseCommand):
     help = 'Run automatically in the background'
 
     def cache_searches(self):
-        alphabets = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
-                     'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+        alphabets = list(string.ascii_lowercase)
         numbers = ["%d" % x for x in range(10)]
 
-        keywords = chain(itertools.product(alphabets, repeat=2), itertools.product(numbers, repeat=2))
+        keywords = chain(product(alphabets, repeat=2), product(numbers, repeat=2))
 
         for keyword in keywords:
             search_term = "".join(keyword)

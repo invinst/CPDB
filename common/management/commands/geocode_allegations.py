@@ -39,16 +39,16 @@ class Command(BaseCommand):
             if allegation.add2:
                 add2 = allegation.add2
             if allegation.city:
-
                 splitted = allegation.city.split(' ')
                 if len(splitted) > 2:
                     city = allegation.city
 
             point = None
             allegation.point = None
+
             if add1 or add2 or city:
                 address_lookup = "%s %s, %s" % (add1, add2, city)
-                point = self.geocode_address(address_lookup)
+                point = self.geocode_address(address_lookup, allegation.beat)
             elif allegation.beat:
                 point = allegation.beat.polygon.centroid
             if point:
