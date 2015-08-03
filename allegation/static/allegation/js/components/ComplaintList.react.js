@@ -3,6 +3,7 @@ var React = require('react');
 var Filters = require('./Filters.react');
 var ComplaintListStore = require('../stores/ComplaintListStore');
 var ComplaintListRow = require('./ComplaintListRow.react');
+var RequestModal = require('./Complaint/RequestModal.react');
 var FilterActions = require('../actions/FilterActions');
 var OfficerStore = require('../stores/OfficerStore');
 
@@ -127,6 +128,7 @@ var ComplaintList = React.createClass({
             <a href={downloadHref} className='btn btn-black btn-download'>Download Table</a>
           </div>
         </div>
+        <RequestModal />
       </div>
     )
   },

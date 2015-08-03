@@ -143,7 +143,6 @@ function createAreas() {
     var areaHover = new L.Control.Command();
     _map.addControl(areaHover);
 
-    console.log(_baseLayers)
     }, 'json').fail(function(jqxhr, textStatus, error) {
       var err = textStatus + ", " + error;
       console.log("Request Failed: " + err);
