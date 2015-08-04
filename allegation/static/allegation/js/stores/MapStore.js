@@ -36,7 +36,11 @@ var _controlDiv = null;
 var _ajax_req = null;
 var _queryString = null;
 var _normalStyle = {"fillColor": "#eeffee", "fillOpacity": 0.0, 'weight': 2};
-var _state = {};
+var _state = {
+  'maxZoom': 17,
+  'minZoom': 10,
+  'scrollWheelZoom': false
+};
 var _types = ['police-districts','wards','police-beats','neighborhoods'];
 
 function create(dom_id, opts) {
@@ -143,7 +147,7 @@ function createAreas() {
 
   L.Control.Command = L.Control.extend({
     options: {
-        position: 'topright',
+        position: 'topright'
     },
 
     onAdd: function (map) {
@@ -170,7 +174,16 @@ var MapStore = assign({}, EventEmitter.prototype, {
   getSession: function () {
     var center = _map.getCenter();
     center = [center['lat'],center['lng']];
-    return {'map': {'bounds': _map.getBounds(), 'defaultZoom': _map.getZoom(), 'center': center, 'maxZoom': 17, 'minZoom': 10, 'scrollWheelZoom': false}}
+    return {
+      'map': {
+        'bounds': _map.getBounds(),
+        'defaultZoom': _map.getZoom(),
+        'center': center,
+        'maxZoom': 17,
+        'minZoom': 10,
+        'scrollWheelZoom': false
+      }
+    }
   },
   setSession: function (opts) {
     if ('map' in opts) {
@@ -196,7 +209,7 @@ var MapStore = assign({}, EventEmitter.prototype, {
   },
 
   setMarkers: function (markers) {
-    var latLngs = []
+    var latLngs = [];
     var features = markers.features;
     var heatOpts = { radius: 10, max: this.mapIntensity(features.length) };
 
