@@ -16,7 +16,7 @@ var FILTER_NAMES = {
   'not-sustained': 'Not Sustained',
   'exonerated': 'Exonerated',
   'unfounded': 'Unfounded',
-  'unknown': 'Unknown'
+  'other': 'Other'
 };
 
 function normalizeFinalFinding(finding) {
@@ -38,7 +38,7 @@ function isDisciplined(final_outcome_class) {
 function isActiveFilter(activeFilter, finding, final_outcome_class) {
   if (activeFilter == 'all') return true;
 
-  if (activeFilter ==  'unknown') {
+  if (activeFilter ==  'other') {
     return isUnknownFinding(finding);
   }
 

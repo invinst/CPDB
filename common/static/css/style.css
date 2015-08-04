@@ -778,7 +778,7 @@ canvas.leaflet-heatmap-layer {
     color: #62b28c;
 }
 
-.fa.unknown {
+.fa.other {
     color: #989898;
 }
 
@@ -900,7 +900,7 @@ canvas.leaflet-heatmap-layer {
     background-color: #0079ae;
     color: white;
 }
-
+u
 .leaflet-control-layers-base label span {
     display: block;
     padding: 2px;
