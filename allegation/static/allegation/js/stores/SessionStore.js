@@ -34,15 +34,16 @@ var SessionStore = assign({}, EventEmitter.prototype, {
       _sessionData = _.clone(tempSessionData);
     }
     $.ajax({
-      url: document.location.href,
+      url: HOME_URL,
       data: JSON.stringify(_sessionData),
       success: function (returnData) {
       },
       contentType: "application/json; charset=utf-8",
       dataType: 'json',
-      type: 'POST'
+      type: 'POST',
+      weight: 0.1
     });
-  },
+  }
 });
 
 // Register callback to handle all updates
