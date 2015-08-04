@@ -863,7 +863,7 @@ canvas.leaflet-heatmap-layer {
     color: #62b28c;
 }
 
-.fa.other {
+.fa.other, .fa.no-affidavit {
     color: #989898;
 }
 

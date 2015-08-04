@@ -66,7 +66,7 @@ var ComplaintListRow = React.createClass({
       date = allegation.start_date;
       date_label = "Investigation Start";
     }
-    var finding = this.props.finding ? this.props.finding.replace(/ /,"-").toLowerCase() : 'unknown';
+    var finding = this.props.finding ? this.props.finding.replace(/ /,"-").toLowerCase() : 'other';
     caretClasses = caretClasses + " complaint-row-outcome " + finding;
     var rowClassName = 'complaint-row ' + finding;
     if (allegation.final_outcome_class == 'disciplined') {
