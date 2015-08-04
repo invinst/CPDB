@@ -109,7 +109,7 @@ function cpdbAutocomplete($input) {
                 newData = newData.concat([freeTextData]);
               }
             }
-            newData = newData.concat(subdata);
+            newData = subdata.concat(newData);
           });
 
           response(newData);
