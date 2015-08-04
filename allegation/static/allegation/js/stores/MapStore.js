@@ -41,7 +41,8 @@ var _state = {}
 
 function create(dom_id, opts) {
   dom_id = dom_id ? dom_id : 'map';
-  opts = opts ? opts : {'maxZoom': 17, 'minZoom': 10, 'scrollWheelZoom': false};
+  opts = !$.isEmptyObject(opts) ? opts : { 'maxZoom': 17, 'minZoom': 10, 'scrollWheelZoom': false };
+
   var defaultZoom = 'defaultZoom' in opts ? opts['defaultZoom'] : 11;
   var center = 'center' in opts ? opts['center'] : [41.85677, -87.6024055];
 
@@ -53,7 +54,6 @@ function create(dom_id, opts) {
 
   }).setMaxBounds(maxBounds);
     _map.on('move',function () {
-      console.log('on move');
       FilterActions.saveSession();
     });
   createAreas();
@@ -109,7 +109,6 @@ function getAreaBoundaries(type) {
         });
         if (!(area_type in _layers)) {
           _layers[area_type] = L.layerGroup();
-          console.log(prettyLabels(area_type).capitalize())
           _baseLayers[prettyLabels(area_type).capitalize()] = _layers[area_type];
           if (!first_layer_added && area_type == 'police-districts') {
             first_layer_added = true;
@@ -123,7 +122,6 @@ function getAreaBoundaries(type) {
       }
     });
     var nextTypeIndex = _types.indexOf(type) + 1;
-    console.log(nextTypeIndex,_types[nextTypeIndex]);
     if (_types[nextTypeIndex]) {
       getAreaBoundaries(_types[nextTypeIndex])
     }
@@ -188,13 +186,11 @@ var MapStore = assign({}, EventEmitter.prototype, {
   getMarkers: function () {
     return _markers;
   },
+
   setMarkers: function (markers) {
     var latLngs = []
     var features = markers.features;
 
-    if (_heat) {
-      _map.removeLayer(_heat);
-    }
     var featuresMarkers = L.geoJson({features: features}, {
       pointToLayer: L.mapbox.marker.style,
       style: function (feature) {
@@ -210,6 +206,7 @@ var MapStore = assign({}, EventEmitter.prototype, {
     _map.addLayer(_heat);
 
   },
+
   getMap: function () {
     return _map;
   },
