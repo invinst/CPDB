@@ -863,7 +863,7 @@ canvas.leaflet-heatmap-layer {
     color: #62b28c;
 }
 
-.fa.unknown {
+.fa.other, .fa.no-affidavit {
     color: #989898;
 }
 
@@ -992,12 +992,17 @@ canvas.leaflet-heatmap-layer {
     padding-left: 15px;
     color: #0079ae;
 }
-
+.leaflet-control-command.leaflet-control{
+    float:left;
+}
 .leaflet-control-command {
     border-top: 2px solid #000;
     clear: none;
 }
-
+.leaflet-control-layers.leaflet-control-layers-expanded {
+    clear: none;
+    float:left;
+}
 .leaflet-control-command-interior {
     padding: 10px;
     width: 150px;
