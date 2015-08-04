@@ -70,10 +70,11 @@ var ComplaintList = React.createClass({
     var x = 1;
     var locked = false;
     var that = this;
-    var window = $(window);
+    var currentWindow = $(window);
 
-    window.on('scroll',function(){
-      if (window.scrollTop()/$(document).height() > .35 && !locked) {
+    currentWindow.on('scroll',function(){
+      if (currentWindow.scrollTop()/$(document).height() > .35 && !locked) {
+        console.log('over half of page');
         var qry = FilterStore.getQueryString();
 
         $.get('/api/allegations/?' + qry + "page=" + x + "&length=25", function (data) {
