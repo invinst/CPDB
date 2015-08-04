@@ -14,10 +14,10 @@ var TimelineAndLocation = React.createClass({
 
     var row = [];
     if (allegation.start_date || allegation.incident_date || allegation.end_date) {
-      row.push(<Timeline complaint={complaint} />);
+      row.push(<Timeline key="timeline" complaint={complaint} />);
     }
     if (allegation.point.lat) {
-      row.push(<Location complaint={complaint} />);
+      row.push(<Location key="location" complaint={complaint} />);
     }
     var className = "hidden";
     if (row.length) {

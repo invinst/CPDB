@@ -109,7 +109,6 @@ function getAreaBoundaries(type) {
         });
         if (!(area_type in _layers)) {
           _layers[area_type] = L.layerGroup();
-          console.log(prettyLabels(area_type).capitalize())
           _baseLayers[prettyLabels(area_type).capitalize()] = _layers[area_type];
           if (!first_layer_added && area_type == 'police-districts') {
             first_layer_added = true;
