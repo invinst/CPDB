@@ -3,7 +3,7 @@ var React = require('react');
 var Filters = require('./Filters.react');
 var ComplaintListStore = require('../stores/ComplaintListStore');
 var MapStore = require('../stores/MapStore');
-var FilterStore = require('../stores/FilterStore');
+var SessionStore = require('../stores/SessionStore');
 var Officer = require("./Officer.react");
 var ComplaintOfficerList = require("./ComplaintOfficerList.react");
 var ComplaintListRowDetail = require("./ComplaintListRowDetail.react");
@@ -119,7 +119,7 @@ var ComplaintListRow = React.createClass({
     });
 
 
-    FilterStore.saveSession({
+    SessionStore.saveSession({
       opened_complaints: init_data['opened_complaints']
     })
   }
