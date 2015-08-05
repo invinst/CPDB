@@ -5,58 +5,30 @@ var OfficerMixin = require("../OfficerMixin.react");
 var Officer = React.createClass({
   mixins: [OfficerMixin],
   getInitialState: function () {
-    return {investigation: 0};
+    return {};
   },
   componentDidMount: function () {
   },
   render: function () {
-    var rows = [];
-    var allegation = this.props.complaint.allegation;
-    var investigationData = this.props.investigation;
-    if (investigationData) {
-      for (var i = 0; i < investigationData.length; i++) {
-        var investigation = investigationData[i];
+    var investigator = this.props.complaint.investigator;
+    var more = '';
 
-        var style = {
-          'width': ( (investigation.count - investigation.no_action_taken_count) / investigation.count ) * 100 + "%"
-        };
-        var progressStyle = {
-          width: 100 + "%"
-        };
-        rows.push(
-          <div key={i}>
-            <div>
-              {investigation.officer.officer_first}&nbsp;
-              {investigation.officer.officer_last}&nbsp;
-              ({investigation.count} cases)
-            </div>
-            <div className="progress complaint" style={progressStyle}>
-              <div className="progress-bar discipline" role="progressbar" aria-valuenow="60" aria-valuemin="0"
-                   aria-valuemax="100" style={style}>
-                <span className="sr-only"></span>
-              </div>
-            </div>
-          </div>
-        );
-      }
-    }
+    var progressStyle = {
+      width: '100%'
+    };
+    var percent = (investigator.discipline_count / investigator.complaint_count) * 100;
+    var style = {
+      width: percent + '%'
+    };
 
-    var investigator = "";
-    if (rows.length) {
-      investigator = (
+    if (investigator.complaint_count > 1) {
+      more = (
         <div>
-          <div className='results'>
-            <div className='investigator-name'>
-              {allegation.investigator_name}
-            </div>
-            {rows}
-          </div>
-          <div className="legend">
-            <div>
-              <span className='red line'></span>No Punishment
-            </div>
-            <div>
-              <span className='blue line'></span>Discipline Applied
+          ({investigator.complaint_count} {pluralize('case', investigator.complaint_count)})
+          <div className="progress complaint" style={progressStyle}>
+            <div className="progress-bar discipline" role="progressbar" aria-valuenow="60" aria-valuemin="0"
+                 aria-valuemax="100" style={style}>
+              <span className="sr-only"></span>
             </div>
           </div>
         </div>
@@ -65,7 +37,24 @@ var Officer = React.createClass({
 
     return (
       <div className='investigation'>
-        <div className='row-fluid'>{investigator}</div>
+        <div className='row-fluid'>
+          <div>
+            <div className='results'>
+              <div className='investigator-name'>
+                {investigator.name}
+              </div>
+              {more}
+            </div>
+            <div className="legend">
+              <div>
+                <span className='red line'></span>No Punishment
+              </div>
+              <div>
+                <span className='blue line'></span>Discipline Applied
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

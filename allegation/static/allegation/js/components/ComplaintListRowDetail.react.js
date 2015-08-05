@@ -21,9 +21,8 @@ var ComplaintListRowDetail = React.createClass({
   render: function () {
     var complaint = this.props.complaint;
     var infor = [<Summary key="summary" complaint={complaint} />];
-    if (this.state.investigation) {
-      infor.push(<OfficerList key="officer-list" complaint={complaint} investigation={this.state.investigation} />);
-    }
+
+    infor.push(<OfficerList key="officer-list" complaint={complaint} />);
     infor.push(<TimelineAndLocation key="timeline" complaint={complaint} />);
 
     if (this.state.police_witness && this.state.police_witness.length) {

@@ -80,6 +80,7 @@ class AllegationAPIView(View):
                 'complaining_witness': witness,
                 'police_witness': police_witness,
                 'beat_name': beat_name,
+                'investigator': allegation.investigator,
             }
             allegations_list.append(ret)
 

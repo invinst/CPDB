@@ -262,19 +262,6 @@ class InvestigationAPIView(View):
         if crid:
             allegations = Allegation.objects.filter(crid=crid)
             allegation_officers = Officer.objects.filter(pk__in=allegations.values('officer'))
-            allegation = allegations[0]
-            investigator = allegation.investigator
-
-            ret['investigation'] = []
-            for officer in allegation_officers:
-                complaints = Allegation.objects.filter(officer=officer, investigator=investigator)
-                num_investigated = complaints.count()
-                no_action_taken_count = complaints.filter(final_outcome__in=NO_DISCIPLINE_CODES).count()
-                ret['investigation'].append({
-                    'count': num_investigated,
-                    'no_action_taken_count': no_action_taken_count,
-                    'officer': officer,
-                })
 
             ret['police_witness'] = []
             for witness in PoliceWitness.objects.filter(crid=crid):
