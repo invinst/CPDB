@@ -5,6 +5,8 @@ from django.db import models, migrations
 
 
 def capitalize_string(string):
+    if not string:
+        return string
     return " ".join(x.capitalize() for x in string.split(" "))
 
 
