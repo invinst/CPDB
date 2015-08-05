@@ -14,9 +14,7 @@ var ComplaintListRowDetail = React.createClass({
     this.setState(data);
   },
   componentDidMount: function () {
-    console.log(this.state.police_witness);
     if (this.state.police_witness == 0) {
-      console.log("json");
       $.getJSON('/api/investigation/', {'crid': this.props.complaint.allegation.crid}, this.setInvestigation);
     }
   },
