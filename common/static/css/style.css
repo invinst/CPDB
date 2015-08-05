@@ -549,6 +549,14 @@ ul.nav.navbar-nav {
     background-color: #c0272d;
 }
 
+.witness .progress-bar.discipline{
+    background-color: #c0272d;
+}
+
+.witness .progress.complaint{
+    background-color: #709dc0;
+}
+
 .results {
     background-color: #fff;
     padding: 20px;

@@ -68,10 +68,10 @@ var PoliceWitness = React.createClass({
       var legend = (
         <div className="legend">
           <div>
-            <span className='red line'></span>No Punishment
+            <span className='blue line'></span>No Punishment
           </div>
           <div>
-            <span className='blue line'></span>Discipline Applied
+            <span className='red line'></span>Discipline Applied
           </div>
         </div>
       );
