@@ -1035,6 +1035,12 @@ form.navbar-form.navbar-right {
 .btn-close:hover:not(.btn-link):not(.btn-flat) {
     color: #333;
 }
+
+.button-list {
+    border-top: 1px solid #333;
+    margin-top: 36px;
+}
+
 .button-list .btn {
     margin-left: 0;
 }
