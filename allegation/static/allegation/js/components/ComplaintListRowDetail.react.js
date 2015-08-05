@@ -8,22 +8,23 @@ var RequestButton = require('./Complaint/RequestButton.react');
 
 var ComplaintListRowDetail = React.createClass({
   getInitialState: function () {
-    return {investigation: 0};
+    return {police_witness: 0};
   },
   setInvestigation: function(data) {
     this.setState(data);
   },
   componentDidMount: function () {
-    if (this.state.investigation == 0) {
+    console.log(this.state.police_witness);
+    if (this.state.police_witness == 0) {
+      console.log("json");
       $.getJSON('/api/investigation/', {'crid': this.props.complaint.allegation.crid}, this.setInvestigation);
     }
   },
   render: function () {
     var complaint = this.props.complaint;
     var infor = [<Summary key="summary" complaint={complaint} />];
-    if (this.state.investigation) {
-      infor.push(<OfficerList key="officer-list" complaint={complaint} investigation={this.state.investigation} />);
-    }
+
+    infor.push(<OfficerList key="officer-list" complaint={complaint} />);
     infor.push(<TimelineAndLocation key="timeline" complaint={complaint} />);
 
     if (this.state.police_witness && this.state.police_witness.length) {
