@@ -19,7 +19,6 @@ def upper_case_state_name(apps, schema_editor):
                     parts[i] = 'IL'
                     break
             allegation.city = " ".join(parts)
-            allegation.add1 = capitalize_string(allegation.add1)
             allegation.add2 = capitalize_string(allegation.add2)
             allegation.save()
 
