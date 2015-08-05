@@ -18,30 +18,6 @@ var _sessionData = {};
 var init_data = typeof(INIT_DATA) == 'undefined' ? false : INIT_DATA;
 var init_filters = typeof(INIT_FILTERS) == 'undefined' ? {} : INIT_FILTERS;
 
-AUTOCOMPLETE_CATEGORY_NAMES = {
-  'crid': 'Complaint ID',
-  'cat__category': 'Category',
-  'cat': 'Allegation type',
-  'investigator': 'Investigator',
-  'officer': 'Officer name',
-  'officer__star': 'Badge number',
-  'officer__unit': 'Officer Unit',
-  'officer__rank': 'Officer Rank',
-  'officer__gender': 'Officer Gender',
-  'officer__race': 'Officer Race',
-  'recc_outcome': 'Recommended Outcome',
-  'recc_finding': 'Recommended Finding',
-  'final_outcome': 'Final Outcome',
-  'final_finding': 'Final Finding',
-  'incident_date_only__year': 'Incident Year',
-  'incident_date_only__year_month': 'Incident Year/Month',
-  'incident_date_only': 'Incident Date',
-  'areas__id': 'Area',
-  'complainant_gender': 'Complainant Gender',
-  'complainant_race': 'Complainant Race',
-  'city': 'Zip Code'
-};
-
 
 function isSameTag(current, other) {
   return (current.value[0] == other.value[0] && current.value[1] == other.value[1])
