@@ -7,6 +7,7 @@ from common.models import ComplainingWitness, PoliceWitness
 from common.json_serializer import JSONSerializer
 
 from allegation.views.allegation_query_filter import AllegationQueryFilter
+from allegation.services.outcome_analytics import OutcomeAnalytics
 from search.models import FilterLog
 
 
@@ -88,9 +89,9 @@ class AllegationAPIView(View):
             }
             allegations_list.append(ret)
 
+        analytics = OutcomeAnalytics.get_analytics(allegations)
         content = JSONSerializer().serialize({
             'allegations': allegations_list,
-            'iTotalRecords': Allegation.objects.all().count(),
-            'iTotalDisplayRecords': allegations.count(),
+            'analytics': analytics
         })
         return HttpResponse(content)
