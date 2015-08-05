@@ -177,7 +177,10 @@ class AllegationApiViewTestCase(AllegationApiTestBase):
         for row in data:
             allegation = Allegation.objects.get(pk=row['allegation']['id'])
             allegation.final_outcome.should.be.within(DISCIPLINE_CODES)
+            allegation.final_finding.should.equal('SU')
+
         data = self.fetch_allegations(outcome_text='no discipline')
         for row in data:
             allegation = Allegation.objects.get(pk=row['allegation']['id'])
             allegation.final_outcome.should.be.within(NO_DISCIPLINE_CODES)
+            allegation.final_finding.should.equal('SU')
