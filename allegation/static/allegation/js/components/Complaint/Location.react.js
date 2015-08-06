@@ -52,7 +52,7 @@ var Location = React.createClass({
     }
   },
   getSize: function() {
-    return '360x168';
+    return '350x168';
   },
   render: function () {
     var content;

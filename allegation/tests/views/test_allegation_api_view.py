@@ -184,3 +184,9 @@ class AllegationApiViewTestCase(AllegationApiTestBase):
             allegation = Allegation.objects.get(pk=row['allegation']['id'])
             allegation.final_outcome.should.be.within(NO_DISCIPLINE_CODES)
             allegation.final_finding.should.equal('SU')
+
+    def test_investigator_data(self):
+        data = self.fetch_allegations()
+        data.should.be.ok
+        for row in data:
+            row.should.contain('investigator')

@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from django.db.models import Count
 
-from common.models import Allegation, Investigator
+from common.models import Allegation, Investigator, DISCIPLINE_CODES
 
 
 class Command(BaseCommand):
@@ -25,5 +25,7 @@ class Command(BaseCommand):
                     investigator = Investigator.objects.create(raw_name=raw_name,
                                                                name=name,
                                                                complaint_count=value['dcount'])
-                finally:
-                    Allegation.objects.filter(investigator_name=raw_name).update(investigator=investigator)
+                allegations = Allegation.objects.filter(investigator_name=raw_name)
+                allegations.update(investigator=investigator)
+                investigator.discipline_count = allegations.filter(final_outcome__in=DISCIPLINE_CODES).count()
+                investigator.save()

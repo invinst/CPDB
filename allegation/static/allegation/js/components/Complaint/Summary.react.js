@@ -27,7 +27,7 @@ var Summary = React.createClass({
     var allegation = this.props.complaint.allegation;
     return (
       <div className="col">
-        <div className="title">Final Outcome</div>
+        <div className="title">Final Finding</div>
         {allegation.final_finding || 'Unknown'}
       </div>
     );
@@ -36,7 +36,7 @@ var Summary = React.createClass({
     var allegation = this.props.complaint.allegation;
     return (
       <div className="col">
-        <div className="title">Disciplinary action</div>
+        <div className="title">Final Outcome</div>
         {allegation.final_outcome || 'Unknown'}
       </div>
     );
