@@ -45,7 +45,7 @@ var _state = {
 
 function create(dom_id, opts) {
   dom_id = dom_id ? dom_id : 'map';
-  opts = opts ? opts : {};
+  opts = opts ? opts : _state;
   var defaultZoom = 'defaultZoom' in opts ? opts['defaultZoom'] : 11;
   var center = 'center' in opts ? opts['center'] : [41.85677, -87.6024055];
 
@@ -57,7 +57,6 @@ function create(dom_id, opts) {
 
   }).setMaxBounds(maxBounds);
     _map.on('move',function () {
-      console.log('on move');
       FilterActions.saveSession();
     });
   createAreas();
@@ -126,7 +125,6 @@ function getAreaBoundaries(type) {
       }
     });
     var nextTypeIndex = _types.indexOf(type) + 1;
-    console.log(nextTypeIndex,_types[nextTypeIndex]);
     if (_types[nextTypeIndex]) {
       getAreaBoundaries(_types[nextTypeIndex])
     }
@@ -200,21 +198,11 @@ var MapStore = assign({}, EventEmitter.prototype, {
   getMarkers: function () {
     return _markers;
   },
-  mapIntensity: function(markersLength) {
-    var intensity = 1;
-    if (markersLength < 15000 ) {
-       intensity = markersLength / 15000;
-    }
-    return intensity;
-  },
   setMarkers: function (markers) {
     var latLngs = [];
     var features = markers.features;
     var heatOpts = { radius: 10, max: this.mapIntensity(features.length) };
 
-    if (_heat) {
-      _map.removeLayer(_heat);
-    }
     var featuresMarkers = L.geoJson({features: features}, {
       pointToLayer: L.mapbox.marker.style,
       style: function (feature) {
@@ -230,6 +218,7 @@ var MapStore = assign({}, EventEmitter.prototype, {
     _map.addLayer(_heat);
 
   },
+
   getMap: function () {
     return _map;
   },
