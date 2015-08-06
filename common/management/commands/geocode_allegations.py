@@ -29,6 +29,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         counter = 0
+
         for allegation in Allegation.objects.filter(point=None):
             city = ''
             add1 = ""
@@ -44,8 +45,8 @@ class Command(BaseCommand):
 
             point = None
             allegation.point = None
-            if add1 or add2 or city:
 
+            if add1 or add2 or city:
                 address_lookup = "%s %s, %s" % (add1, add2, city)
                 point = self.geocode_address(address_lookup, allegation.beat)
             elif allegation.beat:

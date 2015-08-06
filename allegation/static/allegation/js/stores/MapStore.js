@@ -35,13 +35,13 @@ var _baseLayers = {};
 var _controlDiv = null;
 var _ajax_req = null;
 var _queryString = null;
-var _types = ['police-districts','wards','police-beats','neighborhoods']
 var _normalStyle = {"fillColor": "#eeffee", "fillOpacity": 0.0, 'weight': 2};
 var _state = {
   'maxZoom': 17,
   'minZoom': 10,
   'scrollWheelZoom': false
 };
+var _types = ['police-districts', 'wards', 'police-beats', 'neighborhoods'];
 
 function create(dom_id, opts) {
   dom_id = dom_id ? dom_id : 'map';
@@ -198,10 +198,23 @@ var MapStore = assign({}, EventEmitter.prototype, {
   getMarkers: function () {
     return _markers;
   },
+
+  mapIntensity: function(markersLength) {
+    var intensity = 1;
+    if (markersLength < 15000 ) {
+       intensity = markersLength / 15000;
+    }
+    return intensity;
+  },
+
   setMarkers: function (markers) {
     var latLngs = [];
     var features = markers.features;
     var heatOpts = { radius: 10, max: this.mapIntensity(features.length) };
+
+    if (_heat) {
+      _map.removeLayer(_heat);
+    }
 
     var featuresMarkers = L.geoJson({features: features}, {
       pointToLayer: L.mapbox.marker.style,

@@ -10,6 +10,7 @@ from search.utils.zip_code import *
 
 AREA_SORT_ORDERS = { 'police-beats': 0, 'neighborhoods': 1, 'ward': 2, 'police-districts': 3, 'school-grounds': 5 }
 
+# TODO: More test for this one, especially test for ensure the order, returned format
 class Suggestion(object):
     def make_suggestion_format(self, match):
         return [match[1], match[0]]
@@ -178,6 +179,7 @@ class Suggestion(object):
 
         ret['officer__gender'] = ret['complainant_gender']
         ret['officer__race'] = ret['complainant_race']
+
         ret['officer__rank'] = self.suggest_in(q, RANKS)
 
         ret['outcome_text'] = self.suggest_in(q, OUTCOME_TEXT)

@@ -18,6 +18,7 @@ var _sessionData = {};
 var init_data = typeof(INIT_DATA) == 'undefined' ? false : INIT_DATA;
 var init_filters = typeof(INIT_FILTERS) == 'undefined' ? {} : INIT_FILTERS;
 
+
 function isSameTag(current, other) {
   return (current.value[0] == other.value[0] && current.value[1] == other.value[1])
 }

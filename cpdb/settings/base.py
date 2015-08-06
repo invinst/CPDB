@@ -176,6 +176,7 @@ CACHES = {
 GRAPH_DISTCURVE_NUM_X_TICKS = 6
 GRAPH_DISTCURVE_NUM_Y_TICKS = 4
 MAP_POINT_THRESHOLD = 3
+SHELL_PLUS='ipython'
 DJANGO_ENV = 'dev'
 
 if len(sys.argv) > 1 and sys.argv[1] == 'test':
