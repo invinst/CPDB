@@ -3,12 +3,14 @@ var React = require('react');
 var Filters = require('./Filters.react');
 var OfficerActions = require('../actions/OfficerActions');
 var OfficerMixin = require("./OfficerMixin.react");
-var pluralize = require('pluralize')
 
 var Officer = React.createClass({
   mixins: [OfficerMixin],
+
   getInitialState: function () {
-    return {'selected': false}
+    return {
+      'selected': false
+    }
   },
 
   componentDidMount: function () {
@@ -27,47 +29,70 @@ var Officer = React.createClass({
     if (!officer) {
       return <div></div>
     }
-    var officerComplaintAvgStatus = this.getAvgClass();
+    var className = 'officer ' + this.getAvgClass();
 
-    var className = 'officer ' + officerComplaintAvgStatus;
     var selection_state = '';
     if (this.props.active) {
       className += " active";
       selection_state = 'selected';
     }
+
     if (this.props.selected) {
       className += " selected";
       selection_state = 'selected';
     }
+
     var selectableArea = "";
     if (!this.props.noClick) {
       selectableArea = <div onClick={this.onClick} className='checkmark cursor'>
         <i className='fa fa-check'></i>
       </div>
     }
-    var unit = "";
-    var disciplineClass = 'sixty disciplines no-border';
-    if (officer.unit){
-      unit = "Unit " + officer.unit;
-      disciplineClass = 'sixty disciplines';
-    }
 
     var officerLink = officer.absolute_url;
     var officerId = 'officer_' + officer.id;
+
+    var charactersToDisplay = 20;
+    var displayName = officer.officer_first.toLowerCase() + " " + officer.officer_last.toLowerCase();
+    if(displayName.length > charactersToDisplay){
+      displayName = officer.officer_first.toLowerCase().substr(0, 1) + ". " + officer.officer_last.toLowerCase();
+    }
+
+    var race = officer.race || 'Race N/A';
+    var gender = officer.gender || 'Gender N/A';
+    var gender = gender.replace('M', 'Male').replace('F', 'Female');
+
+
     return (
-      <div className={className} data-state={selection_state} id={officerId} onMouseDown={this.onMouseDown} onMouseUp={this.onMouseUp}>
+      <div className={className} data-state={selection_state} id={officerId} onMouseDown={this.onMouseDown}
+           onMouseUp={this.onMouseUp}>
         <a className='officer-link' href={officerLink}>
           <div className='officer_name'>
             <strong>
-              {this.props.officer.officer_first.toLowerCase()} {officer.officer_last.toLowerCase()}
+              {displayName}
             </strong>
           </div>
-          <div className='row'>
-            <div className='col-md-12'>
-              <div className='thirty-five unit'>{unit}</div>
-              <div className={disciplineClass}>
-                <div>{officer.allegations_count} {pluralize('complaint', officer.allegations_count)}</div>
-                <div>{officer.discipline_count} {pluralize('discipline', officer.discipline_count)}</div>
+          <div className='race-gender'>
+            {race}, {gender}
+          </div>
+          <div className='complaint-discipline-row'>
+            <div className='row'>
+              <div className='col-md-6'>
+                <div className=''>
+                  complaints
+                </div>
+                <div className=''>
+                  {officer.allegations_count}
+                </div>
+              </div>
+              <div className='vertical-line'></div>
+              <div className='col-md-6'>
+                <div className=''>
+                  disciplines
+                </div>
+                <div className=''>
+                  {officer.discipline_count}
+                </div>
               </div>
             </div>
           </div>
