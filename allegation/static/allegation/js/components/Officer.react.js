@@ -1,8 +1,11 @@
 var HOST = 'http://localhost:8000';
 var React = require('react');
+
 var Filters = require('./Filters.react');
 var OfficerActions = require('../actions/OfficerActions');
-var OfficerMixin = require("./OfficerMixin.react");
+var OfficerMixin = require('./OfficerMixin.react');
+
+var OfficerPresenter = require('../presenters/OfficerPresenter');
 
 var Officer = React.createClass({
   mixins: [OfficerMixin],
@@ -51,17 +54,7 @@ var Officer = React.createClass({
 
     var officerLink = officer.absolute_url;
     var officerId = 'officer_' + officer.id;
-
-    var charactersToDisplay = 20;
-    var displayName = officer.officer_first.toLowerCase() + " " + officer.officer_last.toLowerCase();
-    if(displayName.length > charactersToDisplay){
-      displayName = officer.officer_first.toLowerCase().substr(0, 1) + ". " + officer.officer_last.toLowerCase();
-    }
-
-    var race = officer.race || 'Race N/A';
-    var gender = officer.gender || 'Gender N/A';
-    var gender = gender.replace('M', 'Male').replace('F', 'Female');
-
+    var presenter = OfficerPresenter(officer);
 
     return (
       <div className={className} data-state={selection_state} id={officerId} onMouseDown={this.onMouseDown}
@@ -69,11 +62,11 @@ var Officer = React.createClass({
         <a className='officer-link' href={officerLink}>
           <div className='officer_name'>
             <strong>
-              {displayName}
+              { presenter.displayName() }
             </strong>
           </div>
           <div className='race-gender'>
-            {race}, {gender}
+            { presenter.race() }, { presenter.gender() }
           </div>
           <div className='complaint-discipline-row'>
             <div className='row'>
