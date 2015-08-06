@@ -1133,3 +1133,12 @@ form.navbar-form.navbar-right {
 #request_modal .modal-dialog {
     width: 700px;
 }
+
+.loading-animation {
+    background-color: #709dc0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 5px;
+    transition: all 1s;
+}
