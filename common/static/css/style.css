@@ -628,11 +628,11 @@ ul.nav.navbar-nav {
 }
 
 .progress-bar.discipline {
-    background-color: #709dc0;
+    background-color: #c0272d;
 }
 
 .progress.complaint {
-    background-color: #c0272d;
+    background-color: #709dc0;
 }
 
 .results {
@@ -1120,6 +1120,11 @@ form.navbar-form.navbar-right {
 
 .btn-close:hover:not(.btn-link):not(.btn-flat) {
     color: #333;
+}
+
+.button-list {
+    border-top: 1px solid #333;
+    margin-top: 36px;
 }
 
 .button-list .btn {
