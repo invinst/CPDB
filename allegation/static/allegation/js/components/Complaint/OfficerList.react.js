@@ -1,5 +1,5 @@
 var React = require('react');
-var Officer = require('./Officer.react');
+var Officer = require('../Officer.react');
 var Investigator = require('./Investigator.react');
 
 
@@ -43,7 +43,7 @@ var OfficerList = React.createClass({
         className = investigator ? officerClass : 'col-md-offset-1 col-md-2';
         rows.push(
           <div className={className} key="officer">
-            <Officer active={true} officer={complaint.officer}/>
+            <Officer active={true} officer={complaint.officer} noClick={true}/>
           </div>
         );
       }
@@ -51,7 +51,7 @@ var OfficerList = React.createClass({
         className = (!investigator && (rows.length % 5 == 0)) ? 'col-md-offset-1 col-md-2' : officerClass;
         rows.push(
           <div className={className} key={i}>
-            <Officer active={true} officer={complaint.officers[i]}/>
+            <Officer active={true} officer={complaint.officers[i]} noClick={true}/>
           </div>
         );
       }

@@ -5,7 +5,6 @@ var ComplaintListStore = require('../stores/ComplaintListStore');
 var MapStore = require('../stores/MapStore');
 var SessionStore = require('../stores/SessionStore');
 var Officer = require("./Officer.react");
-var ComplaintOfficerList = require("./ComplaintOfficerList.react");
 var ComplaintListRowDetail = require("./ComplaintListRowDetail.react");
 var RequestButton = require('./Complaint/RequestButton.react');
 var _timeline = false;
