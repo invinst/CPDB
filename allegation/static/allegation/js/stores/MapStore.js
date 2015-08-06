@@ -41,12 +41,11 @@ var _state = {
   'minZoom': 10,
   'scrollWheelZoom': false
 };
-var _types = ['police-districts','wards','police-beats','neighborhoods'];
+var _types = ['police-districts', 'wards', 'police-beats', 'neighborhoods'];
 
 function create(dom_id, opts) {
   dom_id = dom_id ? dom_id : 'map';
-  opts = !$.isEmptyObject(opts) ? opts : { 'maxZoom': 17, 'minZoom': 10, 'scrollWheelZoom': false };
-
+  opts = opts ? opts : _state;
   var defaultZoom = 'defaultZoom' in opts ? opts['defaultZoom'] : 11;
   var center = 'center' in opts ? opts['center'] : [41.85677, -87.6024055];
 
