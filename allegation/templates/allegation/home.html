@@ -29,6 +29,7 @@
     var INIT_FILTERS = {filters: {% if filters %}{{ filters|safe }}{% else %}false{% endif %}};
   </script>
   <script>
+  MEDIA_URL = {{ MEDIA_URL }}
     // We don't run this one on test env
     {% if DJANGO_ENV != 'test' %}
     jQuery(document).ready(function() {

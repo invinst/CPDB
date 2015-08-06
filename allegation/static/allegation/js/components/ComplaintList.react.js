@@ -3,6 +3,7 @@ var React = require('react');
 var Filters = require('./Filters.react');
 var ComplaintListStore = require('../stores/ComplaintListStore');
 var ComplaintListRow = require('./ComplaintListRow.react');
+var Download = require('./Download.react');
 var FilterStore = require('../stores/FilterStore');
 var RequestModal = require('./Complaint/RequestModal.react');
 var FilterActions = require('../actions/FilterActions');
@@ -129,7 +130,7 @@ var ComplaintList = React.createClass({
       }
     }
 
-    var downloadHref = '/allegations/download/?' + OfficerStore.getQueryString();
+    var query = OfficerStore.getQueryString();
 
     return (
       <div className="complaint_list">
@@ -144,7 +145,7 @@ var ComplaintList = React.createClass({
         {rows}
         <div className="row">
           <div className="col-md-2 col-md-offset-10">
-            <a href={downloadHref} className='btn btn-black btn-download'>Download Table</a>
+            <Download query={query} />
           </div>
         </div>
         <RequestModal />
