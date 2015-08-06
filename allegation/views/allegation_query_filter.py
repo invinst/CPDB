@@ -38,6 +38,10 @@ class AllegationQueryFilter(object):
             if text:
                 added_value = DISCIPLINE_CODES if text == 'any discipline' else NO_DISCIPLINE_CODES
                 value += added_value
+        if field == 'final_finding':
+            text = self.request.GET.get('outcome_text')
+            if text:
+                value += ['SU']  # sustained
 
         if len(value) > 1:
             self.filters["%s__in" % field] = value
