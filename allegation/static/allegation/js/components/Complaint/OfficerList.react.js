@@ -27,7 +27,7 @@ var OfficerList = React.createClass({
           <div className="section-title">
             Investigator
           </div>
-          <Investigator complaint={complaint} investigation={investigation}/>
+          <Investigator complaint={complaint}/>
         </div>
       )
     }

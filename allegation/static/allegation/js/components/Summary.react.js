@@ -5,6 +5,7 @@ var SummaryActions = require('../actions/SummaryActions');
 var SummaryRow = require("./SummaryRow.react");
 var SummaryChildRow = require("./SummaryChildRow.react");
 var SummaryStore = require("../stores/SummaryStore");
+var ExtraInformation = require('./SummarySection/ExtraInformation.react');
 
 
 var Summary = React.createClass({
@@ -55,8 +56,11 @@ var Summary = React.createClass({
       <div id="summary-container" onClick={this.containerClick}>
         <div id='summary'>
           <div className='row'>
-            <div className="col-md-8">{rows}</div>
-            <div className="col-md-4 child-row-container">{childRowGroup}</div>
+            <div className='col-md-8'>{rows}</div>
+            <div className='col-md-4 child-row-wrapper'>
+              <div className='child-row-container'>{childRowGroup}</div>
+            </div>
+            <ExtraInformation />
           </div>
         </div>
       </div>

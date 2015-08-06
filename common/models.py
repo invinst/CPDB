@@ -358,6 +358,7 @@ class Investigator(models.Model):
     raw_name = models.CharField(max_length=160)
     name = models.CharField(max_length=160)
     complaint_count = models.IntegerField(default=0)
+    discipline_count = models.IntegerField(default=0)
 
     @property
     def tag_value(self):

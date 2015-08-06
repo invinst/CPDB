@@ -13,6 +13,8 @@ var PoliceWitness = React.createClass({
     if (witnesses && witnesses.length) {
 
       var witnesses_rows = [];
+      var eachRow = Math.min(3, witnesses.length);
+      var witnessesRowClassName = "col-md-" + (12 / eachRow);
       for (var i = 0; i < witnesses.length; i++) {
         var witnesses_obj = witnesses[i];
         var rows = [];
@@ -48,7 +50,7 @@ var PoliceWitness = React.createClass({
         }
 
         witnesses_rows.push(
-          <div className="col-md-4" key={i}>
+          <div className={witnessesRowClassName} key={i}>
             <div className='results witness'>
               <div className='investigator-name'>
                 {witnesses_obj.witness_officer.officer_first} {witnesses_obj.witness_officer.officer_last}
@@ -66,10 +68,10 @@ var PoliceWitness = React.createClass({
       var legend = (
         <div className="legend">
           <div>
-            <span className='red line'></span>No Punishment
+            <span className='blue line'></span>No Punishment
           </div>
           <div>
-            <span className='blue line'></span>Discipline Applied
+            <span className='red line'></span>Discipline Applied
           </div>
         </div>
       );
