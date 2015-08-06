@@ -4,11 +4,6 @@ var OfficerMixin = require("../OfficerMixin.react");
 
 var Officer = React.createClass({
   mixins: [OfficerMixin],
-  getInitialState: function () {
-    return {};
-  },
-  componentDidMount: function () {
-  },
   render: function () {
     var investigator = this.props.complaint.investigator;
     var more = '';
