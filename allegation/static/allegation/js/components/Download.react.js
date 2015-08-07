@@ -20,6 +20,7 @@ var Download = React.createClass({
 
     if (this.state.href) {
       location.href = this.state.href;
+      return;
     }
 
     this.setState({
@@ -55,7 +56,7 @@ var Download = React.createClass({
       );
     } else {
       content = (
-        <button onClick={this.onClick} className='btn btn-black btn-download'>Download Table</button>
+        <a onClick={this.onClick} href={this.state.href} className='btn btn-black btn-download'>Download Table</a>
       )
     }
     return (

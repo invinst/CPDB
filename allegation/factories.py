@@ -2,6 +2,7 @@ from django.utils import timezone
 import factory
 from faker import Faker
 
+from allegation.models import Download
 from common.models import AllegationCategory, Officer, Area, Allegation, Investigator, ComplainingWitness, RACES, \
     OUTCOMES
 
@@ -74,3 +75,11 @@ class AllegationFactory(factory.django.DjangoModelFactory):
         if extracted:
             for area in extracted:
                 self.areas.add(area)
+
+
+class DownloadFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Download
+    query = factory.Sequence(lambda n: fake.name())
+    finished = factory.Sequence(lambda n: n % 2)
+    url = factory.Sequence(lambda n: fake.url())
