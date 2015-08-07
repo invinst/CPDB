@@ -12,6 +12,8 @@ var FilterStore = require('../stores/FilterStore');
 var OfficerStore = require('../stores/OfficerStore');
 
 var FilterActions = require('../actions/FilterActions');
+var OutcomeFilterActions = require('../actions/ComplaintList/OutcomeFilterActions');
+
 
 var ComplaintList = React.createClass({
   getInitialState: function () {
@@ -93,6 +95,7 @@ var ComplaintList = React.createClass({
   },
   _onChange: function () {
     this.setState(ComplaintListStore.getAll());
+
   }
 });
 

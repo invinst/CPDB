@@ -12,7 +12,8 @@
     "object-assign": "^1.0.0",
     "react": "^0.12.0",
     "pluralize": "~1.1.2",
-    "lodash": "~3.10.0"
+    "lodash": "~3.10.0",
+    "q": "~1.4.1"
   },
   "devDependencies": {
     "browserify": "^6.2.0",
