@@ -63,6 +63,7 @@ function create(dom_id, opts) {
   MapStore.update();
 }
 function getAreaBoundaries(type) {
+  filters = FilterStore.getAll();
   $.get("/api/areas/?type=" + type, function (data) {
     var first_layer_added = false;
     _geo_json_layer = L.geoJson(data, {
@@ -72,6 +73,13 @@ function getAreaBoundaries(type) {
       },
       onEachFeature: function (feature, layer) {
         layer.selected = false;
+        if ('areas__id' in filters) {
+          if (filters['areas__id']['value'].indexOf(feature.properties.id) > -1) {
+            layer.selected = true;
+            layer.setStyle(highlightStyle);
+          }
+        }
+
         var area_type = feature.properties.type;
         layer.on('mouseover', function () {
           $(".leaflet-control-command-interior").show().text(feature.properties.name);

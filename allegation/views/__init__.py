@@ -43,7 +43,11 @@ class AllegationListView(TemplateView):
 
     def get_filters(self, key, values):
         if key == 'areas__id':
-            return False
+            ret = []
+            for pk in values['value']:
+                area = Area.objects.get(pk=pk)
+                ret.append({'text': "%s: %s" % (area.type, area.name) , 'value': pk})
+            return ret
 
         if key in self.KEYS:
             values = self.KEYS[key].objects.filter(pk__in=values['value'])

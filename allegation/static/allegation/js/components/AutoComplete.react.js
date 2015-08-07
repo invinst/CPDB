@@ -92,6 +92,7 @@ var AutoComplete = React.createClass({
   },
   getInitialState: function () {
     var filters = {};
+
     if (init_data){
       filters = FilterStore.setSession(init_filters);
       MapStore.setSession(init_data);
