@@ -254,7 +254,7 @@ var MapStore = assign({}, EventEmitter.prototype, {
     if (_heat) {
       _map.removeLayer(_heat);
     }
-    _ajax_req = $.getJSON("/api/allegations/gis/?" + queryString, function (data) {
+    _ajax_req = $.getJSON("/api/allegations/cluster/?" + queryString, function (data) {
       store.setMarkers(data);
     });
   },
