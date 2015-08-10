@@ -17,19 +17,9 @@ var OutcomeFilterActions = require('../actions/ComplaintList/OutcomeFilterAction
 
 var ComplaintList = React.createClass({
   getInitialState: function () {
-    var ret = {
-      'complaints': []
-    };
-    if (this.props.allegations) {
-      ret = ComplaintListStore.init({
-        'complaints': this.props.allegations,
-        'officer': this.props.officer
-      });
-    } else {
-      ret = ComplaintListStore.init();
-    }
-    return ret;
+    return ComplaintListStore.getState();
   },
+  
   componentDidMount: function () {
     ComplaintListStore.addChangeListener(this._onChange);
     //var x = 1;
@@ -55,6 +45,9 @@ var ComplaintList = React.createClass({
     return rows[rowIndex];
   },
   render: function () {
+    var activeFilter = this.state.activeFilter;
+    var analytics = this.state.analytics;
+    
     if (!this.state.complaints.length) {
       return <div></div>;
     }
@@ -80,7 +73,7 @@ var ComplaintList = React.createClass({
             <h3 className="margin-top-0">Complaints</h3>
           </div>
           <div className='col-md-10 text-right'>
-	          <OutcomeFilter />
+	    <OutcomeFilter activeFilter={activeFilter} analytics={analytics} />
           </div>
         </div>
         {rows}
@@ -94,8 +87,7 @@ var ComplaintList = React.createClass({
     )
   },
   _onChange: function () {
-    this.setState(ComplaintListStore.getAll());
-
+    this.setState(ComplaintListStore.getState());
   }
 });
 

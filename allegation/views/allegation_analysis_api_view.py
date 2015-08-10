@@ -13,7 +13,7 @@ class AllegationAnalysisAPIView(View):
         super(AllegationAnalysisAPIView, self).__init__(**kwargs)
 
     def get_allegations(self, ignore_filters=None):
-        allegation_query_filters = AllegationQueryFilter(self.request, ignore_filters)
+        allegation_query_filters = AllegationQueryFilter(self.request.GET, ignore_filters)
         allegations = Allegation.allegations.by_allegation_filter(allegation_query_filters)
 
         return allegations

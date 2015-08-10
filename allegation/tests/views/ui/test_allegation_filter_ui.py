@@ -30,11 +30,13 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         # On each filter
         for filter in FILTERS:
             self.element_by_tagname_and_text('span', filter).click()
+            self.until(self.ajax_complete)
             number_of_final_findings = len(FILTERS[filter])
             self.number_of_complaints().should.equal(number_of_final_findings)
 
         # Disciplined filter
         self.element_by_tagname_and_text('span', 'Disciplined').click()
+        self.until(self.ajax_complete)
         self.number_of_complaints().should.equal(Allegation.objects.filter(final_outcome_class='disciplined').count())
 
     def number_of_complaints(self):

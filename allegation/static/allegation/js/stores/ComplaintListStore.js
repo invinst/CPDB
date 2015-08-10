@@ -1,14 +1,3 @@
-/*
- * Copyright (c) 2014, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * MapStore
- */
-
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var MapConstants = require('../constants/MapConstants');
@@ -16,13 +5,15 @@ var AppConstants = require('../constants/AppConstants');
 
 var assign = require('object-assign');
 var OfficerStore = require('./OfficerStore');
-var OutcomeFilterStore = require('./ComplaintList/OutcomeFilterStore');
 var _ = require('lodash');
 
+var OutcomeAnalysisAPI = require('../utils/OutcomeAnalysisAPI');
 var CHANGE_EVENT = 'change';
 
 var _state = {
-  'complaints': []
+  'complaints': [],
+  'activeFilter': 'all',
+  'analytics': []
 };
 
 
@@ -47,7 +38,7 @@ var ComplaintListStore = assign({}, EventEmitter.prototype, {
 
   update: function () {
     var queryString = OfficerStore.getQueryString();
-    var activeFilter = OutcomeFilterStore.getState().activeFilter;
+    var activeFilter = _state['activeFilter'];
     var outcomeFilterQuery = this.outcomeFilterQuery(activeFilter);
 
     if (!queryString) {
@@ -61,10 +52,23 @@ var ComplaintListStore = assign({}, EventEmitter.prototype, {
     $.getJSON('/api/allegations/?' + queryString, function (data) {
       that.changeComplaintList(data.allegations);
     })
+
+    // OutcomeAnalysisAPI.getAnalysisInformation();
   },
 
   changeComplaintList: function(complaints) {
     _state['complaints'] = complaints;
+    OutcomeAnalysisAPI.getAnalysisInformation();
+    ComplaintListStore.emitChange();
+  },
+
+  setAnalysisInformation: function(data) {
+    _state.analytics = data;
+    this.emitChange();
+  },
+
+  setActiveFilter: function(activeFilter) {
+    _state['activeFilter'] = activeFilter;
     this.emitChange();
   },
 
@@ -83,7 +87,7 @@ var ComplaintListStore = assign({}, EventEmitter.prototype, {
     return _state;
   },
 
-  getAll: function (type) {
+  getState: function (type) {
     return _state;
   },
 
@@ -104,7 +108,7 @@ var ComplaintListStore = assign({}, EventEmitter.prototype, {
   }
 });
 
-// Register callback to handle all updates
+
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case MapConstants.MAP_REPLACE_FILTERS:
@@ -124,7 +128,12 @@ AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.SET_ACTIVE_COMPLAINT_LIST_FILTER:
+      ComplaintListStore.setActiveFilter(action.filter);
       ComplaintListStore.update();
+      break;
+
+    case AppConstants.RECEIVED_OUTCOME_FILTER_ANALYSIS:
+      ComplaintListStore.setAnalysisInformation(action.data['analytics']);
       break;
 
     default:
