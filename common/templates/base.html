@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-{% load i18n %}
-{% load staticfiles %}
-{% load common_tags %}
+{% load staticfiles common_tags compress %}
 <html>
 <head>
     <title>{% block title %} {{ session.query.title | default_site_title }} {% endblock %}</title>
@@ -11,29 +9,29 @@
     <meta name="language" content="{{ LANGUAGE_CODE }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description"
-          content="{% block meta-description %}{% trans 'CPDB' %}{% endblock %}" />
+          content="{% block meta-description %}CPDB{% endblock %}" />
     <meta name="keywords" content="{% block meta-keywords %}{% endblock %}" />
     <meta name="author" content="Antipro.VN" />
     {% block meta %}{% endblock %}
     <link rel="pingback" href="/xmlrpc/" />
     <link rel="shortcut icon" type='image/png' href="{% static 'img/logox2.png' %}" />
     <link rel="home" href="/" />
-    {% block head-link %}
+    {% block head-link-external %}
         <link href='http://fonts.googleapis.com/css?family=Vollkorn:400italic,400' rel='stylesheet' type='text/css'>
         <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700' rel='stylesheet' type='text/css'>
+        <link href="//cdnjs.cloudflare.com/ajax/libs/vis/4.2.0/vis.css" rel="stylesheet" type="text/css" />
+    {%  endblock %}
+    {%  block head-link %}
+
         <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'bootstrap-material-design/dist/css/material-fullpalette.min.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'bootstrap-material-design/dist/css/roboto.min.css' %}" />
-        <link href="//cdnjs.cloudflare.com/ajax/libs/vis/4.2.0/vis.css" rel="stylesheet" type="text/css" />
         <link rel="stylesheet" type="text/css" href="{% static 'toastr/toastr.min.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'components-font-awesome/css/font-awesome.min.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
 
     {% endblock %}
     <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
-    <script src="{% static 'js/jquery.mobile.custom.min.js' %}"></script>
-    <script src="{% static 'jquery-cookie/jquery.cookie.js' %}"></script>
-    <script src="{% static 'js/head_define.js' %}"></script>
 </head>
 <body id="{% block page_id %}body{% endblock %}">
 {% include '_top_nav.html' %}
@@ -64,27 +62,37 @@
     </footer>
 </div>
 {% endblock %}
-{% block footerjs %}
-    <script src="{% static 'js/head_define.js' %}"></script>
+{% block footerjs-external %}
     <script src="//cdnjs.cloudflare.com/ajax/libs/vis/4.2.0/vis.min.js"></script>
-    <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'bootstrap-material-design/dist/js/material.min.js' %}"></script>
-    <script src="{% static 'toastr/toastr.min.js' %}"></script>
-    <script src="{% static 'moment/min/moment.min.js' %}"></script>
-    <script src="{% static 'underscore/underscore-min.js' %}"></script>
     <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.js'></script>
     <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-heat/v0.1.3/leaflet-heat.js'></script>
-    <script src="{% static 'js/foot_define.js' %}"></script>
-    <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-         })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-        ga('create', 'UA-63671047-1', 'auto');
-        ga('send', 'pageview');
-
-    </script>
 {% endblock %}
+{% block footerjs %}
+    {% compress js %}
+
+        <script src="{% static 'js/jquery.mobile.custom.min.js' %}"></script>
+        <script src="{% static 'jquery-cookie/jquery.cookie.js' %}"></script>
+        <script src="{% static 'js/head_define.js' %}"></script>
+
+        <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'bootstrap-material-design/dist/js/material.min.js' %}"></script>
+        <script src="{% static 'toastr/toastr.min.js' %}"></script>
+        <script src="{% static 'moment/min/moment.min.js' %}"></script>
+        <script src="{% static 'underscore/underscore-min.js' %}"></script>
+        <script src="{% static 'js/foot_define.js' %}"></script>
+        <script>
+            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+             })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+            ga('create', 'UA-63671047-1', 'auto');
+            ga('send', 'pageview');
+
+
+        </script>
+     {% endcompress %}
+{% endblock %}
+
 </body>
 </html>
