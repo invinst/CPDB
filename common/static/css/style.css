@@ -1172,3 +1172,40 @@ form.navbar-form.navbar-right {
     padding: 5px 10px;
     font-family: 'Source Sans Pro', sans-serif;
 }
+
+.chart-row {
+    padding-left: 0;
+}
+
+.chart-row .nav-tabs {
+    background-color: #f1f1f1 !important;
+}
+
+.chart-row .nav-tabs > li {
+    padding-top: 4px;
+    border-top: 0 solid #f1f1f1 !important;
+    border-right: 1px solid #cbcbcb !important;
+}
+
+.chart-row .nav-tabs > li.active {
+    padding-top: 0;
+    border-top: 4px solid #0079ae !important;
+    border-right: 0 !important;
+}
+
+.chart-row .nav-tabs > li > a {
+    border-radius: 0 !important;
+    background-color: #f1f1f1 !important;
+    color: #0079ae !important;
+}
+
+.chart-row .nav-tabs > li.active > a {
+    background-color: #f6f6ec !important;
+    color: #333333 !important;
+    border-right: 1px solid #cbcbcb !important;
+}
+
+.sunburst-legend {
+    text-align: center;
+    color: #fff;
+}

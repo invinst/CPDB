@@ -18,6 +18,7 @@ var Filters = require('./Filters.react');
 var MapStore = require('../stores/MapStore');
 var FilterAction = require('../actions/FilterActions');
 var Summary = require('./Summary.react');
+var Sunburst = require('./Sunburst.react');
 var OfficerList = require('./OfficerList.react');
 var ComplaintList = require('./ComplaintList.react');
 var DistributionChart = require('./DistributionChart.react');
@@ -81,7 +82,27 @@ var CPDBApp = React.createClass({
           <div className='col-md-6 map-column relative'>
             <div id='map' className='pin-top pin-bottom'></div>
           </div>
-          <div className='col-md-6'><Summary /></div>
+          <div className='col-md-6 chart-row'>
+            <div>
+              <ul className="nav nav-tabs" role="tablist">
+                <li role="presentation" className="active">
+                  <a href="#sunburst" aria-controls="sunburst" role="tab" data-toggle="tab">Penalty Distribution</a>
+                </li>
+                <li role="presentation">
+                  <a href="#categories" aria-controls="profile" role="tab" data-toggle="tab">Complaint Types</a>
+                </li>
+              </ul>
+
+              <div className="tab-content">
+                <div role="tabpanel" className="tab-pane active" id="sunburst">
+                  <Sunburst />
+                </div>
+                <div role="tabpanel" className="tab-pane" id="categories">
+                  <Summary />
+                </div>
+              </div>
+          </div>
+          </div>
         </div>
         <div className='container'>
           <div id='officer-cards'><OfficerList /></div>
