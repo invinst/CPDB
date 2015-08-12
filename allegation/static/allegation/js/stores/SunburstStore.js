@@ -13,15 +13,26 @@ var _state = {
 var _complaints = {};
 var _currentActive = false;
 
-
+var _queryString = null;
 
 var SunburstStore = assign({}, EventEmitter.prototype, {
   update: function () {
-    var query_string = FilterStore.getQueryString();
-    $.getJSON('/api/allegations/sunburst/?' + query_string, function (data) {
-      _state['rows'] = data.summary;
+    var queryString = FilterStore.getQueryString(['final_outcome', 'final_finding']);
+    if (queryString == _queryString) {
+      return;
+    }
+    _queryString = queryString;
+
+    d3.json("/api/allegations/sunburst/?" + queryString, function (error, data) {
+      if (error) throw error;
+      var root = data.sunburst;
+      _state = {
+        data: root,
+        selected: root,
+        drew: false
+      };
       SunburstStore.emitChange();
-    })
+    });
   },
   set: function (key, value) {
     _state[key] = value;

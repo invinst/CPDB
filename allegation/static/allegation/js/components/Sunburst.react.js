@@ -73,16 +73,25 @@ var Sunburst = React.createClass({
   getInitialState: function () {
     return SunburstStore.init();
   },
-  initChart: function () {
-
-    svg = d3.select("#sunburst-chart").append("svg")
-      .attr("width", width)
-      .attr("height", height)
-      .append("g")
-      .attr("transform", "translate(" + width / 2 + "," + (height / 2 + 10) + ")");
-
-    d3.select(self.frameElement).style("height", height + "px");
-
+  makeTag: function (tag) {
+    return {
+      text: tag.label,
+      value: [tag.category, tag.value]
+    }
+  },
+  select: function (d) {
+    if (d == this.state.selected) {
+      return;
+    }
+    if (d.tagValue && (d != this.state.selected.parent)) {
+      $("#cpdb-search").tagsinput("add", this.makeTag(d.tagValue))
+    }
+    this.setState({
+        'selected': d
+      });
+    path.transition()
+      .duration(750)
+      .attrTween("d", arcTween(d));
   },
   drawChart: function () {
     if (this.state.drew) {
@@ -92,16 +101,16 @@ var Sunburst = React.createClass({
     if (!data) {
       return;
     }
-    var that = this;
 
-    function click(d) {
-      that.setState({
-        'selected': d
-      });
-      path.transition()
-        .duration(750)
-        .attrTween("d", arcTween(d));
-    }
+    d3.select("#sunburst-chart svg").remove();
+
+    svg = d3.select("#sunburst-chart").append("svg")
+      .attr("width", width)
+      .attr("height", height)
+      .append("g")
+      .attr("transform", "translate(" + width / 2 + "," + (height / 2 + 10) + ")");
+
+    d3.select(self.frameElement).style("height", height + "px");
 
     path = svg.selectAll("path")
       .data(partition.nodes(data))
@@ -113,40 +122,32 @@ var Sunburst = React.createClass({
         }
         return colors[d.name];
       })
-      .on("click", click);
+      .on("click", this.select);
     this.setState({
       drew: true
-    });
-  },
-  updateChart: function() {
-    var that = this;
-    d3.json("/static/sunburst.json", function (error, root) {
-      if (error) throw error;
-      that.setState({
-        data: root,
-        selected: root,
-        drew: false
-      });
     });
   },
   componentDidUpdate: function() {
     this.drawChart();
   },
   componentDidMount: function () {
-    this.initChart();
-    this.updateChart();
     SunburstStore.addChangeListener(this._onChange);
+    SunburstStore.update();
   },
   _onChange: function () {
     this.setState(SunburstStore.getAll())
   },
 
   makeLegend: function (node) {
+    var total = sum(node);
+    if (!total) {
+      return ''
+    }
     var style = {
       background: colors[node.name]
     };
     return (
-      <div key={node.name} className="sunburst-legend" style={style}>{node.name}</div>
+      <div key={node.name} className="sunburst-legend" style={style}>{node.name} ({total})</div>
     );
   },
 
