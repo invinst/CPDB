@@ -8,7 +8,32 @@ var width = 800,
   svg,
   path,
   radius = Math.min(width, height) / 2.2,
-  colors = {};
+  colors = {
+    'Allegation': '#bfd4df',
+    'Unsustained': '#0079ae' ,
+    'Sustained': '#ff6000',
+    'No Affidavit': '#709dc0',
+    'Discharged': '#cbcbcb',
+    'No Cooperation': '#a5b4be',
+    'Unfounded': '#172b3a',
+    'Exonerate': '#62b28c',
+    'Not Sustained': '#258aad',
+    'Disciplined': '#cc0000',
+    'Not Disciplined': '#ff9d5c',
+    'Noted': '#ff9d5c',
+    'Not Served (Resigned)': '#fdae6a',
+    'Not Served (Inactive)': '#fdd0a2',
+    'Reinstated by Court Action': '#669999',
+    'Reinstated by Police Board': '#66cccc',
+    'Unknown': '#989898',
+    'No Action Taken': '#688b99',
+    '1-9 days': '#ff8a90',
+    'Reprimand': '#ff5454',
+    '10-30 days': '#ed2121',
+    'Termination': '#647a66',
+    'Separation': '#4c544c',
+    '30+ days': '#930c0c'
+  };
 
 var color = d3.scale.category20c();
 

@@ -11,8 +11,10 @@ class AllegationSunburstView(AllegationAPIView):
         output = self.fetch_output(self.levels, allegations)
 
         return JsonResponse({
-            'name': 'Allegation',
-            'children': output,
+            'sunburst': {
+                'name': 'Allegation',
+                'children': output,
+            }
         })
 
     def fetch_output(self, levels, objects):
@@ -109,10 +111,10 @@ class AllegationSunburstView(AllegationAPIView):
                 },
             }, {
                 'condition': Q(final_outcome__in=[str(x).zfill(3) for x in range(1, 10)]),  # 001 to 009
-                'name': '1 to 9 days',
+                'name': '1-9 days',
             }, {
                 'condition': Q(final_outcome__in=[str(x).zfill(3) for x in range(10, 31)]),  # 010 to 031
-                'name': '10 to 30 days',
+                'name': '10-30 days',
             }, {
                 'condition': Q(final_outcome='200'),
                 'name': '30+ days',

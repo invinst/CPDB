@@ -4,7 +4,7 @@ from allegation.tests.views.base import AllegationApiTestBase
 
 
 class AllegationSunburstApiViewTestCase(AllegationApiTestBase):
-    def test_get_summary(self):
+    def test_get_sunburst(self):
         response = self.client.get('/api/allegations/sunburst/')
 
         response.status_code.should.equal(200)
@@ -14,5 +14,5 @@ class AllegationSunburstApiViewTestCase(AllegationApiTestBase):
 
         isinstance(data['sunburst'], dict).should.be.true
 
-        for key, value in data['sunburst'].items():
+        for value in data['sunburst']['children']:
             value.should.contain('tagValue')
