@@ -8,7 +8,7 @@ var ExtraInformation = React.createClass({
         <div className='row'>
           <div className='width-12-percent'>
               <span className='background-light-blue box'></span>
-              <span className='extra-information-text'>Disciplines taken</span>
+              <span className='extra-information-text'>Disciplines</span>
           </div>
           <div className='width-12-percent'>
               <span className='background-grey box'></span>
