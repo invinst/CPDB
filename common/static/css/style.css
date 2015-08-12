@@ -1226,6 +1226,7 @@ form.navbar-form.navbar-right {
     font-family: "Source Sans Pro", sans-serif;
     font-size: 18px;
     font-weight: 600;
+    text-transform: uppercase;
 }
 
 #sunburst-legend .list {

@@ -86,10 +86,14 @@ var CPDBApp = React.createClass({
             <div>
               <ul className="nav nav-tabs" role="tablist">
                 <li role="presentation" className="active">
-                  <a href="#sunburst" aria-controls="sunburst" role="tab" data-toggle="tab">Penalty Distribution</a>
+                  <a href="#sunburst" aria-controls="sunburst" role="tab" data-toggle="tab">
+                    <i className="icomoon icon-pie-chart" /> Penalty Distribution
+                  </a>
                 </li>
                 <li role="presentation">
-                  <a href="#categories" aria-controls="profile" role="tab" data-toggle="tab">Complaint Types</a>
+                  <a href="#categories" aria-controls="profile" role="tab" data-toggle="tab">
+                    <i className="icomoon icon-stack" /> Complaint Types
+                  </a>
                 </li>
               </ul>
 
