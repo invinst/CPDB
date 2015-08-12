@@ -3,8 +3,8 @@ var SummaryActions = require('../actions/SummaryActions');
 var SunburstStore = require("../stores/SunburstStore");
 
 
-var width = 800,
-  height = 500,
+var width = 760,
+  height = 460,
   svg,
   path,
   radius = Math.min(width, height) / 2.2,
@@ -169,17 +169,26 @@ var Sunburst = React.createClass({
       return ''
     }
     var style = {
-      background: colors[node.name]
+      color: colors[node.name]
     };
     return (
-      <div key={node.name} className="sunburst-legend" style={style}>{node.name} ({total})</div>
+      <tr key={node.name} className="sunburst-legend" onClick={this.select.bind(this, node)}>
+        <td className="color"><span className="fa fa-stop" style={style}></span></td>
+        <td className="size">{total}</td>
+        <td className="name">{node.name}</td>
+      </tr>
     );
   },
 
   render: function () {
     var legends = [];
-    if (this.state.selected) {
-      var selected = this.state.selected;
+    var selected = this.state.selected;
+    var total = sum(selected);
+    var percent = null;
+    var theMax = {};
+    var percentStatement = '';
+    if (selected) {
+      var max = 0;
       if (selected.parent) {
         legends.push(this.makeLegend(selected.parent));
       }
@@ -190,15 +199,39 @@ var Sunburst = React.createClass({
         for (var i = 0; i < childrenLength; i++) {
           var child = selected.children[i];
           legends.push(this.makeLegend(child));
+          var size = sum(child);
+          if (size > max) {
+            theMax = child;
+            max = size;
+          }
         }
       }
+      if (max) {
+        percent = (max * 100 / total).toFixed(2);
+        percentStatement = (
+          <div>
+            <strong>{percent}%</strong> of {selected.name} complaints were resulted in {theMax.name}
+          </div>
+        )
+      }
     }
+
     return (
       <div className="row">
-        <div id="sunburst-legend" className="col-md-2">
-          {legends}
+        <div className="col-md-3">
+          <div id="sunburst-legend">
+            <div className="root">
+              {total} <span className="name">{selected.name}</span>
+            </div>
+            <div className="percent">
+              {percentStatement}
+            </div>
+            <div className="list">
+              <table>{legends}</table>
+            </div>
+          </div>
         </div>
-        <div id="sunburst-chart" className="col-md-10">
+        <div id="sunburst-chart" className="col-md-9">
         </div>
       </div>
     );

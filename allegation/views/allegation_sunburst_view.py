@@ -141,7 +141,7 @@ class AllegationSunburstView(AllegationAPIView):
                 },
             }]
         }, {
-            'name': 'Not disciplined',
+            'name': 'Not Disciplined',
             'condition': ~Q(final_outcome__in=DISCIPLINE_CODES),
             'tagValue': {
                 'label': 'No discipline',

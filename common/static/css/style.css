@@ -110,8 +110,8 @@ ul.nav.navbar-nav {
 
 #summary-container {
     overflow: hidden;
-    margin-left: 3.4%;
-    padding-left: 0px;
+    margin-left: 30px;
+    padding-left: 0;
     margin-top: 44px;
 }
 
@@ -1205,7 +1205,60 @@ form.navbar-form.navbar-right {
     border-right: 1px solid #cbcbcb !important;
 }
 
-.sunburst-legend {
-    text-align: center;
-    color: #fff;
+#sunburst-legend {
+    color: #333;
+    padding-top: 44px;
+    padding-left: 30px
 }
+
+#sunburst-legend table {
+    width: 100%;
+}
+#sunburst-legend table td {
+    padding: 5px;
+}
+
+#sunburst-legend .name {
+    color: #0079ae;
+}
+
+#sunburst-legend .root {
+    font-family: "Source Sans Pro", sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+#sunburst-legend .list {
+    margin-top: 44px;
+}
+
+#sunburst-legend .percent {
+    height: 3em;
+}
+
+#sunburst-legend table td.size {
+    text-align: right;
+    width: 50px;
+}
+#sunburst-legend table td.color {
+    width: 20px;
+}
+
+.sunburst-legend {
+    cursor: pointer;
+}
+
+#sunburst-chart svg {
+    position: relative;
+    left: -162px;
+}
+
+#sunburst-chart {
+    overflow: hidden;
+}
+
+#sunburst-chart path {
+    stroke: #fff;
+    fill-rule: evenodd;
+}
+
