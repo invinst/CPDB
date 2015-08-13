@@ -8,6 +8,7 @@ FILTERS = [
     'neighborhood_id',
     'recc_finding',
     'final_outcome',
+    'final_outcome_class',
     'recc_outcome',
     'final_finding',
     'officer',
