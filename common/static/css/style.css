@@ -867,6 +867,10 @@ canvas.leaflet-heatmap-layer {
     color: #989898;
 }
 
+.complaint-row.disciplined  .fa.fa-chevron-right {
+     color: #c0272d;
+}
+
 .complaint-row.disciplined {
     background: #ffe3e7;
 }
