@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'django_extensions',
     'djangobower',
     'django_tables2',
+    'compressor',
 
     'common',
     'allegation',
@@ -127,6 +128,7 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'djangobower.finders.BowerFinder',
+    'compressor.finders.CompressorFinder',
 )
 
 STATIC_URL = '/static/'
@@ -191,3 +193,5 @@ EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 BROKER_URL = os.environ.get('BROKER_URL', 'redis://localhost:6379/0')
+COMPRESS_ENABLED = True
+COMPRESS_JS_FILTERS = []

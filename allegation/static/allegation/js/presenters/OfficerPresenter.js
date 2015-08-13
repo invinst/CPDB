@@ -1,4 +1,5 @@
 var AppConstants = require('../constants/AppConstants');
+var _ = require('lodash');
 
 var OfficerPresenter = function(officer) {
   return {
@@ -13,14 +14,18 @@ var OfficerPresenter = function(officer) {
     },
 
     gender: function() {
-      var gender = officer.gender || 'Gender N/A';
+      var gender = officer.gender || '';
       gender = gender.replace('M', 'Male').replace('F', 'Female');
 
       return gender;
     },
 
     race: function() {
-      return officer.race || 'Race N/A';
+      return officer.race || '';
+    },
+
+    genderRace: function() {
+      return _.compact([this.gender(), this.race()]).join(', ');
     }
   }
 };

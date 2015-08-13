@@ -6,7 +6,7 @@ import time
 from bs4 import BeautifulSoup
 from django.core import management
 from django.test.testcases import LiveServerTestCase, SimpleTestCase as DjangoSimpleTestCase
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, WebDriverException
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.select import Select
@@ -201,6 +201,9 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         viewport_height = self.browser.execute_script("return window.innerHeight")
 
         return viewport_y + viewport_height >= element_location['y'] >= viewport_y
+
+    def ajax_complete(self):
+        return 0 == self.browser.execute_script("return jQuery.active")
 
 
 class SimpleTestCase(DjangoSimpleTestCase, UserTestBaseMixin):
