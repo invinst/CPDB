@@ -106,10 +106,10 @@ function cpdbAutocomplete($input) {
                   label: request.term,
                   value: request.term
                 };
-                newData = newData.concat([freeTextData]);
+                subdata = subdata.concat([freeTextData]);
               }
             }
-            newData = subdata.concat(newData);
+            newData = newData.concat(subdata);
           });
 
           response(newData);
