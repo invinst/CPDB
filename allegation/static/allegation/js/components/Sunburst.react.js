@@ -4,7 +4,7 @@ var SunburstStore = require("../stores/SunburstStore");
 
 
 var width = 760,
-  height = 460,
+  height = 430,
   svg,
   path,
   radius = Math.min(width, height) / 2.2,
