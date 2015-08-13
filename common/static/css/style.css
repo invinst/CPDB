@@ -523,7 +523,7 @@ ul.nav.navbar-nav {
     text-overflow: ellipsis;
     width: 100%;
     white-space: nowrap;
-    padding: 10px 10px 0 10px
+    padding: 10px 10px 0 15px;
 }
 
 .officer .officer_name + .row {
@@ -1140,23 +1140,27 @@ form.navbar-form.navbar-right {
     transition: all 1s;
 }
 .race-gender {
-    font-family: 'Source San Pro', sans-serif;
-    font-size: 11px;
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 12px;
     color: #989898;
-    padding: 2px 10px 0px 10px;
+    padding: 2px 15px 0px 15px;
     line-height: 1.1em;
     min-height: 1.1em;
 }
 .officer .complaint-discipline-row {
-    padding: 2px 10px 10px 10px;
+    padding: 2px 10px 10px 15px;
     margin-bottom: 10px;
+}
+
+.officer-disciplines {
+    margin-left: -10px;
 }
 
 .vertical-line {
     border-left: solid 1px #989898;
     height: 25px;
     float: left;
-    margin-left: -1px;
+    margin-left: -6px;
     margin-top: 5px;
 }
 
