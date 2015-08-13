@@ -15,6 +15,10 @@ var RequestModal = (function () {
     },
     show: function () {
       $(this.getDOMNode()).modal("show");
+      var emailInput = $(this.getDOMNode()).find("input[name='email']");
+      setTimeout(function () {
+        emailInput.focus();
+      }, 500);
     },
     hide: function () {
       $(this.getDOMNode()).modal("hide");
@@ -23,9 +27,12 @@ var RequestModal = (function () {
       mountedInstant = this;
     },
     render: function () {
+      var style = {
+        'margin-top': $(window).height() / 2 - 100 + 'px'
+      };
       return (
         <div className="modal fade" id="request_modal" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div className="modal-dialog" role="document">
+          <div className="modal-dialog" role="document" style={style}>
             <div className="modal-content">
               <div className="modal-header">
                 <button type="button" className="close" data-dismiss="modal" aria-label="Close">
@@ -35,7 +42,7 @@ var RequestModal = (function () {
               <div className="modal-body">
                 <h3>We'll notify you when the document is made available.</h3>
                 <input type="email" name="email" className="form-control"
-                       placeholder="Please enter email address" />
+                       placeholder="Please enter email address" onKeyDown={this.onKeyDown} />
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-default" data-dismiss="modal">Cancel</button>
@@ -49,8 +56,17 @@ var RequestModal = (function () {
     email: function () {
       return $(this.getDOMNode()).find("input[name='email']").val();
     },
-    onClick: function () {
+    register: function () {
       RequestDocumentActions.registerEmail(allegation.crid, this.email());
+    },
+    onClick: function () {
+      this.register();
+    },
+    onKeyDown: function (e) {
+      if(e.keyCode == 13) {
+        e.preventDefault();
+        this.register();
+      }
     }
   });
 
