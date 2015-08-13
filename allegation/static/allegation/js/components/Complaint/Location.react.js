@@ -1,6 +1,6 @@
 var React = require('react');
 var MapStore = require("../../stores/MapStore");
-
+var AppConstants = require("../../constants/AppConstants");
 
 var Location = React.createClass({
   getInitialState: function () {
@@ -40,8 +40,7 @@ var Location = React.createClass({
       }
       else {
         map_image = (
-          'http://api.tiles.mapbox.com/v4/mapbox.streets/url-http%3A%2F%2Fdata.invisible' +
-          '.institute%2Fstatic%2F64x_map_marker.png(' + lng + ',' + lat + ')/' + centerLng + ',' + lat + ',13/' +
+          'http://api.tiles.mapbox.com/v4/mapbox.streets/url-' + encodeURIComponent(AppConstants.MAP_MARKER_ICON_URL) +'(' + lng + ',' + lat + ')/' + centerLng + ',' + lat + ',13/' +
           this.getSize() +
           '.png?access_token=' + token
         );
