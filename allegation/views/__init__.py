@@ -192,7 +192,7 @@ class AllegationGISApiView(AllegationAPIView):
 class AllegationClusterApiView(AllegationAPIView):
 
     def get(self, request):
-        allegations = self.get_allegations(ignore_filters=['areas__id'])
+        allegations = self.get_allegations()
         allegation_pks = list(allegations.values_list('id', flat=True))
 
         allegation_pks = ",".join(str(x) for x in allegation_pks)

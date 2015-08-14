@@ -251,7 +251,7 @@ var MapStore = assign({}, EventEmitter.prototype, {
       return;
     }
     var store = this;
-    var queryString = FilterStore.getQueryString(['areas__id']);
+    var queryString = FilterStore.getQueryString();
     if (queryString == _queryString) {
       return;
     }
@@ -259,9 +259,7 @@ var MapStore = assign({}, EventEmitter.prototype, {
     if (_ajax_req) {
       _ajax_req.abort();
     }
-    if (_heat) {
-      _map.removeLayer(_heat);
-    }
+
     _ajax_req = $.getJSON("/api/allegations/cluster/?" + queryString, function (data) {
       store.setMarkers(data);
     });
