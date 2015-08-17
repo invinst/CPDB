@@ -116,9 +116,6 @@ function cpdbAutocomplete($input) {
         }
       });
     },
-    close: function (event, ui) {
-      $($input).val('');
-    },
     select: function (event, ui) {
       $('#cpdb-search').tagsinput("add", {
         text: tagLabel(ui.item.category, ui.item.label),
