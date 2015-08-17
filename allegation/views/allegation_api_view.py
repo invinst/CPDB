@@ -14,10 +14,13 @@ from search.models import FilterLog
 class AllegationAPIView(View):
     def __init__(self, **kwargs):
         super(AllegationAPIView, self).__init__(**kwargs)
+        self.orig_query_dict = None
 
     @property
     def query_dict(self):
-        return self.request.GET
+        if not self.orig_query_dict:
+            return self.request.GET
+        return self.orig_query_dict
 
     def get_allegations(self, ignore_filters=None):
         allegation_query_filters = AllegationQueryFilter(self.query_dict, ignore_filters)
