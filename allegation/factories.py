@@ -1,3 +1,6 @@
+import random
+from django.contrib.gis.geos import MultiPolygon, Polygon
+
 from django.utils import timezone
 import factory
 from faker import Faker
@@ -14,7 +17,8 @@ class AreaFactory(factory.django.DjangoModelFactory):
         model = Area
 
     name = factory.Sequence(lambda n: fake.first_name())
-    type = factory.Sequence(lambda n: fake.first_name())
+    type = factory.Sequence(lambda n: 'school-grounds')
+    polygon = factory.Sequence(lambda n: MultiPolygon(Polygon(((0, 0), (0, 1), (1, 1), (0, 0)))))
 
 
 class OfficerFactory(factory.django.DjangoModelFactory):
@@ -63,6 +67,7 @@ class AllegationFactory(factory.django.DjangoModelFactory):
     incident_date_only = factory.LazyAttribute(lambda o: o.incident_date.date())
     investigator = factory.SubFactory(InvestigatorFactory)
     officer = factory.SubFactory(OfficerFactory)
+    point = None
 
     @factory.post_generation
     def areas(self, create, extracted, **kwargs):
@@ -75,6 +80,9 @@ class AllegationFactory(factory.django.DjangoModelFactory):
         if extracted:
             for area in extracted:
                 self.areas.add(area)
+                if not self.point and random.randint(0,10) > 5:
+                    self.point = area.polygon.centroid
+                    self.save()
 
 
 class DownloadFactory(factory.django.DjangoModelFactory):

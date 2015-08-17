@@ -128,7 +128,7 @@ class AllegationListView(TemplateView):
 
 class AreaAPIView(View):
     def get(self, request):
-        areas = Area.objects.all().exclude(type='school-grounds')
+        areas = Area.objects.all()
         type_filter = request.GET.get('type')
 
         if type_filter:
@@ -163,20 +163,15 @@ class AllegationClusterApiView(AllegationAPIView):
 
     def get(self, request):
         areas = request.GET.getlist('areas__id')
-        print(areas)
         ignore_filters = ['areas__id']
         if areas:
             self.orig_query_dict = request.GET.copy()
             schools = Area.objects.filter(pk__in=areas, type='school-grounds')
-            print(schools.query)
             areas = list(schools.values_list('pk', flat=True))
             if areas:
-                if len(areas) == 1:
-                    areas = areas[0]
-                self.orig_query_dict['areas__id'] = areas
+                self.orig_query_dict.setlist('areas__id', areas)
                 ignore_filters = []
         allegations = self.get_allegations(ignore_filters=ignore_filters)
-
         allegation_pks = list(allegations.values_list('id', flat=True))
 
         allegation_pks = ",".join(str(x) for x in allegation_pks)
