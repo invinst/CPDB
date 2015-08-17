@@ -640,6 +640,10 @@ ul.nav.navbar-nav {
     border: 1px solid #cbcbcb;
 }
 
+.investigation {
+    font-family: "Source Sans Pro", sans-serif;
+}
+
 .investigation .results {
     width: 60%;
     float: left;
@@ -648,7 +652,6 @@ ul.nav.navbar-nav {
 .legend {
     font-size: 14px;
     color: #989898;
-    font-family: "Source Sans Pro", sans-serif;
 }
 
 .investigation .legend {
@@ -659,6 +662,7 @@ ul.nav.navbar-nav {
 
 .investigation .investigator-name {
     color: #709dc0;
+    font-family: 'Vollkorn', serif;
 }
 
 .line {
@@ -674,6 +678,10 @@ ul.nav.navbar-nav {
 
 .line.red {
     background-color: #c0272d;
+}
+
+strong.red {
+    color: #c0272d;
 }
 
 .timeline-date.start {
