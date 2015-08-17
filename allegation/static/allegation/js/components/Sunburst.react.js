@@ -1,6 +1,7 @@
 var React = require('react');
 var SummaryActions = require('../actions/SummaryActions');
 var SunburstStore = require("../stores/SunburstStore");
+var FilterStore = require("../stores/FilterStore");
 
 
 var width = 760,
@@ -108,15 +109,25 @@ var Sunburst = React.createClass({
     if (d == this.state.selected) {
       return;
     }
-    if (d.tagValue && (d != this.state.selected.parent)) {
-      $("#cpdb-search").tagsinput("add", this.makeTag(d.tagValue))
-    }
+
+    var selected = this.state.selected;
+
     this.setState({
-        'selected': d
-      });
+      'selected': d
+    });
+
+    if ((d == selected.parent) && selected.tagValue) {
+      FilterStore.tagsInputRemoveItemObject(this.makeTag(selected.tagValue));
+    }
+
+    if (d.tagValue) {
+      $("#cpdb-search").tagsinput("add", this.makeTag(d.tagValue));
+    }
+
     path.transition()
       .duration(750)
       .attrTween("d", arcTween(d));
+
   },
   drawChart: function () {
     if (this.state.drew) {

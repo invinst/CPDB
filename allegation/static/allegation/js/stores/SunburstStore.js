@@ -17,7 +17,7 @@ var _queryString = null;
 
 var SunburstStore = assign({}, EventEmitter.prototype, {
   update: function () {
-    var queryString = FilterStore.getQueryString(['final_outcome', 'final_finding']);
+    var queryString = FilterStore.getQueryString(['final_outcome', 'final_finding', 'outcome_text']);
     if (queryString == _queryString) {
       return;
     }
