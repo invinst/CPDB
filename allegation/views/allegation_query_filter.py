@@ -45,14 +45,8 @@ class AllegationQueryFilter(object):
             if text:
                 value += ['SU']  # sustained
 
-        if len(value) > 1 or field == 'areas__id':
-            if field == 'areas__id':
-                schools = Area.objects.filter(pk__in=value, type='school-grounds')
-                if schools:
-                    self.filters['areas__in'] = list(schools.values_list('pk', flat=True))
-
-            else:
-                self.filters["%s__in" % field] = value
+        if len(value) > 1:
+            self.filters["%s__in" % field] = value
 
         elif value:
             self.filters[field] = value[0]
