@@ -22,5 +22,7 @@ module.exports = {
     'exonerated': 'EX',
     'unfounded': 'UN',
     'other': ['NC', 'NA', 'DS']
-  }
+  },
+
+  MAP_MARKER_ICON_URL: 'http://data.invisible.institute/static/img/64x_map_marker.png'
 };
