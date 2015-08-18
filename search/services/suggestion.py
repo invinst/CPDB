@@ -111,9 +111,11 @@ class Suggestion(object):
         # suggestion for officer name
         parts = q.split(' ')
         if len(parts) > 1:
-            condition = Q(officer_first__istartswith=parts[0]) & Q(officer_last__istartswith=" ".join(parts[1:]))
+            condition = Q(officer_first__istartswith=parts[0]) | Q(Q(officer_last__istartswith=" ".join(parts[1:])) | \
+                                                                                         Q(officer_last__istartswith=q))
         else:
             condition = Q(officer_first__icontains=q) | Q(officer_last__icontains=q)
+            
         results = self.query_suggestions(Officer, condition, ['officer_first', 'officer_last', 'allegations_count', 'id'],
                                          order_bys=('-allegations_count', 'officer_first', 'officer_last'))
         results = [["%s %s (%s)" % (x[0], x[1], x[2]), x[3] ] for x in results]
