@@ -4,6 +4,7 @@ from django.db.models.query_utils import Q
 
 from common.models import AllegationCategory, Allegation, Area, Investigator, Officer, FINDINGS, OUTCOMES, UNITS, GENDER, \
     RACES, OUTCOME_TEXT, RANKS
+from search.models.alias import Alias
 from search.utils.date import *
 from search.utils.zip_code import *
 
@@ -153,7 +154,7 @@ class Suggestion(object):
         queryset = queryset.distinct()[:limit]
         return list(queryset)
 
-    def make_suggestion(self, q):
+    def _make_suggestion(self, q):
         ret = OrderedDict()
         ret['incident_date_only__year_month'] = self.suggest_incident_year_month(q)
         ret['officer__star'] = self.suggest_officer_star(q)
@@ -187,5 +188,18 @@ class Suggestion(object):
         ret['outcome_text'] = self.suggest_in(q, OUTCOME_TEXT)
 
         ret = OrderedDict((k, v) for k, v in ret.items() if v)
+        return ret
+
+    def make_suggestion(self, q):
+        ret = self._make_suggestion(q)
+
+        aliases = Alias.objects.filter(alias__iexact=q)
+        for alias in aliases:
+            alias_suggest = self._make_suggestion(alias.target)
+            for key in alias_suggest:
+                if key in ret:
+                    ret[key] = ret[key] + alias_suggest[key]
+                else:
+                    ret[key] = alias_suggest[key]
 
         return ret

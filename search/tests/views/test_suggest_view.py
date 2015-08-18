@@ -3,6 +3,7 @@ import json
 from allegation.factories import OfficerFactory, AllegationCategoryFactory, AllegationFactory
 from common.models import AllegationCategory, Officer
 from common.tests.core import SimpleTestCase
+from search.factories import AliasFactory
 from search.models import SuggestionLog
 
 
@@ -134,9 +135,19 @@ class SuggestViewTestCase(SimpleTestCase):
     def num_of_tracked_suggestions(self):
         return SuggestionLog.objects.count()
 
-    def test_suggest_finding(self):
+    def test_suggest_city(self):
         AllegationFactory(city='Chicago IL 60616')
         data = self.get_suggestion('616')
         self.get_suggestion('616').should.contain('city')
         self.get_suggestion('123').shouldnt.contain('city')
         self.get_suggestion('Chi').shouldnt.contain('city')
+
+    def test_search_with_alias(self):
+        officer = OfficerFactory()
+        alias = AliasFactory(target=str(officer))
+
+        data = self.get_suggestion(alias.alias)
+        data.should.contain('officer')
+
+        officer_ids = [x['value'] for x in data['officer']]
+        officer_ids.should.contain(officer.id)
