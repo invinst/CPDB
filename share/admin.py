@@ -7,7 +7,7 @@ from share.models import Session
 
 
 class ShareSessionAdmin(admin.ModelAdmin):
-    search_fields = ['hash_id', 'session_type', 'session_title', 'search_tags', 'shared_from', 'shared_to']
+    search_fields = ['query']
     list_display = ['hash_id', 'session_type', 'session_title', 'search_tags', 'shared_from', 'shared_to']
 
     def format_as_session_link(self, obj):
