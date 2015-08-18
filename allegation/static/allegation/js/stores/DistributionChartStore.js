@@ -19,7 +19,7 @@ var CHANGE_EVENT = 'change';
 var SUMMARY_CHANGE = 'summary-change';
 var SET_ACTIVE_OFFICER = 'set-active-officer';
 var _state = {};
-
+var ajax = null;
 
 var GRAPH_ELEM_SEL = '#complained-officers .graph';
 
@@ -129,8 +129,11 @@ var DistributionChartStore = assign({}, EventEmitter.prototype, {
     if (!('element' in _state)) {
       return;
     }
+    if (ajax) {
+      ajax.abort();
+    }
     var queryString = FilterStore.getQueryString();
-    $.get('/officer/count/?by=num_complaints&' + queryString, function (data) {
+    ajax = $.get('/officer/count/?by=num_complaints&' + queryString, function (data) {
       drawChart(data);
     });
   },
