@@ -12,9 +12,9 @@ admin.site.register(Alias, AliasAdmin)
 
 
 class SuggestionAdmin(admin.ModelAdmin):
-    search_fields = ['query', 'session_id']
+    search_fields = ['query', 'session_id', 'ip']
     list_filter = ['num_suggestions']
-    list_display = ['session_hash', 'query', 'num_suggestions', 'created_at']
+    list_display = ['session_hash', 'query', 'num_suggestions', 'created_at', 'ip']
 
     def session_hash(self, obj):
         return obj.session_id[:6]
