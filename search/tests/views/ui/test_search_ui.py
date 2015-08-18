@@ -1,8 +1,12 @@
 from allegation.factories import OfficerFactory
+from common.models import Officer
 from common.tests.core import BaseLiveTestCase
 
 
 class SearchUITestCase(BaseLiveTestCase):
+    def setUp(self):
+        Officer.objects.all().delete()
+
     def test_search_box_displayed_on_home_page(self):
         self.visit('/')
         self.until(lambda: self.find_all('#cpdb-search'))

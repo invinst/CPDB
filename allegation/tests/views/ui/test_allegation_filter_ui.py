@@ -23,15 +23,16 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         self.visit('/')
 
         # Check all
+        self.link("Complaint Types").click()
         self.link(self.allegation_category.category).click()
         self.until(lambda : self.element_exist('.complaint-row'))
         self.number_of_complaints().should.equal(number_of_all_created_complaints())
 
         # On each filter
-        for filter in FILTERS:
-            self.element_by_tagname_and_text('span', filter).click()
+        for filter_text in FILTERS:
+            self.element_by_tagname_and_text('span', filter_text, parent=".filters").click()
             self.until(self.ajax_complete)
-            number_of_final_findings = len(FILTERS[filter])
+            number_of_final_findings = len(FILTERS[filter_text])
             self.number_of_complaints().should.equal(number_of_final_findings)
 
         # Disciplined filter

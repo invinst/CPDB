@@ -12,6 +12,7 @@ class HomePageTestCase(BaseLiveTestCase):
         other_category = AllegationCategoryFactory()
         other_allegation = AllegationFactory(cat=other_category)
         self.visit('/')
+        self.link("Complaint Types").click()
         self.number_of_officers().should.equal(2)
 
         self.link(self.allegation_category.category).click()
@@ -20,6 +21,7 @@ class HomePageTestCase(BaseLiveTestCase):
 
     def test_click_on_officer_will_show_compliant(self):
         self.visit('/')
+        self.link("Complaint Types").click()
 
         self.number_of_officers().should.equal(1)
 
@@ -36,6 +38,7 @@ class HomePageTestCase(BaseLiveTestCase):
 
         # First, we click a category, we should see the arrow beside the category
         self.visit('/')
+        self.link("Complaint Types").click()
         self.element_exist('.row .arrow-container').should.equal(False)
         self.link(self.allegation_category.category).click()
         # TODO: We should have another test to check which main category this arrow belong to?
