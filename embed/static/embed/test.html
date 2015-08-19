@@ -1,0 +1,34 @@
+<!doctype html>
+<html ng-app="todoApp">
+  <head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js"></script>
+    <script>
+      angular.module('todoApp', []).controller('TodoListController', function() {
+        var todoList = this;
+
+        this.page = '';
+        this.pk = '';
+        this.query = '';
+        this.src = '';
+
+        this.changeSrc = function () {
+          todoList.src = "http://localhost:8000/embed/?page=" + todoList.page + "&pk=" + todoList.pk + "&query=" + todoList.query + "";
+          console.log(todoList.src);
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <h2>Todo</h2>
+    <div ng-controller="TodoListController as todoList">
+      <form ng-submit="todoList.changeSrc()">
+        Page: <input type="text" ng-model="todoList.page"  size="30"><br />
+        PK: <input type="text" ng-model="todoList.pk"  size="30"><br />
+        Query: <input type="text" ng-model="todoList.query"  size="30"><br />
+        <button type="submit">Embed</button>
+      </form>
+
+      <iframe src="{{ todoList.src }}" style="width: 100%" frameborder="0" width="200" height="120"></iframe>
+    </div>
+  </body>
+</html>

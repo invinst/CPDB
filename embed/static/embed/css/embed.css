@@ -7,10 +7,17 @@
 
 .col-md-12 {
     width: 100%;
+    padding-right: 5px;
+    padding-left: 0;
+}
+
+body > .row {
+    margin: 0;
 }
 
 .officer {
     padding-bottom: 0;
+    margin-bottom: 0;
 }
 
 .officer .complaint-discipline-row {
