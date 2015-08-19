@@ -1,26 +1,4 @@
-{% extends 'base.html' %}
-{% load staticfiles compress %}
-
-{% block head-link-external %}
-    {{ block.super }}
-    <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
-{%  endblock %}
-{%  block head-link %}
-   {% compress css %}
-    {{ block.super }}
-
-    <link rel="stylesheet" href="{% static 'jquery-ui/themes/base/core.css' %}" />
-    <link rel="stylesheet" href="{% static 'jquery-ui/themes/base/theme.css' %}" />
-    <link rel="stylesheet" href="{% static 'jquery-ui/themes/base/menu.css' %}" />
-    <link rel="stylesheet" href="{% static 'jquery-ui/themes/base/slider.css' %}" />
-    <link rel="stylesheet" href="{% static 'bootstrap-tagsinput/dist/bootstrap-tagsinput.css' %}" />
-    <link rel="stylesheet" href="{% static 'search/css/search.css' %}" />
-    <link rel="stylesheet" href="{% static 'allegation/css/MarkerCluster.Default.css' %}" />
-    <link rel="stylesheet" href="{% static 'allegation/css/MarkerCluster.css' %}" />
-    <link rel="stylesheet" href="{% static 'c3/c3.min.css' %}" />
-    <link rel="stylesheet" href="{% static 'graph/css/complained-officers.css' %}" />
-  {% endcompress %}
-{% endblock %}
+{% extends 'allegation/base.html' %}
 
 {% block content %}
   {% if DJANGO_ENV != 'test' %}
@@ -31,13 +9,11 @@
 {% endblock %}
 
 {% block footerjs %}
-  {% compress js %}
-    {{ block.super }}
-
-    <script>
-      var INIT_DATA = {% if session %}{{ session.query|safe }}{% else %}false{% endif %};
-      var INIT_FILTERS = {filters: {% if filters %}{{ filters|safe }}{% else %}false{% endif %}};
-    </script>
+  <script>
+    var INIT_DATA = {% if session %}{{ session.query|safe }}{% else %}false{% endif %};
+    var INIT_FILTERS = {filters: {% if filters %}{{ filters|safe }}{% else %}false{% endif %}};
+  </script>
+  {{ block.super }}
     <script>
      var MEDIA_URL = "{{ MEDIA_URL }}";
       // We don't run this one on test env
@@ -50,14 +26,4 @@
       });
       {% endif %}
     </script>
-    <script src="{% static 'jquery-ui/jquery-ui.min.js' %}"></script>
-    <script src="{% static 'jqueryui-touch-punch/jquery.ui.touch-punch.min.js' %}"></script>
-    <script src="{% static 'bootstrap-tagsinput/src/bootstrap-tagsinput.js' %}"></script>
-    <script src="{% static 'search/js/search.js' %}"></script>
-    <script src="{% static 'd3/d3.min.js' %}"></script>
-    <script src="{% static 'c3/c3.min.js' %}"></script>
-    <script src="{% static 'pluralize/pluralize.js' %}"></script>
-    <script src="{% static 'js/ajax_loading_animation.js' %}"></script>
-  {% endcompress %}
-  <script src="{% static 'allegation/js/bundle.js' %}"></script>
 {% endblock %}

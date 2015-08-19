@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'djangobower',
     'django_tables2',
     'compressor',
+    'rest_framework',
 
     'common',
     'allegation',
@@ -52,6 +53,7 @@ INSTALLED_APPS = (
     'graph',
     'document',
     'share',
+    'embed',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -193,5 +195,12 @@ EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 BROKER_URL = os.environ.get('BROKER_URL', 'redis://localhost:6379/0')
-COMPRESS_ENABLED = True
+COMPRESS_ENABLED = os.environ.get('COMPRESS_ENABLED') != 'False'
 COMPRESS_JS_FILTERS = []
+
+
+# REST_FRAMEWORK
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 20,
+}

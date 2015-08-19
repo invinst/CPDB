@@ -1,0 +1,23 @@
+{% extends 'allegation/base.html' %}
+{% load staticfiles %}
+
+{% block head-link %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'embed/css/embed.css' %}" />
+{% endblock %}
+
+{% block meta %}
+  {{ block.super }}
+  <meta name="viewport" content="width=1440" />
+{% endblock %}
+
+{% block body %}
+  <script>
+    PAGE = '{{ page }}';
+    PK = '{{ pk }}';
+    QUERY = '{{ QUERY }}';
+  </script>
+  <div class="row">
+    <div id="embed" class="col-md-12 col-lg-12 col-sm-12"></div>
+  </div>
+{% endblock %}
