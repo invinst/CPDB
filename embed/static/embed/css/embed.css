@@ -12,7 +12,8 @@
 }
 
 body > .row {
-    margin: 0;
+    margin-left: 0;
+    margin-right: 0;
 }
 
 .officer {
@@ -22,4 +23,23 @@ body > .row {
 
 .officer .complaint-discipline-row {
     margin-bottom: 0;
+}
+
+
+#officer_list > .row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+#officer_list {
+    width: calc(100% - 100px);
+    margin: auto;
+}
+
+#officer_list .officer {
+    margin-bottom: 20px;
+}
+
+.officer-control {
+    display: block;
 }

@@ -10,6 +10,8 @@
         this.pk = '';
         this.query = '';
         this.src = '';
+        this.width = '100%';
+        this.height = 300;
 
         this.changeSrc = function () {
           todoList.src = "http://localhost:8000/embed/?page=" + todoList.page + "&pk=" + todoList.pk + "&query=" + todoList.query + "";
@@ -25,10 +27,12 @@
         Page: <input type="text" ng-model="todoList.page"  size="30"><br />
         PK: <input type="text" ng-model="todoList.pk"  size="30"><br />
         Query: <input type="text" ng-model="todoList.query"  size="30"><br />
+        Width: <input type="text" ng-model="todoList.width"  size="30"><br />
+        Height: <input type="text" ng-model="todoList.height"  size="30"><br />
         <button type="submit">Embed</button>
       </form>
 
-      <iframe src="{{ todoList.src }}" style="width: 100%" frameborder="0" width="200" height="120"></iframe>
+      <iframe id="view" src="{{ todoList.src }}" width="{{ todoList.width }}" height="{{ todoList.height }}" frameborder="0"></iframe>
     </div>
   </body>
 </html>

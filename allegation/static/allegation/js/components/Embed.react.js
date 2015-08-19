@@ -3,6 +3,8 @@
  */
 var React = require('react');
 var Officer = require('./Officer.react');
+var OfficerList = require('./OfficerList.react');
+
 
 var Embed = React.createClass({
   getInitialState: function () {
@@ -21,18 +23,22 @@ var Embed = React.createClass({
     this.setContent(<Officer officer={officer} noClick={true} />);
   },
 
+  renderOfficers: function (data) {
+    this.setContent(<OfficerList data={data} noClick={true} />);
+  },
+
   embedOfficerCard: function () {
     $.getJSON('/api/officers/' + this.props.pk + '/', this.renderOfficer);
   },
 
-  embedMap: function () {
-
+  embedOfficers: function () {
+    $.getJSON('/api/allegations/officers/?' + this.props.query + '/', this.renderOfficers);
   },
 
   componentWillMount: function () {
     var listener = {
       'officer-card': this.embedOfficerCard,
-      'map': this.embedMap,
+      'officers': this.embedOfficers
     };
 
     listener[this.props.page]();
