@@ -63,9 +63,6 @@ var CPDBApp = React.createClass({
     })
   },
 
-  componentWillUnmount: function () {
-  },
-
   /**
    * @return {object}
    */
@@ -115,14 +112,6 @@ var CPDBApp = React.createClass({
       </div>
     );
   },
-
-  /**
-   * Event handler for 'change' events coming from the MapStore
-   */
-  _onChange: function () {
-
-  }
-
 });
 
 module.exports = CPDBApp;

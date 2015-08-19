@@ -8,7 +8,7 @@ var Map = React.createClass({
   },
   initMap: function (opts) {
     var element = this.getDOMNode();
-    var opts = opts || {'maxZoom': 17, 'minZoom': 10, 'scrollWheelZoom': false};
+    opts = opts || {'maxZoom': 17, 'minZoom': 10, 'scrollWheelZoom': false};
     var defaultZoom = 'defaultZoom' in opts ? opts['defaultZoom'] : 12;
 
     var southWest = L.latLng(41.143501411390766, -88.53057861328125);

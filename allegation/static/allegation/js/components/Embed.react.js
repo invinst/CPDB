@@ -10,16 +10,34 @@ var Embed = React.createClass({
       embed: <div></div>
     }
   },
-  componentWillMount: function () {
-    var that = this;
-    if (this.props.page == 'officer-card') {
-      $.getJSON('/api/officers/' + that.props.pk + '/', function (officer) {
-        that.setState({
-          embed: <Officer officer={officer} noClick={true} />
-        });
-      });
-    }
+
+  setContent: function (content) {
+    this.setState({
+      embed: content
+    });
   },
+
+  renderOfficer: function (officer) {
+    this.setContent(<Officer officer={officer} noClick={true} />);
+  },
+
+  embedOfficerCard: function () {
+    $.getJSON('/api/officers/' + this.props.pk + '/', this.renderOfficer);
+  },
+
+  embedMap: function () {
+
+  },
+
+  componentWillMount: function () {
+    var listener = {
+      'officer-card': this.embedOfficerCard,
+      'map': this.embedMap,
+    };
+
+    listener[this.props.page]();
+  },
+
   render: function () {
     return this.state.embed;
   }

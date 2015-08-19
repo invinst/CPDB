@@ -1,5 +1,4 @@
 var React = require('react');
-var OfficerMixin = require("../OfficerMixin.react");
 
 var SIMPLE_DATE_FORMAT = 'MMM DD, YYYY';
 var DETAIL_DATE_FORMAT = 'MMM DD, YYYY HH:mm';

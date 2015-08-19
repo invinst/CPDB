@@ -1,5 +1,5 @@
 var React = require('react');
-var OfficerMixin = require("../OfficerMixin.react");
+var OfficerMixin = require("../Officer/OfficerMixin.react");
 
 
 var Officer = React.createClass({
