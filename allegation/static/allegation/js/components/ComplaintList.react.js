@@ -8,46 +8,29 @@ var OutcomeFilter = require('./ComplaintList/OutcomeFilter.react');
 var RequestModal = require('./Complaint/RequestModal.react');
 
 var ComplaintListStore = require('../stores/ComplaintListStore');
-var FilterStore = require('../stores/FilterStore');
 var OfficerStore = require('../stores/OfficerStore');
 
-var FilterActions = require('../actions/FilterActions');
-var OutcomeFilterActions = require('../actions/ComplaintList/OutcomeFilterActions');
+var ComplaintListActions = require('../actions/ComplaintList/ComplaintListActions');
 
 
 var ComplaintList = React.createClass({
   getInitialState: function () {
     return ComplaintListStore.getState();
   },
-  
+
   componentDidMount: function () {
     ComplaintListStore.addChangeListener(this._onChange);
-    //var x = 1;
-    //var locked = false;
-    //var that = this;
-    //var currentWindow = $(window);
-    //
-    //currentWindow.on('scroll',function(){
-    //  if (currentWindow.scrollTop()/$(document).height() > .35 && !locked) {
-    //    console.log('over half of page');
-    //    var qry = FilterStore.getQueryString();
-    //
-    //    $.get('/api/allegations/?' + qry + "page=" + x + "&length=25", function (data) {
-    //      that.setState({'complaints': $.merge(that.state.complaints,data.allegations)});
-    //      x++;
-    //      locked = false;
-    //    }, 'json');
-    //    locked = true;
-    //  }
-    //})
+    $(window).on('scroll', this._onScroll);
   },
+
   rowGetter: function (rowIndex) {
     return rows[rowIndex];
   },
+
   render: function () {
     var activeFilter = this.state.activeFilter;
     var analytics = this.state.analytics;
-    
+
     if (!this.state.complaints.length) {
       return <div></div>;
     }
@@ -67,28 +50,36 @@ var ComplaintList = React.createClass({
     var query = OfficerStore.getQueryString();
 
     return (
-      <div className="complaint_list">
+      <div className="complaint_list" onScroll={this.onScroll}>
         <div className='row'>
           <div className='col-md-2'>
             <h3 className="margin-top-0">Complaints</h3>
           </div>
           <div className='col-md-10 text-right'>
-	    <OutcomeFilter activeFilter={activeFilter} analytics={analytics} />
+            <OutcomeFilter activeFilter={activeFilter} analytics={analytics}/>
           </div>
         </div>
         {rows}
         <div className="row">
           <div className="col-md-2 col-md-offset-10">
-            <Download query={query} />
+            <Download query={query}/>
           </div>
         </div>
         <RequestModal />
       </div>
     )
   },
+
   _onChange: function () {
     this.setState(ComplaintListStore.getState());
-  }
+  },
+
+  _onScroll: function () {
+    if ($(window).scrollTop() / $(document).height() > .35 && !this.state.scrollLock) {
+      ComplaintListActions.getMoreData(this.state.pageNumber);
+      ComplaintListStore.lockScroll();
+    }
+  },
 });
 
 module.exports = ComplaintList;

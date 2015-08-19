@@ -12,7 +12,6 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var MapConstants = require('../constants/MapConstants');
-var FilterActions = require('../actions/FilterActions');
 var assign = require('object-assign');
 var CHANGE_EVENT = 'change';
 var CREATE_EVENT = 'change';
@@ -57,6 +56,11 @@ var FilterStore = assign({}, EventEmitter.prototype, {
       return _filters;
     }
   },
+
+  getFilters: function() {
+    return _filters;
+  },
+
   update: function (id, updates) {
     update(id, updates);
     this.emit(CHANGE_EVENT);

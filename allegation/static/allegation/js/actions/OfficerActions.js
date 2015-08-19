@@ -1,16 +1,7 @@
-/*
- * Copyright (c) 2014-2015, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * TodoActions
- */
-
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var MapConstants = require('../constants/MapConstants');
+var ComplaintListAPI = require('../utils/ComplaintListAPI');
+var OutcomeAnalysisAPI = require('../utils/OutcomeAnalysisAPI');
 
 var OfficerActions = {
 
@@ -24,7 +15,9 @@ var OfficerActions = {
     AppDispatcher.dispatch({
       actionType: MapConstants.SET_ACTIVE_OFFICER,
       officer: officer
-    })
+    });
+    ComplaintListAPI.getData();
+    OutcomeAnalysisAPI.getAnalysisInformation();
   },
   setComplaintsCount: function (start, end) {
     AppDispatcher.dispatch({

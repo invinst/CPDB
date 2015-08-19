@@ -31,6 +31,9 @@ var OfficerStore = assign({}, EventEmitter.prototype, {
   setSession: function (data) {
     this.set('active_officers', data.active_officers || []);
   },
+  getActiveOfficers: function() {
+    return _state.active_officers;
+  },
   getQueryString: function () {
     var queryString = FilterStore.getQueryString();
     for (var i = 0; i < _state['active_officers'].length; i++) {
