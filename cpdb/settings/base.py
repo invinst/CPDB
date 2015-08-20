@@ -44,6 +44,7 @@ INSTALLED_APPS = (
     'django_tables2',
     'compressor',
     'rest_framework',
+    'jsonify',
 
     'common',
     'allegation',

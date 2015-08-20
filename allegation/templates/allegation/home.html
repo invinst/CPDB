@@ -1,4 +1,5 @@
 {% extends 'allegation/base.html' %}
+{% load jsonify %}
 
 {% block content %}
   {% if DJANGO_ENV != 'test' %}
@@ -9,9 +10,10 @@
 {% endblock %}
 
 {% block footerjs %}
+
   <script>
-    var INIT_DATA = {% if session %}{{ session.query|safe }}{% else %}false{% endif %};
-    var INIT_FILTERS = {filters: {% if filters %}{{ filters|safe }}{% else %}false{% endif %}};
+    var INIT_DATA = {% if session %}{{ session.query|jsonify }}{% else %}false{% endif %};
+    var INIT_FILTERS = {filters: {% if filters %}{{ filters|jsonify }}{% else %}false{% endif %}};
   </script>
   {{ block.super }}
     <script>

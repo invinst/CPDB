@@ -6,9 +6,9 @@ var FilterStore = require("../stores/FilterStore");
 
 var width = 760,
   height = 430,
+  radius,
   svg,
   path,
-  radius = Math.min(width, height) / 2.2,
   colors = {
     'Allegation': '#bfd4df',
     'Unsustained': '#0079ae' ,
@@ -35,6 +35,11 @@ var width = 760,
     'Separation': '#4c544c',
     '30+ days': '#930c0c'
   };
+
+if ($(window).width() <= 1200) {
+    height = 300;
+}
+radius = Math.min(width, height) / 2.2;
 
 var color = d3.scale.category20c();
 
@@ -167,6 +172,11 @@ var Sunburst = React.createClass({
     this.drawChart();
   },
   componentDidMount: function () {
+
+    if ($(window).width() <= 1200) {
+      $("#sunburst-chart").addClass("small");
+    }
+
     SunburstStore.addChangeListener(this._onChange);
     SunburstStore.update();
   },
@@ -221,7 +231,7 @@ var Sunburst = React.createClass({
         percent = (max * 100 / total).toFixed(2);
         percentStatement = (
           <div>
-            <strong>{percent}%</strong> of {selected.name} complaints were resulted in {theMax.name}
+            <strong>{percent}%</strong> of "{selected.name}" complaints were "{theMax.name}"
           </div>
         )
       }
@@ -229,10 +239,10 @@ var Sunburst = React.createClass({
 
     return (
       <div className="row">
-        <div className="col-md-3">
+        <div className="col-md-5">
           <div id="sunburst-legend">
             <div className="root">
-              {total} <span className="name">{selected.name}</span>
+              {total} {selected.name}
             </div>
             <div className="percent">
               {percentStatement}
@@ -242,7 +252,7 @@ var Sunburst = React.createClass({
             </div>
           </div>
         </div>
-        <div id="sunburst-chart" className="col-md-9">
+        <div id="sunburst-chart" className="col-md-7">
         </div>
       </div>
     );
