@@ -2,7 +2,7 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var MapConstants = require('../constants/MapConstants');
 var AppConstants = require('../constants/AppConstants');
-
+var ajax = null;
 var assign = require('object-assign');
 var OfficerStore = require('./OfficerStore');
 var _ = require('lodash');
@@ -45,11 +45,14 @@ var ComplaintListStore = assign({}, EventEmitter.prototype, {
       this.changeComplaintList([]);
       return;
     }
+    if (ajax) {
+      ajax.abort();
+    }
 
     queryString = queryString + outcomeFilterQuery;
     var that = this;
 
-    $.getJSON('/api/allegations/?' + queryString, function (data) {
+    ajax = $.getJSON('/api/allegations/?' + queryString, function (data) {
       that.changeComplaintList(data.allegations);
     })
 

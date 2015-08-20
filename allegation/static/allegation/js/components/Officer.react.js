@@ -70,7 +70,7 @@ var Officer = React.createClass({
           </div>
           <div className='complaint-discipline-row'>
             <div className='row'>
-              <div className='col-md-6'>
+              <div className='col-xs-6'>
                 <div className=''>
                   complaints
                 </div>
@@ -79,7 +79,7 @@ var Officer = React.createClass({
                 </div>
               </div>
               <div className='vertical-line'></div>
-              <div className='col-md-6 officer-disciplines'>
+              <div className='col-xs-6 officer-disciplines'>
                 <div className=''>
                   disciplines
                 </div>

@@ -16,6 +16,7 @@ var assign = require('object-assign');
 var FilterStore = require('./FilterStore');
 var CHANGE_EVENT = 'change';
 var SUMMARY_CHANGE = 'summary-change';
+var ajax = false;
 var _state = {
   'rows': [],
   'current': false
@@ -24,12 +25,6 @@ var _complaints = {};
 var _currentActive = false;
 
 
-/**
- * Update a TODO item.
- * @param  {string} id
- * @param {object} updates An object literal containing only the data to be
- *     updated.
- */
 function update(id, updates) {
   _complaints[id] = assign({}, _complaints[id], updates);
 }
@@ -46,7 +41,10 @@ function create(id, complaint) {
 var SummaryStore = assign({}, EventEmitter.prototype, {
   update: function () {
     var query_string = FilterStore.getQueryString();
-    $.getJSON('/api/allegations/summary/?' + query_string, function (data) {
+    if (ajax) {
+      ajax.abort();
+    }
+    ajax = $.getJSON('/api/allegations/summary/?' + query_string, function (data) {
       _state['rows'] = data.summary;
       SummaryStore.emitChange();
     })

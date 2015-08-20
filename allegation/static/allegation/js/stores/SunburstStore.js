@@ -4,6 +4,7 @@ var MapConstants = require('../constants/MapConstants');
 var assign = require('object-assign');
 var FilterStore = require('./FilterStore');
 var CHANGE_EVENT = 'change';
+var ajax = null;
 
 var _state = {
   'rows': [],
@@ -22,8 +23,10 @@ var SunburstStore = assign({}, EventEmitter.prototype, {
       return;
     }
     _queryString = queryString;
-
-    d3.json("/api/allegations/sunburst/?" + queryString, function (error, data) {
+    if (ajax) {
+      ajax.abort();
+    }
+    ajax = d3.json("/api/allegations/sunburst/?" + queryString, function (error, data) {
       if (error) throw error;
       var root = data.sunburst;
       _state = {
