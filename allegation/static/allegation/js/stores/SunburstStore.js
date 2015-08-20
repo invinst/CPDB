@@ -28,14 +28,17 @@ var SunburstStore = assign({}, EventEmitter.prototype, {
     }
     ajax = d3.json("/api/allegations/sunburst/?" + queryString, function (error, data) {
       if (error) throw error;
-      var root = data.sunburst;
-      _state = {
-        data: root,
-        selected: root,
-        drew: false
-      };
-      SunburstStore.emitChange();
+      SunburstStore.setData(data);
     });
+  },
+  setData: function (data) {
+    var root = data.sunburst;
+    _state = {
+      data: root,
+      selected: root,
+      drew: false
+    };
+    SunburstStore.emitChange();
   },
   set: function (key, value) {
     _state[key] = value;

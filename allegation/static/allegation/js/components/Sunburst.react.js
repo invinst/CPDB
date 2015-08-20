@@ -4,7 +4,7 @@ var SunburstStore = require("../stores/SunburstStore");
 var FilterStore = require("../stores/FilterStore");
 
 
-var width = 760,
+var width = 430,
   height = 430,
   radius,
   svg,
@@ -37,7 +37,7 @@ var width = 760,
   };
 
 if ($(window).width() <= 1200) {
-    height = 300;
+    height = width = 300;
 }
 radius = Math.min(width, height) / 2.2;
 

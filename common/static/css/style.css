@@ -1271,11 +1271,9 @@ form.navbar-form.navbar-right {
 
 #sunburst-chart svg {
     position: relative;
-    left: -160px;
 }
 
 #sunburst-chart.small svg {
-    left: -255px;
 }
 
 #sunburst-chart {

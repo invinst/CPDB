@@ -11,6 +11,14 @@
     padding-left: 0;
 }
 
+.col-md-5 {
+    width: 41.66666667%;
+}
+
+.col-md-7 {
+    width: 58.33333333%;
+}
+
 body > .row {
     margin-left: 0;
     margin-right: 0;
@@ -42,4 +50,8 @@ body > .row {
 
 .officer-control {
     display: block;
+}
+
+#sunburst-chart path {
+    stroke: #fff;
 }
