@@ -18,9 +18,7 @@ class AllegationAPIView(View):
 
     @property
     def query_dict(self):
-        if not self.orig_query_dict:
-            return self.request.GET
-        return self.orig_query_dict
+        return self.orig_query_dict or self.request.GET
 
     def get_allegations(self, ignore_filters=None):
         allegation_query_filters = AllegationQueryFilter(self.query_dict, ignore_filters)

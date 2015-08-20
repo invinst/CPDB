@@ -1,6 +1,6 @@
 import random
-from django.contrib.gis.geos import MultiPolygon, Polygon
 
+from django.contrib.gis.geos import MultiPolygon, Polygon
 from django.utils import timezone
 import factory
 from faker import Faker
