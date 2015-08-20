@@ -153,7 +153,6 @@ BOWER_INSTALLED_APPS = (
     'bootstrap-tagsinput#0.4.2',
     'jquery-cookie#1.4.1',
     'c3',
-    'd3',
     'components-font-awesome',
     'moment',
     'highcharts-release#4.1.6',
