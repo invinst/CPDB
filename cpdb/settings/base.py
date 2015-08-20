@@ -43,6 +43,7 @@ INSTALLED_APPS = (
     'djangobower',
     'django_tables2',
     'compressor',
+    'jsonify',
 
     'common',
     'allegation',

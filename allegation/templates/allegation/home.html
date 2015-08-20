@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load staticfiles compress %}
+{% load staticfiles compress jsonify %}
 
 {% block head-link-external %}
     {{ block.super }}
@@ -35,8 +35,8 @@
     {{ block.super }}
 
     <script>
-      var INIT_DATA = {% if session %}{{ session.query|safe }}{% else %}false{% endif %};
-      var INIT_FILTERS = {filters: {% if filters %}{{ filters|safe }}{% else %}false{% endif %}};
+      var INIT_DATA = {% if session %}{{ session.query|jsonify }}{% else %}false{% endif %};
+      var INIT_FILTERS = {filters: {% if filters %}{{ filters|jsonify }}{% else %}false{% endif %}};
     </script>
     <script>
      var MEDIA_URL = "{{ MEDIA_URL }}";

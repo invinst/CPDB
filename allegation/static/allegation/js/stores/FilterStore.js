@@ -124,7 +124,7 @@ var FilterStore = assign({}, EventEmitter.prototype, {
 
       if (filter['value']) {
         for (var i = 0; i < filter['value'].length; i++) {
-          if (typeof(filter['value'][i]) == 'object') {
+          if (filter['value'][i] && (typeof(filter['value'][i]) == 'object')) {
             query += filterName + "=" + filter['value'][i][1] + "&";
           } else {
             query += filterName + "=" + filter['value'][i] + "&";
@@ -140,7 +140,7 @@ var FilterStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case MapConstants.MAP_REPLACE_FILTERS:
-      FilterStore.replaceFilters(action.filters)
+      FilterStore.replaceFilters(action.filters);
       break;
 
     case MapConstants.MAP_CHANGE_FILTER:

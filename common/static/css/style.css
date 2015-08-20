@@ -1155,7 +1155,7 @@ form.navbar-form.navbar-right {
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 12px;
     color: #989898;
-    padding: 2px 15px 0px 15px;
+    padding: 2px 15px 0 15px;
     line-height: 1.1em;
     min-height: 1.1em;
 }
@@ -1233,7 +1233,9 @@ form.navbar-form.navbar-right {
     width: 100%;
 }
 #sunburst-legend table td {
-    padding: 5px;
+    padding-right: 10px;
+    padding-bottom: 5px;
+    vertical-align: top;
 }
 
 #sunburst-legend .name {
@@ -1248,11 +1250,11 @@ form.navbar-form.navbar-right {
 }
 
 #sunburst-legend .list {
-    margin-top: 44px;
+    margin-top: 30px;
 }
 
 #sunburst-legend .percent {
-    height: 3em;
+    min-height: 3em;
 }
 
 #sunburst-legend table td.size {
@@ -1269,7 +1271,11 @@ form.navbar-form.navbar-right {
 
 #sunburst-chart svg {
     position: relative;
-    left: -162px;
+    left: -160px;
+}
+
+#sunburst-chart.small svg {
+    left: -255px;
 }
 
 #sunburst-chart {
