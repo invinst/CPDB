@@ -1,10 +1,22 @@
 var ComplaintListServerActions = require('../actions/ComplaintList/ComplaintListServerActions');
 var AllegationFetcherQueryBuilder = require('./AllegationFetcherQueryBuilder');
+var AppConstants = require('../constants/AppConstants');
+
 var ajax = null;
 
 var ComplaintListAPI = {
+  preloadDataForOtherTab: function () {
+    for (filter in AppConstants.FILTERS) {
+      var queryString = AllegationFetcherQueryBuilder.buildQuery(filter);
+      ajax = $.getJSON('/api/allegations/?' + queryString, function (data) {
+        console.log(data);
+      })
+    }
+  },
+
   getData: function () {
     var queryString = AllegationFetcherQueryBuilder.buildQuery();
+    var that = this;
 
     if (queryString) {
       if (ajax) {
@@ -13,9 +25,10 @@ var ComplaintListAPI = {
 
       ajax = $.getJSON('/api/allegations/?' + queryString, function (data) {
         ComplaintListServerActions.receivedData(data);
+        that.preloadDataForOtherTab();
       });
     } else {
-      ComplaintListServerActions.receivedData({'allegations':[], 'analytics': {}});
+      ComplaintListServerActions.receivedData({'allegations': [], 'analytics': {}});
     }
   },
 

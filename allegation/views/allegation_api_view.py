@@ -46,7 +46,7 @@ class AllegationAPIView(View):
         except ValueError:
             page = 0
 
-        length = getattr(settings, 'ALLEGATION_LIST_ITEM_COUNT', 200)
+        length = getattr(settings, 'ALLEGATION_LIST_ITEM_COUNT', 25)
         try:
             length = int(request.GET.get('length', length))
         except ValueError:

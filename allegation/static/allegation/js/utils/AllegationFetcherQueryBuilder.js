@@ -49,11 +49,11 @@ var AllegationFetcherQueryBuilder = {
     return query;
   },
 
-  buildQuery: function() {
+  buildQuery: function(activeOutcomeFilter) {
     var filters = FilterStore.getFilters();
     var ignoreFilters = [];
     var activeOfficers = OfficerStore.getActiveOfficers();
-    var activeOutcomeFilter = ComplaintListStore.getActiveFilter();
+    var activeOutcomeFilter = activeOutcomeFilter || ComplaintListStore.getActiveFilter();
 
     if (_.isEmpty(filters) && _.isEmpty(activeOfficers))
       return '';

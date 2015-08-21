@@ -25,7 +25,6 @@ var ComplaintListStore = assign({}, EventEmitter.prototype, {
 
   setActiveFilter: function(activeFilter) {
     _state['activeFilter'] = activeFilter;
-    this.emitChange();
   },
 
   lockScroll: function() {
@@ -59,6 +58,8 @@ AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.SET_ACTIVE_COMPLAINT_LIST_FILTER:
       ComplaintListStore.setActiveFilter(action.filter);
+      _state['pageNumber'] = 1;
+      ComplaintListStore.emitChange();
       break;
 
     case AppConstants.RECEIVED_OUTCOME_FILTER_ANALYSIS:
