@@ -11,6 +11,17 @@
     padding-left: 0;
 }
 
+.row .row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.row .row .col-md-12,
+.row .row-fluid .col-md-12 {
+    padding-right: 0;
+    padding-left: 0;
+}
+
 .col-md-5 {
     width: 41.66666667%;
 }

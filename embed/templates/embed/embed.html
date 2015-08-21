@@ -6,18 +6,15 @@
   <link rel="stylesheet" href="{% static 'embed/css/embed.css' %}" />
 {% endblock %}
 
-{% block meta %}
-  {{ block.super }}
-  <meta name="viewport" content="width=1440" />
-{% endblock %}
-
 {% block body %}
   <script>
     PAGE = '{{ page }}';
     PK = '{{ pk }}';
     QUERY = '{{ query }}';
   </script>
-  <div class="row">
-    <div id="embed" class="col-md-12 col-lg-12 col-sm-12"></div>
+  <div class="container-fluid">
+    <div class="row">
+      <div id="embed" class="col-md-12 col-lg-12 col-sm-12"></div>
+    </div>
   </div>
 {% endblock %}

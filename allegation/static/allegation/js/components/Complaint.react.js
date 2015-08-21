@@ -6,7 +6,7 @@ var PoliceWitness = require('./Complaint/PoliceWitness.react');
 var RequestButton = require('./Complaint/RequestButton.react');
 
 
-var ComplaintListRowDetail = React.createClass({
+var Complaint = React.createClass({
   getInitialState: function () {
     return {police_witness: 0};
   },
@@ -30,17 +30,23 @@ var ComplaintListRowDetail = React.createClass({
     }
 
     var cssClasses = "row-fluid complaint_detail clearfix slide-down" + (this.props.hide ? ' closed' : '');
-    return (
-      <div className={cssClasses}>
-        <div className="col-md-12">
-          {infor}
-        </div>
+    var buttons = '';
+    if (!this.props.noButton) {
+      buttons = (
         <div className="col-md-10 col-md-offset-1 button-list">
           <RequestButton complaint={complaint} />
           <button type="button" className="btn btn-close" onClick={this.toggleComplaint}>
             <i className="fa fa-times" /> Close
           </button>
         </div>
+      );
+    }
+    return (
+      <div className={cssClasses}>
+        <div className="col-md-12">
+          {infor}
+        </div>
+        {buttons}
       </div>
     );
   },
@@ -50,4 +56,4 @@ var ComplaintListRowDetail = React.createClass({
   }
 });
 
-module.exports = ComplaintListRowDetail;
+module.exports = Complaint;

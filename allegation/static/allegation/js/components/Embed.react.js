@@ -6,6 +6,7 @@ var Officer = require('./Officer.react');
 var OfficerList = require('./OfficerList.react');
 var Sunburst = require('./Sunburst.react');
 var Map = require('./Map.react');
+var Complaint = require('./Complaint.react');
 
 
 var Embed = React.createClass({
@@ -25,6 +26,10 @@ var Embed = React.createClass({
     this.setContent(<Officer officer={officer} noClick={true} />);
   },
 
+  renderAllegation: function (data) {
+    this.setContent(<Complaint complaint={data.allegations[0]} noButton={true} />);
+  },
+
   embedOfficerCard: function () {
     $.getJSON('/api/officers/' + this.props.pk + '/', this.renderOfficer);
   },
@@ -41,12 +46,17 @@ var Embed = React.createClass({
     this.setContent(<Map query={this.props.query} />);
   },
 
+  embedAllegation: function () {
+    $.getJSON('/api/allegations/?id=' + this.props.pk, this.renderAllegation);
+  },
+
   componentWillMount: function () {
     var listener = {
       'officer-card': this.embedOfficerCard,
       'officers': this.embedOfficers,
       'sunburst': this.embedSunburst,
-      'map': this.embedMap
+      'map': this.embedMap,
+      'allegation': this.embedAllegation
     };
 
     listener[this.props.page]();
