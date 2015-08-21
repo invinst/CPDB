@@ -7,8 +7,8 @@ from common.models import Area, Allegation
 
 class AllegationGisApiViewTestCase(AllegationApiTestBase):
 
-    def fetch_gis_allegations(self, **params):
-        response = self.client.get('/api/allegations/cluster/', params)
+    def fetch_gis_allegations(self, url='/api/allegations/cluster/', **params):
+        response = self.client.get(url, params)
         data = json.loads(response.content.decode())
         return data
 
@@ -26,6 +26,19 @@ class AllegationGisApiViewTestCase(AllegationApiTestBase):
         area = Area.objects.filter()[0]
         officer = area.allegation_set.all()[0].officer
         num_markers = area.allegation_set.filter(officer=officer).exclude(point=None).count()
-        allegations = self.fetch_gis_allegations(officer=officer.id)
+        allegations = self.fetch_gis_allegations(url='/api/allegations/gis/', officer=officer.id)
         num_returned = len(allegations['features'])
         num_markers.should.equal(num_returned)
+
+    def test_return_cluster_success(self):
+        num_markers = Allegation.objects.filter().exclude(point=None).count()
+        allegations = self.fetch_gis_allegations(url='/api/allegations/cluster/')
+        num_returned = len(allegations['features'])
+        num_markers.should.be.above(num_returned)
+        num_returned.shouldnt.equal(0)
+
+    def test_return_cluster_success_no_points(self):
+        officer = Allegation.objects.filter(point=None).first().officer
+        allegations = self.fetch_gis_allegations(url='/api/allegations/cluster/', officer=officer.id)
+        num_returned = len(allegations['features'])
+        num_returned.should.equal(0)

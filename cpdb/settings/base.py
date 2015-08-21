@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.8/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os, sys
+from django.core.urlresolvers import reverse_lazy
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -194,5 +195,14 @@ EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 BROKER_URL = os.environ.get('BROKER_URL', 'redis://localhost:6379/0')
+
 COMPRESS_ENABLED = True
 COMPRESS_JS_FILTERS = []
+COMPRESS_PRECOMPILERS = (
+    ('text/less', 'lessc {infile}'),
+    ('text/sass', 'sass {infile}'),
+)
+
+LOGIN_URL = reverse_lazy("admin:login")
+
+ANALYTICS_API_KEY_FILE = os.path.join(BASE_DIR, 'keys', 'cpdb-analytics.p12')

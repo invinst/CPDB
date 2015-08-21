@@ -27,3 +27,4 @@ if len(sys.argv) > 1 and sys.argv[1] == 'test':
             'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
         }
     }
+COMPRESS_ENABLED = False

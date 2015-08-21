@@ -1,0 +1,58 @@
+{% load compress static %}
+<!doctype>
+<html>
+    <head>
+        <title>CPDB Analytics</title>
+        {% compress css %}
+            <link rel='stylesheet' type='text/css' href='{% static 'bootstrap/dist/css/bootstrap.min.css' %}' />
+            <link rel="stylesheet" type="text/css" href="{% static 'components-font-awesome/css/font-awesome.min.css' %}" />
+            <link type='text/sass' rel='stylesheet' href='{% static 'admin/sass/style.sass' %}' media='all'>
+        {% endcompress %}
+    </head>
+    <body>
+        <header class='row'>
+            {% block header %}
+                <div class='col-md-3 left-column '>
+                    <div class='row'>
+                        <div class='col-xs-6'>
+                            <img src="{% static 'img/logo.png' %}" alt="CPDB" />
+                        </div>
+                        <div class='col-xs-6 welcome'>
+                            Hello
+                            <div>{{ request.user.get_full_name }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class='col-md-9'>
+                    <div class='pull-right'>
+                        <div id="period">
+                        </div>
+                    </div>
+                    <h1>Overview</h1>
+                </div>
+            {% endblock %}
+        </header>
+
+        {% block content %}
+            <div class='row content'>
+                {% block left_col %}
+                    <div class='col-md-3 left-column left-menu no-padding'>
+                        <div id='navigation-menu'>
+                        </div>
+                    </div>
+                {% endblock %}
+                {% block right_col %}
+                    <div class='col-md-9 margin-top'>
+                        <div id='content'></div>
+                    </div>
+                {% endblock %}
+            </div>
+        {% endblock %}
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700|Vollkorn:400italic,400' rel='stylesheet' type='text/css'>
+    <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+    {% compress js %}
+        <script src='{% static "admin/js/bundle.js" %}'></script>
+    {% endcompress %}
+
+    </body>
+</html>

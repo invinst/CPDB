@@ -1,5 +1,6 @@
 import datetime
 import json
+from django.conf import settings
 
 from django.utils import timezone
 
@@ -129,10 +130,10 @@ class AllegationApiViewTestCase(AllegationApiTestBase):
 
     def test_multiple_areas(self):
         areas = Area.objects.filter()
-        num_allegations = len(Allegation.objects.filter(areas=areas).values('crid'))
+        num_allegations = len(Allegation.objects.filter(areas=areas).distinct().values('crid'))
         allegations = self.fetch_allegations(areas__id=list(areas.values_list('pk', flat=True)))
         num_returned = len(allegations)
-        num_allegations.should.equal(num_returned)
+        num_returned.should.equal(getattr(settings, 'ALLEGATION_LIST_ITEM_COUNT', 200))
 
     def test_filter_by_complaint_gender(self):
         allegation = self.allegations[0]

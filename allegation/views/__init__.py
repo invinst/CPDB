@@ -204,36 +204,38 @@ class AllegationClusterApiView(AllegationAPIView):
                 ignore_filters = []
         allegations = self.get_allegations(ignore_filters=ignore_filters)
         allegation_pks = list(allegations.values_list('id', flat=True))
-
-        allegation_pks = ",".join(str(x) for x in allegation_pks)
-        kursor = connection.cursor()
-
-        grid_size = 0.0005
         ret = {'features': [], 'type': 'FeatureCollection'}
-        kursor.execute('''
-            SELECT
-                COUNT( point ) AS count,
-                ST_AsText( ST_Centroid(ST_Collect( point )) ) AS center
-            FROM common_allegation WHERE point IS NOT NULL and id in (%s)
-            GROUP BY
-                ST_SnapToGrid( ST_SetSRID(point, 4326), %s, %s)
-            ''' % (allegation_pks, grid_size, grid_size)
-                       )
-        kclusters = kursor.fetchall()
 
-        for cluster in kclusters:
-            point = fromstr(cluster[1])
-            allegation_json = {
-                "type": "Feature",
-                "properties": {
-                    "name": cluster[0],
-                },
-                'geometry': {
-                    'coordinates': [point.x, point.y],
-                    'type': 'Point'
+        if len(allegation_pks) > 0:
+            allegation_pks = ",".join(str(x) for x in allegation_pks)
+            kursor = connection.cursor()
+
+            grid_size = 0.0005
+
+            kursor.execute('''
+                SELECT
+                    COUNT( point ) AS count,
+                    ST_AsText( ST_Centroid(ST_Collect( point )) ) AS center
+                FROM common_allegation WHERE point IS NOT NULL and id in (%s)
+                GROUP BY
+                    ST_SnapToGrid( ST_SetSRID(point, 4326), %s, %s)
+                ''' % (allegation_pks, grid_size, grid_size)
+                           )
+            kclusters = kursor.fetchall()
+
+            for cluster in kclusters:
+                point = fromstr(cluster[1])
+                allegation_json = {
+                    "type": "Feature",
+                    "properties": {
+                        "name": cluster[0],
+                    },
+                    'geometry': {
+                        'coordinates': [point.x, point.y],
+                        'type': 'Point'
+                    }
                 }
-            }
-            ret['features'].append(allegation_json)
+                ret['features'].append(allegation_json)
 
         content = json.dumps(ret)
         return HttpResponse(content)
