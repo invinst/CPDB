@@ -38,11 +38,12 @@ var OfficerStore = assign({}, EventEmitter.prototype, {
     }
     return queryString;
   },
-  update: function () {
+  update: function (query) {
     if (ajax) {
       ajax.abort();
     }
-    ajax = $.getJSON('/api/allegations/officers/?' + FilterStore.getQueryString(), function (data) {
+    var queryString = query || FilterStore.getQueryString();
+    ajax = $.getJSON('/api/allegations/officers/?' + queryString, function (data) {
       _state.officers = data.officers;
       _state.overview = data.overview || [];
       OfficerStore.emitChange();
@@ -83,7 +84,6 @@ AppDispatcher.register(function (action) {
     case MapConstants.MAP_ADD_FILTER:
       if (!firstCall) {
         OfficerStore.set('active_officers', []);
-
       }
       firstCall = false;
       OfficerStore.update();

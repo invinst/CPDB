@@ -27,11 +27,10 @@ var OFFICER_PER_DISPLAY = OFFICER_PER_PAGE * 3;
 var OfficerList = React.createClass({
   getInitialState: function () {
     return {
-      officers: this.props.data ? this.props.data.officers : [],
+      officers: [],
       active_officers: [],
-      overview: this.props.data ? this.props.data.overview : [],
-      current_view: 0,
-      hasData: this.props.data ? true: false  // cast to boolean
+      overview: [],
+      current_view: 0
     };
   },
 
@@ -78,9 +77,8 @@ var OfficerList = React.createClass({
 
     $(".officer-control").disableSelection();
 
-    if (this.state.hasData) {
-      this.initSlider();
-      this.componentDidUpdate();
+    if (this.props.query != undefined) {
+      OfficerStore.update(this.props.query);
     }
   },
 
@@ -117,10 +115,10 @@ var OfficerList = React.createClass({
   },
 
   renderNewDisplay: function (value) {
-      $(".officers-container").addClass("off");
-      this.setState({
-          current_view: value * OFFICER_PER_COL
-      });
+    $(".officers-container").addClass("off");
+    this.setState({
+      current_view: value * OFFICER_PER_COL
+    });
   },
 
   slideToDisplay: function (value) {

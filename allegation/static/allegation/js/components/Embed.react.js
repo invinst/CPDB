@@ -5,8 +5,7 @@ var React = require('react');
 var Officer = require('./Officer.react');
 var OfficerList = require('./OfficerList.react');
 var Sunburst = require('./Sunburst.react');
-
-var SunburstStore = require("../stores/SunburstStore");
+var Map = require('./Map.react');
 
 
 var Embed = React.createClass({
@@ -26,32 +25,28 @@ var Embed = React.createClass({
     this.setContent(<Officer officer={officer} noClick={true} />);
   },
 
-  renderOfficers: function (data) {
-    this.setContent(<OfficerList data={data} noClick={true} />);
-  },
-
-  renderSunburst: function (data) {
-    this.setContent(<Sunburst />);
-    SunburstStore.setData(data);
-  },
-
   embedOfficerCard: function () {
     $.getJSON('/api/officers/' + this.props.pk + '/', this.renderOfficer);
   },
 
   embedOfficers: function () {
-    $.getJSON('/api/allegations/officers/?' + this.props.query + '/', this.renderOfficers);
+    this.setContent(<OfficerList query={this.props.query} noClick={true} />);
   },
 
   embedSunburst: function () {
-     $.getJSON('/api/allegations/sunburst/?' + this.props.query + '/', this.renderSunburst);
+    this.setContent(<Sunburst query={this.props.query} />);
+  },
+
+  embedMap: function () {
+    this.setContent(<Map query={this.props.query} />);
   },
 
   componentWillMount: function () {
     var listener = {
       'officer-card': this.embedOfficerCard,
       'officers': this.embedOfficers,
-      'sunburst': this.embedSunburst
+      'sunburst': this.embedSunburst,
+      'map': this.embedMap
     };
 
     listener[this.props.page]();

@@ -54,14 +54,14 @@ var MapStore = assign({}, EventEmitter.prototype, {
   getPolygons: function () {
     return _polygons;
   },
-  update: function () {
-    var queryString = FilterStore.getQueryString(['areas__id']);
+
+  update: function (query) {
+    var queryString = query || FilterStore.getQueryString(['areas__id']);
     this.changeQuery(queryString);
   },
 
   changeQuery: function (queryString) {
     var store = this;
-    var queryString = FilterStore.getQueryString();
     if (queryString == _queryString) {
       return;
     }

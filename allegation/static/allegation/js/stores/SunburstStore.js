@@ -17,8 +17,8 @@ var _currentActive = false;
 var _queryString = null;
 
 var SunburstStore = assign({}, EventEmitter.prototype, {
-  update: function () {
-    var queryString = FilterStore.getQueryString(['final_outcome', 'final_finding', 'outcome_text']);
+  update: function (query) {
+    var queryString = query || FilterStore.getQueryString(['final_outcome', 'final_finding', 'outcome_text']);
     if (queryString == _queryString) {
       return;
     }
@@ -50,8 +50,8 @@ var SunburstStore = assign({}, EventEmitter.prototype, {
   getCurrentActive: function(){
     return _currentActive;
   },
-  init: function () {
-    this.update();
+  init: function (query) {
+    this.update(query);
     return _state;
   },
   getAll: function (type) {

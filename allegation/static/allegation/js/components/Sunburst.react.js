@@ -102,7 +102,7 @@ function sum(d){
 
 var Sunburst = React.createClass({
   getInitialState: function () {
-    return SunburstStore.init();
+    return SunburstStore.init(this.props.query);
   },
   makeTag: function (tag) {
     return {

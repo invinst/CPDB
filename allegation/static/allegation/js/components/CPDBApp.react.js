@@ -22,7 +22,7 @@ var Sunburst = require('./Sunburst.react');
 var OfficerList = require('./OfficerList.react');
 var ComplaintList = require('./ComplaintList.react');
 var DistributionChart = require('./DistributionChart.react');
-var MainMap = require('./MainMap.react');
+var Map = require('./Map.react');
 
 /**
  * Retrieve the current TODO data from the MapStore
@@ -77,7 +77,7 @@ var CPDBApp = React.createClass({
           </div>
         <div className='row map-row'>
           <div className='col-md-6 map-column relative'>
-            <MainMap />
+            <Map />
           </div>
           <div className='col-md-6 chart-row'>
             <div>
