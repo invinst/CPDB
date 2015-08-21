@@ -36,7 +36,7 @@ var Map = React.createClass({
   componentDidMount: function () {
     this.create();
     this.createAreas();
-    MapStore.update();
+    MapStore.update(this.props.query);
 
     MapStore.addChangeMarkerListener(this.changeMarker);
     MapStore.addBeforeChangeMarkerListener(this.beforeChangeMarker);
