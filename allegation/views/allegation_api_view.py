@@ -8,6 +8,7 @@ from common.json_serializer import JSONSerializer
 
 from allegation.views.allegation_query_filter import AllegationQueryFilter
 from allegation.services.outcome_analytics import OutcomeAnalytics
+from common.utils.http_request import get_client_ip
 from search.models import FilterLog
 
 
@@ -28,10 +29,12 @@ class AllegationAPIView(View):
 
     def track_filter(self, num_allegations):
         querystring = self.request.META['QUERY_STRING']
+        ip = get_client_ip(self.request)
         if querystring:
             FilterLog.objects.create(query=querystring,
-                                 session_id=self.request.session.session_key or "",
-                                 num_allegations=num_allegations)
+                                     session_id=self.request.session.session_key or "",
+                                     num_allegations=num_allegations,
+                                     ip=ip)
 
     def get(self, request):
         allegations = self.get_allegations()

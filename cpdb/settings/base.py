@@ -172,11 +172,12 @@ OFFICER_LIST_SEND_LENGTH = os.environ.get('OFFICER_LIST_SEND_LENGTH', 150)
 
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': [
-            '127.0.0.1:11211',
-        ]
-    }
+        'BACKEND': 'redis_cache.RedisCache',
+        'LOCATION': 'redis://localhost:6379/0',
+        'OPTIONS': {
+            'MAX_ENTRIES': 20000
+        }
+    },
 }
 
 GRAPH_DISTCURVE_NUM_X_TICKS = 6
