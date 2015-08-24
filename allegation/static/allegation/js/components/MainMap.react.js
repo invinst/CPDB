@@ -27,7 +27,8 @@ var Map = React.createClass({
     var state = {
       'maxZoom': 17,
       'minZoom': 10,
-      'scrollWheelZoom': false
+      'scrollWheelZoom': false,
+      'area': 'police-districts'
     };
     $.extend(state, MapStore.getState());
     return state;
@@ -40,6 +41,14 @@ var Map = React.createClass({
 
     MapStore.addChangeMarkerListener(this.changeMarker);
     MapStore.addBeforeChangeMarkerListener(this.beforeChangeMarker);
+    $("body").on("change", ".leaflet-control-layers-selector", function () {
+      var currentSelectedType = $(".leaflet-control-layers-selector:checked").next().text();
+
+      MapStore.setState({
+         'area': currentSelectedType.toLowerCase().trim().replace(" ","-")
+      });
+      FilterActions.saveSession();
+    });
   },
 
   mapIntensity: function(markersLength) {
@@ -70,7 +79,7 @@ var Map = React.createClass({
       MapStore.setState({
         'bounds': this.getBounds(),
         'defaultZoom': this.getZoom(),
-        'center': center
+        'center': center,
       });
       FilterActions.saveSession();
     });
@@ -158,7 +167,7 @@ var Map = React.createClass({
     if (!(area_type in _layers)) {
       _layers[area_type] = L.layerGroup();
       _baseLayers[prettyLabels(area_type).capitalize()] = _layers[area_type];
-      if (!this.first_layer_added && area_type == 'police-districts') {
+      if (!this.first_layer_added && area_type == this.state.area) {
         this.first_layer_added = true;
         _map.addLayer(_baseLayers[prettyLabels(area_type).capitalize()]);
       }
