@@ -23,3 +23,5 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
     }
 }
+
+COMPRESS_ENABLED = False
