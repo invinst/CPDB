@@ -7,6 +7,7 @@ var OfficerList = require('./OfficerList.react');
 var Sunburst = require('./Sunburst.react');
 var Map = require('./Map.react');
 var Complaint = require('./Complaint.react');
+var Summary = require('./Summary.react');
 
 
 var Embed = React.createClass({
@@ -50,13 +51,18 @@ var Embed = React.createClass({
     $.getJSON('/api/allegations/?id=' + this.props.pk, this.renderAllegation);
   },
 
+  embedSummary: function () {
+    this.setContent(<Summary query={this.props.query} />);
+  },
+
   componentWillMount: function () {
     var listener = {
       'officer-card': this.embedOfficerCard,
       'officers': this.embedOfficers,
       'sunburst': this.embedSunburst,
       'map': this.embedMap,
-      'allegation': this.embedAllegation
+      'allegation': this.embedAllegation,
+      'summary': this.embedSummary
     };
 
     listener[this.props.page]();

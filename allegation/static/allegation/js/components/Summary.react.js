@@ -10,7 +10,7 @@ var ExtraInformation = require('./SummarySection/ExtraInformation.react');
 
 var Summary = React.createClass({
   getInitialState: function () {
-    return SummaryStore.init();
+    return SummaryStore.init(this.props.query);
   },
   componentDidMount: function () {
     SummaryStore.addChangeListener(this._onChange);

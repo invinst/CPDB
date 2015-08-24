@@ -66,3 +66,30 @@ body > .row {
 #sunburst-chart path {
     stroke: #fff;
 }
+
+
+#summary .row {
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+#summary-container {
+    margin-left: 0;
+    margin-top: 0;
+}
+
+#summary {
+    padding: 5px;
+}
+
+#summary.selected {
+    left: -52%;
+}
+
+#summary .child-rows {
+    overflow-y: auto;
+}
+
+#summary .child-row-container {
+    overflow-y: auto;
+}
