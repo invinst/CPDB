@@ -151,7 +151,7 @@ BOWER_INSTALLED_APPS = (
     'datatables#1.10.7',
     'bootstrap#3.3.2',
     'bootstrap-tagsinput#0.4.2',
-    'jquery-cookie#1.4.1',
+    'jquery.cookie#1.4.1',
     'c3',
     'components-font-awesome',
     'moment',
@@ -180,7 +180,7 @@ CACHES = {
 GRAPH_DISTCURVE_NUM_X_TICKS = 6
 GRAPH_DISTCURVE_NUM_Y_TICKS = 4
 MAP_POINT_THRESHOLD = 3
-SHELL_PLUS='ipython'
+SHELL_PLUS ='ipython'
 DJANGO_ENV = 'dev'
 
 if len(sys.argv) > 1 and sys.argv[1] == 'test':
