@@ -27,8 +27,10 @@ DATABASES = {
 
 CACHES = {
     'default': {
-        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
-        'LOCATION': '/var/tmp/django_cache',
-        'TIMEOUT': (86400 * 30 * 6),
-    }
+        'BACKEND': 'redis_cache.RedisCache',
+        'LOCATION': '***REMOVED***',
+        'OPTIONS': {
+            'MAX_ENTRIES': 20000
+        }
+    },
 }

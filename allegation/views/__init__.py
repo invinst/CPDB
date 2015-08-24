@@ -128,7 +128,7 @@ class AllegationListView(TemplateView):
 
 class AreaAPIView(View):
     def get(self, request):
-        areas = Area.objects.all().exclude(type='school-grounds')
+        areas = Area.objects.all()
         type_filter = request.GET.get('type')
 
         if type_filter:
@@ -171,28 +171,38 @@ class AllegationGISApiView(AllegationAPIView):
             if allegation.crid in seen_crids:
                 continue
             seen_crids[allegation.crid] = True
-            point = None
+
             if allegation.point:
                 point = json.loads(allegation.point.geojson)
 
-            allegation_json = {
-                "type": "Feature",
-                "properties": {
-                    "name": allegation.crid,
-                },
-                'geometry': point
-            }
-            if allegation.cat:
-                allegation_json['properties']['type'] = allegation.cat.allegation_name,
+                allegation_json = {
+                    "type": "Feature",
+                    "properties": {
+                        "name": allegation.crid,
+                    },
+                    'geometry': point
+                }
+                if allegation.cat:
+                    allegation_json['properties']['type'] = allegation.cat.allegation_name,
             allegation_dict['features'].append(allegation_json)
 
         content = json.dumps(allegation_dict)
         return HttpResponse(content)
 
+
 class AllegationClusterApiView(AllegationAPIView):
 
     def get(self, request):
-        allegations = self.get_allegations(ignore_filters=['areas__id'])
+        areas = request.GET.getlist('areas__id')
+        ignore_filters = ['areas__id']
+        if areas:
+            self.orig_query_dict = request.GET.copy()
+            schools = Area.objects.filter(pk__in=areas, type='school-grounds')
+            areas = list(schools.values_list('pk', flat=True))
+            if areas:
+                self.orig_query_dict.setlist('areas__id', areas)
+                ignore_filters = []
+        allegations = self.get_allegations(ignore_filters=ignore_filters)
         allegation_pks = list(allegations.values_list('id', flat=True))
 
         allegation_pks = ",".join(str(x) for x in allegation_pks)

@@ -3,6 +3,7 @@ import json
 
 from django.http.response import HttpResponseBadRequest, HttpResponse
 from django.views.generic.base import View
+from common.utils.http_request import get_client_ip
 from search.models.suggestion import SuggestionLog
 
 from search.services.suggestion import Suggestion
@@ -11,8 +12,10 @@ from search.services.suggestion import Suggestion
 class SuggestView(View):
     def track_suggestions_query(self, ret):
         total_results = sum([len(v) for k, v in ret.items()])
-        SuggestionLog.objects.create(session_id=self.request.session.session_key or '', query=self.request.GET.get('term', ''),
-                                     num_suggestions=total_results)
+        ip = get_client_ip(self.request)
+        SuggestionLog.objects.create(session_id=self.request.session.session_key or '',
+                                     query=self.request.GET.get('term', ''),
+                                     num_suggestions=total_results, ip=ip)
 
     def get(self, request):
         q = request.GET.get('term', '').lower()

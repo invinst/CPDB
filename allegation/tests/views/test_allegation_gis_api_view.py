@@ -8,7 +8,7 @@ from common.models import Area, Allegation
 class AllegationGisApiViewTestCase(AllegationApiTestBase):
 
     def fetch_gis_allegations(self, **params):
-        response = self.client.get('/api/allegations/gis/', params)
+        response = self.client.get('/api/allegations/cluster/', params)
         data = json.loads(response.content.decode())
         return data
 
@@ -25,7 +25,7 @@ class AllegationGisApiViewTestCase(AllegationApiTestBase):
     def test_return_markers(self):
         area = Area.objects.filter()[0]
         officer = area.allegation_set.all()[0].officer
-        num_markers = area.allegation_set.filter(officer=officer).count()
+        num_markers = area.allegation_set.filter(officer=officer).exclude(point=None).count()
         allegations = self.fetch_gis_allegations(officer=officer.id)
         num_returned = len(allegations['features'])
         num_markers.should.equal(num_returned)

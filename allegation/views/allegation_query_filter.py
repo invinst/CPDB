@@ -1,5 +1,5 @@
 from django.db.models.query_utils import Q
-from common.models import AllegationCategory, DISCIPLINE_CODES, NO_DISCIPLINE_CODES
+from common.models import AllegationCategory, DISCIPLINE_CODES, NO_DISCIPLINE_CODES, Area
 
 FILTERS = [
     'crid',
