@@ -12,7 +12,9 @@ DATABASES = {
         'HOST': 'localhost',
         ***REMOVED***
         'USER': 'ubuntu',
-        'TEST_NAME': 'circle_test',
+        'TEST': {
+            'NAME': 'circle_test',
+        }
     }
 }
 
