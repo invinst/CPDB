@@ -2,15 +2,13 @@ var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var AppConstants = require('../../constants/AppConstants');
 var ComplaintListAPI = require('../../utils/ComplaintListAPI');
 
-var OutcomeFilterActions = {
-  setActiveFilter: function (val) {
+var ComplaintListActions = {
+  getMoreData: function(pageNumber) {
     AppDispatcher.dispatch({
-      actionType: AppConstants.SET_ACTIVE_COMPLAINT_LIST_FILTER,
-      filter: val
+      actionType: AppConstants.COMPLAINT_LIST_GET_MORE_DATA
     });
-
-    ComplaintListAPI.getData();
+    ComplaintListAPI.getMoreData(pageNumber)
   }
 };
 
-module.exports = OutcomeFilterActions;
+module.exports = ComplaintListActions;

@@ -80,10 +80,10 @@ var SummaryStore = assign({}, EventEmitter.prototype, {
   addChangeListener: function (callback) {
     this.on(CHANGE_EVENT, callback);
   },
+
   addSummaryListener: function (callback) {
     this.on(SUMMARY_CHANGE, callback);
   }
-
 });
 
 // Register callback to handle all updates

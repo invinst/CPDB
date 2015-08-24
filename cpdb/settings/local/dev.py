@@ -10,7 +10,7 @@ if 'test' in sys.argv:
     CELERY_ALWAYS_EAGER = True
 
 MAP_BOX_API_KEY = 'sk.eyJ1Ijoic3RlZmFuZ2VvcmciLCJhIjoiMTNLSkhyTSJ9.b6k_KvDsuacf72UgbStcGQ'
-ALLEGATION_LIST_ITEM_COUNT = 100
+ALLEGATION_LIST_ITEM_COUNT = 25
 CACHES = {
     'default': {
         'BACKEND': 'redis_cache.RedisCache',
