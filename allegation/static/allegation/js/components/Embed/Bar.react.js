@@ -2,8 +2,10 @@
  * Created by eastagile on 8/6/15.
  */
 var React = require('react');
-var Download = require('./Download.react');
-var EmbedAction = require('../')
+var Download = require('../Download.react');
+var EmbedAction = require('../../actions/EmbedActions');
+var EmbedStore = require('../../stores/EmbedStore');
+
 
 var Bar = React.createClass({
   getInitialState: function () {
@@ -12,19 +14,36 @@ var Bar = React.createClass({
     };
   },
 
+  _enterMode: function () {
+    this.setState({
+      embedMode: true
+    });
+  },
+
+  _leaveMode: function () {
+    this.setState({
+      embedMode: false
+    });
+  },
+
+  componentDidMount: function() {
+    EmbedStore.addEnterListener(this._enterMode);
+    EmbedStore.addLeaveListener(this._leaveMode);
+  },
+
   onClick: function (e) {
     e.preventDefault();
 
-    this.setState({
-      embedMode: !this.state.embedMode
-    });
+    if (this.state.embedMode) {
+      EmbedAction.leaveEmbedMode();
+    } else {
+      EmbedAction.enterEmbedMode();
+    }
   },
 
   exitMode: function (e) {
     e.preventDefault();
-    this.setState({
-      embedMode: false
-    });
+    EmbedAction.leaveEmbedMode();
   },
 
   render: function () {

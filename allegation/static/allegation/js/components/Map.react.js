@@ -3,6 +3,8 @@ var MapStore = require("../stores/MapStore");
 var FilterStore = require('../stores/FilterStore');
 var FilterActions = require("../actions/FilterActions");
 
+var EmbedMixin = require('./Embed/Mixin.react');
+
 var highlightStyle = {
   color: '#2262CC',
   weight: 3,
@@ -23,6 +25,8 @@ var _types = ['police-districts', 'wards', 'police-beats', 'neighborhoods', 'sch
 
 
 var Map = React.createClass({
+  mixins: [EmbedMixin],
+
   getInitialState: function () {
     var state = {
       'maxZoom': 17,
@@ -40,6 +44,8 @@ var Map = React.createClass({
 
     MapStore.addChangeMarkerListener(this.changeMarker);
     MapStore.addBeforeChangeMarkerListener(this.beforeChangeMarker);
+
+    this.embedListener();
   },
 
   mapIntensity: function(markersLength) {
