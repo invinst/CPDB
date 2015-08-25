@@ -3,7 +3,6 @@
  */
 var React = require('react');
 var Download = require('./Download.react');
-var EmbedButton = require('./Embed/Button.react');
 
 
 var EmbedBar = React.createClass({
