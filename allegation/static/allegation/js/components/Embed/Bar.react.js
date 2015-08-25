@@ -3,9 +3,9 @@
  */
 var React = require('react');
 var Download = require('./Download.react');
+var EmbedAction = require('../')
 
-
-var EmbedBar = React.createClass({
+var Bar = React.createClass({
   getInitialState: function () {
     return {
       embedMode: false
@@ -62,4 +62,4 @@ var EmbedBar = React.createClass({
   }
 });
 
-module.exports = EmbedBar;
+module.exports = Bar;

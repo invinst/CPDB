@@ -23,7 +23,7 @@ var OfficerList = require('./OfficerList.react');
 var ComplaintList = require('./ComplaintList.react');
 var DistributionChart = require('./DistributionChart.react');
 var Map = require('./Map.react');
-var EmbedBar = require('./EmbedBar.react');
+var EmbedBar = require('./Embed/Bar.react');
 
 /**
  * Retrieve the current TODO data from the MapStore
