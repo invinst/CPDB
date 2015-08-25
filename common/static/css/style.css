@@ -1284,11 +1284,31 @@ form.navbar-form.navbar-right {
 }
 
 #EmbedBar {
-    margin-top: 35px;
-    padding: 20px 0;
+    margin-top: 15px;
     background-color: #a5b4be;
+}
+
+#EmbedBar .row > div {
+    padding: 20px 10px;
 }
 
 #EmbedBar, #EmbedBar a {
     color: white;
+}
+
+#EmbedBar .active {
+    background-color: #0079ae;
+}
+
+body.embedding {
+    background-color: #a5b4be;
+}
+
+body {
+    transition: 0.5s background-color;
+}
+
+.container.content {
+    background-color: #fff;
+    padding-bottom: 20px;
 }

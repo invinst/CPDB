@@ -106,7 +106,7 @@ var CPDBApp = React.createClass({
           </div>
           </div>
         </div>
-        <div className='container'>
+        <div className='container content'>
           <div id='officer-cards'><OfficerList /></div>
           <div id='complaint-list'><ComplaintList /></div>
         </div>
