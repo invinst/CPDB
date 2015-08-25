@@ -19,7 +19,7 @@ var ComplaintList = React.createClass({
   getInitialState: function () {
     return ComplaintListStore.getState();
   },
-  
+
   componentDidMount: function () {
     ComplaintListStore.addChangeListener(this._onChange);
     //var x = 1;
@@ -47,7 +47,7 @@ var ComplaintList = React.createClass({
   render: function () {
     var activeFilter = this.state.activeFilter;
     var analytics = this.state.analytics;
-    
+
     if (!this.state.complaints.length) {
       return <div></div>;
     }
@@ -64,8 +64,6 @@ var ComplaintList = React.createClass({
       rows.push(<ComplaintListRow key={i} complaint={complaint} officer={officer} finding={allegation.final_finding}/>)
     }
 
-    var query = OfficerStore.getQueryString();
-
     return (
       <div className="complaint_list">
         <div className='row'>
@@ -77,11 +75,6 @@ var ComplaintList = React.createClass({
           </div>
         </div>
         {rows}
-        <div className="row">
-          <div className="col-md-2 col-md-offset-10">
-            <Download query={query} />
-          </div>
-        </div>
         <RequestModal />
       </div>
     )

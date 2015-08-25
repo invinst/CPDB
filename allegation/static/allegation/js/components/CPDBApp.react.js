@@ -23,6 +23,7 @@ var OfficerList = require('./OfficerList.react');
 var ComplaintList = require('./ComplaintList.react');
 var DistributionChart = require('./DistributionChart.react');
 var Map = require('./Map.react');
+var EmbedBar = require('./EmbedBar.react');
 
 /**
  * Retrieve the current TODO data from the MapStore
@@ -108,6 +109,15 @@ var CPDBApp = React.createClass({
         <div className='container'>
           <div id='officer-cards'><OfficerList /></div>
           <div id='complaint-list'><ComplaintList /></div>
+        </div>
+        <div>
+          <div id='EmbedBar' className="row">
+            <div className="col-md-12">
+              <div className='container'>
+                <EmbedBar />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     );

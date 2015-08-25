@@ -48,16 +48,18 @@
 
     {% endblock %}
 </div>
-<div class="container">
+<div class="container-fluid">
     <footer>
         <div class="row">
             <div class="col-lg-12">
+              <div class="container">
                 {% include '_footer_nav.html' %}
-		<div id='powered-by'>
-		  <a href='/'>
-		    <img class='rackspace-logo' src='{% static 'img/rackspace.svg' %}'/>
-		  </a>
-		</div>
+                <div id='powered-by'>
+                  <a href='/'>
+                    <img class='rackspace-logo' src='{% static 'img/rackspace.svg' %}'/>
+                  </a>
+                </div>
+              </div>
             </div>
         </div>
     </footer>

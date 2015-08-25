@@ -42,8 +42,9 @@ button a:hover {
     margin-top: 0;
 }
 
-footer {
-    margin: 3em 0;
+footer .row {
+    background-color: #172b3a;
+    padding: 20px 0;
 }
 
 #map {
@@ -592,6 +593,7 @@ ul.nav.navbar-nav {
     padding:  5px 0 0;
     font-family: 'Vollkorn';
     clear: both;
+    border-bottom: 1px solid black;
 }
 
 .complaint-row > .row:first-child {
@@ -785,10 +787,6 @@ strong.red {
 .btn.btn-view:hover:not(.btn-link):not(.btn-flat) {
     background-color: #0a90cb;
     color: white;
-}
-
-.complaint-row + .complaint-row {
-    border-top: 1px solid black;
 }
 
 .filter_links a {
@@ -1178,14 +1176,14 @@ form.navbar-form.navbar-right {
 
 .download-wrapper .progress {
     width: 151px;
-    height: 36px;
-    margin: 10px 1px;
+    height: 20px;
+    margin: 0;
 }
 
 .download-wrapper .progress-bar {
     width: 100%;
     font-size: 16px;
-    padding: 5px 10px;
+    padding: 0 10px;
     font-family: 'Source Sans Pro', sans-serif;
 }
 
@@ -1285,3 +1283,12 @@ form.navbar-form.navbar-right {
     fill-rule: evenodd;
 }
 
+#EmbedBar {
+    margin-top: 35px;
+    padding: 20px 0;
+    background-color: #a5b4be;
+}
+
+#EmbedBar, #EmbedBar a {
+    color: white;
+}
