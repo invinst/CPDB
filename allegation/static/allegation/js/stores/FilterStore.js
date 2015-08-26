@@ -16,6 +16,8 @@ var FilterActions = require('../actions/FilterActions');
 var assign = require('object-assign');
 var CHANGE_EVENT = 'change';
 var CREATE_EVENT = 'change';
+var ENABLE_EVENT = 'enable';
+var DISABLE_EVENT = 'disable';
 var _filters = {};
 
 
@@ -61,8 +63,17 @@ var FilterStore = assign({}, EventEmitter.prototype, {
     update(id, updates);
     this.emit(CHANGE_EVENT);
   },
+
   emitChange: function () {
     this.emit(CHANGE_EVENT);
+  },
+
+  emitEnable: function () {
+    this.emit(ENABLE_EVENT);
+  },
+
+  emitDisable: function () {
+    this.emit(DISABLE_EVENT);
   },
 
   emitCreate: function () {
@@ -113,9 +124,19 @@ var FilterStore = assign({}, EventEmitter.prototype, {
   addChangeListener: function (callback) {
     this.on(CHANGE_EVENT, callback);
   },
+
+  addEnableListener: function (callback) {
+    this.on(ENABLE_EVENT, callback);
+  },
+
+  addDisableListener: function (callback) {
+    this.on(DISABLE_EVENT, callback);
+  },
+
   addCreateListener: function (callback) {
     this.on(CREATE_EVENT, callback);
   },
+
   getQueryString: function (ignoreFilters) {
     var query = "";
     for (var filterName in _filters) {
@@ -153,6 +174,14 @@ AppDispatcher.register(function (action) {
     case MapConstants.MAP_ADD_FILTER:
       create(action.key, action.value);
       FilterStore.emitCreate();
+      break;
+
+    case MapConstants.ENTER_EMBED_MODE:
+      FilterStore.emitDisable();
+      break;
+
+    case MapConstants.LEAVE_EMBED_MODE:
+      FilterStore.emitEnable();
       break;
 
     default:
