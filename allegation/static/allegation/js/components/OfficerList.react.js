@@ -6,6 +6,8 @@ var Officer = require("./Officer.react");
 var OfficerStore = require("../stores/OfficerStore");
 var FilterStore = require("../stores/FilterStore");
 
+var EmbedMixin = require('./Embed/Mixin.react');
+
 
 var VIEW_PORT_COUNT = 6;
 var OFFICER_PER_COL = 2;
@@ -26,15 +28,59 @@ var OFFICER_PER_DISPLAY = OFFICER_PER_PAGE * 3;
 
 
 var OfficerList = React.createClass({
+  mixins: [EmbedMixin],
   getInitialState: function () {
     return {
       officers: [],
       active_officers: [],
       overview: [],
       current_view: 0,
-      selectable: true
+      embedding: false
     };
   },
+
+  // embedding
+  getEmbedCode: function () {
+    var node = this.getDOMNode();
+    var width = $(node).width();
+    var height = $(node).height();
+    var src = "/embed/?page=officers&query=" + encodeURIComponent(FilterStore.getQueryString());
+    return '<iframe width="' + width + 'px" height="' + height + 'px" frameborder="0" src="' + this.absoluteUri(src)
+       + '"></iframe>';
+  },
+  getEmbedNode: function () {
+    this.embedNode = this.embedNode || $('<div class="embed-code"></div>');
+    this.embedNode.append('<i class="fa fa-code"></i>');
+    this.embedNode.append('<input type="text" value="" readonly="readonly" />');
+
+    this.embedNode.find("input").on("click", function (e) {
+      e.preventDefault();
+      $(this).select();
+    }).val(this.getEmbedCode());
+    return this.embedNode;
+  },
+
+  removeEmbedNode: function () {
+    this.getEmbedNode().remove();
+    this.embedNode = null;
+  },
+
+  enterEmbedMode: function () {
+    var node = this.getDOMNode();
+    var parent = $(node).parent();
+    $(parent).prepend(this.getEmbedNode());
+    this.setState({
+      embedding: true
+    });
+  },
+
+  leaveEmbedMode: function () {
+    this.removeEmbedNode();
+    this.setState({
+      embedding: false
+    });
+  },
+  // end embedding
 
   slideToLeft: function (e) {
     if (e) {
@@ -71,22 +117,9 @@ var OfficerList = React.createClass({
     e.preventDefault();
   },
 
-  _onEnable: function () {
-    this.setState({
-      selectable: true
-    });
-  },
-
-  _onDisable: function () {
-    this.setState({
-      selectable: false
-    });
-  },
-
   componentDidMount: function () {
     OfficerStore.addChangeListener(this._onChange);
-    FilterStore.addEnableListener(this._onEnable);
-    FilterStore.addDisableListener(this._onDisable);
+    this.embedListener();
 
     $(".officer-vertical-scroll").swipeleft(this.slideToLeft);
     $(".officer-vertical-scroll").swiperight(this.slideToRight);
@@ -150,7 +183,7 @@ var OfficerList = React.createClass({
     var display = this.getDisplaying();
     var start = display[0];
     var end = display[1];
-    var noClick = this.props.noClick || !this.state.selectable;
+    var noClick = this.props.noClick || this.state.embedding;
 
     for (i = start; i < end; i++) {
       var officer = this.state.officers[i];

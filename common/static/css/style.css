@@ -1313,6 +1313,7 @@ body {
 .embed-code {
     background-color: #fff;
     padding: 10px;
+    border-bottom: 1px solid #a5b4be;
 }
 
 .embed-code .fa {
