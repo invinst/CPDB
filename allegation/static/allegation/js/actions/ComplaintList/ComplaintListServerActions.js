@@ -2,6 +2,12 @@ var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var AppConstants = require('../../constants/AppConstants');
 
 var ComplaintListServerActions = {
+  getData: function() {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.COMPLAINT_LIST_GET_DATA
+    })
+  },
+
   receivedData: function(data) {
     AppDispatcher.dispatch({
       actionType: AppConstants.COMPLAINT_LIST_RECEIVED_DATA,

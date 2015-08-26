@@ -1,12 +1,13 @@
 var HOST = 'http://localhost:8000';
 var React = require('react');
+var $ = require('jquery');
 
 var Filters = require('./Filters.react');
 var ComplaintListRow = require('./ComplaintListRow.react');
 var Download = require('./Download.react');
 var OutcomeFilter = require('./ComplaintList/OutcomeFilter.react');
 var RequestModal = require('./Complaint/RequestModal.react');
-
+var LoadingComplaintList = require('./ComplaintList/LoadingComplaintList.react');
 var ComplaintListStore = require('../stores/ComplaintListStore');
 var OfficerStore = require('../stores/OfficerStore');
 
@@ -30,10 +31,16 @@ var ComplaintList = React.createClass({
   render: function () {
     var activeFilter = this.state.activeFilter;
     var analytics = this.state.analytics;
+    var loading = this.state.loading || false;
+
+    if (loading) {
+      return (<LoadingComplaintList />);
+    }
 
     if (!this.state.complaints.length) {
       return <div></div>;
     }
+
     var rows = [];
     var officer = null;
     if (this.props.officer) {
