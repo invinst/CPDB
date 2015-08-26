@@ -4,6 +4,7 @@ var Filters = require('./Filters.react');
 var OfficerActions = require('../actions/OfficerActions');
 var Officer = require("./Officer.react");
 var OfficerStore = require("../stores/OfficerStore");
+var FilterStore = require("../stores/FilterStore");
 
 
 var VIEW_PORT_COUNT = 6;
@@ -30,7 +31,8 @@ var OfficerList = React.createClass({
       officers: [],
       active_officers: [],
       overview: [],
-      current_view: 0
+      current_view: 0,
+      selectable: true
     };
   },
 
@@ -69,8 +71,22 @@ var OfficerList = React.createClass({
     e.preventDefault();
   },
 
+  _onEnable: function () {
+    this.setState({
+      selectable: true
+    });
+  },
+
+  _onDisable: function () {
+    this.setState({
+      selectable: false
+    });
+  },
+
   componentDidMount: function () {
     OfficerStore.addChangeListener(this._onChange);
+    FilterStore.addEnableListener(this._onEnable);
+    FilterStore.addDisableListener(this._onDisable);
 
     $(".officer-vertical-scroll").swipeleft(this.slideToLeft);
     $(".officer-vertical-scroll").swiperight(this.slideToRight);
@@ -134,7 +150,7 @@ var OfficerList = React.createClass({
     var display = this.getDisplaying();
     var start = display[0];
     var end = display[1];
-    var noClick = this.props.noClick;
+    var noClick = this.props.noClick || !this.state.selectable;
 
     for (i = start; i < end; i++) {
       var officer = this.state.officers[i];
@@ -194,7 +210,6 @@ var OfficerList = React.createClass({
         <div className={className} key={i} style={style} />
       );
     }
-
 
     return (
       <div id="officer_list">

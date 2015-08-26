@@ -312,10 +312,6 @@ ul.nav.navbar-nav {
     color: #a5b4be;
 }
 
-#officer_list {
-    margin-top: 28px;
-}
-
 #officer_list .officers .col-sm-2 {
     padding-right: 5px;
 }
@@ -1311,6 +1307,7 @@ body {
 .container.content {
     background-color: #fff;
     padding-bottom: 20px;
+    margin-top: 28px;
 }
 
 .embed-code {
