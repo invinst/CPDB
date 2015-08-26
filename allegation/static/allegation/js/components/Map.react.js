@@ -37,6 +37,43 @@ var Map = React.createClass({
     return state;
   },
 
+  // embedding
+  getEmbedCode: function () {
+    var node = this.getDOMNode();
+    var width = $(node).width();
+    var height = $(node).height();
+    var src = "/embed/?page=map&query=" + encodeURIComponent(FilterStore.getQueryString());
+    return '<iframe width="' + width + 'px" height="' + height + 'px" frameborder="0" src="' + this.absoluteUri(src)
+       + '"></iframe>';
+  },
+  getEmbedNode: function () {
+    this.embedNode = this.embedNode || $('<div class="embed-code"></div>');
+    this.embedNode.append('<i class="fa fa-code"></i>');
+    this.embedNode.append('<input type="text" value="" readonly="readonly" />');
+
+    this.embedNode.find("input").on("click", function (e) {
+      e.preventDefault();
+      $(this).select();
+    }).val(this.getEmbedCode());
+    return this.embedNode;
+  },
+
+  removeEmbedNode: function () {
+    this.getEmbedNode().remove();
+    this.embedNode = null;
+  },
+
+  enterEmbedMode: function () {
+    var node = this.getDOMNode();
+    var parent = $(node).parent();
+    $(parent).prepend(this.getEmbedNode())
+  },
+
+  leaveEmbedMode: function () {
+    this.removeEmbedNode();
+  },
+  // end embedding
+
   componentDidMount: function () {
     this.create();
     this.createAreas();

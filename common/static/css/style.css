@@ -1312,3 +1312,20 @@ body {
     background-color: #fff;
     padding-bottom: 20px;
 }
+
+.embed-code {
+    background-color: #fff;
+    padding: 10px;
+}
+
+.embed-code .fa {
+    color: #0079ae;
+    font-size: 25px;
+}
+
+.embed-code input {
+    width: calc(100% - 35px);
+    border: none;
+    padding: 0;
+    margin-left: 5px;
+}

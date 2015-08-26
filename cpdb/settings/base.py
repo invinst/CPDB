@@ -161,6 +161,7 @@ BOWER_INSTALLED_APPS = (
     'highcharts-release#4.1.6',
     'pluralize',
     'jqueryui-touch-punch#4bc0091452',
+    'zeroclipboard',
 )
 
 MEDIA_URL = '/media/'
