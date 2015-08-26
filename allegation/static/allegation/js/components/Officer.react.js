@@ -4,7 +4,6 @@ var React = require('react');
 var Filters = require('./Filters.react');
 var OfficerActions = require('../actions/OfficerActions');
 var OfficerMixin = require('./OfficerMixin.react');
-
 var OfficerPresenter = require('../presenters/OfficerPresenter');
 
 var Officer = React.createClass({
@@ -55,9 +54,13 @@ var Officer = React.createClass({
     var officerLink = officer.absolute_url;
     var officerId = 'officer_' + officer.id;
     var presenter = OfficerPresenter(officer);
+    var intersection = "";
+    if ('intersection' in this.props) {
+      intersection = this.props.intersection + " Shared Allegations";
+    }
 
     return (
-      <div className={className} data-state={selection_state} id={officerId} onMouseDown={this.onMouseDown}
+      <div className={className} data-tip={intersection}  data-state={selection_state} id={officerId} onMouseDown={this.onMouseDown}
            onMouseUp={this.onMouseUp}>
         <a className='officer-link' href={officerLink}>
           <div className='officer_name' onClick={this.openOfficerProfile}>

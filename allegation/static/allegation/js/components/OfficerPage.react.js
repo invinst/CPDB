@@ -7,6 +7,7 @@ var OfficerDetail = require('./OfficerDetail.react');
 var Officer = require('./Officer.react');
 var Filters = require('./Filters.react');
 var FilterActions = require("../actions/FilterActions");
+var ReactTooltip = require("react-tooltip");
 
 
 var OfficerPage = React.createClass({
@@ -31,6 +32,7 @@ var OfficerPage = React.createClass({
         </div>
         <div className="container">
           <RelatedOfficers relatedOfficers={this.props.related}/>
+          <ReactTooltip place='top' type='dark' effect='solid'/>
           <StoryList officer={this.props.officer} />
           <ComplaintList allegations={this.props.officer.allegations} officer={this.props.officer}/>
         </div>

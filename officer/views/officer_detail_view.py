@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.db.models.aggregates import Count
 from django.shortcuts import render
 from django.views.generic.base import View
 
@@ -14,21 +15,14 @@ class OfficerDetailView(View):
         allegations = Allegation.objects.filter(officer=officer)
         has_map = allegations.exclude(point=None).count() > settings.MAP_POINT_THRESHOLD
         officer_dict = JSONSerializer().serialize(officer)
+        related_query = Allegation.objects.filter(crid__in=allegations.values_list('crid', flat=True)).exclude(officer_id=officer_id)
+        related_officers_ordered = related_query.values('officer').annotate(total=Count('crid')).order_by('-total')
 
-        officers = {}
         related_officers = []
-        for allegation in allegations:
-            related = Allegation.objects.filter(crid=allegation.crid).exclude(pk=allegation.pk)
-            for related_allegation in related:
-                if related_allegation and related_allegation.officer:
-                    if not related_allegation.officer.pk in officers:
-                        officers[related_allegation.officer.pk] = 0
-                    officers[related_allegation.officer.pk] += 1
+        for officer in related_officers_ordered:
+            related_officers.append({'num_allegations': officer['total'],
+                                     'officer': Officer.objects.get(pk=officer['officer'])})
 
-                    if officers[related_allegation.officer.pk] > 1:
-                        related_officers.append(related_allegation.officer.pk)
-
-        related_officers = Officer.objects.filter(pk__in=related_officers).order_by('-allegations_count', '-discipline_count')
         related_officers = JSONSerializer().serialize(related_officers)
 
         return render(request, 'officer/officer_detail.html', {
