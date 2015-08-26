@@ -96,7 +96,10 @@ var Officer = React.createClass({
 
   },
   onClick: function () {
-    OfficerActions.setActiveOfficer(this.props.officer);
+    var officer = this.props.officer;
+    var presenter = OfficerPresenter(officer);
+    OfficerActions.setActiveOfficer(officer);
+    ga('send', 'event', 'officer', 'filter-by', presenter.displayName());
   }
 });
 
