@@ -1327,3 +1327,28 @@ body {
     padding: 0;
     margin-left: 5px;
 }
+
+.checkmark.embed {
+    background-color: #709dc0;
+    color: #fff;
+}
+
+.checkmark.embed:hover {
+    background-color: #0a90cb;
+}
+
+.embed .tooltip {
+    left: -47px;
+    width: 115px;
+    position: absolute;
+    top: 17px;
+    display: none;
+}
+
+.embed .tooltip.bottom .tooltip-arrow {
+    display: block;
+}
+
+.embed.zeroclipboard-is-hover .tooltip {
+    display: block;
+}

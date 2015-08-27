@@ -191,7 +191,8 @@ var OfficerList = React.createClass({
       count += 1;
 
       officers.push(
-        <Officer officer={officer} key={i} index={count} active={active} selected={selected} noClick={noClick} />
+        <Officer officer={officer} key={i} index={count} active={active} selected={selected}
+                 noClick={noClick} embed={this.state.embedding}/>
       );
 
       if (count >= displayCount - 1) {
