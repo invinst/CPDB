@@ -4,18 +4,39 @@ var Filters = require('./Filters.react');
 var SummaryActions = require('../actions/SummaryActions');
 var SummaryRow = require("./SummaryRow.react");
 var SummaryChildRow = require("./SummaryChildRow.react");
+var EmbedMixin = require('./Embed/Mixin.react');
 var SummaryStore = require("../stores/SummaryStore");
+var FilterStore = require("../stores/FilterStore");
 var ExtraInformation = require('./SummarySection/ExtraInformation.react');
 
 
 var Summary = React.createClass({
+  mixins: [EmbedMixin],
+
   getInitialState: function () {
     return SummaryStore.init(this.props.query);
   },
+
+  // embedding
+  getEmbedCode: function () {
+    var node = this.getDOMNode();
+    var width = $(node).width();
+    var height = $(node).height();
+    var src = "/embed/?page=summary&query=" + encodeURIComponent(FilterStore.getQueryString());
+    return '<iframe width="' + width + 'px" height="' + height + 'px" frameborder="0" src="' + this.absoluteUri(src)
+       + '"></iframe>';
+  },
+  // end embedding
+
   componentDidMount: function () {
     SummaryStore.addChangeListener(this._onChange);
-    SummaryStore.addSummaryListener(this._changeView)
+    SummaryStore.addSummaryListener(this._changeView);
+
+    if (this.props.tabs) {
+      this.props.tabs.tabs.push(this);
+    }
   },
+
   render: function () {
     var i,
       j,

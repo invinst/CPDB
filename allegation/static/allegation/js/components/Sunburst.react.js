@@ -1,4 +1,5 @@
 var React = require('react');
+var EmbedMixin = require('./Embed/Mixin.react');
 var SummaryActions = require('../actions/SummaryActions');
 var SunburstStore = require("../stores/SunburstStore");
 var FilterStore = require("../stores/FilterStore");
@@ -101,15 +102,29 @@ function sum(d){
 }
 
 var Sunburst = React.createClass({
+  mixins: [EmbedMixin],
   getInitialState: function () {
     return SunburstStore.init(this.props.query);
   },
+
+  // embedding
+  getEmbedCode: function () {
+    var node = this.getDOMNode();
+    var width = $(node).width();
+    var height = $(node).height();
+    var src = "/embed/?page=sunburst&query=" + encodeURIComponent(FilterStore.getQueryString());
+    return '<iframe width="' + width + 'px" height="' + height + 'px" frameborder="0" src="' + this.absoluteUri(src)
+       + '"></iframe>';
+  },
+  // end embedding
+
   makeTag: function (tag) {
     return {
       text: tag.label,
       value: [tag.category, tag.value]
     }
   },
+
   select: function (d) {
     if (d == this.state.selected) {
       return;
@@ -134,6 +149,7 @@ var Sunburst = React.createClass({
       .attrTween("d", arcTween(d));
 
   },
+
   drawChart: function () {
     if (this.state.drew) {
       return;
@@ -168,9 +184,11 @@ var Sunburst = React.createClass({
       drew: true
     });
   },
+
   componentDidUpdate: function() {
     this.drawChart();
   },
+
   componentDidMount: function () {
 
     if ($(window).width() <= 1200) {
@@ -179,7 +197,12 @@ var Sunburst = React.createClass({
 
     SunburstStore.addChangeListener(this._onChange);
     SunburstStore.update();
+
+    if (this.props.tabs) {
+      this.props.tabs.tabs.push(this);
+    }
   },
+
   _onChange: function () {
     this.setState(SunburstStore.getAll())
   },
