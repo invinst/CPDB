@@ -20,7 +20,7 @@ var _state = {
       data: []
     }]
   },
-  options: {responsive: true},
+  options: {responsive: true, aspectRatio: true},
   rawData: {}
 };
 
