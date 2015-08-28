@@ -2,7 +2,7 @@ var AppConstants = require('../constants/AppConstants');
 var SearchTrafficServerActions = require('../actions/SearchTrafficServerActions');
 
 
-var ajax =null;
+var ajax = null;
 
 
 var SearchTrafficAPI = {
