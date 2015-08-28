@@ -98,17 +98,6 @@ function cpdbAutocomplete($input) {
         success: function (data) {
           var newData = [];
           $.each(data, function (i, subdata) {
-            if (['start', 'crid', 'officer__star', 'officer_id'].indexOf(i) != -1) {
-              // if request.term is found in the suggestion then we dont need to add this
-              if (!suggestionExists(request.term, subdata)) {
-                var freeTextData = {
-                  category: i == 'officer_id' ? 'officer_name' : i,
-                  label: request.term,
-                  value: request.term
-                };
-                subdata = subdata.concat([freeTextData]);
-              }
-            }
             newData = newData.concat(subdata);
           });
 
