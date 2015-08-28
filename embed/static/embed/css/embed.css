@@ -98,3 +98,15 @@ body > .row {
 #summary .child-row-container {
     overflow-y: auto;
 }
+
+.col-md-8 {
+    width: 66.66666667%;
+}
+
+.col-md-4 {
+    width: 33.33333333%;
+}
+
+.col-md-2 {
+    width: 16.66666667%;
+}
