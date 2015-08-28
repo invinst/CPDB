@@ -53,14 +53,6 @@ var Officer = React.createClass({
               </div>
               {more}
             </div>
-            <div className="legend">
-              <div>
-                <span className='red line'></span>Discipline Applied
-              </div>
-              <div>
-                <span className='blue line'></span>No Punishment
-              </div>
-            </div>
           </div>
         </div>
       </div>
