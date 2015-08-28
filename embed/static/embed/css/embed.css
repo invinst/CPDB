@@ -16,6 +16,11 @@
     margin-right: 0;
 }
 
+.row .officer-link .row {
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
 .row .row .col-md-12,
 .row .row-fluid .col-md-12 {
     padding-right: 0;

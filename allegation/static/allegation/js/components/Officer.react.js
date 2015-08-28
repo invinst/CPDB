@@ -36,10 +36,6 @@ var Officer = React.createClass({
 
   componentDidMount: function () {
     this.copyEmbed();
-
-    var node = this.getDOMNode();
-    this.width = $(node).width();
-    this.height = $(node).height();
   },
 
   componentDidUpdate: function () {
@@ -56,8 +52,8 @@ var Officer = React.createClass({
 
   // embedding
   getEmbedCode: function () {
-    var src = "/embed/?page=officers&pk=" + encodeURIComponent(this.props.officer.id);
-    return '<iframe width="' + this.width + 'px" height="' + this.height + 'px" frameborder="0" src="' + this.absoluteUri(src)
+    var src = "/embed/?page=officer-card&pk=" + encodeURIComponent(this.props.officer.id);
+    return '<iframe width="170px" height="110px" frameborder="0" src="' + this.absoluteUri(src)
        + '"></iframe>';
   },
 
