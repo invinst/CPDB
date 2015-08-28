@@ -146,7 +146,7 @@ class SuggestViewTestCase(SimpleTestCase):
         officer = OfficerFactory()
         alias = AliasFactory(target=str(officer))
 
-        data = self.get_suggestion(alias.alias)
+        data = self.get_suggestion(alias.alias[0:2])
         data.should.contain('officer')
 
         officer_ids = [x['value'] for x in data['officer']]

@@ -116,7 +116,7 @@ class Suggestion(object):
                                                                                          Q(officer_last__istartswith=q))
         else:
             condition = Q(officer_first__icontains=q) | Q(officer_last__icontains=q)
-            
+
         results = self.query_suggestions(Officer, condition, ['officer_first', 'officer_last', 'allegations_count', 'id'],
                                          order_bys=('-allegations_count', 'officer_first', 'officer_last'))
         results = [["%s %s (%s)" % (x[0], x[1], x[2]), x[3] ] for x in results]
@@ -193,7 +193,7 @@ class Suggestion(object):
     def make_suggestion(self, q):
         ret = self._make_suggestion(q)
 
-        aliases = Alias.objects.filter(alias__iexact=q)
+        aliases = Alias.objects.filter(alias__istartswith=q)[0:10]
         for alias in aliases:
             alias_suggest = self._make_suggestion(alias.target)
             for key in alias_suggest:
