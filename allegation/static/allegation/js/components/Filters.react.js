@@ -7,6 +7,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 var React = require('react');
+var L = require('leaflet');
 
 var AutoComplete = require('./AutoComplete.react');
 var FilterStore = require('../stores/FilterStore');
@@ -57,5 +58,6 @@ var Filters = React.createClass({
   }
 
 });
+
 
 module.exports = Filters;

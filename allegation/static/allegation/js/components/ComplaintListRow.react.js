@@ -108,9 +108,12 @@ var ComplaintListRow = React.createClass({
     var openedComplaints = init_data['opened_complaints'];
     var id = this.props.complaint.allegation.id
     if (this.state.show) {
+      var url = "/allegations/" + this.props.complaint.allegation.id;
+      ga('send', 'event', 'allegation', 'close', this.props.complaint.allegation.id);
       openedComplaints.splice(openedComplaints.indexOf(id), 1);
     } else {
       openedComplaints.push(id);
+      ga('send', 'event', 'allegation', 'open', this.props.complaint.allegation.id);
     }
     this.setState({
       show: !this.state.show,

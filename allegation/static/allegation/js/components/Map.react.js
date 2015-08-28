@@ -1,9 +1,15 @@
 var React = require('react');
+require('mapbox.js');
+require('leaflet.heat');
 var MapStore = require("../stores/MapStore");
 var FilterStore = require('../stores/FilterStore');
 var FilterActions = require("../actions/FilterActions");
 
 var EmbedMixin = require('./Embed/Mixin.react');
+
+var MAP_TYPE = 'mapbox.streets';
+
+L.mapbox.accessToken = 'pk.eyJ1Ijoic3RlZmFuZ2VvcmciLCJhIjoiVnBNOEp4byJ9.7i2N7gTV-t_QtAA-kAAlFA';
 
 var highlightStyle = {
   color: '#2262CC',

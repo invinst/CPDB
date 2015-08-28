@@ -16,7 +16,6 @@ var FilterStore = require('./FilterStore');
 var FilterActions = require('../actions/FilterActions');
 var assign = require('object-assign');
 
-
 var CHANGE_EVENT = 'change';
 var CHANGE_MARKER_EVENT = 'change_marker';
 var BEFORE_CHANGE_MARKER_EVENT = 'beofer_change_marker';
@@ -41,7 +40,7 @@ var MapStore = assign({}, EventEmitter.prototype, {
   setState: function(state) {
     $.extend(_state, state);
   },
-  getState: function(){
+  getState: function() {
     return _state;
   },
   getToken: function () {

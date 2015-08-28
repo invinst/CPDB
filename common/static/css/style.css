@@ -643,7 +643,7 @@ ul.nav.navbar-nav {
 }
 
 .investigation .results {
-    width: 60%;
+    width: 80%;
     float: left;
 }
 
@@ -1277,6 +1277,14 @@ form.navbar-form.navbar-right {
 #sunburst-chart path {
     stroke: #f6f6ec;
     fill-rule: evenodd;
+}
+
+#loading {
+    margin-top: 20px;
+}
+
+.center {
+    text-align: center;
 }
 
 #EmbedBar {

@@ -1,6 +1,7 @@
 /**
  * Created by eastagile on 8/3/15.
  */
+;
 (function ($) {
   var ajaxCallCount = 0;
   var finishAjaxCallCount = 0;

@@ -17,12 +17,15 @@ from django.conf import settings
 from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 from allegation.views import AllegationListView
+from allegation.views.admin_analysis_dashboard_view import AdminAnalysisDashboardView
 
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/$', login_required(AdminAnalysisDashboardView.as_view()), name='my-view'),
+    url(r'^admin/models/', include(admin.site.urls)),
     url(r'^', include('allegation.urls', namespace='allegation')),
     url(r'^search/', include('search.urls', namespace='search')),
     url(r'^share/', include('share.urls', namespace='share')),

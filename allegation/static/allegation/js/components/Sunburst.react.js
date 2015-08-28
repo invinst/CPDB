@@ -150,6 +150,46 @@ var Sunburst = React.createClass({
 
   },
 
+  getAncestors: function (node) {
+    var path = [];
+    var current = node;
+    while (current.parent) {
+      path.unshift(current);
+      current = current.parent;
+    }
+    return path;
+  },
+
+  mouseleave: function (d) {
+    var that = this;
+    // Deactivate all segments during transition.
+    d3.selectAll("path").on("mouseover", null);
+
+    // Transition each segment to full opacity and then reactivate it.
+    d3.selectAll("path")
+        .transition()
+        .duration(500)
+        .style("opacity", 1)
+        .each("end", function() {
+                d3.select(this).on("mouseover", that.mouseover);
+              });
+
+    d3.select("#explanation")
+        .style("visibility", "hidden");
+  },
+
+  mouseover: function (d) {
+    d3.selectAll("path")
+      .style("opacity", 0.3);
+
+    var sequenceArray = this.getAncestors(d);
+    svg.selectAll("path")
+      .filter(function(node) {
+                return (sequenceArray.indexOf(node) >= 0);
+              })
+      .style("opacity", 1);
+  },
+
   drawChart: function () {
     if (this.state.drew) {
       return;
@@ -165,6 +205,7 @@ var Sunburst = React.createClass({
       .attr("width", width)
       .attr("height", height)
       .append("g")
+      .attr("id", "container")
       .attr("transform", "translate(" + width / 2 + "," + (height / 2 + 10) + ")");
 
     d3.select(self.frameElement).style("height", height + "px");
@@ -179,7 +220,11 @@ var Sunburst = React.createClass({
         }
         return colors[d.name];
       })
-      .on("click", this.select);
+      .on("click", this.select)
+      .on("mouseover", this.mouseover);
+
+    d3.select("#container").on("mouseleave", this.mouseleave);
+
     this.setState({
       drew: true
     });
