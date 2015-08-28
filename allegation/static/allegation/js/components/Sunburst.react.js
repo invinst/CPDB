@@ -208,8 +208,6 @@ var Sunburst = React.createClass({
       .attr("id", "container")
       .attr("transform", "translate(" + width / 2 + "," + (height / 2 + 10) + ")");
 
-    d3.select(self.frameElement).style("height", height + "px");
-
     path = svg.selectAll("path")
       .data(partition.nodes(data))
       .enter().append("path")
