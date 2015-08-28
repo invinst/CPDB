@@ -6,9 +6,9 @@ var FilterStore = require("../stores/FilterStore");
 
 var width = 760,
   height = 430,
+  radius,
   svg,
   path,
-  radius = Math.min(width, height) / 2.2,
   colors = {
     'Allegation': '#bfd4df',
     'Unsustained': '#0079ae' ,
@@ -35,6 +35,11 @@ var width = 760,
     'Separation': '#4c544c',
     '30+ days': '#930c0c'
   };
+
+if ($(window).width() <= 1200) {
+    height = 300;
+}
+radius = Math.min(width, height) / 2.2;
 
 var color = d3.scale.category20c();
 
@@ -129,6 +134,47 @@ var Sunburst = React.createClass({
       .attrTween("d", arcTween(d));
 
   },
+
+  getAncestors: function (node) {
+    var path = [];
+    var current = node;
+    while (current.parent) {
+      path.unshift(current);
+      current = current.parent;
+    }
+    return path;
+  },
+
+  mouseleave: function (d) {
+    var that = this;
+    // Deactivate all segments during transition.
+    d3.selectAll("path").on("mouseover", null);
+
+    // Transition each segment to full opacity and then reactivate it.
+    d3.selectAll("path")
+        .transition()
+        .duration(500)
+        .style("opacity", 1)
+        .each("end", function() {
+                d3.select(this).on("mouseover", that.mouseover);
+              });
+
+    d3.select("#explanation")
+        .style("visibility", "hidden");
+  },
+
+  mouseover: function (d) {
+    d3.selectAll("path")
+      .style("opacity", 0.3);
+
+    var sequenceArray = this.getAncestors(d);
+    svg.selectAll("path")
+      .filter(function(node) {
+                return (sequenceArray.indexOf(node) >= 0);
+              })
+      .style("opacity", 1);
+  },
+
   drawChart: function () {
     if (this.state.drew) {
       return;
@@ -144,6 +190,7 @@ var Sunburst = React.createClass({
       .attr("width", width)
       .attr("height", height)
       .append("g")
+      .attr("id", "container")
       .attr("transform", "translate(" + width / 2 + "," + (height / 2 + 10) + ")");
 
     d3.select(self.frameElement).style("height", height + "px");
@@ -158,18 +205,30 @@ var Sunburst = React.createClass({
         }
         return colors[d.name];
       })
-      .on("click", this.select);
+      .on("click", this.select)
+      .on("mouseover", this.mouseover);
+
+    d3.select("#container").on("mouseleave", this.mouseleave);
+
     this.setState({
       drew: true
     });
   },
+
   componentDidUpdate: function() {
     this.drawChart();
   },
+
   componentDidMount: function () {
+
+    if ($(window).width() <= 1200) {
+      $("#sunburst-chart").addClass("small");
+    }
+
     SunburstStore.addChangeListener(this._onChange);
     SunburstStore.update();
   },
+
   _onChange: function () {
     this.setState(SunburstStore.getAll())
   },
@@ -221,7 +280,7 @@ var Sunburst = React.createClass({
         percent = (max * 100 / total).toFixed(2);
         percentStatement = (
           <div>
-            <strong>{percent}%</strong> of {selected.name} complaints were resulted in {theMax.name}
+            <strong>{percent}%</strong> of "{selected.name}" complaints were "{theMax.name}"
           </div>
         )
       }
@@ -229,10 +288,10 @@ var Sunburst = React.createClass({
 
     return (
       <div className="row">
-        <div className="col-md-3">
+        <div className="col-md-5">
           <div id="sunburst-legend">
             <div className="root">
-              {total} <span className="name">{selected.name}</span>
+              {total} {selected.name}
             </div>
             <div className="percent">
               {percentStatement}
@@ -242,7 +301,7 @@ var Sunburst = React.createClass({
             </div>
           </div>
         </div>
-        <div id="sunburst-chart" className="col-md-9">
+        <div id="sunburst-chart" className="col-md-7">
         </div>
       </div>
     );
