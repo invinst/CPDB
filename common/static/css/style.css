@@ -166,13 +166,14 @@ ul.nav.navbar-nav {
 
 #summary .child-rows {
     max-height: 480px;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     transition: left 1s;
     left: 100%;
     position: absolute;
-    width: calc(100% - 1em);
+    width: calc(100% - 18px);
     background: #f6f6ec;
+    visibility: hidden;
 }
 
 /* extra information */
@@ -223,11 +224,11 @@ ul.nav.navbar-nav {
 
 #summary .child-rows.active {
     left: calc(1em - 5px);
+    visibility: visible;
 }
 
 #summary .child-row-container {
-    overflow-y: scroll;
-    overflow-x: hidden;
+    overflow: hidden;
     border-left: 1px solid #989898;
     min-height: 300px;
 }

@@ -32,6 +32,12 @@ var Summary = React.createClass({
     SummaryStore.addChangeListener(this._onChange);
     SummaryStore.addSummaryListener(this._changeView);
 
+    var that = $(this.getDOMNode());
+    var height = that.parent().height();
+    setTimeout(function () {
+      that.find(".child-rows").css('max-height', height);
+    }, 1000);
+
     if (this.props.tabs) {
       this.props.tabs.tabs.push(this);
     }
