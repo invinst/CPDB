@@ -34,6 +34,9 @@
     <script src="{% static 'pluralize/pluralize.js' %}"></script>
     <script src="{% static 'js/ajax_loading_animation.js' %}"></script>
     <script src="{% static 'zeroclipboard/dist/ZeroClipboard.min.js' %}"></script>
+    <script>
+    ZeroClipboard.config({swfPath: '/static/zeroclipboard/dist/ZeroClipboard.swf'});
+    </script>
   {% endcompress %}
   <script src="{% static 'allegation/js/bundle.js' %}"></script>
 {% endblock %}
