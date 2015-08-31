@@ -9,6 +9,7 @@ from django.core.urlresolvers import reverse
 
 from common.models import AllegationCategory
 
+
 class Command(BaseCommand):
     help = 'Run automatically in the background'
 
