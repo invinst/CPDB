@@ -1,5 +1,4 @@
 var React = require('react');
-var Loading = require('react-loading');
 
 var LoadingComplaintList = React.createClass({
   render: function () {
