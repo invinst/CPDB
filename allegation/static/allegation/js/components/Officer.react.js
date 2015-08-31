@@ -5,6 +5,8 @@ var Filters = require('./Filters.react');
 var OfficerActions = require('../actions/OfficerActions');
 var OfficerMixin = require('./OfficerMixin.react');
 var OfficerPresenter = require('../presenters/OfficerPresenter');
+var OfficerStore = require("../stores/OfficerStore");
+
 
 var Officer = React.createClass({
   mixins: [OfficerMixin],
@@ -13,9 +15,6 @@ var Officer = React.createClass({
     return {
       'selected': false
     }
-  },
-
-  componentDidMount: function () {
   },
 
   onMouseDown: function(e) {
@@ -39,7 +38,7 @@ var Officer = React.createClass({
       selection_state = 'selected';
     }
 
-    if (this.props.selected) {
+    if (this.state.selected) {
       className += " selected";
       selection_state = 'selected';
     }
@@ -55,12 +54,15 @@ var Officer = React.createClass({
     var officerId = 'officer_' + officer.id;
     var presenter = OfficerPresenter(officer);
     var intersection = "";
+    var intersectionClass = "";
     if ('intersection' in this.props) {
-      intersection = this.props.intersection + " Shared Allegations";
+      intersection = " Co-accused in " + this.props.intersection + ' cases';
+      intersectionClass = 'intersection';
+      className += ' has-intersection'
     }
 
     return (
-      <div className={className} data-tip={intersection}  data-state={selection_state} id={officerId} onMouseDown={this.onMouseDown}
+      <div className={className}  data-state={selection_state} id={officerId} onMouseDown={this.onMouseDown}
            onMouseUp={this.onMouseUp}>
         <a className='officer-link' href={officerLink}>
           <div className='officer_name' onClick={this.openOfficerProfile}>
@@ -68,26 +70,33 @@ var Officer = React.createClass({
               { presenter.displayName() }
             </strong>
           </div>
-          <div className='race-gender'>
-            { presenter.genderRace() }
-          </div>
-          <div className='complaint-discipline-row'>
+          <div className={intersectionClass}>
             <div className='row'>
-              <div className='col-xs-6'>
-                <div className=''>
-                  complaints
+              <div className='col-xs-12'>{intersection}</div>
+            </div>
+          </div>
+          <div className='non-intersection'>
+            <div className='race-gender'>
+              { presenter.genderRace() }
+            </div>
+            <div className='complaint-discipline-row'>
+              <div className='row'>
+                <div className='col-xs-6'>
+                  <div className=''>
+                    complaints
+                  </div>
+                  <div className=''>
+                    {officer.allegations_count}
+                  </div>
                 </div>
-                <div className=''>
-                  {officer.allegations_count}
-                </div>
-              </div>
-              <div className='vertical-line'></div>
-              <div className='col-xs-6 officer-disciplines'>
-                <div className=''>
-                  disciplines
-                </div>
-                <div className=''>
-                  {officer.discipline_count}
+                <div className='vertical-line'></div>
+                <div className='col-xs-6 officer-disciplines'>
+                  <div className=''>
+                    disciplines
+                  </div>
+                  <div className=''>
+                    {officer.discipline_count}
+                  </div>
                 </div>
               </div>
             </div>
