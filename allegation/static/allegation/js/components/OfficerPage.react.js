@@ -1,12 +1,12 @@
 var HOST = 'http://localhost:8000';
 var React = require('react');
+
 var ComplaintList = require('./ComplaintList.react');
-var RelatedOfficers = require('./Officer/RelatedOfficers.react');
-var StoryList = require('./Officer/StoryList.react');
-var OfficerDetail = require('./OfficerDetail.react');
-var Officer = require('./Officer.react');
-var Filters = require('./Filters.react');
 var FilterActions = require("../actions/FilterActions");
+var OfficerDetail = require('./OfficerDetail.react');
+
+var RelatedOfficers = require('./OfficerPage/RelatedOfficers.react');
+var StoryList = require('./OfficerPage/StoryList.react');
 
 
 var OfficerPage = React.createClass({
