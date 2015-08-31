@@ -10,7 +10,8 @@ var _state = {
   'activeFilter': 'all',
   'analytics': [],
   'scrollLock': false,
-  'pageNumber': 1
+  'pageNumber': 1,
+  'loading': false
 };
 
 var ComplaintListStore = assign({}, EventEmitter.prototype, {
@@ -54,7 +55,7 @@ var ComplaintListStore = assign({}, EventEmitter.prototype, {
 });
 
 
-AppDispatcher.register(function (action) {
+AppDispatcher.register(function(action) {
   switch (action.actionType) {
     case AppConstants.SET_ACTIVE_COMPLAINT_LIST_FILTER:
       ComplaintListStore.setActiveFilter(action.filter);
@@ -73,8 +74,14 @@ AppDispatcher.register(function (action) {
       ComplaintListStore.emitChange();
       break;
 
+    case AppConstants.COMPLAINT_LIST_GET_DATA:
+      _state['loading'] = true;
+      ComplaintListStore.emitChange();
+      break;
+
     case AppConstants.COMPLAINT_LIST_RECEIVED_DATA:
       _state['complaints'] = action.data.allegations;
+      _state['loading'] = false;
       ComplaintListStore.emitChange();
       break;
 

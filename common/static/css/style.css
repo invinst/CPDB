@@ -1287,3 +1287,10 @@ form.navbar-form.navbar-right {
     fill-rule: evenodd;
 }
 
+#loading {
+    margin-top: 20px;
+}
+
+.center {
+    text-align: center;
+}

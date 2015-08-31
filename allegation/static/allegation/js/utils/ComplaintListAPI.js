@@ -17,6 +17,7 @@ var ComplaintListAPI = {
   getData: function () {
     var queryString = AllegationFetcherQueryBuilder.buildQuery();
     var that = this;
+    ComplaintListServerActions.getData();
 
     if (queryString) {
       if (ajax) {
