@@ -349,6 +349,7 @@ ul.nav.navbar-nav {
     top: -55px;
     border: none;
     background: none;
+    cursor: pointer;
 }
 
 #overview-slider.ui-slider .ui-slider-handle {
@@ -362,6 +363,7 @@ ul.nav.navbar-nav {
     background: none;
     border-radius: 0;
     font-size: 1em;
+    cursor: pointer;
 }
 
 .overview-0 {
@@ -1285,5 +1287,6 @@ form.navbar-form.navbar-right {
 #sunburst-chart path {
     stroke: #f6f6ec;
     fill-rule: evenodd;
+    cursor: pointer;
 }
 
