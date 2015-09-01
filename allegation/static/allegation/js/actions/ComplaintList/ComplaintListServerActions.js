@@ -21,6 +21,14 @@ var ComplaintListServerActions = {
       data: data
     })
   },
+
+  receivedOfficerComplaints: function(data) {
+    console.log(data);
+    AppDispatcher.dispatch({
+      actionType: AppConstants.OFFICER_COMPLAINT_LIST_RECEIVED_DATA,
+      data: data
+    })
+  }
 };
 
 module.exports = ComplaintListServerActions;

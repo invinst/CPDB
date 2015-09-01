@@ -1,13 +1,12 @@
 var HOST = 'http://localhost:8000';
 var React = require('react');
 
-var ComplaintList = require('./ComplaintList.react');
+var ComplaintSection = require('./OfficerPage/ComplaintSection.react');
 var FilterActions = require("../actions/FilterActions");
 var OfficerDetail = require('./OfficerDetail.react');
 
 var RelatedOfficers = require('./OfficerPage/RelatedOfficers.react');
 var StoryList = require('./OfficerPage/StoryList.react');
-
 
 var OfficerPage = React.createClass({
 
@@ -15,13 +14,9 @@ var OfficerPage = React.createClass({
     return {};
   },
 
-  componentWillMount: function () {
-    FilterActions.replaceFilters([{
-      value: ['officer', this.props.officer.id]
-    }]);
-  },
-
   render: function () {
+    var complaints = this.props.officer.allegations || [];
+    
     return (
       <div>
         <div className="map-row">
@@ -32,11 +27,12 @@ var OfficerPage = React.createClass({
         <div className="container">
           <RelatedOfficers relatedOfficers={this.props.related}/>
           <StoryList officer={this.props.officer} />
-          <ComplaintList allegations={this.props.officer.allegations} officer={this.props.officer}/>
+          <ComplaintSection officer={this.props.officer}/>
         </div>
       </div>
     );
   },
+  
 });
 
 module.exports = OfficerPage;
