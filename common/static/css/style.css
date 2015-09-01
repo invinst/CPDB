@@ -1290,3 +1290,10 @@ form.navbar-form.navbar-right {
     cursor: pointer;
 }
 
+#loading {
+    margin-top: 20px;
+}
+
+.center {
+    text-align: center;
+}

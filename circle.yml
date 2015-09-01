@@ -22,5 +22,6 @@ test:
     - python manage.py collectstatic --noinput
   override:
     - coverage run manage.py test --noinput
+    - npm test
   post:
     - coverage report --omit="/home/ubuntu/virtualenvs/*,common/json_serializer.py"

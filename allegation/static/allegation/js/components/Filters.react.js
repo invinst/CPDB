@@ -8,6 +8,7 @@
  */
 var HOST = 'http://localhost:8000';
 var React = require('react');
+var L = require('leaflet');
 var MapFilter = require('./MapFilter.react');
 var AutoComplete = require('./AutoComplete.react');
 var FilterStore = require('../stores/FilterStore');
@@ -58,5 +59,6 @@ var Filters = React.createClass({
   }
 
 });
+
 
 module.exports = Filters;
