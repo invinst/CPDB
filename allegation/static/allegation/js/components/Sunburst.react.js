@@ -239,7 +239,6 @@ var Sunburst = React.createClass({
     }
 
     SunburstStore.addChangeListener(this._onChange);
-    SunburstStore.update();
 
     if (this.props.tabs) {
       this.props.tabs.tabs.push(this);
