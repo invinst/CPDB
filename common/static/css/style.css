@@ -363,7 +363,14 @@ ul.nav.navbar-nav {
     background: none;
     border-radius: 0;
     font-size: 1em;
-    cursor: pointer;
+    cursor: move;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+}
+
+#overview-slider.ui-slider .ui-slider-handle.ui-state-active {
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
 }
 
 .overview-0 {
