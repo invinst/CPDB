@@ -13,7 +13,11 @@ var RelatedOfficers = React.createClass({
     return _.map(this.props.relatedOfficers, function(officer) {
       return (
         <div className='col-md-2' key={officer.officer.id}>
-          <Officer officer={officer.officer} noClick={true} intersection={officer.num_allegations} active={true}/>
+          <Officer officer={officer.officer}
+                   noClick={true}
+                   intersection={officer.num_allegations}
+                   witness={officer.witness}
+                   active={true} />
         </div>
       );
     });

@@ -6,7 +6,7 @@ var OfficerActions = require('../actions/OfficerActions');
 var OfficerMixin = require('./OfficerMixin.react');
 var OfficerPresenter = require('../presenters/OfficerPresenter');
 var OfficerStore = require("../stores/OfficerStore");
-
+var pluralize = require('pluralize')
 
 var Officer = React.createClass({
   mixins: [OfficerMixin],
@@ -38,7 +38,7 @@ var Officer = React.createClass({
       selection_state = 'selected';
     }
 
-    if (this.state.selected) {
+    if (this.props.selected) {
       className += " selected";
       selection_state = 'selected';
     }
@@ -56,7 +56,8 @@ var Officer = React.createClass({
     var intersection = "";
     var intersectionClass = "";
     if ('intersection' in this.props) {
-      intersection = " Co-accused in " + this.props.intersection + ' cases';
+      intersection = this.props.witness ? 'Witness in ' : " Co-accused in ";
+      intersection += pluralize('case', this.props.intersection, true);
       intersectionClass = 'intersection';
       className += ' has-intersection'
     }
