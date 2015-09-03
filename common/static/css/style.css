@@ -1313,6 +1313,12 @@ body {
     transition: 0.5s background-color;
 }
 
+@media (min-width: 1200px){
+    .container {
+        width: 1230px;
+    }
+}
+
 .container.content {
     background-color: #fff;
     padding-bottom: 20px;

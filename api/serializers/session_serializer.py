@@ -1,11 +1,12 @@
+from django_extensions.db.fields.json import JSONField
 from rest_framework import serializers
 
 from share.models import Session
 
 
 class SessionSerializer(serializers.HyperlinkedModelSerializer):
-
-    query = serializers.DictField()
+    serializer_field_mapping = serializers.HyperlinkedModelSerializer.serializer_field_mapping
+    serializer_field_mapping[JSONField] = serializers.DictField
 
     class Meta:
         model = Session
@@ -14,5 +15,13 @@ class SessionSerializer(serializers.HyperlinkedModelSerializer):
                   'query',
                   'share_from',
                   'share_count',
+                  'url',
                   )
 
+    def get_extra_kwargs(self):
+        kwargs = super(SessionSerializer, self).get_extra_kwargs()
+        kwargs['url'] = {
+            'lookup_url_kwarg': 'pk',
+            'lookup_field': 'hash_id',
+        }
+        return kwargs
