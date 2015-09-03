@@ -42,7 +42,6 @@ class Officer(models.Model):
                        kwargs={
                            'first_name': slugify(self.officer_first),
                            'last_name': slugify(self.officer_last),
-                           'badge': slugify(self.star),
                            'pk': self.pk
                        })
 
