@@ -1,23 +1,36 @@
 var React = require('react');
-var Officer = require('../Officer.react');
 var _ = require('lodash');
+
+var Officer = require('../Officer.react');
+var RelatedOfficersStore = require('../../stores/OfficerPage/RelatedOfficersStore');
 
 
 var RelatedOfficers = React.createClass({
-
   getInitialState: function () {
-    return { 'relatedOfficers': {} };
+    return RelatedOfficersStore.getState();
   },
 
+  componentDidMount: function() {
+    RelatedOfficersStore.addChangeListener(this._onChange);
+  },
+  
+  componentWillUnmount: function() {
+    RelatedOfficersStore.removeChangeListener(this._onChange);
+  },
+  
   renderRelatedOfficerList: function() {
-    return _.map(this.props.relatedOfficers, function(officer) {
+    var activeOfficers = this.state['activeOfficers'];
+
+    return this.props.relatedOfficers.map(function(officer) {
+      var selected = _(activeOfficers).contains(officer.officer.id)
+
       return (
-        <div className='col-lg-2 col-md-3 col-sm-4 col-sm-offset-0 col-xs-6' key={officer.id}>
+        <div className='col-lg-2 col-md-3 col-sm-4 col-sm-offset-0 col-xs-6' key={officer.officer.id}>
           <Officer officer={officer.officer}
-                   noClick={true}
                    intersection={officer.num_allegations}
                    witness={officer.witness}
-                   active={true} />
+                   active={true}
+                   page='officer-details' selected={selected}/>
         </div>
       );
     });
@@ -41,6 +54,10 @@ var RelatedOfficers = React.createClass({
         </div>
       </div>
     );
+  },
+
+  _onChange: function() {
+    this.setState(RelatedOfficersStore.getState());
   }
 });
 
