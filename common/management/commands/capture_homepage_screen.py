@@ -1,6 +1,7 @@
 import datetime
 import os
 from time import sleep
+from xvfbwrapper import Xvfb
 
 from django.conf import settings
 from django.core.mail.message import EmailMessage
@@ -12,8 +13,10 @@ class Command(BaseCommand):
     help = 'Capture landing page screen'
 
     def handle(self, *args, **options):
+        xvfb = Xvfb(width=1600, height=720)
+        xvfb.start()
         browser = WebDriver()
-        browser.get("http://data.invisible.institute/")
+        browser.get(settings.DOMAIN)
         sleep(1)
         browser.find_element_by_css_selector("#disclaimer button").click()
         sleep(0.7)
@@ -33,3 +36,4 @@ class Command(BaseCommand):
                              to=['cpdb@eastagile.com'])
         email.attach_file(file_path)
         email.send()
+        xvfb.stop()

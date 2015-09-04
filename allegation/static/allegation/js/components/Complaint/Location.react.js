@@ -12,7 +12,6 @@ var Location = React.createClass({
     var allegation = this.props.complaint.allegation;
     var map_image, address;
     if (allegation.point.lat) {
-      var token = MapStore.getToken();
       var lat = allegation.point.lat;
       var lng = allegation.point.lng;
 
@@ -22,7 +21,7 @@ var Location = React.createClass({
         map_image = (
           'http://api.tiles.mapbox.com/v4/mapbox.streets/pin-l-cross+482(' +
           lng + ',' + lat + ')/' + centerLng + ',' + lat + ',13/' + this.getSize() +
-          '.png?access_token=' + token
+          '.png?access_token=' + AppConstants.MAP_TOKEN
         );
 
         address = (

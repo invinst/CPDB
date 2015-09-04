@@ -43,9 +43,7 @@ var MapStore = assign({}, EventEmitter.prototype, {
   getState: function() {
     return _state;
   },
-  getToken: function () {
-    return MBX;
-  },
+
   getMarkers: function () {
     return _markers;
   },

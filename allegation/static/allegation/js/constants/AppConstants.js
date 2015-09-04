@@ -12,6 +12,9 @@ module.exports = {
   AVG_COMPLAINTS_NUMBER_YELLOW: 60,
   MAX_OFFICER_NAME_LENGTH: 20,
 
+  MAP_TOKEN: 'pk.eyJ1Ijoic3RlZmFuZ2VvcmciLCJhIjoiVnBNOEp4byJ9.7i2N7gTV-t_QtAA-kAAlFA',
+  MAP_TYPE: 'mapbox.streets',
+  
   FILTERS: {
     'all': 'All',
     'disciplined': 'Disciplined',
