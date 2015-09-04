@@ -117,7 +117,7 @@ var Sunburst = React.createClass({
     var width = $(node).width();
     var height = $(node).height();
     var src = "/embed/?page=sunburst&query=" + encodeURIComponent(FilterStore.getQueryString());
-    src += "&selected=" + this.state.selected.name;
+    src += "&state=" + this.stateToString({name: this.state.selected.name});
     return '<iframe width="' + width + 'px" height="' + height + 'px" frameborder="0" src="' + this.absoluteUri(src)
        + '"></iframe>';
   },
@@ -168,10 +168,10 @@ var Sunburst = React.createClass({
   mouseleave: function (d) {
     var that = this;
     // Deactivate all segments during transition.
-    d3.selectAll("path").on("mouseover", null);
+    svg.selectAll("path").on("mouseover", null);
 
     // Transition each segment to full opacity and then reactivate it.
-    d3.selectAll("path")
+    svg.selectAll("path")
         .transition()
         .duration(500)
         .style("opacity", 1)
@@ -184,7 +184,7 @@ var Sunburst = React.createClass({
   },
 
   mouseover: function (d) {
-    d3.selectAll("path")
+    svg.selectAll("path")
       .style("opacity", 0.3);
 
     var sequenceArray = this.getAncestors(d);

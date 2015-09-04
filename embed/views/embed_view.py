@@ -1,3 +1,5 @@
+import json
+
 from django.views.generic.base import TemplateView
 
 
@@ -9,5 +11,5 @@ class EmbedView(TemplateView):
         context['page'] = self.request.GET.get('page')
         context['pk'] = self.request.GET.get('pk')
         context['query'] = self.request.GET.get('query')
-        context['selected'] = self.request.GET.get('selected')
+        context['state'] = json.loads(self.request.GET.get('state'))
         return context

@@ -1,5 +1,5 @@
 {% extends 'allegation/base.html' %}
-{% load staticfiles %}
+{% load staticfiles jsonify %}
 
 {% block head-link %}
   {{ block.super }}
@@ -11,7 +11,7 @@
     PAGE = '{{ page }}';
     PK = '{{ pk }}';
     QUERY = '{{ query }}';
-    SELECTED = '{{ selected }}';
+    STATE = {{ state|jsonify }};
   </script>
   <div class="container-fluid">
     <div class="row">

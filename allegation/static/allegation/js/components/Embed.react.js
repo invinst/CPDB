@@ -40,11 +40,12 @@ var Embed = React.createClass({
   },
 
   embedSunburst: function () {
-    this.setContent(<Sunburst query={this.props.query} selected={this.props.selected} />);
+    this.setContent(<Sunburst query={this.props.query} selected={this.props.state.name} />);
   },
 
   embedMap: function () {
-    this.setContent(<Map query={this.props.query} />);
+    this.setContent(<Map query={this.props.query} center={this.props.state.center}
+                         defaultZoom={this.props.state.defaultZoom} />);
   },
 
   embedAllegation: function () {

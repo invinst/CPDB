@@ -37,7 +37,9 @@ var Map = React.createClass({
     var state = {
       'maxZoom': 17,
       'minZoom': 10,
-      'scrollWheelZoom': false
+      'scrollWheelZoom': false,
+      'center': this.props.center,
+      'defaultZoom': this.props.defaultZoom
     };
     $.extend(state, MapStore.getState());
     return state;
@@ -49,6 +51,12 @@ var Map = React.createClass({
     var width = $(node).width();
     var height = $(node).height();
     var src = "/embed/?page=map&query=" + encodeURIComponent(FilterStore.getQueryString());
+    var state = MapStore.getState();
+    state = {
+      center: state.center,
+      defaultZoom: state.defaultZoom
+    }
+    src += "&state=" + encodeURIComponent(JSON.stringify(state));
     return '<iframe width="' + width + 'px" height="' + height + 'px" frameborder="0" src="' + this.absoluteUri(src)
        + '"></iframe>';
   },
@@ -102,8 +110,8 @@ var Map = React.createClass({
   create :function (dom_id, opts) {
     dom_id = dom_id ? dom_id : this.getDOMNode();
     opts = opts ? opts : this.state;
-    var defaultZoom = 'defaultZoom' in opts ? opts['defaultZoom'] : 11;
-    var center = 'center' in opts ? opts['center'] : [41.85677, -87.6024055];
+    var defaultZoom = opts.defaultZoom ? opts['defaultZoom'] : 11;
+    var center = opts.center ? opts['center'] : [41.85677, -87.6024055];
 
     var southWest = L.latLng(41.143501411390766, -88.53057861328125);
     var northEast = L.latLng(42.474122772511485, -85.39947509765625);

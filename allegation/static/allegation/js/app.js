@@ -41,7 +41,7 @@ if (siteTitle) {
 var embed = document.getElementById('embed');
 if (embed) {
     React.render(
-      <Embed page={PAGE} pk={PK} query={QUERY} selected={SELECTED} />,
+      <Embed page={PAGE} pk={PK} query={QUERY} state={STATE} />,
       embed
     );
 }
