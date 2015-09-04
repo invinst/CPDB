@@ -163,7 +163,7 @@ var Officer = React.createClass({
     var officer = this.props.officer;
     var presenter = OfficerPresenter(officer);
     var page = this.props.page || 'home';
-    OfficerActions.setActiveOfficer(officer);
+    OfficerActions.setActiveOfficer(officer, page);
     ga('send', 'event', 'officer', 'filter-by', presenter.displayName());
   }
 });

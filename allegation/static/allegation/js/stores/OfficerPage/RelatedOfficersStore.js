@@ -29,10 +29,11 @@ var RelatedOfficersStore = assign({}, EventEmitter.prototype, {
   }
 });
 
-AppDispatcher.register(function(action) {
+RelatedOfficersStore.dispatchEvents = AppDispatcher.register(function(action) {
   switch (action.actionType) {
   case MapConstants.SET_ACTIVE_OFFICER:
     var index = _state.activeOfficers.indexOf(action.officer.id);
+    
     if (index == -1) {
       _state['activeOfficers'].push(action.officer.id);
 
@@ -46,8 +47,6 @@ AppDispatcher.register(function(action) {
   default:
       break;
   }
-  
-
 });
 
 

@@ -80,7 +80,7 @@ var OfficerStore = assign({}, EventEmitter.prototype, {
 
 
 // Register callback to handle all updates
-AppDispatcher.register(function (action) {
+OfficerStore.dispatchEvent = AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case MapConstants.MAP_REPLACE_FILTERS:
     case MapConstants.MAP_CHANGE_FILTER:

@@ -8,11 +8,11 @@ describe('ComplaintList', function () {
   var complaints;
   var ComplaintListStore = require('../../stores/ComplaintListStore');
   var LoadingComplaintList = require('../ComplaintList/LoadingComplaintList.react');
-  var ComplaintList = require('../ComplaintList.react');
+  var ComplaintSection = require('../ComplaintSection.react');
 
   it('should exists', function () {
     complaints = TestUtils.renderIntoDocument(
-      <ComplaintList />
+      <ComplaintSection />
     );
     expect(TestUtils.isCompositeComponent(complaints)).toBeTruthy();
   });
@@ -21,7 +21,7 @@ describe('ComplaintList', function () {
     ComplaintListStore.getState = jest.genMockFunction();
     ComplaintListStore.getState.mockReturnValue({'complaints': [], 'loading': false});
     complaints = TestUtils.renderIntoDocument(
-      <ComplaintList />
+      <ComplaintSection />
     );
     var divs = TestUtils.scryRenderedDOMComponentsWithTag(complaints, 'div');
     expect(divs.length).toBe(1);
@@ -32,7 +32,7 @@ describe('ComplaintList', function () {
     ComplaintListStore.getState.mockReturnValue({'loading': true});
 
     var shallowRenderer = TestUtils.createRenderer();
-    shallowRenderer.render(<ComplaintList />);
+    shallowRenderer.render(<ComplaintSection />);
     var result = shallowRenderer.getRenderOutput();
 
     expect(result.type.displayName).toBe('LoadingComplaintList');

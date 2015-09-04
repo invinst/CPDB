@@ -25,3 +25,8 @@ class OutcomeAnalyticsTestCase(SimpleTestCase):
 
         for filter_type in FILTERS:
             results[filter_type].should.equal(len(FILTERS[filter_type]))
+
+    def test_other_count_with_null_outcome_value(self):
+        AllegationFactory(final_finding=None)
+        results = OutcomeAnalytics.get_analytics(allegations)
+        results['Other'].should.equal(len(FILTERS['Other']) + 1)
