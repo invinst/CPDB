@@ -119,7 +119,6 @@ var Map = React.createClass({
     _map = L.mapbox.map(dom_id, MAP_TYPE, opts).setView(center, defaultZoom);
 
     _map.on('click', function (event) {
-
     }).setMaxBounds(maxBounds);
 
     _map.on('move', function () {

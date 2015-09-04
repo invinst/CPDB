@@ -36,11 +36,11 @@ var OfficerList = React.createClass({
       if (officerCol != 10) {
         officerPerCol = 12 / officerPerRow;
       }
-      var officerClass = 'col-md-' + officerPerCol;
+      var officerClass = " col-md-3 col-xs-6 col-sm-4";
       var className;
 
       if (complaint.officer) {
-        className = investigator ? officerClass : 'col-md-offset-1 col-md-2';
+        className = investigator ? officerClass : '  col-md-3 col-xs-6 col-sm-4';
         rows.push(
           <div className={className} key="officer">
             <Officer active={true} officer={complaint.officer} noClick={true}/>
@@ -48,7 +48,7 @@ var OfficerList = React.createClass({
         );
       }
       for (i = 0; i < complaint.officers.length; i++) {
-        className = (!investigator && (rows.length % 5 == 0)) ? 'col-md-offset-1 col-md-2' : officerClass;
+        className = officerClass;
         rows.push(
           <div className={className} key={i}>
             <Officer active={true} officer={complaint.officers[i]} noClick={true}/>
@@ -76,8 +76,11 @@ var OfficerList = React.createClass({
           <div>
             <div className="section-title col-md-10 col-md-offset-1">
               Officers Involved
+
             </div>
-            {rows}
+            <div className="col-md-10 col-md-offset-1">
+              <div className="row">{rows}</div>
+            </div>
           </div>
         )
       }

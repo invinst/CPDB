@@ -67,10 +67,8 @@ var ComplaintListRow = React.createClass({
     }
     var finding = this.props.finding ? this.props.finding.replace(/ /,"-").toLowerCase() : 'other';
     caretClasses = caretClasses + " complaint-row-outcome " + finding;
-    var rowClassName = 'complaint-row ' + finding;
-    if (allegation.final_outcome_class == 'disciplined') {
-      rowClassName += ' disciplined';
-    }
+    var rowClassName = 'complaint-row ' + finding + " " + allegation.final_outcome_class;
+
 
     return (
       <div className={rowClassName}>
