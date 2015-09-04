@@ -248,7 +248,6 @@ Investigator"""
         self.save_workbook()
 
         self.save_model()
-        print("Done")
 
 
 @app.task
