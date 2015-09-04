@@ -104,7 +104,11 @@ function sum(d){
 var Sunburst = React.createClass({
   mixins: [EmbedMixin],
   getInitialState: function () {
-    return SunburstStore.init(this.props.query);
+    return {
+      data: false,
+      selected: false,
+      drew: false
+    }
   },
 
   // embedding
@@ -113,6 +117,7 @@ var Sunburst = React.createClass({
     var width = $(node).width();
     var height = $(node).height();
     var src = "/embed/?page=sunburst&query=" + encodeURIComponent(FilterStore.getQueryString());
+    src += "&selected=" + this.state.selected.name;
     return '<iframe width="' + width + 'px" height="' + height + 'px" frameborder="0" src="' + this.absoluteUri(src)
        + '"></iframe>';
   },
@@ -199,6 +204,8 @@ var Sunburst = React.createClass({
       return;
     }
 
+    var that = this;
+
     d3.select("#sunburst-chart svg").remove();
 
     svg = d3.select("#sunburst-chart").append("svg")
@@ -223,6 +230,15 @@ var Sunburst = React.createClass({
 
     d3.select("#container").on("mouseleave", this.mouseleave);
 
+    var selectedName = this.props.selected;
+    if (selectedName) {
+      svg.selectAll("path").each(function (d) {
+        if (d.name == selectedName) {
+          that.select(d);
+        }
+      });
+    }
+
     this.setState({
       drew: true
     });
@@ -243,10 +259,17 @@ var Sunburst = React.createClass({
     if (this.props.tabs) {
       this.props.tabs.tabs.push(this);
     }
+
+    SunburstStore.init(this.props.query);
   },
 
   _onChange: function () {
-    this.setState(SunburstStore.getAll())
+    var root = SunburstStore.getRoot();
+    this.setState({
+      data: root,
+      selected: root,
+      drew: false
+    })
   },
 
   makeLegend: function (node) {

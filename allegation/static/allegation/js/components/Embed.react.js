@@ -40,7 +40,7 @@ var Embed = React.createClass({
   },
 
   embedSunburst: function () {
-    this.setContent(<Sunburst query={this.props.query} />);
+    this.setContent(<Sunburst query={this.props.query} selected={this.props.selected} />);
   },
 
   embedMap: function () {

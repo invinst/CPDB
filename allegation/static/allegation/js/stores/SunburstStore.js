@@ -6,14 +6,7 @@ var FilterStore = require('./FilterStore');
 var CHANGE_EVENT = 'change';
 var ajax = null;
 
-var _state = {
-  'rows': [],
-  'current': false,
-  selected: false
-};
-var _complaints = {};
-var _currentActive = false;
-
+var root = null;
 var _queryString = null;
 
 var SunburstStore = assign({}, EventEmitter.prototype, {
@@ -31,32 +24,20 @@ var SunburstStore = assign({}, EventEmitter.prototype, {
       SunburstStore.setData(data);
     });
   },
+
   setData: function (data) {
-    var root = data.sunburst;
-    _state = {
-      data: root,
-      selected: root,
-      drew: false
-    };
+    root = data.sunburst;
     SunburstStore.emitChange();
   },
-  set: function (key, value) {
-    _state[key] = value;
-  },
-  setCurrentActive: function(val){
-    _currentActive = val;
-    SunburstStore.emitChange();
-  },
-  getCurrentActive: function(){
-    return _currentActive;
-  },
+
   init: function (query) {
     this.update(query);
-    return _state;
   },
-  getAll: function (type) {
-    return _state;
+
+  getRoot: function () {
+    return root;
   },
+
   emitChange: function () {
     this.emit(CHANGE_EVENT);
   },

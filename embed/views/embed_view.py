@@ -9,4 +9,5 @@ class EmbedView(TemplateView):
         context['page'] = self.request.GET.get('page')
         context['pk'] = self.request.GET.get('pk')
         context['query'] = self.request.GET.get('query')
+        context['selected'] = self.request.GET.get('selected')
         return context
