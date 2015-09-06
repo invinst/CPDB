@@ -36,6 +36,7 @@ class Officer(models.Model):
     star = models.FloatField(null=True)
     allegations_count = models.IntegerField(default=0)
     discipline_count = models.IntegerField(default=0)
+    birth_year = models.IntegerField(default=0)
 
     def get_absolute_url(self):
         return reverse("officer:detail",
@@ -80,6 +81,7 @@ class ComplainingWitness(models.Model):
     crid = models.CharField(max_length=30, null=True, db_index=True)
     gender = models.CharField(max_length=1, null=True)
     race = models.CharField(max_length=50, null=True)
+    age = models.IntegerField(null=True)
 
 
 class AllegationCategory(models.Model):
@@ -361,6 +363,8 @@ class Investigator(models.Model):
     name = models.CharField(max_length=160)
     complaint_count = models.IntegerField(default=0)
     discipline_count = models.IntegerField(default=0)
+    current_rank = models.CharField(max_length=50, null=True)
+    current_report = models.CharField(max_length=4, null=True)
 
     @property
     def tag_value(self):
