@@ -50,6 +50,13 @@ class Command(BaseCommand):
                         witness = self.get_witness(crid=crid, race=race)
                         if not witness:
                             witness = self.get_witness(crid=crid)
+                            if not witness:
+                                witness = ComplainingWitness.objects.create(
+                                    crid=crid,
+                                    race=race,
+                                    age=age,
+                                    gender=gender
+                                )
                     finally:
                         if witness:
                             witness.race = race
