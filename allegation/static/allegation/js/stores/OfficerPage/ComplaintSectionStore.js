@@ -12,13 +12,14 @@ var _state = {
   'rawComplaints': [],
   'analytics': {},
   'activeFilter': 'all'
-}
+};
 
 function intersectedWith(activeOfficers) {
   return function(complaint)  {
     var involvedOfficers = _.pluck(complaint.officers, 'id');
     var witnessOfficers = _.pluck(complaint.police_witness, 'officer.pk');
     var officers = _.union(involvedOfficers, witnessOfficers);
+
     // order in _.difference() is important!
     return _.isEmpty(_.difference(activeOfficers, officers));
   }

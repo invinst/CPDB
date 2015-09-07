@@ -2,6 +2,7 @@ var AppConstants = require('../constants/AppConstants');
 var ComplaintListStore = require('../stores/ComplaintListStore');
 var OfficerStore = require('../stores/OfficerStore');
 var FilterStore = require('../stores/FilterStore');
+var _ = require('lodash');
 
 var AllegationFetcherQueryBuilder = {
   buildOutcomeFilterQuery: function(activeFilter) {

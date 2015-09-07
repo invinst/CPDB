@@ -35,7 +35,13 @@ class AllegationFilterTestCase(BaseLiveTestCase):
             number_of_final_findings = len(FILTERS[filter_text])
             self.number_of_complaints().should.equal(number_of_final_findings)
 
-        # Disciplined filter
+    def test_filter_by_disciplined(self):
+        AllegationFactory(cat=self.allegation_category, final_outcome_class='disciplined')
+        self.visit('/')
+        # Create at least 1 disciplined allegation
+        self.link("Complaint Types").click()
+        self.link(self.allegation_category.category).click()
+
         self.element_by_tagname_and_text('span', 'Disciplined').click()
         self.until(self.ajax_complete)
         self.number_of_complaints().should.equal(Allegation.objects.filter(final_outcome_class='disciplined').count())

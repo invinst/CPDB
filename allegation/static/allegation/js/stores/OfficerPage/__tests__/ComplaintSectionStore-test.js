@@ -58,7 +58,7 @@ describe('ComplaintSectionStore', function() {
 
     ],
     analytics: {}
-  }
+  };
 
   var actionOfficerComplaintListReceivedData = function(returnData) {
     return {
@@ -108,7 +108,7 @@ describe('ComplaintSectionStore', function() {
     // init data
     callback(actionSetActiveComplaintListFilter('disciplined'))
     expect(ComplaintSectionStore.getState()['complaints'].length).toBe(3)
-    
+
     callback(actionSetActiveComplaintListFilter('sustained'))
     expect(ComplaintSectionStore.getState()['complaints'].length).toBe(1)
   });
@@ -123,16 +123,16 @@ describe('ComplaintSectionStore', function() {
     callback(actionSetActiveOfficer);
     expect(ComplaintSectionStore.getState()['complaints'].length).toBe(1)
   });
-  
+
   it('update complaints based on intersected witness officers', function() {
     callback(actionOfficerComplaintListReceivedData(data));
     var RelatedOfficersStore = require('../RelatedOfficersStore');
     RelatedOfficersStore.getState.mockReturnValue({
       activeOfficers: [4]
     });
-    
+
     callback(actionSetActiveOfficer);
-    
+
     expect(ComplaintSectionStore.getState()['complaints'].length).toBe(1)
   });
 
@@ -142,9 +142,9 @@ describe('ComplaintSectionStore', function() {
     RelatedOfficersStore.getState.mockReturnValue({
       activeOfficers: [7]
     });
-    
+
     callback(actionSetActiveOfficer);
-    
+
     expect(ComplaintSectionStore.getState()['complaints'].length).toBe(0)
   });
 });

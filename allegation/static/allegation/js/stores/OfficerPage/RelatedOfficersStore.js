@@ -8,8 +8,7 @@ var assign = require('object-assign');
 //TODO: How to deal with duplication in OfficerPage components and HomePage components?
 var _state = {
   'activeOfficers': []
-}
-
+};
 
 var RelatedOfficersStore = assign({}, EventEmitter.prototype, {
   getState: function() {
@@ -33,7 +32,7 @@ RelatedOfficersStore.dispatchEvents = AppDispatcher.register(function(action) {
   switch (action.actionType) {
   case MapConstants.SET_ACTIVE_OFFICER:
     var index = _state.activeOfficers.indexOf(action.officer.id);
-    
+
     if (index == -1) {
       _state['activeOfficers'].push(action.officer.id);
 
@@ -43,7 +42,7 @@ RelatedOfficersStore.dispatchEvents = AppDispatcher.register(function(action) {
     }
     RelatedOfficersStore.emitChange();
     break;
-    
+
   default:
       break;
   }

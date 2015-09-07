@@ -1,6 +1,7 @@
 var ComplaintListServerActions = require('../actions/ComplaintList/ComplaintListServerActions');
 var AllegationFetcherQueryBuilder = require('./AllegationFetcherQueryBuilder');
 var AppConstants = require('../constants/AppConstants');
+var $ = require('jquery');
 
 var ajax = null;
 
@@ -34,16 +35,16 @@ var ComplaintListAPI = {
 
   getAllForOfficer: function(officer) {
     var endpoint = '/api/allegations/?officer=' + officer + '&length=-1';
-    
+
     if (ajax) {
       ajax.abort();
     }
-    
+
     ajax = $.getJSON(endpoint, function (data) {
       ComplaintListServerActions.receivedOfficerComplaints(data);
     });
   },
-  
+
   getMoreData: function (pageNumber) {
     var queryString = AllegationFetcherQueryBuilder.buildQuery();
     var pagedQuery = [queryString, 'page=' + pageNumber, 'length=25'].join('&');
