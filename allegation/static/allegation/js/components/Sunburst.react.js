@@ -130,7 +130,14 @@ var Sunburst = React.createClass({
     }
   },
 
+  isEmbedding: function () {
+    return this.props.tabs && this.props.tabs.embedding;
+  },
+
   select: function (d) {
+    if (this.isEmbedding()) {
+      return;
+    }
     if (d == this.state.selected) {
       return;
     }
