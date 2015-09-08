@@ -20,8 +20,7 @@ function intersectedWith(activeOfficers) {
     var witnessOfficers = _.pluck(complaint.police_witness, 'officer.pk');
     var officers = _.union(involvedOfficers, witnessOfficers);
 
-    // order in _.difference() is important!
-    return _.isEmpty(_.difference(activeOfficers, officers));
+    return !_(officers).intersection(activeOfficers).isEmpty();
   }
 }
 
@@ -33,13 +32,9 @@ function hasOutcome(outcome) {
   }
 }
 
-function hasNoInvolvedOfficer(complaint) {
-  return _.isEmpty(complaint.officers);
-}
-
 function getComplaints(complaints, activeOfficers, activeFilter) {
   if (!_.isEmpty(activeOfficers)) {
-    complaints = _(complaints).reject(hasNoInvolvedOfficer).filter(intersectedWith(activeOfficers)).value();
+    complaints = _(complaints).filter(intersectedWith(activeOfficers)).value();
   }
 
   return _(complaints).filter(hasOutcome(activeFilter)).value()
@@ -55,9 +50,14 @@ function finalOutcome(complaint) {
   return 'Other';
 }
 
+function isDisciplined(complaint) {
+  return complaint.allegation.final_outcome_class == 'disciplined'
+}
+
 function analyzeComplaints(complaints) {
   return _(complaints).countBy(finalOutcome).merge({
-    'All': complaints.length
+    'All': complaints.length,
+    'Disciplined': _(complaints).filter(isDisciplined).value().length
   }).value();
 }
 

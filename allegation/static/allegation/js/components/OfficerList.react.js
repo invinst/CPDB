@@ -5,9 +5,8 @@ var OfficerActions = require('../actions/OfficerActions');
 var Officer = require("./Officer.react");
 var OfficerStore = require("../stores/OfficerStore");
 var FilterStore = require("../stores/FilterStore");
-
 var EmbedMixin = require('./Embed/Mixin.react');
-
+var pluralize = require('pluralize')
 
 var VIEW_PORT_COUNT = 6;
 var OFFICER_PER_COL = 2;

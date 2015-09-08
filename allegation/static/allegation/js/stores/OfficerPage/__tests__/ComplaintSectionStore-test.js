@@ -136,6 +136,18 @@ describe('ComplaintSectionStore', function() {
     expect(ComplaintSectionStore.getState()['complaints'].length).toBe(1)
   });
 
+  it('update complaints based on intersected witness officers or co-accused officers', function() {
+    callback(actionOfficerComplaintListReceivedData(data));
+    var RelatedOfficersStore = require('../RelatedOfficersStore');
+    RelatedOfficersStore.getState.mockReturnValue({
+      activeOfficers: [1, 4]
+    });
+
+    callback(actionSetActiveOfficer);
+
+    expect(ComplaintSectionStore.getState()['complaints'].length).toBe(2)
+  });
+
   it('update complaints to empty if there is no intersects', function() {
     callback(actionOfficerComplaintListReceivedData(data));
     var RelatedOfficersStore = require('../RelatedOfficersStore');
@@ -146,5 +158,21 @@ describe('ComplaintSectionStore', function() {
     callback(actionSetActiveOfficer);
 
     expect(ComplaintSectionStore.getState()['complaints'].length).toBe(0)
+  });
+
+  it('update complaints analytics after any officer is set active', function() {
+    callback(actionOfficerComplaintListReceivedData(data));
+    var RelatedOfficersStore = require('../RelatedOfficersStore');
+    RelatedOfficersStore.getState.mockReturnValue({
+      activeOfficers: [1, 3]
+    });
+
+    callback(actionSetActiveOfficer);
+
+    var analytics = ComplaintSectionStore.getState()['analytics']
+    expect(analytics['Disciplined']).toBe(2)
+    expect(analytics['Sustained']).toBe(1)
+    expect(analytics['Not Sustained']).toBe(1)
+    expect(analytics['All']).toBe(2)
   });
 });

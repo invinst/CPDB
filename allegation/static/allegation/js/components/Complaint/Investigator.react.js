@@ -1,8 +1,8 @@
 var React = require('react');
 var OfficerMixin = require("../Officer/OfficerMixin.react");
+var pluralize = require('pluralize');
 
-
-var Officer = React.createClass({
+var Investigator = React.createClass({
   mixins: [OfficerMixin],
   render: function () {
     var investigator = this.props.complaint.investigator;
@@ -60,4 +60,4 @@ var Officer = React.createClass({
   }
 });
 
-module.exports = Officer;
+module.exports = Investigator;
