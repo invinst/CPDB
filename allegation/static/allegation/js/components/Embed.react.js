@@ -53,7 +53,8 @@ var Embed = React.createClass({
   },
 
   embedSummary: function () {
-    this.setContent(<Summary query={this.props.query} />);
+    this.setContent(<Summary query={this.props.query} selectedCategories={this.props.state.selectedCategories}
+                             currentActive={this.props.state.currentActive} />);
   },
 
   componentWillMount: function () {

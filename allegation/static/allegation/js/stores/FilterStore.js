@@ -51,12 +51,10 @@ var FilterStore = assign({}, EventEmitter.prototype, {
     return _filters;
   },
   getAll: function (type) {
-    if (type in _filters) {
+    if (type) {
       return _filters[type];
     }
-    else {
-      return _filters;
-    }
+    return _filters;
   },
 
   getFilters: function() {
