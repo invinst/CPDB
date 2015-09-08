@@ -86,6 +86,16 @@ var Tabs = React.createClass({
               <i className="icomoon icon-stack" /> Complaint Types
             </a>
           </li>
+          <li role="presentation" className="disabled">
+            <a href="#" aria-controls="profile" role="tab">
+              <i className="fa fa-male"></i> Race &amp; Gender
+            </a>
+          </li>
+          <li role="presentation" className="disabled">
+            <a href="#" aria-controls="profile" role="tab">
+              <i className="fa fa-clock-o"></i> Time
+            </a>
+          </li>
         </ul>
 
         <div className="tab-content">

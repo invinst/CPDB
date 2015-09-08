@@ -8,6 +8,15 @@ class HomePageTestCase(BaseLiveTestCase):
         self.allegation_category = AllegationCategoryFactory()
         self.allegation = AllegationFactory(cat=self.allegation_category)
 
+    def test_see_tabs(self):
+        self.visit('/')
+        links = self.find_all('.chart-row a')
+        link_texts = [x.text for x in links]
+        link_texts.should.contain('Penalty Distribution')
+        link_texts.should.contain('Complaint Types')
+        link_texts.should.contain('Race & Gender')
+        link_texts.should.contain('Time')
+
     def test_click_on_category_only_show_allegation_belong_to_it(self):
         other_category = AllegationCategoryFactory()
         other_allegation = AllegationFactory(cat=other_category)
