@@ -25,6 +25,7 @@ RANKS = [
     ['Chief', 'Chief']
 ]
 
+
 class Officer(models.Model):
     officer_first = models.CharField(max_length=255, null=True, db_index=True)
     officer_last = models.CharField(max_length=255, null=True, db_index=True)
@@ -36,6 +37,10 @@ class Officer(models.Model):
     star = models.FloatField(null=True)
     allegations_count = models.IntegerField(default=0)
     discipline_count = models.IntegerField(default=0)
+
+    @property
+    def absolute_url(self):
+        return self.get_absolute_url()
 
     def get_absolute_url(self):
         return reverse("officer:detail",

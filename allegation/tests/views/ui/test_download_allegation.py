@@ -11,12 +11,12 @@ class DownloadAllegationTestCase(BaseLiveTestCase):
         self.visit('/')
         self.find('.officer .checkmark').click()
 
-        self.until(lambda: self.find('.download-wrapper .btn-download'))
-        self.find('.download-wrapper .btn-download').click()
+        self.until(lambda: self.find('.download-wrapper a'))
+        self.find('.download-wrapper a').click()
         self.find('.download-wrapper').text.should.equal('Processing')
 
         self.until(lambda: self.find('.download-wrapper').text != 'Processing')
-        link = self.find(".download-wrapper .btn-download")
+        link = self.find(".download-wrapper a")
         href = link.get_attribute('href')
 
         download_response = requests.head(href)

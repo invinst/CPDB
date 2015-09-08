@@ -16,7 +16,14 @@ var SummaryRow = React.createClass({
   getInitialState: function () {
     return getSummaryRowState();
   },
-  hasActiveChildren: function (filters) {
+
+  componentDidMount: function () {
+    if (this.props.category.name == this.props.summary.props.currentActive) {
+      this.onClick();
+    }
+  },
+
+  hasActiveChildren: function () {
     var filters = FilterStore.getAll();
     if ('cat' in filters) {
       var category = this.props.category;
@@ -31,10 +38,16 @@ var SummaryRow = React.createClass({
     }
     return false;
   },
+
   isActive: function (category){
+    var selectedCategories = this.props.summary.props.selectedCategories;
+    if (selectedCategories) {
+      return selectedCategories.indexOf(category.name) > -1;
+    }
     var filters = FilterStore.getAll();
     return 'cat__category' in filters && filters['cat__category'].value.indexOf(category.name) > -1
   },
+
   render: function () {
     var category = this.props.category;
     var style = {
@@ -58,7 +71,7 @@ var SummaryRow = React.createClass({
     }
 
     if (this.props.isCurrentActive) {
-      mainCategoryClassName += ' active'
+      mainCategoryClassName += ' active';
       arrow = (
         <div className='arrow-container'>
           <i className='fa fa-caret-left fa-28px'></i>
@@ -98,7 +111,10 @@ var SummaryRow = React.createClass({
 
   },
   onClick: function (e) {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
+
     var current = this.props.category;
 
     if (this.isActive(current)) {
@@ -107,7 +123,7 @@ var SummaryRow = React.createClass({
       $('#cpdb-search').tagsinput("add", current.tagValue);
     }
 
-    SummaryStore.setCurrentActive(current.name)
+    SummaryStore.setCurrentActive(current.name);
 
     $(".child-rows.active").removeClass('active');
     $("#child-rows-" + current.id).addClass('active');

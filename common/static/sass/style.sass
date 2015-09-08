@@ -129,6 +129,9 @@ $font_5: Helvetica
 body
   background-color: $white
   font-family: $font_0, $font_1
+  transition: 0.5s background-color
+  &.embedding
+    background-color: $color_cadet_blue_approx
 
 .navbar
   min-height: 72px
@@ -182,7 +185,9 @@ h3
   margin-top: 0
 
 footer
-  margin: 3em 0
+  .row
+    background-color: #172b3a
+    padding: 20px 0
 
 #map
   width: 100%
@@ -264,23 +269,24 @@ footer
 
   .child-rows
     max-height: 480px
-    overflow-y: scroll
+    overflow-y: auto
     overflow-x: hidden
     //If you use compass, instead of the line below you could use + transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
     transition: left 1s
     left: 100%
     position: absolute
-    width: calc(100% - 1em)
+    width:  calc(100% - 18px)
+    visibility: hidden
     background: $color_pampas_approx
     &.active
       left: calc(1em - 5px)
+      visibility: visible
 
     .row + .row
       margin-top: 7px
 
   .child-row-container
-    overflow-y: scroll
-    overflow-x: hidden
+    overflow: hidden
     border-left: 1px solid $color_mountain_mist_approx
     min-height: 300px
 
@@ -377,7 +383,6 @@ footer
     width: calc(83.33333333% + 15px)
 
 #officer_list
-  margin-top: 28px
   .officers .col-sm-2
     padding-right: 5px
 
@@ -624,6 +629,7 @@ footer
 
 .complaint-row
   padding: 5px 0 0
+  border-bottom: 1px solid black
   font-family: $font_2
   clear: both
   &.disciplined
@@ -650,9 +656,6 @@ footer
 
   .btn:hover
     opacity: .6
-
-  + .complaint-row
-    border-top: 1px solid $black
 
 .timeline-title
   color: $color_mountain_mist_approx
@@ -1058,13 +1061,13 @@ footer
 .download-wrapper
   .progress
     width: 151px
-    height: 36px
-    margin: 10px 1px
+    height: 20px
+    margin: 0
 
   .progress-bar
     width: 100%
     font-size: 16px
-    padding: 5px 10px
+    padding: 0 10px
     font-family: $font_0, $font_4
 
 .chart-row
@@ -1131,14 +1134,10 @@ footer
   overflow: hidden
   svg
     position: relative
-    left: -160px
 
   path
     stroke: $color_pampas_approx
     fill-rule: evenodd
-
-  &.small svg
-    left: -255px
 
 #loading
   margin-top: 20px
@@ -1206,3 +1205,61 @@ form.navbar-form.navbar-right
 @media(max-width: 1024px)
   .container.content
     width: 100%
+
+@media(min-width: 1200px)
+  .container
+    width: 1230px
+
+#EmbedBar
+  margin-top: 15px
+  background-color: $color_cadet_blue_approx
+  color: $white
+  a
+    color: $white
+
+  .active
+    background-color: $color_deep_cerulean_approx
+
+  .row > div
+    padding: 20px 10px
+
+.embed-code
+  background-color: $white
+  padding: 10px
+  border-bottom: 1px solid $color_cadet_blue_approx
+  .fa
+    color: $color_deep_cerulean_approx
+    font-size: 25px
+
+  input
+    width: calc(100% - 35px)
+    border: none
+    padding: 0
+    margin-left: 5px
+
+
+.embed
+  .tooltip
+    left: -47px
+    width: 115px
+    position: absolute
+    top: 17px
+    display: none
+    &.bottom .tooltip-arrow
+      display: block
+
+
+  &.zeroclipboard-is-hover .tooltip
+    display: block
+
+
+.container.content
+  background-color: $white
+  padding-bottom: 20px
+  margin-top: 28px
+
+.checkmark.embed
+  background-color: $color_ship_cove_approx
+  color: $white
+  &:hover
+    background-color: $color_pacific_blue_approx

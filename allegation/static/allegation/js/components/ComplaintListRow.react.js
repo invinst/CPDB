@@ -5,7 +5,7 @@ var ComplaintListStore = require('../stores/ComplaintListStore');
 var MapStore = require('../stores/MapStore');
 var SessionStore = require('../stores/SessionStore');
 var Officer = require("./Officer.react");
-var ComplaintListRowDetail = require("./ComplaintListRowDetail.react");
+var Complaint = require("./Complaint.react");
 var RequestButton = require('./Complaint/RequestButton.react');
 var _timeline = false;
 var init_data = typeof(INIT_DATA) != 'undefined' && INIT_DATA ? INIT_DATA : {'opened_complaints':[]};
@@ -40,7 +40,7 @@ var ComplaintListRow = React.createClass({
     var showMore = '';
 
     if (this.detailRendered()) {
-      showMore = <ComplaintListRowDetail complaint={complaint} hide={detailIsShown}/>;
+      showMore = <Complaint complaint={complaint} hide={detailIsShown}/>;
       caretClasses = 'fa fa-chevron-' + (detailIsShown ? 'right' : 'down');
     }
 

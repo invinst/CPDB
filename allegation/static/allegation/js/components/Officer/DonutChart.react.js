@@ -44,7 +44,7 @@ var DonutChart = React.createClass({
         chart: {
           type: 'pie',
           backgroundColor: 'transparent',
-          renderTo: 'donut-chart',
+          renderTo: 'donut-chart'
         },
         credits: false,
         title: {
@@ -85,7 +85,6 @@ var DonutChart = React.createClass({
       }
     );
     //http://stackoverflow.com/questions/9732205/place-text-in-center-of-pie-chart-highcharts
-
 
   },
   render: function () {

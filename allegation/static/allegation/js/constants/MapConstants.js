@@ -22,4 +22,6 @@ module.exports = keyMirror({
   SET_ACTIVE_COMPLAINT_LIST_FILTER: null,
   INIT: null,
   SAVE_SESSION:'SAVE_SESSION',
+  ENTER_EMBED_MODE: null,
+  LEAVE_EMBED_MODE: null
 });

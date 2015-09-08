@@ -3,16 +3,16 @@
 <html>
 <head>
     <title>{% block title %} {{ session.query.title | default_site_title }} {% endblock %}</title>
+  {% block meta %}
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta http-equiv="cache-control" content="public" />
     <meta name="robots" content="follow, all" />
     <meta name="language" content="{{ LANGUAGE_CODE }}" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description"
           content="{% block meta-description %}CPDB{% endblock %}" />
     <meta name="keywords" content="{% block meta-keywords %}{% endblock %}" />
     <meta name="author" content="Antipro.VN" />
-    {% block meta %}{% endblock %}
+  {% endblock %}
     <link rel="pingback" href="/xmlrpc/" />
     <link rel="shortcut icon" type='image/png' href="{% static 'img/logox2.png' %}" />
     <link rel="home" href="/" />
@@ -34,8 +34,8 @@
     <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
 </head>
 <body id="{% block page_id %}body{% endblock %}">
-{% include '_top_nav.html' %}
 {% block body %}
+{% include '_top_nav.html' %}
 <div class="container">
     {% include '_top_banner.html' %}
     {% block slider %}{% endblock %}
@@ -47,49 +47,52 @@
 
     {% endblock %}
 </div>
-<div class="container">
+<div class="container-fluid">
     <footer>
         <div class="row">
             <div class="col-lg-12">
+              <div class="container">
                 {% include '_footer_nav.html' %}
-		<div id='powered-by'>
-		  <a href='/'>
-		    <img class='rackspace-logo' src='{% static 'img/rackspace.svg' %}'/>
-		  </a>
-		</div>
+                <div id='powered-by'>
+                  <a href='/'>
+                    <img class='rackspace-logo' src='{% static 'img/rackspace.svg' %}'/>
+                  </a>
+                </div>
+              </div>
             </div>
         </div>
     </footer>
 </div>
 {% endblock %}
 {% block footerjs-external %}
-    <script src="//cdnjs.cloudflare.com/ajax/libs/vis/4.2.0/vis.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/vis/4.2.0/vis.min.js"></script>
+  <script src='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.js'></script>
+  <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-heat/v0.1.3/leaflet-heat.js'></script>
 {% endblock %}
 {% block footerjs %}
-    {% compress js %}
+  {% compress js %}
 
-        <script src="{% static 'js/jquery.mobile.custom.min.js' %}"></script>
-        <script src="{% static 'jquery.cookie/jquery.cookie.js' %}"></script>
-        <script src="{% static 'js/head_define.js' %}"></script>
+    <script src="{% static 'js/jquery.mobile.custom.min.js' %}"></script>
+    <script src="{% static 'js/jquery-ui.custom.min.js' %}"></script>
+    <script src="{% static 'jquery.cookie/jquery.cookie.js' %}"></script>
+    <script src="{% static 'js/head_define.js' %}"></script>
 
-        <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
-        <script src="{% static 'bootstrap-material-design/dist/js/material.min.js' %}"></script>
-        <script src="{% static 'toastr/toastr.min.js' %}"></script>
-        <script src="{% static 'moment/min/moment.min.js' %}"></script>
-        <script src="{% static 'underscore/underscore-min.js' %}"></script>
-        <script src="{% static 'js/foot_define.js' %}"></script>
-        <script>
-            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-             })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'bootstrap-material-design/dist/js/material.min.js' %}"></script>
+    <script src="{% static 'toastr/toastr.min.js' %}"></script>
+    <script src="{% static 'moment/min/moment.min.js' %}"></script>
+    <script src="{% static 'underscore/underscore-min.js' %}"></script>
+    <script src="{% static 'js/foot_define.js' %}"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+       })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-            ga('create', 'UA-63671047-1', 'auto');
-            ga('send', 'pageview');
-
-
-        </script>
-     {% endcompress %}
+      ga('create', 'UA-63671047-1', 'auto');
+      ga('send', 'pageview');
+    </script>
+  {% endcompress %}
 {% endblock %}
 
 </body>
