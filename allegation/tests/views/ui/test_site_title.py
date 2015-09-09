@@ -15,6 +15,6 @@ class SiteTitleTestCase(BaseLiveTestCase):
         self.browser.current_url.should.contain(slugify_url)
 
         # Revisit current url should not change the title
-        self.browser.get(self.browser.current_url)
+        self.browser.refresh()
         self.browser.title.should.equal(title)
         self.find('.site-title-input').get_attribute('value').should.equal(title)

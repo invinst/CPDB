@@ -9,6 +9,7 @@
 
 var React = require('react');
 var CPDBApp = require('./components/CPDBApp.react');
+var Embed = require('./components/Embed.react');
 var OfficerPage = require('./components/OfficerPage.react');
 var SiteTitle = require('./components/SiteTitle.react');
 
@@ -37,3 +38,10 @@ if (siteTitle) {
     );
 }
 
+var embed = document.getElementById('embed');
+if (embed) {
+    React.render(
+      <Embed page={PAGE} pk={PK} query={QUERY} state={STATE} />,
+      embed
+    );
+}

@@ -1,7 +1,5 @@
-import os
-
 from django.core.management.base import BaseCommand
-from common.models import ComplainingWitness, PoliceWitness, Allegation
+from common.models import ComplainingWitness, PoliceWitness
 
 
 import csv

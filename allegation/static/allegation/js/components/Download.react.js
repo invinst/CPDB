@@ -2,15 +2,18 @@
  * Created by eastagile on 8/6/15.
  */
 var React = require('react');
+var OfficerStore = require('../stores/OfficerStore');
 
 
 var Download = React.createClass({
   getInitialState: function () {
     return {
       processing: false,
-      href: false
+      href: false,
+      query: null
     };
   },
+
   onClick: function (e) {
     e.preventDefault();
 
@@ -29,7 +32,7 @@ var Download = React.createClass({
 
     var that = this;
 
-    $.post('/allegations/download/?' + this.props.query, function (data) {
+    $.post('/allegations/download/?' + this.state.query, function (data) {
       var listener = null;
       listener = setInterval(function () {
         $.getJSON('/allegations/download/', {id: data.download.id}, function (result) {
@@ -46,8 +49,22 @@ var Download = React.createClass({
       }, 1000);
     });
   },
+
+  componentDidMount: function () {
+    OfficerStore.addChangeListener(this.onChange);
+  },
+
+  onChange: function () {
+    this.setState({
+      query: OfficerStore.getQueryString()
+    });
+  },
+
   render: function () {
     var content = '';
+    if (!this.state.query) {
+      return <div className="hidden"></div>
+    }
     if (this.state.processing) {
       content = (
         <div className="progress progress-striped active">
@@ -56,7 +73,9 @@ var Download = React.createClass({
       );
     } else {
       content = (
-        <a onClick={this.onClick} href={this.state.href} className='btn btn-black btn-download'>Download Table</a>
+        <a onClick={this.onClick} href={this.state.href}>
+          <i className="fa fa-download"></i> Download Table
+        </a>
       )
     }
     return (

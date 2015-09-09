@@ -39,12 +39,12 @@ function create(id, complaint) {
 
 
 var SummaryStore = assign({}, EventEmitter.prototype, {
-  update: function () {
-    var query_string = FilterStore.getQueryString();
+  update: function (query) {
+    var queryString = query || FilterStore.getQueryString();
     if (ajax) {
       ajax.abort();
     }
-    ajax = $.getJSON('/api/allegations/summary/?' + query_string, function (data) {
+    ajax = $.getJSON('/api/allegations/summary/?' + queryString, function (data) {
       _state['rows'] = data.summary;
       SummaryStore.emitChange();
     })
@@ -59,12 +59,12 @@ var SummaryStore = assign({}, EventEmitter.prototype, {
   getCurrentActive: function(){
     return _currentActive;
   },
-  init: function () {
+  init: function (query) {
     _state = {
       'rows': [],
       'current': false
     };
-    this.update();
+    this.update(query);
     return _state;
   },
   getAll: function (type) {

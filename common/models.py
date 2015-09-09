@@ -25,6 +25,7 @@ RANKS = [
     ['Chief', 'Chief']
 ]
 
+
 class Officer(models.Model):
     officer_first = models.CharField(max_length=255, null=True, db_index=True)
     officer_last = models.CharField(max_length=255, null=True, db_index=True)
@@ -37,12 +38,15 @@ class Officer(models.Model):
     allegations_count = models.IntegerField(default=0)
     discipline_count = models.IntegerField(default=0)
 
+    @property
+    def absolute_url(self):
+        return self.get_absolute_url()
+
     def get_absolute_url(self):
         return reverse("officer:detail",
                        kwargs={
                            'first_name': slugify(self.officer_first),
                            'last_name': slugify(self.officer_last),
-                           'badge': slugify(self.star),
                            'pk': self.pk
                        })
 

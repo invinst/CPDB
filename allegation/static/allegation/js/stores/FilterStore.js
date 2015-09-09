@@ -15,6 +15,8 @@ var MapConstants = require('../constants/MapConstants');
 var assign = require('object-assign');
 var CHANGE_EVENT = 'change';
 var CREATE_EVENT = 'change';
+var ENABLE_EVENT = 'enable';
+var DISABLE_EVENT = 'disable';
 var _filters = {};
 
 
@@ -49,12 +51,10 @@ var FilterStore = assign({}, EventEmitter.prototype, {
     return _filters;
   },
   getAll: function (type) {
-    if (type in _filters) {
+    if (type) {
       return _filters[type];
     }
-    else {
-      return _filters;
-    }
+    return _filters;
   },
 
   getFilters: function() {
@@ -65,8 +65,17 @@ var FilterStore = assign({}, EventEmitter.prototype, {
     update(id, updates);
     this.emit(CHANGE_EVENT);
   },
+
   emitChange: function () {
     this.emit(CHANGE_EVENT);
+  },
+
+  emitEnable: function () {
+    this.emit(ENABLE_EVENT);
+  },
+
+  emitDisable: function () {
+    this.emit(DISABLE_EVENT);
   },
 
   emitCreate: function () {
@@ -74,11 +83,15 @@ var FilterStore = assign({}, EventEmitter.prototype, {
 
   },
   tagsInputRemoveItemObject: function (tagValue) {
-    var items = $('#cpdb-search').tagsinput("items");
+    var search = $('#cpdb-search');
+    var items = search.tagsinput("items");
+    if (!items) {
+      return;
+    }
     for (var i = 0; i < items.length; i++) {
       var item = items[i];
       if (item.value[0] == tagValue.value[0] && item.value[1] == tagValue.value[1]) {
-        $('#cpdb-search').tagsinput("remove", item);
+        search.tagsinput("remove", item);
         break;
       }
     }
@@ -89,8 +102,6 @@ var FilterStore = assign({}, EventEmitter.prototype, {
         var index = _filters[filterName].value.indexOf(filterValue);
         if (index > -1) {
           _filters[filterName].value.splice(index, 1);
-
-          return;
         }
       }
 
@@ -115,9 +126,19 @@ var FilterStore = assign({}, EventEmitter.prototype, {
   addChangeListener: function (callback) {
     this.on(CHANGE_EVENT, callback);
   },
+
+  addEnableListener: function (callback) {
+    this.on(ENABLE_EVENT, callback);
+  },
+
+  addDisableListener: function (callback) {
+    this.on(DISABLE_EVENT, callback);
+  },
+
   addCreateListener: function (callback) {
     this.on(CREATE_EVENT, callback);
   },
+
   getQueryString: function (ignoreFilters) {
     var query = "";
     for (var filterName in _filters) {
@@ -155,6 +176,14 @@ AppDispatcher.register(function (action) {
     case MapConstants.MAP_ADD_FILTER:
       create(action.key, action.value);
       FilterStore.emitCreate();
+      break;
+
+    case MapConstants.ENTER_EMBED_MODE:
+      FilterStore.emitDisable();
+      break;
+
+    case MapConstants.LEAVE_EMBED_MODE:
+      FilterStore.emitEnable();
       break;
 
     default:

@@ -4,6 +4,9 @@ var Filters = require('./Filters.react');
 var OfficerActions = require('../actions/OfficerActions');
 var Officer = require("./Officer.react");
 var OfficerStore = require("../stores/OfficerStore");
+var FilterStore = require("../stores/FilterStore");
+
+var EmbedMixin = require('./Embed/Mixin.react');
 
 
 var VIEW_PORT_COUNT = 6;
@@ -16,6 +19,8 @@ var windowWidth = $(window).width();
 
 if (windowWidth <= 320) {
   VIEW_PORT_COUNT = 2;
+} else {
+  VIEW_PORT_COUNT = parseInt(windowWidth / 200);
 }
 
 var OFFICER_PER_PAGE = VIEW_PORT_COUNT * OFFICER_PER_COL;
@@ -23,14 +28,60 @@ var OFFICER_PER_DISPLAY = OFFICER_PER_PAGE * 3;
 
 
 var OfficerList = React.createClass({
+  mixins: [EmbedMixin],
   getInitialState: function () {
     return {
       officers: [],
       active_officers: [],
       overview: [],
-      current_view: 0
+      current_view: 0,
+      embedding: false
     };
   },
+
+  // embedding
+  getEmbedCode: function () {
+    var node = this.getDOMNode();
+    var width = $(node).width();
+    var height = $(node).height();
+    var src = "/embed/?page=officers&query=" + encodeURIComponent(FilterStore.getQueryString());
+    return '<iframe width="' + width + 'px" height="' + height + 'px" frameborder="0" src="' + this.absoluteUri(src)
+       + '"></iframe>';
+  },
+  getEmbedNode: function () {
+    this.embedNode = this.embedNode || $('<div class="embed-code"></div>');
+    this.embedNode.append('<i class="fa fa-code"></i>');
+    this.embedNode.append('<input type="text" value="" readonly="readonly" />');
+
+    this.embedNode.find("input").on("click", function (e) {
+      e.preventDefault();
+      $(this).select();
+    }).val(this.getEmbedCode());
+    return this.embedNode;
+  },
+
+  removeEmbedNode: function () {
+    this.getEmbedNode().remove();
+    this.embedNode = null;
+  },
+
+  enterEmbedMode: function () {
+    var node = this.getDOMNode();
+    var parent = $(node).parent();
+    $(parent).prepend(this.getEmbedNode());
+    this.setState({
+      embedding: true
+    });
+  },
+
+  leaveEmbedMode: function () {
+    this.removeEmbedNode();
+    this.setState({
+      embedding: false
+    });
+  },
+  // end embedding
+
   slideToLeft: function (e) {
     if (e) {
       e.preventDefault();
@@ -44,29 +95,40 @@ var OfficerList = React.createClass({
     slider.slider("value", value);
     this.display(value);
   },
+
   slideToRight: function (e) {
     if (e) {
       e.preventDefault();
     }
+
     var slider = $("#overview-slider");
     var value = slider.slider("value");
     value = value - 1;
+
     if (value < 0) {
       return;
     }
+
     slider.slider("value", value);
     this.display(value);
   },
+
   prevent: function (e) {
     e.preventDefault();
   },
+
   componentDidMount: function () {
     OfficerStore.addChangeListener(this._onChange);
+    this.embedListener();
 
     $(".officer-vertical-scroll").swipeleft(this.slideToLeft);
     $(".officer-vertical-scroll").swiperight(this.slideToRight);
 
     $(".officer-control").disableSelection();
+
+    if (this.props.query != undefined) {
+      OfficerStore.update(this.props.query);
+    }
   },
 
   getDisplaying: function () {
@@ -102,10 +164,10 @@ var OfficerList = React.createClass({
   },
 
   renderNewDisplay: function (value) {
-      $(".officers-container").addClass("off");
-      this.setState({
-          current_view: value * OFFICER_PER_COL
-      });
+    $(".officers-container").addClass("off");
+    this.setState({
+      current_view: value * OFFICER_PER_COL
+    });
   },
 
   slideToDisplay: function (value) {
@@ -121,6 +183,7 @@ var OfficerList = React.createClass({
     var display = this.getDisplaying();
     var start = display[0];
     var end = display[1];
+    var noClick = this.props.noClick || this.state.embedding;
 
     for (i = start; i < end; i++) {
       var officer = this.state.officers[i];
@@ -128,7 +191,8 @@ var OfficerList = React.createClass({
       count += 1;
 
       officers.push(
-        <Officer officer={officer} key={i} index={count} active={active} selected={selected} />
+        <Officer officer={officer} key={i} index={count} active={active} selected={selected}
+                 noClick={noClick} embed={this.state.embedding}/>
       );
 
       if (count >= displayCount - 1) {
@@ -181,7 +245,6 @@ var OfficerList = React.createClass({
       );
     }
 
-
     return (
       <div id="officer_list">
         <div className='row'>
@@ -216,8 +279,8 @@ var OfficerList = React.createClass({
         </div>
       </div>
     );
-
   },
+
   componentDidUpdate: function(){
     var container = $(".officers-container");
 
@@ -244,6 +307,7 @@ var OfficerList = React.createClass({
         .css('left', left + 'px');
     }, 10);
   },
+
   display: function(value) {
     if (this.isDisplaying(value)) {
       this.slideToDisplay(value)
@@ -251,10 +315,39 @@ var OfficerList = React.createClass({
       this.renderNewDisplay(value);
     }
   },
+
   slideHandle: function(e, ui){
     var value = ui.value;
     this.display(value);
   },
+
+  initSlider: function () {
+    var container = $(".officers-container");
+    var max = this.state.officers.length - OFFICER_PER_PAGE;
+    if (max % OFFICER_PER_COL){
+      max = parseInt(max / OFFICER_PER_COL) + 1;
+    } else {
+      max = max / OFFICER_PER_COL;
+    }
+
+    var overview = $(".overview-container");
+    var controller = $(".officer-control");
+    if (max <= 1) {
+      overview.hide();
+      controller.addClass('off');
+    } else {
+      controller.removeClass('off');
+      overview.show();
+      $("#overview-slider").slider({
+        min: 0,
+        max: max,
+        value: 0,
+        slide: this.slideHandle,
+        start: this.slideHandle
+      });
+    }
+  },
+
   _onChange: function () {
     var newState = OfficerStore.getAll();
     if (newState.officers == this.state.officers) {
@@ -262,32 +355,10 @@ var OfficerList = React.createClass({
     } else {
       newState.current_view = 0;
       this.setState(newState);
-      var container = $(".officers-container");
-      var max = this.state.officers.length - OFFICER_PER_PAGE;
-      if (max % OFFICER_PER_COL){
-        max = parseInt(max / OFFICER_PER_COL) + 1;
-      } else {
-        max = max / OFFICER_PER_COL;
-      }
-
-      var overview = $(".overview-container");
-      var controller = $(".officer-control");
-      if (max <= 1) {
-        overview.hide();
-        controller.addClass('off');
-      } else {
-        controller.removeClass('off');
-        overview.show();
-        $("#overview-slider").slider({
-          min: 0,
-          max: max,
-          value: 0,
-          slide: this.slideHandle,
-          start: this.slideHandle
-        });
-      }
+      this.initSlider();
     }
   },
+
   showMore: function (e) {
     e.preventDefault();
     OfficerActions.setViewMore();

@@ -54,8 +54,6 @@ var ComplaintList = React.createClass({
       rows.push(<ComplaintListRow key={i} complaint={complaint} officer={officer} finding={allegation.final_finding}/>)
     }
 
-    var query = OfficerStore.getQueryString();
-
     return (
       <div className="complaint_list" onScroll={this.onScroll}>
         <div className='row'>
@@ -67,11 +65,6 @@ var ComplaintList = React.createClass({
           </div>
         </div>
         {rows}
-        <div className="row">
-          <div className="col-md-2 col-md-offset-10">
-            <Download query={query}/>
-          </div>
-        </div>
         <RequestModal />
       </div>
     )

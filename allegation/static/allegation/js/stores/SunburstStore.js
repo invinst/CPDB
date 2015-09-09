@@ -6,19 +6,12 @@ var FilterStore = require('./FilterStore');
 var CHANGE_EVENT = 'change';
 var ajax = null;
 
-var _state = {
-  'rows': [],
-  'current': false,
-  selected: false
-};
-var _complaints = {};
-var _currentActive = false;
-
+var root = null;
 var _queryString = null;
 
 var SunburstStore = assign({}, EventEmitter.prototype, {
-  update: function () {
-    var queryString = FilterStore.getQueryString(['final_outcome', 'final_finding', 'outcome_text']);
+  update: function (query) {
+    var queryString = query || FilterStore.getQueryString(['final_outcome', 'final_finding', 'outcome_text']);
     if (queryString == _queryString) {
       return;
     }
@@ -28,32 +21,23 @@ var SunburstStore = assign({}, EventEmitter.prototype, {
     }
     ajax = d3.json("/api/allegations/sunburst/?" + queryString, function (error, data) {
       if (error) throw error;
-      var root = data.sunburst;
-      _state = {
-        data: root,
-        selected: root,
-        drew: false
-      };
-      SunburstStore.emitChange();
+      SunburstStore.setData(data);
     });
   },
-  set: function (key, value) {
-    _state[key] = value;
-  },
-  setCurrentActive: function(val){
-    _currentActive = val;
+
+  setData: function (data) {
+    root = data.sunburst;
     SunburstStore.emitChange();
   },
-  getCurrentActive: function(){
-    return _currentActive;
+
+  init: function (query) {
+    this.update(query);
   },
-  init: function () {
-    this.update();
-    return _state;
+
+  getRoot: function () {
+    return root;
   },
-  getAll: function (type) {
-    return _state;
-  },
+
   emitChange: function () {
     this.emit(CHANGE_EVENT);
   },

@@ -48,6 +48,7 @@ var AutoComplete = React.createClass({
     }
     FilterActions.replaceFilters(tags);
   },
+
   componentDidMount: function () {
     var element = this.getDOMNode();
     $(element).tagsinput({
@@ -73,11 +74,7 @@ var AutoComplete = React.createClass({
       }
     }
 
-    $(element).on('beforeItemAdd', function (event) {
-      var tags = $(this).tagsinput('items');
-      var tag = event.item;
-      event.cancel = isDuplicatedTag(tags, tag)
-    });
+    $(element).on('beforeItemAdd', this.beforeItemAdd);
 
     $(element).tagsinput("input").hide();
 
@@ -88,8 +85,37 @@ var AutoComplete = React.createClass({
       $(element).trigger("itemAdded");
     }
     FilterStore.addChangeListener(this._onChange);
+    FilterStore.addDisableListener(this._onDisable);
+    FilterStore.addEnableListener(this._onEnable);
     OfficerStore.addChangeListener(this._onChange);
   },
+
+  beforeItemAdd: function (event) {
+    var tags = $(this.getDOMNode()).tagsinput('items');
+    var tag = event.item;
+    event.cancel = isDuplicatedTag(tags, tag)
+  },
+
+  _onDisable: function () {
+    $("#search-wrapper").hide();
+    var element = this.getDOMNode();
+    $(element).off("beforeItemAdd", this.beforeItemAdd)
+      .on("beforeItemAdd", this.cancelItemChange)
+      .on("beforeItemRemove", this.cancelItemChange);
+  },
+
+  _onEnable: function () {
+    $("#search-wrapper").show();
+    var element = this.getDOMNode();
+    $(element).on("beforeItemAdd", this.beforeItemAdd)
+      .off("beforeItemAdd", this.cancelItemChange)
+      .off("beforeItemRemove", this.cancelItemChange);
+  },
+
+  cancelItemChange: function (event) {
+    event.cancel = true;
+  },
+
   getInitialState: function () {
     var filters = {};
 
