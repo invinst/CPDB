@@ -9,7 +9,7 @@ var OutcomeFilter = require('./ComplaintList/OutcomeFilter.react');
 var RequestModal = require('./Complaint/RequestModal.react');
 var LoadingComplaintList = require('./ComplaintList/LoadingComplaintList.react');
 var ComplaintListStore = require('../stores/ComplaintListStore');
-var OfficerStore = require('../stores/OfficerStore');
+var OfficerListStore = require('../stores/OfficerListStore');
 
 var ComplaintListActions = require('../actions/ComplaintList/ComplaintListActions');
 
@@ -40,7 +40,7 @@ var ComplaintSection = React.createClass({
       return <div></div>;
     }
 
-    var query = OfficerStore.getQueryString();
+    var query = OfficerListStore.getQueryString();
 
     return (
       <div className="complaint_list" onScroll={this.onScroll}>

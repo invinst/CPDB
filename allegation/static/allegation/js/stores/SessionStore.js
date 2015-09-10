@@ -14,7 +14,7 @@ var EventEmitter = require('events').EventEmitter;
 var MapConstants = require('../constants/MapConstants');
 var assign = require('object-assign');
 var MapStore = require('../stores/MapStore');
-var OfficerStore = require('../stores/OfficerStore');
+var OfficerListStore = require('../stores/OfficerListStore');
 var FilterStore = require('../stores/FilterStore')
 
 var _sessionData = {};
@@ -28,7 +28,7 @@ var SessionStore = assign({}, EventEmitter.prototype, {
     var tempSessionData = sessionData || {};
     $.extend(tempSessionData, FilterStore.getSession());
     $.extend(tempSessionData, MapStore.getSession());
-    $.extend(tempSessionData, OfficerStore.getSession());
+    $.extend(tempSessionData, OfficerListStore.getSession());
 
     if (! _.isEqual(tempSessionData, _sessionData)) {
       _sessionData = _.clone(tempSessionData);

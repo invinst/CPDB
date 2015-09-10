@@ -3,10 +3,10 @@ var React = require('react');
 var Filters = require('./Filters.react');
 var OfficerActions = require('../actions/OfficerActions');
 var Officer = require("./Officer.react");
-var OfficerStore = require("../stores/OfficerStore");
 var FilterStore = require("../stores/FilterStore");
 var EmbedMixin = require('./Embed/Mixin.react');
-var pluralize = require('pluralize')
+var pluralize = require('pluralize');
+var OfficerListStore = require("../stores/OfficerListStore");
 
 var VIEW_PORT_COUNT = 6;
 var OFFICER_PER_COL = 2;
@@ -117,8 +117,8 @@ var OfficerList = React.createClass({
   },
 
   componentDidMount: function () {
-    OfficerStore.addChangeListener(this._onChange);
     this.embedListener();
+    OfficerListStore.addChangeListener(this._onChange);
 
     $(".officer-vertical-scroll").swipeleft(this.slideToLeft);
     $(".officer-vertical-scroll").swiperight(this.slideToRight);
@@ -126,7 +126,7 @@ var OfficerList = React.createClass({
     $(".officer-control").disableSelection();
 
     if (this.props.query != undefined) {
-      OfficerStore.update(this.props.query);
+      OfficerListStore.update(this.props.query);
     }
   },
 
@@ -348,7 +348,7 @@ var OfficerList = React.createClass({
   },
 
   _onChange: function () {
-    var newState = OfficerStore.getAll();
+    var newState = OfficerListStore.getAll();
     if (newState.officers == this.state.officers) {
       this.setState(newState);
     } else {

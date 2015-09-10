@@ -24,7 +24,7 @@ var _state = {
 };
 
 
-var OfficerStore = assign({}, EventEmitter.prototype, {
+var OfficerListStore = assign({}, EventEmitter.prototype, {
   getSession: function () {
     return {'active_officers': _.clone(_state['active_officers'])};
   },
@@ -49,7 +49,7 @@ var OfficerStore = assign({}, EventEmitter.prototype, {
     ajax = $.getJSON('/api/allegations/officers/?' + queryString, function (data) {
       _state.officers = data.officers;
       _state.overview = data.overview || [];
-      OfficerStore.emitChange();
+      OfficerListStore.emitChange();
     });
   },
   set: function (key, value) {
@@ -80,26 +80,26 @@ var OfficerStore = assign({}, EventEmitter.prototype, {
 
 
 // Register callback to handle all updates
-OfficerStore.dispatchEvent = AppDispatcher.register(function (action) {
+OfficerListStore.dispatchEvent = AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case MapConstants.MAP_REPLACE_FILTERS:
     case MapConstants.MAP_CHANGE_FILTER:
     case MapConstants.MAP_ADD_FILTER:
       if (!firstCall) {
-        OfficerStore.set('active_officers', []);
+        OfficerListStore.set('active_officers', []);
       }
       firstCall = false;
-      OfficerStore.update();
+      OfficerListStore.update();
       break;
 
     case MapConstants.OFFICER_VIEW_MORE:
-      OfficerStore.set('show_more', !_state['show_more']);
+      OfficerListStore.set('show_more', !_state['show_more']);
       break;
 
     case MapConstants.SET_OFFICER_LIST_FILTER:
       _state.complaints_count_start = action.start;
       _state.complaints_count_end = action.end;
-      OfficerStore.update();
+      OfficerListStore.update();
       break;
 
     case MapConstants.SET_ACTIVE_OFFICER:
@@ -111,7 +111,7 @@ OfficerStore.dispatchEvent = AppDispatcher.register(function (action) {
       else {
         _state.active_officers.splice(index, 1);
       }
-      OfficerStore.emitChange();
+      OfficerListStore.emitChange();
       break;
 
     default:
@@ -119,4 +119,4 @@ OfficerStore.dispatchEvent = AppDispatcher.register(function (action) {
   }
 });
 
-module.exports = OfficerStore;
+module.exports = OfficerListStore;

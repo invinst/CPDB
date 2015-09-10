@@ -11,7 +11,7 @@ var React = require('react');
 var SessionStore = require('../stores/SessionStore');
 var FilterStore = require('../stores/FilterStore');
 var MapStore = require('../stores/MapStore');
-var OfficerStore = require('../stores/OfficerStore');
+var OfficerListStore = require('../stores/OfficerListStore');
 var FilterActions = require('../actions/FilterActions');
 var cx = require('react/lib/cx');
 var _sessionData = {};
@@ -87,7 +87,7 @@ var AutoComplete = React.createClass({
     FilterStore.addChangeListener(this._onChange);
     FilterStore.addDisableListener(this._onDisable);
     FilterStore.addEnableListener(this._onEnable);
-    OfficerStore.addChangeListener(this._onChange);
+    OfficerListStore.addChangeListener(this._onChange);
   },
 
   beforeItemAdd: function (event) {
@@ -122,7 +122,7 @@ var AutoComplete = React.createClass({
     if (init_data){
       filters = FilterStore.setSession(init_filters);
       MapStore.setSession(init_data);
-      OfficerStore.setSession(init_data);
+      OfficerListStore.setSession(init_data);
     } else {
       filters = FilterStore.getAll(this.props.filterkey);
     }

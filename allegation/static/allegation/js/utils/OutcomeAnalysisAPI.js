@@ -1,4 +1,4 @@
-var OfficerStore = require('../stores/OfficerStore');
+var OfficerListStore = require('../stores/OfficerListStore');
 var OutcomeAnalysisServerActionCreator = require('../actions/ComplaintList/OutcomeAnalysisServerActionCreator');
 var AllegationFetcherQueryBuilder = require('./AllegationFetcherQueryBuilder');
 var ajax = null;
@@ -12,7 +12,7 @@ var OutcomeAnalysisAPI = {
         ajax.abort();
       }
 
-      ajax = $.getJSON('/api/allegations/analysis?' + OfficerStore.getQueryString(), function (data) {
+      ajax = $.getJSON('/api/allegations/analysis?' + OfficerListStore.getQueryString(), function (data) {
         OutcomeAnalysisServerActionCreator.receivedAnalysisInformation(data);
       });
     }
