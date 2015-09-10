@@ -7,6 +7,7 @@ var OfficerStore = require("../stores/OfficerStore");
 var FilterStore = require("../stores/FilterStore");
 
 var EmbedMixin = require('./Embed/Mixin.react');
+var OfficerMixin = require('./Officer/OfficerMixin.react');
 
 
 var VIEW_PORT_COUNT = 6;
@@ -26,9 +27,11 @@ if (windowWidth <= 320) {
 var OFFICER_PER_PAGE = VIEW_PORT_COUNT * OFFICER_PER_COL;
 var OFFICER_PER_DISPLAY = OFFICER_PER_PAGE * 3;
 
+var DISPLAYING_COUNT = 12;
 
 var OfficerList = React.createClass({
-  mixins: [EmbedMixin],
+  mixins: [EmbedMixin, OfficerMixin],
+
   getInitialState: function () {
     return {
       officers: [],
@@ -168,11 +171,35 @@ var OfficerList = React.createClass({
     this.setState({
       current_view: value * OFFICER_PER_COL
     });
+    this.slideToDisplay(value)
+  },
+
+  pecent: function (a, b) {
+    return (a / b) * 100;
+  },
+
+  updateQuickView: function (start) {
+    var overview = [0, 0, 0, 0, 0];
+    var i;
+    for (i = start; i < start + DISPLAYING_COUNT; i++) {
+      overview[this.getAvgLevel(this.state.officers[i])]++;
+    }
+    var total = overview.reduce(function (a, b) {
+      return a + b
+    });
+    var summary = "";
+    for (i = 0; i < overview.length; i++) {
+      summary += "<div class=\"overview overview-" + i + "\" style=\"width: " + this.pecent(overview[i], total) +
+        "%\"></div>";
+    }
+    $("#overview-slider .ui-slider-handle").html(summary);
   },
 
   slideToDisplay: function (value) {
-    var left = this.getInitDisplay(value * OFFICER_PER_COL);
+    var start = value * OFFICER_PER_COL;
+    var left = this.getInitDisplay(start);
     $(".officers-container").css('left', left + 'px');
+    this.updateQuickView(start);
   },
 
   render: function () {
@@ -287,6 +314,7 @@ var OfficerList = React.createClass({
     var officerBlock = $(".officer-block").slice(1, 2);
     OFFICER_WIDTH = officerBlock.width() + parseFloat(officerBlock.css('margin-left')) +
                     parseFloat(officerBlock.css('padding-left')) + parseFloat(officerBlock.css('padding-right'));
+    DISPLAYING_COUNT = container.parent().width() / OFFICER_WIDTH * OFFICER_PER_COL;
 
     if (OLD_DISPLAY == this.state.current_view) {
       return;

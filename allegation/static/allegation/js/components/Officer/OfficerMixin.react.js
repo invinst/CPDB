@@ -10,9 +10,13 @@ var OFFICER_COMPLAINT_COUNT_RANGE = [
 
 var OfficerMixin = {
   getAvgClass: function() {
+    return 'avg-' + this.getAvgLevel(this.props.officer);
+  },
+
+  getAvgLevel: function (officer) {
     for (var i = 0; i < OFFICER_COMPLAINT_COUNT_RANGE.length; i++) {
-      if (this.props.officer.allegations_count >= OFFICER_COMPLAINT_COUNT_RANGE[i][0]) {
-        return 'avg-' + i;
+      if (officer.allegations_count >= OFFICER_COMPLAINT_COUNT_RANGE[i][0]) {
+        return i;
       }
     }
   }
