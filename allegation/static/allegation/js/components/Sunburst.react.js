@@ -5,8 +5,8 @@ var SunburstStore = require("../stores/SunburstStore");
 var FilterStore = require("../stores/FilterStore");
 
 
-var width = 430,
-  height = 430,
+var width = 390,
+  height = 390,
   radius,
   svg,
   path,
