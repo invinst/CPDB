@@ -10,24 +10,20 @@ var EmbedMixin = require('./Embed/Mixin.react');
 var OfficerMixin = require('./Officer/OfficerMixin.react');
 
 
-var VIEW_PORT_COUNT = 6;
-var OFFICER_PER_COL = 2;
+var VIEW_PORT_COUNT,
+  OFFICER_PER_COL,
+  OLD_DISPLAY,
+  OFFICER_WIDTH,
+  VIEW_PORT_COUNT,
+  OFFICER_PER_PAGE,
+  OFFICER_PER_DISPLAY,
+  OFFICER_PER_PAGE;
 
-var OLD_DISPLAY = 0;
-var OFFICER_WIDTH = null;
+VIEW_PORT_COUNT = 6;
+OFFICER_PER_COL = 2;
 
-var windowWidth = $(window).width();
-
-if (windowWidth <= 320) {
-  VIEW_PORT_COUNT = 2;
-} else {
-  VIEW_PORT_COUNT = parseInt(windowWidth / 200);
-}
-
-var OFFICER_PER_PAGE = VIEW_PORT_COUNT * OFFICER_PER_COL;
-var OFFICER_PER_DISPLAY = OFFICER_PER_PAGE * 3;
-
-var DISPLAYING_COUNT = 12;
+OLD_DISPLAY = 0;
+OFFICER_WIDTH = null;
 
 var OfficerList = React.createClass({
   mixins: [EmbedMixin, OfficerMixin],
@@ -181,7 +177,7 @@ var OfficerList = React.createClass({
   updateQuickView: function (start) {
     var overview = [0, 0, 0, 0, 0];
     var i;
-    for (i = start; i < start + DISPLAYING_COUNT; i++) {
+    for (i = start; i < start + OFFICER_PER_PAGE; i++) {
       overview[this.getAvgLevel(this.state.officers[i])]++;
     }
     var total = overview.reduce(function (a, b) {
@@ -314,12 +310,11 @@ var OfficerList = React.createClass({
     var officerBlock = $(".officer-block").slice(1, 2);
     OFFICER_WIDTH = officerBlock.width() + parseFloat(officerBlock.css('margin-left')) +
                     parseFloat(officerBlock.css('padding-left')) + parseFloat(officerBlock.css('padding-right'));
-    DISPLAYING_COUNT = container.parent().width() / OFFICER_WIDTH * OFFICER_PER_COL;
 
     if (OLD_DISPLAY == this.state.current_view) {
       return;
     }
-
+    console.log(this.state.current_view);
     var left = this.getInitDisplay(this.state.current_view);
     if (left) {
       if (OLD_DISPLAY > this.state.current_view) {
@@ -376,7 +371,20 @@ var OfficerList = React.createClass({
     }
   },
 
+  calculateConstants: function () {
+    var width = $("#officer-cards").width();
+    if (width <= 320) {
+      VIEW_PORT_COUNT = 2;
+    } else {
+      VIEW_PORT_COUNT = parseInt(width / 200);
+    }
+
+    OFFICER_PER_PAGE = VIEW_PORT_COUNT * OFFICER_PER_COL;
+    OFFICER_PER_DISPLAY = OFFICER_PER_PAGE * 3;
+  },
+
   _onChange: function () {
+    this.calculateConstants();
     var newState = OfficerStore.getAll();
     if (newState.officers == this.state.officers) {
       this.setState(newState);
@@ -386,6 +394,20 @@ var OfficerList = React.createClass({
       this.initSlider();
     }
     this.updateQuickView(0);
+    this.updateSliderSize();
+  },
+
+  updateSliderSize: function () {
+    var slider = $("#overview-slider");
+    var handler = slider.find(".ui-slider-handle");
+    var fullWidth = slider.parent().width();
+    var handlerWidth = OFFICER_PER_PAGE * fullWidth / this.state.officers.length;
+    console.log(handlerWidth);
+    handler.width(handlerWidth);
+    handlerWidth = handler.width(); // get real width after css
+    console.log(handlerWidth);
+    handler.css('margin-left', -handlerWidth / 2 - 3 + 'px');
+    slider.css('width', 'calc(100% - ' + (handlerWidth + 6) + 'px)');
   },
 
   showMore: function (e) {
