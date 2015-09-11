@@ -177,7 +177,8 @@ var OfficerList = React.createClass({
   updateQuickView: function (start) {
     var overview = [0, 0, 0, 0, 0];
     var i;
-    for (i = start; i < start + OFFICER_PER_PAGE; i++) {
+    var min = Math.min(start + OFFICER_PER_PAGE, this.state.officers.length);
+    for (i = start; i < min; i++) {
       overview[this.getAvgLevel(this.state.officers[i])]++;
     }
     var total = overview.reduce(function (a, b) {
@@ -314,7 +315,6 @@ var OfficerList = React.createClass({
     if (OLD_DISPLAY == this.state.current_view) {
       return;
     }
-    console.log(this.state.current_view);
     var left = this.getInitDisplay(this.state.current_view);
     if (left) {
       if (OLD_DISPLAY > this.state.current_view) {
@@ -402,10 +402,9 @@ var OfficerList = React.createClass({
     var handler = slider.find(".ui-slider-handle");
     var fullWidth = slider.parent().width();
     var handlerWidth = OFFICER_PER_PAGE * fullWidth / this.state.officers.length;
-    console.log(handlerWidth);
+
     handler.width(handlerWidth);
     handlerWidth = handler.width(); // get real width after css
-    console.log(handlerWidth);
     handler.css('margin-left', -handlerWidth / 2 - 3 + 'px');
     slider.css('width', 'calc(100% - ' + (handlerWidth + 6) + 'px)');
   },
