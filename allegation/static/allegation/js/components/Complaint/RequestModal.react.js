@@ -1,5 +1,7 @@
 var React = require('react');
-var $ = require('jquery');
+if (typeof($) == 'undefined'){
+  $ = require('jquery');
+}
 
 var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var RequestDocumentConstants = require('../../constants/RequestDocumentConstants');
