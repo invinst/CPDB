@@ -8,11 +8,24 @@ class HomePageTestCase(BaseLiveTestCase):
         self.allegation_category = AllegationCategoryFactory()
         self.allegation = AllegationFactory(cat=self.allegation_category)
 
+    def test_see_tabs(self):
+        self.visit('/')
+        links = self.find_all('.chart-row .nav a')
+        link_texts = [x.text for x in links]
+        link_texts.should.contain('Outcomes')
+        link_texts.should.contain('Categories')
+        link_texts.should.contain('Race & Gender')
+        link_texts.should.contain('Timeframe')
+
+    def filter_complaint_type(self):
+        self.visit('/')
+        self.link("Categories").click()
+
     def test_click_on_category_only_show_allegation_belong_to_it(self):
         other_category = AllegationCategoryFactory()
         other_allegation = AllegationFactory(cat=other_category)
-        self.visit('/')
-        self.link("Complaint Types").click()
+
+        self.filter_complaint_type()
         self.number_of_officers().should.equal(2)
 
         self.link(self.allegation_category.category).click()
@@ -20,8 +33,7 @@ class HomePageTestCase(BaseLiveTestCase):
         self.number_of_officers().should.equal(1)
 
     def test_click_on_officer_will_show_compliant(self):
-        self.visit('/')
-        self.link("Complaint Types").click()
+        self.filter_complaint_type()
 
         self.number_of_officers().should.equal(1)
 
@@ -37,8 +49,7 @@ class HomePageTestCase(BaseLiveTestCase):
             AllegationCategoryFactory(category=category)
 
         # First, we click a category, we should see the arrow beside the category
-        self.visit('/')
-        self.link("Complaint Types").click()
+        self.filter_complaint_type()
         self.element_exist('.row .arrow-container').should.equal(False)
         self.link(self.allegation_category.category).click()
         # TODO: We should have another test to check which main category this arrow belong to?
@@ -46,9 +57,8 @@ class HomePageTestCase(BaseLiveTestCase):
 
         # And it should have a an arrow on the category
         self.number_of_active_subcategories().should.equal(AllegationCategory.objects.filter(category=category).count())
-
         self.link(self.allegation_category.allegation_name).click()
-        self.number_of_active_subcategories().should.equal(1)
+        self.until(lambda: self.number_of_active_subcategories().should.equal(1))
 
     def number_of_active_subcategories(self):
         active_subcategories = self.find_all('.child-rows .category-name.active')

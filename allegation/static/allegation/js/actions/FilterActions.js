@@ -13,7 +13,6 @@ var FilterActions = {
     // call API here
     if (values.length > 0) {
       var lastFilter = values[values.length - 1];
-      console.log(lastFilter);
       ga('send', 'event', 'filter', lastFilter.value[0], lastFilter.text);
     }
     ComplaintListAPI.getData();

@@ -9,7 +9,6 @@ var ComplaintListAPI = {
     for (filter in AppConstants.FILTERS) {
       var queryString = AllegationFetcherQueryBuilder.buildQuery(filter);
       ajax = $.getJSON('/api/allegations/?' + queryString, function (data) {
-        console.log(data);
       })
     }
   },

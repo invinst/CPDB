@@ -1,11 +1,12 @@
 var React = require('react');
+var EmbedMixin = require('./Embed/Mixin.react');
 var SummaryActions = require('../actions/SummaryActions');
 var SunburstStore = require("../stores/SunburstStore");
 var FilterStore = require("../stores/FilterStore");
 
 
-var width = 760,
-  height = 430,
+var width = 390,
+  height = 390,
   radius,
   svg,
   path,
@@ -37,7 +38,7 @@ var width = 760,
   };
 
 if ($(window).width() <= 1200) {
-    height = 300;
+    height = width = 300;
 }
 radius = Math.min(width, height) / 2.2;
 
@@ -101,16 +102,43 @@ function sum(d){
 }
 
 var Sunburst = React.createClass({
+  mixins: [EmbedMixin],
   getInitialState: function () {
-    return SunburstStore.init();
+    return {
+      data: false,
+      selected: false,
+      hovering: false,
+      drew: false
+    }
   },
+
+  // embedding
+  getEmbedCode: function () {
+    var node = this.getDOMNode();
+    var width = $(node).width();
+    var height = $(node).height();
+    var src = "/embed/?page=sunburst&query=" + encodeURIComponent(FilterStore.getQueryString());
+    src += "&state=" + this.stateToString({name: this.state.selected.name});
+    return '<iframe width="' + width + 'px" height="' + height + 'px" frameborder="0" src="' + this.absoluteUri(src)
+       + '"></iframe>';
+  },
+  // end embedding
+
   makeTag: function (tag) {
     return {
       text: tag.label,
       value: [tag.category, tag.value]
     }
   },
+
+  isEmbedding: function () {
+    return this.props.tabs && this.props.tabs.embedding;
+  },
+
   select: function (d) {
+    if (this.isEmbedding()) {
+      return;
+    }
     if (d == this.state.selected) {
       return;
     }
@@ -148,10 +176,10 @@ var Sunburst = React.createClass({
   mouseleave: function (d) {
     var that = this;
     // Deactivate all segments during transition.
-    d3.selectAll("path").on("mouseover", null);
+    svg.selectAll("path").on("mouseover", null);
 
     // Transition each segment to full opacity and then reactivate it.
-    d3.selectAll("path")
+    svg.selectAll("path")
         .transition()
         .duration(500)
         .style("opacity", 1)
@@ -161,10 +189,14 @@ var Sunburst = React.createClass({
 
     d3.select("#explanation")
         .style("visibility", "hidden");
+
+    this.setState({
+      hovering: false
+    });
   },
 
   mouseover: function (d) {
-    d3.selectAll("path")
+    svg.selectAll("path")
       .style("opacity", 0.3);
 
     var sequenceArray = this.getAncestors(d);
@@ -173,6 +205,9 @@ var Sunburst = React.createClass({
                 return (sequenceArray.indexOf(node) >= 0);
               })
       .style("opacity", 1);
+    this.setState({
+      hovering: d
+    });
   },
 
   drawChart: function () {
@@ -184,6 +219,8 @@ var Sunburst = React.createClass({
       return;
     }
 
+    var that = this;
+
     d3.select("#sunburst-chart svg").remove();
 
     svg = d3.select("#sunburst-chart").append("svg")
@@ -192,8 +229,6 @@ var Sunburst = React.createClass({
       .append("g")
       .attr("id", "container")
       .attr("transform", "translate(" + width / 2 + "," + (height / 2 + 10) + ")");
-
-    d3.select(self.frameElement).style("height", height + "px");
 
     path = svg.selectAll("path")
       .data(partition.nodes(data))
@@ -209,6 +244,15 @@ var Sunburst = React.createClass({
       .on("mouseover", this.mouseover);
 
     d3.select("#container").on("mouseleave", this.mouseleave);
+
+    var selectedName = this.props.selected;
+    if (selectedName) {
+      svg.selectAll("path").each(function (d) {
+        if (d.name == selectedName) {
+          that.select(d);
+        }
+      });
+    }
 
     this.setState({
       drew: true
@@ -226,11 +270,21 @@ var Sunburst = React.createClass({
     }
 
     SunburstStore.addChangeListener(this._onChange);
-    SunburstStore.update();
+
+    if (this.props.tabs) {
+      this.props.tabs.tabs.push(this);
+    }
+
+    SunburstStore.init(this.props.query);
   },
 
   _onChange: function () {
-    this.setState(SunburstStore.getAll())
+    var root = SunburstStore.getRoot();
+    this.setState({
+      data: root,
+      selected: root,
+      drew: false
+    })
   },
 
   makeLegend: function (node) {
@@ -250,25 +304,56 @@ var Sunburst = React.createClass({
     );
   },
 
+  renderBreadcrumb: function (node) {
+    if (!node) {
+      return;
+    }
+    var breadcrumb = [];
+    var current = node;
+    while (current.parent) {
+      breadcrumb.unshift(this.makeBreadcrumb(current.parent));
+      current = current.parent;
+    }
+    breadcrumb.push(this.makeBreadcrumb(node));
+    return (
+      <ol className="sunburst-breadcrumb">{breadcrumb}</ol>
+    );
+  },
+
+  makeBreadcrumb: function (node) {
+    var total = sum(node);
+    var className = "sunburst-legend";
+    if (node == this.state.selected) {
+      className += " active";
+    }
+    return (
+      <li className={className} onClick={this.select.bind(this, node)}>
+        {total} <br />
+        <span className="name">{node.name}</span>
+      </li>
+    )
+  },
+
   render: function () {
+    var that = this;
     var legends = [];
     var selected = this.state.selected;
-    var total = sum(selected);
     var percent = null;
     var theMax = {};
     var percentStatement = '';
+    var hovering = this.state.hovering || selected;
+    var total = sum(hovering);
     if (selected) {
       var max = 0;
       if (selected.parent) {
         legends.push(this.makeLegend(selected.parent));
       }
       legends.push(this.makeLegend(selected));
-      if (selected.children) {
-        var childrenLength = selected.children.length;
 
+      if (hovering.children) {
+        var childrenLength = hovering.children.length;
         for (var i = 0; i < childrenLength; i++) {
-          var child = selected.children[i];
-          legends.push(this.makeLegend(child));
+          var child = hovering.children[i];
           var size = sum(child);
           if (size > max) {
             theMax = child;
@@ -276,22 +361,34 @@ var Sunburst = React.createClass({
           }
         }
       }
+      if (selected.children) {
+        $.each(selected.children, function(i, child) {
+          legends.push(that.makeLegend(child));
+        });
+      }
+
+
       if (max) {
         percent = (max * 100 / total).toFixed(2);
         percentStatement = (
           <div>
-            <strong>{percent}%</strong> of "{selected.name}" complaints were "{theMax.name}"
+            <strong>{percent}%</strong> of "{hovering.name}" complaints were "{theMax.name}"
           </div>
         )
       }
     }
 
+    var breadcrumb = this.renderBreadcrumb(hovering);
+
     return (
       <div className="row">
+        <div className="col-md-12">
+          {breadcrumb}
+        </div>
         <div className="col-md-5">
           <div id="sunburst-legend">
             <div className="root">
-              {total} {selected.name}
+              {total} {hovering.name}
             </div>
             <div className="percent">
               {percentStatement}

@@ -29,13 +29,22 @@ var SummaryChildRow = React.createClass({
 
     this.state.selected = !this.state.selected;
   },
+
+  isActive: function () {
+    var filters = FilterStore.getAll();
+    var catId = this.props.subcategory.cat_id;
+    var selectedCategories = this.props.summary.props.selectedCategories;
+    return (
+      ('cat' in filters && filters['cat'].value.indexOf(catId) > -1)
+      || ('cat__category' in filters && filters['cat__category'].value.indexOf(this.props.category.name) > -1)
+      || (selectedCategories && selectedCategories.indexOf(catId) > -1)
+    );
+  },
+
   render: function () {
     var className = "category-name";
-    var filters = FilterStore.getAll();
-    if ('cat' in filters && filters['cat'].value.indexOf(this.props.subcategory.cat_id) > -1) {
-      className += " active";
-    }
-    if ('cat__category' in filters && filters['cat__category'].value.indexOf(this.props.category.name) > -1) {
+
+    if (this.isActive()) {
       className += " active";
     }
 

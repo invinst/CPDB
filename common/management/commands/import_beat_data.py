@@ -1,9 +1,9 @@
-import os
 import csv
 from django.contrib.gis.utils.layermapping import LayerMapping
 
 from django.core.management.base import BaseCommand
 from common.models import Area, Allegation
+
 
 class Command(BaseCommand):
     help = 'Import csv data'

@@ -12,8 +12,12 @@ var RelatedOfficers = React.createClass({
   renderRelatedOfficerList: function() {
     return _.map(this.props.relatedOfficers, function(officer) {
       return (
-        <div className='col-md-2' key={officer.id}>
-          <Officer officer={officer} noClick={true} active={true}/>
+        <div className='col-lg-2 col-md-3 col-sm-4 col-sm-offset-0 col-xs-6' key={officer.id}>
+          <Officer officer={officer.officer}
+                   noClick={true}
+                   intersection={officer.num_allegations}
+                   witness={officer.witness}
+                   active={true} />
         </div>
       );
     });

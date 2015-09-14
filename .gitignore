@@ -72,3 +72,5 @@ bundle.js
 allegation/static/allegation/js/bundle.js
 .sass-cache
 /keys/
+dump.rdb
+allegation/static/admin/js/bundle.min.js

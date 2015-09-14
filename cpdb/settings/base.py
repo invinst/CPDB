@@ -33,6 +33,7 @@ INSTALLED_APPS = (
     'djangobower',
     'django_tables2',
     'compressor',
+    'rest_framework',
     'jsonify',
 
     'common',
@@ -43,6 +44,7 @@ INSTALLED_APPS = (
     'graph',
     'document',
     'share',
+    'embed',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -149,6 +151,7 @@ BOWER_INSTALLED_APPS = (
     'highcharts-release#4.1.6',
     'pluralize',
     'jqueryui-touch-punch#4bc0091452',
+    'zeroclipboard',
 )
 
 MEDIA_URL = '/media/'
@@ -185,8 +188,7 @@ EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 BROKER_URL = os.environ.get('BROKER_URL', 'redis://localhost:6379/0')
-
-COMPRESS_ENABLED = True
+COMPRESS_ENABLED = os.environ.get('COMPRESS_ENABLED') != 'False'
 COMPRESS_JS_FILTERS = []
 COMPRESS_PRECOMPILERS = (
     ('text/less', 'lessc {infile}'),
@@ -196,3 +198,10 @@ COMPRESS_PRECOMPILERS = (
 LOGIN_URL = reverse_lazy("admin:login")
 
 ANALYTICS_API_KEY_FILE = os.path.join(BASE_DIR, 'keys', 'cpdb-analytics.p12')
+
+
+# REST_FRAMEWORK
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 20,
+}

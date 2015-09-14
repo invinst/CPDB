@@ -1,10 +1,10 @@
 var React = require('react');
 var MapStore = require("../stores/MapStore");
 var FilterActions = require("../actions/FilterActions");
-var Timeline = require("./Timeline.react");
-var Map = require("./Map.react");
-var DonutChart = require("./DonutChart.react");
-var OfficerMixin = require("./OfficerMixin.react");
+var Timeline = require("./Officer/Timeline.react");
+var Map = require("./Officer/Map.react");
+var DonutChart = require("./Officer/DonutChart.react");
+var OfficerMixin = require("./Officer/OfficerMixin.react");
 
 
 var ranks = {

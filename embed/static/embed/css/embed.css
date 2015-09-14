@@ -1,0 +1,112 @@
+.col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9 {
+    float: left;
+}
+.col-md-6 {
+    width: 50%;
+}
+
+.col-md-12 {
+    width: 100%;
+    padding-right: 5px;
+    padding-left: 0;
+}
+
+.row .row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.row .officer-link .row {
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+.row .row .col-md-12,
+.row .row-fluid .col-md-12 {
+    padding-right: 0;
+    padding-left: 0;
+}
+
+.col-md-5 {
+    width: 41.66666667%;
+}
+
+.col-md-7 {
+    width: 58.33333333%;
+}
+
+body > .row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.officer {
+    padding-bottom: 0;
+    margin-bottom: 0;
+}
+
+.officer .complaint-discipline-row {
+    margin-bottom: 0;
+}
+
+
+#officer_list > .row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+#officer_list {
+    width: calc(100% - 100px);
+    margin: auto;
+}
+
+#officer_list .officer {
+    margin-bottom: 20px;
+}
+
+.officer-control {
+    display: block;
+}
+
+#sunburst-chart path {
+    stroke: #fff;
+}
+
+
+#summary .row {
+    margin-left: -15px;
+    margin-right: -15px;
+}
+
+#summary-container {
+    margin-left: 0;
+    margin-top: 0;
+}
+
+#summary {
+    padding: 5px;
+}
+
+#summary.selected {
+    left: -52%;
+}
+
+#summary .child-rows {
+    overflow-y: auto;
+}
+
+#summary .child-row-container {
+    overflow-y: auto;
+}
+
+.col-md-8 {
+    width: 66.66666667%;
+}
+
+.col-md-4 {
+    width: 33.33333333%;
+}
+
+.col-md-2 {
+    width: 16.66666667%;
+}
