@@ -1,4 +1,6 @@
 var React = require('react');
+var $ = require('jquery');
+
 var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var RequestDocumentConstants = require('../../constants/RequestDocumentConstants');
 var RequestDocumentActions = require('../../actions/RequestDocumentActions');
@@ -28,7 +30,7 @@ var RequestModal = (function () {
     },
     render: function () {
       var style = {
-        'margin-top': $(window).height() / 2 - 100 + 'px'
+        'marginTop': $(window).height() / 2 - 100 + 'px'
       };
       return (
         <div className="modal fade" id="request_modal" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel">

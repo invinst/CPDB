@@ -7,7 +7,6 @@ describe('ComplaintList', function () {
   var TestUtils = React.addons.TestUtils;
   var complaints;
   var ComplaintListStore = require('../../stores/ComplaintListStore');
-  var LoadingComplaintList = require('../ComplaintList/LoadingComplaintList.react');
   var ComplaintSection = require('../ComplaintSection.react');
 
   it('should exists', function () {
@@ -27,15 +26,5 @@ describe('ComplaintList', function () {
     expect(divs.length).toBe(1);
   });
 
-  it('show the loading icon when starting ajax call', function () {
-    ComplaintListStore.getState = jest.genMockFunction();
-    ComplaintListStore.getState.mockReturnValue({'loading': true});
-
-    var shallowRenderer = TestUtils.createRenderer();
-    shallowRenderer.render(<ComplaintSection />);
-    var result = shallowRenderer.getRenderOutput();
-
-    expect(result.type.displayName).toBe('LoadingComplaintList');
-  });
 });
 
