@@ -107,6 +107,7 @@ var Sunburst = React.createClass({
     return {
       data: false,
       selected: false,
+      hovering: false,
       drew: false
     }
   },
@@ -188,6 +189,10 @@ var Sunburst = React.createClass({
 
     d3.select("#explanation")
         .style("visibility", "hidden");
+
+    this.setState({
+      hovering: false
+    });
   },
 
   mouseover: function (d) {
@@ -200,6 +205,9 @@ var Sunburst = React.createClass({
                 return (sequenceArray.indexOf(node) >= 0);
               })
       .style("opacity", 1);
+    this.setState({
+      hovering: d
+    });
   },
 
   drawChart: function () {
@@ -296,25 +304,56 @@ var Sunburst = React.createClass({
     );
   },
 
+  renderBreadcrumb: function (node) {
+    if (!node) {
+      return;
+    }
+    var breadcrumb = [];
+    var current = node;
+    while (current.parent) {
+      breadcrumb.unshift(this.makeBreadcrumb(current.parent));
+      current = current.parent;
+    }
+    breadcrumb.push(this.makeBreadcrumb(node));
+    return (
+      <ol className="sunburst-breadcrumb">{breadcrumb}</ol>
+    );
+  },
+
+  makeBreadcrumb: function (node) {
+    var total = sum(node);
+    var className = "sunburst-legend";
+    if (node == this.state.selected) {
+      className += " active";
+    }
+    return (
+      <li className={className} onClick={this.select.bind(this, node)}>
+        {total} <br />
+        <span className="name">{node.name}</span>
+      </li>
+    )
+  },
+
   render: function () {
+    var that = this;
     var legends = [];
     var selected = this.state.selected;
-    var total = sum(selected);
     var percent = null;
     var theMax = {};
     var percentStatement = '';
+    var hovering = this.state.hovering || selected;
+    var total = sum(hovering);
     if (selected) {
       var max = 0;
       if (selected.parent) {
         legends.push(this.makeLegend(selected.parent));
       }
       legends.push(this.makeLegend(selected));
-      if (selected.children) {
-        var childrenLength = selected.children.length;
 
+      if (hovering.children) {
+        var childrenLength = hovering.children.length;
         for (var i = 0; i < childrenLength; i++) {
-          var child = selected.children[i];
-          legends.push(this.makeLegend(child));
+          var child = hovering.children[i];
           var size = sum(child);
           if (size > max) {
             theMax = child;
@@ -322,22 +361,34 @@ var Sunburst = React.createClass({
           }
         }
       }
+      if (selected.children) {
+        $.each(selected.children, function(i, child) {
+          legends.push(that.makeLegend(child));
+        });
+      }
+
+
       if (max) {
         percent = (max * 100 / total).toFixed(2);
         percentStatement = (
           <div>
-            <strong>{percent}%</strong> of "{selected.name}" complaints were "{theMax.name}"
+            <strong>{percent}%</strong> of "{hovering.name}" complaints were "{theMax.name}"
           </div>
         )
       }
     }
 
+    var breadcrumb = this.renderBreadcrumb(hovering);
+
     return (
       <div className="row">
+        <div className="col-md-12">
+          {breadcrumb}
+        </div>
         <div className="col-md-5">
           <div id="sunburst-legend">
             <div className="root">
-              {total} {selected.name}
+              {total} {hovering.name}
             </div>
             <div className="percent">
               {percentStatement}
