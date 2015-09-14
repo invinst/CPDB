@@ -7,28 +7,27 @@ var OfficerStore = require("../stores/OfficerStore");
 var FilterStore = require("../stores/FilterStore");
 
 var EmbedMixin = require('./Embed/Mixin.react');
+var OfficerMixin = require('./Officer/OfficerMixin.react');
 
 
-var VIEW_PORT_COUNT = 6;
-var OFFICER_PER_COL = 2;
+var VIEW_PORT_COUNT,
+  OFFICER_PER_COL,
+  OLD_DISPLAY,
+  OFFICER_WIDTH,
+  VIEW_PORT_COUNT,
+  OFFICER_PER_PAGE,
+  OFFICER_PER_DISPLAY,
+  OFFICER_PER_PAGE;
 
-var OLD_DISPLAY = 0;
-var OFFICER_WIDTH = null;
+VIEW_PORT_COUNT = 6;
+OFFICER_PER_COL = 2;
 
-var windowWidth = $(window).width();
-
-if (windowWidth <= 320) {
-  VIEW_PORT_COUNT = 2;
-} else {
-  VIEW_PORT_COUNT = parseInt(windowWidth / 200);
-}
-
-var OFFICER_PER_PAGE = VIEW_PORT_COUNT * OFFICER_PER_COL;
-var OFFICER_PER_DISPLAY = OFFICER_PER_PAGE * 3;
-
+OLD_DISPLAY = 0;
+OFFICER_WIDTH = null;
 
 var OfficerList = React.createClass({
-  mixins: [EmbedMixin],
+  mixins: [EmbedMixin, OfficerMixin],
+
   getInitialState: function () {
     return {
       officers: [],
@@ -168,11 +167,36 @@ var OfficerList = React.createClass({
     this.setState({
       current_view: value * OFFICER_PER_COL
     });
+    this.slideToDisplay(value)
+  },
+
+  pecent: function (a, b) {
+    return (a / b) * 100;
+  },
+
+  updateQuickView: function (start) {
+    var overview = [0, 0, 0, 0, 0];
+    var i;
+    var min = Math.min(start + OFFICER_PER_PAGE, this.state.officers.length);
+    for (i = start; i < min; i++) {
+      overview[this.getAvgLevel(this.state.officers[i])]++;
+    }
+    var total = overview.reduce(function (a, b) {
+      return a + b
+    });
+    var summary = "";
+    for (i = 0; i < overview.length; i++) {
+      summary += "<div class=\"overview overview-" + i + "\" style=\"width: " + this.pecent(overview[i], total) +
+        "%\"></div>";
+    }
+    $("#overview-slider .ui-slider-handle").html(summary);
   },
 
   slideToDisplay: function (value) {
-    var left = this.getInitDisplay(value * OFFICER_PER_COL);
+    var start = value * OFFICER_PER_COL;
+    var left = this.getInitDisplay(start);
     $(".officers-container").css('left', left + 'px');
+    this.updateQuickView(start);
   },
 
   render: function () {
@@ -291,7 +315,6 @@ var OfficerList = React.createClass({
     if (OLD_DISPLAY == this.state.current_view) {
       return;
     }
-
     var left = this.getInitDisplay(this.state.current_view);
     if (left) {
       if (OLD_DISPLAY > this.state.current_view) {
@@ -348,7 +371,20 @@ var OfficerList = React.createClass({
     }
   },
 
+  calculateConstants: function () {
+    var width = $("#officer-cards").width();
+    if (width <= 320) {
+      VIEW_PORT_COUNT = 2;
+    } else {
+      VIEW_PORT_COUNT = parseInt(width / 200);
+    }
+
+    OFFICER_PER_PAGE = VIEW_PORT_COUNT * OFFICER_PER_COL;
+    OFFICER_PER_DISPLAY = OFFICER_PER_PAGE * 3;
+  },
+
   _onChange: function () {
+    this.calculateConstants();
     var newState = OfficerStore.getAll();
     if (newState.officers == this.state.officers) {
       this.setState(newState);
@@ -357,6 +393,20 @@ var OfficerList = React.createClass({
       this.setState(newState);
       this.initSlider();
     }
+    this.updateQuickView(0);
+    this.updateSliderSize();
+  },
+
+  updateSliderSize: function () {
+    var slider = $("#overview-slider");
+    var handler = slider.find(".ui-slider-handle");
+    var fullWidth = slider.parent().width();
+    var handlerWidth = OFFICER_PER_PAGE * fullWidth / this.state.officers.length;
+
+    handler.width(handlerWidth);
+    handlerWidth = handler.width(); // get real width after css
+    handler.css('margin-left', -handlerWidth / 2 - 3 + 'px');
+    slider.css('width', 'calc(100% - ' + (handlerWidth + 6) + 'px)');
   },
 
   showMore: function (e) {
