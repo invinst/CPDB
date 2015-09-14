@@ -8,7 +8,7 @@ var EmbedMixin = require('./Embed/Mixin.react');
 
 var OfficerPresenter = require('../presenters/OfficerPresenter');
 var OfficerStore = require("../stores/OfficerStore");
-var pluralize = require('pluralize')
+var pluralize = require('pluralize');
 
 var Officer = React.createClass({
   mixins: [OfficerMixin, EmbedMixin],
