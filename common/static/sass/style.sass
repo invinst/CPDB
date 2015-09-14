@@ -412,6 +412,7 @@ footer
   top: -55px
   border: none
   background: none
+  cursor: pointer
   &.ui-slider .ui-slider-handle
     border: 3px solid $white
     height: 61px
@@ -423,6 +424,12 @@ footer
     border-radius: 0
     font-size: 1em
     box-shadow: 0 0 3px $color_celeste_approx
+    cursor: move
+    cursor: -moz-grab
+    cursor: -webkit-grab
+    &.ui-state-active
+      cursor: -moz-grabbing
+      cursor: -webkit-grabbing
 
   .overview
     height: 55px
@@ -1162,6 +1169,7 @@ footer
   path
     stroke: $color_pampas_approx
     fill-rule: evenodd
+    cursor: pointer
 
 #loading
   margin-top: 20px
