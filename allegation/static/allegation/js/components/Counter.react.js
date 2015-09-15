@@ -1,5 +1,6 @@
 var React = require('react');
-
+var numeral = require('numeral');
+var AppConstants = require('../constants/AppConstants');
 
 var Counter = React.createClass({
   from: 0,
@@ -7,7 +8,10 @@ var Counter = React.createClass({
   componentDidUpdate: function () {
     $(this.getDOMNode()).countTo({
       from: this.from,
-      to: this.props.to
+      to: this.props.to,
+      formatter: function (value, options) {
+        return numeral(value).format(AppConstants.NUMERAL_FORMAT);
+      }
     });
     this.from = this.props.to
   },
