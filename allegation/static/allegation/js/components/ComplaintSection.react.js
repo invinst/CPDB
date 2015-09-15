@@ -5,9 +5,10 @@ var $ = require('jquery');
 var Filters = require('./Filters.react');
 var ComplaintList = require('./ComplaintList.react');
 var Download = require('./Download.react');
+var Counter = require('./Counter.react');
 var OutcomeFilter = require('./ComplaintList/OutcomeFilter.react');
 var RequestModal = require('./Complaint/RequestModal.react');
-var LoadingComplaintList = require('./ComplaintList/LoadingComplaintList.react');
+var Content = require('./ComplaintList/Content.react');
 var ComplaintListStore = require('../stores/ComplaintListStore');
 var OfficerListStore = require('../stores/OfficerListStore');
 
@@ -31,10 +32,7 @@ var ComplaintSection = React.createClass({
   render: function () {
     var activeFilter = this.state.activeFilter;
     var analytics = this.state.analytics;
-    var loading = this.state.loading || false;
-    if (loading) {
-      return (<LoadingComplaintList />);
-    }
+    var loading = this.state.loading;
 
     if (!this.state.complaints.length) {
       return <div></div>;
@@ -44,14 +42,13 @@ var ComplaintSection = React.createClass({
       <div className="complaint_list" onScroll={this.onScroll}>
         <div className='row'>
           <div className='col-md-2'>
-            <h3 className="margin-top-0">Complaints</h3>
+            <h3 className="margin-top-0">Complaints <Counter to={analytics.All} /></h3>
           </div>
           <div className='col-md-10 text-right'>
-            <OutcomeFilter activeFilter={activeFilter} analytics={analytics}/>
+            <OutcomeFilter loading={loading} activeFilter={activeFilter} analytics={analytics}/>
           </div>
         </div>
-        <ComplaintList officer={this.props.officer} complaints={this.state.complaints} />
-        <RequestModal />
+        <Content loading={loading} officer={this.props.officer} complaints={this.state.complaints} />
       </div>
     )
   },
