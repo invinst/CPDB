@@ -31,7 +31,8 @@ var OfficerList = React.createClass({
       active_officers: [],
       overview: [],
       current_view: 0,
-      embedding: false
+      embedding: false,
+      filtered: false
     };
   },
 
@@ -267,6 +268,8 @@ var OfficerList = React.createClass({
       );
     }
 
+    var sliderClassName = this.state.filtered ? 'filtered' : '';
+
     return (
       <div id="officer_list">
         <div className='row'>
@@ -280,7 +283,7 @@ var OfficerList = React.createClass({
               {overview}
               <div className="clearfix"></div>
             </div>
-            <div id="overview-slider"></div>
+            <div id="overview-slider" className={sliderClassName}></div>
           </div>
         </div>
         <div className="row">

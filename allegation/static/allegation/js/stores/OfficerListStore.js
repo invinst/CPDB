@@ -46,6 +46,9 @@ var OfficerListStore = assign({}, EventEmitter.prototype, {
       ajax.abort();
     }
     var queryString = query || FilterStore.getQueryString();
+
+    _state.filtered = queryString;
+
     ajax = $.getJSON('/api/allegations/officers/?' + queryString, function (data) {
       _state.officers = data.officers;
       _state.overview = data.overview || [];
