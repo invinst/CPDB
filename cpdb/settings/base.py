@@ -35,6 +35,7 @@ INSTALLED_APPS = (
     'compressor',
     'rest_framework',
     'jsonify',
+    'django_nose',
 
     'common',
     'allegation',
@@ -205,3 +206,5 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 20,
 }
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
