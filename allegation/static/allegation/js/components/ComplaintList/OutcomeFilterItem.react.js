@@ -1,5 +1,7 @@
 var React = require('react');
 var OutcomeFilterActions = require('../../actions/ComplaintList/OutcomeFilterActions');
+var numeral = require('numeral');
+var AppConstants = require('../../constants/AppConstants');
 
 var OutcomeFilterItem = React.createClass({
   setOutcomeFilter: function(filter) {
@@ -10,8 +12,10 @@ var OutcomeFilterItem = React.createClass({
     var type = this.props.type || 'all';
     var name = this.props.name || 'All';
     var quantity = this.props.quantity || 0;
+    var formattedQuantity = numeral(quantity).format(AppConstants.NUMERAL_FORMAT);
+
     var filterIconClass = ["fa fa-circle", type].join(' ');
-    var filterIcon = <span><i className={filterIconClass}></i>{name} ({quantity})</span>;
+    var filterIcon = <span><i className={filterIconClass}></i>{name} ({formattedQuantity})</span>;
     var activeClass = this.props.active ? 'active' : '';
 
     return (

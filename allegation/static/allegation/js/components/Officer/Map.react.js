@@ -1,6 +1,6 @@
 var React = require('react');
 var _map = null;
-
+var AppConstants = require('../../constants/AppConstants');
 
 var Map = React.createClass({
   getInitialState: function () {
@@ -15,7 +15,7 @@ var Map = React.createClass({
     var northEast = L.latLng(42.474122772511485, -85.39947509765625);
     var maxBounds = L.LatLngBounds(southWest, northEast);
 
-    _map = L.mapbox.map(element, MAP_TYPE, opts).setView([41.870839118528714, -87.6272964477539], defaultZoom);
+    _map = L.mapbox.map(element, AppConstants.MAP_TYPE, opts).setView([41.870839118528714, -87.6272964477539], defaultZoom);
     _map.on('click', function (event) {
       console.log(event);
     }).setMaxBounds(maxBounds);

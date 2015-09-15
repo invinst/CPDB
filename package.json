@@ -15,6 +15,7 @@
     "lodash": "~3.10.0",
     "mapbox.js": "~2.2.1",
     "moment": "^2.10.3",
+    "numeral": "^1.5.3",
     "object-assign": "^1.0.0",
     "pluralize": "~1.1.2",
     "q": "~1.4.1",
