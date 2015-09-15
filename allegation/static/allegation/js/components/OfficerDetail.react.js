@@ -28,11 +28,8 @@ var OfficerDetail = React.createClass({
     return {}
   },
   componentDidMount: function () {
-    FilterActions.replaceFilters([{
-      value: ['officer', this.props.officer.id]
-    }]);
-
   },
+
   render: function () {
     var officer = this.props.officer;
     var complaintRate = this.getAvgClass();

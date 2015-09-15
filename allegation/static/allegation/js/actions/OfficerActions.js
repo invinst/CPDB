@@ -11,13 +11,17 @@ var OfficerActions = {
       value: value
     });
   },
-  setActiveOfficer: function (officer) {
+  setActiveOfficer: function (officer, page) {
     AppDispatcher.dispatch({
       actionType: MapConstants.SET_ACTIVE_OFFICER,
       officer: officer
     });
-    ComplaintListAPI.getData();
-    OutcomeAnalysisAPI.getAnalysisInformation();
+
+    // We only do API call on Officer instance on homepage 
+    if (page == 'home') {
+      ComplaintListAPI.getData();
+      OutcomeAnalysisAPI.getAnalysisInformation();
+    }
   },
   setComplaintsCount: function (start, end) {
     AppDispatcher.dispatch({

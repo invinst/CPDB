@@ -7,9 +7,6 @@ from common.models import Allegation
 from allegation.services.outcome_analytics import FILTERS
 
 
-OUTCOME_CLASS = ['sustained', 'open-investigation', 'disciplined']
-
-
 class AllegationFilterTestCase(BaseLiveTestCase):
     def setUp(self):
         self.allegation_category = AllegationCategoryFactory()
@@ -17,7 +14,7 @@ class AllegationFilterTestCase(BaseLiveTestCase):
             for final_finding in FILTERS[filter]:
                 # Make sure it doesn't break the disciplined test
                 AllegationFactory(final_finding=final_finding, cat=self.allegation_category,
-                                  final_outcome_class=random.choice(OUTCOME_CLASS))
+                                  final_outcome_class='disciplined')
 
     def test_filter_by_final_finding(self):
         self.visit('/')
@@ -35,7 +32,6 @@ class AllegationFilterTestCase(BaseLiveTestCase):
             number_of_final_findings = len(FILTERS[filter_text])
             self.number_of_complaints().should.equal(number_of_final_findings)
 
-        # Disciplined filter
         self.element_by_tagname_and_text('span', 'Disciplined').click()
         self.until(self.ajax_complete)
         self.number_of_complaints().should.equal(Allegation.objects.filter(final_outcome_class='disciplined').count())

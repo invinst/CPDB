@@ -2,7 +2,7 @@
  * Created by eastagile on 8/6/15.
  */
 var React = require('react');
-var OfficerStore = require('../stores/OfficerStore');
+var OfficerListStore = require('../stores/OfficerListStore');
 
 
 var Download = React.createClass({
@@ -51,12 +51,12 @@ var Download = React.createClass({
   },
 
   componentDidMount: function () {
-    OfficerStore.addChangeListener(this.onChange);
+    OfficerListStore.addChangeListener(this.onChange);
   },
 
   onChange: function () {
     this.setState({
-      query: OfficerStore.getQueryString()
+      query: OfficerListStore.getQueryString()
     });
   },
 

@@ -74,7 +74,7 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     def browser(self):
         if world.browser is None:
             world.browser = WebDriver()
-            world.browser.implicitly_wait(5)
+            world.browser.implicitly_wait(10)
             world.browser.set_window_size(width=1200, height=800)
         return world.browser
 
@@ -172,7 +172,7 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     def sleep(self, seconds):
         time.sleep(seconds)
 
-    def until(self, method, timeout=10, message='', interval=0.5):
+    def until(self, method, timeout=60, message='', interval=0.5):
         """Calls the method provided with the driver as an argument until the \
         return value is not False."""
         end_time = time.time() + timeout

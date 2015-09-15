@@ -7,7 +7,7 @@ from faker import Faker
 
 from allegation.models import Download
 from common.models import AllegationCategory, Officer, Area, Allegation, Investigator, ComplainingWitness, RACES, \
-    OUTCOMES
+    OUTCOMES, PoliceWitness
 
 fake = Faker()
 
@@ -20,6 +20,9 @@ class AreaFactory(factory.django.DjangoModelFactory):
     type = factory.Sequence(lambda n: 'school-grounds')
     polygon = factory.Sequence(lambda n: MultiPolygon(Polygon(((0, 0), (0, 1), (1, 1), (0, 0)))))
 
+class PoliceWitnessFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = PoliceWitness
 
 class OfficerFactory(factory.django.DjangoModelFactory):
     class Meta:

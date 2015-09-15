@@ -18,7 +18,7 @@ var Filters = require('./Filters.react');
 var MapStore = require('../stores/MapStore');
 var FilterAction = require('../actions/FilterActions');
 var OfficerList = require('./OfficerList.react');
-var ComplaintList = require('./ComplaintList.react');
+var ComplaintSection = require('./ComplaintSection.react');
 var DistributionChart = require('./DistributionChart.react');
 var Map = require('./Map.react');
 var EmbedBar = require('./Embed/Bar.react');
@@ -85,7 +85,7 @@ var CPDBApp = React.createClass({
         </div>
         <div className='container content'>
           <div id='officer-cards'><OfficerList /></div>
-          <div id='complaint-list'><ComplaintList /></div>
+          <div id='complaint-list'><ComplaintSection /></div>
         </div>
         <div>
           <div id='EmbedBar' className="row">

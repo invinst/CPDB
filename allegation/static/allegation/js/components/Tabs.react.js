@@ -2,7 +2,6 @@
  * Created by eastagile on 8/6/15.
  */
 var React = require('react');
-var OfficerStore = require('../stores/OfficerStore');
 var FilterStore = require('../stores/FilterStore');
 var Sunburst = require('./Sunburst.react');
 var EmbedMixin = require('./Embed/Mixin.react');

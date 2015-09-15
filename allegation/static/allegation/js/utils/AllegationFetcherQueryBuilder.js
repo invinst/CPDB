@@ -1,7 +1,8 @@
 var AppConstants = require('../constants/AppConstants');
 var ComplaintListStore = require('../stores/ComplaintListStore');
-var OfficerStore = require('../stores/OfficerStore');
+var OfficerListStore = require('../stores/OfficerListStore');
 var FilterStore = require('../stores/FilterStore');
+var _ = require('lodash');
 
 var AllegationFetcherQueryBuilder = {
   buildOutcomeFilterQuery: function(activeFilter) {
@@ -53,7 +54,7 @@ var AllegationFetcherQueryBuilder = {
   buildQuery: function(activeOutcomeFilter) {
     var filters = FilterStore.getFilters();
     var ignoreFilters = [];
-    var activeOfficers = OfficerStore.getActiveOfficers();
+    var activeOfficers = OfficerListStore.getActiveOfficers();
     var activeOutcomeFilter = activeOutcomeFilter || ComplaintListStore.getActiveFilter();
 
     if (_.isEmpty(filters) && _.isEmpty(activeOfficers))

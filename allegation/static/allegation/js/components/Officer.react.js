@@ -5,9 +5,10 @@ var Filters = require('./Filters.react');
 var OfficerActions = require('../actions/OfficerActions');
 var OfficerMixin = require('./Officer/OfficerMixin.react');
 var EmbedMixin = require('./Embed/Mixin.react');
+var CheckMark = require('./Officer/CheckMark.react');
 
 var OfficerPresenter = require('../presenters/OfficerPresenter');
-var OfficerStore = require("../stores/OfficerStore");
+
 var pluralize = require('pluralize');
 
 var Officer = React.createClass({
@@ -44,14 +45,6 @@ var Officer = React.createClass({
     this.copyEmbed();
   },
 
-  onMouseDown: function(e) {
-    $(e.currentTarget).addClass('no-box-shadow')
-  },
-
-  onMouseUp: function(e) {
-    $(e.currentTarget).removeClass('no-box-shadow')
-  },
-
   // embedding
   getEmbedCode: function () {
     var src = "/embed/?page=officer-card&pk=" + encodeURIComponent(this.props.officer.id);
@@ -77,30 +70,6 @@ var Officer = React.createClass({
       selection_state = 'selected';
     }
 
-    var selectableArea = "";
-    if (!this.props.noClick) {
-      selectableArea = (
-        <div onClick={this.onClick} className='checkmark cursor'>
-          <i className='fa fa-check'></i>
-        </div>
-      );
-    }
-
-    if (this.props.embed) {
-      selectableArea = (
-        <div data-clipboard-text={this.getEmbedCode()} className='checkmark embed cursor'
-             aria-label="Copy to clipboard" data-copied-hint="Copied!">
-          <i className='fa fa-code'></i>
-          <div className="tooltip bottom" role="tooltip">
-            <div className="tooltip-arrow"></div>
-            <div className="tooltip-inner">
-              Click to copy
-            </div>
-          </div>
-        </div>
-      );
-    }
-
     var officerLink = officer.absolute_url;
     var officerId = 'officer_' + officer.id;
     var presenter = OfficerPresenter(officer);
@@ -114,8 +83,7 @@ var Officer = React.createClass({
     }
 
     return (
-      <div className={className}  data-state={selection_state} id={officerId} onMouseDown={this.onMouseDown}
-           onMouseUp={this.onMouseUp}>
+      <div className={className}  data-state={selection_state} id={officerId}>
         <a className='officer-link' href={officerLink} target="_parent">
           <div className='officer_name'>
             <strong>
@@ -154,17 +122,11 @@ var Officer = React.createClass({
             </div>
           </div>
         </a>
-        {selectableArea}
+        <CheckMark clickable={!this.props.noClick} officer={officer} page={this.props.page}/>
       </div>
     );
-
   },
-  onClick: function () {
-    var officer = this.props.officer;
-    var presenter = OfficerPresenter(officer);
-    OfficerActions.setActiveOfficer(officer);
-    ga('send', 'event', 'officer', 'filter-by', presenter.displayName());
-  }
+
 });
 
 module.exports = Officer;

@@ -508,8 +508,10 @@ footer
   max-height: 93px
   overflow: hidden
 
+    background-color: #0079AE
+    color: white
   &.has-intersection
-    &:hover
+    &:hover, &.selected
       background-color: #0079AE
       color: white
       .officer_name
@@ -536,9 +538,10 @@ footer
     a.officer-link
       @extend .extend_6
 
-    > .checkmark
+    > .checkmark, .checkmark.justChange:hover
       background-color: $color_ship_cove_approx
-
+    > .checkmark:hover
+      background-color: $color_celeste_approx
   &.avg-0
     border-top-color: $color_tall_poppy_approx
 
@@ -571,6 +574,9 @@ footer
     bottom: 0
     background-color: $color_celeste_approx
     color: $white
+
+    &.justChange, &.justChange:hover
+      background: $color_celeste_approx
     &:hover
       background-color: $color_ship_cove_approx
 

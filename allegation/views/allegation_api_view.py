@@ -49,6 +49,9 @@ class AllegationAPIView(View):
         length = getattr(settings, 'ALLEGATION_LIST_ITEM_COUNT', 25)
         try:
             length = int(request.GET.get('length', length))
+            if length == -1:
+                length = allegations.count();
+                page = 0
         except ValueError:
             pass
 

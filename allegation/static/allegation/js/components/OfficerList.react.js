@@ -3,11 +3,12 @@ var React = require('react');
 var Filters = require('./Filters.react');
 var OfficerActions = require('../actions/OfficerActions');
 var Officer = require("./Officer.react");
-var OfficerStore = require("../stores/OfficerStore");
 var FilterStore = require("../stores/FilterStore");
+var OfficerListStore = require("../stores/OfficerListStore");
 
 var EmbedMixin = require('./Embed/Mixin.react');
 var OfficerMixin = require('./Officer/OfficerMixin.react');
+
 
 
 var VIEW_PORT_COUNT,
@@ -15,8 +16,8 @@ var VIEW_PORT_COUNT,
   OLD_DISPLAY,
   OFFICER_WIDTH,
   VIEW_PORT_COUNT,
-  OFFICER_PER_PAGE,
-  OFFICER_PER_DISPLAY,
+  OFFICER_PER_PAGE=12,
+  OFFICER_PER_DISPLAY=36,
   OFFICER_PER_PAGE;
 
 VIEW_PORT_COUNT = 6;
@@ -117,8 +118,8 @@ var OfficerList = React.createClass({
   },
 
   componentDidMount: function () {
-    OfficerStore.addChangeListener(this._onChange);
     this.embedListener();
+    OfficerListStore.addChangeListener(this._onChange);
 
     $(".officer-vertical-scroll").swipeleft(this.slideToLeft);
     $(".officer-vertical-scroll").swiperight(this.slideToRight);
@@ -126,7 +127,7 @@ var OfficerList = React.createClass({
     $(".officer-control").disableSelection();
 
     if (this.props.query != undefined) {
-      OfficerStore.update(this.props.query);
+      OfficerListStore.update(this.props.query);
     }
   },
 
@@ -207,8 +208,8 @@ var OfficerList = React.createClass({
     var display = this.getDisplaying();
     var start = display[0];
     var end = display[1];
-    var noClick = this.props.noClick || this.state.embedding;
 
+    var noClick = this.props.noClick || this.state.embedding;
     for (i = start; i < end; i++) {
       var officer = this.state.officers[i];
       var selected = this.state.active_officers.indexOf(officer.id) > -1;
@@ -384,8 +385,7 @@ var OfficerList = React.createClass({
   },
 
   _onChange: function () {
-    this.calculateConstants();
-    var newState = OfficerStore.getAll();
+    var newState = OfficerListStore.getAll();
     if (newState.officers == this.state.officers) {
       this.setState(newState);
     } else {

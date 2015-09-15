@@ -17,7 +17,7 @@ var OutcomeFilter = React.createClass({
       var name = AppConstants.FILTERS[type];
       var quantity = analytics[name];
       if (quantity) {
-        outcomeFilters.push(<OutcomeFilterItem key={type} type={type} active={type==activeFilter} name={name} quantity={quantity}/>)
+        outcomeFilters.push(<OutcomeFilterItem type={type} key={type} active={type==activeFilter} name={name} quantity={quantity}/>)
       }
     }
 
