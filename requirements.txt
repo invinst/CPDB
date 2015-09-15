@@ -17,6 +17,7 @@ django-extensions==1.5.3
 django-factory==0.11
 django-filter==0.11.0
 django-jsonify==0.3.0
+django-nose==1.4.1
 django-postgrespool==0.3.0
 django-redis-cache==1.6.0
 django-tables2==1.0.4
