@@ -395,44 +395,42 @@ footer
   opacity: .4
 
 .overview
-  height: 49px
+  height: 24px
   background: $color_japanese_laurel_approx
   float: left
   transition: 1s width
 
 .overview-container
-  height: 64px
+  height: 32px
   margin-bottom: 20px
 
 #overview-slider
-  width: calc(100% - 64px)
+  width: calc(100% - 8px)
   margin: auto
-  height: 49px
+  height: 24px
   position: relative
-  top: -55px
+  top: -26px
   border: none
   background: none
   cursor: pointer
   &.ui-slider .ui-slider-handle
-    border: 3px solid $white
-    height: 61px
-    min-width: 64px
-    margin-left: -32px
+    border: 2px solid $white
+    height: 28px
+    min-width: 8px
+    margin-left: -4px
     top: -3px
     background: none
     //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
     border-radius: 0
     font-size: 1em
     box-shadow: 0 0 3px $color_celeste_approx
+    transition: 0.5s left
     cursor: move
     cursor: -moz-grab
     cursor: -webkit-grab
     &.ui-state-active
       cursor: -moz-grabbing
       cursor: -webkit-grabbing
-
-  .overview
-    height: 55px
 
 .overview-0
   background-color: $color_coral_red_approx
