@@ -10,5 +10,5 @@ class AllegationApiTestBase(TestCase):
 
     def setUp(self):
         self.allegations = []
-        for i in range(400):
+        for i in range(40):
             self.allegations.append(AllegationFactory())
