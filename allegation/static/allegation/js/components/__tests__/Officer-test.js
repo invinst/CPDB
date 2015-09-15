@@ -1,6 +1,7 @@
 "use strict";
 
 jest.autoMockOff();
+$ = require('jquery');
 
 describe('Officer', function () {
   var React = require('react/addons');
