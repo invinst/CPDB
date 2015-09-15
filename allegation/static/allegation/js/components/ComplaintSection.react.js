@@ -40,8 +40,6 @@ var ComplaintSection = React.createClass({
       return <div></div>;
     }
 
-    var query = OfficerListStore.getQueryString();
-
     return (
       <div className="complaint_list" onScroll={this.onScroll}>
         <div className='row'>
@@ -53,11 +51,6 @@ var ComplaintSection = React.createClass({
           </div>
         </div>
         <ComplaintList officer={this.props.officer} complaints={this.state.complaints} />
-        <div className="row">
-          <div className="col-md-2 col-md-offset-10">
-            <Download query={query}/>
-          </div>
-        </div>
         <RequestModal />
       </div>
     )
