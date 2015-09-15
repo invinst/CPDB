@@ -1,7 +1,7 @@
 var React = require('react');
 
 var RequestModal = require('../Complaint/RequestModal.react');
-var ComplaintListRow = require('../ComplaintListRow.react');
+var ComplaintList = require('../ComplaintList.react');
 
 var Content = React.createClass({
 
@@ -15,24 +15,10 @@ var Content = React.createClass({
         </div>
       );
     }
-    var rows = [];
-    var officer = null;
-    if (this.props.officer) {
-      officer = this.props.officer
-    }
-
-    var complaintLength = this.props.complaints.length;
-
-    for (var i = 0; i < complaintLength; i++) {
-      var complaint = this.props.complaints[i];
-      var allegation = complaint.allegation;
-
-      rows.push(<ComplaintListRow key={i} complaint={complaint} officer={officer} finding={allegation.final_finding}/>)
-    }
 
     return (
       <div>
-        {rows}
+        <ComplaintList officer={this.props.officer} complaints={this.props.complaints} />
         <RequestModal />
       </div>
     )

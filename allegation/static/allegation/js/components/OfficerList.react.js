@@ -14,22 +14,13 @@ var OfficerMixin = require('./Officer/OfficerMixin.react');
 
 
 
-var VIEW_PORT_COUNT,
-  OFFICER_PER_COL,
-  OLD_DISPLAY,
-  OFFICER_WIDTH,
-  VIEW_PORT_COUNT,
+var VIEW_PORT_COUNT=6,
+  OFFICER_PER_COL=2,
+  OLD_DISPLAY=0,
+  OFFICER_WIDTH=null,
   OFFICER_PER_PAGE=12,
   OFFICER_PER_DISPLAY=36,
-  OFFICER_PER_PAGE;
-
-VIEW_PORT_COUNT = 6;
-OFFICER_PER_COL = 2;
-
-OLD_DISPLAY = 0;
-OFFICER_WIDTH = null;
-
-var OFFICERS_LENGTH = 0;
+  OFFICERS_LENGTH = 0;
 
 var OfficerList = React.createClass({
   mixins: [EmbedMixin, OfficerMixin],
