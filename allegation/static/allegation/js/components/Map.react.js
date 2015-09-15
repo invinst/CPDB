@@ -4,12 +4,10 @@ require('leaflet.heat');
 var MapStore = require("../stores/MapStore");
 var FilterStore = require('../stores/FilterStore');
 var FilterActions = require("../actions/FilterActions");
-
+var AppConstants = require('../constants/AppConstants');
 var EmbedMixin = require('./Embed/Mixin.react');
 
-var MAP_TYPE = 'mapbox.streets';
-
-L.mapbox.accessToken = 'pk.eyJ1Ijoic3RlZmFuZ2VvcmciLCJhIjoiVnBNOEp4byJ9.7i2N7gTV-t_QtAA-kAAlFA';
+L.mapbox.accessToken = AppConstants.MAP_TOKEN;
 
 var highlightStyle = {
   color: '#2262CC',
@@ -116,7 +114,7 @@ var Map = React.createClass({
     var southWest = L.latLng(41.143501411390766, -88.53057861328125);
     var northEast = L.latLng(42.474122772511485, -85.39947509765625);
     var maxBounds = L.LatLngBounds(southWest, northEast);
-    _map = L.mapbox.map(dom_id, MAP_TYPE, opts).setView(center, defaultZoom);
+    _map = L.mapbox.map(dom_id, AppConstants.MAP_TYPE, opts).setView(center, defaultZoom);
 
     _map.on('click', function (event) {
     }).setMaxBounds(maxBounds);
