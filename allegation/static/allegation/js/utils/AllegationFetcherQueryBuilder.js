@@ -38,10 +38,11 @@ var AllegationFetcherQueryBuilder = {
 
       if (filter['value']) {
         for (var i = 0; i < filter['value'].length; i++) {
-          if (typeof(filter['value'][i]) == 'object') {
-            query += filterName + "=" + filter['value'][i][1] + "&";
+          var value = filter['value'][i];
+          if (value && typeof(value) == 'object') {
+            query += filterName + "=" + value[1] + "&";
           } else {
-            query += filterName + "=" + filter['value'][i] + "&";
+            query += filterName + "=" + value + "&";
           }
         }
       }

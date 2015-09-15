@@ -391,14 +391,14 @@ footer
   overflow: hidden
 
 .overview-box
-  border-bottom: 3px solid $color_celeste_approx
   padding: 3px 0
-  border-top: 3px solid $color_celeste_approx
+  opacity: .4
 
 .overview
   height: 49px
   background: $color_japanese_laurel_approx
   float: left
+  transition: 1s width
 
 .overview-container
   height: 64px
@@ -412,18 +412,27 @@ footer
   top: -55px
   border: none
   background: none
+  cursor: pointer
   &.ui-slider .ui-slider-handle
-    border: 3px solid $color_mine_shaft_approx
-    border-left: none
-    border-right: none
+    border: 3px solid $white
     height: 61px
-    width: 64px
+    min-width: 64px
     margin-left: -32px
-    top: -6px
+    top: -3px
     background: none
     //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
     border-radius: 0
     font-size: 1em
+    box-shadow: 0 0 3px $color_celeste_approx
+    cursor: move
+    cursor: -moz-grab
+    cursor: -webkit-grab
+    &.ui-state-active
+      cursor: -moz-grabbing
+      cursor: -webkit-grabbing
+
+  .overview
+    height: 55px
 
 .overview-0
   background-color: $color_coral_red_approx
@@ -1118,8 +1127,8 @@ footer
       &.color
         width: 20px
 
-  .name
-    color: $color_deep_cerulean_approx
+  .percent
+    min-height: 3em
 
   .root
     font-family: $font_0, $font_4
@@ -1127,14 +1136,36 @@ footer
     font-weight: 600
     text-transform: uppercase
 
-  .list
-    margin-top: 30px
-
-  .percent
-    min-height: 3em
+.sunburst-breadcrumb
+  list-style: none
+  margin: 0px 30px 0 0
+  padding: 10px 0px 10px 30px
+  border-bottom: 1px solid $color_celeste_approx
+  > li
+    display: inline-block
+    margin-right: 17px
+    &:after
+      content: "\25B6"
+      position: relative
+      bottom: 13px
+      font-family: $font_4
+      font-size: 12px
+      color: $color_mountain_mist_approx
+      right: -8px
+    &:last-child:after
+      display: none
 
 .sunburst-legend
   cursor: pointer
+
+  &.active
+    font-weight: 700
+
+  .name
+    color: $color_deep_cerulean_approx
+
+  .list
+    margin-top: 30px
 
 #sunburst-chart
   overflow: hidden
@@ -1144,6 +1175,7 @@ footer
   path
     stroke: $color_pampas_approx
     fill-rule: evenodd
+    cursor: pointer
 
 #loading
   margin-top: 20px

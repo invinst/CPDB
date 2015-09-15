@@ -5,10 +5,10 @@ var Filters = require('./Filters.react');
 var OfficerActions = require('../actions/OfficerActions');
 var OfficerMixin = require('./Officer/OfficerMixin.react');
 var EmbedMixin = require('./Embed/Mixin.react');
-var OfficerPresenter = require('../presenters/OfficerPresenter');
 var CheckMark = require('./Officer/CheckMark.react');
 
-var $ = require('jquery');
+var OfficerPresenter = require('../presenters/OfficerPresenter');
+
 var pluralize = require('pluralize');
 
 var Officer = React.createClass({

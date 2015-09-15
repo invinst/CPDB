@@ -76,23 +76,23 @@ var Tabs = React.createClass({
           <li role="presentation" className="active">
             <a href="#sunburst" aria-controls="sunburst" role="tab" data-toggle="tab"
                onClick={this.activeTab.bind(this, 0)}>
-              <i className="icomoon icon-pie-chart" /> Penalty Distribution
+              Outcomes
             </a>
           </li>
           <li role="presentation">
             <a href="#categories" aria-controls="profile" role="tab" data-toggle="tab"
                onClick={this.activeTab.bind(this, 1)}>
-              <i className="icomoon icon-stack" /> Complaint Types
+              Categories
             </a>
           </li>
           <li role="presentation" className="disabled">
             <a href="#" aria-controls="profile" role="tab">
-              <i className="fa fa-male"></i> Race &amp; Gender
+              Race &amp; Gender
             </a>
           </li>
           <li role="presentation" className="disabled">
             <a href="#" aria-controls="profile" role="tab">
-              <i className="fa fa-clock-o"></i> Time
+              Timeframe
             </a>
           </li>
         </ul>

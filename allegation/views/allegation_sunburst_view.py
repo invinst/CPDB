@@ -12,7 +12,7 @@ class AllegationSunburstView(AllegationAPIView):
 
         return JsonResponse({
             'sunburst': {
-                'name': 'Allegation',
+                'name': 'Allegations',
                 'children': output,
             }
         })
