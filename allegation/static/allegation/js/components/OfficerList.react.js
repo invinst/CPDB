@@ -1,8 +1,11 @@
 var HOST = 'http://localhost:8000';
 var React = require('react');
+
 var Filters = require('./Filters.react');
 var OfficerActions = require('../actions/OfficerActions');
 var Officer = require("./Officer.react");
+var Counter = require("./Counter.react");
+
 var FilterStore = require("../stores/FilterStore");
 var OfficerListStore = require("../stores/OfficerListStore");
 
@@ -11,20 +14,13 @@ var OfficerMixin = require('./Officer/OfficerMixin.react');
 
 
 
-var VIEW_PORT_COUNT,
-  OFFICER_PER_COL,
-  OLD_DISPLAY,
-  OFFICER_WIDTH,
-  VIEW_PORT_COUNT,
+var VIEW_PORT_COUNT=6,
+  OFFICER_PER_COL=2,
+  OLD_DISPLAY=0,
+  OFFICER_WIDTH=null,
   OFFICER_PER_PAGE=12,
   OFFICER_PER_DISPLAY=36,
-  OFFICER_PER_PAGE;
-
-VIEW_PORT_COUNT = 6;
-OFFICER_PER_COL = 2;
-
-OLD_DISPLAY = 0;
-OFFICER_WIDTH = null;
+  OFFICERS_LENGTH = 0;
 
 var OfficerList = React.createClass({
   mixins: [EmbedMixin, OfficerMixin],
@@ -121,8 +117,9 @@ var OfficerList = React.createClass({
     this.embedListener();
     OfficerListStore.addChangeListener(this._onChange);
 
-    $(".officer-vertical-scroll").swipeleft(this.slideToLeft);
-    $(".officer-vertical-scroll").swiperight(this.slideToRight);
+    $(".officer-vertical-scroll")
+      .swipeleft(this.slideToLeft)
+      .swiperight(this.slideToRight);
 
     $(".officer-control").disableSelection();
 
@@ -274,7 +271,7 @@ var OfficerList = React.createClass({
       <div id="officer_list">
         <div className='row'>
           <div className='col-md-12'>
-            <h3>Officers</h3>
+            <h3>Officers <Counter to={this.state.officers.length} /></h3>
           </div>
         </div>
         <div className="row">
@@ -307,6 +304,7 @@ var OfficerList = React.createClass({
   },
 
   componentDidUpdate: function(){
+
     var container = $(".officers-container");
 
     var officerBlock = $(".officer-block").slice(1, 2);

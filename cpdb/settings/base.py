@@ -153,6 +153,7 @@ BOWER_INSTALLED_APPS = (
     'pluralize',
     'jqueryui-touch-punch#4bc0091452',
     'zeroclipboard',
+    'jquery-countTo#1.1.0',
 )
 
 MEDIA_URL = '/media/'

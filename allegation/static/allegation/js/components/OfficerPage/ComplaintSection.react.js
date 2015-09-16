@@ -4,6 +4,7 @@ var ComplaintSectionStore = require('../../stores/OfficerPage/ComplaintSectionSt
 var ComplaintListAPI = require('../../utils/ComplaintListAPI');
 var OutcomeFilter = require('../ComplaintList/OutcomeFilter.react');
 var ComplaintList = require('../ComplaintList.react');
+var Counter = require("../Counter.react");
 
 var ComplaintSection = React.createClass({
   getInitialState: function () {
@@ -25,7 +26,7 @@ var ComplaintSection = React.createClass({
         <div className="complaint_list">
         <div className='row'>
           <div className='col-md-2'>
-            <h3 className="margin-top-0">Complaints</h3>
+            <h3 className="margin-top-0">Complaints <Counter to={this.state.complaints.length} /></h3>
           </div>
           <div className='col-md-10 text-right'>
             <OutcomeFilter activeFilter={this.state.activeFilter} analytics={this.state.analytics} />
