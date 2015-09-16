@@ -15,7 +15,12 @@ var OutcomeFilterItem = React.createClass({
     var formattedQuantity = numeral(quantity).format(AppConstants.NUMERAL_FORMAT);
 
     var filterIconClass = ["fa fa-circle", type].join(' ');
-    var filterIcon = <span><i className={filterIconClass}></i>{name} ({formattedQuantity})</span>;
+    if (type != 'all') {
+      var filterIcon = <span><i className={filterIconClass}></i>{name} ({formattedQuantity})</span>;
+    } else {
+      var filterIcon = <span>{name} ({formattedQuantity})</span>
+    }
+
     var activeClass = this.props.active ? 'active' : '';
 
     return (
