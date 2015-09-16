@@ -6,6 +6,7 @@
   "main": "allegation/static/allegation/js/app.js",
   "dependencies": {
     "chart.js": "~1.0.2",
+    "classnames": "^2.1.3",
     "flux": "^2.0.1",
     "jquery": "~2.1.4",
     "keymirror": "~0.1.0",
