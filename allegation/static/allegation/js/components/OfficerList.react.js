@@ -1,5 +1,5 @@
-var HOST = 'http://localhost:8000';
 var React = require('react');
+var classNames = require('classnames');
 
 var Filters = require('./Filters.react');
 var OfficerActions = require('../actions/OfficerActions');
@@ -31,7 +31,8 @@ var OfficerList = React.createClass({
       active_officers: [],
       overview: [],
       current_view: 0,
-      embedding: false
+      embedding: false,
+      filtered: false
     };
   },
 
@@ -267,6 +268,10 @@ var OfficerList = React.createClass({
       );
     }
 
+    var sliderClassName = classNames('col-md-12', 'overview-container', {
+      'filtered': this.state.filtered
+    });
+
     return (
       <div id="officer_list">
         <div className='row'>
@@ -275,7 +280,7 @@ var OfficerList = React.createClass({
           </div>
         </div>
         <div className="row">
-          <div className="col-md-12 overview-container">
+          <div className={sliderClassName}>
             <div className="overview-box">
               {overview}
               <div className="clearfix"></div>
