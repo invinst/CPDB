@@ -15,7 +15,7 @@ var SearchSection = React.createClass({
 
   render: function() {
     return (
-      <div>Search here we come</div>
+      <div>Anything changes?</div>
     )
   }
 });

@@ -34,12 +34,12 @@ var ContentStore = assign({}, EventEmitter.prototype, {
 
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
-    case AppConstants.SET_ACTIVE_NAV_ITEM:
-      ContentStore.changePageContent(action.activeItem);
-      break;
+  case AppConstants.SET_ACTIVE_NAV_ITEM:
+    ContentStore.changePageContent(action.activeItem);
+    break;
 
-    default:
-      break;
+  default:
+    break;
   }
 });
 

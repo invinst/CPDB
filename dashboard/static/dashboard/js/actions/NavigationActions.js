@@ -6,7 +6,7 @@ var NavigationActions = {
     AppDispatcher.dispatch({
       actionType: AppConstants.SET_ACTIVE_NAV_ITEM,
       activeItem: activeItem
-    })
+    });
   }
 };
 

@@ -34,7 +34,7 @@
   },
   "scripts": {
     "start": "watchify -o allegation/static/allegation/js/bundle.js -v -d allegation/static/allegation/js/app.js",
-    "start_admin": "watchify -o dadashboard/static/dashboard/js/bundle.js -v -d dashboard/static/dashboard/js/app.js",
+    "start_admin": "watchify -o dashboard/static/dashboard/js/bundle.js -v -d dashboard/static/dashboard/js/app.js",
     "build": "browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > allegation/static/allegation/js/bundle.min.js",
     "build_admin": "browserify dashboard/static/dashboard/js/app.js -t [envify --NODE_ENV production] | uglifyjs -cm > dashboard/static/dashboard/js/bundle.min.js",
     "circleci": "browserify allegation/static/allegation/js/app.js > allegation/static/allegation/js/bundle.js",

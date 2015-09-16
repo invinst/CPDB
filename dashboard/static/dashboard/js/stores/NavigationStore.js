@@ -35,12 +35,12 @@ var NavigationStore = assign({}, EventEmitter.prototype, {
 
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
-    case AppConstants.SET_ACTIVE_NAV_ITEM:
-      NavigationStore.setActiveItem(action.activeItem);
-      break;
+  case AppConstants.SET_ACTIVE_NAV_ITEM:
+    NavigationStore.setActiveItem(action.activeItem);
+    break;
 
-    default:
-      break;
+  default:
+    break;
   }
 });
 
