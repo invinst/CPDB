@@ -10,6 +10,7 @@ var Counter = React.createClass({
     $(this.getDOMNode()).countTo({
       from: this.from,
       to: this.props.to,
+      refreshInterval: 20,
       formatter: function (value, options) {
         return numeral(value).format(AppConstants.NUMERAL_FORMAT);
       }
