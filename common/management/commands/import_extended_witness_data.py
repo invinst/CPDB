@@ -22,51 +22,32 @@ class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument('--file')
 
-    def get_witness(self, **kwargs):
-        try:
-            return ComplainingWitness.objects.get(**kwargs)
-        except ComplainingWitness.DoesNotExist:
-            self.counters['not_found'] += 1
-            return False
-        except ComplainingWitness.MultipleObjectsReturned:
-            self.counters['multiple'] += 1
-            return False
+
 
     def handle(self, *args, **options):
         with open(options['file']) as f:
             reader = csv.reader(f)
+            ComplainingWitness.objects.all().delete()
 
-            crid = False
             for row in reader:
                 if self.counters['row'] % 3 == 1:
                     crid = row[CRID_COL]
                 if self.counters['row'] % 3 == 2:
                     gender = row[GENDER_COL]
                     race = row[RACE_COL]
-                    age = row[AGE_COL] or 0
-                witness = False
-                if self.counters['row'] % 3 == 0 and crid:
                     try:
-                        witness = self.get_witness(crid=crid, race=race)
-                        if not witness:
-                            witness = self.get_witness(crid=crid)
-                            if not witness:
-                                witness = ComplainingWitness.objects.create(
-                                    crid=crid,
-                                    race=race,
-                                    age=age,
-                                    gender=gender
-                                )
-                    finally:
-                        if witness:
-                            witness.race = race
-                            try:
-                                witness.age = int(age)
-                            except ValueError:
-                                witness.age = 0
+                        age = int(row[AGE_COL])
+                    except ValueError:
+                        age = None
 
-                            witness.gender = gender
-                            witness.save()
-                            self.counters['updated'] += 1
+                if self.counters['row'] % 3 == 0 and crid:
+                    ComplainingWitness.objects.create(
+                        crid=crid,
+                        race=race,
+                        age=age,
+                        gender=gender
+                    )
+
+                    self.counters['updated'] += 1
                 self.counters['row'] += 1
             print(self.counters)
