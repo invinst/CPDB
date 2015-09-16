@@ -117,7 +117,7 @@ Investigator"""
 
             sheet.write(row_count, 7, allegation.recc_finding)
             sheet.write(row_count, 8, allegation.recc_outcome)
-            sheet.write(row_count, 0, allegation.final_finding)
+            sheet.write(row_count, 9, allegation.final_finding)
             sheet.write(row_count, 10, allegation.final_outcome)
             sheet.write(row_count, 11, FINDINGS_DICT.get(allegation.final_finding))
             sheet.write(row_count, 12, OUTCOME_DICT.get(allegation.final_outcome))
