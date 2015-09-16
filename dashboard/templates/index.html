@@ -7,7 +7,7 @@
     {% compress css %}
         <link rel='stylesheet' type='text/css' href='{% static 'bootstrap/dist/css/bootstrap.min.css' %}'/>
         <link rel="stylesheet" type="text/css" href="{% static 'components-font-awesome/css/font-awesome.min.css' %}"/>
-        <link type='text/sass' rel='stylesheet' href='{% static 'admin/sass/style.sass' %}' media='all'>
+        <link type='text/sass' rel='stylesheet' href='{% static 'dashboard/sass/style.sass' %}' media='all'>
     {% endcompress %}
 </head>
 <body>
@@ -29,7 +29,8 @@
               <div id="period">
               </div>
           </div>
-          <h1>Overview</h1>
+          <div id='page-title'>
+          </div>
       </div>
   {% endblock %}
 </header>
@@ -53,7 +54,7 @@
       type='text/css'>
 <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
 {% compress js %}
-    <script src='{% static "admin/js/bundle.js" %}'></script>
+    <script src='{% static "dashboard/js/bundle.js" %}'></script>
 {% endcompress %}
 
 </body>

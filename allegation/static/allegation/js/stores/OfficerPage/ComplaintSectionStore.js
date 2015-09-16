@@ -1,6 +1,5 @@
 var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var AppConstants = require('../../constants/AppConstants');
-var MapConstants = require('../../constants/MapConstants');
 var RelatedOfficersStore = require('./RelatedOfficersStore');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
@@ -21,7 +20,7 @@ function intersectedWith(activeOfficers) {
     var officers = _.union(involvedOfficers, witnessOfficers);
 
     return !_(officers).intersection(activeOfficers).isEmpty();
-  }
+  };
 }
 
 function hasOutcome(outcome) {
@@ -29,7 +28,7 @@ function hasOutcome(outcome) {
     if (outcome == 'all') return true;
     if (outcome == 'disciplined') return (complaint.allegation.final_outcome_class == 'disciplined');
     return finalOutcome(complaint) == AppConstants.FILTERS[outcome];
-  }
+  };
 }
 
 function getComplaints(complaints, activeOfficers, activeFilter) {
@@ -37,7 +36,7 @@ function getComplaints(complaints, activeOfficers, activeFilter) {
     complaints = _(complaints).filter(intersectedWith(activeOfficers)).value();
   }
 
-  return _(complaints).filter(hasOutcome(activeFilter)).value()
+  return _(complaints).filter(hasOutcome(activeFilter)).value();
 }
 
 function finalOutcome(complaint) {
@@ -51,7 +50,7 @@ function finalOutcome(complaint) {
 }
 
 function isDisciplined(complaint) {
-  return complaint.allegation.final_outcome_class == 'disciplined'
+  return complaint.allegation.final_outcome_class == 'disciplined';
 }
 
 function analyzeComplaints(complaints) {
@@ -66,6 +65,7 @@ function updateComplaints(activeFilter) {
   var activeOfficers = RelatedOfficersStore.getState()['activeOfficers'];
   var activeFilter = _state['activeFilter'] = activeFilter || 'all';
   var rawComplaints = _state['rawComplaints'];
+
   _state['complaints'] = getComplaints(rawComplaints, activeOfficers, activeFilter);
 }
 
@@ -99,7 +99,7 @@ AppDispatcher.register(function(action) {
     updateComplaints(action.filter);
     break;
 
-  case MapConstants.SET_ACTIVE_OFFICER:
+  case AppConstants.SET_ACTIVE_OFFICER:
     AppDispatcher.waitFor([RelatedOfficersStore.dispatchEvents]);
     updateComplaints();
     _state['analytics'] = analyzeComplaints(_state['complaints']);

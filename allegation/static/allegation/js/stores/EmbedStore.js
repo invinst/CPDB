@@ -10,7 +10,7 @@
  */
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
-var MapConstants = require('../constants/MapConstants');
+var AppConstants = require('../constants/AppConstants');
 var assign = require('object-assign');
 
 
@@ -43,11 +43,11 @@ module.exports = EmbedStore;
 // Register callback to handle all updates
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
-    case MapConstants.ENTER_EMBED_MODE:
+    case AppConstants.ENTER_EMBED_MODE:
       EmbedStore.emitEnter();
       break;
 
-    case MapConstants.LEAVE_EMBED_MODE:
+    case AppConstants.LEAVE_EMBED_MODE:
       EmbedStore.emitLeave();
       break;
 

@@ -122,7 +122,7 @@
     },
     "numeral": {
       "version": "1.5.3",
-      "from": "numeral@*",
+      "from": "https://registry.npmjs.org/numeral/-/numeral-1.5.3.tgz",
       "resolved": "https://registry.npmjs.org/numeral/-/numeral-1.5.3.tgz"
     },
     "object-assign": {

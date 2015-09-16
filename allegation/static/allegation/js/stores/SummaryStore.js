@@ -11,7 +11,7 @@
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
-var MapConstants = require('../constants/MapConstants');
+var AppConstants = require('../constants/AppConstants');
 var assign = require('object-assign');
 var FilterStore = require('./FilterStore');
 var CHANGE_EVENT = 'change';
@@ -90,13 +90,13 @@ var SummaryStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function (action) {
 
   switch (action.actionType) {
-    case MapConstants.MAP_REPLACE_FILTERS:
-    case MapConstants.MAP_CHANGE_FILTER:
-    case MapConstants.MAP_ADD_FILTER:
+    case AppConstants.MAP_REPLACE_FILTERS:
+    case AppConstants.MAP_CHANGE_FILTER:
+    case AppConstants.MAP_ADD_FILTER:
       SummaryStore.update();
       break;
 
-    case MapConstants.SET_SUMMARY:
+    case AppConstants.SET_SUMMARY:
       SummaryStore.set('current', action.type);
       SummaryStore.emitSummaryChange();
       break;

@@ -8,7 +8,7 @@ var EmbedMixin = require('./Embed/Mixin.react');
 var CheckMark = require('./Officer/CheckMark.react');
 
 var OfficerPresenter = require('../presenters/OfficerPresenter');
-
+var $ = require('jquery');
 var pluralize = require('pluralize');
 
 var Officer = React.createClass({

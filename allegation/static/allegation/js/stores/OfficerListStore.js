@@ -11,12 +11,11 @@
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
-var MapConstants = require('../constants/MapConstants');
+var AppConstants = require('../constants/AppConstants');
 var assign = require('object-assign');
 var FilterStore = require('./FilterStore');
 var CHANGE_EVENT = 'change';
 var SUMMARY_CHANGE = 'summary-change';
-var SET_ACTIVE_OFFICER = 'set-active-officer';
 var firstCall = true;
 var ajax = null;
 var _state = {
@@ -85,9 +84,9 @@ var OfficerListStore = assign({}, EventEmitter.prototype, {
 // Register callback to handle all updates
 OfficerListStore.dispatchEvent = AppDispatcher.register(function (action) {
   switch (action.actionType) {
-    case MapConstants.MAP_REPLACE_FILTERS:
-    case MapConstants.MAP_CHANGE_FILTER:
-    case MapConstants.MAP_ADD_FILTER:
+    case AppConstants.MAP_REPLACE_FILTERS:
+    case AppConstants.MAP_CHANGE_FILTER:
+    case AppConstants.MAP_ADD_FILTER:
       if (!firstCall) {
         OfficerListStore.set('active_officers', []);
       }
@@ -95,17 +94,17 @@ OfficerListStore.dispatchEvent = AppDispatcher.register(function (action) {
       OfficerListStore.update();
       break;
 
-    case MapConstants.OFFICER_VIEW_MORE:
+    case AppConstants.OFFICER_VIEW_MORE:
       OfficerListStore.set('show_more', !_state['show_more']);
       break;
 
-    case MapConstants.SET_OFFICER_LIST_FILTER:
+    case AppConstants.SET_OFFICER_LIST_FILTER:
       _state.complaints_count_start = action.start;
       _state.complaints_count_end = action.end;
       OfficerListStore.update();
       break;
 
-    case MapConstants.SET_ACTIVE_OFFICER:
+    case AppConstants.SET_ACTIVE_OFFICER:
       var index = _state.active_officers.indexOf(action.officer.id);
       if (index == -1) {
         _state.active_officers.push(action.officer.id);

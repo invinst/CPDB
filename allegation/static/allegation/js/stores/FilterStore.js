@@ -11,7 +11,7 @@
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
-var MapConstants = require('../constants/MapConstants');
+var AppConstants = require('../constants/AppConstants');
 var assign = require('object-assign');
 var CHANGE_EVENT = 'change';
 var CREATE_EVENT = 'change';
@@ -164,25 +164,25 @@ var FilterStore = assign({}, EventEmitter.prototype, {
 // Register callback to handle all updates
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
-    case MapConstants.MAP_REPLACE_FILTERS:
+    case AppConstants.MAP_REPLACE_FILTERS:
       FilterStore.replaceFilters(action.filters);
       break;
 
-    case MapConstants.MAP_CHANGE_FILTER:
+    case AppConstants.MAP_CHANGE_FILTER:
       update(action.key, action.value);
       FilterStore.emitChange();
       break;
 
-    case MapConstants.MAP_ADD_FILTER:
+    case AppConstants.MAP_ADD_FILTER:
       create(action.key, action.value);
       FilterStore.emitCreate();
       break;
 
-    case MapConstants.ENTER_EMBED_MODE:
+    case AppConstants.ENTER_EMBED_MODE:
       FilterStore.emitDisable();
       break;
 
-    case MapConstants.LEAVE_EMBED_MODE:
+    case AppConstants.LEAVE_EMBED_MODE:
       FilterStore.emitEnable();
       break;
 

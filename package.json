@@ -27,14 +27,14 @@
   "devDependencies": {
     "browserify": "^6.2.0",
     "envify": "^3.0.0",
-    "jest-cli": "^0.4.3",
+    "jest-cli": "^0.5.5",
     "reactify": "^0.15.2",
     "uglify-js": "~2.4.15",
     "watchify": "^2.1.1"
   },
   "scripts": {
     "start": "watchify -o allegation/static/allegation/js/bundle.js -v -d allegation/static/allegation/js/app.js",
-    "start_admin": "watchify -o dashboard/static/dashboard/js/bundle.js -v -d dashboard/static/dashboard/js/app.js",
+    "start_admin": "watchify -o dadashboard/static/dashboard/js/bundle.js -v -d dashboard/static/dashboard/js/app.js",
     "build": "browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > allegation/static/allegation/js/bundle.min.js",
     "build_admin": "browserify dashboard/static/dashboard/js/app.js -t [envify --NODE_ENV production] | uglifyjs -cm > dashboard/static/dashboard/js/bundle.min.js",
     "circleci": "browserify allegation/static/allegation/js/app.js > allegation/static/allegation/js/bundle.js",
@@ -48,7 +48,6 @@
     ]
   },
   "jest": {
-    "rootDir": "allegation/static/allegation/js",
-    "scriptPreprocessor": "<rootDir>/test-preprocessor.js"
-  }
+    "scriptPreprocessor": "allegation/static/allegation/js/test-preprocessor.js",
+    "testPathIgnorePatterns": ["/node_modules/", "<rootDir>/static/"] }
 }
