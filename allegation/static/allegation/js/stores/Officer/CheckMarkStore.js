@@ -45,4 +45,6 @@ AppDispatcher.register(function (action) {
   CheckMarkStore.emitChange();
 });
 
+CheckMarkStore.setMaxListeners(0);
+
 module.exports = CheckMarkStore;

@@ -42,7 +42,7 @@ var ComplaintSection = React.createClass({
       <div className="complaint_list" onScroll={this.onScroll}>
         <div className='row'>
           <div className='col-md-2'>
-            <h3 className="margin-top-0">Complaints <Counter to={analytics.All} /></h3>
+            <h3 className="margin-top-0">Complaints (<Counter to={analytics.All} />)</h3>
           </div>
           <div className='col-md-10 text-right'>
             <OutcomeFilter loading={loading} activeFilter={activeFilter} analytics={analytics}/>
