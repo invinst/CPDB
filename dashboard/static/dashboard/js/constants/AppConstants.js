@@ -18,5 +18,5 @@ module.exports = {
     { page: '/officer', icon: 'user', text: 'Officer Profiles' }
   ],
 
-  SEARCH_TRAFFIC_ENDPOINT: '/api/admin/search-traffic/',
+  SEARCH_TRAFFIC_ENDPOINT: '/api/dashboard/search-traffic/',
 };

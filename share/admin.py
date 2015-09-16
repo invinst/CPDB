@@ -11,7 +11,7 @@ class ShareSessionAdmin(admin.ModelAdmin):
     list_display = ['hash_id', 'session_type', 'session_title', 'search_tags', 'shared_from', 'shared_to']
 
     def format_as_session_link(self, obj):
-        return format_html("<a href='/admin/share/session/{}'>{}</a>", obj.id, obj.hash_id)
+        return format_html("<a href='/dashboard/share/session/{}'>{}</a>", obj.id, obj.hash_id)
 
     def shared_from(self, obj):
         if obj.share_from:

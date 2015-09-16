@@ -5,7 +5,6 @@ from django.views.decorators.cache import cache_page
 from allegation.views import AllegationAPIView, AreaAPIView, AllegationClusterApiView
 from allegation.views import AllegationChartApiView, AllegationCSVView, InvestigationAPIView
 from allegation.views import AllegationSummaryApiView, OfficerListAPIView
-from allegation.views.admin.search_traffic import AdminSearchTrafficApi
 from allegation.views.allegation_analysis_api_view import AllegationAnalysisAPIView
 from allegation.views.allegation_download_view import AllegationDownloadView
 from allegation.views.allegation_sunburst_view import AllegationSunburstView
@@ -27,5 +26,4 @@ urlpatterns = [
     url(r'^api/investigation/$', cache_view(InvestigationAPIView.as_view()), name='investigation'),
     url(r'^allegations/download/', (AllegationDownloadView.as_view()), name='allegation-download'),
     url(r'^api/allegations/sunburst/$', cache_view(AllegationSunburstView.as_view()), name='allegation-api-sunburst'),
-    url(r'^api/admin/search-traffic/$', login_required(AdminSearchTrafficApi.as_view()), name='admin-search-traffic'),
 ]

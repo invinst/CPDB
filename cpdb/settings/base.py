@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'document',
     'share',
     'embed',
+    'dashboard',
 )
 
 MIDDLEWARE_CLASSES = (
