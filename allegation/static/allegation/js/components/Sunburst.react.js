@@ -3,7 +3,8 @@ var EmbedMixin = require('./Embed/Mixin.react');
 var SummaryActions = require('../actions/SummaryActions');
 var SunburstStore = require("../stores/SunburstStore");
 var FilterStore = require("../stores/FilterStore");
-
+var numeral = require('numeral');
+var AppConstants = require('../constants/AppConstants');
 
 var width = 390,
   height = 390,
@@ -298,7 +299,7 @@ var Sunburst = React.createClass({
     return (
       <tr key={node.name} className="sunburst-legend" onClick={this.select.bind(this, node)}>
         <td className="color"><span className="fa fa-stop" style={style}></span></td>
-        <td className="size">{total}</td>
+        <td className="size">{numeral(total).format(AppConstants.NUMERAL_FORMAT)}</td>
         <td className="name">{node.name}</td>
       </tr>
     );
@@ -328,7 +329,7 @@ var Sunburst = React.createClass({
     }
     return (
       <li className={className} onClick={this.select.bind(this, node)}>
-        {total} <br />
+        {numeral(total).format(AppConstants.NUMERAL_FORMAT)} <br />
         <span className="name">{node.name}</span>
       </li>
     )
@@ -388,7 +389,7 @@ var Sunburst = React.createClass({
         <div className="col-md-5">
           <div id="sunburst-legend">
             <div className="root">
-              {total} {hovering.name}
+              {numeral(total).format(AppConstants.NUMERAL_FORMAT)} {hovering.name}
             </div>
             <div className="percent">
               {percentStatement}

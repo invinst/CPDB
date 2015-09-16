@@ -4,6 +4,8 @@ var Filters = require('./Filters.react');
 var MapStore = require('../stores/MapStore');
 var SummaryActions = require('../actions/SummaryActions');
 var FilterStore = require('../stores/FilterStore');
+var AppConstants = require('../constants/AppConstants');
+var numeral = require('numeral');
 
 function getChildRowState() {
   return {
@@ -51,7 +53,7 @@ var SummaryChildRow = React.createClass({
     return (
       <div className="row summary-child-row">
         <div className="col-md-2 count">
-          {this.props.subcategory.count}
+          {numeral(this.props.subcategory.count).format(AppConstants.NUMERAL_FORMAT)}
         </div>
         <div className="col-md-10 category-name-wrapper">
           <a href="#" className={className} onClick={this.onClick}>{this.props.subcategory.name}</a>

@@ -5,6 +5,8 @@ var MapStore = require('../stores/MapStore');
 var FilterStore = require('../stores/FilterStore');
 var SummaryStore = require('../stores/SummaryStore');
 var SummaryActions = require('../actions/SummaryActions');
+var AppConstants = require('../constants/AppConstants');
+var numeral = require('numeral');
 
 function getSummaryRowState() {
   return {
@@ -79,9 +81,6 @@ var SummaryRow = React.createClass({
       )
     }
 
-    var count = parseInt( category.count ).toLocaleString();
-    var total = parseInt( category.total ).toLocaleString();
-
     return (
       <div className="row category main-category" onClickCapture={this.onClick}>
         <div className='col-md-5'>
@@ -95,11 +94,11 @@ var SummaryRow = React.createClass({
         <div className={mainCategoryClassName}>
           <div className={parentClassName}>
             <div className='col-md-2 category-anlytics'>
-              <span className='count'>{count}</span>
-              </div>
-              <div className='col-md-2 category-anlytics'>
-              <span className='total'>{total}</span>
-                </div>
+              <span className='count'>{numeral(category.count).format(AppConstants.NUMERAL_FORMAT)}</span>
+            </div>
+            <div className='col-md-2 category-anlytics'>
+              <span className='total'>{numeral(category.total).format(AppConstants.NUMERAL_FORMAT)}</span>
+            </div>
             <div className='col-md-8 relative category-name-wrapper'>
               {arrow}
               <a href='#' className={className}>{category.name}</a>
