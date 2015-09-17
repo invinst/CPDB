@@ -1,8 +1,9 @@
 'use strict';
 
 jest.dontMock('../PageTitleStore');
-jest.dontMock('object-assign');
+jest.dontMock('lodash');
 jest.dontMock('../../constants/AppConstants');
+jest.dontMock('../Base');
 
 describe('PageTitleStore', function() {
   var AppDispatcher;

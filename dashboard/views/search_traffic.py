@@ -6,6 +6,7 @@ from django.db import connection
 from django.db.models.aggregates import Count
 from django.http.response import HttpResponse
 from django.views.generic.base import View
+
 from search.models.suggestion import SuggestionLog
 
 

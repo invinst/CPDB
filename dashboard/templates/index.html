@@ -9,6 +9,7 @@
         <link rel="stylesheet" type="text/css" href="{% static 'components-font-awesome/css/font-awesome.min.css' %}"/>
         <link type='text/sass' rel='stylesheet' href="{% static 'dashboard/sass/style.sass' %}" media='all'>
     {% endcompress %}
+    <link href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.css" rel="stylesheet" />
 </head>
 <body>
   {% block content %}
@@ -40,7 +41,6 @@
 
     <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700|Vollkorn:400italic,400' rel='stylesheet'
           type='text/css'>
-    <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
     {% compress js %}
         <script src='{% static "dashboard/js/bundle.js" %}'></script>
     {% endcompress %}

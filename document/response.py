@@ -6,8 +6,11 @@ from common.json_serializer import JSONSerializer
 class HttpResponseBadRequest(BaseHttpResponseBadRequest):
     def __init__(self, form=None, content='', *args, **kwargs):
         if form:
-            content = JSONSerializer().serialize(form.errors)
-        super(HttpResponseBadRequest, self).__init__(content, *args, **kwargs)
+            content = {
+                'errors': form.errors
+            }
+            content = JSONSerializer().serialize(content)
+        super(HttpResponseBadRequest, self).__init__(content, content_type="application/json", *args, **kwargs)
 
 
 class JsonResponse(HttpResponse):

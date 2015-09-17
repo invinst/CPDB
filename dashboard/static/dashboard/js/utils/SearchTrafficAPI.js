@@ -1,6 +1,6 @@
 var AppConstants = require('../constants/AppConstants');
 var SearchTrafficServerActions = require('../actions/SearchTrafficServerActions');
-
+global.jQuery = require('jquery');
 
 var ajax = null;
 
@@ -11,7 +11,7 @@ var SearchTrafficAPI = {
       ajax.abort();
     }
 
-    ajax = $.getJSON(AppConstants.SEARCH_TRAFFIC_ENDPOINT, function(data) {
+    ajax = jQuery.getJSON(AppConstants.SEARCH_TRAFFIC_ENDPOINT, function(data) {
       SearchTrafficServerActions.receivedSearchTrafficData(data);
     });
   }

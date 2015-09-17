@@ -1,5 +1,6 @@
 from common.tests.core import BaseLiveTestCase
-from search.models.suggestion import FilterLog
+from search.factories import SuggestionLogFactory, AliasFactory
+from search.models.alias import Alias
 
 
 class SearchResultTestCase(BaseLiveTestCase):
@@ -7,18 +8,48 @@ class SearchResultTestCase(BaseLiveTestCase):
         self.login_user()
         self.visit('/admin/')
 
-    def test_see_search_result_tab(self):
-        self.should_see_text('Search Results')
-        self.element_by_tagname_and_text('span', 'Search Results').click()
-        self.button('Add Alias').should.be.ok
-        # self.find("#results").should.be.ok
+    def tearDown(self):
+        Alias.objects.all().delete()
+        super(SearchResultTestCase, self).tearDown()
 
-    # def test_see_empty_search_results(self):
-    #     self.link('Search Result').click()
-    #     self.find("#results").should.be.ok
-    #
-    # def test_see_search_results(self):
-    #     FilterLogFactory()
-    #     self.link('Search Result').click()
-    #     results = self.find_all("#results .result")
-    #     results.shouldnt.equal([])
+    def go_to_search_result(self):
+        self.element_by_tagname_and_text('span', 'Search Results').click()
+
+    def test_see_search_result_tab(self):
+        log = SuggestionLogFactory()
+
+        self.should_see_text('Search Results')
+        self.go_to_search_result()
+        self.button('Add Alias').should.be.ok
+        self.find("#queries").should.be.ok
+        results = self.find_all("#queries .query")
+
+        len(results).shouldnt.equal(0)
+        self.should_see_text(log.query)
+        self.should_see_text(log.num_suggestions)
+        self.should_see_text(1)
+
+    def test_add_alias(self):
+        self.try_to_create_new_alias()
+
+        self.until(lambda: self.should_see_text("Add new alias successfully"))
+        self.find(".modal").is_displayed().should.be.false
+
+        Alias.objects.filter(alias="alias", target="target").count().should.equal(1)
+
+    def test_existing_alias(self):
+        alias = AliasFactory()
+        self.try_to_create_new_alias(alias.alias, alias.target)
+        self.until(lambda: self.should_see_text("Alias with this Alias and Target already exists"))
+        self.find(".modal").is_displayed().should.be.false
+
+
+    def try_to_create_new_alias(self, alias='alias', target='target'):
+        self.go_to_search_result()
+        self.button('Add Alias').click()
+        self.until(lambda: self.find(".modal").is_displayed())
+        self.find(".modal").text.should.contain("Add Alias")
+
+        self.find("input[name='alias']").send_keys(alias)
+        self.find("input[name='target']").send_keys(target)
+        self.button("SUBMIT").click()

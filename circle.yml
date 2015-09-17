@@ -13,6 +13,7 @@ dependencies:
   post:
     - npm install -g bower
     - npm run circleci
+    - npm run circleci_admin
   override:
     - pip install -r requirements.txt
     - pyenv local 2.7.9
