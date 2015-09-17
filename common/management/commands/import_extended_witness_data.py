@@ -30,9 +30,10 @@ class Command(BaseCommand):
             ComplainingWitness.objects.all().delete()
 
             for row in reader:
-                if self.counters['row'] % 3 == 1:
+                if len(row[CRID_COL]) > 0:
                     crid = row[CRID_COL]
-                if self.counters['row'] % 3 == 2:
+
+                if row[GENDER_COL] or row[RACE_COL] or row[AGE_COL]:
                     gender = row[GENDER_COL]
                     race = row[RACE_COL]
                     try:
@@ -40,13 +41,13 @@ class Command(BaseCommand):
                     except ValueError:
                         age = None
 
-                if self.counters['row'] % 3 == 0 and crid:
-                    ComplainingWitness.objects.create(
-                        crid=crid,
-                        race=race,
-                        age=age,
-                        gender=gender
-                    )
+                    if crid:
+                        ComplainingWitness.objects.create(
+                            crid=crid,
+                            race=race,
+                            age=age,
+                            gender=gender
+                        )
 
                     self.counters['updated'] += 1
                 self.counters['row'] += 1
