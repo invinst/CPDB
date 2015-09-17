@@ -16,7 +16,7 @@ var PageTitle = React.createClass({
 
   render: function() {
     return (
-      <div>
+      <div className='pull-left'>
         <h1>{this.state.activeItemText}</h1>
       </div>
     )

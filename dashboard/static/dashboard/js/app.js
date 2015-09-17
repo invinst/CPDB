@@ -7,17 +7,9 @@ var PageTitle = require('./components/PageTitle.react');
 var contentEl = document.getElementById('content');
 if(contentEl) {
     React.render(
-        <Content />,
-        contentEl
+      <Content />,
+      contentEl
     );
-}
-
-var pageTitle = document.getElementById('page-title');
-if(pageTitle) {
-  React.render(
-    <PageTitle />,
-    pageTitle
-  );
 }
 
 var navigationEl = document.getElementById('navigation-menu');

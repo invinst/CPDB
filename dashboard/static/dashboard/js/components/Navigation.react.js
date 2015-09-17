@@ -28,7 +28,7 @@ var Navigation = React.createClass({
 
   render: function() {
     return (
-      <ul className='list-unstyled'>
+      <ul className='list-unstyled col-md-12 col-xs-12'>
         { this.renderNavigation() }
       </ul>
     )

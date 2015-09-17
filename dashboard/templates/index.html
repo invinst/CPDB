@@ -5,57 +5,45 @@
     <title>CPDB Analytics</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     {% compress css %}
-        <link rel='stylesheet' type='text/css' href='{% static 'bootstrap/dist/css/bootstrap.min.css' %}'/>
+        <link rel='stylesheet' type='text/css' href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}"/>
         <link rel="stylesheet" type="text/css" href="{% static 'components-font-awesome/css/font-awesome.min.css' %}"/>
-        <link type='text/sass' rel='stylesheet' href='{% static 'dashboard/sass/style.sass' %}' media='all'>
+        <link type='text/sass' rel='stylesheet' href="{% static 'dashboard/sass/style.sass' %}" media='all'>
     {% endcompress %}
 </head>
 <body>
-<header class='row'>
-  {% block header %}
-      <div class='col-sm-3 left-column col-xs-6 no-padding'>
-          <div class='row'>
-              <div class='col-xs-6 '>
-                  <img src="{% static 'img/logo.png' %}" alt="CPDB"/>
-              </div>
-              <div class='col-xs-6 welcome'>
-                  <div class="col-xs-4 col-sm-12">Hello</div>
-                  <div class="col-xs-8 col-sm-12">{{ request.user.get_full_name }}</div>
-              </div>
-          </div>
-      </div>
-      <div class='col-sm-9 col-xs-6 no-padding title'>
-          <div class='pull-right'>
-              <div id="period">
-              </div>
-          </div>
-          <div id='page-title'>
-          </div>
-      </div>
-  {% endblock %}
-</header>
-
-{% block content %}
+  {% block content %}
+  <div class='container-fluid'>
     <div class='row content'>
-      {% block left_col %}
-          <div class='col-sm-3 left-column left-menu no-padding'>
-              <div id='navigation-menu'>
-              </div>
-          </div>
-      {% endblock %}
-      {% block right_col %}
-          <div class='col-sm-9 margin-top'>
-              <div id='content'></div>
-          </div>
-      {% endblock %}
+        {% block left %}
+        <div class='col-sm-3 left-column left-menu'>
+            <div class='row top-nav'>
+                <div class='col-xs-6 logo'>
+                    <img src="{% static 'img/logo.png' %}" alt="CPDB"/>
+                </div>
+                <div class='col-xs-6 welcome'>
+                    <div class="col-xs-4 col-sm-12">Hello</div>
+                    <div class="col-xs-8 col-sm-12">{{ request.user.get_full_name }}</div>
+                </div>
+            </div>
+            <div id='navigation-menu' class="row">
+            </div>
+        </div>
+        {% endblock %}
+        {% block right %}
+        <div class='col-sm-9'>
+            <div id='content'></div>
+        </div>
+        {% endblock %}
     </div>
-{% endblock %}
-<link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700|Vollkorn:400italic,400' rel='stylesheet'
-      type='text/css'>
-<script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
-{% compress js %}
-    <script src='{% static "dashboard/js/bundle.js" %}'></script>
-{% endcompress %}
+  </div>
+  {% endblock %}
+
+    <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700|Vollkorn:400italic,400' rel='stylesheet'
+          type='text/css'>
+    <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+    {% compress js %}
+        <script src='{% static "dashboard/js/bundle.js" %}'></script>
+    {% endcompress %}
 
 </body>
 </html>

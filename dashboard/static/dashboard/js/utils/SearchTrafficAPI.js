@@ -13,7 +13,7 @@ var SearchTrafficAPI = {
 
     ajax = $.getJSON(AppConstants.SEARCH_TRAFFIC_ENDPOINT, function(data) {
       SearchTrafficServerActions.receivedSearchTrafficData(data);
-    })
+    });
   }
 };
 
