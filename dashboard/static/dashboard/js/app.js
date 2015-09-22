@@ -2,7 +2,6 @@ var React = require('react');
 var Content = require('./components/Content.react');
 var Navigation = require('./components/Navigation.react');
 var Period = require('./components/Period.react');
-var PageTitle = require('./components/PageTitle.react');
 
 var contentEl = document.getElementById('content');
 if(contentEl) {

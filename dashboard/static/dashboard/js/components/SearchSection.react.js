@@ -1,17 +1,18 @@
 var React = require('react');
 var QueryList = require('./SearchSection/QueryList.react');
 var QueryListFilter = require('./SearchSection/QueryListFilter.react');
+var Search = require('./SearchSection/Search.react');
 var AddAliasModal = require('./SearchSection/AddAliasModal.react');
-var QueriesDataAPI = require('../utils/QueriesDataAPI');
-var AddAliasActions = require('../actions/SearchSection/AddAliasActions');
+var SearchResultsAPI = require('../utils/SearchResultsAPI');
+var AddAliasModalActions = require('../actions/SearchSection/AddAliasModalActions');
 
 var SearchSection = React.createClass({
   componentDidMount: function() {
-    QueriesDataAPI.get();
+    SearchResultsAPI.get();
   },
 
   showAliasModal: function () {
-    AddAliasActions.show();
+    AddAliasModalActions.show();
   },
 
   render: function() {
@@ -33,6 +34,7 @@ var SearchSection = React.createClass({
         <div>
           <div className='row'>
             <QueryListFilter />
+            <Search />
           </div>
           <div className='row'>
             <div id='queries' className='col-md-12'>

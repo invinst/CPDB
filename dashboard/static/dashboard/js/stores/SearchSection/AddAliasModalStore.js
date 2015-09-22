@@ -25,11 +25,12 @@ var AddAliasModalStore = _.assign(Base(_state), {
 AppDispatcher.register(function(action) {
   switch (action.actionType) {
   case AppConstants.SHOW_ADD_ALIAS_MODAL:
+    var alias = (action.data && action.data.alias) ? action.data.alias : '';
     AddAliasModalStore.updateState('isOpen', true);
     AddAliasModalStore.updateState('formValid', false);
     AddAliasModalStore.updateState('flashMessage', '');
     AddAliasModalStore.updateState('errorMessages', []);
-    AddAliasModalStore.updateState('alias', '');
+    AddAliasModalStore.updateState('alias', alias);
     AddAliasModalStore.updateState('target', '');
     AddAliasModalStore.emitChange();
     break;

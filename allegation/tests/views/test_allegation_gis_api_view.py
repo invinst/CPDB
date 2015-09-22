@@ -1,6 +1,6 @@
 import json
 
-from allegation.factories import AreaFactory
+from allegation.factories import AreaFactory, AllegationFactory
 from allegation.tests.views.base import AllegationApiTestBase
 from common.models import Area, Allegation
 
@@ -38,6 +38,7 @@ class AllegationGisApiViewTestCase(AllegationApiTestBase):
         num_returned.shouldnt.equal(0)
 
     def test_return_cluster_success_no_points(self):
+        AllegationFactory()
         officer = Allegation.objects.filter(point=None).first().officer
         allegations = self.fetch_gis_allegations(url='/api/allegations/cluster/', officer=officer.id)
         num_returned = len(allegations['features'])

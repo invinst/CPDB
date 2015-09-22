@@ -5,16 +5,16 @@ global.jQuery = require('jquery');
 require('bootstrap');
 require('jquery-validation');
 var AddAliasModalStore = require('../../stores/SearchSection/AddAliasModalStore');
-var AddAliasActions = require('../../actions/SearchSection/AddAliasActions');
+var AddAliasModalActions = require('../../actions/SearchSection/AddAliasModalActions');
 var toastr = require('toastr');
 
 var AddAliasModal = React.createClass(_.assign(Base(AddAliasModalStore), {
   updateValue: function (stateName, e) {
-    AddAliasActions.formDataChange(stateName, e.target.value);
+    AddAliasModalActions.formDataChange(stateName, e.target.value);
   },
 
   createAlias: function () {
-    AddAliasActions.createAlias(this.state.alias, this.state.target);
+    AddAliasModalActions.createAlias(this.state.alias, this.state.target);
   },
 
   render: function() {
@@ -55,7 +55,7 @@ var AddAliasModal = React.createClass(_.assign(Base(AddAliasModalStore), {
   },
 
   hideModal: function () {
-    AddAliasActions.hide();
+    AddAliasModalActions.hide();
   },
 
   toggleModal: function () {
