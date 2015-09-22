@@ -36,6 +36,11 @@ class AllegationSunburstView(AllegationAPIView):
     levels = [{
         'name': 'Unsustained',
         'condition': ~Q(final_finding='SU'),
+        'tagValue': {
+            'label': 'Unsustained',
+            'category': 'final_finding_text',
+            'value': 'unsustained'
+        },
         'children': [{
             'condition': Q(final_finding='DS'),
             'name': 'Discharged',
