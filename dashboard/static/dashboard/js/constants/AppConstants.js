@@ -18,6 +18,9 @@ module.exports = {
   LOAD_MORE_SEARCH_RESULTS_DATA: 13,
   LOCK_SCROLL: 14,
 
+  SEARCH_OFFICER_WITH_QUERY: 15,
+  RECEIVED_OFFICER_LIST: 16,
+
   QUERY_LIST_FILTERS: {
     'all': 'All',
     'fail-attempts': 'Fail attempts',
@@ -38,5 +41,6 @@ module.exports = {
 
   SEARCH_TRAFFIC_API_ENDPOINT: '/api/dashboard/search-traffic/',
   SEARCH_RESULTS_API_ENDPOINT: '/api/dashboard/query-data/',
-  ALIAS_API_ENDPOINT: '/api/dashboard/alias/'
+  ALIAS_API_ENDPOINT: '/api/dashboard/alias/',
+  OFFICER_END_POINT: '/api/dashboard/officer/'
 };

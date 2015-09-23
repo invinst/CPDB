@@ -3,6 +3,7 @@ from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import D
 from django.db import models
 from django.db.models.query_utils import Q
+from allegation.utils.query import OfficerQuery
 
 
 class AllegationQuerySet(models.query.QuerySet):
@@ -87,12 +88,7 @@ class AllegationQuerySet(models.query.QuerySet):
         cond = Q()
 
         for name in names:
-            parts = name.split(' ')
-            if len(parts) > 1:
-                cond = Q(officer__officer_first__istartswith=parts[0])
-                cond = cond | Q(officer__officer_last__istartswith=" ".join(parts[1:]))
-            else:
-                cond = Q(officer__officer_first__istartswith=name) | Q(officer__officer_last__istartswith=name)
+            cond = cond | OfficerQuery.condition_by_name(name, prefix='officer__')
 
         return self.filter(cond)
 
