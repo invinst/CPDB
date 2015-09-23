@@ -1,15 +1,15 @@
 "use strict";
 
-jest.dontMock('../../../constants/MapConstants');
+jest.dontMock('../../../constants/AppConstants');
 jest.dontMock('../ComplaintSectionStore');
 jest.dontMock('object-assign');
+jest.dontMock('lodash');
 
 describe('ComplaintSectionStore', function() {
   var AppDispatcher;
   var callback;
   var ComplaintSectionStore;
   var AppConstants = require('../../../constants/AppConstants');
-  var MapConstants = require('../../../constants/MapConstants');
 
   var data = {
     allegations: [
@@ -64,18 +64,18 @@ describe('ComplaintSectionStore', function() {
     return {
       actionType: AppConstants.OFFICER_COMPLAINT_LIST_RECEIVED_DATA,
       data: returnData
-    }
+    };
   };
 
   var actionSetActiveComplaintListFilter = function(filter_type) {
     return {
       actionType: AppConstants.SET_ACTIVE_COMPLAINT_LIST_FILTER,
       filter: filter_type
-    }
+    };
   };
 
   var actionSetActiveOfficer = {
-    actionType: MapConstants.SET_ACTIVE_OFFICER,
+    actionType: AppConstants.SET_ACTIVE_OFFICER,
     officer: {
       id: 1
     }

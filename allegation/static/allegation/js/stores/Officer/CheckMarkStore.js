@@ -1,7 +1,6 @@
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 var AppConstants = require('../../constants/AppConstants');
-var MapConstants = require('../../constants/MapConstants');
 var AppDispatcher = require('../../dispatcher/AppDispatcher');
 
 var _state = {
@@ -36,7 +35,7 @@ AppDispatcher.register(function (action) {
   case AppConstants.OFFICER_MOUSE_OUT:
       _state.justChange[action.officer.id]= false;
     break;
-  case MapConstants.SET_ACTIVE_OFFICER:
+  case AppConstants.SET_ACTIVE_OFFICER:
      _state.justChange[action.officer.id] = true;
    break;
   default:

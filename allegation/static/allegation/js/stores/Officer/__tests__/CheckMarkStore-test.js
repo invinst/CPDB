@@ -1,7 +1,6 @@
 "use strict";
 
 jest.dontMock('../../../constants/AppConstants');
-jest.dontMock('../../../constants/MapConstants');
 jest.dontMock('../CheckMarkStore');
 jest.dontMock('object-assign');
 
@@ -10,7 +9,6 @@ describe('CheckMarkStore', function() {
   var callback;
   var CheckMarkStore;
   var AppConstants = require('../../../constants/AppConstants');
-  var MapConstants = require('../../../constants/MapConstants');
 
   var actionMouseOut = {
     actionType: AppConstants.OFFICER_MOUSE_OUT,
@@ -18,7 +16,7 @@ describe('CheckMarkStore', function() {
   };
 
   var actionActiveOfficer = {
-    actionType: MapConstants.SET_ACTIVE_OFFICER,
+    actionType: AppConstants.SET_ACTIVE_OFFICER,
     officer: { id: 1 }
   };
 

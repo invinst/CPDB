@@ -11,7 +11,7 @@
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
-var MapConstants = require('../constants/MapConstants');
+var AppConstants = require('../constants/AppConstants');
 var assign = require('object-assign');
 var MapStore = require('../stores/MapStore');
 var OfficerListStore = require('../stores/OfficerListStore');
@@ -49,7 +49,7 @@ var SessionStore = assign({}, EventEmitter.prototype, {
 // Register callback to handle all updates
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
-    case MapConstants.SAVE_SESSION:
+    case AppConstants.SAVE_SESSION:
       SessionStore.saveSession();
       break;
 

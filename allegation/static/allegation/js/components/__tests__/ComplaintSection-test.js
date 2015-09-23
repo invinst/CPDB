@@ -25,6 +25,4 @@ describe('ComplaintList', function () {
     var divs = TestUtils.scryRenderedDOMComponentsWithTag(complaints, 'div');
     expect(divs.length).toBe(1);
   });
-
 });
-

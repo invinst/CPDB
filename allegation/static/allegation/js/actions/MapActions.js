@@ -10,7 +10,7 @@
  */
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
-var MapConstants = require('../constants/MapConstants');
+var AppConstants = require('../constants/AppConstants');
 
 var MapActions = {
 

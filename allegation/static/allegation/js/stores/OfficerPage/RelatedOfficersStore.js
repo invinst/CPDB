@@ -1,6 +1,5 @@
 var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var AppConstants = require('../../constants/AppConstants');
-var MapConstants = require('../../constants/MapConstants');
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 
@@ -30,7 +29,7 @@ var RelatedOfficersStore = assign({}, EventEmitter.prototype, {
 
 RelatedOfficersStore.dispatchEvents = AppDispatcher.register(function(action) {
   switch (action.actionType) {
-  case MapConstants.SET_ACTIVE_OFFICER:
+  case AppConstants.SET_ACTIVE_OFFICER:
     var index = _state.activeOfficers.indexOf(action.officer.id);
 
     if (index == -1) {

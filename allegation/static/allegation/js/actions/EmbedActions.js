@@ -1,16 +1,16 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
-var MapConstants = require('../constants/MapConstants');
+var AppConstants = require('../constants/AppConstants');
 
 var EmbedAction = {
   enterEmbedMode: function() {
     AppDispatcher.dispatch({
-      actionType: MapConstants.ENTER_EMBED_MODE
+      actionType: AppConstants.ENTER_EMBED_MODE
     })
   },
 
   leaveEmbedMode: function() {
     AppDispatcher.dispatch({
-      actionType: MapConstants.LEAVE_EMBED_MODE
+      actionType: AppConstants.LEAVE_EMBED_MODE
     })
   }
 };

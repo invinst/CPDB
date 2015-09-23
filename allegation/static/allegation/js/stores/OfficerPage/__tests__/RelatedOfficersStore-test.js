@@ -1,6 +1,6 @@
 "use strict";
 
-jest.dontMock('../../../constants/MapConstants');
+jest.dontMock('../../../constants/AppConstants');
 jest.dontMock('../RelatedOfficersStore');
 jest.dontMock('object-assign');
 
@@ -8,10 +8,10 @@ describe('RelatedOfficersStore', function() {
   var AppDispatcher;
   var callback;
   var RelatedOfficersStore;
-  var MapConstants = require('../../../constants/MapConstants');
+  var AppConstants = require('../../../constants/AppConstants');
 
   var actionSetActiveOfficer = {
-    actionType: MapConstants.SET_ACTIVE_OFFICER,
+    actionType: AppConstants.SET_ACTIVE_OFFICER,
     officer: {
       id: 1
     } 

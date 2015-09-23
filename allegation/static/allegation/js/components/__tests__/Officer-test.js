@@ -1,7 +1,6 @@
 "use strict";
 
 jest.autoMockOff();
-$ = require('jquery');
 
 describe('Officer', function () {
   var React = require('react/addons');
@@ -14,4 +13,3 @@ describe('Officer', function () {
     expect(TestUtils.isCompositeComponent(officer)).toBeTruthy();
   });
 });
-

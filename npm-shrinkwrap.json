@@ -2,6 +2,11 @@
   "name": "CPDBFlux",
   "version": "0.0.3",
   "dependencies": {
+    "bootstrap": {
+      "version": "3.3.5",
+      "from": "bootstrap@*",
+      "resolved": "https://registry.npmjs.org/bootstrap/-/bootstrap-3.3.5.tgz"
+    },
     "chart.js": {
       "version": "1.0.2",
       "from": "https://registry.npmjs.org/chart.js/-/chart.js-1.0.2.tgz",
@@ -63,6 +68,11 @@
       "from": "https://registry.npmjs.org/jquery/-/jquery-2.1.4.tgz",
       "resolved": "https://registry.npmjs.org/jquery/-/jquery-2.1.4.tgz"
     },
+    "jquery-validation": {
+      "version": "1.14.0",
+      "from": "jquery-validation@*",
+      "resolved": "https://registry.npmjs.org/jquery-validation/-/jquery-validation-1.14.0.tgz"
+    },
     "keymirror": {
       "version": "0.1.1",
       "from": "https://registry.npmjs.org/keymirror/-/keymirror-0.1.1.tgz",
@@ -122,7 +132,7 @@
     },
     "numeral": {
       "version": "1.5.3",
-      "from": "numeral@*",
+      "from": "https://registry.npmjs.org/numeral/-/numeral-1.5.3.tgz",
       "resolved": "https://registry.npmjs.org/numeral/-/numeral-1.5.3.tgz"
     },
     "object-assign": {
@@ -347,6 +357,11 @@
           }
         }
       }
+    },
+    "toastr": {
+      "version": "2.1.2",
+      "from": "toastr@*",
+      "resolved": "https://registry.npmjs.org/toastr/-/toastr-2.1.2.tgz"
     }
   }
 }

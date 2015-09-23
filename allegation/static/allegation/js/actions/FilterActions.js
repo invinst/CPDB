@@ -1,12 +1,12 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
-var MapConstants = require('../constants/MapConstants');
+var AppConstants = require('../constants/AppConstants');
 var ComplaintListAPI = require('../utils/ComplaintListAPI');
 var OutcomeAnalysisAPI = require('../utils/OutcomeAnalysisAPI');
 
 var FilterActions = {
   replaceFilters: function (values) {
     AppDispatcher.dispatch({
-      actionType: MapConstants.MAP_REPLACE_FILTERS,
+      actionType: AppConstants.MAP_REPLACE_FILTERS,
       filters: values
     })
 
@@ -21,7 +21,7 @@ var FilterActions = {
 
   changeFilter: function (key, value) {
     AppDispatcher.dispatch({
-      actionType: MapConstants.MAP_CHANGE_FILTER,
+      actionType: AppConstants.MAP_CHANGE_FILTER,
       key: key,
       value: {'value': value}
     });
@@ -31,7 +31,7 @@ var FilterActions = {
 
   addFilter: function (key, value) {
     AppDispatcher.dispatch({
-      actionType: MapConstants.MAP_ADD_FILTER,
+      actionType: AppConstants.MAP_ADD_FILTER,
       key: key,
       value: value
     });
@@ -41,7 +41,7 @@ var FilterActions = {
 
   saveSession: function() {
     AppDispatcher.dispatch({
-      actionType: MapConstants.SAVE_SESSION
+      actionType: AppConstants.SAVE_SESSION
     })
   }
 };
