@@ -87,7 +87,7 @@ var Officer = React.createClass({
         <a className='officer-link' href={officerLink} target="_parent">
           <div className='officer_name'>
             <strong>
-              { presenter.displayName() }
+              { presenter.displayName }
             </strong>
           </div>
           <div className={intersectionClass}>
@@ -97,7 +97,7 @@ var Officer = React.createClass({
           </div>
           <div className='non-intersection'>
             <div className='race-gender'>
-              { presenter.genderRace() }
+              { presenter.genderRace }
             </div>
             <div className='complaint-discipline-row'>
               <div className='row'>

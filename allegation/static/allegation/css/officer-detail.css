@@ -72,26 +72,38 @@
     background: #f7f7ed;
 }
 
-#OfficerDetail .information {
-    border-top: 1px solid black;
+.information {
+    padding: 15px 35px;
+    border-top: solid 1px #333333;
 }
 
-#OfficerDetail .information .title {
-    color: #989898;
+.information-entry {
+    display: inline-block;
+    white-space: nowrap;
+    padding: 3px 5px;
+    font-weight: 500;
 }
 
-#OfficerDetail .information table {
+.information-entry .desc {
+    color: #cbcbcb;
 }
 
-#OfficerDetail .information table td {
-    padding: 0 1em;
-    text-align: center;
+.information-entry .val {
+    color: #333333;
 }
 
-#OfficerDetail .information table td + td {
-    border-left: 1px solid black;
+.splitter {
+    border-right: solid 1px #cbcbcb;
+    height: 20px;
+    margin-top: 5px;
+}
+.information-entry span + span {
+    padding: 0 4px;
 }
 
+.visualization-information {
+    padding-top: 20px;
+}
 .vis-timeline {
     border: none;
 }
