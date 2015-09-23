@@ -5,6 +5,7 @@ var QueryListStore = require('../../stores/SearchSection/QueryListStore');
 var QueryListActions = require('../../actions/SearchSection/QueryListActions');
 var SearchResultsAPI = require('../../utils/SearchResultsAPI');
 var React = require('react');
+var moment = require('moment');
 
 global.jQuery = require('jquery');
 var QueryList = React.createClass(_.assign(Base(QueryListStore), {
@@ -38,6 +39,7 @@ var QueryList = React.createClass(_.assign(Base(QueryListStore), {
           <td>{x.query}</td>
           <td>{x.num_suggestions}</td>
           <td>{x.num_usage}</td>
+          <td>{moment(x.updated_at).format('hh:mm a, DD MMM YYYY')}</td>
           <td>
             <a className="add-alias" onClick={that._onClick.bind(that, x.query)} href="#">
               <i className='fa fa-plus'/>
@@ -57,6 +59,7 @@ var QueryList = React.createClass(_.assign(Base(QueryListStore), {
               <th>Query</th>
               <th>No. of suggestions</th>
               <th>No. of usage</th>
+              <th>Last entered at</th>
               <th></th>
             </tr>
           </thead>

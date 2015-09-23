@@ -1,4 +1,4 @@
-from django.db.models.aggregates import Count
+from django.db.models.aggregates import Count, Max
 from django.views.generic.base import View
 
 from document.response import JsonResponse
@@ -24,8 +24,9 @@ class AdminQueryDataApi(View):
         logs = logs.distinct('query')[start:end]
         queries = [x.query for x in logs]
         log_counts = SuggestionLog.objects.filter(query__in=queries).values_list('query').annotate(count=Count('query'))
-
+        updated_ats = SuggestionLog.objects.filter(query__in=queries).values_list('query').annotate(updated_at=Max('created_at'))
         return JsonResponse({
             'data': logs,
             'usage': dict(log_counts),
+            'last_entered': dict(updated_ats)
         })
