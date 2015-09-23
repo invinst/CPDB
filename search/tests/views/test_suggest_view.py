@@ -5,6 +5,7 @@ from common.models import AllegationCategory, Officer
 from common.tests.core import SimpleTestCase
 from search.factories import AliasFactory
 from search.models import SuggestionLog
+from search.models.alias import Alias
 
 
 class SuggestViewTestCase(SimpleTestCase):
@@ -151,3 +152,6 @@ class SuggestViewTestCase(SimpleTestCase):
 
         officer_ids = [x['value'] for x in data['officer']]
         officer_ids.should.contain(officer.id)
+
+        alias = Alias.objects.get(id=alias.id)
+        alias.num_usage.should.equal(1)

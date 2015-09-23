@@ -280,6 +280,7 @@ UNITS = [
     ['711', 'Violence Reduction Initiative - North'],
     ['712', 'Violence Reduction Initiative - South'],
 ]
+UNITS_DICT = dict(UNITS)
 
 GENDER = [
     ['M', "Male"],

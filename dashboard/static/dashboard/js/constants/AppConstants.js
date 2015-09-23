@@ -6,14 +6,23 @@ module.exports = {
   SET_PERIOD: 4,
   WINDOW_SIZE_CHANGED: 5,
 
-  RECEIVED_QUERIES_DATA: 6,
+  RECEIVED_SEARCH_RESULTS_DATA: 6,
 
-  RECEIVED_QUERY_TRAFFIC_DATA: 7,
+  SHOW_ADD_ALIAS_MODAL: 7,
+  HIDE_ADD_ALIAS_MODAL: 8,
+  RECEIVED_ALIAS_CREATION_RESULT: 9,
+  FAILED_TO_CREATE_ALIAS: 10,
 
-  SHOW_ADD_ALIAS_MODAL: 8,
-  HIDE_ADD_ALIAS_MODAL: 9,
-  RECEIVED_ALIAS_CREATION_RESULT: 10,
-  FAILED_TO_CREATE_ALIAS: 11,
+  SET_QUERY_LIST_ACTIVE_ITEM: 11,
+  SEARCH_FOR_SUGGESTIONS: 12,
+  LOAD_MORE_SEARCH_RESULTS_DATA: 13,
+  LOCK_SCROLL: 14,
+
+  QUERY_LIST_FILTERS: {
+    'all': 'All',
+    'fail-attempts': 'Fail attempts',
+    'alias': 'Alias'
+  },
 
   PERIODS: {
     'day': 'Daily',
@@ -27,7 +36,7 @@ module.exports = {
     { page: '/officer', icon: 'user', text: 'Officer Profiles' }
   ],
 
-  SEARCH_TRAFFIC_ENDPOINT: '/api/dashboard/search-traffic/',
-  QUERIES_DATA_ENDPOINT: '/api/dashboard/query-data/',
-  ALIAS_ENDPOINT: '/api/dashboard/alias/'
+  SEARCH_TRAFFIC_API_ENDPOINT: '/api/dashboard/search-traffic/',
+  SEARCH_RESULTS_API_ENDPOINT: '/api/dashboard/query-data/',
+  ALIAS_API_ENDPOINT: '/api/dashboard/alias/'
 };

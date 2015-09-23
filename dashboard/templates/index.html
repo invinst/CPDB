@@ -1,5 +1,4 @@
-{% load compress static %}
-<!doctype>
+{% load compress static %}<!doctype>
 <html>
 <head>
     <title>CPDB Analytics</title>
@@ -16,7 +15,7 @@
   <div class='container-fluid'>
     <div class='row content'>
         {% block left %}
-        <div class='col-sm-3 left-column left-menu'>
+        <div class='col-sm-3 left-column left-menu fixed'>
             <div class='row top-nav'>
                 <div class='col-xs-6 logo'>
                     <img src="{% static 'img/logo.png' %}" alt="CPDB"/>
@@ -31,7 +30,7 @@
         </div>
         {% endblock %}
         {% block right %}
-        <div class='col-sm-9'>
+        <div class='col-sm-9 col-sm-offset-3'>
             <div id='content'></div>
         </div>
         {% endblock %}

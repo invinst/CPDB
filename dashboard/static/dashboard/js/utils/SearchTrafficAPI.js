@@ -11,7 +11,7 @@ var SearchTrafficAPI = {
       ajax.abort();
     }
 
-    ajax = jQuery.getJSON(AppConstants.SEARCH_TRAFFIC_ENDPOINT, function(data) {
+    ajax = jQuery.getJSON(AppConstants.SEARCH_TRAFFIC_API_ENDPOINT, function(data) {
       SearchTrafficServerActions.receivedSearchTrafficData(data);
     });
   }

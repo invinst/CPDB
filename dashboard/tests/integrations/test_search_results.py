@@ -43,7 +43,6 @@ class SearchResultTestCase(BaseLiveTestCase):
         self.until(lambda: self.should_see_text("Alias with this Alias and Target already exists"))
         self.find(".modal").is_displayed().should.be.false
 
-
     def try_to_create_new_alias(self, alias='alias', target='target'):
         self.go_to_search_result()
         self.button('Add Alias').click()
@@ -53,3 +52,28 @@ class SearchResultTestCase(BaseLiveTestCase):
         self.find("input[name='alias']").send_keys(alias)
         self.find("input[name='target']").send_keys(target)
         self.button("SUBMIT").click()
+
+    def test_filter_fail_attemps(self):
+        log = SuggestionLogFactory(num_suggestions=0)
+        log1 = SuggestionLogFactory(num_suggestions=1)
+        self.go_to_search_result()
+        self.element_by_tagname_and_text('li', "Fail attempts").click()
+        self.should_see_text(log.query)
+        self.should_not_see_text(log1.query)
+
+    def test_filter_alias(self):
+        log = SuggestionLogFactory(num_suggestions=0)
+        alias = AliasFactory()
+        self.go_to_search_result()
+        self.element_by_tagname_and_text('li', "Alias").click()
+        self.should_see_text(alias.alias)
+        self.should_not_see_text(log.query)
+
+    def test_add_alias_from_query(self):
+        SuggestionLogFactory()
+        self.go_to_search_result()
+
+        row = self.find(".query")
+        row.find(".add-alias").click()
+        self.until(lambda: self.find(".modal").is_displayed())
+        self.find("input[name='alias']").get_attribute("value").should.equal(row.find("td").text)

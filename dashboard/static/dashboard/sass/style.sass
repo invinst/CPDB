@@ -13,12 +13,15 @@ body
   color: black
 
   .top-nav
-    border-bottom: 1px solid $grey
+    border-bottom: 1px solid $color-dusty-gray
     height: 73px
 
   .left-column
     background-color: $blue
     color: $white
+    position: fixed
+    @media(max-width: 764px)
+      position: initial
 
   .title
     @media(max-width: 767px)

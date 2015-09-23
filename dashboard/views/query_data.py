@@ -6,16 +6,26 @@ from search.models.suggestion import SuggestionLog
 
 
 class AdminQueryDataApi(View):
+    PER_PAGE = 15
 
     def get(self, request):
-        start = int(request.GET.get('start', 0))
-        end = int(request.GET.get('end', 5))
+        page = int(request.GET.get('page', 0))
+        start = page * self.PER_PAGE
+        end = start + self.PER_PAGE
 
-        logs = SuggestionLog.objects.all().distinct('query')[start:end]
+        logs = SuggestionLog.objects.all()
+
+        if request.GET.get('fail'):
+            logs = logs.filter(num_suggestions=0)
+
+        if 'q' in request.GET:
+            logs = logs.filter(query__istartswith=request.GET.get('q'))
+
+        logs = logs.distinct('query')[start:end]
         queries = [x.query for x in logs]
         log_counts = SuggestionLog.objects.filter(query__in=queries).values_list('query').annotate(count=Count('query'))
 
         return JsonResponse({
-            'logs': logs,
-            'log_counts': dict(log_counts),
+            'data': logs,
+            'usage': dict(log_counts),
         })

@@ -2,7 +2,7 @@ var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var AppConstants = require('../../constants/AppConstants');
 var AliasAPI = require('../../utils/AliasAPI');
 
-var AddAliasActions = {
+var AddAliasModalActions = {
   show: function (data) {
     AppDispatcher.dispatch({
       actionType: AppConstants.SHOW_ADD_ALIAS_MODAL,
@@ -29,4 +29,4 @@ var AddAliasActions = {
   }
 };
 
-module.exports = AddAliasActions;
+module.exports = AddAliasModalActions;

@@ -3,7 +3,6 @@ var SearchTrafficAPI = require('../utils/SearchTrafficAPI');
 var QueryItemList = require('./OverviewSection/QueryItemList.react');
 var SearchTrafficChart = require('./OverviewSection/SearchTrafficChart.react');
 var PeriodPicker = require('./OverviewSection/PeriodPicker.react');
-var PageTitle = require('./PageTitle.react');
 
 var OverviewSection = React.createClass({
   componentDidMount: function () {
