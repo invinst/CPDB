@@ -6,7 +6,8 @@ var Base = require('../Base');
 var _state = {
   data: [],
   locked: false,
-  page: 1
+  page: 1,
+  sortBy: []
 };
 
 var QueryListStore = _.assign(Base(_state), {
@@ -33,6 +34,10 @@ AppDispatcher.register(function(action) {
   case AppConstants.LOCK_SCROLL:
     QueryListStore.updateState('locked', true);
     QueryListStore.emitChange();
+    break;
+
+  case AppConstants.SORT_QUERY_LIST:
+    QueryListStore.updateState('sortBy', action.data);
     break;
 
   default:

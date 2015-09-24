@@ -26,6 +26,10 @@ var QueryList = React.createClass(_.assign(Base(QueryListStore), {
     }
   },
 
+  _onHeaderClick: function(sortBy) {
+    QueryListActions.sortBy(sortBy);
+  },
+
   componentDidMount: function () {
     QueryListStore.addChangeListener(this._onChange);
     jQuery(window).on('scroll', this._onScroll);
@@ -58,8 +62,8 @@ var QueryList = React.createClass(_.assign(Base(QueryListStore), {
             <tr>
               <th>Query</th>
               <th>No. of suggestions</th>
-              <th>No. of usage</th>
-              <th>Last entered at</th>
+              <th onClick={this._onHeaderClick.bind(this, 'usage')}>No. of usage</th>
+              <th onClick={this._onHeaderClick.bind(this, 'updated_at')}>Last entered at</th>
               <th></th>
             </tr>
           </thead>

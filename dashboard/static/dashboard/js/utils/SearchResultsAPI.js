@@ -74,11 +74,13 @@ var SearchResultsAPI = {
     }
 
     var query = SearchStore.getState()['query'];
-    var activeItem = QueryListFilterStore.getState()['activeItem'];
+    var queryListStates = QueryListFilterStore.getState();
+    var activeItem = queryListStates['activeItem'];
+    var sortBy = queryListStates['sortBy'];
     var page = QueryListStore.getState()['page'];
     var that = this;
 
-    var params = this.buildParams(params);
+    var params = this.buildParams(query, activeItem);
     params.page = page;
 
     var endpoint = this.getAPIEndpoint(activeItem);
