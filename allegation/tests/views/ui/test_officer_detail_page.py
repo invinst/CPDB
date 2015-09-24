@@ -1,4 +1,5 @@
 from allegation.factories import AllegationFactory, OfficerFactory, PoliceWitnessFactory
+from common.models import UNITS
 from common.tests.core import BaseLiveTestCase
 
 
@@ -6,7 +7,7 @@ class OfficerDetailPageTestCase(BaseLiveTestCase):
     def setUp(self):
         self.rank = 'SGT'
         self.star = '823'
-        self.unit = '212'
+        self.unit = '001'
         self.gender = 'M'
         self.crid_1 = '1234'
         self.crid_2 = '2345'
@@ -23,12 +24,15 @@ class OfficerDetailPageTestCase(BaseLiveTestCase):
         PoliceWitnessFactory(officer=self.witness_officer, crid=self.crid_2)
 
     def test_click_to_officer_card_lead_to_detail_page_with_basic_information_about_officer(self):
+        units = dict(UNITS)
+        unit_name = units[self.unit]
         self.go_to_officer_detail_page(self.officer)
         self.until(self.ajax_complete)
-        self.should_see_text('Unit %s' % self.unit)
-        self.should_see_text('Star %s' % self.star)
-        self.should_see_text('Rank %s' % 'Sergeant')
-        self.should_see_text('Sex %s' % 'Male')
+        self.should_see_text(self.unit)
+        self.should_see_text(unit_name)
+        self.should_see_text(self.star)
+        self.should_see_text('Sergeant')
+        self.should_see_text('Male')
 
     def test_filter_by_intersected_officer(self):
         self.go_to_officer_detail_page(self.officer)
