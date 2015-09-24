@@ -1,32 +1,70 @@
+import json
+import datetime
+from django.db import connection
 from django.db.models.aggregates import Count, Max
+from django.http import HttpResponse, HttpResponseBadRequest
 from django.views.generic.base import View
 
-from document.response import JsonResponse
 from search.models.suggestion import SuggestionLog
 
 
 class AdminQueryDataApi(View):
     PER_PAGE = 15
+    SUPPORTED_SORT_ORDER = ['query', 'num_usage', 'updated_at']
+
+    def order_by(self, order_by):
+        if order_by.startswith('-'):
+            order = 'DESC'
+        else:
+            order = 'ASC'
+
+        order_by = order_by.replace('-', '')
+
+        if order_by not in self.SUPPORTED_SORT_ORDER:
+            raise Exception('Unknown sort order')
+
+        return order, order_by
+
+    def build_result_entry_from_log(self, log):
+        result = {}
+        result['query'] = log[0]
+        result['num_usage'] = log[1]
+        result['updated_at'] = str(log[2])
+        result['num_suggestions'] = log[3]
+
+        return result
+
+    def num_suggestion_condition(self, fail=False):
+        condition_query = ''
+
+        if fail:
+            condition_query = 'AND num_suggestions=0'
+
+        return condition_query
 
     def get(self, request):
-        page = int(request.GET.get('page', 0))
-        start = page * self.PER_PAGE
-        end = start + self.PER_PAGE
+        try:
+            page = int(request.GET.get('page', 0))
+            start = page * self.PER_PAGE
+            q = request.GET.get('q', '').lower()
+            order, order_by = self.order_by(request.GET.get('order_by', 'query'))
+            additional_condition = self.num_suggestion_condition(request.GET.get('fail'))
 
-        logs = SuggestionLog.objects.all()
+            cursor = connection.cursor()
+            cursor.execute('''
+            SELECT DISTINCT query, COUNT(query) as num_usage, MAX(created_at) as last_update, MAX(num_suggestions) as max_num_suggestions
+            FROM search_suggestionlog
+            WHERE lower(query) LIKE '%%%s%%' %s
+            GROUP BY query ORDER BY %s %s OFFSET %d LIMIT %d
+            ''' % (q, additional_condition, order_by, order, start, self.PER_PAGE))
+            logs = cursor.fetchall()
 
-        if request.GET.get('fail'):
-            logs = logs.filter(num_suggestions=0)
+            results = list(map(self.build_result_entry_from_log, logs))
 
-        if 'q' in request.GET:
-            logs = logs.filter(query__istartswith=request.GET.get('q'))
+            data = {
+                'data': results
+            }
 
-        logs = logs.distinct('query')[start:end]
-        queries = [x.query for x in logs]
-        log_counts = SuggestionLog.objects.filter(query__in=queries).values_list('query').annotate(count=Count('query'))
-        updated_ats = SuggestionLog.objects.filter(query__in=queries).values_list('query').annotate(updated_at=Max('created_at'))
-        return JsonResponse({
-            'data': logs,
-            'usage': dict(log_counts),
-            'last_entered': dict(updated_ats)
-        })
+            return HttpResponse(json.dumps(data))
+        except Exception as e:
+            return HttpResponseBadRequest(json.dumps({ 'error': str(e)}))

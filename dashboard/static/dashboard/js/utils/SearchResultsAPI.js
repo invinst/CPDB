@@ -19,8 +19,6 @@ var SearchResultsAPI = {
 
   transformSearchResults: function(data) {
     return _.map(data.data, function (obj){
-      obj.num_usage = data.usage[obj.query];
-      obj.updated_at = data.last_entered[obj.query];
       return obj;
     });
   },
