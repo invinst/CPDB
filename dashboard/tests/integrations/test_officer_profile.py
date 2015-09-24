@@ -57,3 +57,41 @@ class SearchResultTestCase(BaseLiveTestCase):
         self.should_see_text("Officer profile has been updated.")
         officer_data = Officer.objects.get(id=officer.id)
         officer_data.officer_last.should.contain(random_string)
+
+    def test_add_officer_story(self):
+        officer = self.officer
+        self.go_to_officer_profile()
+        self.find("#search-officer input").send_keys(officer.officer_first)
+
+        self.find(".officer").click()
+        self.element_for_label('Title').send_keys("Title")
+        self.element_for_label('Slug').send_keys("Slug")
+        self.element_for_label('Short Description').send_keys("Short Description")
+        self.element_for_label('Content').send_keys("Content")
+
+        self.button("Save").click()
+        self.until(self.ajax_complete)
+
+        self.should_see_text('New story has been created.')
+        new_row = self.find(".story").text
+        new_row.should.contain("Title")
+
+        self.element_for_label('Title').send_keys("2")
+        self.button("Save").click()
+        self.until(self.ajax_complete)
+
+        self.should_see_text('Story has been updated.')
+        self.until(self.ajax_complete)
+
+        new_row = self.find(".story").text
+        new_row.should.contain("Title2")
+
+        self.browser.refresh()
+        self.until(lambda: self.find(".story").should.be.ok)
+        new_row.should.contain("Title2")
+
+        self.find(".story .fa-pencil").click()
+        self.element_for_label('Title').get_attribute('value').should.equal("Title2")
+        self.element_for_label('Slug').get_attribute('value').should.equal("Slug")
+        self.element_for_label('Short Description').get_attribute('value').should.equal("Short Description")
+        self.element_for_label('Content').get_attribute('value').should.equal("Content")

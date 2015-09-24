@@ -32,7 +32,7 @@ AppDispatcher.register(function(action) {
       break;
 
     case AppConstants.SET_OFFICER_TAB_ACTIVE:
-      OfficerStore.updateState('method', action.data.method);
+      OfficerStore.updateState('method', action.data);
       OfficerStore.emitChange();
       break;
 

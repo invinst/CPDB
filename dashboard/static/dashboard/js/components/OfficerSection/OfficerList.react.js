@@ -7,13 +7,13 @@ var OfficerStore = require('../../stores/OfficerSection/OfficerStore');
 var SearchStore = require('../../stores/OfficerSection/SearchStore');
 
 global.jQuery = require('jquery');
-var QueryList = React.createClass(_.assign(Base(OfficerListStore), {
+var OfficerList = React.createClass(_.assign(Base(OfficerListStore), {
 
   clickOfficer: function (officer) {
     OfficerActions.setOfficer(officer);
   },
 
-  renderQueryList: function() {
+  renderOfficerList: function() {
     var that = this;
     return this.state.officers.map(function(x) {
       return (
@@ -56,7 +56,7 @@ var QueryList = React.createClass(_.assign(Base(OfficerListStore), {
             </tr>
           </thead>
           <tbody>
-            { this.renderQueryList() }
+            { this.renderOfficerList() }
           </tbody>
         </table>
       </div>
@@ -64,4 +64,4 @@ var QueryList = React.createClass(_.assign(Base(OfficerListStore), {
   }
 }));
 
-module.exports = QueryList;
+module.exports = OfficerList;

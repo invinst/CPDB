@@ -8,6 +8,7 @@ var OfficerAPI = require('../../utils/OfficerAPI');
 var OfficerTabs = require('./Officer/Tabs.react');
 var OfficerProfile = require('./Officer/Profile.react');
 var StoryForm = require('./Officer/StoryForm.react');
+var StoryList = require('./Officer/StoryList.react');
 
 var Officer = React.createClass(_.assign(Base(OfficerStore), {
   getOfficerName: function () {
@@ -37,8 +38,11 @@ var Officer = React.createClass(_.assign(Base(OfficerStore), {
           { this.getOfficerName() }
           <OfficerTabs />
         </div>
-        <div className="well">
+        <div className="well" id="officer_formset">
           { this.getContent() }
+        </div>
+        <div>
+          <StoryList />
         </div>
       </div>
     );

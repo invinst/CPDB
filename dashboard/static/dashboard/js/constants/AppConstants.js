@@ -27,6 +27,10 @@ module.exports = {
   UPDATED_OFFICER_DATA: 21,
   SET_OFFICER_TAB_ACTIVE: 22,
   UPDATE_STORY_DATA: 23,
+  STORY_CREATED: 24,
+  RECEIVED_STORY_LIST: 25,
+  EDIT_STORY: 26,
+  STORY_UPDATED: 27,
 
   QUERY_LIST_FILTERS: {
     'all': 'All',
@@ -49,5 +53,6 @@ module.exports = {
   SEARCH_TRAFFIC_API_ENDPOINT: '/api/dashboard/search-traffic/',
   SEARCH_RESULTS_API_ENDPOINT: '/api/dashboard/query-data/',
   ALIAS_API_ENDPOINT: '/api/dashboard/alias/',
-  OFFICER_END_POINT: '/api/dashboard/officers/'
+  OFFICER_END_POINT: '/api/dashboard/officers/',
+  STORY_END_POINT: '/api/dashboard/stories/'
 };

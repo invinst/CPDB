@@ -12,7 +12,8 @@ class AdminOfficerViewSet(viewsets.ModelViewSet):
     authentication_classes = (SessionAuthentication,)
 
     def get_queryset(self):
+        queryset = super(AdminOfficerViewSet, self).get_queryset()
         q = self.request.GET.get('q')
         if q:
-            return Officer.objects.filter(OfficerQuery.condition_by_name(q))
-        return super(AdminOfficerViewSet, self).get_queryset()
+            queryset = queryset.filter(OfficerQuery.condition_by_name(q))
+        return queryset

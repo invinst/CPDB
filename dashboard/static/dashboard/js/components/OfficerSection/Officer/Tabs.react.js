@@ -18,7 +18,7 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
   },
 
   onClick: function (tab) {
-    TabsActions.setActive(tab);
+    TabsActions.setActive(tab.method);
   },
 
   getTabs: function () {

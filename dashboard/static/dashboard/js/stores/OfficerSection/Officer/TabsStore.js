@@ -22,7 +22,7 @@ var TabsStore = _.assign(Base(_state), {
 AppDispatcher.register(function(action) {
   switch (action.actionType) {
     case AppConstants.SET_OFFICER_TAB_ACTIVE:
-      TabsStore.updateState('active', action.data.method);
+      TabsStore.updateState('active', action.data);
       TabsStore.emitChange();
       break;
 

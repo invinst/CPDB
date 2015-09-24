@@ -8,13 +8,14 @@ from dashboard.views.alias_view import AdminAliasApi
 from dashboard.views.officer import AdminOfficerViewSet
 from dashboard.views.query_data import AdminQueryDataApi
 from dashboard.views.search_traffic import AdminSearchTrafficApi
-
+from dashboard.views.story import AdminStoryViewSet
 
 cache_view = cache_page(86400 * 90)
 
 
 router = routers.DefaultRouter()
-router.register(r'officers', AdminOfficerViewSet, base_name='dashboard')
+router.register(r'officers', AdminOfficerViewSet)
+router.register(r'stories', AdminStoryViewSet)
 
 
 urlpatterns = [
