@@ -101,6 +101,8 @@ describe('QueryListStore', function() {
   it('set sort control on `SORT_QUERY_LIST`', function() {
     var sortBy = 'sortBy';
     callback(actionSortQueryList(sortBy));
-    expect(QueryListStore.getState()['sortBy']).toBe(sortBy);
+    expect(QueryListStore.getSortOrder()).toBe(sortBy);
+    callback(actionSortQueryList(sortBy));
+    expect(QueryListStore.getSortOrder()).toBe('-' + sortBy);
   });
 });

@@ -1,16 +1,16 @@
-from django.db.models.aggregates import Count
+import json
 from django.http.response import HttpResponse
 from django.views.generic.base import View
 
 from dashboard.forms.alias_form import AliasForm
-from document.response import HttpResponseBadRequest, JsonResponse
+from document.response import JsonResponse, HttpResponseBadRequest
 from search.models.alias import Alias
-from search.models.suggestion import SuggestionLog
 
 
 
 class AdminAliasApi(View):
     PER_PAGE = 15
+    SUPPORTED_SORT_ORDER = ['alias', 'num_usage', 'updated_at']
 
     def post(self, request):
         form = AliasForm(request.POST)
@@ -21,17 +21,26 @@ class AdminAliasApi(View):
         return HttpResponse(status=201)
 
     def get(self, request):
-        page = int(request.GET.get('page', 0))
-        start = page * self.PER_PAGE
-        end = start + self.PER_PAGE
+        try:
+            page = int(request.GET.get('page', 0))
+            start = page * self.PER_PAGE
+            end = start + self.PER_PAGE
+            order_by = request.GET.get('order_by') or 'alias'
 
-        aliases = Alias.objects.all()
+            if order_by.replace('-', '') not in self.SUPPORTED_SORT_ORDER:
+                raise Exception('Unknown sort order')
 
-        if 'q' in request.GET:
-            aliases = aliases.filter(alias__istartswith=request.GET.get('q'))
+            aliases = Alias.objects.all()
 
-        aliases = aliases[start:end]
+            if 'q' in request.GET:
+                aliases = aliases.filter(alias__istartswith=request.GET.get('q'))
 
-        return JsonResponse({
-            'data': aliases,
-        })
+            aliases = aliases.order_by(order_by)[start:end]
+
+            return JsonResponse({
+                'data': aliases,
+            })
+        except Exception as e:
+            return HttpResponse(json.dumps({
+                'error': str(e),
+            }))

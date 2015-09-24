@@ -47,12 +47,12 @@ class AdminQueryDataApi(View):
             page = int(request.GET.get('page', 0))
             start = page * self.PER_PAGE
             q = request.GET.get('q', '').lower()
-            order, order_by = self.order_by(request.GET.get('order_by', 'query'))
+            order, order_by = self.order_by(request.GET.get('order_by') or 'query')
             additional_condition = self.num_suggestion_condition(request.GET.get('fail'))
 
             cursor = connection.cursor()
             cursor.execute('''
-            SELECT DISTINCT query, COUNT(query) as num_usage, MAX(created_at) as last_update, MAX(num_suggestions) as max_num_suggestions
+            SELECT DISTINCT query, COUNT(query) as num_usage, MAX(created_at) as updated_at, MAX(num_suggestions) as max_num_suggestions
             FROM search_suggestionlog
             WHERE lower(query) LIKE '%%%s%%' %s
             GROUP BY query ORDER BY %s %s OFFSET %d LIMIT %d

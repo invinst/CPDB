@@ -7,10 +7,17 @@ var _state = {
   data: [],
   locked: false,
   page: 1,
-  sortBy: []
+  sortBy: '',
+  order: 1
 };
 
 var QueryListStore = _.assign(Base(_state), {
+  getSortOrder: function() {
+    if (_state['sortBy']) {
+      return (_state['order'] > 0 ? '' : '-') + _state['sortBy'];
+    }
+    return '';
+  }
 });
 
 AppDispatcher.register(function(action) {
@@ -37,7 +44,17 @@ AppDispatcher.register(function(action) {
     break;
 
   case AppConstants.SORT_QUERY_LIST:
+    var currentSortBy = QueryListStore.getState()['sortBy'];
+    var order = QueryListStore.getState()['order'];
+    var sortBy = action.data;
+
+    if (currentSortBy == sortBy) {
+      order = -order;
+    }
+
     QueryListStore.updateState('sortBy', action.data);
+    QueryListStore.updateState('order', order);
+    QueryListStore.emitChange();
     break;
 
   default:
