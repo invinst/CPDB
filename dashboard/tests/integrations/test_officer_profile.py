@@ -33,16 +33,20 @@ class SearchResultTestCase(BaseLiveTestCase):
         self.should_see_text(officer.gender)
         self.should_see_text(officer.race)
 
-        self.browser.refresh()
-        self.until(lambda: self.should_see_text(officer.officer_last))
-
     def test_update_officer(self):
         officer = self.officer
         self.go_to_officer_profile()
         self.find("#search-officer input").send_keys(officer.officer_first)
 
         self.find(".officer").click()
+        self.should_see_text('Edit information')
+        self.should_see_text('Add story')
         self.should_see_text(str(officer))
+
+        self.browser.refresh()
+        self.until(lambda: self.should_see_text(officer.officer_last))
+
+        self.element_by_tagname_and_text('li', 'Edit information').click()
         self.button("Save").should.be.ok
 
         random_string = "abc"

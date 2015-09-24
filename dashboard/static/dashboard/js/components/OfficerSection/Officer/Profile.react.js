@@ -74,11 +74,20 @@ var Profile = React.createClass(_.assign(Base(ProfileStore), {
                    onChange={this.update("appt_date")} value={this.value('appt_date')} />
           </div>
         </div>
+        <div className="form-group">
+          <label htmlFor="birth_year" className="col-lg-2 col-md-2 col-xs-2">Birth year</label>
+          <div className="col-lg-10 col-md-10 col-xs-10">
+            <input type="text" className="form-control" id="birth_year" name="birth_year"
+                   onChange={this.update("birth_year")} value={this.value('birth_year')} />
+          </div>
+        </div>
         <div className="row">
           <div className="col-sm-4">
             <div className="form-group">
-              <div className="col-lg-12 col-md-12">
+              <div className="col-lg-12 col-md-12 col-xs-2">
                 <label htmlFor="unit">Unit</label>
+              </div>
+              <div  className="col-lg-12 col-md-12 col-xs-10">
                 <input type="text" className="form-control" id="unit" name="unit"
                        onChange={this.update("unit")} value={this.value('unit')} />
               </div>
@@ -86,8 +95,10 @@ var Profile = React.createClass(_.assign(Base(ProfileStore), {
           </div>
           <div className="col-sm-4">
             <div className="form-group">
-              <div className="col-lg-12 col-md-12">
+              <div className="col-lg-12 col-md-12 col-xs-2">
                 <label htmlFor="rank">Rank</label>
+              </div>
+              <div  className="col-lg-12 col-md-12 col-xs-10">
                 <input type="text" className="form-control" id="rank" name="rank"
                        onChange={this.update("rank")} value={this.value('rank')} />
               </div>
@@ -95,15 +106,17 @@ var Profile = React.createClass(_.assign(Base(ProfileStore), {
           </div>
           <div className="col-sm-4">
             <div className="form-group">
-              <div className="col-lg-12 col-md-12">
+              <div className="col-lg-12 col-md-12 col-xs-2">
                 <label htmlFor="star">Star</label>
+              </div>
+              <div  className="col-lg-12 col-md-12 col-xs-10">
                 <input type="text" className="form-control" id="star" name="star"
                        onChange={this.update("star")} value={this.value('star')} />
               </div>
             </div>
           </div>
         </div>
-        <div className="form-group">
+        <div className="form-group actions">
           <div className="col-xs-12 text-right">
             <button type="button" className="btn btn-primary" onClick={this.save}>
               <i className="fa fa-floppy-o"></i> Save

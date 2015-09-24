@@ -6,7 +6,8 @@ var navigate = require('react-mini-router').navigate;
 
 var _state = {
   officer: null,
-  originOfficer: null
+  originOfficer: null,
+  method: 'storyForm'
 };
 
 var OfficerStore = _.assign(Base(_state), {
@@ -28,6 +29,11 @@ AppDispatcher.register(function(action) {
 
     case AppConstants.RECEIVE_OFFICER:
       OfficerStore.setOfficer(action.data);
+      break;
+
+    case AppConstants.SET_OFFICER_TAB_ACTIVE:
+      OfficerStore.updateState('method', action.data.method);
+      OfficerStore.emitChange();
       break;
 
     default:

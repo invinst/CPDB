@@ -43,6 +43,15 @@
 label
   font-weight: normal
 
+
+.form-group
+  padding-bottom: 7px
+  margin-bottom: 7px
+  border-bottom: 1px solid $color-silver
+  &.actions
+    border-bottom: none
+    margin-bottom: 0
+
 .well
   border-radius: 1px
   .form-control
@@ -50,11 +59,12 @@ label
     background: transparent
     border: 1px solid $color-mine-shaft
 
+
   .form-horizontal
+    margin-bottom: 0
     .form-group
       margin-left: -19px
       margin-right: -19px
-
 
   .btn-primary
     background-color: transparent
@@ -62,9 +72,3 @@ label
     border-color: $blue
     &:hover
       background-color: $color-silver
-
-.form-group
-  border-bottom: 1px solid $color-silver
-  padding-bottom: 7px
-  margin-bottom: 7px
-
