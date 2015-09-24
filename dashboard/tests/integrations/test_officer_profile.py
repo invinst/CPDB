@@ -33,6 +33,9 @@ class SearchResultTestCase(BaseLiveTestCase):
         self.should_see_text(officer.gender)
         self.should_see_text(officer.race)
 
+        self.browser.refresh()
+        self.until(lambda: self.should_see_text(officer.officer_last))
+
     def test_update_officer(self):
         officer = self.officer
         self.go_to_officer_profile()

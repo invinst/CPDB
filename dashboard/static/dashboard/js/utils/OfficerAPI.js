@@ -3,6 +3,7 @@ var AppConstants = require('../constants/AppConstants');
 global.jQuery = require('jquery');
 var OfficerListActions = require('../actions/OfficerSection/OfficerListActions');
 var OfficerActions = require('../actions/OfficerSection/OfficerActions');
+var ProfileActions = require('../actions/OfficerSection/Officer/ProfileActions');
 var SearchStore = require('../stores/OfficerSection/SearchStore');
 
 var ajax = null;
@@ -40,7 +41,7 @@ var OfficerAPI = {
       url: AppConstants.OFFICER_END_POINT + officer.id + '/',
       data: officer
     }).done(function(data) {
-      OfficerActions.officerProfileUpdated(data, origin);
+      ProfileActions.officerProfileUpdated(data, origin);
     });
   }
 };

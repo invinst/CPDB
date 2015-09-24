@@ -14,9 +14,7 @@ var OfficerStore = _.assign(Base(_state), {
     navigate('/officer?id=' + id);
   },
   setOfficer: function (officer) {
-    var clonedOfficer = _.clone(officer);
-    this.updateState('officer', clonedOfficer);
-    this.updateState('originOfficer', officer);
+    this.updateState('officer', officer);
     this.emitChange();
   }
 });
@@ -30,11 +28,6 @@ AppDispatcher.register(function(action) {
 
     case AppConstants.RECEIVE_OFFICER:
       OfficerStore.setOfficer(action.data);
-      break;
-
-    case AppConstants.UPDATE_OFFICER_DATA:
-      _state.officer[action.field] = action.value;
-      OfficerStore.emitChange();
       break;
 
     default:
