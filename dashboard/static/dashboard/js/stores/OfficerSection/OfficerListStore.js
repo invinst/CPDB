@@ -13,13 +13,18 @@ var OfficerListStore = _.assign(Base(_state), {
 
 AppDispatcher.register(function(action) {
   switch (action.actionType) {
-  case AppConstants.RECEIVED_OFFICER_LIST:
-    OfficerListStore.updateState('officers', action.data.officers);
-    OfficerListStore.emitChange();
-    break;
+    case AppConstants.RECEIVED_OFFICER_LIST:
+      OfficerListStore.updateState('officers', action.data);
+      OfficerListStore.emitChange();
+      break;
 
-  default:
-    break;
+    case AppConstants.UPDATED_OFFICER_DATA:
+      _.extend(action.origin, action.officer);
+      OfficerListStore.emitChange();
+      break;
+
+    default:
+      break;
   }
 });
 

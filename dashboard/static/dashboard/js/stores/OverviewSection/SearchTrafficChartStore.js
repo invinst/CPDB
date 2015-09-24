@@ -35,8 +35,11 @@ var SearchTrafficChartStore = assign({}, EventEmitter.prototype, {
     var period = PeriodPickerStore.getState()['period'];
     var data = _state['rawData'];
 
-    _state.chartData.datasets[0].data = data[period][activeQueryItem].data;
-    _state.chartData.labels =  data[period][activeQueryItem].labels;
+    data = data[period][activeQueryItem];
+    if (data) {
+      _state.chartData.datasets[0].data = data.data;
+      _state.chartData.labels =  data.labels;
+    }
 
     SearchTrafficChartStore.emitChange();
   },

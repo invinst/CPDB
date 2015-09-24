@@ -1,18 +1,18 @@
-from django.db.models.query_utils import Q
-from django.views.generic.base import View
+from rest_framework import viewsets
+
 from allegation.utils.query import OfficerQuery
-
+from api.serializers.officer_serializer import OfficerSerializer
 from common.models import Officer
-from document.response import JsonResponse
+from dashboard.authentication import SessionAuthentication
 
 
-class AdminOfficerApi(View):
-    PER_PAGE = 15
+class AdminOfficerViewSet(viewsets.ModelViewSet):
+    queryset = Officer.objects.all()
+    serializer_class = OfficerSerializer
+    authentication_classes = (SessionAuthentication,)
 
-    def get(self, request):
-        q = request.GET.get('q')
-        officers = Officer.objects.filter(OfficerQuery.condition_by_name(q))
-
-        return JsonResponse({
-            'officers': officers
-        })
+    def get_queryset(self):
+        q = self.request.GET.get('q')
+        if q:
+            return Officer.objects.filter(OfficerQuery.condition_by_name(q))
+        return super(AdminOfficerViewSet, self).get_queryset()

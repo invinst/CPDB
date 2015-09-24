@@ -1,16 +1,23 @@
 var React = require('react');
 var _ = require('lodash');
 var Base = require('../Base.react');
+var OfficerActions = require('../../actions/OfficerSection/OfficerActions');
 var OfficerListStore = require('../../stores/OfficerSection/OfficerListStore');
+var OfficerStore = require('../../stores/OfficerSection/OfficerStore');
 var SearchStore = require('../../stores/OfficerSection/SearchStore');
 
 global.jQuery = require('jquery');
 var QueryList = React.createClass(_.assign(Base(OfficerListStore), {
 
+  clickOfficer: function (officer) {
+    OfficerActions.setOfficer(officer);
+  },
+
   renderQueryList: function() {
+    var that = this;
     return this.state.officers.map(function(x) {
       return (
-        <tr className='query'>
+        <tr className='officer' onClick={that.clickOfficer.bind(that, x)}>
           <td>{x.id}</td>
           <td>{x.officer_first}</td>
           <td>{x.officer_last}</td>

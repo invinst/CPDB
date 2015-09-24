@@ -2,6 +2,7 @@ var _ = require('lodash');
 var AppConstants = require('../constants/AppConstants');
 global.jQuery = require('jquery');
 var OfficerListActions = require('../actions/OfficerSection/OfficerListActions');
+var OfficerActions = require('../actions/OfficerSection/OfficerActions');
 var SearchStore = require('../stores/OfficerSection/SearchStore');
 
 var ajax = null;
@@ -19,7 +20,27 @@ var OfficerAPI = {
     };
 
     ajax = jQuery.getJSON(AppConstants.OFFICER_END_POINT, params, function(data) {
-      OfficerListActions.receivedOfficerList(data);
+      OfficerListActions.receivedOfficerList(data.results);
+    });
+  },
+
+  loadById: function(id) {
+    if (ajax) {
+      ajax.abort();
+    }
+
+    ajax = jQuery.getJSON(AppConstants.OFFICER_END_POINT + id + '/', function(data) {
+      OfficerActions.receivedOfficer(data);
+    });
+  },
+
+  saveOfficerProfile: function (officer, origin) {
+    jQuery.ajax({
+      type: 'PUT',
+      url: AppConstants.OFFICER_END_POINT + officer.id + '/',
+      data: officer
+    }).done(function(data) {
+      OfficerActions.officerProfileUpdated(data, origin);
     });
   }
 };

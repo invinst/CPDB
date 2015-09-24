@@ -20,6 +20,11 @@ module.exports = {
 
   SEARCH_OFFICER_WITH_QUERY: 15,
   RECEIVED_OFFICER_LIST: 16,
+  SET_ACTIVE_OFFICER: 17,
+  OFFICE_SECTION_ON_LOAD: 18,
+  RECEIVE_OFFICER: 19,
+  UPDATE_OFFICER_DATA: 20,
+  UPDATED_OFFICER_DATA: 21,
 
   QUERY_LIST_FILTERS: {
     'all': 'All',
@@ -42,5 +47,5 @@ module.exports = {
   SEARCH_TRAFFIC_API_ENDPOINT: '/api/dashboard/search-traffic/',
   SEARCH_RESULTS_API_ENDPOINT: '/api/dashboard/query-data/',
   ALIAS_API_ENDPOINT: '/api/dashboard/alias/',
-  OFFICER_END_POINT: '/api/dashboard/officer/'
+  OFFICER_END_POINT: '/api/dashboard/officers/'
 };

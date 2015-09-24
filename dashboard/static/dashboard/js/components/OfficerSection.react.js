@@ -1,9 +1,26 @@
 var React = require('react');
 var Search = require('./OfficerSection/Search.react');
 var OfficerList = require('./OfficerSection/OfficerList.react');
+var Officer = require('./OfficerSection/Officer.react');
+var Base = require('./Base.react');
+var OfficerSectionStore = require('../stores/OfficerSectionStore');
+var OfficerSectionActions = require('../actions/OfficerSectionActions');
+var _ = require('lodash');
 
-var OfficerSection = React.createClass({
-  componentDidMount: function() {
+var OfficerSection = React.createClass(_.assign(Base(OfficerSectionStore), {
+
+  componentDidMount: function () {
+    OfficerSectionStore.addChangeListener(this._onChange);
+    if (this.props.params.id) {
+      OfficerSectionActions.loadOfficer(this.props.params.id);
+    }
+  },
+
+  content: function () {
+    if (this.props.params.id) {
+      return <Officer />
+    }
+    return <OfficerList />
   },
 
   render: function() {
@@ -21,16 +38,14 @@ var OfficerSection = React.createClass({
         </div>
         <div>
           <div className='row'>
-          </div>
-          <div className='row'>
             <div id='officers' className='col-md-12'>
-              <OfficerList />
+              { this.content() }
             </div>
           </div>
         </div>
       </div>
     )
   }
-});
+}));
 
 module.exports = OfficerSection;

@@ -6,7 +6,7 @@ var OfficerListAction = {
     AppDispatcher.dispatch({
       actionType: AppConstants.RECEIVED_OFFICER_LIST,
       data: data
-    })
+    });
   }
 };
 
