@@ -4,7 +4,7 @@ var Base = require('../../Base.react');
 var StoryFormStore = require('../../../stores/OfficerSection/Officer/StoryFormStore');
 var StoryFormActions = require('../../../actions/OfficerSection/Officer/StoryFormActions');
 var StoryAPI = require('../../../utils/StoryAPI');
-
+var Editor = require('react-medium-editor');
 global.jQuery = require('jquery');
 
 
@@ -34,6 +34,15 @@ var StoryForm = React.createClass(_.assign(Base(StoryFormStore), {
     StoryFormActions.clear();
   },
 
+  editorUpdate: function (field) {
+    return this.onEditorUpdate.bind(this, field);
+  },
+
+  onEditorUpdate: function (field, text) {
+    console.log(text);
+    StoryFormActions.updateField(field, text);
+  },
+
   render: function() {
     return (
       <form className="form-horizontal">
@@ -54,15 +63,17 @@ var StoryForm = React.createClass(_.assign(Base(StoryFormStore), {
         <div className="form-group">
           <label htmlFor="story_short_description" className="col-lg-2 col-md-2 col-xs-2">Short Description</label>
           <div className="col-lg-10 col-md-10 col-xs-10">
-            <textarea type="text" className="form-control" id="story_short_description" name="short_description" required
-                      onChange={this.update("short_description")} value={this.value('short_description')}></textarea>
+            <Editor text={this.value('short_description')} onChange={this.editorUpdate("short_description")}
+                    className="medium-editor story_short_description" />
+            <textarea  name="short_description" value={this.value('short_description')}
+                       className="hidden" required></textarea>
           </div>
         </div>
         <div className="form-group">
           <label htmlFor="story_content" className="col-lg-2 col-md-2 col-xs-2">Content</label>
           <div className="col-lg-10 col-md-10 col-xs-10">
-            <textarea type="text" className="form-control" id="story_content" name="content" required
-                      onChange={this.update("content")} value={this.value('content')}></textarea>
+            <Editor text={this.value('content')} onChange={this.editorUpdate("content")} className="medium-editor story_content" />
+            <textarea  name="content" value={this.value('content')} className="hidden" required></textarea>
           </div>
         </div>
         <div className="form-group actions">

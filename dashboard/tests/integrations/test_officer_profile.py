@@ -97,8 +97,8 @@ class OfficerProfileTestCase(BaseLiveTestCase):
         self.find(".officer").click()
         self.element_for_label('Title').send_keys("Title")
         self.element_for_label('Slug').send_keys("Slug")
-        self.element_for_label('Short Description').send_keys("Short Description")
-        self.element_for_label('Content').send_keys("Content")
+        self.find(".story_short_description").send_keys("Short Description")
+        self.find(".story_content").send_keys("Content")
 
         self.button("Save").click()
         self.until(self.ajax_complete)
@@ -124,5 +124,5 @@ class OfficerProfileTestCase(BaseLiveTestCase):
         self.find(".story .fa-pencil").click()
         self.element_for_label('Title').get_attribute('value').should.equal("Title2")
         self.element_for_label('Slug').get_attribute('value').should.equal("Slug")
-        self.element_for_label('Short Description').get_attribute('value').should.equal("Short Description")
-        self.element_for_label('Content').get_attribute('value').should.equal("Content")
+        self.find(".story_short_description").text.should.equal("Short Description")
+        self.find(".story_content").text.should.equal("Content")
