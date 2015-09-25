@@ -19,4 +19,5 @@ class OfficerSerializer(serializers.HyperlinkedModelSerializer):
                   'allegations_count',
                   'discipline_count',
                   'url',
+                  'birth_year',
                   )
