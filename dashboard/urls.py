@@ -6,7 +6,7 @@ from rest_framework import routers
 
 from dashboard.views.alias_view import AdminAliasApi
 from dashboard.views.officer import AdminOfficerViewSet
-from dashboard.views.query_data import AdminQueryDataApi
+from dashboard.views.query_data_view import AdminQueryDataApi
 from dashboard.views.search_traffic import AdminSearchTrafficApi
 from dashboard.views.story import AdminStoryViewSet
 

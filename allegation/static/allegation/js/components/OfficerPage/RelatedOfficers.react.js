@@ -37,7 +37,7 @@ var RelatedOfficers = React.createClass({
   },
 
   renderTitle: function() {
-    var title = this.props.relatedOfficers.length ? 'Related Officers' : '';
+    var title = this.props.relatedOfficers.length ? 'Co-accused & Witness Officers' : '';
     return (
       <div className='row'>
         <h3 className='col-md-12'>{title}</h3>

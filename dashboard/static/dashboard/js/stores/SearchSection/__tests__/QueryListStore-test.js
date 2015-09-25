@@ -49,6 +49,13 @@ describe('QueryListStore', function() {
     };
   };
 
+  var actionSortQueryList = function(sortBy) {
+    return {
+      actionType: AppConstants.SORT_QUERY_LIST,
+      data: sortBy
+    };
+  };
+
   beforeEach(function() {
     AppDispatcher = require('../../../dispatcher/AppDispatcher');
     QueryListStore = require('../QueryListStore');
@@ -89,5 +96,13 @@ describe('QueryListStore', function() {
   it('enable scroll lock when `LOCK_SCROLL`', function (){
     callback(actionLockScroll);
     expect(QueryListStore.getState()['locked']).toBe(true);
+  });
+
+  it('set sort control on `SORT_QUERY_LIST`', function() {
+    var sortBy = 'sortBy';
+    callback(actionSortQueryList(sortBy));
+    expect(QueryListStore.getSortOrder()).toBe(sortBy);
+    callback(actionSortQueryList(sortBy));
+    expect(QueryListStore.getSortOrder()).toBe('-' + sortBy);
   });
 });
