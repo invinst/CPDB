@@ -38,8 +38,13 @@ class AllegationGisApiViewTestCase(AllegationApiTestBase):
         num_returned.shouldnt.equal(0)
 
     def test_return_cluster_success_no_points(self):
-        AllegationFactory()
+        self.create_none_point_allegation()
         officer = Allegation.objects.filter(point=None).first().officer
         allegations = self.fetch_gis_allegations(url='/api/allegations/cluster/', officer=officer.id)
         num_returned = len(allegations['features'])
         num_returned.should.equal(0)
+
+    def create_none_point_allegation(self):
+        allegation = AllegationFactory()
+        allegation.point = None
+        allegation.save()

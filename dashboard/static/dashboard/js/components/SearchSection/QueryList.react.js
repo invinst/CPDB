@@ -1,10 +1,12 @@
 var _ = require('lodash');
 var AddAliasModalActions = require('../../actions/SearchSection/AddAliasModalActions');
 var Base = require('../Base.react');
+var classnames = require('classnames');
 var QueryListStore = require('../../stores/SearchSection/QueryListStore');
 var QueryListActions = require('../../actions/SearchSection/QueryListActions');
 var SearchResultsAPI = require('../../utils/SearchResultsAPI');
 var React = require('react');
+var moment = require('moment');
 
 global.jQuery = require('jquery');
 var QueryList = React.createClass(_.assign(Base(QueryListStore), {
@@ -25,6 +27,11 @@ var QueryList = React.createClass(_.assign(Base(QueryListStore), {
     }
   },
 
+  _onHeaderClick: function(sortBy) {
+    QueryListActions.sortBy(sortBy);
+    SearchResultsAPI.get();
+  },
+
   componentDidMount: function () {
     QueryListStore.addChangeListener(this._onChange);
     jQuery(window).on('scroll', this._onScroll);
@@ -38,6 +45,7 @@ var QueryList = React.createClass(_.assign(Base(QueryListStore), {
           <td>{x.query}</td>
           <td>{x.num_suggestions}</td>
           <td>{x.num_usage}</td>
+          <td>{moment(x.updated_at).format('hh:mm a, DD MMM YYYY')}</td>
           <td>
             <a className="add-alias" onClick={that._onClick.bind(that, x.query)} href="#">
               <i className='fa fa-plus'/>
@@ -48,6 +56,22 @@ var QueryList = React.createClass(_.assign(Base(QueryListStore), {
     });
   },
 
+  renderSortIcon: function(sortName) {
+    var sortBy = this.state.sortBy;
+    var isSorting = _(sortBy).contains(sortName);
+    var isDesc = this.state.order < 0;
+
+    var cx = classnames({
+      'fa': true,
+      'fa-sort': !isSorting,
+      'sort-active': isSorting,
+      'fa-sort-desc': isSorting && isDesc,
+      'fa-sort-asc': isSorting && !isDesc
+    });
+
+    return (<i className={cx}></i>)
+  },
+
   render: function() {
     return (
       <div className='table-responsive'>
@@ -56,7 +80,8 @@ var QueryList = React.createClass(_.assign(Base(QueryListStore), {
             <tr>
               <th>Query</th>
               <th>No. of suggestions</th>
-              <th>No. of usage</th>
+              <th onClick={this._onHeaderClick.bind(this, 'num_usage')}>No. of usage {this.renderSortIcon('num_usage')}</th>
+              <th onClick={this._onHeaderClick.bind(this, 'updated_at')}>Last entered at {this.renderSortIcon('updated_at')}</th>
               <th></th>
             </tr>
           </thead>

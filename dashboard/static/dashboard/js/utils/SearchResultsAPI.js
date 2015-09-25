@@ -17,13 +17,6 @@ var SearchResultsAPI = {
     }
   },
 
-  transformSearchResults: function(data) {
-    return _.map(data.data, function (obj){
-      obj.num_usage = data.usage[obj.query];
-      return obj;
-    });
-  },
-
   transformAlias: function(data) {
     return _.map(data.data, function (obj){
       obj.query = obj.alias;
@@ -31,9 +24,10 @@ var SearchResultsAPI = {
     });
   },
 
-  buildParams: function(query, activeItem) {
+  buildParams: function(query, activeItem, sortBy) {
     var params = {
-      q: query
+      q: query,
+      order_by: sortBy
     };
 
     if (activeItem == 'fail-attempts') {
@@ -46,9 +40,8 @@ var SearchResultsAPI = {
   transform: function(data, activeItem) {
     if (activeItem == 'alias') {
       return this.transformAlias(data);
-    } else {
-      return this.transformSearchResults(data);
     }
+    return data.data;
   },
 
   get: function() {
@@ -57,9 +50,10 @@ var SearchResultsAPI = {
     }
     var query = SearchStore.getState()['query'];
     var activeItem = QueryListFilterStore.getState()['activeItem'];
+    var sortBy = QueryListStore.getSortOrder();
     var that = this;
 
-    var params = this.buildParams(query, activeItem);
+    var params = this.buildParams(query, activeItem, sortBy);
     var endpoint = this.getAPIEndpoint(activeItem);
 
     ajax = jQuery.getJSON(endpoint, params, function(data) {
@@ -73,11 +67,12 @@ var SearchResultsAPI = {
     }
 
     var query = SearchStore.getState()['query'];
+    var sortBy = QueryListStore.getSortOrder();
     var activeItem = QueryListFilterStore.getState()['activeItem'];
     var page = QueryListStore.getState()['page'];
     var that = this;
 
-    var params = this.buildParams(params);
+    var params = this.buildParams(query, activeItem, sortBy);
     params.page = page;
 
     var endpoint = this.getAPIEndpoint(activeItem);
