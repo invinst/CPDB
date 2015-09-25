@@ -64,7 +64,7 @@ var StoryForm = React.createClass(_.assign(Base(StoryFormStore), {
           <label htmlFor="story_short_description" className="col-lg-2 col-md-2 col-xs-2">Short Description</label>
           <div className="col-lg-10 col-md-10 col-xs-10">
             <Editor text={this.value('short_description')} onChange={this.editorUpdate("short_description")}
-                    className="medium-editor story_short_description" />
+                    className="medium-editor story_short_description" options={{placeholder: false}} />
             <textarea  name="short_description" value={this.value('short_description')}
                        className="hidden" required></textarea>
           </div>
@@ -72,7 +72,8 @@ var StoryForm = React.createClass(_.assign(Base(StoryFormStore), {
         <div className="form-group">
           <label htmlFor="story_content" className="col-lg-2 col-md-2 col-xs-2">Content</label>
           <div className="col-lg-10 col-md-10 col-xs-10">
-            <Editor text={this.value('content')} onChange={this.editorUpdate("content")} className="medium-editor story_content" />
+            <Editor text={this.value('content')} onChange={this.editorUpdate("content")}
+                    className="medium-editor story_content"  options={{placeholder: false}}/>
             <textarea  name="content" value={this.value('content')} className="hidden" required></textarea>
           </div>
         </div>
