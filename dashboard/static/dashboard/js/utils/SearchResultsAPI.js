@@ -68,7 +68,7 @@ var SearchResultsAPI = {
 
     var query = SearchStore.getState()['query'];
     var sortBy = QueryListStore.getSortOrder();
-    var activeItem = QueryListStore.getState()['activeItem'];
+    var activeItem = QueryListFilterStore.getState()['activeItem'];
     var page = QueryListStore.getState()['page'];
     var that = this;
 

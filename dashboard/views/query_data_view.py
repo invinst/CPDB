@@ -13,11 +13,7 @@ class AdminQueryDataApi(View):
     SUPPORTED_SORT_ORDER = ['query', 'num_usage', 'updated_at']
 
     def order_by(self, order_by):
-        if order_by.startswith('-'):
-            order = 'DESC'
-        else:
-            order = 'ASC'
-
+        order = 'DESC' if order_by.startswith('-') else 'ASC'
         order_by = order_by.replace('-', '')
 
         if order_by not in self.SUPPORTED_SORT_ORDER:
@@ -26,21 +22,15 @@ class AdminQueryDataApi(View):
         return order, order_by
 
     def build_result_entry_from_log(self, log):
-        result = {}
-        result['query'] = log[0]
-        result['num_usage'] = log[1]
-        result['updated_at'] = str(log[2])
-        result['num_suggestions'] = log[3]
-
-        return result
+        return {
+            'query': log[0],
+            'num_usage': log[1],
+            'updated_at': str(log[2]),
+            'num_suggestions': log[3]
+        }
 
     def num_suggestion_condition(self, fail=False):
-        condition_query = ''
-
-        if fail:
-            condition_query = 'AND num_suggestions=0'
-
-        return condition_query
+        return 'AND num_suggestions=0' if fail else ''
 
     def get(self, request):
         try:
@@ -54,9 +44,16 @@ class AdminQueryDataApi(View):
             cursor.execute('''
             SELECT DISTINCT query, COUNT(query) as num_usage, MAX(created_at) as updated_at, MAX(num_suggestions) as max_num_suggestions
             FROM search_suggestionlog
-            WHERE lower(query) LIKE '%%%s%%' %s
-            GROUP BY query ORDER BY %s %s OFFSET %d LIMIT %d
-            ''' % (q, additional_condition, order_by, order, start, self.PER_PAGE))
+            WHERE lower(query) LIKE '%{query}%' {additional_condition}
+            GROUP BY query ORDER BY {order_by} {order} OFFSET {start} LIMIT {limit}
+            '''.format(
+                query=q,
+                additional_condition = additional_condition,
+                order_by=order_by,
+                order=order,
+                start=start,
+                limit=self.PER_PAGE
+            ))
             logs = cursor.fetchall()
 
             results = list(map(self.build_result_entry_from_log, logs))

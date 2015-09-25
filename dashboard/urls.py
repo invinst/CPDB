@@ -4,7 +4,7 @@ from django.views.decorators.cache import cache_page
 from django.views.decorators.csrf import csrf_exempt
 
 from dashboard.views.alias_view import AdminAliasApi
-from dashboard.views.query_data import AdminQueryDataApi
+from dashboard.views.query_data_view import AdminQueryDataApi
 from dashboard.views.search_traffic import AdminSearchTrafficApi
 
 
