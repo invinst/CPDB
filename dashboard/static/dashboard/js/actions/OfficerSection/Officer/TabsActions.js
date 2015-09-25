@@ -8,6 +8,7 @@ var TabsActions = {
       data: method
     });
   },
+
   goToStoryForm: function () {
     this.setActive('storyForm');
   }

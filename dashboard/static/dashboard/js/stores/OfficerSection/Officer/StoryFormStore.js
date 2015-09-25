@@ -5,7 +5,8 @@ var Base = require('../../Base');
 var navigate = require('react-mini-router').navigate;
 
 var _state = {
-  story: {}
+  story: {},
+  officer: {}
 };
 
 var StoryFormStore = _.assign(Base(_state), {
@@ -16,7 +17,10 @@ AppDispatcher.register(function(action) {
   switch (action.actionType) {
     case AppConstants.SET_ACTIVE_OFFICER:
     case AppConstants.RECEIVE_OFFICER:
-      _state.story = {officer: action.data.url};
+      _state.officer = action.data;
+
+    case AppConstants.CLEAR_STORY_FORM:
+      _state.story = {officer: _state.officer.url};
       StoryFormStore.emitChange();
       break;
 

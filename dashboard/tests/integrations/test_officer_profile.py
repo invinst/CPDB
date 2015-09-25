@@ -1,9 +1,10 @@
 from allegation.factories import OfficerFactory
 from common.models import Officer
 from common.tests.core import BaseLiveTestCase
+from officer.factories import StoryFactory
 
 
-class SearchResultTestCase(BaseLiveTestCase):
+class OfficerProfileTestCase(BaseLiveTestCase):
     def setUp(self):
         self.login_user()
         self.visit('/admin/')
@@ -11,7 +12,7 @@ class SearchResultTestCase(BaseLiveTestCase):
 
     def tearDown(self):
         Officer.objects.all().delete()
-        super(SearchResultTestCase, self).tearDown()
+        super(OfficerProfileTestCase, self).tearDown()
 
     def go_to_officer_profile(self):
         self.element_by_tagname_and_text('span', 'Officer Profiles').click()
@@ -57,6 +58,36 @@ class SearchResultTestCase(BaseLiveTestCase):
         self.should_see_text("Officer profile has been updated.")
         officer_data = Officer.objects.get(id=officer.id)
         officer_data.officer_last.should.contain(random_string)
+
+    def test_delete_story(self):
+        officer = self.officer
+        stories = [StoryFactory(officer=officer) for x in range(2)]
+        self.go_to_officer_profile()
+        self.find("#search-officer input").send_keys(officer.officer_first)
+        self.find(".officer").click()
+
+        self.until(lambda: self.should_see_text(stories[1].title))
+        self.should_see_text(stories[0].title)
+
+        self.find(".story .fa-trash").click()
+        confirm_message = 'You are going to delete story "{title}"?'.format(title=stories[1].title)
+        self.until(lambda: self.should_see_text(confirm_message))
+        self.button("OK").click()
+        self.until_ajax_complete()
+
+        self.should_see_text('Story "{title}" has been deleted.'.format(title=stories[1].title))
+        self.until_ajax_complete()  # reload story list
+        self.until(lambda: self.should_not_see_text(stories[1].title))
+        self.should_see_text(stories[0].title)
+
+        self.find(".check-all").click()
+        self.button("Delete").click()
+        self.until(lambda: self.should_see_text("You are going to delete all stories of this officer?"))
+        self.button("OK").click()
+        self.until_ajax_complete()
+
+        self.should_see_text("Stories have been deleted.")
+        self.should_not_see_text(stories[0].title)
 
     def test_add_officer_story(self):
         officer = self.officer

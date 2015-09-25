@@ -44,6 +44,25 @@ var StoryAPI = {
     }).done(function(data) {
       StoryFormActions.updatedStory(data);
     });
+  },
+
+  queryDelete: function (story) {
+    return jQuery.ajax({
+      type: 'DELETE',
+      url: AppConstants.STORY_END_POINT + story.id + '/',
+    });
+  },
+
+  delete: function (story) {
+    this.queryDelete(story).done(function() {
+      StoryListActions.deletedStory(story);
+    });
+  },
+  deleteBulk: function (stories) {
+    var ajaxs = _.map(stories, this.queryDelete);
+    jQuery.when.apply(ajaxs).done(function () {
+      StoryListActions.deletedStories(stories);
+    })
   }
 };
 

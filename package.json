@@ -5,6 +5,7 @@
   "repository": "https://github.com/facebook/flux",
   "main": "allegation/static/allegation/js/app.js",
   "dependencies": {
+    "bootbox": "^4.4.0",
     "bootstrap": "^3.3.5",
     "chart.js": "~1.0.2",
     "classnames": "^2.1.3",

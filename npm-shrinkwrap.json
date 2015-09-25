@@ -2,6 +2,11 @@
   "name": "CPDBFlux",
   "version": "0.0.3",
   "dependencies": {
+    "bootbox": {
+      "version": "4.4.0",
+      "from": "bootbox@*",
+      "resolved": "https://registry.npmjs.org/bootbox/-/bootbox-4.4.0.tgz"
+    },
     "bootstrap": {
       "version": "3.3.5",
       "from": "https://registry.npmjs.org/bootstrap/-/bootstrap-3.3.5.tgz",

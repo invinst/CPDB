@@ -9,6 +9,7 @@ class AdminStoryViewSet(viewsets.ModelViewSet):
     queryset = Story.objects.all()
     serializer_class = StorySerializer
     authentication_classes = (SessionAuthentication,)
+    ordering = ('created_date',)
 
     def get_queryset(self):
         queryset = super(AdminStoryViewSet, self).get_queryset()

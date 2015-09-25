@@ -26,6 +26,12 @@ var OfficerAction = {
       actionType: AppConstants.STORY_UPDATED,
       data: story
     });
+  },
+
+  clear: function () {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.CLEAR_STORY_FORM
+    });
   }
 };
 

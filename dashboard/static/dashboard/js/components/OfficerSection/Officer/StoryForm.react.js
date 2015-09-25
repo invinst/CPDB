@@ -14,9 +14,10 @@ var StoryForm = React.createClass(_.assign(Base(StoryFormStore), {
   },
 
   value: function (field) {
-    if (this.state.story) {
+    if (this.state.story && this.state.story[field]) {
       return this.state.story[field];
     }
+    return '';
   },
 
   update: function (field) {
@@ -27,6 +28,10 @@ var StoryForm = React.createClass(_.assign(Base(StoryFormStore), {
     if (jQuery(this.getDOMNode()).valid()) {
       StoryAPI.save(this.state.story);
     }
+  },
+
+  clear: function () {
+    StoryFormActions.clear();
   },
 
   render: function() {
@@ -62,6 +67,9 @@ var StoryForm = React.createClass(_.assign(Base(StoryFormStore), {
         </div>
         <div className="form-group actions">
           <div className="col-xs-12 text-right">
+            <button type="button" className="btn btn-default" onClick={this.clear}>
+              Clear
+            </button>
             <button type="button" className="btn btn-primary" onClick={this.save}>
               <i className="fa fa-floppy-o"></i> Save
             </button>

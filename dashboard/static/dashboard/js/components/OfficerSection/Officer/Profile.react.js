@@ -24,6 +24,7 @@ var Profile = React.createClass(_.assign(Base(ProfileStore), {
   save: function () {
     OfficerAPI.saveOfficerProfile(this.state.officer, this.state.originOfficer);
   },
+
   render: function() {
     return (
       <form className="form-horizontal">
