@@ -7,7 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', '0042_merge'),
+        ('common', '0041_officer_birth_year'),
     ]
 
     operations = [
@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='officer',
             name='appt_date',
-            field=models.DateField(blank=True, null=True),
+            field=models.DateField(null=True, blank=True),
         ),
         migrations.AlterField(
             model_name='officer',
@@ -34,36 +34,36 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='officer',
             name='gender',
-            field=models.CharField(max_length=1, blank=True, null=True),
+            field=models.CharField(null=True, blank=True, max_length=1),
         ),
         migrations.AlterField(
             model_name='officer',
             name='officer_first',
-            field=models.CharField(db_index=True, max_length=255, blank=True, null=True),
+            field=models.CharField(null=True, blank=True, db_index=True, max_length=255),
         ),
         migrations.AlterField(
             model_name='officer',
             name='officer_last',
-            field=models.CharField(db_index=True, max_length=255, blank=True, null=True),
+            field=models.CharField(null=True, blank=True, db_index=True, max_length=255),
         ),
         migrations.AlterField(
             model_name='officer',
             name='race',
-            field=models.CharField(max_length=50, blank=True, null=True),
+            field=models.CharField(null=True, blank=True, max_length=50),
         ),
         migrations.AlterField(
             model_name='officer',
             name='rank',
-            field=models.CharField(max_length=5, blank=True, null=True),
+            field=models.CharField(null=True, blank=True, max_length=5),
         ),
         migrations.AlterField(
             model_name='officer',
             name='star',
-            field=models.FloatField(blank=True, null=True),
+            field=models.FloatField(null=True, blank=True),
         ),
         migrations.AlterField(
             model_name='officer',
             name='unit',
-            field=models.CharField(max_length=5, blank=True, null=True),
+            field=models.CharField(null=True, blank=True, max_length=5),
         ),
     ]
