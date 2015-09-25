@@ -30,7 +30,7 @@ OFFICER_COMPLAINT_COUNT_RANGE = getattr(settings, 'OFFICER_COMPLAINT_COUNT_RANGE
 
 
 class AllegationListView(TemplateView):
-    template_name = 'allegation/home.html'
+    template_name = 'allegation/index.html'
     session = None
     KEYS = {
         'officer': Officer,

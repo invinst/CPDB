@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+{% load staticfiles common_tags compress %}
+<html>
+  <head>
+    {% block meta %}
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <meta http-equiv="cache-control" content="public" />
+    <meta name="robots" content="follow, all" />
+    <meta name="language" content="{{ LANGUAGE_CODE }}" />
+    <meta name="description"
+          content="{% block meta-description %}CPDB{% endblock %}" />
+    <meta name="keywords" content="{% block meta-keywords %}{% endblock %}" />
+    {% endblock %}
+  </head>
+  <body>
+    <div id='router'></div>
+    <script src="{% static 'allegation/js/bundle.js' %}"></script>
+  </body>
+</html>
