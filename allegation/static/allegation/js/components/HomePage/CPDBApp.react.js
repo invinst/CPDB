@@ -1,32 +1,14 @@
-/**
- * Copyright (c) 2014-2015, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- */
-
-/**
- * This component operates as a "Controller-View".  It listens for changes in
- * the MapStore and passes the new data to its children.
- */
-
-
 var React = require('react');
-var Filters = require('./Filters.react');
-var MapStore = require('../stores/MapStore');
-var FilterAction = require('../actions/FilterActions');
-var OfficerList = require('./OfficerList.react');
-var ComplaintSection = require('./ComplaintSection.react');
-var DistributionChart = require('./DistributionChart.react');
-var Map = require('./Map.react');
-var EmbedBar = require('./Embed/Bar.react');
-var Tabs = require('./Tabs.react');
+var Filters = require('components/HomePage/Filters.react');
+var MapStore = require('stores/MapStore');
+var FilterAction = require('actions/FilterActions');
+var OfficerList = require('components/HomePage/OfficerList.react');
+var ComplaintSection = require('components/HomePage/ComplaintSection.react');
+var DistributionChart = require('components/HomePage/DistributionChart.react');
+var Map = require('components/HomePage/Map.react');
+var EmbedBar = require('components/HomePage/Embed/Bar.react');
+var Tabs = require('components/HomePage/Tabs.react');
 
-/**
- * Retrieve the current TODO data from the MapStore
- */
 
 function getMapState() {
   return {};
@@ -54,6 +36,7 @@ var CPDBApp = React.createClass({
       SAVE_STATE = true;
     }
   },
+
   componentDidMount: function () {
     this.initShare();
     $('.smooth-scroll').click(function() {
@@ -63,9 +46,6 @@ var CPDBApp = React.createClass({
     })
   },
 
-  /**
-   * @return {object}
-   */
   render: function () {
 
     return (

@@ -1,7 +1,7 @@
 var React = require('react');
-var OutcomeFilterActions = require('../../actions/ComplaintList/OutcomeFilterActions');
+var OutcomeFilterActions = require('actions/ComplaintList/OutcomeFilterActions');
 var numeral = require('numeral');
-var AppConstants = require('../../constants/AppConstants');
+var AppConstants = require('constants/AppConstants');
 
 var OutcomeFilterItem = React.createClass({
   setOutcomeFilter: function(filter) {

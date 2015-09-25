@@ -1,5 +1,5 @@
 var React = require('react');
-var MapStore = require("../../stores/MapStore");
+var MapStore = require("stores/MapStore");
 
 
 var Timeline = React.createClass({

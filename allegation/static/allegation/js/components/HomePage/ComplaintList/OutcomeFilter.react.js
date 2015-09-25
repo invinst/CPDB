@@ -1,7 +1,7 @@
 var React = require('react');
-var OutcomeFilterItem = require('./OutcomeFilterItem.react');
-var OutcomeAnalysisAPI = require('../../utils/OutcomeAnalysisAPI');
-var AppConstants = require('../../constants/AppConstants');
+var OutcomeFilterItem = require('components/HomePage/ComplaintList/OutcomeFilterItem.react');
+var OutcomeAnalysisAPI = require('utils/OutcomeAnalysisAPI');
+var AppConstants = require('constants/AppConstants');
 
 var OutcomeFilter = React.createClass({
   componentDidMount: function() {

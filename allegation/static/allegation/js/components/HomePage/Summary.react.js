@@ -1,13 +1,13 @@
 var HOST = 'http://localhost:8000';
 var React = require('react');
-var Filters = require('./Filters.react');
-var SummaryActions = require('../actions/SummaryActions');
-var SummaryRow = require("./SummaryRow.react");
-var SummaryChildRow = require("./SummaryChildRow.react");
+var Filters = require('components/HomePage/Filters.react');
+var SummaryActions = require('actions/SummaryActions');
+var SummaryRow = require("components/HomePage/SummaryRow.react");
+var SummaryChildRow = require("components/HomePage/SummaryChildRow.react");
 var EmbedMixin = require('./Embed/Mixin.react');
-var SummaryStore = require("../stores/SummaryStore");
-var FilterStore = require("../stores/FilterStore");
-var ExtraInformation = require('./SummarySection/ExtraInformation.react');
+var SummaryStore = require("stores/SummaryStore");
+var FilterStore = require("stores/FilterStore");
+var ExtraInformation = require('components/HomePage/SummarySection/ExtraInformation.react');
 
 
 var Summary = React.createClass({

@@ -1,7 +1,7 @@
 var React = require('react');
 
-var StoryListStore = require('../../stores/Officer/StoryListStore');
-var Story = require('./Story.react');
+var StoryListStore = require('stores/Officer/StoryListStore');
+var Story = require('components/HomePage/OfficerPage/Story.react');
 
 
 var StoryList = React.createClass({

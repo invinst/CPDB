@@ -1,6 +1,6 @@
 var React = require('react');
 var _map = null;
-var AppConstants = require('../../constants/AppConstants');
+var AppConstants = require('constants/AppConstants');
 
 var Map = React.createClass({
   getInitialState: function () {

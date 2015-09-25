@@ -3,9 +3,9 @@ if (typeof($) == 'undefined'){
   $ = require('jquery');
 }
 
-var AppDispatcher = require('../../dispatcher/AppDispatcher');
-var RequestDocumentConstants = require('../../constants/RequestDocumentConstants');
-var RequestDocumentActions = require('../../actions/RequestDocumentActions');
+var AppDispatcher = require('dispatcher/AppDispatcher');
+var RequestDocumentConstants = require('constants/RequestDocumentConstants');
+var RequestDocumentActions = require('actions/RequestDocumentActions');
 
 
 var RequestModal = (function () {

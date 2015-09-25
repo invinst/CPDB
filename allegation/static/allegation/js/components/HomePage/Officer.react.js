@@ -1,13 +1,13 @@
 var HOST = 'http://localhost:8000';
 var React = require('react');
 
-var Filters = require('./Filters.react');
-var OfficerActions = require('../actions/OfficerActions');
-var OfficerMixin = require('./Officer/OfficerMixin.react');
-var EmbedMixin = require('./Embed/Mixin.react');
-var CheckMark = require('./Officer/CheckMark.react');
+var Filters = require('components/HomePage/Filters.react');
+var OfficerActions = require('actions/OfficerActions');
+var OfficerMixin = require('components/HomePage/Officer/OfficerMixin.react');
+var EmbedMixin = require('components/HomePage/Embed/Mixin.react');
+var CheckMark = require('components/HomePage/Officer/CheckMark.react');
 
-var OfficerPresenter = require('../presenters/OfficerPresenter');
+var OfficerPresenter = require('presenters/OfficerPresenter');
 var $ = require('jquery');
 var pluralize = require('pluralize');
 

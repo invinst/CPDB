@@ -8,11 +8,11 @@
  */
 
 var React = require('react');
-var SessionStore = require('../stores/SessionStore');
-var FilterStore = require('../stores/FilterStore');
-var MapStore = require('../stores/MapStore');
-var OfficerListStore = require('../stores/OfficerListStore');
-var FilterActions = require('../actions/FilterActions');
+var SessionStore = require('stores/SessionStore');
+var FilterStore = require('stores/FilterStore');
+var MapStore = require('stores/MapStore');
+var OfficerListStore = require('stores/OfficerListStore');
+var FilterActions = require('actions/FilterActions');
 var cx = require('react/lib/cx');
 var _sessionData = {};
 var init_data = typeof(INIT_DATA) == 'undefined' ? false : INIT_DATA;

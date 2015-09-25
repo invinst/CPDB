@@ -2,17 +2,16 @@ var HOST = 'http://localhost:8000';
 var React = require('react');
 var $ = require('jquery');
 
-var Filters = require('./Filters.react');
-var ComplaintList = require('./ComplaintList.react');
-var Download = require('./Download.react');
-var Counter = require('./Counter.react');
-var OutcomeFilter = require('./ComplaintList/OutcomeFilter.react');
-var RequestModal = require('./Complaint/RequestModal.react');
-var Content = require('./ComplaintList/Content.react');
-var ComplaintListStore = require('../stores/ComplaintListStore');
-var OfficerListStore = require('../stores/OfficerListStore');
-
-var ComplaintListActions = require('../actions/ComplaintList/ComplaintListActions');
+var Filters = require('components/HomePage/Filters.react');
+var ComplaintList = require('components/HomePage/ComplaintList.react');
+var Download = require('components/HomePage/Download.react');
+var Counter = require('components/HomePage/Counter.react');
+var OutcomeFilter = require('components/HomePage/ComplaintList/OutcomeFilter.react');
+var RequestModal = require('components/HomePage/Complaint/RequestModal.react');
+var Content = require('components/HomePage/ComplaintList/Content.react');
+var ComplaintListStore = require('stores/ComplaintListStore');
+var OfficerListStore = require('stores/OfficerListStore');
+var ComplaintListActions = require('actions/ComplaintList/ComplaintListActions');
 
 
 var ComplaintSection = React.createClass({

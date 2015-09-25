@@ -1,11 +1,11 @@
 var HOST = 'http://localhost:8000';
 var React = require('react');
-var Filters = require('./Filters.react');
-var MapStore = require('../stores/MapStore');
-var FilterStore = require('../stores/FilterStore');
-var SummaryStore = require('../stores/SummaryStore');
-var SummaryActions = require('../actions/SummaryActions');
-var AppConstants = require('../constants/AppConstants');
+var Filters = require('components/HomePage/Filters.react');
+var MapStore = require('stores/MapStore');
+var FilterStore = require('stores/FilterStore');
+var SummaryStore = require('stores/SummaryStore');
+var SummaryActions = require('actions/SummaryActions');
+var AppConstants = require('constants/AppConstants');
 var numeral = require('numeral');
 
 function getSummaryRowState() {

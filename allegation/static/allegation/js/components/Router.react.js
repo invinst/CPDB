@@ -1,6 +1,6 @@
 var React = require('react'),
     RouterMixin = require('react-mini-router').RouterMixin;
-
+var CPDBApp = require('components/HomePage/CPDBApp.react');
 var Router = React.createClass({
 
     mixins: [RouterMixin],
@@ -15,7 +15,7 @@ var Router = React.createClass({
     },
 
     home: function() {
-        return <div>Hello World</div>;
+        return (<CPDBApp />)
     },
 
     message: function(text) {

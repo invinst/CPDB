@@ -1,12 +1,12 @@
 var HOST = 'http://localhost:8000';
 var React = require('react');
-var Filters = require('./Filters.react');
-var ComplaintListStore = require('../stores/ComplaintListStore');
-var MapStore = require('../stores/MapStore');
-var SessionStore = require('../stores/SessionStore');
-var Officer = require("./Officer.react");
-var Complaint = require("./Complaint.react");
-var RequestButton = require('./Complaint/RequestButton.react');
+var Filters = require('components/HomePage/Filters.react');
+var ComplaintListStore = require('stores/ComplaintListStore');
+var MapStore = require('stores/MapStore');
+var SessionStore = require('stores/SessionStore');
+var Officer = require("components/HomePage/Officer.react");
+var Complaint = require("components/HomePage/Complaint.react");
+var RequestButton = require('components/HomePage/Complaint/RequestButton.react');
 var _timeline = false;
 var init_data = typeof(INIT_DATA) != 'undefined' && INIT_DATA ? INIT_DATA : {'opened_complaints':[]};
 

@@ -2,10 +2,10 @@
  * Created by eastagile on 8/6/15.
  */
 var React = require('react');
-var FilterStore = require('../stores/FilterStore');
-var Sunburst = require('./Sunburst.react');
-var EmbedMixin = require('./Embed/Mixin.react');
-var Summary = require('./Summary.react');
+var FilterStore = require('stores/FilterStore');
+var Sunburst = require('components/HomePage/Sunburst.react');
+var EmbedMixin = require('components/HomePage/Embed/Mixin.react');
+var Summary = require('components/HomePage/Summary.react');
 
 
 var Tabs = React.createClass({

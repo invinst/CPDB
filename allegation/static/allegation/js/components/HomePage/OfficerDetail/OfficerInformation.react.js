@@ -1,6 +1,6 @@
 var _ = require('lodash');
-var AppConstants = require('../../constants/AppConstants');
-var OfficerPresenter = require('../../presenters/OfficerPresenter.js');
+var AppConstants = require('constants/AppConstants');
+var OfficerPresenter = require('presenters/OfficerPresenter.js');
 var React = require('react');
 
 

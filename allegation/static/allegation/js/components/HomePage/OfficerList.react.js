@@ -1,16 +1,16 @@
 var React = require('react');
 var classNames = require('classnames');
 
-var Filters = require('./Filters.react');
-var OfficerActions = require('../actions/OfficerActions');
-var Officer = require("./Officer.react");
-var Counter = require("./Counter.react");
+var Filters = require('components/HomePage/Filters.react');
+var OfficerActions = require('actions/OfficerActions');
+var Officer = require("components/HomePage/Officer.react");
+var Counter = require("components/HomePage/Counter.react");
 
-var FilterStore = require("../stores/FilterStore");
-var OfficerListStore = require("../stores/OfficerListStore");
+var FilterStore = require("stores/FilterStore");
+var OfficerListStore = require("stores/OfficerListStore");
 
-var EmbedMixin = require('./Embed/Mixin.react');
-var OfficerMixin = require('./Officer/OfficerMixin.react');
+var EmbedMixin = require('components/HomePage/Embed/Mixin.react');
+var OfficerMixin = require('components/HomePage/Officer/OfficerMixin.react');
 
 
 

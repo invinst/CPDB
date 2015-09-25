@@ -1,6 +1,6 @@
 var React = require('react');
-var Officer = require('../Officer.react');
-var Investigator = require('./Investigator.react');
+var Officer = require('components/HomePage/Officer.react');
+var Investigator = require('components/HomePage/Complaint/Investigator.react');
 var pluralize = require('pluralize');
 
 var OfficerList = React.createClass({

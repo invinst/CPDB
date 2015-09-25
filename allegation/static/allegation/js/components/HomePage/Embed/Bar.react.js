@@ -2,9 +2,9 @@
  * Created by eastagile on 8/6/15.
  */
 var React = require('react');
-var Download = require('../Download.react');
-var EmbedAction = require('../../actions/EmbedActions');
-var EmbedStore = require('../../stores/EmbedStore');
+var Download = require('components/HomePage/Download.react');
+var EmbedAction = require('actions/EmbedActions');
+var EmbedStore = require('stores/EmbedStore');
 
 
 var Bar = React.createClass({

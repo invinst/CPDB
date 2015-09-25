@@ -1,4 +1,4 @@
-var EmbedStore = require('../../stores/EmbedStore');
+var EmbedStore = require('stores/EmbedStore');
 
 
 var Mixin = {

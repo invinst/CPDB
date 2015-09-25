@@ -1,7 +1,7 @@
 var React = require('react');
 
-var RequestModal = require('../Complaint/RequestModal.react');
-var ComplaintList = require('../ComplaintList.react');
+var RequestModal = require('components/HomePage/Complaint/RequestModal.react');
+var ComplaintList = require('components/HomePage/ComplaintList.react');
 
 var Content = React.createClass({
 

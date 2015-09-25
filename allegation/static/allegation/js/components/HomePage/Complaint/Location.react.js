@@ -1,6 +1,6 @@
 var React = require('react');
-var MapStore = require("../../stores/MapStore");
-var AppConstants = require("../../constants/AppConstants");
+var MapStore = require("stores/MapStore");
+var AppConstants = require("constants/AppConstants");
 
 var Location = React.createClass({
   getInitialState: function () {

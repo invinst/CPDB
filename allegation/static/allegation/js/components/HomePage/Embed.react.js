@@ -2,12 +2,12 @@
  * Created by eastagile on 8/18/15.
  */
 var React = require('react');
-var Officer = require('./Officer.react');
-var OfficerList = require('./OfficerList.react');
-var Sunburst = require('./Sunburst.react');
-var Map = require('./Map.react');
-var Complaint = require('./Complaint.react');
-var Summary = require('./Summary.react');
+var Officer = require('components/HomePage/Officer.react');
+var OfficerList = require('components/HomePage/OfficerList.react');
+var Sunburst = require('components/HomePage/Sunburst.react');
+var Map = require('components/HomePage/Map.react');
+var Complaint = require('components/HomePage/Complaint.react');
+var Summary = require('components/HomePage/Summary.react');
 
 
 var Embed = React.createClass({

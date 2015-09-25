@@ -1,11 +1,11 @@
 var React = require('react');
 require('mapbox.js');
 require('leaflet.heat');
-var MapStore = require("../stores/MapStore");
-var FilterStore = require('../stores/FilterStore');
-var FilterActions = require("../actions/FilterActions");
-var AppConstants = require('../constants/AppConstants');
-var EmbedMixin = require('./Embed/Mixin.react');
+var MapStore = require("stores/MapStore");
+var FilterStore = require('stores/FilterStore');
+var FilterActions = require("actions/FilterActions");
+var AppConstants = require('constants/AppConstants');
+var EmbedMixin = require('components/HomePage/Embed/Mixin.react');
 
 L.mapbox.accessToken = AppConstants.MAP_TOKEN;
 

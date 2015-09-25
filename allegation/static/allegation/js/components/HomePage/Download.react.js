@@ -1,8 +1,5 @@
-/**
- * Created by eastagile on 8/6/15.
- */
 var React = require('react');
-var OfficerListStore = require('../stores/OfficerListStore');
+var OfficerListStore = require('stores/OfficerListStore');
 
 
 var Download = React.createClass({

@@ -1,10 +1,10 @@
 var React = require('react');
 
-var ComplaintSectionStore = require('../../stores/OfficerPage/ComplaintSectionStore');
-var ComplaintListAPI = require('../../utils/ComplaintListAPI');
-var OutcomeFilter = require('../ComplaintList/OutcomeFilter.react');
-var ComplaintList = require('../ComplaintList.react');
-var Counter = require("../Counter.react");
+var ComplaintSectionStore = require('stores/OfficerPage/ComplaintSectionStore');
+var ComplaintListAPI = require('utils/ComplaintListAPI');
+var OutcomeFilter = require('components/HomePage/ComplaintList/OutcomeFilter.react');
+var ComplaintList = require('components/HomePage/ComplaintList.react');
+var Counter = require("components/HomePage/Counter.react");
 
 var ComplaintSection = React.createClass({
   getInitialState: function () {

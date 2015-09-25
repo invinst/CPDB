@@ -1,6 +1,6 @@
 var React = require('react');
 var numeral = require('numeral');
-var AppConstants = require('../constants/AppConstants');
+var AppConstants = require('constants/AppConstants');
 
 
 var Counter = React.createClass({

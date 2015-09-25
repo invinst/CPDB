@@ -1,10 +1,10 @@
 var React = require('react');
-var EmbedMixin = require('./Embed/Mixin.react');
-var SummaryActions = require('../actions/SummaryActions');
-var SunburstStore = require("../stores/SunburstStore");
-var FilterStore = require("../stores/FilterStore");
+var EmbedMixin = require('components/HomePage/Embed/Mixin.react');
+var SummaryActions = require('actions/SummaryActions');
+var SunburstStore = require("stores/SunburstStore");
+var FilterStore = require("stores/FilterStore");
 var numeral = require('numeral');
-var AppConstants = require('../constants/AppConstants');
+var AppConstants = require('constants/AppConstants');
 
 var width = 390,
   height = 390,

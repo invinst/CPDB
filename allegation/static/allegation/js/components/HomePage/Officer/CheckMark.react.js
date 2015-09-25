@@ -1,8 +1,8 @@
 var React = require('react');
-var OfficerPresenter = require('../../presenters/OfficerPresenter');
-var CheckMarkStore = require('../../stores/Officer/CheckMarkStore');
-var OfficerActions = require('../../actions/OfficerActions');
-var CheckMarkActions = require('../../actions/Officer/CheckMarkActions');
+var OfficerPresenter = require('presenters/OfficerPresenter');
+var CheckMarkStore = require('stores/Officer/CheckMarkStore');
+var OfficerActions = require('actions/OfficerActions');
+var CheckMarkActions = require('actions/Officer/CheckMarkActions');
 
 var CheckMark = React.createClass({
   getInitialState: function () {
@@ -58,7 +58,7 @@ var CheckMark = React.createClass({
     var presenter = OfficerPresenter(officer);
     var page = this.props.page || 'home';
     OfficerActions.setActiveOfficer(officer, page);
-    ga('send', 'event', 'officer', 'filter-by', presenter.displayName());
+    ga('send', 'event', 'officer', 'filter-by', presenter.displayName);
   },
 
   onMouseOut: function(officer) {
