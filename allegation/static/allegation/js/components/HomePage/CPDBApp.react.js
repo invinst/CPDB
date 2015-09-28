@@ -26,7 +26,7 @@ var CPDBApp = React.createClass({
     if (location.pathname == '/') {
       $.getJSON('/share/init/', function (data) {
         SESSION_HASH = data.session.hash_id;
-        HOME_URL = "/" + SESSION_HASH + "/";
+        HOME_URL = "/" + SESSION_HASH + "/#!";
         history.pushState({}, '', HOME_URL);
         SAVE_STATE = true;
       });

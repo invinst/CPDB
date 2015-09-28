@@ -24,8 +24,8 @@ var Router = React.createClass({
         return <div>{text}</div>;
     },
 
-    officer: function(officerSlug, id) {
-      return <OfficerPage />;
+    officer: function(officerSlug, officerId) {
+      return <OfficerPage officerId={officerId} />;
     },
 
     notFound: function(path) {

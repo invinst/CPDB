@@ -10,6 +10,8 @@ var CheckMark = require('components/HomePage/Officer/CheckMark.react');
 var OfficerPresenter = require('presenters/OfficerPresenter');
 var $ = require('jquery');
 var pluralize = require('pluralize');
+var StringUtil = require('utils/StringUtil');
+var navigate = require('react-mini-router').navigate;
 
 var Officer = React.createClass({
   mixins: [OfficerMixin, EmbedMixin],
@@ -84,7 +86,7 @@ var Officer = React.createClass({
 
     return (
       <div className={className}  data-state={selection_state} id={officerId}>
-        <a className='officer-link' href={officerLink} target="_parent">
+        <a className='officer-link' onClick={this._onClick.bind(this, officer)} target="_parent">
           <div className='officer_name'>
             <strong>
               { presenter.displayName }
@@ -127,6 +129,11 @@ var Officer = React.createClass({
     );
   },
 
+  _onClick: function(officer) {
+    var presenter = OfficerPresenter(officer);
+    var officerPageLink = '/officer/' + StringUtil.slugify(presenter.displayName) + '/' + officer.id;
+    navigate(officerPageLink);
+  }
 });
 
 module.exports = Officer;

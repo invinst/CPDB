@@ -1,26 +1,12 @@
 var DEFAULT_SITE_TITLE = "Chicago Police Database";
 var React = require('react');
 var SessionStore = require("stores/SessionStore");
+var StringUtil = require('utils/StringUtil');
 var init_data = typeof(INIT_DATA) == 'undefined' ? {} : INIT_DATA;
 
-function removeMultipleSpace(str) {
-  return str.replace(/\s{2,}/g, ' ');
-}
-
-function removeNonAlphaNumeric(str) {
-  return str.replace(/[^\w\s]/gi, '');
-}
-
-function slugify(title) {
-  var asciiTitle = removeNonAlphaNumeric(title);
-  var singleSpaceTitle = removeMultipleSpace(asciiTitle).trim();
-  var lowerCaseTitle  = singleSpaceTitle.toLowerCase();
-
-  return lowerCaseTitle.replace(/\s/g, '-').trim();
-}
 
 function updateUrlWithSlugifiedTitle(title) {
-  var slugifiedTitle = slugify(title);
+  var slugifiedTitle = StringUtil.slugify(title);
   var pathName = window.location.pathname;
   var newPathName = pathName.replace(/\/(.+?)\/(.+)?$/, "/$1/" + slugifiedTitle);
 

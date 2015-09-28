@@ -36,7 +36,7 @@
     "watchify": "^2.1.1"
   },
   "scripts": {
-    "start": "NODE_PATH=allegation/static/allegation/js watchify -o allegation/static/allegation/js/bundle.js -v -d allegation/static/allegation/js/app.js",
+    "start": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js watchify -o allegation/static/allegation/js/bundle.js -v -d allegation/static/allegation/js/app.js",
     "start_admin": "watchify -o dashboard/static/dashboard/js/bundle.js -v -d dashboard/static/dashboard/js/app.js",
     "build": "browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > allegation/static/allegation/js/bundle.min.js",
     "build_admin": "browserify dashboard/static/dashboard/js/app.js -t [envify --NODE_ENV production] | uglifyjs -cm > dashboard/static/dashboard/js/bundle.min.js",

@@ -22,6 +22,7 @@ module.exports = {
   ENTER_EMBED_MODE: count++,
   LEAVE_EMBED_MODE: count++,
 
+  RECEIVED_OFFICER_DATA: count++,
 
   AVG_COMPLAINTS_NUMBER_GREEN: 20,
   AVG_COMPLAINTS_NUMBER_YELLOW: 60,
@@ -199,4 +200,5 @@ module.exports = {
   },
 
   MAP_MARKER_ICON_URL: 'http://data.invisible.institute/static/img/64x_map_marker.png',
+  OFFICER_PAGE_API_ENDPOINT: '/officer'
 };

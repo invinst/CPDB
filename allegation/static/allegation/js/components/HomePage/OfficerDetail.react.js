@@ -18,6 +18,7 @@ var OfficerDetail = React.createClass({
 
   render: function () {
     var officer = this.props.officer;
+    var hasMap = !!this.props.hasMap;
     var complaintRate = this.getAvgClass();
 
     var complaintRateLabel = 'Below the average complaint rate';
@@ -28,10 +29,11 @@ var OfficerDetail = React.createClass({
     var mapStyle = {
       height: '240px'
     };
-    var columnClass = showMap ? "col-md-4" : "col-md-6";
+
+    var columnClass = hasMap ? "col-md-4" : "col-md-6";
     var mapDiv = "";
     var radius = 8;
-    if(showMap){
+    if(hasMap){
       var options = {
         defaultZoom: 10,
         maxZoom: 15,
