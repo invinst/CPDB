@@ -5,6 +5,7 @@ var Base = require('../Base.react');
 var DocumentListStore = require('../../stores/DocumentSection/DocumentListStore');
 var DocumentListActions = require('../../actions/DocumentSection/DocumentListActions');
 var DocumentRequestAPI = require('../../utils/DocumentRequestAPI');
+var AppConstants = require('../../constants/AppConstants');
 
 global.jQuery = require('jquery');
 
@@ -25,17 +26,16 @@ var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
     jQuery(window).on('scroll', this._onScroll);
   },
 
-
   getStatus: function (requested, id) {
     if (id) {
-      return 'Fulfilled';
+      return AppConstants.DOCUMENT_STATUS['fulfilled'];
     }
 
     if (requested) {
-      return 'Requesting';
+      return AppConstants.DOCUMENT_STATUS['requesting'];
     }
 
-    return 'Missing';
+    return AppConstants.DOCUMENT_STATUS['missing'];
   },
 
   rowClassName: function (allegation) {
@@ -45,21 +45,41 @@ var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
     });
   },
 
+  renderDocumentActions: function(status) {
+    if (status != AppConstants.DOCUMENT_STATUS['fulfilled']) {
+      return (
+        <div>
+          <button className="btn btn-primary">
+            <i className="fa fa-link"></i> Add
+          </button>
+          <button className="btn btn-cancel">
+            <i className="fa fa-times"></i> Cancel
+          </button>
+        </div>
+      );
+    } else {
+      return (
+        <div>
+          <button className="btn btn-primary inverse">
+            <i className="fa fa-refresh"></i> Update
+          </button>
+        </div>
+      );
+    }
+  },
+
   renderDocumentList: function() {
     var that = this;
     return this.state.documents.map(function(x) {
+      var status = that.getStatus(x.document_requested, x.document_id);
+
       return (
         <tr className='document' key={"crid" + x.crid} className={that.rowClassName(x)}>
           <td>{x.crid}</td>
-          <td className="status">{that.getStatus(x.document_requested, x.document_id)}</td>
+          <td className="status">{status}</td>
           <td>{x.number_of_request}</td>
           <td className="actions">
-            <button className="btn btn-primary">
-              <i className="fa fa-link"></i> Add
-            </button>
-            <button className="btn btn-cancel">
-              <i className="fa fa-times"></i> Cancel
-            </button>
+            { that.renderDocumentActions(status) }
           </td>
         </tr>
       )

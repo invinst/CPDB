@@ -64,6 +64,12 @@ module.exports = {
     'Native American'
   ],
 
+  DOCUMENT_STATUS: {
+    'fulfilled': 'Fulfilled',
+    'missing': 'Missing',
+    'requesting': 'Requesting'
+  },
+
   NAVIGATION_ITEMS: [
     { page: '/', icon: 'bar-chart', text: 'Overview'},
     { page: '/search', icon: 'tags', text: 'Search Results' },
