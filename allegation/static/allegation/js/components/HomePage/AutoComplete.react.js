@@ -50,12 +50,17 @@ var AutoComplete = React.createClass({
   },
 
   componentDidMount: function () {
+    // TODO: Move this stuff cpdbAutocomplate to be a React one?
+    if ($("#autocomplete").length) {
+      cpdbAutocomplete($("#autocomplete"));
+    }
     var element = this.getDOMNode();
     $(element).tagsinput({
       itemValue: 'value',
       itemText: 'text',
       tagClass: 'tag label label-info-autocomplete'
     });
+    console.log($(element).tagsinput());
     var filters = this.state.filters;
     for (var key in filters) {
       var filter = filters[key];

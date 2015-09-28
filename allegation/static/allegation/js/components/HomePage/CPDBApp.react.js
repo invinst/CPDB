@@ -1,14 +1,13 @@
 var React = require('react');
-var Filters = require('components/HomePage/Filters.react');
-var MapStore = require('stores/MapStore');
-var FilterAction = require('actions/FilterActions');
-var OfficerList = require('components/HomePage/OfficerList.react');
-var ComplaintSection = require('components/HomePage/ComplaintSection.react');
-var DistributionChart = require('components/HomePage/DistributionChart.react');
-var Map = require('components/HomePage/Map.react');
-var EmbedBar = require('components/HomePage/Embed/Bar.react');
-var Tabs = require('components/HomePage/Tabs.react');
 
+var ComplaintSection = require('components/HomePage/ComplaintSection.react');
+var EmbedBar = require('components/HomePage/Embed/Bar.react');
+var Filters = require('components/HomePage/Filters.react');
+var Map = require('components/HomePage/Map.react');
+var Tabs = require('components/HomePage/Tabs.react');
+var OfficerList = require('components/HomePage/OfficerList.react');
+var SiteTitle = require('components/HomePage/SiteTitle.react');
+var AutoComplete = require('components/HomePage/AutoComplete.react');
 
 function getMapState() {
   return {};
@@ -49,29 +48,56 @@ var CPDBApp = React.createClass({
   render: function () {
 
     return (
-      <div className='container-fluid'>
-          <div className="row" id='filter-row'>
-             <div className="col-md-10 col-md-offset-1">
-                <Filters />
-             </div>
+      <div>
+        <div className="navbar navbar-default">
+          <div className="navbar-header">
+            <a href="/" className="navbar-brand">
+                <img src="" alt="" />
+            </a>
+            <button className="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+                <span className="icon-bar"></span>
+                <span className="icon-bar"></span>
+                <span className="icon-bar"></span>
+            </button>
           </div>
-        <div className='row map-row'>
-          <div className='col-md-6 map-column relative'>
-            <Map />
-          </div>
-          <div className='col-md-6 chart-row'>
-            <Tabs />
+          <div className="navbar-collapse collapse" id="navbar-main">
+              <ul className="nav navbar-nav">
+                <li className='site-title'>
+                  <SiteTitle />
+                </li>
+              </ul>
+              <form className="navbar-form navbar-right" role="search">
+                <div id="search-wrapper">
+                  <input type="text" id="autocomplete" placeholder="Search by name, neighborhood, or complaint" class="ui-autocomplete-input" autocomplete="off" />
+
+                </div>
+              </form>
           </div>
         </div>
-        <div className='container content'>
-          <div id='officer-cards'><OfficerList /></div>
-          <div id='complaint-list'><ComplaintSection /></div>
-        </div>
-        <div>
-          <div id='EmbedBar' className="row">
-            <div className="col-md-12">
-              <div className='container'>
-                <EmbedBar />
+        <div className='container-fluid'>
+            <div className="row" id='filter-row'>
+               <div className="col-md-10 col-md-offset-1">
+                  <Filters />
+               </div>
+            </div>
+          <div className='row map-row'>
+            <div className='col-md-6 map-column relative'>
+              <Map />
+            </div>
+            <div className='col-md-6 chart-row'>
+              <Tabs />
+            </div>
+          </div>
+          <div className='container content'>
+            <div id='officer-cards'><OfficerList /></div>
+            <div id='complaint-list'><ComplaintSection /></div>
+          </div>
+          <div>
+            <div id='EmbedBar' className="row">
+              <div className="col-md-12">
+                <div className='container'>
+                  <EmbedBar />
+                </div>
               </div>
             </div>
           </div>
