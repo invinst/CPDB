@@ -10,4 +10,6 @@ class AllegationRequestSerializer(serializers.HyperlinkedModelSerializer):
                   'crid',
                   'url',
                   'number_of_request',
+                  'document_requested',
+                  'document_id',
                   )

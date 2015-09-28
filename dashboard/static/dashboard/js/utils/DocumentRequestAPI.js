@@ -1,6 +1,7 @@
 var _ = require('lodash');
 var AppConstants = require('../constants/AppConstants');
 var DocumentListActions = require('../actions/DocumentSection/DocumentListActions');
+var TabsStore = require('../stores/DocumentSection/TabsStore');
 
 
 var ajax = null;
@@ -11,7 +12,11 @@ var DocumentAPI = {
       ajax.abort();
     }
 
-    ajax = jQuery.getJSON(AppConstants.DOCUMENT_REQUEST_END_POINT, function(data) {
+    var params = {
+      type: TabsStore.getState().active
+    };
+
+    ajax = jQuery.getJSON(AppConstants.DOCUMENT_REQUEST_END_POINT, params, function(data) {
       DocumentListActions.receivedDocumentList(data.results);
     });
   },

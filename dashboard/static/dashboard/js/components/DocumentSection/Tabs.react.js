@@ -4,12 +4,13 @@ var _ = require('lodash');
 var TabsStore = require('../../stores/DocumentSection/TabsStore');
 var TabsActions = require('../../actions/DocumentSection/TabsActions');
 var AppConstants = require('../../constants/AppConstants');
-var SearchResultsAPI = require('../../utils/SearchResultsAPI');
+var DocumentRequestAPI = require('../../utils/DocumentRequestAPI');
 var cx = require('classnames');
 
 var Tabs = React.createClass(_.assign(Base(TabsStore), {
   onClick: function (tab) {
     TabsActions.setActive(tab);
+    DocumentRequestAPI.get();
   },
 
   renderTabs: function() {
