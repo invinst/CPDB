@@ -1,5 +1,4 @@
 var _ = require('lodash');
-var navigate = require('react-mini-router').navigate;
 
 var AppDispatcher = require('../../../dispatcher/AppDispatcher');
 var AppConstants = require('../../../constants/AppConstants');

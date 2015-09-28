@@ -50,6 +50,15 @@ module.exports = {
     'month': 'Monthly'
   },
 
+  RACES: [
+    'Black',
+    'Hispanic',
+    'White',
+    'Asian',
+    'Unknown',
+    'Native American'
+  ],
+
   NAVIGATION_ITEMS: [
     { page: '/', icon: 'bar-chart', text: 'Overview'},
     { page: '/search', icon: 'tags', text: 'Search Results' },

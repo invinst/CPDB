@@ -1,6 +1,7 @@
 var Base = require('../../Base.react');
 var React = require('react');
 var _ = require('lodash');
+var classnames = require('classnames')
 
 var TabsStore = require('../../../stores/OfficerSection/Officer/TabsStore');
 var TabsActions = require('../../../actions/OfficerSection/Officer/TabsActions');
@@ -24,7 +25,10 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
   getTabs: function () {
     var that = this;
     return this.state.tabs.map(function (x) {
-      var className = that.getActiveClass(x);
+      var className = classnames({
+        'active': x.method == that.state.active
+      });
+
       return (
         <li onClick={that.clickFor(x)} className={className} key={x.text}>{x.text}</li>
       )

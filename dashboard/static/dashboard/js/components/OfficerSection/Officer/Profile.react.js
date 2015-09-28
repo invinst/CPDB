@@ -4,6 +4,7 @@ var Base = require('../../Base.react');
 var ProfileStore = require('../../../stores/OfficerSection/Officer/ProfileStore');
 var ProfileActions = require('../../../actions/OfficerSection/Officer/ProfileActions');
 var OfficerAPI = require('../../../utils/OfficerAPI');
+var AppConstants = require('../../../constants/AppConstants.js');
 
 
 var Profile = React.createClass(_.assign(Base(ProfileStore), {
@@ -23,6 +24,12 @@ var Profile = React.createClass(_.assign(Base(ProfileStore), {
 
   save: function () {
     OfficerAPI.saveOfficerProfile(this.state.officer, this.state.originOfficer);
+  },
+
+  getRaceOptions: function () {
+    return AppConstants.RACES.map(function (x) {
+      return <option value={x} key={x}>{x}</option>
+    });
   },
 
   render: function() {
@@ -59,12 +66,7 @@ var Profile = React.createClass(_.assign(Base(ProfileStore), {
             <select type="text" className="form-control" id="race" name="race" onChange={this.update("race")}
                     value={this.value('race')}>
               <option value="">--</option>
-              <option value="Black">Black</option>
-              <option value="Hispanic">Hispanic</option>
-              <option value="White">White</option>
-              <option value="Asian">Asian</option>
-              <option value="Unknown">Unknown</option>
-              <option value="Native American">Native American</option>
+              { this.getRaceOptions() }
             </select>
           </div>
         </div>

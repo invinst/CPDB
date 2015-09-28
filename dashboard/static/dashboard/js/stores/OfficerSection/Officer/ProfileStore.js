@@ -2,7 +2,6 @@ var AppDispatcher = require('../../../dispatcher/AppDispatcher');
 var AppConstants = require('../../../constants/AppConstants');
 var _ = require('lodash');
 var Base = require('../../Base');
-var navigate = require('react-mini-router').navigate;
 
 var _state = {
   officer: null,
