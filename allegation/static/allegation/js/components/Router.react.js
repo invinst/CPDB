@@ -1,13 +1,15 @@
 var React = require('react'),
     RouterMixin = require('react-mini-router').RouterMixin;
 var CPDBApp = require('components/HomePage/CPDBApp.react');
+var OfficerPage = require('components/HomePage/OfficerPage.react');
 var Router = React.createClass({
 
     mixins: [RouterMixin],
 
     routes: {
         '/': 'home',
-        '/message/:text': 'message'
+        '/message/:text': 'message',
+        '/officer/:officerSlug/:id': 'officer'
     },
 
     render: function() {
@@ -20,6 +22,10 @@ var Router = React.createClass({
 
     message: function(text) {
         return <div>{text}</div>;
+    },
+
+    officer: function(officerSlug, id) {
+      return <OfficerPage />;
     },
 
     notFound: function(path) {

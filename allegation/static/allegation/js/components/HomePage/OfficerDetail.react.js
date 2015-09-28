@@ -1,4 +1,4 @@
-var AppConstants = require('../constants/AppConstants');
+var AppConstants = require('constants/AppConstants');
 var React = require('react');
 var MapStore = require("stores/MapStore");
 var FilterActions = require("actions/FilterActions");

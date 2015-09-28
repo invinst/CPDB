@@ -1,5 +1,7 @@
+import json
 from django.conf import settings
 from django.db.models.aggregates import Count
+from django.http import HttpResponse
 from django.shortcuts import render
 from django.views.generic.base import View
 
@@ -36,13 +38,9 @@ class OfficerDetailView(View):
 
         related_officers = sorted(related_officers, key=lambda n: n['num_allegations'], reverse=True)
 
-        related_officers = JSONSerializer().serialize(related_officers)
-
-        return render(request, 'officer/officer_detail.html', {
+        return HttpResponse(JSONSerializer().serialize({
             'officer': officer_dict,
             'allegations': allegations,
             'related_officers': related_officers,
-            'has_map': has_map,
-        })
-
-
+            'has_map': has_map
+        }))
