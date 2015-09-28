@@ -6,6 +6,9 @@ var TabsStore = require('../stores/DocumentSection/TabsStore');
 
 var ajax = null;
 
+var limit = 0;
+var count = 20;
+
 var DocumentAPI = {
   get: function() {
     if (ajax) {
@@ -17,9 +20,27 @@ var DocumentAPI = {
     };
 
     ajax = jQuery.getJSON(AppConstants.DOCUMENT_REQUEST_END_POINT, params, function(data) {
+      limit = 0;
       DocumentListActions.receivedDocumentList(data.results);
     });
   },
+
+  loadMore: function() {
+    if (ajax) {
+      ajax.abort();
+    }
+    limit += count;
+
+    var params = {
+      type: TabsStore.getState().active,
+      limit: limit,
+      offset: limit + count
+    };
+
+    ajax = jQuery.getJSON(AppConstants.DOCUMENT_REQUEST_END_POINT, params, function(data) {
+      DocumentListActions.receivedMore(data.results);
+    });
+  }
 };
 
 module.exports = DocumentAPI;

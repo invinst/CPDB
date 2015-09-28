@@ -2,7 +2,7 @@ var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var AppConstants = require('../../constants/AppConstants');
 var DocumentRequestAPI = require('../../utils/DocumentRequestAPI');
 
-var DocumentListActions = {
+var DocumentActions = {
   receivedDocumentList: function (data) {
     AppDispatcher.dispatch({
       actionType: AppConstants.RECEIVED_DOCUMENT_LIST,
@@ -11,4 +11,4 @@ var DocumentListActions = {
   }
 };
 
-module.exports = DocumentListActions;
+module.exports = DocumentActions;

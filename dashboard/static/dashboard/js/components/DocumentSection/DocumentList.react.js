@@ -3,13 +3,28 @@ var _ = require('lodash');
 var classnames = require('classnames')
 var Base = require('../Base.react');
 var DocumentListStore = require('../../stores/DocumentSection/DocumentListStore');
+var DocumentListActions = require('../../actions/DocumentSection/DocumentListActions');
+var DocumentRequestAPI = require('../../utils/DocumentRequestAPI');
 
 global.jQuery = require('jquery');
+
 var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
 
-  clickDocument: function (Document) {
-    Allegation.setDocument(Document);
+  _onScroll: function(e) {
+    var windowHeight = window.innerHeight;
+    var toBottom = jQuery(document).height() - windowHeight - jQuery(window).scrollTop();
+
+    if (toBottom <= 100 && !this.state.locked) {
+      DocumentRequestAPI.loadMore();
+      DocumentListActions.lockScroll();
+    }
   },
+
+  componentDidMount: function () {
+    DocumentListStore.addChangeListener(this._onChange);
+    jQuery(window).on('scroll', this._onScroll);
+  },
+
 
   getStatus: function (requested, id) {
     if (id) {

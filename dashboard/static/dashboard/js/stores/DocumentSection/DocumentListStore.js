@@ -6,10 +6,11 @@ var AppConstants = require('../../constants/AppConstants');
 var Base = require('../Base');
 
 var _state = {
-  documents: []
+  documents: [],
+  locked: false
 };
 
-var DocumentSectionStore = _.assign(Base(_state), {
+var DocumentListStore = _.assign(Base(_state), {
   init: function (params) {
     _.extend(_state, params);
     return this.getState();
@@ -20,7 +21,20 @@ AppDispatcher.register(function(action) {
   switch (action.actionType) {
     case AppConstants.RECEIVED_DOCUMENT_LIST:
       _state.documents = action.data;
-      DocumentSectionStore.emitChange();
+      DocumentListStore.emitChange();
+      break;
+
+    case AppConstants.RECEIVED_MORE_DOCUMENT_RESULTS_DATA:
+      if (!_.isEmpty(action.data)) {
+        _state.documents = _state.documents.concat(action.data);
+        _state.locked = false;
+        DocumentListStore.emitChange();
+      }
+      break;
+
+    case AppConstants.LOCK_SCROLL_DOCUMENT_LIST:
+      _state.locked = true;
+      DocumentListStore.emitChange();
       break;
 
     default:
@@ -28,4 +42,4 @@ AppDispatcher.register(function(action) {
   }
 });
 
-module.exports = DocumentSectionStore;
+module.exports = DocumentListStore;
