@@ -38,6 +38,9 @@ module.exports = {
   DELETE_BULK_STORY: 31,
   CLEAR_STORY_FORM: 32,
 
+  RECEIVED_DOCUMENT_LIST: 33,
+  SET_DOCUMENT_ACTIVE_TAB: 34,
+
   QUERY_LIST_FILTERS: {
     'all': 'All',
     'fail-attempts': 'Fail attempts',
@@ -62,12 +65,15 @@ module.exports = {
   NAVIGATION_ITEMS: [
     { page: '/', icon: 'bar-chart', text: 'Overview'},
     { page: '/search', icon: 'tags', text: 'Search Results' },
-    { page: '/officer', icon: 'user', text: 'Officer Profiles' }
+    { page: '/officer', icon: 'user', text: 'Officer Profiles' },
+    { page: '/document', icon: 'folder-open-o', text: 'Investigation Documents' }
   ],
 
   SEARCH_TRAFFIC_API_ENDPOINT: '/api/dashboard/search-traffic/',
   SEARCH_RESULTS_API_ENDPOINT: '/api/dashboard/query-data/',
   ALIAS_API_ENDPOINT: '/api/dashboard/alias/',
   OFFICER_END_POINT: '/api/dashboard/officers/',
-  STORY_END_POINT: '/api/dashboard/stories/'
+  STORY_END_POINT: '/api/dashboard/stories/',
+  DOCUMENT_END_POINT: '/api/dashboard/documents/',
+  DOCUMENT_REQUEST_END_POINT: '/api/dashboard/document-requests/',
 };

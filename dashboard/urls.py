@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from rest_framework import routers
 
 from dashboard.views.alias_view import AdminAliasApi
+from dashboard.views.allegation_request_view import AdminAllegationRequestViewSet
 from dashboard.views.officer_view import AdminOfficerViewSet
 from dashboard.views.query_data_view import AdminQueryDataApi
 from dashboard.views.search_traffic import AdminSearchTrafficApi
@@ -16,6 +17,7 @@ cache_view = cache_page(86400 * 90)
 router = routers.DefaultRouter()
 router.register(r'officers', AdminOfficerViewSet)
 router.register(r'stories', AdminStoryViewSet)
+router.register(r'document-requests', AdminAllegationRequestViewSet)
 
 
 urlpatterns = [

@@ -13,10 +13,10 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         radius = int(options['radius']) or 1000
 
-        for allegation in Allegation.objects.filter(areas__type='school-grounds'):
-            allegation.areas.filter(type='school-grounds').delete()
+        for allegation_id in Allegation.objects.filter(areas__type='school-grounds').values_list('id', flat=True):
+            Allegation(id=allegation_id).areas.filter(type='school-grounds').delete()
 
         for school in Area.objects.filter(type='school-grounds'):
             center = school.polygon.centroid
-            for allegation in Allegation.objects.filter(point__distance_lte=(center, D(m=radius))):
-                allegation.areas.add(school)
+            for allegation_id in Allegation.objects.filter(point__distance_lte=(center, D(m=radius))).values_list('id', flat=True):
+                Allegation(id=allegation_id).areas.add(school)
