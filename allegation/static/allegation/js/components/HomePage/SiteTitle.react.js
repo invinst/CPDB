@@ -1,8 +1,12 @@
-var DEFAULT_SITE_TITLE = "Chicago Police Database";
+var _ = require('lodash');
+var $ = require('jquery');
 var React = require('react');
+
+var AppConstants = require('constants/AppConstants');
+var Base = require('components/Base.react');
+var SessionAPI = require('utils/SessionAPI');
 var SessionStore = require("stores/SessionStore");
 var StringUtil = require('utils/StringUtil');
-var init_data = typeof(INIT_DATA) == 'undefined' ? {} : INIT_DATA;
 
 
 function updateUrlWithSlugifiedTitle(title) {
@@ -13,29 +17,27 @@ function updateUrlWithSlugifiedTitle(title) {
   window.history.pushState([], "", newPathName)
 }
 
-var SiteTitle = React.createClass({
-  getInitialState: function () {
-    var initial = init_data['title'] || DEFAULT_SITE_TITLE;
-
-    return {
-      text: initial
-    }
-  },
-
+var SiteTitle = React.createClass(_.assign(Base(SessionStore), {
   render: function() {
+    console.log(this.state);
+    var title = this.state.data.title || AppConstants.DEFAULT_SITE_TITLE;
+
     return (
-      <input className='site-title-input' type='text' value={this.state.text} onChange={this.change} />
+      <input className='site-title-input' type='text' value={title} onChange={this._onTitleChange} />
     )
   },
 
-  change: function (e) {
-    var newTitle = $(e.target).val();
+  _onTitleChange: function (e) {
+    if(e) {
+      var newTitle = $(e.target).val();
+      console.log(newTitle);
+      this.setState({'text': newTitle});
+      SessionAPI.updateSessionInfo({'title': newTitle});
 
-    this.setState({ 'text': newTitle });
-    SessionStore.saveSession({'title': newTitle});
-    document.title = newTitle;
-    updateUrlWithSlugifiedTitle(newTitle);
+      document.title = newTitle;
+      updateUrlWithSlugifiedTitle(newTitle);
+    }
   },
-});
+}));
 
 module.exports = SiteTitle;

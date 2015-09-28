@@ -39,6 +39,7 @@
       {% endcompress %}
   </head>
   <body>
+  {% csrf_token %}
     <div id='router'></div>
     <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/vis/4.2.0/vis.min.js"></script>
@@ -70,6 +71,16 @@
     <script src="{% static 'zeroclipboard/dist/ZeroClipboard.min.js' %}"></script>
     <script src="{% static 'jquery-countTo/jquery.countTo.js' %}"></script>
     <script src="{% static 'highcharts/highcharts.js' %}"></script>
+    <script>
+        $.ajaxSetup({
+            beforeSend: function(xhr, settings) {
+                console.log('header added', $.cookie()['csrftoken'])
+                xhr.setRequestHeader("X-CSRFToken", $.cookie()['csrftoken']);
+
+            }
+        });
+    </script>
     <script src="{% static 'allegation/js/bundle.js' %}"></script>
+
   </body>
 </html>

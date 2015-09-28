@@ -29,7 +29,7 @@ class AllegationDownloadViewTestCase(SimpleTestCase):
 
     def test_create_download_file(self):
         with mock.patch('allegation.views.allegation_download_view.download_allegations') as mock_obj:
-            response = self.client.post("/allegations/download/?abc=def")
+            response = self.client.post("/api/download/?abc=def")
 
         response.status_code.should.equal(200)
 

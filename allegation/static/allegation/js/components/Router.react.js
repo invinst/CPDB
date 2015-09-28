@@ -3,34 +3,35 @@ var React = require('react'),
 var CPDBApp = require('components/HomePage/CPDBApp.react');
 var OfficerPage = require('components/HomePage/OfficerPage.react');
 var Router = React.createClass({
+  mixins: [RouterMixin],
 
-    mixins: [RouterMixin],
+  routes: {
+    '/': 'home',
+    '/:session': 'home',
+    '/message/:text': 'message',
+    '/officer/:officerSlug/:id': 'officer'
+  },
 
-    routes: {
-        '/': 'home',
-        '/message/:text': 'message',
-        '/officer/:officerSlug/:id': 'officer'
-    },
+  render: function() {
+    return this.renderCurrentRoute();
+  },
 
-    render: function() {
-        return this.renderCurrentRoute();
-    },
+  home: function(session) {
+    session = _.isObject(session) ? '' : session;
+    return (<CPDBApp session={session}/>)
+  },
 
-    home: function() {
-        return (<CPDBApp />)
-    },
+  message: function(text) {
+    return <div>{text}</div>;
+  },
 
-    message: function(text) {
-        return <div>{text}</div>;
-    },
+  officer: function(officerSlug, officerId) {
+    return <OfficerPage officerId={officerId} />;
+  },
 
-    officer: function(officerSlug, officerId) {
-      return <OfficerPage officerId={officerId} />;
-    },
-
-    notFound: function(path) {
-        return <div class="not-found">Page Not Found: {path}</div>;
-    }
+  notFound: function(path) {
+    return <div class="not-found">Page Not Found: {path}</div>;
+  }
 
 });
 

@@ -3,6 +3,7 @@ var React = require('react');
 var Filters = require('components/HomePage/Filters.react');
 var ComplaintListStore = require('stores/ComplaintListStore');
 var MapStore = require('stores/MapStore');
+var SessionAPI = require('utils/SessionAPI');
 var SessionStore = require('stores/SessionStore');
 var Officer = require("components/HomePage/Officer.react");
 var Complaint = require("components/HomePage/Complaint.react");
@@ -118,10 +119,10 @@ var ComplaintListRow = React.createClass({
       hasShown: true
     });
 
-
-    SessionStore.saveSession({
+    SessionAPI.updateSessionInfo({
       opened_complaints: init_data['opened_complaints']
-    })
+    });
+
   }
 });
 

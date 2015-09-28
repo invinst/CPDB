@@ -1,44 +1,41 @@
+var _ = require('lodash');
 var React = require('react');
 
+var AutoComplete = require('components/HomePage/AutoComplete.react');
+var Base = require('components/Base.react');
 var ComplaintSection = require('components/HomePage/ComplaintSection.react');
 var EmbedBar = require('components/HomePage/Embed/Bar.react');
 var Filters = require('components/HomePage/Filters.react');
 var Map = require('components/HomePage/Map.react');
-var Tabs = require('components/HomePage/Tabs.react');
 var OfficerList = require('components/HomePage/OfficerList.react');
+var SessionAPI = require('utils/SessionAPI');
+var SessionStore = require('stores/SessionStore');
 var SiteTitle = require('components/HomePage/SiteTitle.react');
-var AutoComplete = require('components/HomePage/AutoComplete.react');
+var Tabs = require('components/HomePage/Tabs.react');
 
-function getMapState() {
-  return {};
-}
 
-HOME_URL = location.pathname;
-SAVE_STATE = false;
-SESSION_HASH = '';
-
-var CPDBApp = React.createClass({
-
-  getInitialState: function () {
-    return getMapState();
-  },
+var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
   initShare: function () {
     if (location.pathname == '/') {
       $.getJSON('/share/init/', function (data) {
         SESSION_HASH = data.session.hash_id;
-        HOME_URL = "/" + SESSION_HASH + "/#!";
-        history.pushState({}, '', HOME_URL);
+        /*         HOME_URL = "/" + SESSION_HASH + "/#!"; */
+        /*         history.pushState({}, '', HOME_URL); */
         SAVE_STATE = true;
       });
     } else {
       SESSION_HASH = HOME_URL.substr(1, HOME_URL.length - 1);
       SAVE_STATE = true;
+      //SessionAction.getSession(SESSION_HASH);
     }
   },
 
   componentDidMount: function () {
-    this.initShare();
-    $('.smooth-scroll').click(function() {
+    var session = this.props.session || '';
+    SessionAPI.getSessionInfo(session);
+
+    /*     this.initShare(); */
+    $('.smooth-scroll').click(function() {q
       var target = $(this).data('target');
       var top = $(target).offset().top - 100;
       $("html, body").animate({scrollTop: top}, 500);
@@ -69,7 +66,6 @@ var CPDBApp = React.createClass({
               <form className="navbar-form navbar-right" role="search">
                 <div id="search-wrapper">
                   <input type="text" id="autocomplete" placeholder="Search by name, neighborhood, or complaint" class="ui-autocomplete-input" autocomplete="off" />
-
                 </div>
               </form>
           </div>
@@ -105,6 +101,6 @@ var CPDBApp = React.createClass({
       </div>
     );
   }
-});
+}));
 
 module.exports = CPDBApp;

@@ -13,6 +13,7 @@ var FilterStore = require('stores/FilterStore');
 var MapStore = require('stores/MapStore');
 var OfficerListStore = require('stores/OfficerListStore');
 var FilterActions = require('actions/FilterActions');
+var SessionAPI = require('utils/SessionAPI');
 var cx = require('react/lib/cx');
 var _sessionData = {};
 var init_data = typeof(INIT_DATA) == 'undefined' ? false : INIT_DATA;
@@ -142,7 +143,7 @@ var AutoComplete = React.createClass({
     if (event) {
       FilterActions.changeFilter(this.props.filterkey, event.target.value);
     }
-    SessionStore.saveSession();
+    SessionAPI.updateSessionInfo({'query': FilterStore.getSession()});
   },
 
   /**
