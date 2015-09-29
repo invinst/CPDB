@@ -4,7 +4,6 @@ var Filters = require('components/HomePage/Filters.react');
 var ComplaintListStore = require('stores/ComplaintListStore');
 var MapStore = require('stores/MapStore');
 var SessionAPI = require('utils/SessionAPI');
-var SessionStore = require('stores/SessionStore');
 var Officer = require("components/HomePage/Officer.react");
 var Complaint = require("components/HomePage/Complaint.react");
 var RequestButton = require('components/HomePage/Complaint/RequestButton.react');

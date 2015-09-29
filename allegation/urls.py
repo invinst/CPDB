@@ -27,5 +27,5 @@ urlpatterns = [
     url(r'^api/investigation/$', cache_view(InvestigationAPIView.as_view()), name='investigation'),
     url(r'^allegations/download/', (AllegationDownloadView.as_view()), name='allegation-download'),
     url(r'^api/allegations/sunburst/$', cache_view(AllegationSunburstView.as_view()), name='allegation-api-sunburst'),
-    url(r'^api/allegations/session/$', SessionAPIView.as_view(), name='allegation-api-session'),
+    url(r'^api/allegations/session/$', csrf_exempt(SessionAPIView.as_view()), name='allegation-api-session'),
 ]

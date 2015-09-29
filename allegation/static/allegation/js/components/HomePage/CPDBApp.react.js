@@ -2,6 +2,7 @@ var _ = require('lodash');
 var React = require('react');
 
 var AutoComplete = require('components/HomePage/AutoComplete.react');
+var AppConstants = require('constants/AppConstants');
 var Base = require('components/Base.react');
 var ComplaintSection = require('components/HomePage/ComplaintSection.react');
 var EmbedBar = require('components/HomePage/Embed/Bar.react');
@@ -15,21 +16,6 @@ var Tabs = require('components/HomePage/Tabs.react');
 
 
 var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
-  initShare: function () {
-    if (location.pathname == '/') {
-      $.getJSON('/share/init/', function (data) {
-        SESSION_HASH = data.session.hash_id;
-        /*         HOME_URL = "/" + SESSION_HASH + "/#!"; */
-        /*         history.pushState({}, '', HOME_URL); */
-        SAVE_STATE = true;
-      });
-    } else {
-      SESSION_HASH = HOME_URL.substr(1, HOME_URL.length - 1);
-      SAVE_STATE = true;
-      //SessionAction.getSession(SESSION_HASH);
-    }
-  },
-
   componentDidMount: function () {
     var session = this.props.session || '';
     SessionAPI.getSessionInfo(session);

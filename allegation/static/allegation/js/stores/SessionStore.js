@@ -35,10 +35,23 @@ AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.RECEIVED_SESSION_DATA:
+      var data = action.data.data;
+      data['title'] = data['title'] || AppConstants.DEFAULT_SITE_TITLE;
+      _state['data'] = data;
+      SessionStore.emitChange();
+      break;
+
+    case AppConstants.UPDATE_TITLE:
+      var title = action.title;
+      _state['data']['title'] = title;
+      SessionStore.emitChange();
+      break;
+
     case AppConstants.RECEIVED_UPDATED_SESSION_DATA:
       _state['data'] = action.data.data;
       SessionStore.emitChange();
       break;
+
     default: break;
   }
 });

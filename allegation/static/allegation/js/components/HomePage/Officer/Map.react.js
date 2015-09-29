@@ -17,7 +17,6 @@ var Map = React.createClass({
 
     _map = L.mapbox.map(element, AppConstants.MAP_TYPE, opts).setView([41.870839118528714, -87.6272964477539], defaultZoom);
     _map.on('click', function (event) {
-      console.log(event);
     }).setMaxBounds(maxBounds);
   },
   drawHeatMap: function (query_string) {

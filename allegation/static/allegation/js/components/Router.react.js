@@ -8,6 +8,7 @@ var Router = React.createClass({
   routes: {
     '/': 'home',
     '/:session': 'home',
+    '/:session/:title': 'home',
     '/message/:text': 'message',
     '/officer/:officerSlug/:id': 'officer'
   },
@@ -16,7 +17,7 @@ var Router = React.createClass({
     return this.renderCurrentRoute();
   },
 
-  home: function(session) {
+  home: function(session, title) {
     session = _.isObject(session) ? '' : session;
     return (<CPDBApp session={session}/>)
   },

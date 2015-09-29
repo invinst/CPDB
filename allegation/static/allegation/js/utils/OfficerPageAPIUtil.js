@@ -10,7 +10,6 @@ var OfficerPageAPIUtil = {
     }
 
     ajax = $.getJSON(AppConstants.OFFICER_PAGE_API_ENDPOINT, {'pk': officer}, function (data) {
-      console.log(data);
       OfficerPageActions.receivedOfficerData(data);
     });
   }

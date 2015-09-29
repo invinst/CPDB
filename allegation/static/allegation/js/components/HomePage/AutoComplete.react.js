@@ -8,7 +8,6 @@
  */
 
 var React = require('react');
-var SessionStore = require('stores/SessionStore');
 var FilterStore = require('stores/FilterStore');
 var MapStore = require('stores/MapStore');
 var OfficerListStore = require('stores/OfficerListStore');
@@ -61,7 +60,6 @@ var AutoComplete = React.createClass({
       itemText: 'text',
       tagClass: 'tag label label-info-autocomplete'
     });
-    console.log($(element).tagsinput());
     var filters = this.state.filters;
     for (var key in filters) {
       var filter = filters[key];
