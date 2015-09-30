@@ -1,7 +1,6 @@
 var HOST = 'http://localhost:8000';
 var React = require('react');
 var Filters = require('components/HomePage/Filters.react');
-var ComplaintListStore = require('stores/ComplaintListStore');
 var MapStore = require('stores/MapStore');
 var SessionAPI = require('utils/SessionAPI');
 var Officer = require("components/HomePage/Officer.react");

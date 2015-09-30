@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var React = require('react');
 require('mapbox.js');
 require('leaflet.heat');
@@ -87,14 +88,24 @@ var Map = React.createClass({
   // end embedding
 
   componentDidMount: function () {
+
     this.create();
     this.createAreas();
-    MapStore.update(this.props.query);
 
     MapStore.addChangeMarkerListener(this.changeMarker);
     MapStore.addBeforeChangeMarkerListener(this.beforeChangeMarker);
+    MapStore.update(this.props.query);
+    if (MapStore.getMarkers()) {
+      MapStore.emitChangeMarker();
+    }
 
     this.embedListener();
+  },
+
+  componentDidUnmount: function() {
+    _map.remove();
+    _baseLayers = {};
+    this.first_layer_added = false;
   },
 
   mapIntensity: function(markersLength) {
@@ -105,7 +116,9 @@ var Map = React.createClass({
     return intensity;
   },
 
-  create :function (dom_id, opts) {
+  create: function (dom_id, opts) {
+    this.first_layer_added = false;
+    _layers = {}
     dom_id = dom_id ? dom_id : this.getDOMNode();
     opts = opts ? opts : this.state;
     var defaultZoom = opts.defaultZoom ? opts['defaultZoom'] : 11;

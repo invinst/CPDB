@@ -202,6 +202,7 @@ var OfficerList = React.createClass({
     var displayCount = OFFICER_PER_DISPLAY;  // 2 time need for view port
     var officers = [];
     var count = 0, i;
+
     var active = this.state.active_officers.length == 0;
     var display = this.getDisplaying();
     var start = display[0];

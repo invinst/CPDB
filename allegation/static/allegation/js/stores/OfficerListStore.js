@@ -14,6 +14,8 @@ var EventEmitter = require('events').EventEmitter;
 var AppConstants = require('../constants/AppConstants');
 var assign = require('object-assign');
 var FilterStore = require('./FilterStore');
+var SessionActions = require("actions/SessionActions");
+
 var CHANGE_EVENT = 'change';
 var SUMMARY_CHANGE = 'summary-change';
 var firstCall = true;
@@ -108,11 +110,16 @@ OfficerListStore.dispatchEvent = AppDispatcher.register(function (action) {
       var index = _state.active_officers.indexOf(action.officer.id);
       if (index == -1) {
         _state.active_officers.push(action.officer.id);
-
       }
       else {
         _state.active_officers.splice(index, 1);
       }
+      OfficerListStore.emitChange();
+      break;
+
+    case AppConstants.RECEIVED_SESSION_DATA:
+      var data = action.data.data;
+      _state['active_officers'] = data['query']['active_officers'] || [];
       OfficerListStore.emitChange();
       break;
 

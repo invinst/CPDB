@@ -141,7 +141,7 @@ var AutoComplete = React.createClass({
     if (event) {
       FilterActions.changeFilter(this.props.filterkey, event.target.value);
     }
-    SessionAPI.updateSessionInfo({'query': FilterStore.getSession()});
+    //SessionAPI.updateSessionInfo({'query': FilterStore.getSession()});
   },
 
   /**

@@ -3,6 +3,7 @@ var _ = require('lodash');
 require('jquery.cookie');
 
 var AppConstants = require('constants/AppConstants');
+var ComplaintListAPI = require('utils/ComplaintListAPI');
 var SessionActions = require('actions/SessionActions');
 var SessionStore = require('stores/SessionStore');
 
@@ -20,6 +21,7 @@ var SessionAPI = {
 
     ajax = $.getJSON(AppConstants.SESSION_API_ENDPOINT, params, function(data) {
       SessionActions.receivedSessionInfoData(data);
+      ComplaintListAPI.getData()
     });
   },
 
@@ -30,15 +32,21 @@ var SessionAPI = {
       'request_data': JSON.stringify(data),
     };
 
-    $.ajax({
-      url: AppConstants.SESSION_API_ENDPOINT,
-      data: requestData,
-      dataType: 'json',
-      type: 'POST',
-      success: function(data) {
+    if (ajax) {
+      ajax.abort();
+    }
+
+    if (!_.isEmpty(data.hash)) {
+      ajax = $.ajax({
+        url: AppConstants.SESSION_API_ENDPOINT,
+        data: requestData,
+        dataType: 'json',
+        type: 'POST',
+        success: function (data) {
           SessionActions.receivedUpdatedSessionInfoData(data);
-      }
-    });
+        }
+      });
+    }
   }
 };
 
