@@ -18,7 +18,7 @@ var AddDocumentLinkModal = React.createClass(_.assign(Base(AddDocumentLinkModalS
   },
 
   addLink: function () {
-    DocumentAPI.addLink(this.state.link);
+    DocumentAPI.addLink(this.state.link ,this.state.supplied_crid);
   },
 
   render: function() {
@@ -33,9 +33,14 @@ var AddDocumentLinkModal = React.createClass(_.assign(Base(AddDocumentLinkModalS
             <div className="modal-body">
               <form>
                 <div className='form-group'>
-                  <input type='text' className='form-control link-input' name='link' placeholder='Enter link'
-                         required="required" value={this.state.link}
-                         onChange={this.updateValue.bind(this, 'link')} />
+                  <div className="col-md-3">
+                    <label htmlFor="link">Enter URL</label>
+                  </div>
+                  <div className="col-md-9">
+                    <input id="link" type='text' className='form-control link-input' name='link'
+                           required="required" value={this.state.link}
+                           onChange={this.updateValue.bind(this, 'link')} />
+                  </div>
                 </div>
               </form>
             </div>

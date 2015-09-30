@@ -2,10 +2,10 @@ var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var AppConstants = require('../../constants/AppConstants');
 
 var AddDocumentLinkModalActions = {
-  show: function (data) {
+  show: function (crid) {
     AppDispatcher.dispatch({
       actionType: AppConstants.SHOW_ADD_DOCUMENT_LINK_MODAL,
-      data: data
+      crid: crid
     });
   },
 
@@ -24,14 +24,14 @@ var AddDocumentLinkModalActions = {
     });
   },
 
-  documentLinkAdded(crid) {
+  documentLinkAdded: function(crid) {
     AppDispatcher.dispatch({
       actionType: AppConstants.DOCUMENT_LINK_ADDED,
       crid: crid
     });
   },
 
-  failedToAddDocumentLink() {
+  failedToAddDocumentLink: function() {
     AppDispatcher.dispatch({
       actionType: AppConstants.FAILED_ADD_DOCUMENT_LINK,
     });

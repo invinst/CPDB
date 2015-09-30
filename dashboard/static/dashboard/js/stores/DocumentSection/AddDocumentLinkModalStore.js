@@ -7,6 +7,7 @@ var _state = {
   isOpen: false,
   formValid: false,
   link: '',
+  supplied_crid: '',
   crid: '',
   flashMessage: '',
   errorMessages: []
@@ -28,6 +29,7 @@ AppDispatcher.register(function(action) {
     AddDocumentLinkModalStore.updateState('isOpen', true);
     AddDocumentLinkModalStore.updateState('formValid', false);
     AddDocumentLinkModalStore.updateState('link', '');
+    AddDocumentLinkModalStore.updateState('supplied_crid', action.crid);
     AddDocumentLinkModalStore.updateState('crid', '');
     AddDocumentLinkModalStore.updateState('flashMessage', '');
     AddDocumentLinkModalStore.updateState('errorMessages', []);
@@ -37,6 +39,7 @@ AppDispatcher.register(function(action) {
   case AppConstants.HIDE_ADD_DOCUMENT_LINK_MODAL:
     AddDocumentLinkModalStore.updateState('isOpen', false);
     AddDocumentLinkModalStore.updateState('flashMessage', '');
+    AddDocumentLinkModalStore.updateState('errorMessages', []);
     AddDocumentLinkModalStore.emitChange();
     break;
 
@@ -44,6 +47,7 @@ AppDispatcher.register(function(action) {
     AddDocumentLinkModalStore.updateState('isOpen', false);
     var msg = 'The document is successfully added to allegation #'+action.crid+'!';
     AddDocumentLinkModalStore.updateState('flashMessage', msg);
+    AddDocumentLinkModalStore.updateState('errorMessages', []);
     AddDocumentLinkModalStore.emitChange();
     break;
 

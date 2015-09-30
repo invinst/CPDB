@@ -6,6 +6,7 @@ var DocumentSectionStore = require('../stores/DocumentSectionStore');
 var DocumentSectionActions = require('../actions/DocumentSectionActions');
 var DocumentRequestAPI = require('../utils/DocumentRequestAPI');
 var AddDocumentLinkModal = require('./DocumentSection/AddDocumentLinkModal.react');
+var AddDocumentLinkModalActions = require('../actions/DocumentSection/AddDocumentLinkModalActions');
 var _ = require('lodash');
 
 var DocumentSection = React.createClass(_.assign(Base(DocumentSectionStore), {
@@ -25,6 +26,10 @@ var DocumentSection = React.createClass(_.assign(Base(DocumentSectionStore), {
     return <DocumentList />
   },
 
+  showAddLinkModal: function () {
+    AddDocumentLinkModalActions.show();
+  },
+
   render: function() {
     return (
       <div>
@@ -35,7 +40,7 @@ var DocumentSection = React.createClass(_.assign(Base(DocumentSectionStore), {
             </h1>
           </div>
           <div id='search-officer' className='col-md-6 col-xs-6 text-right'>
-            <button className="btn btn-primary">Add document</button>
+            <button className="btn btn-primary" onClick={this.showAddLinkModal}>Add document</button>
           </div>
         </div>
         <div>

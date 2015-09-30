@@ -7,6 +7,7 @@ from document.response import JsonResponse, HttpResponseBadRequest
 class DocumentLinkView(View):
     def post(self, request):
         link = request.POST.get('link', None)
+        crid = request.POST.get('crid', None)
         if not link:
             return HttpResponseBadRequest()
 
@@ -14,7 +15,7 @@ class DocumentLinkView(View):
             # Example link: https://www.documentcloud.org/documents/1273509-cr-1002643.html
             link_parts = link.split('/')[-1].split('.')[0].split('-')
             document_id = link_parts[0]
-            crid = link_parts[2]
+            crid = crid or link_parts[2]
             normalized_title = '-'.join(link_parts[1:])
         except IndexError:
             return HttpResponseBadRequest()
@@ -26,11 +27,8 @@ class DocumentLinkView(View):
             })
         title = self.get_title(get_title_resp.content.decode())
 
-        allegation = Allegation.objects.get(crid=crid)
-        allegation.document_id = document_id
-        allegation.document_normalized_title = normalized_title
-        allegation.document_title = title
-        allegation.save()
+        allegations = Allegation.objects.filter(crid=crid)
+        allegations.update(document_id=document_id, document_normalized_title=normalized_title, document_title=title)
 
         return JsonResponse({
             'status': 200,

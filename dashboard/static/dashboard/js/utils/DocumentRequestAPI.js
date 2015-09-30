@@ -43,13 +43,14 @@ var DocumentAPI = {
     });
   },
 
-  addLink: function(link) {
+  addLink: function(link, crid) {
     if (ajax) {
       ajax.abort();
     }
 
     var params = {
-      link: link
+      link: link,
+      crid: crid
     };
 
     ajax = jQuery.ajax({
@@ -59,7 +60,7 @@ var DocumentAPI = {
       success: function(data) {
         AddDocumentLinkModalActions.documentLinkAdded(data.crid);
       },
-      error: function(jqXHR, textStatus, errorThrown) {
+      error: function(jqXHR) {
         if (jqXHR.status == 400) {
           AddDocumentLinkModalActions.failedToAddDocumentLink();
         }

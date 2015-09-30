@@ -1,6 +1,6 @@
 var React = require('react');
 var _ = require('lodash');
-var classnames = require('classnames')
+var classnames = require('classnames');
 var Base = require('../Base.react');
 var DocumentListStore = require('../../stores/DocumentSection/DocumentListStore');
 var DocumentListActions = require('../../actions/DocumentSection/DocumentListActions');
@@ -46,15 +46,15 @@ var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
     });
   },
 
-  showAddLinkModal: function () {
-    AddDocumentLinkModalActions.show();
+  showAddLinkModal: function (crid) {
+    AddDocumentLinkModalActions.show(crid);
   },
 
-  renderDocumentActions: function(status) {
+  renderDocumentActions: function(status, crid) {
     if (status != AppConstants.DOCUMENT_STATUS['fulfilled']) {
       return (
         <div>
-          <button className="btn btn-primary" onClick={this.showAddLinkModal}>
+          <button className="btn btn-primary" onClick={this.showAddLinkModal.bind(this, crid)}>
             <i className="fa fa-link"></i> Add
           </button>
           <button className="btn btn-cancel">
@@ -88,7 +88,7 @@ var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
           <td className="status"><i className={className}></i> {statusText}</td>
           <td>{x.number_of_request}</td>
           <td className="actions">
-            { that.renderDocumentActions(statusText) }
+            { that.renderDocumentActions(statusText, x.crid) }
           </td>
         </tr>
       )
