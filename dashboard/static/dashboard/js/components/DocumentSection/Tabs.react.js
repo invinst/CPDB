@@ -19,7 +19,7 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
       var className = cx({
         active: x == that.state.active
       });
-      return <li className={className} onClick={that.onClick.bind(that, x)}>{x}</li>
+      return <li key={x} className={className} onClick={that.onClick.bind(that, x)}>{x}</li>
     });
   },
 

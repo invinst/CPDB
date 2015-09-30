@@ -6,6 +6,7 @@ var DocumentListStore = require('../../stores/DocumentSection/DocumentListStore'
 var DocumentListActions = require('../../actions/DocumentSection/DocumentListActions');
 var DocumentRequestAPI = require('../../utils/DocumentRequestAPI');
 var AppConstants = require('../../constants/AppConstants');
+var AddDocumentLinkModalActions = require('../../actions/DocumentSection/AddDocumentLinkModalActions');
 
 global.jQuery = require('jquery');
 
@@ -28,14 +29,14 @@ var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
 
   getStatus: function (requested, id) {
     if (id) {
-      return AppConstants.DOCUMENT_STATUS['fulfilled'];
+      return 'fulfilled';
     }
 
     if (requested) {
-      return AppConstants.DOCUMENT_STATUS['requesting'];
+      return 'requesting';
     }
 
-    return AppConstants.DOCUMENT_STATUS['missing'];
+    return 'missing';
   },
 
   rowClassName: function (allegation) {
@@ -45,11 +46,15 @@ var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
     });
   },
 
+  showAddLinkModal: function () {
+    AddDocumentLinkModalActions.show();
+  },
+
   renderDocumentActions: function(status) {
     if (status != AppConstants.DOCUMENT_STATUS['fulfilled']) {
       return (
         <div>
-          <button className="btn btn-primary">
+          <button className="btn btn-primary" onClick={this.showAddLinkModal}>
             <i className="fa fa-link"></i> Add
           </button>
           <button className="btn btn-cancel">
@@ -72,14 +77,18 @@ var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
     var that = this;
     return this.state.documents.map(function(x) {
       var status = that.getStatus(x.document_requested, x.document_id);
+      var statusText = AppConstants.DOCUMENT_STATUS[status]['text'];
+      var statusIcon = AppConstants.DOCUMENT_STATUS[status]['icon'];
+
+      var className = classnames('fa', "fa-" + statusIcon);
 
       return (
         <tr className='document' key={"crid" + x.crid} className={that.rowClassName(x)}>
           <td>{x.crid}</td>
-          <td className="status">{status}</td>
+          <td className="status"><i className={className}></i> {statusText}</td>
           <td>{x.number_of_request}</td>
           <td className="actions">
-            { that.renderDocumentActions(status) }
+            { that.renderDocumentActions(statusText) }
           </td>
         </tr>
       )

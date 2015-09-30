@@ -9,7 +9,7 @@ class HttpResponseBadRequest(BaseHttpResponseBadRequest):
             content = {
                 'errors': form.errors
             }
-            content = JSONSerializer().serialize(content)
+        content = JSONSerializer().serialize(content)
         super(HttpResponseBadRequest, self).__init__(content, content_type="application/json", *args, **kwargs)
 
 

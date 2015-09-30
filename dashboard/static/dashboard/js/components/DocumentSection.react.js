@@ -5,6 +5,7 @@ var Tabs = require('./DocumentSection/Tabs.react');
 var DocumentSectionStore = require('../stores/DocumentSectionStore');
 var DocumentSectionActions = require('../actions/DocumentSectionActions');
 var DocumentRequestAPI = require('../utils/DocumentRequestAPI');
+var AddDocumentLinkModal = require('./DocumentSection/AddDocumentLinkModal.react');
 var _ = require('lodash');
 
 var DocumentSection = React.createClass(_.assign(Base(DocumentSectionStore), {
@@ -49,6 +50,7 @@ var DocumentSection = React.createClass(_.assign(Base(DocumentSectionStore), {
             </div>
           </div>
         </div>
+        <AddDocumentLinkModal />
       </div>
     )
   }

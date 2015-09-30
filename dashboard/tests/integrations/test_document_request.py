@@ -1,7 +1,5 @@
-from allegation.factories import OfficerFactory
-from common.models import Officer
+from allegation.factories import AllegationFactory
 from common.tests.core import BaseLiveTestCase
-from officer.factories import StoryFactory
 
 
 class OfficerProfileTestCase(BaseLiveTestCase):
@@ -9,7 +7,7 @@ class OfficerProfileTestCase(BaseLiveTestCase):
         self.login_user()
         self.visit('/admin/')
 
-    def go_to_officer_profile(self):
+    def go_to_documents(self):
         self.element_by_tagname_and_text('span', 'Investigation Documents').click()
 
     def tab_should_active(self, text):
@@ -17,7 +15,7 @@ class OfficerProfileTestCase(BaseLiveTestCase):
 
     def test_see_document_request_tab(self):
         self.should_see_text('Investigation Documents')
-        self.go_to_officer_profile()
+        self.go_to_documents()
         self.find("h1").text.should.equal('Investigation Documents')
         self.button("Add document").should.be.ok
 
@@ -30,3 +28,12 @@ class OfficerProfileTestCase(BaseLiveTestCase):
         for tab in tabs:
             self.element_by_tagname_and_text('li', tab).click()
             self.tab_should_active(tab)
+
+    def test_add_document_link(self):
+        AllegationFactory()
+
+        self.go_to_documents()
+        self.button("Add").click()
+        self.until(lambda: self.should_see_text('Add document link'))
+
+        self.button('SUBMIT').click()
