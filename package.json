@@ -41,8 +41,8 @@
     "start_admin": "watchify -o dashboard/static/dashboard/js/bundle.js -v -d dashboard/static/dashboard/js/app.js",
     "build": "browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > allegation/static/allegation/js/bundle.min.js",
     "build_admin": "browserify dashboard/static/dashboard/js/app.js -t [envify --NODE_ENV production] | uglifyjs -cm > dashboard/static/dashboard/js/bundle.min.js",
-    "circleci": "browserify allegation/static/allegation/js/app.js > allegation/static/allegation/js/bundle.js",
-    "circleci_admin": "browserify dashboard/static/dashboard/js/app.js > dashboard/static/dashboard/js/bundle.js",
+    "circleci": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js browserify allegation/static/allegation/js/app.js > allegation/static/allegation/js/bundle.js",
+    "circleci_admin": "NODE_PATH=dashboard/static/dashboard/js browserify dashboard/static/dashboard/js/app.js > dashboard/static/dashboard/js/bundle.js",
     "test": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js jest"
   },
   "author": "Stefan Georg",

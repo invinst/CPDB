@@ -7,7 +7,7 @@ class ShareSessionTestCase(BaseLiveTestCase):
     def test_share_id_appended_to_url_in_home(self):
         self.visit("/")
         self.find("body").click()  # bug - firefox focus url address bar
-        self.until(lambda: self.browser.current_url.count("/") == 4)  # http://host:port/hash/
+        self.until(lambda: self.browser.current_url.count("/") >= 4)  # http://host:port/hash/
 
     def test_not_generate_new_share_when_access_a_share(self):
         self.test_share_id_appended_to_url_in_home()

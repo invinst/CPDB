@@ -1,5 +1,9 @@
-var HOST = 'http://localhost:8000';
+var _ = require("lodash");
 var React = require('react');
+
+var Base = require("components/Base.react");
+var ComplaintListActions = require("actions/ComplaintList/ComplaintListActions");
+var ComplaintListStore = require("stores/ComplaintListStore");
 var Filters = require('components/HomePage/Filters.react');
 var MapStore = require('stores/MapStore');
 var SessionAPI = require('utils/SessionAPI');
@@ -7,29 +11,17 @@ var Officer = require("components/HomePage/Officer.react");
 var Complaint = require("components/HomePage/Complaint.react");
 var RequestButton = require('components/HomePage/Complaint/RequestButton.react');
 var _timeline = false;
-var init_data = typeof(INIT_DATA) != 'undefined' && INIT_DATA ? INIT_DATA : {'opened_complaints':[]};
 
 
 
-var ComplaintListRow = React.createClass({
-  getInitialState: function () {
-    init_data['opened_complaints'] = init_data['opened_complaints'] || [];
-    return {
-      'show': init_data['opened_complaints'].indexOf(this.props.complaint.allegation.id) != -1,
-      'detail': {}
-    }
-  },
-
-  componentDidMount: function () {
-    $(this.getDOMNode()).on("closeAction", this.toggleComplaint);
-  },
+var ComplaintListRow = React.createClass(_.assign(Base(ComplaintListStore), {
 
   detailRendered: function() {
-     return this.state.show || this.state.hasShown;
+     return this.state.hasShown || this.detailIsCurrentlyShown();
   },
 
   detailIsCurrentlyShown: function() {
-     return !this.state.show && this.state.hasShown;
+     return this.state.activeComplaints.indexOf(this.props.complaint.allegation.id) > -1
   },
 
   render: function () {
@@ -37,9 +29,8 @@ var ComplaintListRow = React.createClass({
     var caretClasses = 'fa fa-chevron-right';
     var detailIsShown = this.detailIsCurrentlyShown();
     var showMore = '';
-
     if (this.detailRendered()) {
-      showMore = <Complaint complaint={complaint} hide={detailIsShown}/>;
+      showMore = <Complaint complaint={complaint} hide={!detailIsShown}/>;
       caretClasses = 'fa fa-chevron-' + (detailIsShown ? 'right' : 'down');
     }
 
@@ -101,27 +92,18 @@ var ComplaintListRow = React.createClass({
     );
   },
 
-  toggleComplaint: function (e) {
-    var openedComplaints = init_data['opened_complaints'];
+  componentDidUpdate: function(e) {
     var id = this.props.complaint.allegation.id
-    if (this.state.show) {
-      var url = "/allegations/" + this.props.complaint.allegation.id;
-      ga('send', 'event', 'allegation', 'close', this.props.complaint.allegation.id);
-      openedComplaints.splice(openedComplaints.indexOf(id), 1);
-    } else {
-      openedComplaints.push(id);
-      ga('send', 'event', 'allegation', 'open', this.props.complaint.allegation.id);
-    }
-    this.setState({
-      show: !this.state.show,
-      hasShown: true
-    });
+    var kindOfUserInteraction = this.state.show ? 'open' : 'close';
+    ga('send', 'event', 'allegation', kindOfUserInteraction, id);
+  },
 
-    SessionAPI.updateSessionInfo({
-      opened_complaints: init_data['opened_complaints']
-    });
-
+  toggleComplaint: function (e) {
+    this.setState({hasShown: true});
+    ComplaintListActions.toggleComplaint(this.props.complaint.allegation.id);
+    SessionAPI.updateSessionInfo({'query': { activeComplaints: this.state.activeComplaints}});
   }
-});
+
+}));
 
 module.exports = ComplaintListRow;

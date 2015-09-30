@@ -169,6 +169,9 @@ AppDispatcher.register(function (action) {
       FilterStore.emitEnable();
       break;
 
+    case AppConstants.RECEIVED_SESSION_DATA:
+      FilterStore.setSession(action.data['data']['query']['fitlers'] || {});
+      FilterStore.emitChange()
     default:
       break;
   }

@@ -1,7 +1,6 @@
 var _ = require('lodash');
 var React = require('react');
 
-var AutoComplete = require('components/HomePage/AutoComplete.react');
 var AppConstants = require('constants/AppConstants');
 var Base = require('components/Base.react');
 var ComplaintSection = require('components/HomePage/ComplaintSection.react');

@@ -1,6 +1,7 @@
 var React = require('react');
-var OfficerListStore = require('stores/OfficerListStore');
 
+var AppConstants = require('constants/AppConstants');
+var OfficerListStore = require('stores/OfficerListStore');
 
 var Download = React.createClass({
   getInitialState: function () {
@@ -35,7 +36,7 @@ var Download = React.createClass({
         $.getJSON('/allegations/download/', {id: data.download.id}, function (result) {
           if (result.download.finished) {
             clearInterval(listener);
-            var href = MEDIA_URL + result.download.url;
+            var href = AppConstants.MEDIA_URL + result.download.url;
             that.setState({
               processing: false,
               href: href

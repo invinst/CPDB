@@ -9,6 +9,7 @@ var _state = {
   'complaints': [],
   'activeFilter': 'all',
   'analytics': [],
+  'activeComplaints': [],
   'scrollLock': false,
   'pageNumber': 1,
   'loading': false
@@ -68,10 +69,12 @@ AppDispatcher.register(function(action) {
       break;
 
     case AppConstants.COMPLAINT_LIST_RECEIVED_MORE_DATA:
-      ComplaintListStore.unlockScroll();
-      _state['pageNumber']++;
-      $.merge(_state['complaints'], action.data.allegations);
-      ComplaintListStore.emitChange();
+      if (!_.isEmpty(action.data.allegations)) {
+        ComplaintListStore.unlockScroll();
+        _state['pageNumber']++;
+        $.merge(_state['complaints'], action.data.allegations);
+        ComplaintListStore.emitChange();
+      }
       break;
 
     case AppConstants.COMPLAINT_LIST_GET_DATA:
@@ -85,6 +88,21 @@ AppDispatcher.register(function(action) {
       ComplaintListStore.emitChange();
       break;
 
+    case AppConstants.TOGGLE_COMPLAINT:
+      if (_state['activeComplaints'].indexOf(action.id) > -1) {
+        _state['activeComplaints'].splice(_state['activeComplaints'].indexOf(action.id), 1);
+      }
+      else{
+        _state['activeComplaints'].push(action.id);
+      }
+      ComplaintListStore.emitChange();
+      break;
+
+    case AppConstants.RECEIVED_SESSION_DATA:
+      var data = action.data.data;
+      _state['activeComplaints'] = data['query']['activeComplaints'] || [];
+      ComplaintListStore.emitChange();
+      break;
 
     default:
       break;
