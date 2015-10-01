@@ -31,7 +31,7 @@ var AddDocumentLinkModal = React.createClass(_.assign(Base(AddDocumentLinkModalS
               <h3>Add document link</h3>
             </div>
             <div className="modal-body">
-              <form>
+              <form className="form-horizontal">
                 <div className='form-group'>
                   <div className="col-md-3">
                     <label htmlFor="link">Enter URL</label>

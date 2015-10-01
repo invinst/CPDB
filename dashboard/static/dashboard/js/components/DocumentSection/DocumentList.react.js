@@ -51,7 +51,7 @@ var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
   },
 
   renderDocumentActions: function(status, crid) {
-    if (status != AppConstants.DOCUMENT_STATUS['fulfilled']) {
+    if (status != 'fulfilled') {
       return (
         <div>
           <button className="btn btn-primary" onClick={this.showAddLinkModal.bind(this, crid)}>
@@ -88,7 +88,7 @@ var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
           <td className="status"><i className={className}></i> {statusText}</td>
           <td>{x.number_of_request}</td>
           <td className="actions">
-            { that.renderDocumentActions(statusText, x.crid) }
+            { that.renderDocumentActions(status, x.crid) }
           </td>
         </tr>
       )
