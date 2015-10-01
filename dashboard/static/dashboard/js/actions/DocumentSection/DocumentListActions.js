@@ -20,6 +20,13 @@ var DocumentListActions = {
     AppDispatcher.dispatch({
       actionType: AppConstants.LOCK_SCROLL_DOCUMENT_LIST
     });
+  },
+
+  setActive: function (allegation) {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.SET_ACTIVE_ALLEGATION,
+      data: allegation
+    });
   }
 };
 

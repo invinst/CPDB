@@ -32,51 +32,13 @@ OFFICER_COMPLAINT_COUNT_RANGE = getattr(settings, 'OFFICER_COMPLAINT_COUNT_RANGE
 class AllegationListView(TemplateView):
     template_name = 'allegation/home.html'
     session = None
-    KEYS = {
-        'officer': Officer,
-        'cat': AllegationCategory,
-        'investigator': Investigator
-    }
-    OTHER_KEYS = {
-        'officer__gender': GENDER_DICT,
-        'complainant_gender': GENDER_DICT,
-        'outcome_text': OUTCOME_TEXT_DICT
-    }
 
-    def get_filters(self, key, values):
-        if key == 'areas__id':
-            ret = []
-            for pk in values['value']:
-                area = Area.objects.get(pk=pk)
-                ret.append({'text': "%s: %s" % (area.type, area.name) , 'value': pk})
-            return ret
-
-        if key in self.KEYS:
-            values = self.KEYS[key].objects.filter(pk__in=values['value'])
-            return [o.tag_value for o in values]
-
-        if key in self.OTHER_KEYS:
-            return [{
-                'text': self.OTHER_KEYS[key].get(o),
-                'value': o,
-            } for o in values['value']]
-
-        return values['value']
 
     def get_context_data(self, **kwargs):
         context = super(AllegationListView, self).get_context_data(**kwargs)
         context['show_site_title'] = True
         if self.session:
-            filters = {}
-            save_filters = self.session.query.get('filters', {})
-            for key in save_filters:
-                values = save_filters[key]
-                values = self.get_filters(key, values)
-                if values:
-                    filters.update({
-                        key: values
-                    })
-            context['filters'] = filters
+            context['filters'] = self.session.readable_query
         context['session'] = self.session
         return context
 

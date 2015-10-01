@@ -1,24 +1,22 @@
 var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var AppConstants = require('../../constants/AppConstants');
 var _ = require('lodash');
-var Base = require('./Base');
+var Base = require('../Base');
 
 var _state = {
-  documents: []
+  document: null
 };
 
-var DocumentSectionStore = _.assign(Base(_state), {
-  init: function (params) {
-    _.extend(_state, params);
-    return this.getState();
-  },
+var DocumentStore = _.assign(Base(_state), {
+
 });
 
 AppDispatcher.register(function(action) {
   switch (action.actionType) {
-    case AppConstants.RECEIVED_DOCUMENT_LIST:
-      _state.documents = action.data;
-      DocumentSectionStore.emitChange();
+    case AppConstants.RECEIVED_DOCUMENT:
+    case AppConstants.SET_ACTIVE_ALLEGATION:
+      _state.document = action.data;
+      DocumentStore.emitChange();
       break;
 
     default:
@@ -26,4 +24,4 @@ AppDispatcher.register(function(action) {
   }
 });
 
-module.exports = DocumentSectionStore;
+module.exports = DocumentStore;

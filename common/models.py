@@ -321,6 +321,10 @@ OUTCOME_TEXT = [
 ]
 OUTCOME_TEXT_DICT = dict(OUTCOME_TEXT)
 
+FINAL_FINDING_TEXT_DICT = {
+    'unsustained': 'Unsustained',
+}
+
 
 class Allegation(models.Model):
     record_id = models.IntegerField(null=True)

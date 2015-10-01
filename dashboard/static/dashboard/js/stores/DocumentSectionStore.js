@@ -13,6 +13,10 @@ var DocumentSectionStore = _.assign(Base(_state), {
     _.extend(_state, params);
     return this.getState();
   },
+
+  setActiveAllegation: function (allegation) {
+    navigate('/document?id=' + allegation.id);
+  }
 });
 
 AppDispatcher.register(function(action) {
@@ -22,6 +26,9 @@ AppDispatcher.register(function(action) {
       DocumentSectionStore.emitChange();
       break;
 
+    case AppConstants.SET_ACTIVE_ALLEGATION:
+      DocumentSectionStore.setActiveAllegation(action.data);
+      break;
     default:
       break;
   }

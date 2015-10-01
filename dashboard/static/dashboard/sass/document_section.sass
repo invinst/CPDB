@@ -14,3 +14,22 @@
 .form-control
   &.link-input
     border: 1px solid $color-dusty-gray
+
+.session-query
+  span
+    padding-right: 10px
+    padding-left: 10px
+    display: inline-block
+    & + span
+      border-left: 1px solid $color-dusty-gray
+
+.status
+  &.fulfilled
+    color: $color-ok-green
+  &.requesting
+    color: $color-warn-red
+  &.missing
+    color: $color-wait-gray
+
+.inline-block
+  display: inline-block

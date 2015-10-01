@@ -1,5 +1,6 @@
 var React = require('react');
 var Base = require('./Base.react');
+var Document = require('./DocumentSection/Document.react');
 var DocumentList = require('./DocumentSection/DocumentList.react');
 var Tabs = require('./DocumentSection/Tabs.react');
 var DocumentSectionStore = require('../stores/DocumentSectionStore');
@@ -13,17 +14,35 @@ var DocumentSection = React.createClass(_.assign(Base(DocumentSectionStore), {
 
   componentDidMount: function () {
     DocumentSectionStore.addChangeListener(this._onChange);
-    //if (this.props.params.id) {
-    //  DocumentSectionActions.loadOfficer(this.props.params.id);
-    //}
-    DocumentRequestAPI.get()
+    this.fetchData();
+  },
+
+  componentDidUpdate: function () {
+    this.fetchData();
+  },
+
+  fetchData: function () {
+    if (this.props.params.id) {
+      DocumentRequestAPI.loadDocument(this.props.params.id);
+    } else {
+      DocumentRequestAPI.get()
+    }
   },
 
   content: function () {
-    //if (this.props.params.id) {
-    //  return <Officer />
-    //}
-    return <DocumentList />
+    if (this.props.params.id) {
+      return (
+        <div id='documents' className='col-md-12'>
+          <Document />
+        </div>
+      );
+    }
+    return (
+      <div id='documents' className='col-md-12'>
+        <Tabs />
+        <DocumentList />
+      </div>
+    );
   },
 
   showAddLinkModal: function () {
@@ -45,14 +64,7 @@ var DocumentSection = React.createClass(_.assign(Base(DocumentSectionStore), {
         </div>
         <div>
           <div className='row'>
-            <div className="col-md-12">
-              <Tabs />
-            </div>
-          </div>
-          <div className='row'>
-            <div id='documents' className='col-md-12'>
-              { this.content() }
-            </div>
+            { this.content() }
           </div>
         </div>
         <AddDocumentLinkModal />
