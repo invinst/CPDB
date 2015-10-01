@@ -65,7 +65,7 @@ var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
     } else {
       return (
         <div>
-          <button className="btn btn-primary inverse">
+          <button className="btn btn-primary inverse" onClick={this.showAddLinkModal.bind(this, crid)}>
             <i className="fa fa-refresh"></i> Update
           </button>
         </div>
