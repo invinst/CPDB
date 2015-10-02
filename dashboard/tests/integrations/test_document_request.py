@@ -1,4 +1,5 @@
 from allegation.factories import AllegationFactory
+from common.models import Allegation
 from common.tests.core import BaseLiveTestCase
 
 
@@ -6,6 +7,10 @@ class OfficerProfileTestCase(BaseLiveTestCase):
     def setUp(self):
         self.login_user()
         self.visit('/admin/')
+
+    def tearDown(self):
+        super(OfficerProfileTestCase, self).tearDown()
+        Allegation.objects.all().delete()
 
     def go_to_documents(self):
         self.element_by_tagname_and_text('span', 'Investigation Documents').click()
@@ -39,3 +44,13 @@ class OfficerProfileTestCase(BaseLiveTestCase):
         self.element_for_label('Enter URL').send_keys('https://www.documentcloud.org/documents/1273509-cr-1002643.html')
         self.button('SUBMIT').click()
         self.until(lambda: self.should_see_text('The document is successfully added to allegation #1002643!'))
+
+    def test_cancel_document_request(self):
+        allegation = AllegationFactory(document_requested=True)
+        self.go_to_documents()
+        self.button('Cancel').click()
+        self.button('OK').click()
+        self.until(self.ajax_complete)
+
+        Allegation.objects.get(id=allegation.id).document_requested.should.be.false
+

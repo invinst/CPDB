@@ -18,14 +18,12 @@ var DocumentSection = React.createClass(_.assign(Base(DocumentSectionStore), {
   },
 
   componentDidUpdate: function () {
-    this.fetchData();
+
   },
 
   fetchData: function () {
     if (this.props.params.id) {
       DocumentRequestAPI.loadDocument(this.props.params.id);
-    } else {
-      DocumentRequestAPI.get()
     }
   },
 

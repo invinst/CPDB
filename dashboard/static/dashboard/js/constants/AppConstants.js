@@ -52,6 +52,7 @@ module.exports = {
   HIDE_ADD_DOCUMENT_LINK_MODAL: c++,
   SET_ACTIVE_ALLEGATION: c++,
   RECEIVED_DOCUMENT: c++,
+  DOCUMENT_REQUEST_CANCEL: c++,
 
   QUERY_LIST_FILTERS: {
     'all': 'All',

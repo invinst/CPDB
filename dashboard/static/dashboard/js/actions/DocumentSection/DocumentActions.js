@@ -7,6 +7,13 @@ var DocumentActions = {
       actionType: AppConstants.RECEIVED_DOCUMENT,
       data: data
     });
+  },
+
+  requestCancel: function (allegation) {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.DOCUMENT_REQUEST_CANCEL,
+      data: allegation
+    });
   }
 };
 

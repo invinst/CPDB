@@ -20,6 +20,16 @@ var Document = React.createClass(_.assign(Base(DocumentStore), {
     history.go(-1);
   },
 
+  getRequestCount: function () {
+    var document = this.state.document;
+    if (!document.document_requested && !document.document_id) {
+      return '';
+    }
+    return (
+      <span> | {document.number_of_request} requests </span>
+    );
+  },
+
   render: function () {
     var document = this.state.document;
     if (!document) {
@@ -43,13 +53,13 @@ var Document = React.createClass(_.assign(Base(DocumentStore), {
           <div className="col-md-9">
             <h4 className="inline-block">{document.crid} information</h4>
             &nbsp;<span className={statusClass}><i className={className}></i> {statusObj.text}</span>
-            &nbsp;| {document.number_of_request} requests
+            { this.getRequestCount() }
           </div>
           <div className="col-md-3">
-            { this.renderDocumentActions(status, document.crid) }
+            { this.renderDocumentActions(status, document) }
           </div>
         </div>
-        <QueryList queries={document.queries} />
+        <QueryList document={document} />
       </div>
     );
   }

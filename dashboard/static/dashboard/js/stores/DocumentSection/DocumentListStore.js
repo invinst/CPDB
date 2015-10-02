@@ -37,6 +37,11 @@ AppDispatcher.register(function(action) {
       DocumentListStore.emitChange();
       break;
 
+    case AppConstants.DOCUMENT_REQUEST_CANCEL:
+      action.data.document_requested = false;
+      DocumentListStore.emitChange();
+      break;
+
     default:
       break;
   }

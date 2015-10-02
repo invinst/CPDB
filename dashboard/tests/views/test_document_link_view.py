@@ -48,3 +48,13 @@ class DocumentLinkViewTestCase(SimpleTestCase):
         })
 
         response.status_code.should.equal(400)
+
+    def test_cancel_document_requests(self):
+        allegation = AllegationFactory()
+        response = self.client.post('/api/dashboard/document-link/', {
+            'crid': allegation.crid
+        })
+
+        response.status_code.should.equal(200)
+        for allegation in Allegation.objects.filter(crid=allegation.crid):
+            allegation.document_requested.should.be.false

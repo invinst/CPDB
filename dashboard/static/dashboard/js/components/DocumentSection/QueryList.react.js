@@ -5,11 +5,11 @@ var Base = require('../Base.react');
 
 var QueryList = React.createClass({
   renderQueryList: function () {
-    if (!this.props.queries) {
+    if (!this.props.document.queries) {
       return;
     }
     var that = this;
-    return this.props.queries.map(function (x, index) {
+    return this.props.document.queries.map(function (x, index) {
       return (
         <tr>
           <td>{index + 1}</td>
@@ -34,6 +34,15 @@ var QueryList = React.createClass({
   },
 
   render: function () {
+    var document = this.props.document;
+    if (!document.document_requested && (!document.queries || !document.queries.length)) {
+      return (
+        <div>
+          This allegation has no data as the the moment.
+        </div>
+      );
+    }
+
     return (
       <div className='table-responsive'>
         <table className='table table-striped table-hover'>

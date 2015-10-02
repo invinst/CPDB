@@ -77,6 +77,30 @@ var DocumentRequestAPI = {
         }
       }
     });
+  },
+
+  cancelRequest: function (allegation) {
+    if (ajax) {
+      ajax.abort();
+    }
+
+    var params = {
+      crid: allegation.crid
+    };
+
+    ajax = jQuery.ajax({
+      url: AppConstants.DOCUMENT_LINK_END_POINT,
+      data: params,
+      method: 'POST',
+      success: function(data) {
+        DocumentActions.requestCancel(allegation);
+      },
+      error: function(jqXHR) {
+        if (jqXHR.status == 400) {
+          AddDocumentLinkModalActions.failedToAddDocumentLink();
+        }
+      }
+    });
   }
 };
 

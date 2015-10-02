@@ -19,6 +19,11 @@ AppDispatcher.register(function(action) {
       DocumentStore.emitChange();
       break;
 
+    case AppConstants.DOCUMENT_REQUEST_CANCEL:
+      action.data.document_requested = false;
+      DocumentStore.emitChange();
+      break;
+
     default:
       break;
   }

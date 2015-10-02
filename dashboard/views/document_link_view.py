@@ -10,6 +10,18 @@ class DocumentLinkView(View):
     def post(self, request):
         link = request.POST.get('link', None)
         crid = request.POST.get('crid', None)
+
+        if link is None:
+            return self.cancle_requests(crid)
+
+        return self.update_allegation_document(crid, link)
+
+    def cancle_requests(self, crid):
+        allegations = Allegation.objects.filter(crid=crid)
+        allegations.update(document_requested=False)
+        return JsonResponse()
+
+    def update_allegation_document(self, crid, link):
         if not link:
             return HttpResponseBadRequest()
 

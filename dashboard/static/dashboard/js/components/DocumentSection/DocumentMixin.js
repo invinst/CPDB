@@ -1,7 +1,9 @@
 var React = require('react');
 var classnames = require('classnames');
+var bootbox = require('bootbox');
 var AppConstants = require('../../constants/AppConstants');
 var AddDocumentLinkModalActions = require('../../actions/DocumentSection/AddDocumentLinkModalActions');
+var DocumentRequestAPI = require('../../utils/DocumentRequestAPI');
 
 var DocumentMixin = {
   getStatus: function (requested, id) {
@@ -31,14 +33,22 @@ var DocumentMixin = {
     AddDocumentLinkModalActions.show(crid);
   },
 
-  renderDocumentActions: function(status, crid) {
+  onCancelClick: function (allegation) {
+    bootbox.confirm("Do you want to cancel document request for #" + allegation.crid, function (yes) {
+      if (yes) {
+        DocumentRequestAPI.cancelRequest(allegation);
+      }
+    });
+  },
+
+  renderDocumentActions: function(status, allegation) {
     if (status != 'fulfilled') {
       return (
         <div>
-          <button className="btn btn-primary" onClick={this.showAddLinkModal.bind(this, crid)}>
+          <button className="btn btn-primary" onClick={this.showAddLinkModal.bind(this, allegation.crid)}>
             <i className="fa fa-link"></i> Add
           </button>
-          <button className="btn btn-cancel">
+          <button className="btn btn-cancel" onClick={this.onCancelClick.bind(this, allegation)}>
             <i className="fa fa-times"></i> Cancel
           </button>
         </div>
@@ -46,7 +56,7 @@ var DocumentMixin = {
     } else {
       return (
         <div>
-          <button className="btn btn-primary inverse" onClick={this.showAddLinkModal.bind(this, crid)}>
+          <button className="btn btn-primary inverse" onClick={this.showAddLinkModal.bind(this, allegation.crid)}>
             <i className="fa fa-refresh"></i> Update
           </button>
         </div>

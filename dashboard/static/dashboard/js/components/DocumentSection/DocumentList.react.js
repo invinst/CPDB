@@ -7,6 +7,7 @@ var DocumentListActions = require('../../actions/DocumentSection/DocumentListAct
 var DocumentRequestAPI = require('../../utils/DocumentRequestAPI');
 var DocumentMixin = require('./DocumentMixin');
 var AppConstants = require('../../constants/AppConstants');
+var DocumentRequestAPI = require('../../utils/DocumentRequestAPI');
 var AddDocumentLinkModalActions = require('../../actions/DocumentSection/AddDocumentLinkModalActions');
 
 global.jQuery = require('jquery');
@@ -26,7 +27,12 @@ var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
 
   componentDidMount: function () {
     DocumentListStore.addChangeListener(this._onChange);
+    DocumentRequestAPI.get();
     jQuery(window).on('scroll', this._onScroll);
+  },
+
+  componentWillUnmount: function () {
+    jQuery(window).off('scroll', this._onScroll);
   },
 
   setActiveAllegation: function (allegation) {
@@ -55,7 +61,7 @@ var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
           <td className="status"><i className={className}></i> {statusText}</td>
           <td>{x.number_of_request}</td>
           <td className="actions">
-            { that.renderDocumentActions(status, x.crid) }
+            { that.renderDocumentActions(status, x) }
           </td>
         </tr>
       )

@@ -75,6 +75,7 @@ class AllegationFactory(factory.django.DjangoModelFactory):
     investigator = factory.SubFactory(InvestigatorFactory)
     officer = factory.SubFactory(OfficerFactory)
     point = None
+    document_requested = False
 
     @factory.post_generation
     def areas(self, create, extracted, **kwargs):
