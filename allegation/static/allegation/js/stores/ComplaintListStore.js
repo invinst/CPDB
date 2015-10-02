@@ -108,5 +108,5 @@ AppDispatcher.register(function(action) {
       break;
   }
 });
-
+ComplaintListStore.setMaxListeners(0);
 module.exports = ComplaintListStore;

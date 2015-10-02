@@ -29,12 +29,15 @@ var OfficerListStore = assign({}, EventEmitter.prototype, {
   getSession: function () {
     return {'active_officers': _.clone(_state['active_officers'])};
   },
+
   setSession: function (data) {
     this.set('active_officers', data.active_officers || []);
   },
+
   getActiveOfficers: function() {
     return _state.active_officers;
   },
+
   getQueryString: function () {
     var queryString = FilterStore.getQueryString();
     for (var i = 0; i < _state['active_officers'].length; i++) {
@@ -42,6 +45,7 @@ var OfficerListStore = assign({}, EventEmitter.prototype, {
     }
     return queryString;
   },
+
   update: function (query) {
     if (ajax) {
       ajax.abort();
@@ -56,26 +60,37 @@ var OfficerListStore = assign({}, EventEmitter.prototype, {
       OfficerListStore.emitChange();
     });
   },
+
   set: function (key, value) {
     _state[key] = value;
     this.emitChange();
   },
+
   init: function () {
     this.update();
     return _.clone(_state);
   },
+
   getAll: function () {
     return _.clone(_state);
   },
+
   emitChange: function () {
     this.emit(CHANGE_EVENT);
   },
+
   emitSummaryChange: function () {
     this.emit(SUMMARY_CHANGE);
   },
+
   addChangeListener: function (callback) {
     this.on(CHANGE_EVENT, callback);
   },
+
+  removeChangeListener: function(callback) {
+    this.removeListener(CHANGE_EVENT, callback);
+  },
+
   addSummaryListener: function (callback) {
     this.on(SUMMARY_CHANGE, callback);
   }
@@ -125,6 +140,10 @@ OfficerListStore.dispatchEvent = AppDispatcher.register(function (action) {
 
     default:
       break;
+  }
+  if (firstCall){
+    OfficerListStore.update();
+    firstCall = false;
   }
 });
 

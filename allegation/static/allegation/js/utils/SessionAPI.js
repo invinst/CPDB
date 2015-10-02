@@ -27,7 +27,7 @@ var SessionAPI = {
 
   updateSessionInfo: function(data) {
     var currentData = SessionStore.getState()['data'];
-    var data = _.merge(currentData, data);
+    var data = _.extend(currentData, data);
     var requestData = {
       'request_data': JSON.stringify(data),
     };

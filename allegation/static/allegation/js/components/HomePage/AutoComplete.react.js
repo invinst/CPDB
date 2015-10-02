@@ -33,7 +33,6 @@ function isDuplicatedTag(tags, tag) {
 }
 
 var AutoComplete = React.createClass({
-
   tagsChanged: function (event) {
     if (event.item && event.item.layer) {
       event.item.layer.toggleStyle();
@@ -46,37 +45,34 @@ var AutoComplete = React.createClass({
     } else {
       // Should be used
     }
-    FilterActions.replaceFilters(tags);
-  },
-
-  componentDidMount: function () {
-    // TODO: Move this stuff cpdbAutocomplate to be a React one?
-    if ($("#autocomplete").length) {
-      cpdbAutocomplete($("#autocomplete"));
+    if (!FilterStore.isInitialized()) {
+      if(!this.inAction) {
+        FilterActions.replaceFilters(tags);
+      }
     }
+    SessionAPI.updateSessionInfo({'query': FilterStore.getSession()});
+  },
+  componentWillUnmount: function() {
+    debugger;
+    FilterStore.setInitialized(true);
+    FilterStore.removeChangeListener(this._onChange);
+    OfficerListStore.removeChangeListener(this._onChange);
+  },
+  componentDidMount: function () {
+    debugger;
+    // TODO: Move this stuff cpdbAutocomplate to be a React one?
+    $(document).ready(function() {
+      if ($("#autocomplete").length) {
+        cpdbAutocomplete($("#autocomplete"));
+      }
+    })
+
     var element = this.getDOMNode();
     $(element).tagsinput({
       itemValue: 'value',
       itemText: 'text',
       tagClass: 'tag label label-info-autocomplete'
     });
-    var filters = this.state.filters;
-    for (var key in filters) {
-      var filter = filters[key];
-      for (var i = 0; i < filter.length; i++) {
-        if (filter[i].value) {
-          $(element).tagsinput("add", {
-            text: tagLabel(key, filter[i].text),
-            value: [key, filter[i].value]
-          });
-        } else {
-          $(element).tagsinput("add", {
-            text: tagLabel(key, filter[i]),
-            value: [key, filter[i]]
-          });
-        }
-      }
-    }
 
     $(element).on('beforeItemAdd', this.beforeItemAdd);
 
@@ -85,9 +81,7 @@ var AutoComplete = React.createClass({
     $(element).on('itemAdded', this.tagsChanged)
       .on('itemRemoved', this.tagsChanged);
 
-    if (filters) {
-      $(element).trigger("itemAdded");
-    }
+
     FilterStore.addChangeListener(this._onChange);
     FilterStore.addDisableListener(this._onDisable);
     FilterStore.addEnableListener(this._onEnable);
@@ -121,27 +115,51 @@ var AutoComplete = React.createClass({
   },
 
   getInitialState: function () {
-    var filters = {};
-
-    if (init_data){
-      filters = FilterStore.setSession(init_filters);
-      MapStore.setSession(init_data);
-      OfficerListStore.setSession(init_data);
-    } else {
-      filters = FilterStore.getAll(this.props.filterkey);
-    }
-    return {
-      filters: filters
-    };
+    return FilterStore.getSession();
   },
   /**
    * Event handler for 'change' events coming from the TodoStore
    */
   _onChange: function (event) {
+    debugger;
     if (event) {
       FilterActions.changeFilter(this.props.filterkey, event.target.value);
     }
-    //SessionAPI.updateSessionInfo({'query': FilterStore.getSession()});
+
+    if (FilterStore.isInitialized()) {
+      this.inAction = true;
+      var filters = FilterStore.getAll();
+      try {
+        var element = this.getDOMNode();
+      } catch(e) {};
+      FilterStore.setInitialized(false);
+      for (var key in filters) {
+        var filter = filters[key].value;
+
+        for (var i = 0; i < filter.length; i++) {
+          //debugger
+          if (filter[i].value) {
+            $(element).tagsinput("add", {
+              text: tagLabel(key, filter[i].text),
+              value: [key, filter[i].value]
+            });
+          } else {
+            $(element).tagsinput("add", {
+              text: tagLabel(key, filter[i]),
+              value: [key, filter[i]]
+            });
+          }
+        }
+      }
+
+    }
+    this.inAction = false;
+    SessionAPI.updateSessionInfo({'query': FilterStore.getSession()});
+
+      //if (filters) {
+      //  $(element).trigger("itemAdded");
+      //}
+
   },
 
   /**

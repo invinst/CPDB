@@ -105,11 +105,24 @@ function sum(d){
 var Sunburst = React.createClass({
   mixins: [EmbedMixin],
   getInitialState: function () {
-    return {
-      data: false,
-      selected: false,
-      hovering: false,
-      drew: false
+    root = SunburstStore.getRoot();
+    if (root) {
+     return {
+       data: root,
+       selected: root,
+       hovering: false,
+       drew: false,
+
+
+     }
+    }
+    else {
+      return {
+        data: false,
+        selected: false,
+        hovering: false,
+        drew: false
+      }
     }
   },
 
@@ -265,7 +278,6 @@ var Sunburst = React.createClass({
   },
 
   componentDidMount: function () {
-
     if ($(window).width() <= 1200) {
       $("#sunburst-chart").addClass("small");
     }
