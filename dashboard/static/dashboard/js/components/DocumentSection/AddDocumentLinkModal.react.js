@@ -18,6 +18,7 @@ var AddDocumentLinkModal = React.createClass(_.assign(Base(AddDocumentLinkModalS
   },
 
   addLink: function () {
+    this.waitScreen();
     DocumentAPI.addLink(this.state.link ,this.state.supplied_crid);
   },
 
@@ -32,21 +33,30 @@ var AddDocumentLinkModal = React.createClass(_.assign(Base(AddDocumentLinkModalS
             </div>
             <div className="modal-body">
               <form className="form-horizontal">
+                <div className='wait-screen text-center hidden'>
+                  <div>
+                    <i className="fa fa-spinner fa-spin"></i>
+                  </div>
+                  <div>
+                    Validating...
+                  </div>
+                </div>
                 <div className='form-group'>
                   <div className="col-md-3">
                     <label htmlFor="link">Enter URL</label>
                   </div>
-                  <div className="col-md-9">
+                  <div className="col-md-9 input-group">
                     <input id="link" type='text' className='form-control link-input' name='link'
                            required="required" value={this.state.link}
                            onChange={this.updateValue.bind(this, 'link')} />
+                    <div className="input-group-addon"><i className="fa fa-link"></i></div>
                   </div>
                 </div>
               </form>
             </div>
             <div className="modal-footer">
-              <div className="Text-left">
-                <button type="button" className="btn btn-cancel btn-submit" disabled={disabled} onClick={this.addLink}>
+              <div className="Text-right">
+                <button type="button" className="btn btn-primary" disabled={disabled} onClick={this.addLink}>
                   SUBMIT
                 </button>
                 <button type="button" className="btn btn-cancel" onClick={this.hideModal}>Cancel</button>
@@ -78,12 +88,29 @@ var AddDocumentLinkModal = React.createClass(_.assign(Base(AddDocumentLinkModalS
     }
 
     if (this.state.flashMessage != '') {
+      this.waitScreen(false);
       toastr.success(this.state.flashMessage);
     }
 
     var errorCount = this.state.errorMessages.length;
-    for (var i = 0; i < errorCount; i++) {
-      toastr.error(this.state.errorMessages[i]);
+    if (errorCount > 0) {
+      this.waitScreen(false);
+      for (var i = 0; i < errorCount; i++) {
+        toastr.error(this.state.errorMessages[i]);
+      }
+    }
+  },
+
+  waitScreen: function(open) {
+    if (open == undefined) {
+      open = true;
+    }
+    if (open) {
+      jQuery('#request_modal .wait-screen').removeClass('hidden');
+      jQuery('#request_modal .form-group').addClass('hidden');
+    } else {
+      jQuery('#request_modal .wait-screen').addClass('hidden');
+      jQuery('#request_modal .form-group').removeClass('hidden');
     }
   }
 }));

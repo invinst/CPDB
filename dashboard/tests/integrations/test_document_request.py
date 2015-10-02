@@ -43,7 +43,19 @@ class OfficerProfileTestCase(BaseLiveTestCase):
 
         self.element_for_label('Enter URL').send_keys('https://www.documentcloud.org/documents/1273509-cr-1002643.html')
         self.button('SUBMIT').click()
+        self.should_see_text('Validating...')
         self.until(lambda: self.should_see_text('The document is successfully added to allegation #1002643!'))
+
+    def test_error_adding_link(self):
+        AllegationFactory()
+
+        self.go_to_documents()
+        self.button("Add document").click()
+        self.until(lambda: self.should_see_text('Add document link'))
+
+        self.element_for_label('Enter URL').send_keys('aaa')
+        self.button('SUBMIT').click()
+        self.until(lambda: self.should_see_text('Invalid link! Please check URL'))
 
     def test_cancel_document_request(self):
         allegation = AllegationFactory(document_requested=True)

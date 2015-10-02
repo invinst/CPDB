@@ -1,5 +1,6 @@
 from django.core.mail import send_mail
 
+from cpdb.celery import app
 from document.models import RequestEmail
 
 
@@ -7,6 +8,7 @@ def send_document_notification(allegation, document):
     send_document_notification_by_crid_and_link(allegation.crid, document.published_url)
 
 
+@app.task
 def send_document_notification_by_crid_and_link(crid, link):
     request_emails = RequestEmail.objects.filter(crid=crid)
     if not request_emails.count():

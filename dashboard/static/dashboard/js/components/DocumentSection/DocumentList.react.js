@@ -57,7 +57,7 @@ var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
 
       return (
         <tr className='document' key={"crid" + x.crid} className={that.rowClassName(x)}>
-          <td onClick={that.onClick(x)}>{x.crid}</td>
+          <td onClick={that.onClick(x)} className="pointer">{x.crid}</td>
           <td className="status"><i className={className}></i> {statusText}</td>
           <td>{x.number_of_request}</td>
           <td className="actions">

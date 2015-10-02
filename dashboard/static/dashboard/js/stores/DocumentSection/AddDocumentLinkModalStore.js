@@ -58,6 +58,7 @@ AppDispatcher.register(function(action) {
     break;
 
   case AppConstants.DOCUMENT_LINK_MODAL_FORM_DATA_CHANGED:
+    AddDocumentLinkModalStore.updateState('errorMessages', []);
     AddDocumentLinkModalStore.updateState(action.stateName, action.stateValue);
     AddDocumentLinkModalStore.validFormData();
     AddDocumentLinkModalStore.emitChange();

@@ -44,7 +44,7 @@ var QueryList = React.createClass({
     }
 
     return (
-      <div className='table-responsive'>
+      <div className='table-responsive query-list'>
         <table className='table table-striped table-hover'>
           <thead>
             <tr>

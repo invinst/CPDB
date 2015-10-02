@@ -11,9 +11,37 @@
   .btn-cancel
     color: $white
 
+  .query-list
+    thead
+      tr
+        border-bottom: solid 1.5px $color-dark-border
+    tbody
+      tr
+        &:nth-of-type(odd)
+          background-color: transparent
+        &:hover
+          background-color: #f5f5f5
+
+#request_modal
+  .wait-screen
+    .fa-spinner
+      font-size: 24px
+    div
+      &:last-child
+        margin-top: 10px
+
 .form-control
   &.link-input
     border: 1px solid $color-dusty-gray
+    border-right: none
+    & + .input-group-addon
+      background: transparent
+      border: 1px solid $color-dusty-gray
+      border-left: none
+      -webkit-border-radius: 0
+      -moz-border-radius: 0
+      border-radius: 0
+      color: $blue
 
 .session-query
   span
@@ -33,3 +61,6 @@
 
 .inline-block
   display: inline-block
+
+#add-document
+  margin-top: 30px

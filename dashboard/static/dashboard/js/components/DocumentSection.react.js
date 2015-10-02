@@ -56,8 +56,10 @@ var DocumentSection = React.createClass(_.assign(Base(DocumentSectionStore), {
               Investigation Documents
             </h1>
           </div>
-          <div id='search-officer' className='col-md-6 col-xs-6 text-right'>
-            <button className="btn btn-primary" onClick={this.showAddLinkModal}>Add document</button>
+          <div className='col-md-6 col-xs-6 text-right'>
+            <button id="add-document" className="btn btn-primary" onClick={this.showAddLinkModal}>
+              <i className="fa fa-link"></i> Add document
+            </button>
           </div>
         </div>
         <div>

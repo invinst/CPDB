@@ -1,5 +1,7 @@
+var toastr = require('toastr');
 var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var AppConstants = require('../../constants/AppConstants');
+
 
 var DocumentActions = {
   receivedDocument: function (data) {
@@ -10,6 +12,7 @@ var DocumentActions = {
   },
 
   requestCancel: function (allegation) {
+    toastr.success(allegation.crid + " document requests have been canceled.");
     AppDispatcher.dispatch({
       actionType: AppConstants.DOCUMENT_REQUEST_CANCEL,
       data: allegation
