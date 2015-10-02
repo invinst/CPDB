@@ -17,7 +17,7 @@ var OfficerList = React.createClass(_.assign(Base(OfficerListStore), {
     var that = this;
     return this.state.officers.map(function(x) {
       return (
-        <tr className='officer' onClick={that.clickOfficer.bind(that, x)}>
+        <tr className='officer' onClick={that.clickOfficer.bind(that, x)} className="pointer">
           <td>{x.id}</td>
           <td>{x.officer_first}</td>
           <td>{x.officer_last}</td>
