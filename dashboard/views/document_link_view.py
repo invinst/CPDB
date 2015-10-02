@@ -1,7 +1,9 @@
 from django.views.generic.base import View
 import requests
+
 from common.models import Allegation
 from document.response import JsonResponse, HttpResponseBadRequest
+from document.utils import send_document_notification_by_crid_and_link
 
 
 class DocumentLinkView(View):
@@ -29,6 +31,8 @@ class DocumentLinkView(View):
 
         allegations = Allegation.objects.filter(crid=crid)
         allegations.update(document_id=document_id, document_normalized_title=normalized_title, document_title=title)
+
+        send_document_notification_by_crid_and_link(crid, link)
 
         return JsonResponse({
             'status': 200,

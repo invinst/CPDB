@@ -4,14 +4,18 @@ from document.models import RequestEmail
 
 
 def send_document_notification(allegation, document):
-    request_emails = RequestEmail.objects.filter(crid=allegation.crid)
+    send_document_notification_by_crid_and_link(allegation.crid, document.published_url)
+
+
+def send_document_notification_by_crid_and_link(crid, link):
+    request_emails = RequestEmail.objects.filter(crid=crid)
     if not request_emails.count():
         return
 
     emails = request_emails.values_list('email', flat=True)
     recipient_list = list(emails)
 
-    subject = "[CPDB] Requested document for CR {crid} is now available".format(crid=allegation.crid)
+    subject = "[CPDB] Requested document for CR {crid} is now available".format(crid=crid)
     message = """Hi,
 
     Your requested document for CR {crid} is now available on Document Cloud. You read it at this link {link}.
@@ -20,8 +24,8 @@ def send_document_notification(allegation, document):
     The Citizens' Police Database
 """
     message = message.format(
-        crid=allegation.crid,
-        link=document.published_url
+        crid=crid,
+        link=link
     )
     from_email = None
 
