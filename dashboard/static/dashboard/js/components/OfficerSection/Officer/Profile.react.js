@@ -6,9 +6,16 @@ var ProfileActions = require('../../../actions/OfficerSection/Officer/ProfileAct
 var OfficerAPI = require('../../../utils/OfficerAPI');
 var AppConstants = require('../../../constants/AppConstants.js');
 
+global.jQuery = require('jquery');
+require('jquery-validation');
+
 
 var Profile = React.createClass(_.assign(Base(ProfileStore), {
   onChange: function (field, e) {
+    if (field == 'appt_date' || field == 'birth_year') {
+      jQuery(e.target).valid();
+    }
+
     ProfileActions.updateField(field, e.target.value);
   },
 
@@ -32,9 +39,36 @@ var Profile = React.createClass(_.assign(Base(ProfileStore), {
     });
   },
 
+  getRankOptions: function () {
+    return AppConstants.RANKS.map(function (x) {
+      return <option value={x[0]} key={x[0]}>{x[1]}</option>
+    });
+  },
+
+  addFormValidate: function () {
+    jQuery('#profile-form').validate({
+      rules: {
+        appt_date: {
+          required: true,
+          date: true
+        },
+        birth_year: {
+          required: true,
+          number: true
+        }
+      }
+    });
+  },
+
+  componentDidMount: function () {
+    ProfileStore.addChangeListener(this._onChange);
+
+    this.addFormValidate();
+  },
+
   render: function() {
     return (
-      <form className="form-horizontal">
+      <form id="profile-form" className="form-horizontal">
         <div className="form-group">
           <label htmlFor="officer_last" className="col-lg-2 col-md-2 col-xs-2">Last name</label>
           <div className="col-lg-10 col-md-10 col-xs-10">
@@ -73,8 +107,12 @@ var Profile = React.createClass(_.assign(Base(ProfileStore), {
         <div className="form-group">
           <label htmlFor="appt_date" className="col-lg-2 col-md-2 col-xs-2">Appt date</label>
           <div className="col-lg-10 col-md-10 col-xs-10">
-            <input type="text" className="form-control" id="appt_date" name="appt_date"
-                   onChange={this.update("appt_date")} value={this.value('appt_date')} />
+            <div className="input-group">
+              <input type="text" className="form-control" id="appt_date" name="appt_date"
+                     onChange={this.update("appt_date")} value={this.value('appt_date')} />
+              <div className="input-group-addon"><i className="fa fa-calendar"></i></div>
+            </div>
+            <label htmlFor="appt_date" generated="true" className="error"></label>
           </div>
         </div>
         <div className="form-group">
@@ -102,8 +140,11 @@ var Profile = React.createClass(_.assign(Base(ProfileStore), {
                 <label htmlFor="rank">Rank</label>
               </div>
               <div  className="col-lg-12 col-md-12 col-xs-10">
-                <input type="text" className="form-control" id="rank" name="rank"
-                       onChange={this.update("rank")} value={this.value('rank')} />
+                <select type="text" className="form-control" id="rank" name="rank" onChange={this.update("rank")}
+                    value={this.value('rank')}>
+                  <option value="">--</option>
+                  { this.getRankOptions() }
+                </select>
               </div>
             </div>
           </div>

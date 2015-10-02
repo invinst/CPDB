@@ -59,6 +59,19 @@ module.exports = {
     'Native American'
   ],
 
+  RANKS: [
+      ['FTO', 'Field Training Officer'],
+      ['LT', 'Lieutenant'],
+      ['ET', 'Evidence Technician'],
+      ['DET', 'Detective'],
+      ['PO', 'Police Officer'],
+      ['Cpt', 'Captain'],
+      ['SGT', 'Sergeant'],
+      ['CMDR', 'Commander'],
+      ['Agent', 'Police Agent'],
+      ['Chief', 'Chief']
+  ],
+
   NAVIGATION_ITEMS: [
     { page: '/', icon: 'bar-chart', text: 'Overview'},
     { page: '/search', icon: 'tags', text: 'Search Results' },
