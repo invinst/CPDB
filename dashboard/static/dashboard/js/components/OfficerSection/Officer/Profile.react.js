@@ -8,6 +8,7 @@ var AppConstants = require('../../../constants/AppConstants.js');
 
 global.jQuery = require('jquery');
 require('jquery-validation');
+require('bootstrap-datepicker');
 
 
 var Profile = React.createClass(_.assign(Base(ProfileStore), {
@@ -60,10 +61,21 @@ var Profile = React.createClass(_.assign(Base(ProfileStore), {
     });
   },
 
+  addDatepicker: function () {
+    jQuery("#appt_date").datepicker({
+      format: 'yyyy-mm-dd'
+    }).on('changeDate', this.update('appt_date'));
+
+    jQuery("#appt_date_calendar").click(function () {
+      jQuery("#appt_date").datepicker("show");
+    });
+  },
+
   componentDidMount: function () {
     ProfileStore.addChangeListener(this._onChange);
 
     this.addFormValidate();
+    this.addDatepicker();
   },
 
   render: function() {
@@ -110,7 +122,7 @@ var Profile = React.createClass(_.assign(Base(ProfileStore), {
             <div className="input-group">
               <input type="text" className="form-control" id="appt_date" name="appt_date"
                      onChange={this.update("appt_date")} value={this.value('appt_date')} />
-              <div className="input-group-addon"><i className="fa fa-calendar"></i></div>
+              <div className="input-group-addon"><i className="fa fa-calendar" id="appt_date_calendar"></i></div>
             </div>
             <label htmlFor="appt_date" generated="true" className="error"></label>
           </div>

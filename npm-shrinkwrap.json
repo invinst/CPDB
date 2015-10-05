@@ -4,13 +4,18 @@
   "dependencies": {
     "bootbox": {
       "version": "4.4.0",
-      "from": "bootbox@*",
+      "from": "https://registry.npmjs.org/bootbox/-/bootbox-4.4.0.tgz",
       "resolved": "https://registry.npmjs.org/bootbox/-/bootbox-4.4.0.tgz"
     },
     "bootstrap": {
       "version": "3.3.5",
       "from": "https://registry.npmjs.org/bootstrap/-/bootstrap-3.3.5.tgz",
       "resolved": "https://registry.npmjs.org/bootstrap/-/bootstrap-3.3.5.tgz"
+    },
+    "bootstrap-datepicker": {
+      "version": "1.4.1",
+      "from": "bootstrap-datepicker@*",
+      "resolved": "https://registry.npmjs.org/bootstrap-datepicker/-/bootstrap-datepicker-1.4.1.tgz"
     },
     "chart.js": {
       "version": "1.0.2",
@@ -80,7 +85,7 @@
     },
     "jquery.scrollto": {
       "version": "2.1.2",
-      "from": "jquery.scrollto@*",
+      "from": "https://registry.npmjs.org/jquery.scrollto/-/jquery.scrollto-2.1.2.tgz",
       "resolved": "https://registry.npmjs.org/jquery.scrollto/-/jquery.scrollto-2.1.2.tgz"
     },
     "keymirror": {
@@ -137,7 +142,7 @@
     },
     "medium-editor": {
       "version": "5.8.2",
-      "from": "medium-editor@*",
+      "from": "https://registry.npmjs.org/medium-editor/-/medium-editor-5.8.2.tgz",
       "resolved": "https://registry.npmjs.org/medium-editor/-/medium-editor-5.8.2.tgz"
     },
     "moment": {
@@ -177,12 +182,12 @@
     },
     "react-medium-editor": {
       "version": "1.3.2",
-      "from": "react-medium-editor@*",
+      "from": "https://registry.npmjs.org/react-medium-editor/-/react-medium-editor-1.3.2.tgz",
       "resolved": "https://registry.npmjs.org/react-medium-editor/-/react-medium-editor-1.3.2.tgz",
       "dependencies": {
         "medium-editor": {
           "version": "4.12.11",
-          "from": "medium-editor@>=4.10.1 <5.0.0",
+          "from": "https://registry.npmjs.org/medium-editor/-/medium-editor-4.12.11.tgz",
           "resolved": "https://registry.npmjs.org/medium-editor/-/medium-editor-4.12.11.tgz"
         }
       }
@@ -240,7 +245,7 @@
               "dependencies": {
                 "esprima-fb": {
                   "version": "15001.1001.0-dev-harmony-fb",
-                  "from": "https://registry.npmjs.org/esprima-fb/-/esprima-fb-15001.1001.0-dev-harmony-fb.tgz",
+                  "from": "esprima-fb@>=15001.1001.0-dev-harmony-fb <15001.1002.0",
                   "resolved": "https://registry.npmjs.org/esprima-fb/-/esprima-fb-15001.1001.0-dev-harmony-fb.tgz"
                 },
                 "source-map": {
@@ -296,7 +301,7 @@
                 },
                 "minimatch": {
                   "version": "1.0.0",
-                  "from": "https://registry.npmjs.org/minimatch/-/minimatch-1.0.0.tgz",
+                  "from": "minimatch@>=1.0.0 <2.0.0",
                   "resolved": "https://registry.npmjs.org/minimatch/-/minimatch-1.0.0.tgz",
                   "dependencies": {
                     "lru-cache": {
@@ -313,7 +318,7 @@
                 },
                 "once": {
                   "version": "1.3.2",
-                  "from": "https://registry.npmjs.org/once/-/once-1.3.2.tgz",
+                  "from": "once@>=1.3.0 <2.0.0",
                   "resolved": "https://registry.npmjs.org/once/-/once-1.3.2.tgz",
                   "dependencies": {
                     "wrappy": {
