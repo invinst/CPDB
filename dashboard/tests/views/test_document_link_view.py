@@ -5,6 +5,7 @@ from common.tests.core import SimpleTestCase
 
 
 class DocumentLinkViewTestCase(SimpleTestCase):
+    _multiprocess_can_split_ = True
     def setUp(self):
         self.login_user()
 
