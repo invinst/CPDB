@@ -30,6 +30,7 @@
     "react-medium-editor": "^1.3.2",
     "react-mini-router": "~1.1.7",
     "react-tools": "~0.13.3",
+    "slug": "^0.9.1",
     "toastr": "^2.1.2"
   },
   "devDependencies": {

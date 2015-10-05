@@ -1,5 +1,7 @@
 var React = require('react');
 var _ = require('lodash');
+var slug = require('slug');
+
 var Base = require('../../Base.react');
 var StoryFormStore = require('../../../stores/OfficerSection/Officer/StoryFormStore');
 var StoryFormActions = require('../../../actions/OfficerSection/Officer/StoryFormActions');
@@ -10,7 +12,16 @@ global.jQuery = require('jquery');
 
 var StoryForm = React.createClass(_.assign(Base(StoryFormStore), {
   onChange: function (field, e) {
-    StoryFormActions.updateField(field, e.target.value);
+    var value = e.target.value;
+    if (field == 'slug') {
+      value = slug(value).toLowerCase();  
+    }
+    
+    StoryFormActions.updateField(field, value);
+
+    if (field == 'title') {
+      StoryFormActions.updateField('slug', slug(value).toLowerCase());  
+    }
   },
 
   value: function (field) {
