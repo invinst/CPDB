@@ -16,9 +16,17 @@ class SessionAPIView(View):
             if ints:
                 session_id = ints[0]
                 session = get_object_or_404(Session, pk=session_id)
-                return HttpResponse(JSONSerializer().serialize(
-                    self.prepare_return_data(False, session)
-                ))
+                owned_sessions = request.session.get('owned_sessions', [])
+                if session_id in owned_sessions:
+                    return HttpResponse(JSONSerializer().serialize(
+                        self.prepare_return_data(False, session)
+                    ))
+                else:
+                    new_session = session.clone()
+                    self.update_owned_session(request, new_session)
+                    return HttpResponse(JSONSerializer().serialize(
+                        self.prepare_return_data(False, new_session)
+                    ))
             else:
                 return HttpResponse(JSONSerializer().serialize({'data': {'msg': "Hash not found"}}), status=404)
         else:
@@ -53,13 +61,15 @@ class SessionAPIView(View):
     def create_new_session(self, request):
         session = Session()
         session.save()
+        self.update_owned_session(request, session)
 
+        return session
+
+    def update_owned_session(self, request, session):
         owned_sessions = request.session.get('owned_sessions', [])
         owned_sessions.append(session.id)
         request.session['owned_sessions'] = owned_sessions
         request.session['modified'] = True
-
-        return session
 
     def prepare_return_data(self, is_new=False, session=None):
         return {
@@ -79,8 +89,9 @@ class SessionAPIView(View):
             }), status=400)
 
     def update_session_data(self, session, data):
-        session.query=data['query'] or {}
-        session.title=data['title'] or ''
+        updates = data['query'] or {}
+        session.query.update(**updates)
+        session.title = data['title'] or ''
         session.save()
 
         return session

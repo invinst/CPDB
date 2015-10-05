@@ -6,7 +6,7 @@ describe('ComplaintList', function () {
   var React = require('react/addons');
   var TestUtils = React.addons.TestUtils;
   var complaints;
-  var ComplaintListStore = require('../../stores/ComplaintListStore');
+  var ComplaintListStore = require('stores/ComplaintListStore');
   var ComplaintSection = require('../ComplaintSection.react');
 
   it('should exists', function () {

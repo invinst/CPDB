@@ -32,6 +32,7 @@ class Session(models.Model):
 
     def clone(self):
         session = Session()
+        session.title = self.title
         session.query = self.query
         session.share_from = self
         session.save()

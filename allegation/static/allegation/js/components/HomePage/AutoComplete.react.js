@@ -53,13 +53,11 @@ var AutoComplete = React.createClass({
     SessionAPI.updateSessionInfo({'query': FilterStore.getSession()});
   },
   componentWillUnmount: function() {
-    debugger;
     FilterStore.setInitialized(true);
     FilterStore.removeChangeListener(this._onChange);
     OfficerListStore.removeChangeListener(this._onChange);
   },
   componentDidMount: function () {
-    debugger;
     // TODO: Move this stuff cpdbAutocomplate to be a React one?
     $(document).ready(function() {
       if ($("#autocomplete").length) {
@@ -121,7 +119,6 @@ var AutoComplete = React.createClass({
    * Event handler for 'change' events coming from the TodoStore
    */
   _onChange: function (event) {
-    debugger;
     if (event) {
       FilterActions.changeFilter(this.props.filterkey, event.target.value);
     }

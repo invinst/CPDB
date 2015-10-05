@@ -105,7 +105,7 @@ var FilterStore = assign({}, EventEmitter.prototype, {
   },
   replaceFilters: function (filters) {
     _filters = {};
-    debugger;
+
     $.each(filters, function () {
       var value = this.value[1];
       if (this.value[0] in _filters) {

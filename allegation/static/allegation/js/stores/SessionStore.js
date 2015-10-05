@@ -31,15 +31,16 @@ var SessionStore = _.assign(Base(_state), {
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.SAVE_SESSION:
-      SessionStore.updateSession(action.data);
+    // SessionStore.updateSession(action.data);
+    SessionStore.emitChange();
       break;
 
-    case AppConstants.RECEIVED_SESSION_DATA:
-      var data = action.data.data;
-      data['title'] = data['title'] || AppConstants.DEFAULT_SITE_TITLE;
-      _state['data'] = data;
-      SessionStore.emitChange();
-      break;
+  case AppConstants.RECEIVED_SESSION_DATA:
+    var data = action.data.data;
+    data['title'] = data['title'] || AppConstants.DEFAULT_SITE_TITLE;
+    _state['data'] = data;
+    SessionStore.emitChange();
+    break;
 
     case AppConstants.UPDATE_TITLE:
       var title = action.title;
