@@ -19,7 +19,6 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
     var session = this.props.session || '';
     SessionAPI.getSessionInfo(session);
 
-    /*     this.initShare(); */
     $('.smooth-scroll').click(function() {q
       var target = $(this).data('target');
       var top = $(target).offset().top - 100;

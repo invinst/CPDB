@@ -65,19 +65,6 @@ class AllegationListView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(AllegationListView, self).get_context_data(**kwargs)
-        # context['show_site_title'] = True
-        # if self.session:
-        #     filters = {}
-        #     save_filters = self.session.query.get('filters', {})
-        #     for key in save_filters:
-        #         values = save_filters[key]
-        #          values = self.get_filters(key, values)
-        #         if values:
-        #             filters.update({
-        #                 key: values
-        #             })
-        #     context['filters'] = filters
-        # context['session'] = self.session
         return context
 
     def get(self, request, hash_id=None, *args, **kwargs):

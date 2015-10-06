@@ -115,9 +115,7 @@ var AutoComplete = React.createClass({
   getInitialState: function () {
     return FilterStore.getSession();
   },
-  /**
-   * Event handler for 'change' events coming from the TodoStore
-   */
+
   _onChange: function (event) {
     if (event) {
       FilterActions.changeFilter(this.props.filterkey, event.target.value);
@@ -134,7 +132,6 @@ var AutoComplete = React.createClass({
         var filter = filters[key].value;
 
         for (var i = 0; i < filter.length; i++) {
-          //debugger
           if (filter[i].value) {
             $(element).tagsinput("add", {
               text: tagLabel(key, filter[i].text),
@@ -152,16 +149,8 @@ var AutoComplete = React.createClass({
     }
     this.inAction = false;
     SessionAPI.updateSessionInfo({'query': FilterStore.getSession()});
-
-      //if (filters) {
-      //  $(element).trigger("itemAdded");
-      //}
-
   },
 
-  /**
-   * @return {object}
-   */
   render: function () {
     return (
       <input id="cpdb-search" />
