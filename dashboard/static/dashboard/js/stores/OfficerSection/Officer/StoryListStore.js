@@ -2,12 +2,12 @@ var _ = require('lodash');
 
 var AppDispatcher = require('../../../dispatcher/AppDispatcher');
 var AppConstants = require('../../../constants/AppConstants');
-var StoryAPI = require('../../../utils/StoryAPI');
 var Base = require('../../Base');
 
 
 var _state = {
-  stories: []
+  stories: [],
+  do_update_list: false,
 };
 
 var StoryListStore = _.assign(Base(_state), {
@@ -25,17 +25,15 @@ AppDispatcher.register(function(action) {
     case AppConstants.STORY_CREATED:
     case AppConstants.STORY_DELETED:
     case AppConstants.DELETE_BULK_STORY:
-      StoryAPI.get();
-      break;
-
-
     case AppConstants.SET_ACTIVE_OFFICER:
     case AppConstants.RECEIVE_OFFICER:
-      StoryAPI.get();
+      _state.do_update_list = true;
+      StoryListStore.emitChange();
       break;
 
     case AppConstants.RECEIVED_STORY_LIST:
       _state.stories = action.data;
+      _state.do_update_list = false;
       StoryListStore.emitChange();
       break;
 
