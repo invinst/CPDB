@@ -15,8 +15,8 @@ var FormMixin = {
       <div className="form-group">
         <label htmlFor={id} className="col-lg-2 col-md-2 col-xs-2">{label}</label>
         <div className="col-lg-10 col-md-10 col-xs-10">
-          <input type="text" className="form-control" id={id} name={name} required={required}
-                 onChange={this.update(name)} value={this.value(name)} />
+          <input type="text" className="form-control" id={id} name={field_name} required={required}
+                 onChange={this.update(field_name)} value={this.value(field_name)} />
         </div>
     </div>
      )

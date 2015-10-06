@@ -13,6 +13,12 @@ var StoryAPI = {
     if (ajax) {
       ajax.abort();
     }
+
+    var officer = OfficerStore.getState().officer;
+    if(!officer) {
+      return;
+    }
+
     var params = {
       officer: OfficerStore.getState().officer.id
     };
