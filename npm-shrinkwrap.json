@@ -73,6 +73,11 @@
       "from": "jquery-validation@*",
       "resolved": "https://registry.npmjs.org/jquery-validation/-/jquery-validation-1.14.0.tgz"
     },
+    "jquery.cookie": {
+      "version": "1.4.1",
+      "from": "jquery.cookie@*",
+      "resolved": "https://registry.npmjs.org/jquery.cookie/-/jquery.cookie-1.4.1.tgz"
+    },
     "keymirror": {
       "version": "0.1.1",
       "from": "https://registry.npmjs.org/keymirror/-/keymirror-0.1.1.tgz",

@@ -139,10 +139,6 @@
     height: calc(100% - 50px);
 }
 
-#autocomplete {
-    display: none;
-}
-
 .story {
     border-bottom: 1px solid #333;
     padding: 20px;
