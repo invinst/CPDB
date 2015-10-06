@@ -1,16 +1,10 @@
 var React = require('react');
 
-
+var chart = null;
+// Moving data to Store?
 var DonutChart = React.createClass({
-  getInitialState: function () {
-    return {
-      'disciplineCount': this.props.officer.discipline_count,
-      'totalComplaints': this.props.officer.allegations_count
-    }
-  },
-  componentDidMount: function () {
-    var container = this.getDOMNode();
-    var that = this;
+  buildBrowserData: function(officer) {
+    var nonDisciplines = officer.allegations_count - officer.discipline_count;
     var colors = ["#a5b4be", '#0079ae'],
       browserData = [],
       i,
@@ -18,19 +12,17 @@ var DonutChart = React.createClass({
 
     var data = [{
       name: "Disciplined",
-      y: this.props.officer.discipline_count,
+      y: officer.discipline_count,
       color: "#a5b4be"
     }, {
       name: "Not disciplined",
-      y: this.props.officer.allegations_count - this.props.officer.discipline_count,
+      y: nonDisciplines,
       color: '#0079ae'
     }];
-
     dataLen = data.length;
 
     // Build the data arrays
     for (i = 0; i < dataLen; i += 1) {
-
       // add browser data
       browserData.push({
         name: data[i].name,
@@ -39,8 +31,28 @@ var DonutChart = React.createClass({
       });
     }
 
+    return browserData;
+  },
+
+  componentWillReceiveProps: function(newProps) {
+    var browserData = this.buildBrowserData(newProps.officer)
+    var nonDisciplines = newProps.officer.allegations_count - newProps.officer.discipline_count;
+
+    chart.series[0].setData(browserData, true);
+    $('#pieChartInfoText span strong').html(newProps.officer.discipline_count + ' / ' + nonDisciplines)
+  },
+
+  componentDidMount: function () {
+    var container = this.getDOMNode();
+    var that = this;
+    var colors = ["#a5b4be", '#0079ae'],
+      browserData = [],
+      i,
+      dataLen;
+
+    browserData = this.buildBrowserData(this.props.officer);
     // Create the chart
-    var chart = new Highcharts.Chart({
+    chart = new Highcharts.Chart({
         chart: {
           type: 'pie',
           backgroundColor: 'transparent',

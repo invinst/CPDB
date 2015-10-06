@@ -19,7 +19,7 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
     var session = this.props.session || '';
     SessionAPI.getSessionInfo(session);
 
-    $('.smooth-scroll').click(function() {q
+    $('.smooth-scroll').click(function() {
       var target = $(this).data('target');
       var top = $(target).offset().top - 100;
       $("html, body").animate({scrollTop: top}, 500);
@@ -32,8 +32,8 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
       <div>
         <div className="navbar navbar-default">
           <div className="navbar-header">
-            <a href="/" className="navbar-brand">
-                <img src="" alt="" />
+            <a href="#" className="navbar-brand">
+                <img src="/static/img/logo.png" alt="" />
             </a>
             <button className="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
                 <span className="icon-bar"></span>
