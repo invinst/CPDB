@@ -19,6 +19,25 @@ module.exports = {
   LOCK_SCROLL: 14,
   SORT_QUERY_LIST: 15,
 
+  SEARCH_OFFICER_WITH_QUERY: 15,
+  RECEIVED_OFFICER_LIST: 16,
+  SET_ACTIVE_OFFICER: 17,
+  OFFICE_SECTION_ON_LOAD: 18,
+  RECEIVE_OFFICER: 19,
+  UPDATE_OFFICER_DATA: 20,
+  UPDATED_OFFICER_DATA: 21,
+  SET_OFFICER_TAB_ACTIVE: 22,
+  UPDATE_STORY_DATA: 23,
+  STORY_CREATED: 24,
+  RECEIVED_STORY_LIST: 25,
+  EDIT_STORY: 26,
+  STORY_UPDATED: 27,
+  STORY_DELETED: 28,
+  SELECT_STORY: 29,
+  SELECT_ALL_STORY: 30,
+  DELETE_BULK_STORY: 31,
+  CLEAR_STORY_FORM: 32,
+
   QUERY_LIST_FILTERS: {
     'all': 'All',
     'fail-attempts': 'Fail attempts',
@@ -31,6 +50,28 @@ module.exports = {
     'month': 'Monthly'
   },
 
+  RACES: [
+    'Black',
+    'Hispanic',
+    'White',
+    'Asian',
+    'Unknown',
+    'Native American'
+  ],
+
+  RANKS: [
+      ['FTO', 'Field Training Officer'],
+      ['LT', 'Lieutenant'],
+      ['ET', 'Evidence Technician'],
+      ['DET', 'Detective'],
+      ['PO', 'Police Officer'],
+      ['Cpt', 'Captain'],
+      ['SGT', 'Sergeant'],
+      ['CMDR', 'Commander'],
+      ['Agent', 'Police Agent'],
+      ['Chief', 'Chief']
+  ],
+
   NAVIGATION_ITEMS: [
     { page: '/', icon: 'bar-chart', text: 'Overview'},
     { page: '/search', icon: 'tags', text: 'Search Results' },
@@ -39,5 +80,7 @@ module.exports = {
 
   SEARCH_TRAFFIC_API_ENDPOINT: '/api/dashboard/search-traffic/',
   SEARCH_RESULTS_API_ENDPOINT: '/api/dashboard/query-data/',
-  ALIAS_API_ENDPOINT: '/api/dashboard/alias/'
+  ALIAS_API_ENDPOINT: '/api/dashboard/alias/',
+  OFFICER_END_POINT: '/api/dashboard/officers/',
+  STORY_END_POINT: '/api/dashboard/stories/'
 };

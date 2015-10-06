@@ -25,8 +25,8 @@ var Content = React.createClass({
     return <SearchSection />;
   },
 
-  officerSection: function() {
-    return <OfficerSection />;
+  officerSection: function(params) {
+    return <OfficerSection params={params} />;
   },
 
   getInitialState: function() {

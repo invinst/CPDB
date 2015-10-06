@@ -27,15 +27,48 @@
     height: 100%
 
 
-input.form-control
+.form-control
   border: none
   border-radius: 0
   border-bottom: solid 1px $blue
   box-shadow: none
   padding-left: 0
   padding-right: 0
-  
+
 .modal-footer
   .btn
     & +.btn
       margin-left: 20px
+
+label
+  font-weight: normal
+
+
+.form-group
+  padding-bottom: 7px
+  margin-bottom: 7px
+  border-bottom: 1px solid $color-silver
+  &.actions
+    border-bottom: none
+    margin-bottom: 0
+
+.well
+  border-radius: 1px
+  .form-control
+    padding-left: 10px
+    background: transparent
+    border: 1px solid $color-mine-shaft
+
+
+  .form-horizontal
+    margin-bottom: 0
+    .form-group
+      margin-left: -19px
+      margin-right: -19px
+
+  .btn-primary
+    background-color: transparent
+    color: $blue
+    border-color: $blue
+    &:hover
+      background-color: $color-silver

@@ -206,6 +206,9 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     def ajax_complete(self):
         return 0 == self.browser.execute_script("return jQuery.active")
 
+    def until_ajax_complete(self):
+        self.until(self.ajax_complete)
+
 
 class SimpleTestCase(DjangoSimpleTestCase, UserTestBaseMixin):
     response = None

@@ -7,6 +7,7 @@ class OfficerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Officer
         fields = ('absolute_url',
+                  'id',
                   'officer_first',
                   'officer_last',
                   'gender',
@@ -17,4 +18,6 @@ class OfficerSerializer(serializers.HyperlinkedModelSerializer):
                   'star',
                   'allegations_count',
                   'discipline_count',
+                  'url',
+                  'birth_year',
                   )

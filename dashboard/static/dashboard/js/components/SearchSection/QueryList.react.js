@@ -75,7 +75,7 @@ var QueryList = React.createClass(_.assign(Base(QueryListStore), {
   render: function() {
     return (
       <div className='table-responsive'>
-        <table className='table table-stripped'>
+        <table className='table table-striped'>
           <thead>
             <tr>
               <th>Query</th>

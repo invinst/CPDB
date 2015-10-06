@@ -14,10 +14,10 @@ class HttpResponseBadRequest(BaseHttpResponseBadRequest):
 
 
 class JsonResponse(HttpResponse):
-    def __init__(self, data, safe=True, **kwargs):
+    def __init__(self, data=None, safe=True, **kwargs):
+        data = data or {}
         if safe and not isinstance(data, dict):
-            raise TypeError('In order to allow non-dict objects to be '
-                            'serialized set the safe parameter to False')
+            raise TypeError('In order to allow non-dict objects to be serialized set the safe parameter to False')
         kwargs.setdefault('content_type', 'application/json')
         data = JSONSerializer().serialize(data)
         super(JsonResponse, self).__init__(content=data, **kwargs)

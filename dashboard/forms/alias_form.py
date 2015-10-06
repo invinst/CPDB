@@ -1,4 +1,5 @@
 from django import forms
+
 from search.models.alias import Alias
 
 
