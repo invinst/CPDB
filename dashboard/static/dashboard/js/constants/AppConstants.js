@@ -53,6 +53,7 @@ module.exports = {
   SET_ACTIVE_ALLEGATION: c++,
   RECEIVED_DOCUMENT: c++,
   DOCUMENT_REQUEST_CANCEL: c++,
+  RECEIVED_DOCUMENT_CRID: c++,
 
   QUERY_LIST_FILTERS: {
     'all': 'All',

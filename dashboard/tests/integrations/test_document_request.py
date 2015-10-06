@@ -65,3 +65,15 @@ class OfficerProfileTestCase(BaseLiveTestCase):
 
         Allegation.objects.get(id=allegation.id).document_requested.should.be.false
 
+    def test_go_to_request_by_crid(self):
+        allegation = AllegationFactory()
+        self.go_to_documents()
+        self.find('.crid-request-search').send_keys('%s\n' % allegation.crid)
+        self.until(self.ajax_complete)
+        self.should_see_text(allegation.crid)
+
+    def test_go_to_request_by_crid_not_found(self):
+        self.go_to_documents()
+        self.find('.crid-request-search').send_keys('%s\n' % 123456)
+        self.until(self.ajax_complete)
+        self.until(lambda: self.should_see_text('CRID not found'))

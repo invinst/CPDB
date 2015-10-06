@@ -11,6 +11,13 @@ var DocumentActions = {
     });
   },
 
+  receivedDocumentByCrid: function (data) {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.RECEIVED_DOCUMENT_CRID,
+      data: data
+    });
+  },
+
   requestCancel: function (allegation) {
     toastr.success(allegation.crid + " document requests have been canceled.");
     AppDispatcher.dispatch({
