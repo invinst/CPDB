@@ -59,7 +59,7 @@ class OfficerProfileTestCase(BaseLiveTestCase):
     def test_cancel_document_request(self):
         allegation = AllegationFactory(document_requested=True)
         self.go_to_documents()
-        self.button('Cancel').click()
+        self.button('Cancel', ".document").click()
         self.button('OK').click()
         self.until(self.ajax_complete)
 

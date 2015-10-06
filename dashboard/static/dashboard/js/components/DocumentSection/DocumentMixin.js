@@ -23,7 +23,7 @@ var DocumentMixin = {
   },
 
   rowClassName: function (allegation) {
-    return classnames({
+    return classnames('document', {
       requested: allegation.document_requested,
       fulfilled: allegation.document_id
     });
