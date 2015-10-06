@@ -8,12 +8,6 @@ var TabsActions = require('../../../actions/OfficerSection/Officer/TabsActions')
 
 var Tabs = React.createClass(_.assign(Base(TabsStore), {
 
-  getActiveClass: function (tab) {
-    if (tab.method == this.state.active) {
-      return 'active';
-    }
-  },
-
   clickFor: function (tab) {
     return this.onClick.bind(this, tab);
   },

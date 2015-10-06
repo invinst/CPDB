@@ -123,6 +123,17 @@ class OfficerProfileTestCase(BaseLiveTestCase):
 
         self.find(".story .fa-pencil").click()
         self.element_for_label('Title').get_attribute('value').should.equal("Title2")
-        self.element_for_label('Slug').get_attribute('value').should.equal("Slug")
+        self.element_for_label('Slug').get_attribute('value').should.equal("title2")
         self.find(".story_short_description").text.should.equal("Short Description")
         self.find(".story_content").text.should.equal("Content")
+
+    def test_slugify_title(self):
+        officer = self.officer
+        self.go_to_officer_profile()
+        self.find("#search-officer input").send_keys(officer.officer_first)
+
+        self.find(".officer").click()
+        self.element_for_label('Title').send_keys("Title ABC")
+        self.element_for_label('Slug').get_attribute('value').should.equal("title-abc")
+        self.element_for_label('Slug').send_keys("Slug")
+        self.element_for_label('Slug').get_attribute('value').should.equal("title-abcslug")

@@ -68,6 +68,18 @@ var StoryList = React.createClass(_.assign(Base(StoryListStore), {
     }
   },
 
+  componentDidMount: function () {
+    StoryListStore.addChangeListener(this._onChange);
+
+    StoryAPI.get();
+  },
+
+  componentDidUpdate: function () {
+    if (this.state.do_update_list) {
+      StoryAPI.get();
+    }
+  },
+
   renderStoryList: function() {
     var that = this;
     return this.state.stories.map(function(x) {

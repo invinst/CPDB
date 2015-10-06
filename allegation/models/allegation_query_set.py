@@ -88,7 +88,7 @@ class AllegationQuerySet(models.query.QuerySet):
         cond = Q()
 
         for name in names:
-            cond = cond | OfficerQuery.condition_by_name(name, prefix='officer__')
+            cond |= OfficerQuery.condition_by_name(name, prefix='officer__')
 
         return self.filter(cond)
 

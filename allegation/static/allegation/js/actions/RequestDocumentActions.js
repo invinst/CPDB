@@ -1,4 +1,5 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
+var SessionStore = require('stores/SessionStore');
 var RequestDocumentConstants = require('../constants/RequestDocumentConstants');
 
 var RequestDocumentActions = {
@@ -17,7 +18,7 @@ var RequestDocumentActions = {
         data: {
           crid: crid,
           email: email,
-          session: SESSION_HASH // defined in CPDBApp.react
+          session: SessionStore.getHash() // defined in CPDBApp.react
         },
         success: function () {
           RequestDocumentActions.setRequested(crid);
