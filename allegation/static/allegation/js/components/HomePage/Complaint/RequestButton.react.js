@@ -21,7 +21,7 @@ var RequestButton = React.createClass({
     var allegation = this.props.complaint.allegation;
     var documentLabel = 'Request';
     var linkClassName = 'btn btn-sm btn-request';
-    var link = '#';
+    var link = 'javascript:void()';
     var iconClassName = 'fa fa-file-pdf-o';
     var target = '';
     if (this.state.requested) {

@@ -10,8 +10,8 @@ var Map = require('components/HomePage/Map.react');
 var OfficerList = require('components/HomePage/OfficerList.react');
 var SessionAPI = require('utils/SessionAPI');
 var SessionStore = require('stores/SessionStore');
-var SiteTitle = require('components/HomePage/SiteTitle.react');
 var Tabs = require('components/HomePage/Tabs.react');
+var Nav = require('components/Shared/Nav.react');
 
 
 var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
@@ -30,30 +30,7 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
 
     return (
       <div>
-        <div className="navbar navbar-default">
-          <div className="navbar-header">
-            <a href="#" className="navbar-brand">
-                <img src="/static/img/logo.png" alt="" />
-            </a>
-            <button className="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
-                <span className="icon-bar"></span>
-                <span className="icon-bar"></span>
-                <span className="icon-bar"></span>
-            </button>
-          </div>
-          <div className="navbar-collapse collapse" id="navbar-main">
-              <ul className="nav navbar-nav">
-                <li className='site-title'>
-                  <SiteTitle />
-                </li>
-              </ul>
-              <form className="navbar-form navbar-right" role="search">
-                <div id="search-wrapper">
-                  <input type="text" id="autocomplete" placeholder="Search by name, neighborhood, or complaint" class="ui-autocomplete-input" autocomplete="off" />
-                </div>
-              </form>
-          </div>
-        </div>
+        <Nav />
         <div className='container-fluid'>
             <div className="row" id='filter-row'>
                <div className="col-md-10 col-md-offset-1">
