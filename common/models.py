@@ -316,6 +316,10 @@ OUTCOME_TEXT = [
 ]
 OUTCOME_TEXT_DICT = dict(OUTCOME_TEXT)
 
+FINAL_FINDING_TEXT_DICT = {
+    'unsustained': 'Unsustained',
+}
+
 
 class Allegation(models.Model):
     record_id = models.IntegerField(null=True)
@@ -347,6 +351,7 @@ class Allegation(models.Model):
     document_normalized_title = models.CharField(max_length=255, null=True)
     document_title = models.CharField(max_length=255, null=True)
     document_requested = models.BooleanField(default=False)
+    number_of_request = models.IntegerField(default=0)
 
     @property
     def beat(self):

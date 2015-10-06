@@ -4,6 +4,12 @@
 .btn-primary
   background-color: $blue
 
+  &.inverse
+    background: $white
+    color: $blue
+    &:hover
+      background-color: $color-silver
+
 .modal-footer
   border-top: none
   padding-top: 5px
@@ -17,6 +23,8 @@
 .modal-body
   padding-top: 0
   padding-bottom: 0
+  .form-group
+    border: none
 
 .modal-content
   padding: 30px
