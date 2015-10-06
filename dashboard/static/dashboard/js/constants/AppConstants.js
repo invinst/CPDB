@@ -89,6 +89,9 @@ module.exports = {
   ],
 
   DOCUMENT_STATUS: {
+    'all': {
+      'text': 'All'
+    },
     'fulfilled': {
       'text': 'Fulfilled',
       'icon': 'check'

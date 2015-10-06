@@ -7,7 +7,7 @@ var _state = {
   isOpen: false,
   formValid: false,
   link: '',
-  supplied_crid: '',
+  suppliedCrid: '',
   crid: '',
   flashMessage: '',
   errorMessages: []
@@ -29,7 +29,7 @@ AppDispatcher.register(function(action) {
     AddDocumentLinkModalStore.updateState('isOpen', true);
     AddDocumentLinkModalStore.updateState('formValid', false);
     AddDocumentLinkModalStore.updateState('link', '');
-    AddDocumentLinkModalStore.updateState('supplied_crid', action.crid);
+    AddDocumentLinkModalStore.updateState('suppliedCrid', action.crid);
     AddDocumentLinkModalStore.updateState('crid', '');
     AddDocumentLinkModalStore.updateState('flashMessage', '');
     AddDocumentLinkModalStore.updateState('errorMessages', []);

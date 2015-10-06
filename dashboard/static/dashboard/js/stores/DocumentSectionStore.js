@@ -9,11 +9,6 @@ var _state = {
 };
 
 var DocumentSectionStore = _.assign(Base(_state), {
-  init: function (params) {
-    _.extend(_state, params);
-    return this.getState();
-  },
-
   setActiveAllegation: function (allegation) {
     navigate('/document?id=' + allegation.id);
   }

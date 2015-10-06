@@ -4,7 +4,7 @@ var _ = require('lodash');
 var Base = require('../Base');
 
 var _state = {
-  document: null
+  document: {}
 };
 
 var DocumentStore = _.assign(Base(_state), {

@@ -19,7 +19,7 @@ var AddDocumentLinkModal = React.createClass(_.assign(Base(AddDocumentLinkModalS
 
   addLink: function () {
     this.waitScreen();
-    DocumentAPI.addLink(this.state.link ,this.state.supplied_crid);
+    DocumentAPI.addLink(this.state.link ,this.state.suppliedCrid);
   },
 
   render: function() {

@@ -4,7 +4,6 @@ var Document = require('./DocumentSection/Document.react');
 var DocumentList = require('./DocumentSection/DocumentList.react');
 var Tabs = require('./DocumentSection/Tabs.react');
 var DocumentSectionStore = require('../stores/DocumentSectionStore');
-var DocumentSectionActions = require('../actions/DocumentSectionActions');
 var DocumentRequestAPI = require('../utils/DocumentRequestAPI');
 var AddDocumentLinkModal = require('./DocumentSection/AddDocumentLinkModal.react');
 var AddDocumentLinkModalActions = require('../actions/DocumentSection/AddDocumentLinkModalActions');

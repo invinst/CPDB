@@ -11,10 +11,7 @@ var _state = {
 };
 
 var DocumentListStore = _.assign(Base(_state), {
-  init: function (params) {
-    _.extend(_state, params);
-    return this.getState();
-  },
+  
 });
 
 AppDispatcher.register(function(action) {

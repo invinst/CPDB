@@ -5,14 +5,10 @@ var Base = require('./Base');
 var navigate = require('react-mini-router').navigate;
 
 var _state = {
-  id: null
+  id: ''
 };
 
 var OfficerSectionStore = _.assign(Base(_state), {
-  init: function (params) {
-    _.extend(_state, params);
-    return this.getState();
-  },
   navigateMain: function () {
     navigate('/officer');
   }

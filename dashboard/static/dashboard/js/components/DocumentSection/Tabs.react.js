@@ -1,6 +1,7 @@
 var Base = require('../Base.react');
 var React = require('react');
 var _ = require('lodash');
+var jQuery = require('jquery');
 var TabsStore = require('../../stores/DocumentSection/TabsStore');
 var TabsActions = require('../../actions/DocumentSection/TabsActions');
 var AppConstants = require('../../constants/AppConstants');
@@ -15,11 +16,12 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
 
   renderTabs: function() {
     var that = this;
-    return ['All', 'Missing', 'Requesting', 'Fulfilled'].map(function (x) {
+    return jQuery.map(AppConstants.DOCUMENT_STATUS, function (x) {
+      text = x['text'];
       var className = cx({
-        active: x == that.state.active
+        active: text == that.state.active
       });
-      return <li key={x} className={className} onClick={that.onClick.bind(that, x)}>{x}</li>
+      return <li key={text} className={className} onClick={that.onClick.bind(that, text)}>{text}</li>
     });
   },
 
