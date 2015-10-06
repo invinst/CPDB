@@ -1,0 +1,16 @@
+ul
+  li
+    color: $menu-text-color
+    line-height: 3.4em
+    padding-left: 30px
+    &:hover
+      cursor: pointer
+    &.active, &:hover
+      color: $menu-text-active-color
+      background-color: $menu-active-bg-color
+    .fa
+      margin-right: 10px
+
+    @media(max-width: 767px)
+      display: inline-block
+      padding: 5px 10px

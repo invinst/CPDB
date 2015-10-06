@@ -3,6 +3,9 @@ import json
 from allegation.factories import OfficerFactory, AllegationCategoryFactory, AllegationFactory
 from common.models import AllegationCategory, Officer
 from common.tests.core import SimpleTestCase
+from search.factories import AliasFactory
+from search.models import SuggestionLog
+from search.models.alias import Alias
 
 
 class SuggestViewTestCase(SimpleTestCase):
@@ -33,6 +36,14 @@ class SuggestViewTestCase(SimpleTestCase):
 
         data = self.get_suggestion('12')
         data.should.contain('officer__star')
+
+    def test_detect_suggest_type_officer_unit(self):
+        self.get_suggestion('71').should.contain('officer__unit')
+        self.get_suggestion('99').shouldnt.contain('officer__unit')
+
+    def test_detect_suggest_type_officer_unit_name(self):
+        self.get_suggestion('Vio').should.contain('officer__unit')
+        self.get_suggestion('Viot').shouldnt.contain('officer__unit')
 
     def test_detect_suggest_type_complaint_category(self):
         AllegationCategoryFactory(allegation_name='Bonding category')
@@ -96,3 +107,51 @@ class SuggestViewTestCase(SimpleTestCase):
         data = self.get_suggestion('Unfo')
         data.should.contain('final_finding')
         data.should.contain('recc_finding')
+
+    def test_suggest_officer_rank(self):
+        self.get_suggestion('PO').should.contain('officer__rank')
+        self.get_suggestion('invalidrank').shouldnt.contain('officer__rank')
+
+    def test_suggest_complainant_gender(self):
+        data = self.get_suggestion('mal')
+        data.should.contain('complainant_gender')
+
+    def test_suggest_complainant_race(self):
+        data = self.get_suggestion('blac')
+        data.should.contain('complainant_race')
+
+    def test_suggest_officer_gender(self):
+        data = self.get_suggestion('mal')
+        data.should.contain('officer__gender')
+
+    def test_suggest_officer_race(self):
+        data = self.get_suggestion('blac')
+        data.should.contain('officer__race')
+
+    def test_tracking_suggestion(self):
+        num = self.num_of_tracked_suggestions()
+        self.get_suggestion('anything')
+        self.num_of_tracked_suggestions().should.equal(num + 1)
+
+    def num_of_tracked_suggestions(self):
+        return SuggestionLog.objects.count()
+
+    def test_suggest_city(self):
+        AllegationFactory(city='Chicago IL 60616')
+        data = self.get_suggestion('616')
+        self.get_suggestion('616').should.contain('city')
+        self.get_suggestion('123').shouldnt.contain('city')
+        self.get_suggestion('Chi').shouldnt.contain('city')
+
+    def test_search_with_alias(self):
+        officer = OfficerFactory()
+        alias = AliasFactory(target=str(officer))
+
+        data = self.get_suggestion(alias.alias[0:2])
+        data.should.contain('officer')
+
+        officer_ids = [x['value'] for x in data['officer']]
+        officer_ids.should.contain(officer.id)
+
+        alias = Alias.objects.get(id=alias.id)
+        alias.num_usage.should.equal(1)

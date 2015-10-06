@@ -8,31 +8,15 @@
  */
 
 var React = require('react');
+var SessionStore = require('../stores/SessionStore');
 var FilterStore = require('../stores/FilterStore');
 var MapStore = require('../stores/MapStore');
-var OfficerStore = require('../stores/OfficerStore');
+var OfficerListStore = require('../stores/OfficerListStore');
 var FilterActions = require('../actions/FilterActions');
 var cx = require('react/lib/cx');
 var _sessionData = {};
 var init_data = typeof(INIT_DATA) == 'undefined' ? false : INIT_DATA;
 var init_filters = typeof(INIT_FILTERS) == 'undefined' ? {} : INIT_FILTERS;
-
-AUTOCOMPLETE_CATEGORY_NAMES = {
-    'crid': 'Complaint ID',
-    'cat__category': 'Category',
-    'cat': 'Allegation type',
-    'investigator': 'Investigator',
-    'officer': 'Officer name',
-    'officer__star': 'Badge number',
-    'recc_outcome': 'Recommended Outcome',
-    'recc_finding': 'Recommended Finding',
-    'final_outcome': 'Final Outcome',
-    'final_finding': 'Final Finding',
-    'incident_date_only__year': 'Incident Year',
-    'incident_date_only__year_month': 'Incident Year/Month',
-    'incident_date_only': 'Incident Date',
-    'areas__id': 'Area'
-};
 
 
 function isSameTag(current, other) {
@@ -56,12 +40,15 @@ var AutoComplete = React.createClass({
     }
     var tags = $(this.getDOMNode()).tagsinput("items");
     if (tags.length) {
-      $(".bootstrap-tagsinput").show();
+      setTimeout(function () {
+        $(".bootstrap-tagsinput .tag").addClass('fadeIn');
+      }, 100);
     } else {
-      $(".bootstrap-tagsinput").hide();
+      // Should be used
     }
     FilterActions.replaceFilters(tags);
   },
+
   componentDidMount: function () {
     var element = this.getDOMNode();
     $(element).tagsinput({
@@ -75,23 +62,19 @@ var AutoComplete = React.createClass({
       for (var i = 0; i < filter.length; i++) {
         if (filter[i].value) {
           $(element).tagsinput("add", {
-            text: filter[i].text,
+            text: tagLabel(key, filter[i].text),
             value: [key, filter[i].value]
           });
         } else {
           $(element).tagsinput("add", {
-            text: filter[i],
+            text: tagLabel(key, filter[i]),
             value: [key, filter[i]]
           });
         }
       }
     }
 
-    $(element).on('beforeItemAdd', function (event) {
-      var tags = $(this).tagsinput('items');
-      var tag = event.item;
-      event.cancel = isDuplicatedTag(tags, tag)
-    });
+    $(element).on('beforeItemAdd', this.beforeItemAdd);
 
     $(element).tagsinput("input").hide();
 
@@ -102,14 +85,44 @@ var AutoComplete = React.createClass({
       $(element).trigger("itemAdded");
     }
     FilterStore.addChangeListener(this._onChange);
-    OfficerStore.addChangeListener(this._onChange);
+    FilterStore.addDisableListener(this._onDisable);
+    FilterStore.addEnableListener(this._onEnable);
+    OfficerListStore.addChangeListener(this._onChange);
   },
+
+  beforeItemAdd: function (event) {
+    var tags = $(this.getDOMNode()).tagsinput('items');
+    var tag = event.item;
+    event.cancel = isDuplicatedTag(tags, tag)
+  },
+
+  _onDisable: function () {
+    $("#search-wrapper").hide();
+    var element = this.getDOMNode();
+    $(element).off("beforeItemAdd", this.beforeItemAdd)
+      .on("beforeItemAdd", this.cancelItemChange)
+      .on("beforeItemRemove", this.cancelItemChange);
+  },
+
+  _onEnable: function () {
+    $("#search-wrapper").show();
+    var element = this.getDOMNode();
+    $(element).on("beforeItemAdd", this.beforeItemAdd)
+      .off("beforeItemAdd", this.cancelItemChange)
+      .off("beforeItemRemove", this.cancelItemChange);
+  },
+
+  cancelItemChange: function (event) {
+    event.cancel = true;
+  },
+
   getInitialState: function () {
     var filters = {};
+
     if (init_data){
       filters = FilterStore.setSession(init_filters);
       MapStore.setSession(init_data);
-      OfficerStore.setSession(init_data);
+      OfficerListStore.setSession(init_data);
     } else {
       filters = FilterStore.getAll(this.props.filterkey);
     }
@@ -124,24 +137,16 @@ var AutoComplete = React.createClass({
     if (event) {
       FilterActions.changeFilter(this.props.filterkey, event.target.value);
     }
-    var tempSessionData = {};
-    $.extend(tempSessionData, FilterStore.getSession());
-    $.extend(tempSessionData, MapStore.getSession());
-    $.extend(tempSessionData, OfficerStore.getSession());
-
-    if (! _.isEqual(tempSessionData, _sessionData)) {
-      _sessionData = _.clone(tempSessionData);
-      FilterStore.saveSession(_sessionData);
-    }
+    SessionStore.saveSession();
   },
 
   /**
    * @return {object}
    */
   render: function () {
-
-    return <input id="cpdb-search" />
-
+    return (
+      <input id="cpdb-search" />
+    )
   }
 
 });

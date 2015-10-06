@@ -6,9 +6,9 @@
  * LICENSE file in the root directory of this source tree. An additional grant
  * of patent rights can be found in the PATENTS file in the same directory.
  */
-var HOST = 'http://localhost:8000';
 var React = require('react');
-var MapFilter = require('./MapFilter.react');
+var L = require('leaflet');
+
 var AutoComplete = require('./AutoComplete.react');
 var FilterStore = require('../stores/FilterStore');
 var MapStore = require('../stores/MapStore');
@@ -40,22 +40,13 @@ var Filters = React.createClass({
   render: function () {
     // This section should be hidden by default
     // and shown when there are todos.
-    var allFilters = [];
-    for (var key in this.state.filters) {
 
-      allFilters.push(<MapFilter filterkey={key} key={key} options={this.state.filters[key].items}
-                                 value={this.state.filters[key].value}/>)
-      //FilterStore.addFilter()
-    }
 
-    return <div>
-      <AutoComplete />
-
-      <div className='hidden'>
-        {allFilters}
+    return (
+      <div className=''>
+        <AutoComplete />
       </div>
-    </div>
-
+    )
   },
 
   _onCreate: function () {
@@ -67,5 +58,6 @@ var Filters = React.createClass({
   }
 
 });
+
 
 module.exports = Filters;

@@ -1,8 +1,13 @@
+import random
+
+from django.contrib.gis.geos import MultiPolygon, Polygon
 from django.utils import timezone
 import factory
 from faker import Faker
 
-from common.models import AllegationCategory, Officer, Area, Allegation, Investigator
+from allegation.models import Download
+from common.models import AllegationCategory, Officer, Area, Allegation, Investigator, ComplainingWitness, RACES, \
+    OUTCOMES, PoliceWitness
 
 fake = Faker()
 
@@ -12,8 +17,12 @@ class AreaFactory(factory.django.DjangoModelFactory):
         model = Area
 
     name = factory.Sequence(lambda n: fake.first_name())
-    type = factory.Sequence(lambda n: fake.first_name())
+    type = factory.Sequence(lambda n: 'school-grounds')
+    polygon = factory.Sequence(lambda n: MultiPolygon(Polygon(((0, 0), (0, 1), (1, 1), (0, 0)))))
 
+class PoliceWitnessFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = PoliceWitness
 
 class OfficerFactory(factory.django.DjangoModelFactory):
     class Meta:
@@ -42,26 +51,46 @@ class AllegationCategoryFactory(factory.django.DjangoModelFactory):
     category = factory.Sequence(lambda n: fake.name())
 
 
+class ComplainingWitnessFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = ComplainingWitness
+    crid = factory.Sequence(lambda n: fake.random_int(min=1000))
+    gender = factory.Sequence(lambda n: ['M', 'F'][n % 2])
+    race = factory.Sequence(lambda n: RACES[n % len(RACES)][0])
+
+
 class AllegationFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Allegation
 
     crid = factory.Sequence(lambda n: fake.random_int(min=1000))
     cat = factory.SubFactory(AllegationCategoryFactory)
-    final_outcome = factory.Sequence(lambda n: fake.random_element(['600', '601']))
+    final_outcome = factory.Sequence(lambda n: fake.random_element(x[0] for x in OUTCOMES))
     incident_date = factory.Sequence(lambda n: timezone.now())
     incident_date_only = factory.LazyAttribute(lambda o: o.incident_date.date())
     investigator = factory.SubFactory(InvestigatorFactory)
     officer = factory.SubFactory(OfficerFactory)
+    point = None
 
     @factory.post_generation
     def areas(self, create, extracted, **kwargs):
 
-        if Area.objects.all().count() == 0:
+        if Area.objects.all().count() < 5 :
             for i in range(2):
                 AreaFactory()
-            extracted = Area.objects.all()
+        extracted = Area.objects.all()
 
         if extracted:
             for area in extracted:
                 self.areas.add(area)
+                if not self.point and random.randint(0,10) > 5:
+                    self.point = area.polygon.centroid
+                    self.save()
+
+
+class DownloadFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Download
+    query = factory.Sequence(lambda n: fake.name())
+    finished = factory.Sequence(lambda n: n % 2)
+    url = factory.Sequence(lambda n: fake.url())

@@ -11,11 +11,12 @@
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
-var MapConstants = require('../constants/MapConstants');
+var AppConstants = require('../constants/AppConstants');
 var assign = require('object-assign');
 var FilterStore = require('./FilterStore');
 var CHANGE_EVENT = 'change';
 var SUMMARY_CHANGE = 'summary-change';
+var ajax = false;
 var _state = {
   'rows': [],
   'current': false
@@ -24,12 +25,6 @@ var _complaints = {};
 var _currentActive = false;
 
 
-/**
- * Update a TODO item.
- * @param  {string} id
- * @param {object} updates An object literal containing only the data to be
- *     updated.
- */
 function update(id, updates) {
   _complaints[id] = assign({}, _complaints[id], updates);
 }
@@ -44,9 +39,12 @@ function create(id, complaint) {
 
 
 var SummaryStore = assign({}, EventEmitter.prototype, {
-  update: function () {
-    var query_string = FilterStore.getQueryString();
-    $.getJSON('/api/allegations/summary/?' + query_string, function (data) {
+  update: function (query) {
+    var queryString = query || FilterStore.getQueryString();
+    if (ajax) {
+      ajax.abort();
+    }
+    ajax = $.getJSON('/api/allegations/summary/?' + queryString, function (data) {
       _state['rows'] = data.summary;
       SummaryStore.emitChange();
     })
@@ -61,12 +59,12 @@ var SummaryStore = assign({}, EventEmitter.prototype, {
   getCurrentActive: function(){
     return _currentActive;
   },
-  init: function () {
+  init: function (query) {
     _state = {
       'rows': [],
       'current': false
     };
-    this.update();
+    this.update(query);
     return _state;
   },
   getAll: function (type) {
@@ -82,23 +80,23 @@ var SummaryStore = assign({}, EventEmitter.prototype, {
   addChangeListener: function (callback) {
     this.on(CHANGE_EVENT, callback);
   },
+
   addSummaryListener: function (callback) {
     this.on(SUMMARY_CHANGE, callback);
   }
-
 });
 
 // Register callback to handle all updates
 AppDispatcher.register(function (action) {
 
   switch (action.actionType) {
-    case MapConstants.MAP_REPLACE_FILTERS:
-    case MapConstants.MAP_CHANGE_FILTER:
-    case MapConstants.MAP_ADD_FILTER:
+    case AppConstants.MAP_REPLACE_FILTERS:
+    case AppConstants.MAP_CHANGE_FILTER:
+    case AppConstants.MAP_ADD_FILTER:
       SummaryStore.update();
       break;
 
-    case MapConstants.SET_SUMMARY:
+    case AppConstants.SET_SUMMARY:
       SummaryStore.set('current', action.type);
       SummaryStore.emitSummaryChange();
       break;

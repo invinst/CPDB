@@ -1,6 +1,6 @@
-var DEFAULT_SITE_TITLE = "Citizens’ Police Database";
+var DEFAULT_SITE_TITLE = "Chicago Police Database";
 var React = require('react');
-var FilterStore = require("../stores/FilterStore");
+var SessionStore = require("../stores/SessionStore");
 var init_data = typeof(INIT_DATA) == 'undefined' ? {} : INIT_DATA;
 
 function removeMultipleSpace(str) {
@@ -46,7 +46,7 @@ var SiteTitle = React.createClass({
     var newTitle = $(e.target).val();
 
     this.setState({ 'text': newTitle });
-    FilterStore.saveSession({'title': newTitle});
+    SessionStore.saveSession({'title': newTitle});
     document.title = newTitle;
     updateUrlWithSlugifiedTitle(newTitle);
   },

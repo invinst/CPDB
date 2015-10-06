@@ -1,11 +1,13 @@
 import datetime
 import json
 
+from django.conf import settings
 from django.utils import timezone
 
-from allegation.factories import AreaFactory
+from allegation.factories import AreaFactory, ComplainingWitnessFactory
 from allegation.tests.views.base import AllegationApiTestBase
-from common.models import Allegation, Officer, Area
+from common.models import Allegation, Officer, Area, RACES, DISCIPLINE_CODES, NO_DISCIPLINE_CODES
+from search.models import FilterLog
 
 
 class AllegationApiViewTestCase(AllegationApiTestBase):
@@ -35,10 +37,10 @@ class AllegationApiViewTestCase(AllegationApiTestBase):
         allegations = self.fetch_allegations()
         ids = [d['allegation']['id'] for d in allegations]
 
-        allegations = self.fetch_allegations(start=2)
+        allegations = self.fetch_allegations(page=1)
         ids2 = [d['allegation']['id'] for d in allegations]
 
-        ids2[0].should.equal(ids[2])
+        ids2.shouldnt.contain(ids[0])
 
     def test_filter_by_crid(self):
         crid = self.allegations[0].crid
@@ -128,7 +130,70 @@ class AllegationApiViewTestCase(AllegationApiTestBase):
 
     def test_multiple_areas(self):
         areas = Area.objects.filter()
-        num_allegations = len(Allegation.objects.filter(areas=areas).values('crid'))
+        num_allegations = len(Allegation.objects.filter(areas=areas).distinct().values('crid'))
         allegations = self.fetch_allegations(areas__id=list(areas.values_list('pk', flat=True)))
         num_returned = len(allegations)
-        num_allegations.should.equal(num_returned)
+        num_returned.should.equal(getattr(settings, 'ALLEGATION_LIST_ITEM_COUNT', 200))
+
+    def test_filter_by_complaint_gender(self):
+        allegation = self.allegations[0]
+        for i in range(10):
+            ComplainingWitnessFactory(crid=allegation.crid)
+        data = self.fetch_allegations(complainant_gender='M')
+        for row in data:
+            genders = [x['gender'] for x in row['complaining_witness']]
+            genders.should.contain('M')
+
+    def test_filter_by_complaint_race(self):
+        allegation = self.allegations[0]
+        for i in range(10):
+            ComplainingWitnessFactory(crid=allegation.crid)
+        race = RACES[0][0]
+        data = self.fetch_allegations(complainant_race=race)
+        for row in data:
+            races = [x['race'] for x in row['complaining_witness']]
+            races.should.contain(race)
+
+    def test_filter_by_officer_gender(self):
+        data = self.fetch_allegations(officer__gender='M')
+        for row in data:
+            row['officer']['gender'].should.equal('M')
+
+    def test_filter_by_officer_race(self):
+        race = RACES[0][0]
+        data = self.fetch_allegations(officer__race=race)
+        for row in data:
+            row['officer']['race'].should.equal(race)
+
+    def test_tracking_filter(self):
+        self.num_of_filter_logs().should.equal(0)
+        self.fetch_allegations(officer__gender='M')
+        self.num_of_filter_logs().should.equal(1)
+
+    def num_of_filter_logs(self):
+        return FilterLog.objects.count()
+
+    def test_investigator_data(self):
+        data = self.fetch_allegations()
+        data.should.be.ok
+        for row in data:
+            row.should.contain('investigator')
+
+    def test_filter_by_outcome_group(self):
+        data = self.fetch_allegations(outcome_text='any discipline')
+        for row in data:
+            allegation = Allegation.objects.get(pk=row['allegation']['id'])
+            allegation.final_outcome.should.be.within(DISCIPLINE_CODES)
+            allegation.final_finding.should.equal('SU')
+
+        data = self.fetch_allegations(outcome_text='no discipline')
+        for row in data:
+            allegation = Allegation.objects.get(pk=row['allegation']['id'])
+            allegation.final_outcome.should.be.within(NO_DISCIPLINE_CODES)
+            allegation.final_finding.should.equal('SU')
+
+    def test_investigator_data(self):
+        data = self.fetch_allegations()
+        data.should.be.ok
+        for row in data:
+            row.should.contain('investigator')

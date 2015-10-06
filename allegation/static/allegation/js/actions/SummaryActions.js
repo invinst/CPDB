@@ -10,13 +10,13 @@
  */
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
-var MapConstants = require('../constants/MapConstants');
+var AppConstants = require('../constants/AppConstants');
 
 var SummaryActions = {
 
   setSummary: function (type) {
     AppDispatcher.dispatch({
-      actionType: MapConstants.SET_SUMMARY,
+      actionType: AppConstants.SET_SUMMARY,
       type: type
     });
   }

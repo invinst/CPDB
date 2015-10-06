@@ -4,6 +4,8 @@ var Filters = require('./Filters.react');
 var MapStore = require('../stores/MapStore');
 var SummaryActions = require('../actions/SummaryActions');
 var FilterStore = require('../stores/FilterStore');
+var AppConstants = require('../constants/AppConstants');
+var numeral = require('numeral');
 
 function getChildRowState() {
   return {
@@ -29,22 +31,31 @@ var SummaryChildRow = React.createClass({
 
     this.state.selected = !this.state.selected;
   },
+
+  isActive: function () {
+    var filters = FilterStore.getAll();
+    var catId = this.props.subcategory.cat_id;
+    var selectedCategories = this.props.summary.props.selectedCategories;
+    return (
+      ('cat' in filters && filters['cat'].value.indexOf(catId) > -1)
+      || ('cat__category' in filters && filters['cat__category'].value.indexOf(this.props.category.name) > -1)
+      || (selectedCategories && selectedCategories.indexOf(catId) > -1)
+    );
+  },
+
   render: function () {
     var className = "category-name";
-    var filters = FilterStore.getAll();
-    if ('cat' in filters && filters['cat'].value.indexOf(this.props.subcategory.cat_id) > -1) {
-      className += " active";
-    }
-    if ('cat__category' in filters && filters['cat__category'].value.indexOf(this.props.category.name) > -1) {
+
+    if (this.isActive()) {
       className += " active";
     }
 
     return (
-      <div className="row">
-        <div className="col-md-2">
-          {this.props.subcategory.count}
+      <div className="row summary-child-row">
+        <div className="col-md-2 count">
+          {numeral(this.props.subcategory.count).format(AppConstants.NUMERAL_FORMAT)}
         </div>
-        <div className="col-md-10">
+        <div className="col-md-10 category-name-wrapper">
           <a href="#" className={className} onClick={this.onClick}>{this.props.subcategory.name}</a>
         </div>
       </div>

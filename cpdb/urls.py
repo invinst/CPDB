@@ -13,23 +13,31 @@ Including another URLconf
     1. Add an import:  from blog import urls as blog_urls
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
+from django.conf import settings
 from django.conf.urls import include, url
+from django.conf.urls.static import static
 from django.contrib import admin
+from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 from allegation.views import AllegationListView
+from dashboard.views.admin_analysis_dashboard_view import AdminAnalysisDashboardView
 
 urlpatterns = [
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/$', login_required(AdminAnalysisDashboardView.as_view()), name='my-view'),
+    url(r'^admin/models/', include(admin.site.urls)),
     url(r'^', include('allegation.urls', namespace='allegation')),
     url(r'^search/', include('search.urls', namespace='search')),
     url(r'^share/', include('share.urls', namespace='share')),
     url(r'^officer/', include('officer.urls', namespace='officer')),
     url(r'^document/', include('document.urls', namespace='document')),
     url(r'^$', ensure_csrf_cookie(AllegationListView.as_view()), name='homepage'),
+    url(r'^embed/', include('embed.urls', namespace='embed')),
+    url(r'^api/', include('api.urls')),
+    url(r'^', include('dashboard.urls')),
     url(r'^(?P<hash_id>[\w-]+)/$', ensure_csrf_cookie(AllegationListView.as_view()), name='homepage-share'),
     url(r'^(?P<hash_id>[\w-]+)/(?P<slugified_url>[\w-]+)$', ensure_csrf_cookie(AllegationListView.as_view()), name='homepage-share'),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 handler404 = 'common.views.handler404'

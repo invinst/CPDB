@@ -3,6 +3,8 @@ import io
 import json
 
 from django.conf import settings
+from django.contrib.gis.geos.factory import fromstr
+from django.db import connection
 from django.db.models import Count
 from django.http.response import HttpResponse, Http404
 from django.shortcuts import get_object_or_404, redirect
@@ -11,12 +13,12 @@ from django.views.generic import View
 
 from allegation.views.allegation_api_view import AllegationAPIView
 from common.json_serializer import JSONSerializer
-from common.models import Allegation, Area, AllegationCategory, Investigator, Officer
+from common.models import Allegation, Area, AllegationCategory, Investigator, Officer, GENDER_DICT, OUTCOME_TEXT_DICT
 from common.models import ComplainingWitness, NO_DISCIPLINE_CODES, PoliceWitness
 from share.models import Session
 
+DEFAULT_SITE_TITLE = "Chicago Police Database"
 
-DEFAULT_SITE_TITLE = 'Citizens’ Police Database'
 OFFICER_COMPLAINT_COUNT_RANGE = [
     [20, 0],  # x >= 9
     [9, 20],  # 3 <= x < 9
@@ -30,22 +32,36 @@ OFFICER_COMPLAINT_COUNT_RANGE = getattr(settings, 'OFFICER_COMPLAINT_COUNT_RANGE
 class AllegationListView(TemplateView):
     template_name = 'allegation/home.html'
     session = None
+    KEYS = {
+        'officer': Officer,
+        'cat': AllegationCategory,
+        'investigator': Investigator
+    }
+    OTHER_KEYS = {
+        'officer__gender': GENDER_DICT,
+        'complainant_gender': GENDER_DICT,
+        'outcome_text': OUTCOME_TEXT_DICT
+    }
 
     def get_filters(self, key, values):
-        if key == 'officer':
-            values = Officer.objects.filter(pk__in=values['value'])
-            values = [o.tag_value for o in values]
-        elif key == 'cat':
-            values = AllegationCategory.objects.filter(pk__in=values['value'])
-            values = [o.tag_value for o in values]
-        elif key == 'investigator':
-            values = Investigator.objects.filter(pk__in=values['value'])
-            values = [o.tag_value for o in values]
-        elif key == 'areas__id':
-            return False
-        else:
-            values = values['value']
-        return values
+        if key == 'areas__id':
+            ret = []
+            for pk in values['value']:
+                area = Area.objects.get(pk=pk)
+                ret.append({'text': "%s: %s" % (area.type, area.name) , 'value': pk})
+            return ret
+
+        if key in self.KEYS:
+            values = self.KEYS[key].objects.filter(pk__in=values['value'])
+            return [o.tag_value for o in values]
+
+        if key in self.OTHER_KEYS:
+            return [{
+                'text': self.OTHER_KEYS[key].get(o),
+                'value': o,
+            } for o in values['value']]
+
+        return values['value']
 
     def get_context_data(self, **kwargs):
         context = super(AllegationListView, self).get_context_data(**kwargs)
@@ -112,7 +128,7 @@ class AllegationListView(TemplateView):
 
 class AreaAPIView(View):
     def get(self, request):
-        areas = Area.objects.all().exclude(type='school-grounds')
+        areas = Area.objects.all()
         type_filter = request.GET.get('type')
 
         if type_filter:
@@ -142,6 +158,7 @@ class AreaAPIView(View):
         content = json.dumps(area_dict)
         return HttpResponse(content)
 
+
 class AllegationGISApiView(AllegationAPIView):
     def get(self, request):
         seen_crids = {}
@@ -154,22 +171,73 @@ class AllegationGISApiView(AllegationAPIView):
             if allegation.crid in seen_crids:
                 continue
             seen_crids[allegation.crid] = True
-            point = None
+
             if allegation.point:
                 point = json.loads(allegation.point.geojson)
 
-            allegation_json = {
-                "type": "Feature",
-                "properties": {
-                    "name": allegation.crid,
-                },
-                'geometry': point
-            }
-            if allegation.cat:
-                allegation_json['properties']['type'] = allegation.cat.allegation_name,
+                allegation_json = {
+                    "type": "Feature",
+                    "properties": {
+                        "name": allegation.crid,
+                    },
+                    'geometry': point
+                }
+                if allegation.cat:
+                    allegation_json['properties']['type'] = allegation.cat.allegation_name,
             allegation_dict['features'].append(allegation_json)
 
         content = json.dumps(allegation_dict)
+        return HttpResponse(content)
+
+
+class AllegationClusterApiView(AllegationAPIView):
+
+    def get(self, request):
+        areas = request.GET.getlist('areas__id')
+        ignore_filters = ['areas__id']
+        if areas:
+            self.orig_query_dict = request.GET.copy()
+            schools = Area.objects.filter(pk__in=areas, type='school-grounds')
+            areas = list(schools.values_list('pk', flat=True))
+            if areas:
+                self.orig_query_dict.setlist('areas__id', areas)
+                ignore_filters = []
+        allegations = self.get_allegations(ignore_filters=ignore_filters)
+        allegation_pks = list(allegations.values_list('id', flat=True))
+        ret = {'features': [], 'type': 'FeatureCollection'}
+
+        if len(allegation_pks) > 0:
+            allegation_pks = ",".join(str(x) for x in allegation_pks)
+            kursor = connection.cursor()
+
+            grid_size = 0.0005
+
+            kursor.execute('''
+                SELECT
+                    COUNT( point ) AS count,
+                    ST_AsText( ST_Centroid(ST_Collect( point )) ) AS center
+                FROM common_allegation WHERE point IS NOT NULL and id in (%s)
+                GROUP BY
+                    ST_SnapToGrid( ST_SetSRID(point, 4326), %s, %s)
+                ''' % (allegation_pks, grid_size, grid_size)
+                           )
+            kclusters = kursor.fetchall()
+
+            for cluster in kclusters:
+                point = fromstr(cluster[1])
+                allegation_json = {
+                    "type": "Feature",
+                    "properties": {
+                        "name": cluster[0],
+                    },
+                    'geometry': {
+                        'coordinates': [point.x, point.y],
+                        'type': 'Point'
+                    }
+                }
+                ret['features'].append(allegation_json)
+
+        content = json.dumps(ret)
         return HttpResponse(content)
 
 
@@ -228,6 +296,7 @@ class OfficerListAPIView(AllegationAPIView):
     def get(self, request):
         allegations = self.get_allegations()
         officers = allegations.values_list('officer', flat=True).distinct()
+        officers = list(officers)  # to solve multiple subquery problem
         officers = Officer.objects.filter(pk__in=officers).order_by('-allegations_count')
 
         overview = []
@@ -251,19 +320,6 @@ class InvestigationAPIView(View):
         if crid:
             allegations = Allegation.objects.filter(crid=crid)
             allegation_officers = Officer.objects.filter(pk__in=allegations.values('officer'))
-            allegation = allegations[0]
-            investigator = allegation.investigator
-
-            ret['investigation'] = []
-            for officer in allegation_officers:
-                complaints = Allegation.objects.filter(officer=officer, investigator=investigator)
-                num_investigated = complaints.count()
-                no_action_taken_count = complaints.filter(final_outcome__in=NO_DISCIPLINE_CODES).count()
-                ret['investigation'].append({
-                    'count': num_investigated,
-                    'no_action_taken_count': no_action_taken_count,
-                    'officer': officer,
-                })
 
             ret['police_witness'] = []
             for witness in PoliceWitness.objects.filter(crid=crid):

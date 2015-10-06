@@ -1,11 +1,13 @@
+import json
 import os
 import threading
 import time
 
 from bs4 import BeautifulSoup
 from django.core import management
+from django.core.urlresolvers import reverse
 from django.test.testcases import LiveServerTestCase, SimpleTestCase as DjangoSimpleTestCase
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import NoSuchElementException, WebDriverException
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.select import Select
@@ -73,6 +75,7 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     def browser(self):
         if world.browser is None:
             world.browser = WebDriver()
+            world.browser.implicitly_wait(10)
             world.browser.set_window_size(width=1200, height=800)
         return world.browser
 
@@ -99,11 +102,10 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         self.assertNotIn(text, self.find('body').text)
 
     def login(self, user):
-        self.visit('/')
-        self.find("a#login-nav").click()
-        self.find("#id_auth-username").send_keys(user.username)
-        self.find("#id_auth-password").send_keys(user.raw_password)
-        self.button("Next").click()
+        self.visit(reverse("admin:login"))
+        self.find("#id_username").send_keys(user.username)
+        self.find("#id_password").send_keys(user.raw_password)
+        self.find("input[type='submit']").click()
 
     def element_exist(self, css_selector):
         try:
@@ -170,7 +172,7 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     def sleep(self, seconds):
         time.sleep(seconds)
 
-    def until(self, method, timeout=10, message='', interval=0.5):
+    def until(self, method, timeout=60, message='', interval=0.5):
         """Calls the method provided with the driver as an argument until the \
         return value is not False."""
         end_time = time.time() + timeout
@@ -201,6 +203,9 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
 
         return viewport_y + viewport_height >= element_location['y'] >= viewport_y
 
+    def ajax_complete(self):
+        return 0 == self.browser.execute_script("return jQuery.active")
+
 
 class SimpleTestCase(DjangoSimpleTestCase, UserTestBaseMixin):
     response = None
@@ -230,3 +235,6 @@ class SimpleTestCase(DjangoSimpleTestCase, UserTestBaseMixin):
 
     def should_not_see_text(self, text):
         self.soup.text.shouldnt.contain(text)
+
+    def json(self, response):
+        return json.loads(response.content.decode())

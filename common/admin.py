@@ -1,7 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from common.models import User, Officer, OfficerHistory, Allegation, ComplainingWitness, PoliceWitness, \
-    AllegationCategory
+from common.models import User, Officer, OfficerHistory, Allegation
+from common.models import ComplainingWitness, PoliceWitness, AllegationCategory
+from common.models import Investigator
 
 
 class PoliceWitnessAdmin(admin.ModelAdmin):
@@ -37,7 +38,10 @@ class OfficerAdmin(admin.ModelAdmin):
     search_fields = ['officer_first', 'officer_last']
     inlines = [OfficerHistoryInline, AllegationInline]
 
+class InvestigatorAdmin(admin.ModelAdmin):
+    list_display = ['id', 'name', 'current_rank', 'complaint_count']
 
+admin.site.register(Investigator, InvestigatorAdmin)
 admin.site.register(AllegationCategory, admin.ModelAdmin)
 admin.site.register(PoliceWitness, PoliceWitnessAdmin)
 admin.site.register(ComplainingWitness, ComplainingWitnessAdmin)

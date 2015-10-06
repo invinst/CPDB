@@ -12,7 +12,9 @@ DATABASES = {
         'HOST': 'localhost',
         ***REMOVED***
         'USER': 'ubuntu',
-        'TEST_NAME': 'circle_test',
+        'TEST': {
+            'NAME': 'circle_test',
+        }
     }
 }
 
@@ -23,3 +25,5 @@ CACHES = {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
     }
 }
+
+COMPRESS_ENABLED = False

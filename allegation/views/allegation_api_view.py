@@ -7,36 +7,60 @@ from common.models import ComplainingWitness, PoliceWitness
 from common.json_serializer import JSONSerializer
 
 from allegation.views.allegation_query_filter import AllegationQueryFilter
+from allegation.services.outcome_analytics import OutcomeAnalytics
+from common.utils.http_request import get_client_ip
+from search.models import FilterLog
 
 
 class AllegationAPIView(View):
     def __init__(self, **kwargs):
         super(AllegationAPIView, self).__init__(**kwargs)
+        self.orig_query_dict = None
 
-    def get_allegations(self, ignore_filters=[]):
-        allegation_query_filters = AllegationQueryFilter(self.request, ignore_filters)
+    @property
+    def query_dict(self):
+        return self.orig_query_dict or self.request.GET
+
+    def get_allegations(self, ignore_filters=None):
+        allegation_query_filters = AllegationQueryFilter(self.query_dict, ignore_filters)
         allegations = Allegation.allegations.by_allegation_filter(allegation_query_filters)
 
         return allegations
 
+    def track_filter(self, num_allegations):
+        querystring = self.request.META['QUERY_STRING']
+        ip = get_client_ip(self.request)
+        if querystring:
+            FilterLog.objects.create(query=querystring,
+                                     session_id=self.request.session.session_key or "",
+                                     num_allegations=num_allegations,
+                                     ip=ip)
+
     def get(self, request):
         allegations = self.get_allegations()
         allegations = allegations.order_by('-incident_date', '-start_date', 'crid')
+        self.track_filter(num_allegations=len(allegations))
 
         try:
-            start = int(request.GET.get('start', 0))
+            page = int(request.GET.get('page', 0))
         except ValueError:
-            start = 0
+            page = 0
 
-        length = getattr(settings, 'ALLEGATION_LIST_ITEM_COUNT', 200)
+        length = getattr(settings, 'ALLEGATION_LIST_ITEM_COUNT', 25)
         try:
             length = int(request.GET.get('length', length))
+            if length == -1:
+                length = allegations.count();
+                page = 0
         except ValueError:
             pass
 
         allegations = allegations.select_related('cat')
 
-        display_allegations = allegations[start:start + length]
+        start = page * length
+        end = page * length + length
+
+        display_allegations = allegations[start:end]
         allegations_list = []
 
         for allegation in display_allegations:
@@ -57,6 +81,8 @@ class AllegationAPIView(View):
             if allegation.officer:
                 officers = officers.exclude(pk=allegation.officer.pk)
             officers = officers.order_by('-allegations_count')
+            beat = allegation.beat
+            beat_name = beat.name if beat else ''
 
             ret = {
                 'allegation': allegation,
@@ -65,12 +91,14 @@ class AllegationAPIView(View):
                 'officer': allegation.officer,
                 'complaining_witness': witness,
                 'police_witness': police_witness,
+                'beat_name': beat_name,
+                'investigator': allegation.investigator,
             }
             allegations_list.append(ret)
 
+        analytics = OutcomeAnalytics.get_analytics(allegations)
         content = JSONSerializer().serialize({
             'allegations': allegations_list,
-            'iTotalRecords': Allegation.objects.all().count(),
-            'iTotalDisplayRecords': allegations.count(),
+            'analytics': analytics
         })
         return HttpResponse(content)

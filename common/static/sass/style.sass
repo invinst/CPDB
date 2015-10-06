@@ -1,0 +1,1307 @@
+//colors
+$white: white
+$color_mountain_mist_approx: #989898
+$black: #000000
+$color_mine_shaft_approx: #333333
+$color_pampas_approx: #f6f6ec
+$color_ship_cove_approx: #709dc0
+$color_cadet_blue_approx: #a5b4be
+$color_deep_cerulean_approx: #0079ae
+$color_ziggurat_approx: #bed4df
+$color_storm_dust_approx: #666
+$color_celeste_approx: #cbcbcb
+$color_japanese_laurel_approx: green
+$color_coral_red_approx: #ff4647
+$color_rajah_approx: #f3b272
+$color_goldenrod_approx: #f2db6d
+$color_swamp_green_approx: #a4c683
+$color_silver_tree_approx: #62b28c
+$seashell: #f1f1f1
+$red: red
+$color_tall_poppy_approx: #c0272d
+$color_fire_bush_approx: #ed9429
+$color_golden_grass_approx: #d8b421
+$color_sushi_approx: #83b247
+$color_chateau_green_approx: #41996d
+$color_azalea_approx: #f2ced3
+$color_pattens_blue_approx: #e2f6ff
+$gray: gray
+$color_spring_wood_approx: #f7f7ed
+$color_pacific_blue_approx: #0a90cb
+$color_star_dust_approx: #9a9a9a
+$color_pippin_approx: #ffe3e7
+$blue: blue
+$wild_sand: #f4f4f4
+$color_nobel_approx: #b2b2b2
+$black_70: rgba(0, 0, 0, .7)
+
+//fonts
+$font_0: Source Sans Pro
+$font_1: serif
+$font_2: Vollkorn
+$font_3: Helvetica Neue
+$font_4: sans-serif
+$font_5: Helvetica
+
+//@extend-elements
+//original selectors
+//h1, h2, h3, .h1, .h2, .h3
+.extend_1
+  font-family: $font_2, $font_1
+
+//original selectors
+//.navbar.navbar, .navbar-default.navbar
+.extend_2
+  background: $white
+  color: $black
+
+//original selectors
+//.navbar .navbar-brand, .navbar .navbar-brand:hover, .navbar .navbar-brand:focus
+.extend_3
+  color: $white
+  font-family: $font_3, $font_4
+  font-size: 20px
+  font-weight: bold
+  font-stretch: condensed
+  padding: 0
+
+//original selectors
+//#summary-container .count, .total
+.extend_4
+  text-align: right
+  font-weight: 500
+
+//original selectors
+//#summary .category:hover, #summary .category.active
+.extend_5
+  font-weight: 700
+
+//original selectors
+//.officer.selected a.officer-link, .officer.active a.officer-link
+.extend_6
+  color: $color_mine_shaft_approx
+  text-decoration: none
+  //If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+  box-shadow: none
+
+//original selectors
+//.complaint_list .filters > span.active, .complaint_list .filters > span:hover
+.extend_7
+  border-bottom: 2px solid $black
+
+//original selectors
+//.cursor, .pointer
+.extend_8
+  cursor: pointer
+
+//original selectors
+//.vis-line, .vis-dot
+.extend_9
+  border-color: $color_deep_cerulean_approx
+
+//original selectors
+//.vis-line.end, .vis-dot.end
+.extend_10
+  border-color: $color_tall_poppy_approx
+
+//original selectors
+//.fa.not.sustained, .fa.not-sustained
+.extend_11
+  color: $color_deep_cerulean_approx
+
+//original selectors
+//.fa.other, .fa.no-affidavit
+.extend_12
+  color: $color_mountain_mist_approx
+
+//original selectors
+//.leaflet-control-layers-base label input:checked + span, .leaflet-control-layers-base label:hover input + span
+.extend_13
+  background-color: $color_deep_cerulean_approx
+  color: $white
+
+//original selectors
+//.leaflet-bar, .leaflet-control-layers
+.extend_14
+  //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
+  border-radius: 0
+
+body
+  background-color: $white
+  font-family: $font_0, $font_1
+  transition: 0.5s background-color
+  &.embedding
+    background-color: $color_cadet_blue_approx
+
+.navbar
+  min-height: 72px
+  margin-bottom: 0
+  border-bottom: 1px solid $color_mountain_mist_approx
+  &.navbar
+    @extend .extend_2
+
+  .navbar-brand
+    @extend .extend_3
+    &:hover
+      @extend .extend_3
+
+    &:focus
+      @extend .extend_3
+
+  .navbar-nav > li.site-title > a
+    color: $color_mine_shaft_approx
+
+h1
+  @extend .extend_1
+
+h2
+  @extend .extend_1
+
+h3
+  @extend .extend_1
+
+.h1
+  @extend .extend_1
+
+.h2
+  @extend .extend_1
+
+.h3
+  @extend .extend_1
+
+.page-header
+  margin-top: 20px
+
+.form-group
+  .alert
+    margin-bottom: 0
+
+  ul.errorlist
+    margin: 0
+    padding: 0
+    list-style: none
+
+.margin-top-0
+  margin-top: 0
+
+footer
+  .row
+    background-color: #172b3a
+    padding: 20px 0
+
+#map
+  width: 100%
+  height: 500px
+
+#officer-complaint-map
+  width: 100%
+  height: 200px
+
+.site-title
+  font-style: italic
+  font-size: 30px
+  font-family: $font_2, $font_1
+  margin: 10px 0 0 10px
+  width: 100%
+  input
+    border: none
+    width: 100%
+
+.map-row
+  background-color: $color_pampas_approx
+  .map-column
+    padding: 0
+
+#map-arrow-down
+  position: absolute
+  bottom: 20px
+  right: 3%
+  z-index: 1000
+  color: $white
+  width: 32px
+  height: 32px
+
+#summary-container
+  overflow: hidden
+  margin-left: 30px
+  padding-left: 0
+  margin-top: 44px
+  .category-anlytics
+    text-align: right
+    font-size: 14px
+
+  .count
+    color: $color_ship_cove_approx
+    @extend .extend_4
+
+  .total
+    color: $color_cadet_blue_approx
+
+  #summary.selected
+    margin-left: 0
+
+.fa-28px
+  font-size: 28px
+
+#summary
+  width: 150%
+  font-family: $font_0, $font_4
+  font-size: 12px
+  padding-top: 10px
+  background-color: $color_pampas_approx
+  //If you use compass, instead of the line below you could use + transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+  transition: left 1s
+  position: relative
+  left: 0
+  .child-row-wrapper
+    padding-left: 0
+
+  &.selected
+    left: -50%
+    .extra-information
+      display: none
+
+    .main-category-name-wrapper.active
+      background-color: $color_deep_cerulean_approx
+      color: $white
+      .category-name
+        color: $white
+
+  .child-rows
+    max-height: 480px
+    overflow-y: auto
+    overflow-x: hidden
+    //If you use compass, instead of the line below you could use + transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+    transition: left 1s
+    left: 100%
+    position: absolute
+    width:  calc(100% - 18px)
+    visibility: hidden
+    background: $color_pampas_approx
+    &.active
+      left: calc(1em - 5px)
+      visibility: visible
+
+    .row + .row
+      margin-top: 7px
+
+  .child-row-container
+    overflow: hidden
+    border-left: 1px solid $color_mountain_mist_approx
+    min-height: 300px
+
+  .progress
+    height: 17px
+    margin-bottom: 7px
+
+  .category
+    &:hover
+      @extend .extend_5
+
+    &.active
+      @extend .extend_5
+
+  .category-name
+    color: $color_deep_cerulean_approx
+    font-size: 14px
+    font-weight: 400
+    &:hover
+      text-decoration: none
+
+    &.active
+      font-weight: 700
+      &:focus
+        text-decoration: none
+
+  .child-active
+    background-color: $color_ziggurat_approx
+
+  .main-count
+    line-height: 25px
+
+  .discipline
+    background: $color_ship_cove_approx
+
+  .complaint
+    background: $color_cadet_blue_approx
+
+  .type
+    font-weight: 300
+    line-height: 26px
+
+  .discipline-text
+    color: $color_ship_cove_approx
+
+  .complaint-text
+    color: $color_cadet_blue_approx
+
+  a.back
+    color: $color_storm_dust_approx
+
+.total
+  @extend .extend_4
+
+.extra-information
+  margin-top: 15px
+  margin-left: 30px
+
+.width-12-percent
+  width: 12%
+  float: left
+  display: inline-block
+
+.box
+  height: 10px
+  width: 10px
+  float: left
+  margin: 5px 5px 0 0
+
+.background-light-blue
+  background: $color_ship_cove_approx
+
+.background-grey
+  background: $color_cadet_blue_approx
+
+.extra-information-text
+  font-size: 14px
+  font-weight: 400
+
+.arrow-container
+  position: absolute
+  right: -3px
+  color: $color_pampas_approx
+  top: -4px
+  border-right: solid $color_pampas_approx 1px
+  z-index: 1
+
+.summary-child-row
+  .count
+    text-align: right
+
+  .category-name-wrapper
+    margin-left: -15px
+    width: calc(83.33333333% + 15px)
+
+#officer_list
+  .officers .col-sm-2
+    padding-right: 5px
+
+.officer-vertical-scroll
+  width: 100%
+  overflow: hidden
+
+.overview-box
+  padding: 3px 0
+  opacity: .4
+
+.overview
+  height: 24px
+  background: $color_japanese_laurel_approx
+  float: left
+  transition: 1s width
+
+#overview-slider
+  width: calc(100% - 8px)
+  margin: auto
+  height: 24px
+  position: relative
+  top: -26px
+  border: none
+  background: none
+  cursor: pointer
+  &.ui-slider .ui-slider-handle
+    border: 2px solid $white
+    height: 28px
+    min-width: 16px
+    margin-left: -8px
+    top: -3px
+    background: none
+    //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
+    border-radius: 0
+    font-size: 1em
+    box-shadow: 0 0 3px $color_celeste_approx
+    transition: 0.5s left
+    cursor: move
+    cursor: -moz-grab
+    cursor: -webkit-grab
+    &.ui-state-active
+      cursor: -moz-grabbing
+      cursor: -webkit-grabbing
+
+.overview-container
+  height: 32px
+  margin-bottom: 20px
+  &.filtered .ui-slider-handle
+    min-width: 24px
+    margin-left: -12px
+
+.overview-0
+  background-color: $color_coral_red_approx
+
+.overview-1
+  background-color: $color_rajah_approx
+
+.overview-2
+  background-color: $color_goldenrod_approx
+
+.overview-3
+  background-color: $color_swamp_green_approx
+
+.overview-4
+  background-color: $color_silver_tree_approx
+
+.officers-container
+  width: 6000px
+  //If you use compass, instead of the line below you could use + transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+  transition: 0.5s left ease
+  left: 0
+  position: relative
+  &.off
+    //If you use compass, instead of the line below you could use + transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+    transition: none
+    left: 0
+
+  > div:first-child
+    margin-left: 0
+
+.officer-block
+  width: 169px
+  float: left
+  margin-left: 25px
+
+.officer-control
+  background-color: $color_mountain_mist_approx
+  width: 46px
+  height: 66px
+  position: absolute
+  font-size: 64px
+  text-align: center
+  color: $white
+  line-height: 0
+  top: 72px
+  cursor: pointer
+  &.off
+    display: none
+
+  &:hover
+    opacity: .6
+
+.officer-control-left
+  left: -43px
+
+.officer-control-right
+  right: -43px
+
+.officer
+  background-color: $seashell
+  border: none
+  //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
+  border-radius: 0
+  border-top: 5px solid $red
+  font-size: 12px
+  position: relative
+  color: $color_mountain_mist_approx
+  margin-bottom: 24px
+  font-family: $font_0, $font_4
+  margin-bottom: 20px
+  //If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+  box-shadow: 3px 3px 3px $color_celeste_approx
+  max-height: 93px
+  overflow: hidden
+
+    background-color: #0079AE
+    color: white
+  &.has-intersection
+    &:hover, &.selected
+      background-color: #0079AE
+      color: white
+      .officer_name
+        color: white
+      .intersection
+        display: block
+        padding: 2px 10px 10px 15px
+        color: white
+        font-size: 14px
+        font-weight: bold
+      .non-intersection
+        visibility: hidden
+        height: 28px
+        overflow: hidden
+
+  .intersection
+    display: none
+
+  &:hover
+    //If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+    box-shadow: 7px 7px 7px $color_celeste_approx
+
+  &.selected
+    a.officer-link
+      @extend .extend_6
+
+    > .checkmark, .checkmark.justChange:hover
+      background-color: $color_ship_cove_approx
+    > .checkmark:hover
+      background-color: $color_celeste_approx
+  &.avg-0
+    border-top-color: $color_tall_poppy_approx
+
+  &.avg-1
+    border-top-color: $color_fire_bush_approx
+
+  &.avg-2
+    border-top-color: $color_golden_grass_approx
+
+  &.avg-3
+    border-top-color: $color_sushi_approx
+
+  &.avg-4
+    border-top-color: $color_chateau_green_approx
+
+  .complaint-discipline-row
+    padding: 2px 10px 10px 15px
+    margin-bottom: 10px
+
+  a.officer-link
+    color: $color_mountain_mist_approx
+
+  &.active a.officer-link
+    @extend .extend_6
+
+  > .checkmark
+    position: absolute
+    padding: 4px 6px 3px
+    right: 0
+    bottom: 0
+    background-color: $color_celeste_approx
+    color: $white
+
+    &.justChange, &.justChange:hover
+      background: $color_celeste_approx
+    &:hover
+      background-color: $color_ship_cove_approx
+
+  .officer_name + .row
+    padding-left: 10px
+    padding-right: 10px
+    padding-bottom: 25px
+
+.no-box-shadow
+  //If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+  box-shadow: none !important
+
+.officer_name
+  text-transform: capitalize
+  font-size: 16px
+  font-style: italic
+  font-family: $font_2
+  overflow: hidden
+  text-overflow: ellipsis
+  width: 100%
+  white-space: nowrap
+  padding: 10px 10px 0 15px
+
+@media only screen and (max-width: 1024px)
+  .officer-control
+    display: none
+
+@media only screen and (max-width: 320px)
+  .officers-container
+    width: 600%
+
+  .officer-block
+    width: 16.666666%
+    margin: 0
+
+  .officer-control
+    display: none
+
+  .officer
+    padding: 2px
+    padding-bottom: 11px
+
+.complaint_list
+  margin-top: 2em
+  .filters
+    margin-left: -14px
+  .filters > span
+    display: inline-block
+    padding: 5px 0
+    border-bottom: 2px solid transparent
+    margin: 0 14px
+    cursor: pointer
+    &.active
+      @extend .extend_7
+
+    &:hover
+      @extend .extend_7
+
+    i
+      margin-right: 5px
+      display: inline-block
+      font-size: 0.7em
+
+.complaint-row-outcome
+  font-size: 2em
+  margin-top: 0.3em
+
+.complaint-row
+  padding: 5px 0 0
+  border-bottom: 1px solid black
+  font-family: $font_2
+  clear: both
+  &.disciplined
+    background: $color_pippin_approx
+    &:hover
+      background-color: $color_azalea_approx
+
+    .fa.fa-chevron-right
+      color: $color_tall_poppy_approx
+
+  &:hover
+    background-color: $color_pattens_blue_approx
+
+  .title
+    color: $gray
+    font-size: 12px
+    font-family: $font_0
+
+  .show_more
+    font-size: 34px
+
+  > .row:first-child
+    font-size: 16px
+
+  .btn:hover
+    opacity: .6
+
+.timeline-title
+  color: $color_mountain_mist_approx
+  font-size: 12px
+
+.timeline-date
+  color: $black
+  font-size: 14px
+  &.start
+    color: $color_ship_cove_approx
+
+  &.end
+    color: $color_tall_poppy_approx
+    font-size: 17px
+
+.witness
+  margin-bottom: 24px
+
+.results
+  background-color: $white
+  padding: 20px
+  border: 1px solid $color_celeste_approx
+
+.investigation
+  font-family: $font_0, $font_4
+  .results
+    width: 80%
+    float: left
+
+  .legend
+    float: left
+    width: 40%
+    padding-left: 10px
+
+  .investigator-name
+    color: $color_ship_cove_approx
+    font-family: $font_2, $font_1
+
+.legend
+  font-size: 14px
+  color: $color_mountain_mist_approx
+
+.line
+  display: inline-block
+  width: 20px
+  height: 3px
+  margin-right: 5px
+  &.blue
+    background-color: $color_ship_cove_approx
+
+  &.red
+    background-color: $color_tall_poppy_approx
+
+.complaint_detail
+  background-color: $color_spring_wood_approx
+  .summary
+    border-bottom: 1px solid $color_mine_shaft_approx
+    padding: 20px 0
+    .col
+      float: left
+      padding: 0 15px
+      + .col
+        border-left: 1px solid $color_mine_shaft_approx
+
+  .uppercase
+    font-weight: bold
+    font-size: 18px
+    font-family: $font_0, $font_1
+
+  .allegation-name
+    color: $color_mountain_mist_approx
+    font-style: italic
+
+  > div > .row
+    margin-bottom: 10px
+    + .row
+      margin-top: 36px
+
+  .row.margin-top
+    margin-top: 20px
+
+.address
+  background-color: $white
+  padding: 15px
+
+.section-title
+  font-family: $font_0, $font_4
+  font-size: 16px
+  color: $color_mine_shaft_approx
+  font-weight: 700
+
+.btn
+  &.btn-view
+    &:not(.btn-link):not(.btn-flat)
+      background-color: $color_deep_cerulean_approx
+      color: $white
+      font-family: $font_0
+      text-transform: none
+      border: 1px solid $color_pacific_blue_approx
+      width: 151px
+      font-size: 16px
+      padding: 5px 10px
+
+    &:hover:not(.btn-link):not(.btn-flat)
+      background-color: $color_pacific_blue_approx
+      color: $white
+
+  &.btn-request:not(.btn-link):not(.btn-flat)
+    background-color: $white
+    color: $color_pacific_blue_approx
+    font-family: $font_0
+    text-transform: none
+    border: 1px solid $color_pacific_blue_approx
+    width: 151px
+    max-width: 151px
+    font-size: 16px
+    padding: 5px 10px
+
+@media screen and (max-width: 1024px)
+  .btn.btn-request:not(.btn-link):not(.btn-flat)
+    width: 100%
+    max-width: 100%
+
+#filter-row
+  min-height: 50px
+
+.margin-top
+  margin-top: 1em
+
+.cursor
+  @extend .extend_8
+
+.pointer
+  @extend .extend_8
+
+.vis-item
+  background-color: transparent
+  border-width: 0
+  &.vis-box
+    border: none
+
+.vis-line
+  @extend .extend_9
+  &.end
+    @extend .extend_10
+
+.vis-dot
+  @extend .extend_9
+  &.end
+    @extend .extend_10
+
+.leaflet-container
+  font-family: $font_0, $font_1
+  .marker-cluster-large
+    //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
+    border-radius: 30px
+
+  .marker-cluster-small
+    //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
+    border-radius: 10px
+
+  .leaflet-control-attribution
+    display: none
+
+.fa
+  &.open-investigation
+    color: $color_golden_grass_approx
+
+  &.sustained
+    color: $color_golden_grass_approx
+
+  &.not-sustained
+    @extend .extend_11
+
+  &.unfounded
+    color: $color_mine_shaft_approx
+
+  &.disciplined
+    color: $color_tall_poppy_approx
+
+  &.exonerated
+    color: $color_silver_tree_approx
+
+  &.other
+    @extend .extend_12
+
+  &.no-affidavit
+    @extend .extend_12
+
+  &.not.sustained
+    @extend .extend_11
+
+.btn-download
+  width: 151px
+  padding: 8px 0
+
+.btn-full-width
+  display: inline-block
+  width: 100%
+
+.padding-left
+  padding-left: 5px
+
+.leaflet-control-layers
+  @extend .extend_14
+  label
+    display: inline-block
+    padding: 2px 5px
+    cursor: pointer
+    &.active
+      color: $blue
+
+    input
+      display: none
+
+    &:not(:last)
+      border-right: 1px solid $color_mountain_mist_approx
+
+  &.leaflet-control-layers-expanded
+    clear: none
+    float: left
+
+.leaflet-control-layers-expanded
+  border: 0
+  padding: 0
+
+.leaflet-control-layers-base
+  float: left
+  label
+    display: block
+    width: 150px
+    padding: 5px
+    margin: 0
+    font-weight: 400
+    span
+      display: block
+      padding: 2px
+      padding-left: 15px
+      color: $color_deep_cerulean_approx
+
+    input:checked + span
+      @extend .extend_13
+
+    &:hover input + span
+      @extend .extend_13
+
+.leaflet-control-layers-separator
+  display: none
+
+.leaflet-control-layers-overlays
+  float: right
+
+.tright
+  text-align: right
+
+.fourty
+  width: 40%
+  float: left
+
+.sixty
+  width: 60%
+  float: left
+
+.thirty-five
+  width: 35%
+  float: left
+
+.absolute
+  position: absolute
+
+.relative
+  position: relative
+
+.top-left
+  top: 0
+  left: 0
+
+.leaflet-control-command
+  border-top: 2px solid $black
+  clear: none
+  &.leaflet-control
+    float: left
+
+.leaflet-control-command-interior
+  padding: 10px
+  width: 150px
+  min-height: 40px
+  background-color: $white
+  display: none
+  font-size: 18px
+  font-family: $font_2
+  border-top: 3px solid $color_mine_shaft_approx
+  &:hover
+    background-color: $wild_sand
+
+.leaflet-bar
+  @extend .extend_14
+
+.leaflet-control
+  font-size: 14px
+  border: 1px solid $color_nobel_approx
+  //If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+  box-shadow: 1px
+
+.uppercase
+  text-transform: uppercase
+
+.tcenter
+  text-align: center
+
+.fade
+  opacity: 1
+  //If you use compass, instead of the line below you could use + transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+  transition: opacity 0.5s ease-in-out
+
+.slide-down
+  overflow-y: hidden
+  //If you use compass, instead of the line below you could use + transition-property($property-1, $property-2, $property-3, $property-4, $property-5, $property-6, $property-7, $property-8, $property-9, $property-10)
+  transition-property: all
+  //If you use compass, instead of the line below you could use + transition-duration($duration-1, $duration-2, $duration-3, $duration-4, $duration-5, $duration-6, $duration-7, $duration-8, $duration-9, $duration-10)
+  transition-duration: 0.4s
+  //If you use compass, instead of the line below you could use + transition-timing-function($function-1, $function-2, $function-3, $function-4, $function-5, $function-6, $function-7, $function-8, $function-9, $function-10)
+  transition-timing-function: cubic-bezier(0, 1, 0.5, 1)
+  max-height: 10000px
+  opacity: 1
+  &.closed
+    max-height: 0
+    opacity: 0
+
+#disclaimer
+  font-family: $font_5, $font_4
+  //If you use compass, instead of the line below you could use + transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+  transition: all ease-in-out 1s
+  opacity: 1
+  .modal-backdrop
+    background: $black_70
+    &.in
+      opacity: .9
+
+  .modal-content
+    padding: 10px 0 30px 30px
+
+  .modal-footer
+    text-align: left
+    padding: 0 0 20px 25px
+
+  p
+    font-size: 16px
+
+.back-to-top
+  margin-top: 10px
+
+.rackspace-logo
+  height: 20px
+
+.btn-close
+  &:not(.btn-link):not(.btn-flat)
+    background-color: $color_celeste_approx
+    text-transform: none
+    color: $white
+    font-size: 16px
+    font-family: $font_0, $font_4
+    padding: 8px 20px
+
+  &:hover:not(.btn-link):not(.btn-flat)
+    color: $color_mine_shaft_approx
+
+.button-list
+  border-top: 1px solid $color_mine_shaft_approx
+  margin-top: 36px
+  .btn
+    margin-left: 0
+    + .btn
+      margin-left: 20px
+
+.loading-animation
+  background-color: $color_ship_cove_approx
+  position: fixed
+  top: 0
+  left: 0
+  height: 5px
+  //If you use compass, instead of the line below you could use + transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+  transition: all 1s
+
+.race-gender
+  font-family: $font_0, $font_4
+  font-size: 12px
+  color: $color_mountain_mist_approx
+  padding: 2px 15px 0
+  line-height: 1.1em
+  min-height: 15px
+
+.officer-disciplines
+  margin-left: -10px
+
+.vertical-line
+  border-left: solid 1px $color_mountain_mist_approx
+  height: 25px
+  float: left
+  margin-left: -6px
+  margin-top: 5px
+
+.download-wrapper
+  .progress
+    width: 151px
+    height: 20px
+    margin: 0
+
+  .progress-bar
+    width: 100%
+    font-size: 16px
+    padding: 0 10px
+    font-family: $font_0, $font_4
+
+.chart-row
+  padding-left: 0
+  .nav-tabs
+    background-color: $seashell !important
+    > li
+      padding-top: 4px
+      border-top: 0 solid $seashell !important
+      border-right: 1px solid $color_celeste_approx !important
+      border-bottom: 1px solid $color_celeste_approx !important
+      width: 25%
+      &.active
+        padding-top: 0
+        border-top: 4px solid $color_deep_cerulean_approx !important
+        border-right: 0 !important
+        border-bottom: 1px solid $color_pampas_approx !important
+        > a
+          background-color: $color_pampas_approx !important
+          color: $color_mine_shaft_approx !important
+          border-right: 1px solid $color_celeste_approx !important
+
+      > a
+        //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
+        border-radius: 0 !important
+        background-color: $seashell !important
+        color: $color_deep_cerulean_approx !important
+
+#sunburst-legend
+  color: $color_mine_shaft_approx
+  padding-top: 44px
+  padding-left: 30px
+  table
+    width: 100%
+    td
+      padding-right: 10px
+      padding-bottom: 5px
+      vertical-align: top
+      &.size
+        text-align: right
+        width: 50px
+
+      &.color
+        width: 20px
+
+  .percent
+    min-height: 3em
+
+  .root
+    font-family: $font_0, $font_4
+    font-size: 18px
+    font-weight: 600
+    text-transform: uppercase
+
+.sunburst-breadcrumb
+  list-style: none
+  margin: 0px 30px 0 0
+  padding: 10px 0px 10px 30px
+  border-bottom: 1px solid $color_celeste_approx
+  > li
+    display: inline-block
+    margin-right: 17px
+    &:after
+      content: "\25B6"
+      position: relative
+      bottom: 13px
+      font-family: $font_4
+      font-size: 12px
+      color: $color_mountain_mist_approx
+      right: -8px
+    &:last-child:after
+      display: none
+
+.sunburst-legend
+  cursor: pointer
+
+  &.active
+    font-weight: 700
+
+  .name
+    color: $color_deep_cerulean_approx
+
+  .list
+    margin-top: 30px
+
+#sunburst-chart
+  overflow: hidden
+  svg
+    position: relative
+
+  path
+    stroke: $color_pampas_approx
+    fill-rule: evenodd
+    cursor: pointer
+
+#loading
+  margin-top: 20px
+
+.center
+  text-align: center
+
+a:hover
+  opacity: 0.3
+
+button a:hover
+  text-decoration: none
+
+.navbar-default.navbar
+  @extend .extend_2
+
+ul.nav.navbar-nav
+  width: 45%
+
+.progress-bar.discipline
+  background-color: $color_tall_poppy_approx
+
+.progress.complaint
+  background-color: $color_ship_cove_approx
+
+strong.red
+  color: $color_tall_poppy_approx
+
+.location .address
+  position: absolute
+  top: 50px
+  left: 50px
+
+.filter_links a
+  margin-right: 1.5em
+  color: $color_star_dust_approx
+  &.active
+    color: $black
+    border-bottom: 2px solid $black
+
+.vis-panel.vis-center
+  border-color: $color_deep_cerulean_approx
+
+canvas.leaflet-heatmap-layer
+  z-index: -1
+
+.leaflet-control-zoom > a:hover
+  opacity: .3
+
+form.navbar-form.navbar-right
+  width: 50%
+
+.bootstrap-tagsinput > .tag
+  opacity: 0
+  //If you use compass, instead of the line below you could use + transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+  transition: all ease-in-out 0.5s
+  &.fadeIn
+    //If you use compass, instead of the line below you could use + transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+    transition: all ease-in-out 0.5s
+    opacity: 1
+
+#request_modal .modal-dialog
+  width: 700px
+
+@media(max-width: 1024px)
+  .container.content
+    width: 100%
+
+@media(min-width: 1200px)
+  .container
+    width: 1230px
+
+#EmbedBar
+  margin-top: 15px
+  background-color: $color_cadet_blue_approx
+  color: $white
+  a
+    color: $white
+
+  .active
+    background-color: $color_deep_cerulean_approx
+
+  .row > div
+    padding: 20px 10px
+
+.embed-code
+  background-color: $white
+  padding: 10px
+  border-bottom: 1px solid $color_cadet_blue_approx
+  .fa
+    color: $color_deep_cerulean_approx
+    font-size: 25px
+
+  input
+    width: calc(100% - 35px)
+    border: none
+    padding: 0
+    margin-left: 5px
+
+
+.embed
+  .tooltip
+    left: -47px
+    width: 115px
+    position: absolute
+    top: 17px
+    display: none
+    &.bottom .tooltip-arrow
+      display: block
+
+
+  &.zeroclipboard-is-hover .tooltip
+    display: block
+
+
+.container.content
+  background-color: $white
+  padding-bottom: 20px
+  margin-top: 28px
+
+.checkmark.embed
+  background-color: $color_ship_cove_approx
+  color: $white
+  &:hover
+    background-color: $color_pacific_blue_approx

@@ -11,15 +11,13 @@
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
-var MapConstants = require('../constants/MapConstants');
+var AppConstants = require('../constants/AppConstants');
 var assign = require('object-assign');
 var FilterStore = require('./FilterStore');
-var AppConstants = require("../constants/AppConstants");
 var CHANGE_EVENT = 'change';
 var SUMMARY_CHANGE = 'summary-change';
-var SET_ACTIVE_OFFICER = 'set-active-officer';
 var _state = {};
-
+var ajax = null;
 
 var GRAPH_ELEM_SEL = '#complained-officers .graph';
 
@@ -129,8 +127,11 @@ var DistributionChartStore = assign({}, EventEmitter.prototype, {
     if (!('element' in _state)) {
       return;
     }
+    if (ajax) {
+      ajax.abort();
+    }
     var queryString = FilterStore.getQueryString();
-    $.get('/officer/count/?by=num_complaints&' + queryString, function (data) {
+    ajax = $.get('/officer/count/?by=num_complaints&' + queryString, function (data) {
       drawChart(data);
     });
   },
@@ -152,9 +153,9 @@ var DistributionChartStore = assign({}, EventEmitter.prototype, {
 // Register callback to handle all updates
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
-    case MapConstants.MAP_REPLACE_FILTERS:
-    case MapConstants.MAP_CHANGE_FILTER:
-    case MapConstants.MAP_ADD_FILTER:
+    case AppConstants.MAP_REPLACE_FILTERS:
+    case AppConstants.MAP_CHANGE_FILTER:
+    case AppConstants.MAP_ADD_FILTER:
       DistributionChartStore.update();
       break;
 

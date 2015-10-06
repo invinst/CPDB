@@ -1,26 +1,12 @@
-/**
- * Copyright (c) 2014-2015, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- */
-
-/**
- * This component operates as a "Controller-View".  It listens for changes in
- * the MapStore and passes the new data to its children.
- */
-
-
 var HOST = 'http://localhost:8000';
 var React = require('react');
-var ComplaintList = require('./ComplaintList.react');
-var OfficerDetail = require('./OfficerDetail.react');
-var Officer = require('./Officer.react');
-var Filters = require('./Filters.react');
-var FilterActions = require("../actions/FilterActions");
 
+var ComplaintSection = require('./OfficerPage/ComplaintSection.react');
+var FilterActions = require("../actions/FilterActions");
+var OfficerDetail = require('./OfficerDetail.react');
+
+var RelatedOfficers = require('./OfficerPage/RelatedOfficers.react');
+var StoryList = require('./OfficerPage/StoryList.react');
 
 var OfficerPage = React.createClass({
 
@@ -28,40 +14,9 @@ var OfficerPage = React.createClass({
     return {};
   },
 
-  componentWillMount: function () {
-    FilterActions.replaceFilters([{
-      value: ['officer', this.props.officer.id]
-    }]);
-  },
-
-  componentDidMount: function () {
-
-  },
-
-  componentWillUnmount: function () {
-  },
-
-  /**
-   * @return {object}
-   */
   render: function () {
-    var related = [];
-    var relatedOfficers = "";
-    if (this.props.related.length > 0) {
-      for(var i = 0; i <= this.props.related.length; i++) {
-        var officer = this.props.related[i];
-        related.push(
-          <div className='col-md-2' key={i}>
-            <Officer officer={officer} noClick={true} active={true} />
-          </div>)
-      }
-    }
-    if(related){
-      relatedOfficers = <div>
-        <div className='row'><h3 className='col-md-12'>Related Officers</h3></div>
-        <div className='row'>{related}</div>
-      </div>
-    }
+    var complaints = this.props.officer.allegations || [];
+    
     return (
       <div>
         <div className="map-row">
@@ -70,20 +25,14 @@ var OfficerPage = React.createClass({
           </div>
         </div>
         <div className="container">
-          {relatedOfficers}
-          <ComplaintList allegations={this.props.officer.allegations} officer={this.props.officer}/>
+          <RelatedOfficers relatedOfficers={this.props.related}/>
+          <StoryList officer={this.props.officer} />
+          <ComplaintSection officer={this.props.officer}/>
         </div>
       </div>
     );
   },
-
-  /**
-   * Event handler for 'change'  events coming from the MapStore
-   */
-  _onChange: function () {
-
-  }
-
+  
 });
 
 module.exports = OfficerPage;

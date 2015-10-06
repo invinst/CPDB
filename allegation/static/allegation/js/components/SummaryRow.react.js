@@ -5,6 +5,8 @@ var MapStore = require('../stores/MapStore');
 var FilterStore = require('../stores/FilterStore');
 var SummaryStore = require('../stores/SummaryStore');
 var SummaryActions = require('../actions/SummaryActions');
+var AppConstants = require('../constants/AppConstants');
+var numeral = require('numeral');
 
 function getSummaryRowState() {
   return {
@@ -16,7 +18,14 @@ var SummaryRow = React.createClass({
   getInitialState: function () {
     return getSummaryRowState();
   },
-  hasActiveChildren: function (filters) {
+
+  componentDidMount: function () {
+    if (this.props.category.name == this.props.summary.props.currentActive) {
+      this.onClick();
+    }
+  },
+
+  hasActiveChildren: function () {
     var filters = FilterStore.getAll();
     if ('cat' in filters) {
       var category = this.props.category;
@@ -31,10 +40,16 @@ var SummaryRow = React.createClass({
     }
     return false;
   },
+
   isActive: function (category){
+    var selectedCategories = this.props.summary.props.selectedCategories;
+    if (selectedCategories) {
+      return selectedCategories.indexOf(category.name) > -1;
+    }
     var filters = FilterStore.getAll();
     return 'cat__category' in filters && filters['cat__category'].value.indexOf(category.name) > -1
   },
+
   render: function () {
     var category = this.props.category;
     var style = {
@@ -45,26 +60,30 @@ var SummaryRow = React.createClass({
     };
     var className = "category-name";
     var parentClassName = 'row';
+    var mainCategoryClassName = 'col-md-7 main-category-name-wrapper'
     var arrow = "";
     if (this.isActive(category)) {
+
       className += " active";
     }
 
     // Currently do nothing but keep it here for later styling
     if (this.hasActiveChildren()) {
+      className += " active";
     }
 
     if (this.props.isCurrentActive) {
+      mainCategoryClassName += ' active';
       arrow = (
         <div className='arrow-container'>
-          <i className='fa fa-caret-left fa-2x'></i>
+          <i className='fa fa-caret-left fa-28px'></i>
         </div>
       )
     }
 
     return (
-      <div className="row category main-category">
-        <div className='col-md-6'>
+      <div className="row category main-category" onClickCapture={this.onClick}>
+        <div className='col-md-5'>
           <div className="progress complaint" style={progressStyle}>
             <div className="progress-bar discipline" role="progressbar" aria-valuenow="60" aria-valuemin="0"
                  aria-valuemax="100" style={style}>
@@ -72,14 +91,17 @@ var SummaryRow = React.createClass({
             </div>
           </div>
         </div>
-        <div className='col-md-6'>
+        <div className={mainCategoryClassName}>
           <div className={parentClassName}>
-            <div className='col-md-2'>
-              {category.total}
+            <div className='col-md-2 category-anlytics'>
+              <span className='count'>{numeral(category.count).format(AppConstants.NUMERAL_FORMAT)}</span>
             </div>
-            <div className='col-md-10 relative'>
+            <div className='col-md-2 category-anlytics'>
+              <span className='total'>{numeral(category.total).format(AppConstants.NUMERAL_FORMAT)}</span>
+            </div>
+            <div className='col-md-8 relative category-name-wrapper'>
               {arrow}
-              <a onClickCapture={this.onClick} href='#' className={className}>{category.name}</a>
+              <a href='#' className={className}>{category.name}</a>
             </div>
           </div>
         </div>
@@ -88,7 +110,10 @@ var SummaryRow = React.createClass({
 
   },
   onClick: function (e) {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
+
     var current = this.props.category;
 
     if (this.isActive(current)) {
@@ -97,7 +122,7 @@ var SummaryRow = React.createClass({
       $('#cpdb-search').tagsinput("add", current.tagValue);
     }
 
-    SummaryStore.setCurrentActive(current.name)
+    SummaryStore.setCurrentActive(current.name);
 
     $(".child-rows.active").removeClass('active');
     $("#child-rows-" + current.id).addClass('active');

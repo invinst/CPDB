@@ -1,7 +1,6 @@
 from django.core.management.base import BaseCommand
-from django.db.models import Count
 
-from common.models import Officer, AllegationCategory, Allegation, NO_DISCIPLINE_CODES, DISCIPLINE_CODES
+from common.models import Allegation, NO_DISCIPLINE_CODES, DISCIPLINE_CODES
 
 
 class Command(BaseCommand):

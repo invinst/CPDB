@@ -1,95 +1,90 @@
-/*
- * Copyright (c) 2014, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * MapStore
- */
-
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
-var MapConstants = require('../constants/MapConstants');
+var AppConstants = require('../constants/AppConstants');
+var ajax = null;
 var assign = require('object-assign');
-var OfficerStore = require('./OfficerStore');
-var CHANGE_EVENT = 'change';
+var _ = require('lodash');
 
 var _state = {
   'complaints': [],
-  'activeFilter': 'all'
+  'activeFilter': 'all',
+  'analytics': [],
+  'scrollLock': false,
+  'pageNumber': 1,
+  'loading': false
 };
 
-
 var ComplaintListStore = assign({}, EventEmitter.prototype, {
-  update: function () {
-    var queryString = OfficerStore.getQueryString();
-    if (!queryString) {
-      this.changeComplaintList([]);
-      return;
-    }
-    var that = this;
-    $.getJSON('/api/allegations/?' + queryString, function (data) {
-      that.changeComplaintList(data.allegations);
-    })
-  },
-  changeComplaintList: function(complaints) {
-    _state['complaints'] = complaints;
+  setAnalysisInformation: function(data) {
+    _state.analytics = data;
     this.emitChange();
-  },
-  set: function (key, value) {
-    _state[key] = value;
-    this.emitChange();
-  },
-  init: function (initial) {
-    if (!initial) {
-      this.update();
-    }
-    else {
-      _state = initial;
-    }
-    return _state;
-  },
-  getAll: function (type) {
-    return _state;
-  },
-  emitChange: function () {
-    this.emit(CHANGE_EVENT);
-  },
-  emitSummaryChange: function () {
-    this.emit(SUMMARY_CHANGE);
-  },
-  addChangeListener: function (callback) {
-    this.on(CHANGE_EVENT, callback);
-  },
-  addSummaryListener: function (callback) {
-    this.on(SUMMARY_CHANGE, callback);
   },
 
+  getActiveFilter: function() {
+    return _state['activeFilter'];
+  },
+
+  setActiveFilter: function(activeFilter) {
+    _state['activeFilter'] = activeFilter;
+  },
+
+  lockScroll: function() {
+    _state['scrollLock'] = true;
+    this.emitChange();
+  },
+
+  unlockScroll: function() {
+    _state['scrollLock'] = false;
+  },
+
+  getState: function () {
+    return _state;
+  },
+
+  addChangeListener: function (callback) {
+    this.on(AppConstants.CHANGE_EVENT, callback);
+  },
+
+  removeChangeListener: function(callback) {
+    this.removeListener(AppConstants.CHANGE_EVENT, callback);
+  },
+
+  emitChange: function () {
+    this.emit(AppConstants.CHANGE_EVENT);
+  }
 });
 
-// Register callback to handle all updates
-AppDispatcher.register(function (action) {
+
+AppDispatcher.register(function(action) {
   switch (action.actionType) {
-    case MapConstants.MAP_REPLACE_FILTERS:
-      ComplaintListStore.update();
+    case AppConstants.SET_ACTIVE_COMPLAINT_LIST_FILTER:
+      ComplaintListStore.setActiveFilter(action.filter);
+      _state['pageNumber'] = 1;
+      ComplaintListStore.emitChange();
       break;
 
-    case MapConstants.MAP_CHANGE_FILTER:
-      ComplaintListStore.update();
+    case AppConstants.RECEIVED_OUTCOME_FILTER_ANALYSIS:
+      ComplaintListStore.setAnalysisInformation(action.data['analytics']);
       break;
 
-    case MapConstants.MAP_ADD_FILTER:
-      ComplaintListStore.update();
+    case AppConstants.COMPLAINT_LIST_RECEIVED_MORE_DATA:
+      ComplaintListStore.unlockScroll();
+      _state['pageNumber']++;
+      $.merge(_state['complaints'], action.data.allegations);
+      ComplaintListStore.emitChange();
       break;
 
-    case MapConstants.SET_ACTIVE_OFFICER:
-      ComplaintListStore.update();
+    case AppConstants.COMPLAINT_LIST_GET_DATA:
+      _state['loading'] = true;
+      ComplaintListStore.emitChange();
       break;
-    case MapConstants.SET_ACTIVE_COMPLAINT_LIST_FILTER:
-      ComplaintListStore.set('activeFilter', action.filter);
+
+    case AppConstants.COMPLAINT_LIST_RECEIVED_DATA:
+      _state['complaints'] = action.data.allegations;
+      _state['loading'] = false;
+      ComplaintListStore.emitChange();
       break;
+
     default:
       break;
   }

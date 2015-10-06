@@ -1,34 +1,31 @@
-{% extends 'base.html' %}
-{% load staticfiles %}
-
-{% block head-link %}
-  <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
-    {{ block.super }}
-  <link rel="stylesheet" href="{% static 'jquery-ui/themes/base/all.css' %}" />
-  <link rel="stylesheet" href="{% static 'jquery-ui/themes/base/slider.css' %}" />
-  <link rel="stylesheet" href="{% static 'bootstrap-tagsinput/dist/bootstrap-tagsinput.css' %}" />
-  <link rel="stylesheet" href="{% static 'search/css/search.css' %}" />
-  <link rel="stylesheet" href="{% static 'allegation/css/MarkerCluster.Default.css' %}" />
-  <link rel="stylesheet" href="{% static 'allegation/css/MarkerCluster.css' %}" />
-  <link rel="stylesheet" href="{% static 'c3/c3.min.css' %}" />
-  <link rel="stylesheet" href="{% static 'graph/css/complained-officers.css' %}" />
-{% endblock %}
+{% extends 'allegation/base.html' %}
+{% load jsonify %}
 
 {% block content %}
+  {% if DJANGO_ENV != 'test' %}
+    {% include 'allegation/disclaimer.html' %}
+  {% endif %}
+
   <section id='cpdbapp'></section>
 {% endblock %}
 
 {% block footerjs %}
-  {{ block.super }}
+
   <script>
-    var INIT_DATA = {% if session %}{{ session.query|safe }}{% else %}false{% endif %};
-    var INIT_FILTERS = {filters: {% if filters %}{{ filters|safe }}{% else %}false{% endif %}};
+    var INIT_DATA = {% if session %}{{ session.query|jsonify }}{% else %}false{% endif %};
+    var INIT_FILTERS = {filters: {% if filters %}{{ filters|jsonify }}{% else %}false{% endif %}};
   </script>
-  <script src="{% static 'jquery-ui/jquery-ui.min.js' %}"></script>
-  <script src="{% static 'bootstrap-tagsinput/src/bootstrap-tagsinput.js' %}"></script>
-  <script src="{% static 'search/js/search.js' %}"></script>
-  <script src="{% static 'd3/d3.min.js' %}"></script>
-  <script src="{% static 'c3/c3.min.js' %}"></script>
-  <script src="{% static 'pluralize/pluralize.js' %}"></script>
-  <script src="{% static 'allegation/js/bundle.js' %}"></script>
+  {{ block.super }}
+    <script>
+     var MEDIA_URL = "{{ MEDIA_URL }}";
+      // We don't run this one on test env
+      {% if DJANGO_ENV != 'test' %}
+      jQuery(document).ready(function() {
+        if (!jQuery.cookie('visited')) {
+          jQuery('#disclaimer').modal('show');
+          jQuery.cookie('visited', true, { expires: 365, path: '/' });
+        }
+      });
+      {% endif %}
+    </script>
 {% endblock %}
