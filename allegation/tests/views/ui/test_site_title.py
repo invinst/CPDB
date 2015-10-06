@@ -10,7 +10,7 @@ class SiteTitleTestCase(BaseLiveTestCase):
         self.browser.title.should.equal(DEFAULT_SITE_TITLE)
 
         self.fill_in('.site-title-input', title)
-
+        self.until(self.ajax_complete)
         self.browser.title.should.equal(title)
         self.browser.current_url.should.contain(slugify_url)
 

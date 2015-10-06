@@ -22,6 +22,12 @@ module.exports = {
   ENTER_EMBED_MODE: count++,
   LEAVE_EMBED_MODE: count++,
 
+  RECEIVED_OFFICER_DATA: count++,
+
+  RECEIVED_SESSION_DATA: count++,
+  RECEIVED_UPDATED_SESSION_DATA: count++,
+  UPDATE_TITLE: count++,
+  TOGGLE_COMPLAINT: count++,
 
   AVG_COMPLAINTS_NUMBER_GREEN: 20,
   AVG_COMPLAINTS_NUMBER_YELLOW: 60,
@@ -198,5 +204,11 @@ module.exports = {
     'unitWithName': 'Unit'
   },
 
+  DEFAULT_SITE_TITLE: "Chicago Police Database",
+
+  MEDIA_URL: '/media/',
+
   MAP_MARKER_ICON_URL: 'http://data.invisible.institute/static/img/64x_map_marker.png',
+  OFFICER_PAGE_API_ENDPOINT: '/officer',
+  SESSION_API_ENDPOINT: '/api/allegations/session/'
 };

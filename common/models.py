@@ -44,12 +44,7 @@ class Officer(models.Model):
         return self.get_absolute_url()
 
     def get_absolute_url(self):
-        return reverse("officer:detail",
-                       kwargs={
-                           'first_name': slugify(self.officer_first),
-                           'last_name': slugify(self.officer_last),
-                           'pk': self.pk
-                       })
+        return reverse("officer:detail") + "?pk=%d" % self.pk
 
     def __str__(self):
         return "{first} {last}".format(
