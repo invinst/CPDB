@@ -16,5 +16,5 @@ class SiteTitleTestCase(BaseLiveTestCase):
 
         # Revisit current url should not change the title
         self.browser.refresh()
-        self.browser.title.should.equal(title)
+        self.until(lambda: self.browser.title.should.equal(title))
         self.find('.site-title-input').get_attribute('value').should.equal(title)
