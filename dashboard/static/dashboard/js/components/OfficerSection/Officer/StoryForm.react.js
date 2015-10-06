@@ -50,7 +50,6 @@ var StoryForm = React.createClass(_.assign(Base(StoryFormStore), {
   },
 
   onEditorUpdate: function (field, text) {
-    console.log(text);
     StoryFormActions.updateField(field, text);
   },
 
