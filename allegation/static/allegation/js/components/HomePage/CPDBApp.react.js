@@ -12,6 +12,8 @@ var SessionAPI = require('utils/SessionAPI');
 var SessionStore = require('stores/SessionStore');
 var SiteTitle = require('components/HomePage/SiteTitle.react');
 var Tabs = require('components/HomePage/Tabs.react');
+var Footer = require('components/HomePage/Footer.react');
+var Disclaimer = require('components/HomePage/Disclaimer.react');
 
 
 var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
@@ -82,6 +84,10 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
             </div>
           </div>
         </div>
+        <div className='container-fluid'>
+          <Footer />
+        </div>
+        <Disclaimer />
       </div>
     );
   }
