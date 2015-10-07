@@ -6,10 +6,10 @@ var Timeline = React.createClass({
   getInitialState: function () {
     return {}
   },
-  componentDidMount: function () {
-    var officer = this.props.officer;
-    var container = this.getDOMNode();
 
+  getTimelineData: function(officer) {
+    var container = this.getDOMNode();
+    $(container).html("<i class='fa fa-spin fa-spinner'/>");
     $.getJSON('/officer/timeline/', {'officer': officer.id}, function (data) {
       var timeLineItems = [];
 
@@ -74,8 +74,19 @@ var Timeline = React.createClass({
       // Configuration for the Timeline
       var options = {'moveable': false, 'zoomable': false, height: '260px'};
 
+      $(container).html("");
       new vis.Timeline(container, timeLineItems, options);
     });
+  },
+
+  componentWillReceiveProps: function(newProps) {
+    var officer = newProps.officer;
+    this.getTimelineData(officer);
+  },
+
+  componentDidMount: function () {
+    var officer = this.props.officer;
+    this.getTimelineData(officer);
   },
   render: function () {
     return <div></div>

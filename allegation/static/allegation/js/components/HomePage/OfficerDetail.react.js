@@ -13,6 +13,7 @@ var OfficerDetail = React.createClass({
   getInitialState: function () {
     return {}
   },
+
   componentDidMount: function () {
   },
 
