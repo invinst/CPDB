@@ -28,11 +28,14 @@ class OfficerDetailPageTestCase(BaseLiveTestCase):
         unit_name = units[self.unit]
         self.go_to_officer_detail_page(self.officer)
         self.until(self.ajax_complete)
-        self.should_see_text(self.unit)
-        self.should_see_text(unit_name)
-        self.should_see_text(self.star)
-        self.should_see_text('Sergeant')
-        self.should_see_text('Male')
+
+        self.until(lambda: self.should_see_text(self.unit))
+
+        content = self.find("body").text
+        content.should.contain(unit_name)
+        content.should.contain(self.star)
+        content.should.contain('Sergeant')
+        content.should.contain('Male')
 
     def test_filter_by_intersected_officer(self):
         self.go_to_officer_detail_page(self.officer)
