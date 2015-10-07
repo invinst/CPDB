@@ -289,6 +289,7 @@ var Sunburst = React.createClass({
     }
 
     SunburstStore.init(this.props.query);
+    this.drawChart();
   },
 
   _onChange: function () {
