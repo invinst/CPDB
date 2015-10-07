@@ -8,6 +8,7 @@
  *
  * MapStore
  */
+var L = require("leaflet");
 var LeafletClusters = require("leaflet.markercluster");
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;

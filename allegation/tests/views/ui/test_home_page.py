@@ -8,6 +8,10 @@ class HomePageTestCase(BaseLiveTestCase):
         self.allegation_category = AllegationCategoryFactory()
         self.allegation = AllegationFactory(cat=self.allegation_category)
 
+    def tearDown(self):
+        super(HomePageTestCase, self).tearDown()
+        self.allegation_category.delete()
+
     def test_see_tabs(self):
         self.visit('/')
         links = self.find_all('.chart-row .nav a')

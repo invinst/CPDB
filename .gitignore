@@ -74,3 +74,4 @@ allegation/static/allegation/js/bundle.js
 /keys/
 dump.rdb
 allegation/static/admin/js/bundle.min.js
+dashboard/static/dashboard/js/.bundle.js

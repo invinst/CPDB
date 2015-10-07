@@ -187,7 +187,7 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
             time.sleep(interval)
             if time.time() > end_time:
                 break
-        raise TimeoutException(message)
+        raise TimeoutException(message) from error
 
     def is_displayed_in_viewport(self, element):
         """
@@ -205,6 +205,9 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
 
     def ajax_complete(self):
         return 0 == self.browser.execute_script("return jQuery.active")
+
+    def until_ajax_complete(self):
+        self.until(self.ajax_complete)
 
 
 class SimpleTestCase(DjangoSimpleTestCase, UserTestBaseMixin):

@@ -1,48 +1,29 @@
-/*
- * Copyright (c) 2014, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * MapStore
- */
+var _ = require('lodash');
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
-var EventEmitter = require('events').EventEmitter;
 var AppConstants = require('../constants/AppConstants');
-var assign = require('object-assign');
+var Base = require('stores/Base');
+var FilterStore = require('../stores/FilterStore');
 var MapStore = require('../stores/MapStore');
 var OfficerListStore = require('../stores/OfficerListStore');
-var FilterStore = require('../stores/FilterStore')
 
-var _sessionData = {};
+var _state = {
+  'data': {
+    'new': true,
+    'title': '',
+    'hash': '',
+    'query': {}
+  }
+};
 
-var SessionStore = assign({}, EventEmitter.prototype, {
-  saveSession: function (sessionData) {
-    if (!SAVE_STATE) {
-      return;
-    }
+var SessionStore = _.assign(Base(_state), {
+  updateSession: function(data) {
+    _state['data'] =_.assign(_state['data'], data);
+    this.emitChange();
+  },
 
-    var tempSessionData = sessionData || {};
-    $.extend(tempSessionData, FilterStore.getSession());
-    $.extend(tempSessionData, MapStore.getSession());
-    $.extend(tempSessionData, OfficerListStore.getSession());
-
-    if (! _.isEqual(tempSessionData, _sessionData)) {
-      _sessionData = _.clone(tempSessionData);
-    }
-    $.ajax({
-      url: HOME_URL,
-      data: JSON.stringify(_sessionData),
-      success: function (returnData) {
-      },
-      contentType: "application/json; charset=utf-8",
-      dataType: 'json',
-      type: 'POST',
-      weight: 0.1
-    });
+  getHash: function() {
+    return _state['data']['hash'];
   }
 });
 
@@ -50,9 +31,29 @@ var SessionStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.SAVE_SESSION:
-      SessionStore.saveSession();
+    // SessionStore.updateSession(action.data);
+    SessionStore.emitChange();
       break;
 
+  case AppConstants.RECEIVED_SESSION_DATA:
+    var data = action.data.data;
+    data['title'] = data['title'] || AppConstants.DEFAULT_SITE_TITLE;
+    _state['data'] = data;
+    SessionStore.emitChange();
+    break;
+
+    case AppConstants.UPDATE_TITLE:
+      var title = action.title;
+      _state['data']['title'] = title;
+      SessionStore.emitChange();
+      break;
+
+    case AppConstants.RECEIVED_UPDATED_SESSION_DATA:
+      _state['data'] = action.data.data;
+      SessionStore.emitChange();
+      break;
+
+    default: break;
   }
 });
 

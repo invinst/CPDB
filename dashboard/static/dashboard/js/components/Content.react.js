@@ -4,6 +4,7 @@ var RouterMixin = require('react-mini-router').RouterMixin;
 var OverviewSection = require('./OverviewSection.react');
 var OfficerSection = require('./OfficerSection.react');
 var SearchSection = require('./SearchSection.react');
+var DocumentSection = require('./DocumentSection.react');
 
 var ContentStore = require("../stores/ContentStore.js");
 
@@ -15,6 +16,7 @@ var Content = React.createClass({
     '/' : 'overviewSection',
     '/search': 'searchSection',
     '/officer': 'officerSection',
+    '/document': 'documentSection',
   },
 
   overviewSection: function() {
@@ -25,8 +27,12 @@ var Content = React.createClass({
     return <SearchSection />;
   },
 
-  officerSection: function() {
-    return <OfficerSection />;
+  officerSection: function(params) {
+    return <OfficerSection params={params} />;
+  },
+
+  documentSection: function (params) {
+    return <DocumentSection params={params} />;
   },
 
   getInitialState: function() {

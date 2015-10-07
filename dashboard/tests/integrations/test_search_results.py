@@ -58,7 +58,7 @@ class SearchResultTestCase(BaseLiveTestCase):
         log1 = SuggestionLogFactory(num_suggestions=1)
         self.go_to_search_result()
         self.element_by_tagname_and_text('li', "Fail attempts").click()
-        self.should_see_text(log.query)
+        self.until(lambda: self.should_see_text(log.query))
         self.should_not_see_text(log1.query)
 
     def test_filter_alias(self):
@@ -66,7 +66,7 @@ class SearchResultTestCase(BaseLiveTestCase):
         alias = AliasFactory()
         self.go_to_search_result()
         self.element_by_tagname_and_text('li', "Alias").click()
-        self.should_see_text(alias.alias)
+        self.until(lambda: self.should_see_text(alias.alias))
         self.should_not_see_text(log.query)
 
     def test_add_alias_from_query(self):

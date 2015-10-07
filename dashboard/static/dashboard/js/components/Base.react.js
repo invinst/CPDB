@@ -1,5 +1,12 @@
+var _ = require('lodash');
+
 var Base = function(Store) {
   return {
+    init: function (params) {
+      _.extend(_state, params);
+      return this.getState();
+    },
+
     getInitialState: function() {
       return Store.getState();
     },

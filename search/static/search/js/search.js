@@ -115,4 +115,3 @@ function cpdbAutocomplete($input) {
   });
 }
 
-cpdbAutocomplete($("#autocomplete"));

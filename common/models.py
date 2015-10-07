@@ -27,29 +27,24 @@ RANKS = [
 
 
 class Officer(models.Model):
-    officer_first = models.CharField(max_length=255, null=True, db_index=True)
-    officer_last = models.CharField(max_length=255, null=True, db_index=True)
-    gender = models.CharField(max_length=1, null=True)
-    race = models.CharField(max_length=50, null=True)
-    appt_date = models.DateField(null=True)
-    unit = models.CharField(max_length=5, null=True)
-    rank = models.CharField(max_length=5, null=True)
-    star = models.FloatField(null=True)
-    allegations_count = models.IntegerField(default=0)
-    discipline_count = models.IntegerField(default=0)
-    birth_year = models.IntegerField(default=0)
+    officer_first = models.CharField(max_length=255, null=True, db_index=True, blank=True)
+    officer_last = models.CharField(max_length=255, null=True, db_index=True, blank=True)
+    gender = models.CharField(max_length=1, null=True, blank=True)
+    race = models.CharField(max_length=50, null=True, blank=True)
+    appt_date = models.DateField(null=True, blank=True)
+    unit = models.CharField(max_length=5, null=True, blank=True)
+    rank = models.CharField(max_length=5, null=True, blank=True)
+    star = models.FloatField(null=True, blank=True)
+    allegations_count = models.IntegerField(default=0, blank=True)
+    discipline_count = models.IntegerField(default=0, blank=True)
+    birth_year = models.IntegerField(default=0, blank=True)
 
     @property
     def absolute_url(self):
         return self.get_absolute_url()
 
     def get_absolute_url(self):
-        return reverse("officer:detail",
-                       kwargs={
-                           'first_name': slugify(self.officer_first),
-                           'last_name': slugify(self.officer_last),
-                           'pk': self.pk
-                       })
+        return reverse("officer:detail") + "?pk=%d" % self.pk
 
     def __str__(self):
         return "{first} {last}".format(
@@ -357,6 +352,7 @@ class Allegation(models.Model):
     document_normalized_title = models.CharField(max_length=255, null=True)
     document_title = models.CharField(max_length=255, null=True)
     document_requested = models.BooleanField(default=False)
+    number_of_request = models.IntegerField(default=0)
 
     @property
     def beat(self):

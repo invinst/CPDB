@@ -1,13 +1,14 @@
 import random
+import factory
+import datetime
 
 from django.contrib.gis.geos import MultiPolygon, Polygon
-from django.utils import timezone
-import factory
+
 from faker import Faker
 
 from allegation.models import Download
 from common.models import AllegationCategory, Officer, Area, Allegation, Investigator, ComplainingWitness, RACES, \
-    OUTCOMES, PoliceWitness
+    OUTCOMES, PoliceWitness, GENDER_DICT, RACES_DICT
 
 fake = Faker()
 
@@ -20,9 +21,11 @@ class AreaFactory(factory.django.DjangoModelFactory):
     type = factory.Sequence(lambda n: 'school-grounds')
     polygon = factory.Sequence(lambda n: MultiPolygon(Polygon(((0, 0), (0, 1), (1, 1), (0, 0)))))
 
+
 class PoliceWitnessFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = PoliceWitness
+
 
 class OfficerFactory(factory.django.DjangoModelFactory):
     class Meta:
@@ -32,6 +35,8 @@ class OfficerFactory(factory.django.DjangoModelFactory):
     officer_first = factory.Sequence(lambda n: fake.first_name())
     officer_last = factory.Sequence(lambda n: fake.last_name())
     star = factory.Sequence(lambda n: n)
+    gender = factory.Sequence(lambda n: random.choice(list(GENDER_DICT.keys())))
+    race = factory.Sequence(lambda n: random.choice(list(RACES_DICT.keys())))
 
 
 class InvestigatorFactory(factory.django.DjangoModelFactory):
@@ -66,11 +71,12 @@ class AllegationFactory(factory.django.DjangoModelFactory):
     crid = factory.Sequence(lambda n: fake.random_int(min=1000))
     cat = factory.SubFactory(AllegationCategoryFactory)
     final_outcome = factory.Sequence(lambda n: fake.random_element(x[0] for x in OUTCOMES))
-    incident_date = factory.Sequence(lambda n: timezone.now())
-    incident_date_only = factory.LazyAttribute(lambda o: o.incident_date.date())
+    incident_date = factory.Sequence(lambda n: datetime.date(random.randint(2000, 2015), random.randint(1, 12), random.randint(1, 28)))
+    incident_date_only = factory.LazyAttribute(lambda o: o.incident_date)
     investigator = factory.SubFactory(InvestigatorFactory)
     officer = factory.SubFactory(OfficerFactory)
     point = None
+    document_requested = False
 
     @factory.post_generation
     def areas(self, create, extracted, **kwargs):
