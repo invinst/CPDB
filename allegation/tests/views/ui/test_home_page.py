@@ -127,4 +127,14 @@ class HomePageTestCase(BaseLiveTestCase):
         officers_divs[1].has_class('col-md-4').should.be.true
 
     def test_complaint_detail_without_investigator(self):
-        pass
+        self.allegation.investigator = None
+        self.allegation.save()
+
+        self.visit('/')
+        self.link('Categories').click()
+        self.find('.category-name').click()
+        self.find('.complaint-row .cursor').click()
+        officers_divs = self.find_all('.officers > div')
+
+        len(officers_divs).should.equal(1)
+        officers_divs[0].has_class('col-md-10')
