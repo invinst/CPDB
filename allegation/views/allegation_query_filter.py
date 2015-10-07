@@ -50,7 +50,6 @@ class AllegationQueryFilter(object):
             if text == 'unsustained':
                 value += ['DS', 'EX', 'NA', 'NC', 'NS', 'UN']
 
-
         if len(value) > 1:
             self.filters["%s__in" % field] = value
 
