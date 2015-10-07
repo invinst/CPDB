@@ -84,3 +84,47 @@ class HomePageTestCase(BaseLiveTestCase):
         self.link('Disclaimer').click()
         self.until(lambda: self.button('I UNDERSTAND').click())
         self.until(lambda: self.should_not_see_text('I UNDERSTAND'))
+
+    def test_complaint_detail_with_investigator_0_officer(self):
+        self.allegation.officer = None
+        self.allegation.save()
+
+        self.visit('/')
+        self.link('Categories').click()
+        self.find('.category-name').click()
+        self.check_complaint_detail_with_n_officers('hidden')
+
+    def test_complaint_detail_with_investigator_1_officer(self):
+        self.open_complaint_detail_with_class('col-md-2')
+
+    def test_complaint_detail_with_investigator_2_officer(self):
+        for _ in range(0, 1):
+            AllegationFactory(crid=self.allegation.crid, investigator=self.allegation.investigator)
+
+        self.open_complaint_detail_with_class('col-md-4')
+
+    def test_complaint_detail_with_investigator_3_officer(self):
+        for _ in range(0, 2):
+            AllegationFactory(crid=self.allegation.crid, investigator=self.allegation.investigator)
+
+        self.open_complaint_detail_with_class('col-md-6')
+
+    def test_complaint_detail_with_investigator_more_than_3_officers(self):
+        for _ in range(0, 3):
+            AllegationFactory(crid=self.allegation.crid, investigator=self.allegation.investigator)
+
+        self.open_complaint_detail_with_class('col-md-6')
+
+    def open_complaint_detail_with_class(self, class_name):
+        self.visit('/')
+        self.find('.checkmark').click()
+        self.check_complaint_detail_with_n_officers(class_name)
+
+    def check_complaint_detail_with_n_officers(self, class_name):        
+        self.find('.complaint-row .cursor').click()
+        officers_divs = self.find_all('.officers > div')
+        officers_divs[0].has_class(class_name).should.be.true
+        officers_divs[1].has_class('col-md-4').should.be.true
+
+    def test_complaint_detail_without_investigator(self):
+        pass
