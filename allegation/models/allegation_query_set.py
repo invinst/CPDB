@@ -25,7 +25,7 @@ class AllegationQuerySet(models.query.QuerySet):
         complainant_race = allegation_query_filter.complainant_race()
 
         result = self
-        if filters:
+        if filters or conditions:
             result = result.by_filter(conditions, filters)
 
         if officer_names:
