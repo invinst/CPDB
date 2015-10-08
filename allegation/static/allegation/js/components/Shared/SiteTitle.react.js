@@ -22,14 +22,17 @@ var SiteTitle = React.createClass(_.assign(Base(SessionStore), {
   },
 
   componentWillUpdate: function () {
+    if (!this.props.editable) return;
     var title = this.state.data.title;
     document.title = title;
     updateUrlWithSlugifiedTitle(this.state.data.hash, title);
   },
 
   render: function() {
+    var disabled = !this.props.editable;
+
     return (
-      <input className='site-title-input' type='text' value={this.state.data.title} onChange={this._onTitleChange} />
+      <input className='site-title-input' type='text' value={this.state.data.title} disabled={disabled} onChange={this._onTitleChange} />
     )
   },
 

@@ -12,8 +12,8 @@ var Map = require('components/DataToolPage/Map.react');
 var OfficerList = require('components/DataToolPage/OfficerList.react');
 var SessionAPI = require('utils/SessionAPI');
 var SessionStore = require('stores/SessionStore');
-var Tabs = require('components/HomePage/Tabs.react');
-var Nav = require('components/Shared/Nav.react');
+var Tabs = require('components/DataToolPage/Tabs.react');
+var Nav = require('components/DataToolPage/Nav.react');
 
 
 var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
