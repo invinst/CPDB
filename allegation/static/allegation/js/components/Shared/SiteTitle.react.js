@@ -13,7 +13,7 @@ var _timeout = false;
 
 function updateUrlWithSlugifiedTitle(hash, title) {
   var slugifiedTitle = StringUtil.slugify(title);
-  window.history.pushState([], "", "#!/" + hash + "/" + slugifiedTitle);
+  window.history.replaceState([], "", "#!/data-tools/" + hash + "/" + slugifiedTitle);
 }
 
 var SiteTitle = React.createClass(_.assign(Base(SessionStore), {

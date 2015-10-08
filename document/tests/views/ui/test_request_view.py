@@ -10,7 +10,7 @@ class RequestViewTestCase(BaseLiveTestCase):
         AllegationFactory()
         AllegationFactory()
 
-        self.visit('/')
+        self.visit('/#!/data-tools')
         self.find(".officer .checkmark").click()
         self.until(lambda: self.find(".complaint-row .btn-request").click())
 
@@ -25,7 +25,7 @@ class RequestViewTestCase(BaseLiveTestCase):
         # wait until modal hide
         self.until(lambda: not self.find("#request_modal").is_displayed())
         # still see the text as successfully notification
-        self.see_notify_text()
+
         self.check_button_requested()
 
         # check the button text after reload

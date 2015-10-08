@@ -6,7 +6,7 @@ class SiteTitleTestCase(BaseLiveTestCase):
     def test_site_title(self):
         title = 'This is title'
         slugify_url = 'this-is-title'
-        self.visit('/')
+        self.visit('/#!/data-tools')
         self.browser.title.should.equal(DEFAULT_SITE_TITLE)
 
         self.fill_in('.site-title-input', title)
