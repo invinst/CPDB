@@ -85,7 +85,7 @@
     },
     "jquery.cookie": {
       "version": "1.4.1",
-      "from": "jquery.cookie@*",
+      "from": "https://registry.npmjs.org/jquery.cookie/-/jquery.cookie-1.4.1.tgz",
       "resolved": "https://registry.npmjs.org/jquery.cookie/-/jquery.cookie-1.4.1.tgz"
     },
     "jquery.scrollto": {
@@ -225,6 +225,18 @@
               "resolved": "https://registry.npmjs.org/xtend/-/xtend-4.0.0.tgz"
             }
           }
+        }
+      }
+    },
+    "react-select": {
+      "version": "0.6.12",
+      "from": "react-select@*",
+      "resolved": "https://registry.npmjs.org/react-select/-/react-select-0.6.12.tgz",
+      "dependencies": {
+        "react-input-autosize": {
+          "version": "0.5.3",
+          "from": "react-input-autosize@>=0.5.3 <0.6.0",
+          "resolved": "https://registry.npmjs.org/react-input-autosize/-/react-input-autosize-0.5.3.tgz"
         }
       }
     },
