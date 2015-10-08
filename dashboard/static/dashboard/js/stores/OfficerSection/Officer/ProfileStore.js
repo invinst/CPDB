@@ -29,6 +29,11 @@ AppDispatcher.register(function(action) {
       ProfileStore.emitChange();
       break;
 
+    case AppConstants.RESET_OFFICER_DATA:
+      _state.officer = _.clone(_state.originOfficer);
+      ProfileStore.emitChange();
+      break;
+
     default:
       break;
   }
