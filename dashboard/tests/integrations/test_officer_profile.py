@@ -2,6 +2,7 @@ from allegation.factories import OfficerFactory
 from common.models import Officer
 from common.tests.core import BaseLiveTestCase
 from officer.factories import StoryFactory
+from officer.models import Story
 
 
 class OfficerProfileTestCase(BaseLiveTestCase):
@@ -126,6 +127,21 @@ class OfficerProfileTestCase(BaseLiveTestCase):
         self.element_for_label('Slug').get_attribute('value').should.equal("title2")
         self.find(".story_short_description").text.should.equal("Short Description")
         self.find(".story_content").text.should.equal("Content")
+
+        Story.objects.filter(officer=officer)[0].story_type.should.equal('news')
+
+    def test_story_type_suggest(self):
+        StoryFactory(story_type='abc')
+
+        officer = self.officer
+        self.go_to_officer_profile()
+        self.find("#search-officer input").send_keys(officer.officer_first)
+        self.find(".officer").click()
+
+        select = self.find('.Select-input > input')
+        select.send_keys('a')
+        self.until(self.ajax_complete)
+        self.element_by_classname_and_text('Select-option', 'abc').should.be.ok
 
     def test_slugify_title(self):
         officer = self.officer

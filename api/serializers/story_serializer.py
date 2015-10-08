@@ -12,6 +12,7 @@ class StorySerializer(serializers.HyperlinkedModelSerializer):
                   'slug',
                   'short_description',
                   'content',
+                  'story_type',
                   'created_date',
                   'url',
                   )
