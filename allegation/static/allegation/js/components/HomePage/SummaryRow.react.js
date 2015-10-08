@@ -101,7 +101,7 @@ var SummaryRow = React.createClass({
             </div>
             <div className='col-md-8 relative category-name-wrapper'>
               {arrow}
-              <a href='#' className={className}>{category.name}</a>
+              <a href='javascript:void()' className={className}>{category.name}</a>
             </div>
           </div>
         </div>

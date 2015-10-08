@@ -1,20 +1,26 @@
 var React = require('react'),
     RouterMixin = require('react-mini-router').RouterMixin;
 var CPDBApp = require('components/HomePage/CPDBApp.react');
+var IndexPage = require('components/IndexPage.react');
 var OfficerPage = require('components/HomePage/OfficerPage.react');
 var Router = React.createClass({
   mixins: [RouterMixin],
 
   routes: {
-    '/': 'home',
-    '/:session': 'home',
-    '/:session/:title': 'home',
+    '/': 'index',
+    '/data-tools': 'home',
+    '/data-tools/:session': 'home',
+    '/data-tools/:session/:title': 'home',
     '/message/:text': 'message',
     '/officer/:officerSlug/:id': 'officer'
   },
 
   render: function() {
     return this.renderCurrentRoute();
+  },
+
+  index: function() {
+    return (<IndexPage />);
   },
 
   home: function(session, title) {

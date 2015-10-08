@@ -13,7 +13,7 @@ class HomePageTestCase(BaseLiveTestCase):
         self.allegation_category.delete()
 
     def test_see_tabs(self):
-        self.visit('/')
+        self.visit('/#!/data-tools')
         links = self.find_all('.chart-row .nav a')
         link_texts = [x.text for x in links]
         link_texts.should.contain('Outcomes')
@@ -22,7 +22,7 @@ class HomePageTestCase(BaseLiveTestCase):
         link_texts.should.contain('Timeframe')
 
     def filter_complaint_type(self):
-        self.visit('/')
+        self.visit('/#!/data-tools')
         self.link("Categories").click()
 
     def test_click_on_category_only_show_allegation_belong_to_it(self):
