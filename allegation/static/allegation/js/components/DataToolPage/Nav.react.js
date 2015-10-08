@@ -17,7 +17,7 @@ var Nav = React.createClass({
         <div className="navbar-collapse collapse" id="navbar-main">
           <ul className="nav navbar-nav">
             <li className='site-title'>
-              <SiteTitle editable={true} />
+              <SiteTitle changable={true} />
             </li>
           </ul>
           <Search />
