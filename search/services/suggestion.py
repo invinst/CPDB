@@ -90,7 +90,7 @@ class Suggestion(object):
         if q.count('/') != 0:
             return None
 
-        return [x for x in range(2010, current_year() + 1) if str(x).startswith(q)]
+        return [x for x in range(START_SEARCHABLE_YEAR, current_year() + 1) if str(x).startswith(q)]
 
     def suggest_incident_date_only_year_month(self, q):
         if q.count('/') == 1:
