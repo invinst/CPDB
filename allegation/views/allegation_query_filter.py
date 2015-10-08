@@ -101,8 +101,8 @@ class AllegationQueryFilter(object):
 
     def prepare_categories_filter(self):
         # Merge cat and cat_category
-        if all(x in self.raw_filters for x in ['cat', 'cat_category']):
-            if all(x in self.query_dict for x in ['cat', 'cat_category']):
+        if all(x in self.raw_filters for x in ['cat', 'cat__category']):
+            if all(x in self.query_dict for x in ['cat', 'cat__category']):
                 category_names = self.query_dict.getlist('cat__category')
                 categories = AllegationCategory.objects.filter(category__in=category_names)
                 cats = list(categories.values_list('cat_id', flat=True))
