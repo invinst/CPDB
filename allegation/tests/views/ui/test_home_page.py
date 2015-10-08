@@ -74,11 +74,13 @@ class HomePageTestCase(BaseLiveTestCase):
 
     def test_show_disclaimer(self):
         self.visit('/')
+        self.button('View Database').click()
         self.link('Disclaimer').click()
         self.until(lambda: self.should_see_text('I UNDERSTAND'))
 
     def test_close_disclaimer(self):
         self.visit('/')
+        self.button('View Database').click()
         self.link('Disclaimer').click()
         self.until(lambda: self.button('I UNDERSTAND').click())
         self.until(lambda: self.should_not_see_text('I UNDERSTAND'))
