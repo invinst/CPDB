@@ -1,7 +1,7 @@
 var React = require('react');
 
-var Timeline = require('components/HomePage/Complaint/Timeline.react');
-var Location = require('components/HomePage/Complaint/Location.react');
+var Timeline = require('components/DataToolPage/Complaint/Timeline.react');
+var Location = require('components/DataToolPage/Complaint/Location.react');
 
 
 var TimelineAndLocation = React.createClass({

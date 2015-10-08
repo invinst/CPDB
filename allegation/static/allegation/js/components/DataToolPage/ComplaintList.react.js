@@ -1,7 +1,7 @@
 var HOST = 'http://localhost:8000';
 var React = require('react');
 
-var ComplaintListRow = require('components/HomePage/ComplaintListRow.react');
+var ComplaintListRow = require('components/DataToolPage/ComplaintListRow.react');
 
 
 var ComplaintList = React.createClass({

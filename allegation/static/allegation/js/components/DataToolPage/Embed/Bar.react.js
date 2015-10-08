@@ -2,7 +2,7 @@
  * Created by eastagile on 8/6/15.
  */
 var React = require('react');
-var Download = require('components/HomePage/Download.react');
+var Download = require('components/DataToolPage/Download.react');
 var EmbedAction = require('actions/EmbedActions');
 var EmbedStore = require('stores/EmbedStore');
 

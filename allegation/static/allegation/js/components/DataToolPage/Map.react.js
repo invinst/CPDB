@@ -6,7 +6,7 @@ var MapStore = require("stores/MapStore");
 var FilterStore = require('stores/FilterStore');
 var FilterActions = require("actions/FilterActions");
 var AppConstants = require('constants/AppConstants');
-var EmbedMixin = require('components/HomePage/Embed/Mixin.react');
+var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
 
 L.mapbox.accessToken = AppConstants.MAP_TOKEN;
 

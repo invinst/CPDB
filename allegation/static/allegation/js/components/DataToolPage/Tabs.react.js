@@ -3,9 +3,9 @@
  */
 var React = require('react');
 var FilterStore = require('stores/FilterStore');
-var Sunburst = require('components/HomePage/Sunburst.react');
-var EmbedMixin = require('components/HomePage/Embed/Mixin.react');
-var Summary = require('components/HomePage/Summary.react');
+var Sunburst = require('components/DataToolPage/Sunburst.react');
+var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
+var Summary = require('components/DataToolPage/Summary.react');
 
 
 var Tabs = React.createClass({

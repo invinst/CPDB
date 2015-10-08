@@ -1,5 +1,5 @@
 var React = require('react');
-var EmbedMixin = require('components/HomePage/Embed/Mixin.react');
+var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
 var SummaryActions = require('actions/SummaryActions');
 var SunburstStore = require("stores/SunburstStore");
 var FilterStore = require("stores/FilterStore");

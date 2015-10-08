@@ -1,5 +1,5 @@
 var React = require('react');
-var OutcomeFilterItem = require('components/HomePage/ComplaintList/OutcomeFilterItem.react');
+var OutcomeFilterItem = require('components/DataToolPage/ComplaintList/OutcomeFilterItem.react');
 var OutcomeAnalysisAPI = require('utils/OutcomeAnalysisAPI');
 var AppConstants = require('constants/AppConstants');
 

@@ -4,12 +4,12 @@ var React = require('react');
 var Base = require("components/Base.react");
 var ComplaintListActions = require("actions/ComplaintList/ComplaintListActions");
 var ComplaintListStore = require("stores/ComplaintListStore");
-var Filters = require('components/HomePage/Filters.react');
+var Filters = require('components/DataToolPage/Filters.react');
 var MapStore = require('stores/MapStore');
 var SessionAPI = require('utils/SessionAPI');
-var Officer = require("components/HomePage/Officer.react");
-var Complaint = require("components/HomePage/Complaint.react");
-var RequestButton = require('components/HomePage/Complaint/RequestButton.react');
+var Officer = require("components/DataToolPage/Officer.react");
+var Complaint = require("components/DataToolPage/Complaint.react");
+var RequestButton = require('components/DataToolPage/Complaint/RequestButton.react');
 var _timeline = false;
 
 

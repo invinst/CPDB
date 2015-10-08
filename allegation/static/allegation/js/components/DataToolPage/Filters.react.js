@@ -1,7 +1,7 @@
 var React = require('react');
 var L = require('leaflet');
 
-var AutoComplete = require('components/HomePage/AutoComplete.react');
+var AutoComplete = require('components/DataToolPage/AutoComplete.react');
 var FilterStore = require('stores/FilterStore');
 var MapStore = require('stores/MapStore');
 var _ajax_req = null;

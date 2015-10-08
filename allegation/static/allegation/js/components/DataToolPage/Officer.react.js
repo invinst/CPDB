@@ -1,11 +1,11 @@
 var HOST = 'http://localhost:8000';
 var React = require('react');
 
-var Filters = require('components/HomePage/Filters.react');
+var Filters = require('components/DataToolPage/Filters.react');
 var OfficerActions = require('actions/OfficerActions');
-var OfficerMixin = require('components/HomePage/Officer/OfficerMixin.react');
-var EmbedMixin = require('components/HomePage/Embed/Mixin.react');
-var CheckMark = require('components/HomePage/Officer/CheckMark.react');
+var OfficerMixin = require('components/DataToolPage/Officer/OfficerMixin.react');
+var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
+var CheckMark = require('components/DataToolPage/Officer/CheckMark.react');
 
 var OfficerPresenter = require('presenters/OfficerPresenter');
 var $ = require('jquery');

@@ -1,7 +1,7 @@
 var React = require('react');
 var _ = require('lodash');
 
-var Officer = require('components/HomePage/Officer.react');
+var Officer = require('components/DataToolPage/Officer.react');
 var RelatedOfficersStore = require('stores/OfficerPage/RelatedOfficersStore');
 
 

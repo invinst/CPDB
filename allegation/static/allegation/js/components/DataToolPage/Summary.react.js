@@ -1,12 +1,12 @@
 var React = require('react');
-var Filters = require('components/HomePage/Filters.react');
+var Filters = require('components/DataToolPage/Filters.react');
 var SummaryActions = require('actions/SummaryActions');
-var SummaryRow = require("components/HomePage/SummaryRow.react");
-var SummaryChildRow = require("components/HomePage/SummaryChildRow.react");
+var SummaryRow = require("components/DataToolPage/SummaryRow.react");
+var SummaryChildRow = require("components/DataToolPage/SummaryChildRow.react");
 var EmbedMixin = require('./Embed/Mixin.react');
 var SummaryStore = require("stores/SummaryStore");
 var FilterStore = require("stores/FilterStore");
-var ExtraInformation = require('components/HomePage/SummarySection/ExtraInformation.react');
+var ExtraInformation = require('components/DataToolPage/SummarySection/ExtraInformation.react');
 
 
 var Summary = React.createClass({

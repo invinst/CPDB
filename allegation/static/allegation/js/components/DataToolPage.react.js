@@ -3,16 +3,16 @@ var React = require('react');
 
 var AppConstants = require('constants/AppConstants');
 var Base = require('components/Base.react');
-var ComplaintSection = require('components/HomePage/ComplaintSection.react');
-var EmbedBar = require('components/HomePage/Embed/Bar.react');
-var Filters = require('components/HomePage/Filters.react');
-var Map = require('components/HomePage/Map.react');
-var OfficerList = require('components/HomePage/OfficerList.react');
+var ComplaintSection = require('components/DataToolPage/ComplaintSection.react');
+var Disclaimer = require('components/HomePage/Disclaimer.react');
+var EmbedBar = require('components/DataToolPage/Embed/Bar.react');
+var Footer = require('components/HomePage/Footer.react');
+var Filters = require('components/DataToolPage/Filters.react');
+var Map = require('components/DataToolPage/Map.react');
+var OfficerList = require('components/DataToolPage/OfficerList.react');
 var SessionAPI = require('utils/SessionAPI');
 var SessionStore = require('stores/SessionStore');
 var Tabs = require('components/HomePage/Tabs.react');
-var Footer = require('components/HomePage/Footer.react');
-var Disclaimer = require('components/HomePage/Disclaimer.react');
 var Nav = require('components/Shared/Nav.react');
 
 
@@ -29,7 +29,6 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
   },
 
   render: function () {
-
     return (
       <div>
         <Nav />

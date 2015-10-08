@@ -1,9 +1,9 @@
 var React = require('react');
-var Summary = require('components/HomePage/Complaint/Summary.react');
-var OfficerList = require('components/HomePage/Complaint/OfficerList.react');
-var TimelineAndLocation = require('components/HomePage/Complaint/TimelineAndLocation.react');
-var PoliceWitness = require('components/HomePage/Complaint/PoliceWitness.react');
-var RequestButton = require('components/HomePage/Complaint/RequestButton.react');
+var Summary = require('components/DataToolPage/Complaint/Summary.react');
+var OfficerList = require('components/DataToolPage/Complaint/OfficerList.react');
+var TimelineAndLocation = require('components/DataToolPage/Complaint/TimelineAndLocation.react');
+var PoliceWitness = require('components/DataToolPage/Complaint/PoliceWitness.react');
+var RequestButton = require('components/DataToolPage/Complaint/RequestButton.react');
 
 
 var Complaint = React.createClass({

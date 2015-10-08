@@ -2,11 +2,11 @@ var AppConstants = require('constants/AppConstants');
 var React = require('react');
 var MapStore = require("stores/MapStore");
 var FilterActions = require("actions/FilterActions");
-var Timeline = require("components/HomePage/Officer/Timeline.react");
-var Map = require("components/HomePage/Officer/Map.react");
-var DonutChart = require("components/HomePage/Officer/DonutChart.react");
-var OfficerMixin = require("components/HomePage/Officer/OfficerMixin.react");
-var OfficerInformation = require('components/HomePage/OfficerDetail/OfficerInformation.react');
+var Timeline = require("components/DataToolPage/Officer/Timeline.react");
+var Map = require("components/DataToolPage/Officer/Map.react");
+var DonutChart = require("components/DataToolPage/Officer/DonutChart.react");
+var OfficerMixin = require("components/DataToolPage/Officer/OfficerMixin.react");
+var OfficerInformation = require('components/DataToolPage/OfficerDetail/OfficerInformation.react');
 
 var OfficerDetail = React.createClass({
   mixins: [OfficerMixin],

@@ -1,5 +1,5 @@
 var React = require('react');
-var RequestModal = require('components/HomePage/Complaint/RequestModal.react');
+var RequestModal = require('components/DataToolPage/Complaint/RequestModal.react');
 var RequestDocumentActions = require('actions/RequestDocumentActions');
 var RequestButtonStore = require('stores/Complaint/RequestButtonStore');
 

@@ -3,15 +3,16 @@ var navigate = require('react-mini-router').navigate;
 var React = require('react');
 
 var Base = require('components/Base.react');
-var ComplaintSection = require('components/HomePage/OfficerPage/ComplaintSection.react');
+var ComplaintSection = require('components/OfficerPage/ComplaintSection.react');
 var ComplaintListAPI = require('utils/ComplaintListAPI');
 var FilterActions = require("actions/FilterActions");
-var OfficerDetail = require('components/HomePage/OfficerDetail.react');
+var Nav = require('components/Shared/Nav.react');
+var OfficerDetail = require('components/DataToolPage/OfficerDetail.react');
 var OfficerPageServerActions = require('actions/OfficerPage/OfficerPageServerActions');
 var OfficerPageStore = require('stores/OfficerPageStore');
-var RelatedOfficers = require('components/HomePage/OfficerPage/RelatedOfficers.react');
+var RelatedOfficers = require('components/OfficerPage/RelatedOfficers.react');
 var SessionStore = require('stores/SessionStore');
-var StoryList = require('components/HomePage/OfficerPage/StoryList.react');
+var StoryList = require('components/OfficerPage/StoryList.react');
 
 
 var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
@@ -39,18 +40,7 @@ var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
     }
     return (
       <div>
-        <div className="navbar navbar-default">
-            <div className="navbar-header">
-                <a href="#" onClick={this._onLogoClick} className="navbar-brand">
-                    <img src="/static/img/logo.png" alt="" />
-                </a>
-                <button className="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
-                    <span className="icon-bar"></span>
-                    <span className="icon-bar"></span>
-                    <span className="icon-bar"></span>
-                </button>
-            </div>
-        </div>
+        <Nav dataLink={true} />
         <div id='officer-profile'>
           <div className="map-row">
             <div className="container">
@@ -69,8 +59,7 @@ var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
 
   _onLogoClick: function(e) {
     e.preventDefault();
-    var hash = SessionStore.getHash();
-    navigate('/data-tools/' + hash);
+    navigate('/data-tools' + SessionStore.getUrl());
   }
 
 }));
