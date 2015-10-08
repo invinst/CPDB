@@ -8,7 +8,7 @@ class DownloadAllegationTestCase(BaseLiveTestCase):
     def test_download(self):
         AllegationFactory()
 
-        self.visit('/')
+        self.visit('/#!/data-tools')
         self.find('.officer .checkmark').click()
 
         self.until(lambda: self.find('.download-wrapper a'))

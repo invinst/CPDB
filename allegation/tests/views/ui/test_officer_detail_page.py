@@ -58,7 +58,7 @@ class OfficerDetailPageTestCase(BaseLiveTestCase):
         self.number_of_complaints().should.equal(2)
 
     def go_to_officer_detail_page(self, officer):
-        self.visit('/')
+        self.visit('/#!/data-tools')
         self.find('#officer_%s .officer-link' % officer.id).click()
 
     def number_of_complaints(self):
