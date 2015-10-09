@@ -17,7 +17,7 @@ class AllegationFilterTestCase(BaseLiveTestCase):
                                   final_outcome_class='disciplined')
 
     def test_filter_by_final_finding(self):
-        self.visit('/')
+        self.visit('/#!/data-tools')
 
         # Check all
         self.link("Categories").click()

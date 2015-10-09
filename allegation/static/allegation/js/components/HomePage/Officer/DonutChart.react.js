@@ -34,12 +34,37 @@ var DonutChart = React.createClass({
     return browserData;
   },
 
-  componentWillReceiveProps: function(newProps) {
-    var browserData = this.buildBrowserData(newProps.officer)
-    var nonDisciplines = newProps.officer.allegations_count - newProps.officer.discipline_count;
+  updateTextInsideDonutChart: function(chart, officer) {
+    chart = chart || this.chart;
+    officer = officer || this.props.officer;
 
-    chart.series[0].setData(browserData, true);
-    $('#pieChartInfoText span strong').html(newProps.officer.discipline_count + ' / ' + nonDisciplines)
+    var textX = chart.plotLeft + (chart.plotWidth  * 0.5);
+    var textY = chart.plotTop  + (chart.plotHeight * 0.5);
+    $("#addText").html("");
+    var span = '<span id="pieChartInfoText" style="position:absolute; text-align:center;">';
+    span += '<span style="font-size: 28px"><strong>' + officer.discipline_count +
+            " / " + officer.allegations_count + '</strong><br /></span>';
+    span += '<span style="font-size: 16px;">complaints disciplined</span>';
+    span += '</span>';
+
+    $("#addText").append(span);
+    span = $('#pieChartInfoText');
+
+    span.css('left', textX + (span.width() * -0.5));
+    span.css('top', textY + (span.height() * -0.5));
+
+  },
+
+  componentWillReceiveProps: function(newProps) {
+    var officer = newProps.officer
+    var browserData = this.buildBrowserData(officer);
+
+    this.chart.series[0].setData(browserData, true);
+    this.updateTextInsideDonutChart(null, officer);
+  },
+
+  componentWillUnmount: function() {
+    $(window).unbind('resize');
   },
 
   componentDidMount: function () {
@@ -52,7 +77,7 @@ var DonutChart = React.createClass({
 
     browserData = this.buildBrowserData(this.props.officer);
     // Create the chart
-    chart = new Highcharts.Chart({
+    this.chart = new Highcharts.Chart({
         chart: {
           type: 'pie',
           backgroundColor: 'transparent',
@@ -79,25 +104,12 @@ var DonutChart = React.createClass({
           }
         }]
       },
-      function (chart) {
-        var textX = chart.plotLeft + (chart.plotWidth  * 0.5);
-        var textY = chart.plotTop  + (chart.plotHeight * 0.5);
-
-        var span = '<span id="pieChartInfoText" style="position:absolute; text-align:center;">';
-        span += '<span style="font-size: 28px"><strong>' + that.props.officer.discipline_count +
-                " / " + that.props.officer.allegations_count + '</strong><br /></span>';
-        span += '<span style="font-size: 16px;">complaints disciplined</span>';
-        span += '</span>';
-
-        $("#addText").append(span);
-        span = $('#pieChartInfoText');
-
-        span.css('left', textX + (span.width() * -0.5));
-        span.css('top', textY + (span.height() * -0.5));
-      }
+      this.updateTextInsideDonutChart
     );
     //http://stackoverflow.com/questions/9732205/place-text-in-center-of-pie-chart-highcharts
-
+    $(window).on('resize', function() {
+      that.updateTextInsideDonutChart(that.chart, that.props.officer);
+    });
   },
   render: function () {
     return <div className="relative">

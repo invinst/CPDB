@@ -19,12 +19,16 @@ var Tabs = React.createClass({
   },
 
   // embedding
-  activeTab: function (number) {
+  activeTab: function (number, e) {
     this.activeTabIndex = number;
 
     if (this.embedding) {
       $(this.getDOMNode()).parent().find(".embed-code input").val(this.getEmbedCode());
     }
+
+    var target = $(e.target).data('target');
+    $(".tab-pane").removeClass('active');
+    $(target).addClass('active');
   },
 
   getActiveTab: function () {
@@ -74,13 +78,13 @@ var Tabs = React.createClass({
       <div>
         <ul className="nav nav-tabs" role="tablist">
           <li role="presentation" className="active">
-            <a href="#sunburst" aria-controls="sunburst" role="tab" data-toggle="tab"
+            <a href='javascript:void(0)' data-target="#sunburst" aria-controls="sunburst" role="tab" className='pointer' data-toggle="tab"
                onClick={this.activeTab.bind(this, 0)}>
               Outcomes
             </a>
           </li>
           <li role="presentation">
-            <a href="#categories" aria-controls="profile" role="tab" data-toggle="tab"
+            <a href='javascript:void(0)' data-target="#categories" aria-controls="profile" role="tab" className='pointer' data-toggle="tab"
                onClick={this.activeTab.bind(this, 1)}>
               Categories
             </a>

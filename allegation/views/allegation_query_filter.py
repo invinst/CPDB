@@ -46,6 +46,10 @@ class AllegationQueryFilter(object):
             if text:
                 value += ['SU']  # sustained
 
+            text = self.query_dict.get('final_finding_text')
+            if text == 'unsustained':
+                value += ['DS', 'EX', 'NA', 'NC', 'NS', 'UN']
+
         if len(value) > 1:
             self.filters["%s__in" % field] = value
 

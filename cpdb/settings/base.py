@@ -144,7 +144,7 @@ BOWER_INSTALLED_APPS = (
     'jquery-ui#1.11.3',
     'datatables-scroller#1.2.2',
     'datatables#1.10.7',
-    'bootstrap#3.3.2',
+    'bootstrap#3.3.5',
     'bootstrap-tagsinput#0.4.2',
     'jquery.cookie#1.4.1',
     'c3',
