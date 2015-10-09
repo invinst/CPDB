@@ -11,6 +11,8 @@ var OfficerList = require('components/HomePage/OfficerList.react');
 var SessionAPI = require('utils/SessionAPI');
 var SessionStore = require('stores/SessionStore');
 var Tabs = require('components/HomePage/Tabs.react');
+var Footer = require('components/HomePage/Footer.react');
+var Disclaimer = require('components/HomePage/Disclaimer.react');
 var Nav = require('components/Shared/Nav.react');
 
 
@@ -59,6 +61,10 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
             </div>
           </div>
         </div>
+        <div className='container-fluid'>
+          <Footer />
+        </div>
+        <Disclaimer />
       </div>
     );
   }
