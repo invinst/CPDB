@@ -38,9 +38,8 @@ class OfficerProfileTestCase(BaseLiveTestCase):
     def test_update_officer(self):
         officer = self.officer
         self.go_to_officer_profile()
-        self.find("#search-officer input").send_keys(officer.officer_first)
+        self.go_to_single_officer(officer)
 
-        self.find(".officer").click()
         self.should_see_text('Edit information')
         self.should_see_text('Add story')
         self.should_see_text(str(officer))
@@ -64,8 +63,7 @@ class OfficerProfileTestCase(BaseLiveTestCase):
         officer = self.officer
         stories = [StoryFactory(officer=officer) for x in range(2)]
         self.go_to_officer_profile()
-        self.find("#search-officer input").send_keys(officer.officer_first)
-        self.find(".officer").click()
+        self.go_to_single_officer(officer)
 
         self.until(lambda: self.should_see_text(stories[1].title))
         self.should_see_text(stories[0].title)
@@ -91,18 +89,15 @@ class OfficerProfileTestCase(BaseLiveTestCase):
         self.should_not_see_text(stories[0].title)
 
     def test_add_officer_story(self):
-        officer = self.officer
         self.go_to_officer_profile()
-        self.find("#search-officer input").send_keys(officer.officer_first)
+        self.go_to_single_officer(self.officer)
 
-        self.find(".officer").click()
-        self.element_for_label('Title').send_keys("Title")
-        self.element_for_label('Slug').send_keys("Slug")
-        self.find(".story_short_description").send_keys("Short Description")
-        self.find(".story_content").send_keys("Content")
-
-        self.button("Save").click()
-        self.until(self.ajax_complete)
+        self.add_story(
+            'Title',
+            'Short Description',
+            'Content',
+            slug='Slug',
+        )
 
         self.should_see_text('New story has been created.')
         new_row = self.find(".story").text
@@ -129,11 +124,9 @@ class OfficerProfileTestCase(BaseLiveTestCase):
         self.find(".story_content").text.should.equal("Content")
 
     def test_slugify_title(self):
-        officer = self.officer
         self.go_to_officer_profile()
-        self.find("#search-officer input").send_keys(officer.officer_first)
+        self.go_to_single_officer(self.officer)
 
-        self.find(".officer").click()
         self.element_for_label('Title').send_keys("Title ABC")
         self.element_for_label('Slug').get_attribute('value').should.equal("title-abc")
         self.element_for_label('Slug').send_keys("Slug")
