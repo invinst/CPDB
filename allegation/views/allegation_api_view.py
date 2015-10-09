@@ -29,12 +29,10 @@ class AllegationAPIView(View):
 
     def track_filter(self, num_allegations):
         querystring = self.request.META['QUERY_STRING']
-        ip = get_client_ip(self.request)
         if querystring:
             FilterLog.objects.create(query=querystring,
                                      session_id=self.request.session.session_key or "",
-                                     num_allegations=num_allegations,
-                                     ip=ip)
+                                     num_allegations=num_allegations)
 
     def get(self, request):
         allegations = self.get_allegations()

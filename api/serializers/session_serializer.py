@@ -16,6 +16,8 @@ class SessionSerializer(serializers.HyperlinkedModelSerializer):
                   'share_from',
                   'share_count',
                   'url',
+                  'ip',
+                  'user_agent'
                   )
 
     def get_extra_kwargs(self):

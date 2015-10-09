@@ -12,7 +12,6 @@ from search.services.suggestion import Suggestion
 class SuggestView(View):
     def track_suggestions_query(self, ret):
         total_results = sum([len(v) for k, v in ret.items()])
-        ip = get_client_ip(self.request)
         query = self.request.GET.get('term', '')
         session_id = self.request.session.session_key or ''
         suggestion = SuggestionLog.objects.filter(session_id=session_id).order_by('-created_at').first()
@@ -22,7 +21,7 @@ class SuggestView(View):
         else:
             suggestion = SuggestionLog(session_id=session_id,
                                        query=query,
-                                       num_suggestions=total_results, ip=ip)
+                                       num_suggestions=total_results)
 
         suggestion.save()
 

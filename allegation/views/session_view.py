@@ -4,6 +4,7 @@ from django.shortcuts import get_object_or_404
 from django.views.generic import View
 
 from common.json_serializer import JSONSerializer
+from common.utils.http_request import get_client_ip
 from share.models import Session
 
 
@@ -60,6 +61,8 @@ class SessionAPIView(View):
 
     def create_new_session(self, request):
         session = Session()
+        session.ip = get_client_ip(request)
+        session.user_agent = request.user_agent
         session.save()
         self.update_owned_session(request, session)
 
