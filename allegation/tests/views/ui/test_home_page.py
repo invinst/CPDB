@@ -95,30 +95,33 @@ class HomePageTestCase(BaseLiveTestCase):
         self.check_complaint_detail_with_n_officers('hidden')
 
     def test_complaint_detail_with_investigator_1_officer(self):
-        self.open_complaint_detail_with_class('col-md-2')
+        self.open_complaint_detail_with_class()
+        self.check_complaint_detail_with_n_officers('col-md-2')
 
     def test_complaint_detail_with_investigator_2_officer(self):
-        for _ in range(0, 1):
-            AllegationFactory(crid=self.allegation.crid, investigator=self.allegation.investigator)
-
-        self.open_complaint_detail_with_class('col-md-4')
+        self.create_complaint_detail_with_n_officers(2)
+        self.open_complaint_detail_with_class()
+        self.check_complaint_detail_with_n_officers('col-md-4')
 
     def test_complaint_detail_with_investigator_3_officer(self):
-        for _ in range(0, 2):
-            AllegationFactory(crid=self.allegation.crid, investigator=self.allegation.investigator)
-
-        self.open_complaint_detail_with_class('col-md-6')
+        self.create_complaint_detail_with_n_officers(3)
+        self.open_complaint_detail_with_class()
+        self.check_complaint_detail_with_n_officers('col-md-6')
 
     def test_complaint_detail_with_investigator_more_than_3_officers(self):
-        for _ in range(0, 3):
+        self.create_complaint_detail_with_n_officers(4)
+        self.open_complaint_detail_with_class()
+        self.check_complaint_detail_with_n_officers('col-md-6')
+
+    def create_complaint_detail_with_n_officers(self, number_of_officers):
+        for _ in range(0, number_of_officers-1):
             AllegationFactory(crid=self.allegation.crid, investigator=self.allegation.investigator)
 
         self.open_complaint_detail_with_class('col-md-6')
 
-    def open_complaint_detail_with_class(self, class_name):
+    def open_complaint_detail_with_class(self):
         self.visit('/')
         self.find('.checkmark').click()
-        self.check_complaint_detail_with_n_officers(class_name)
 
     def check_complaint_detail_with_n_officers(self, class_name):        
         self.find('.complaint-row .cursor').click()
