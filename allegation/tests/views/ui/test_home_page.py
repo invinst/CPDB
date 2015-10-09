@@ -99,25 +99,19 @@ class HomePageTestCase(BaseLiveTestCase):
         self.check_complaint_detail_with_n_officers('col-md-2')
 
     def test_complaint_detail_with_investigator_2_officer(self):
-        self.create_complaint_detail_with_n_officers(2)
+        AllegationFactory.create_batch(1, crid=self.allegation.crid, investigator=self.allegation.investigator)
         self.open_complaint_detail_with_class()
         self.check_complaint_detail_with_n_officers('col-md-4')
 
     def test_complaint_detail_with_investigator_3_officer(self):
-        self.create_complaint_detail_with_n_officers(3)
+        AllegationFactory.create_batch(2, crid=self.allegation.crid, investigator=self.allegation.investigator)
         self.open_complaint_detail_with_class()
         self.check_complaint_detail_with_n_officers('col-md-6')
 
     def test_complaint_detail_with_investigator_more_than_3_officers(self):
-        self.create_complaint_detail_with_n_officers(4)
+        AllegationFactory.create_batch(3, crid=self.allegation.crid, investigator=self.allegation.investigator)
         self.open_complaint_detail_with_class()
         self.check_complaint_detail_with_n_officers('col-md-6')
-
-    def create_complaint_detail_with_n_officers(self, number_of_officers):
-        for _ in range(0, number_of_officers-1):
-            AllegationFactory(crid=self.allegation.crid, investigator=self.allegation.investigator)
-
-        self.open_complaint_detail_with_class('col-md-6')
 
     def open_complaint_detail_with_class(self):
         self.visit('/')
