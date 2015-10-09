@@ -2,6 +2,7 @@ from allegation.factories import OfficerFactory
 from common.models import Officer
 from common.tests.core import BaseLiveTestCase
 from officer.factories import StoryFactory
+from officer.models import Story
 
 
 class OfficerProfileTestCase(BaseLiveTestCase):
@@ -137,3 +138,35 @@ class OfficerProfileTestCase(BaseLiveTestCase):
         self.element_for_label('Slug').get_attribute('value').should.equal("title-abc")
         self.element_for_label('Slug').send_keys("Slug")
         self.element_for_label('Slug').get_attribute('value').should.equal("title-abcslug")
+
+    def test_add_document_url_for_story(self):
+        url = 'https://www.documentcloud.org/documents/1273509-cr-1002643.html'
+
+        self.go_to_officer_profile()
+        self.go_to_single_officer(self.officer)
+        self.add_story(
+            'Title',
+            'Desc',
+            'Content',
+            url,
+        )
+
+        len(Story.objects.filter(url=url)).should.equal(1)
+        
+    def go_to_single_officer(self, officer):
+        self.find("#search-officer input").send_keys(officer.officer_first)
+        self.find(".officer").click()
+
+    def add_story(self, title, desc, content, url='', slug=''):
+        self.element_for_label('Title').send_keys(title)
+        self.fill_medium_editor(".story_short_description", desc)
+        self.fill_medium_editor(".story_content", content)
+        self.element_for_label('Enter URL').send_keys(url)
+        self.element_for_label('Slug').send_keys(slug)
+        self.button("Save").click()
+        self.until(self.ajax_complete)
+
+    def fill_medium_editor(self, selector, keys):
+        self.find(selector).send_keys('')
+        self.sleep(.5)
+        self.find(selector).send_keys(keys)
