@@ -12,6 +12,10 @@ class HomePageTestCase(BaseLiveTestCase):
         super(HomePageTestCase, self).tearDown()
         self.allegation_category.delete()
 
+    def visit_home(self):
+        self.visit('/')
+        self.button('View Database').click()
+
     def test_see_tabs(self):
         self.visit('/#!/data-tools')
         links = self.find_all('.chart-row .nav a')
@@ -73,14 +77,12 @@ class HomePageTestCase(BaseLiveTestCase):
         return len(officers)
 
     def test_show_disclaimer(self):
-        self.visit('/')
-        self.button('View Database').click()
+        self.visit_home()
         self.link('Disclaimer').click()
         self.until(lambda: self.should_see_text('I UNDERSTAND'))
 
     def test_close_disclaimer(self):
-        self.visit('/')
-        self.button('View Database').click()
+        self.visit_home()
         self.link('Disclaimer').click()
         self.until(lambda: self.button('I UNDERSTAND').click())
         self.until(lambda: self.should_not_see_text('I UNDERSTAND'))
@@ -89,7 +91,7 @@ class HomePageTestCase(BaseLiveTestCase):
         self.allegation.officer = None
         self.allegation.save()
 
-        self.visit('/')
+        self.visit_home()
         self.link('Categories').click()
         self.find('.category-name').click()
         self.check_complaint_detail_with_n_officers('hidden')
@@ -114,7 +116,7 @@ class HomePageTestCase(BaseLiveTestCase):
         self.check_complaint_detail_with_n_officers('col-md-6')
 
     def open_complaint_detail_with_class(self):
-        self.visit('/')
+        self.visit_home()
         self.find('.checkmark').click()
 
     def check_complaint_detail_with_n_officers(self, class_name):        
@@ -127,7 +129,7 @@ class HomePageTestCase(BaseLiveTestCase):
         self.allegation.investigator = None
         self.allegation.save()
 
-        self.visit('/')
+        self.visit_home()
         self.link('Categories').click()
         self.find('.category-name').click()
         self.find('.complaint-row .cursor').click()
