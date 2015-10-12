@@ -5,10 +5,12 @@ from officer.models import Story
 
 
 class StoryTypeView(View):
-	def get(self, request):
-		query = request.GET.get('query', '')
-		types = Story.objects.filter(story_type__icontains=query).values_list('story_type', flat=True)
+    def get(self, request):
+        query = request.GET.get('query', '')
 
-		return JsonResponse(data={
-			'data': list(types),
-		})
+        limit = 10
+        types = Story.objects.distinct('story_type').filter(story_type__icontains=query).values_list('story_type', flat=True)[:limit]
+
+        return JsonResponse(data={
+            'data': list(types),
+        })
