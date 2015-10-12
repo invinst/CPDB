@@ -143,6 +143,17 @@ class OfficerProfileTestCase(BaseLiveTestCase):
         self.until(self.ajax_complete)
         self.element_by_classname_and_text('Select-option', 'abc').should.be.ok
 
+    def test_story_type_add_new(self):
+        officer = self.officer
+        self.go_to_officer_profile()
+        self.find("#search-officer input").send_keys(officer.officer_first)
+        self.find(".officer").click()
+
+        select = self.find('.Select-input > input')
+        select.send_keys('abc')
+        self.until(self.ajax_complete)
+        self.element_by_classname_and_text('Select-option', 'New type: abc').should.be.ok
+
     def test_slugify_title(self):
         officer = self.officer
         self.go_to_officer_profile()

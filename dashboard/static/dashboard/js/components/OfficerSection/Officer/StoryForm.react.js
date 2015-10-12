@@ -76,7 +76,8 @@ var StoryForm = React.createClass(_.assign(Base(StoryFormStore), {
         <div className="form-group">
           <label htmlFor='story_type' className="col-lg-2 col-md-2 col-xs-2">Type</label>
           <div className="col-lg-10 col-md-10 col-xs-10">
-            <Select asyncOptions={StoryAPI.suggestType} name='story_type' onChange={this.updateStoryType} value={this.value('story_type')} />
+            <Select asyncOptions={StoryAPI.suggestType} name='story_type' onChange={this.updateStoryType} value={this.value('story_type')}
+                    allowCreate={true} addLabelText="New type: {label}" />
             <input type='hidden' value={this.value('story_type')} required />
           </div>
         </div>
