@@ -1,5 +1,6 @@
 import datetime
 
+START_SEARCHABLE_YEAR = 2010
 
 def month_name(number):
     return datetime.date(2011, number, 1).strftime('%B')
@@ -16,7 +17,7 @@ def month_year_entry(month, year):
 def generate_month_year_entry_from_2010(month):
     results = []
 
-    for year in range(2010, current_year()):
+    for year in range(START_SEARCHABLE_YEAR, current_year() + 1):
         results.append(month_year_entry(month, year))
 
     return results
