@@ -1,8 +1,9 @@
 import random
+import factory
+import datetime
 
 from django.contrib.gis.geos import MultiPolygon, Polygon
-from django.utils import timezone
-import factory
+
 from faker import Faker
 
 from allegation.models import Download
@@ -70,8 +71,8 @@ class AllegationFactory(factory.django.DjangoModelFactory):
     crid = factory.Sequence(lambda n: fake.random_int(min=1000))
     cat = factory.SubFactory(AllegationCategoryFactory)
     final_outcome = factory.Sequence(lambda n: fake.random_element(x[0] for x in OUTCOMES))
-    incident_date = factory.Sequence(lambda n: timezone.now())
-    incident_date_only = factory.LazyAttribute(lambda o: o.incident_date.date())
+    incident_date = factory.Sequence(lambda n: datetime.date(random.randint(2000, 2015), random.randint(1, 12), random.randint(1, 28)))
+    incident_date_only = factory.LazyAttribute(lambda o: o.incident_date)
     investigator = factory.SubFactory(InvestigatorFactory)
     officer = factory.SubFactory(OfficerFactory)
     point = None

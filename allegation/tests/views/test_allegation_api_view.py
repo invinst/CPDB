@@ -192,6 +192,12 @@ class AllegationApiViewTestCase(AllegationApiTestBase):
             allegation.final_outcome.should.be.within(NO_DISCIPLINE_CODES)
             allegation.final_finding.should.equal('SU')
 
+    def test_filter_by_finding_text(self):
+        data = self.fetch_allegations(final_finding_text='unsustained')
+        for row in data:
+            allegation = Allegation.objects.get(pk=row['allegation']['id'])
+            allegation.final_finding.shouldnt.equal('SU')
+
     def test_investigator_data(self):
         data = self.fetch_allegations()
         data.should.be.ok

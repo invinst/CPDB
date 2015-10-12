@@ -13,7 +13,8 @@ from django.views.generic import View
 
 from allegation.views.allegation_api_view import AllegationAPIView
 from common.json_serializer import JSONSerializer
-from common.models import Allegation, Area, AllegationCategory, Investigator, Officer, GENDER_DICT, OUTCOME_TEXT_DICT
+from common.models import Allegation, Area, AllegationCategory, Investigator, Officer, GENDER_DICT, OUTCOME_TEXT_DICT, \
+    FINAL_FINDING_TEXT_DICT
 from common.models import ComplainingWitness, NO_DISCIPLINE_CODES, PoliceWitness
 from share.models import Session
 

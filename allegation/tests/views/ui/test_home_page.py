@@ -13,7 +13,7 @@ class HomePageTestCase(BaseLiveTestCase):
         self.allegation_category.delete()
 
     def test_see_tabs(self):
-        self.visit('/')
+        self.visit('/#!/data-tools')
         links = self.find_all('.chart-row .nav a')
         link_texts = [x.text for x in links]
         link_texts.should.contain('Outcomes')
@@ -22,7 +22,7 @@ class HomePageTestCase(BaseLiveTestCase):
         link_texts.should.contain('Timeframe')
 
     def filter_complaint_type(self):
-        self.visit('/')
+        self.visit('/#!/data-tools')
         self.link("Categories").click()
 
     def test_click_on_category_only_show_allegation_belong_to_it(self):
@@ -71,3 +71,16 @@ class HomePageTestCase(BaseLiveTestCase):
     def number_of_officers(self):
         officers = self.find_all('.officer')
         return len(officers)
+
+    def test_show_disclaimer(self):
+        self.visit('/')
+        self.button('View Database').click()
+        self.link('Disclaimer').click()
+        self.until(lambda: self.should_see_text('I UNDERSTAND'))
+
+    def test_close_disclaimer(self):
+        self.visit('/')
+        self.button('View Database').click()
+        self.link('Disclaimer').click()
+        self.until(lambda: self.button('I UNDERSTAND').click())
+        self.until(lambda: self.should_not_see_text('I UNDERSTAND'))

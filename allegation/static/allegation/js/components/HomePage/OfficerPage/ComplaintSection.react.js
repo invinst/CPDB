@@ -2,9 +2,10 @@ var React = require('react');
 
 var ComplaintSectionStore = require('stores/OfficerPage/ComplaintSectionStore');
 var ComplaintListAPI = require('utils/ComplaintListAPI');
-var OutcomeFilter = require('components/HomePage/ComplaintList/OutcomeFilter.react');
 var ComplaintList = require('components/HomePage/ComplaintList.react');
 var Counter = require("components/HomePage/Counter.react");
+var OutcomeFilter = require('components/HomePage/ComplaintList/OutcomeFilter.react');
+var RequestModal = require('components/HomePage/Complaint/RequestModal.react');
 
 var ComplaintSection = React.createClass({
   getInitialState: function () {
@@ -33,6 +34,7 @@ var ComplaintSection = React.createClass({
           </div>
         </div>
         <ComplaintList officer={this.props.officer} complaints={this.state.complaints} />
+        <RequestModal />
         <div className="row">
           <div className="col-md-2 col-md-offset-10">
           </div>
