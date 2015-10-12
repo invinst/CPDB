@@ -1,4 +1,5 @@
 from allegation.factories import OfficerFactory
+from allegation.tests.constants import TEST_DOCUMENT_URL
 from common.models import Officer
 from common.tests.core import BaseLiveTestCase
 from officer.factories import StoryFactory
@@ -182,7 +183,7 @@ class OfficerProfileTestCase(BaseLiveTestCase):
         self.element_for_label('Slug').get_attribute('value').should.equal("title-abcslug")
 
     def test_add_document_url_for_story(self):
-        url = 'https://www.documentcloud.org/documents/1273509-cr-1002643.html'
+        url = TEST_DOCUMENT_URL
 
         self.go_to_officer_profile()
         self.go_to_single_officer(self.officer)

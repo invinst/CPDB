@@ -32,16 +32,19 @@ var CheckMarkStore = assign({}, EventEmitter.prototype, {
 
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
-  case AppConstants.OFFICER_MOUSE_OUT:
+    case AppConstants.OFFICER_MOUSE_OUT:
       _state.justChange[action.officer.id]= false;
-    break;
-  case AppConstants.SET_ACTIVE_OFFICER:
-     _state.justChange[action.officer.id] = true;
-   break;
+      CheckMarkStore.emitChange();
+      break;
+
+    case AppConstants.SET_ACTIVE_OFFICER:
+      _state.justChange[action.officer.id] = true;
+      CheckMarkStore.emitChange();
+      break;
+
   default:
     break;
   }
-  CheckMarkStore.emitChange();
 });
 
 CheckMarkStore.setMaxListeners(0);
