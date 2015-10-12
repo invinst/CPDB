@@ -34,6 +34,10 @@ var Profile = React.createClass(_.assign(Base(ProfileStore), {
     OfficerAPI.saveOfficerProfile(this.state.officer, this.state.originOfficer);
   },
 
+  reset: function () {
+    ProfileActions.resetForm();
+  },
+
   getRaceOptions: function () {
     return AppConstants.RACES.map(function (x) {
       return <option value={x} key={x}>{x}</option>
@@ -174,6 +178,9 @@ var Profile = React.createClass(_.assign(Base(ProfileStore), {
         </div>
         <div className="form-group actions">
           <div className="col-xs-12 text-right">
+            <button type="button" className="btn btn-cancel" onClick={this.reset}>
+              Reset
+            </button>
             <button type="button" className="btn btn-primary" onClick={this.save}>
               <i className="fa fa-floppy-o"></i> Save
             </button>
