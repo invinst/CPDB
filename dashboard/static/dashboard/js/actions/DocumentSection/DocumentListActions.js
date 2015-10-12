@@ -1,5 +1,6 @@
 var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var AppConstants = require('../../constants/AppConstants');
+var toastr = require('toastr');
 
 var DocumentListActions = {
   receivedDocumentList: function (data) {
@@ -27,6 +28,10 @@ var DocumentListActions = {
       actionType: AppConstants.SET_ACTIVE_ALLEGATION,
       data: allegation
     });
+  },
+
+  requestNotFound: function() {
+    toastr.error('CRID not found');
   }
 };
 

@@ -101,6 +101,20 @@ var DocumentRequestAPI = {
         }
       }
     });
+  },
+
+  loadByCrid: function(crid) {
+    if (ajax) {
+      ajax.abort();
+    }
+
+    ajax = jQuery.getJSON(AppConstants.DOCUMENT_REQUEST_END_POINT, {crid: crid}, function(data) {
+      if (data.results.length == 0) {
+        DocumentListActions.requestNotFound();
+      } else {
+        DocumentListActions.setActive(data.results[0]);
+      }
+    });
   }
 };
 

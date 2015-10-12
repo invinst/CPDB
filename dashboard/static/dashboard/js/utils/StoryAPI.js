@@ -69,7 +69,21 @@ var StoryAPI = {
     jQuery.when.apply(ajaxs).done(function () {
       StoryListActions.deletedStories(stories);
     })
-  }
+  },
+
+  suggestType: function (input, callback) {
+    jQuery.get(AppConstants.STORY_TYPE_END_POINT, {query: input}, function(data) {
+      options = jQuery.map(data['data'], function(value) {
+        return {
+          'value': value,
+          'label': value
+        }
+      });
+      callback(null, {
+        options: options
+      });
+    });
+  },
 };
 
 module.exports = StoryAPI;

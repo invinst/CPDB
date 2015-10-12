@@ -54,6 +54,7 @@ module.exports = {
   SET_ACTIVE_ALLEGATION: c++,
   RECEIVED_DOCUMENT: c++,
   DOCUMENT_REQUEST_CANCEL: c++,
+  RECEIVED_DOCUMENT_CRID: c++,
 
   QUERY_LIST_FILTERS: {
     'all': 'All',
@@ -119,6 +120,7 @@ module.exports = {
   ALIAS_API_ENDPOINT: '/api/dashboard/alias/',
   OFFICER_END_POINT: '/api/dashboard/officers/',
   STORY_END_POINT: '/api/dashboard/stories/',
+  STORY_TYPE_END_POINT: '/api/dashboard/story_types/',
   DOCUMENT_END_POINT: '/api/dashboard/documents/',
   DOCUMENT_REQUEST_END_POINT: '/api/dashboard/document-requests/',
   DOCUMENT_LINK_END_POINT: '/api/dashboard/document-link/'

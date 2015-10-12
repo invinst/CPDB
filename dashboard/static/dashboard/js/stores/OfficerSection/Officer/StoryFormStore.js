@@ -19,7 +19,10 @@ AppDispatcher.register(function(action) {
       _state.officer = action.data;
 
     case AppConstants.CLEAR_STORY_FORM:
-      _state.story = {officer: _state.officer.url};
+      _state.story = {
+        officer: _state.officer.url,
+        story_type: 'news'
+      };
       StoryFormStore.emitChange();
       break;
 
