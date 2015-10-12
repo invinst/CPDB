@@ -1,5 +1,6 @@
 var React = require('react');
 
+var Search = require('components/SessionSection/Search.react');
 var SessionsAPI = require('utils/SessionsAPI');
 var SessionList = require('components/SessionSection/SessionList.react');
 
@@ -19,7 +20,8 @@ var SessionSection = React.createClass({
           </div>
         </div>
         <div>
-          <div className='row'>
+          <div className='row'>'
+            <Search />
           </div>
           <div className='row'>
             <div id='sessions' className='col-md-12'>

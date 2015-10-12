@@ -59,6 +59,7 @@ module.exports = {
   RECEIVED_SESSIONS_DATA: c++,
   RECEIVED_MORE_SESSIONS_DATA: c++,
   LOCK_SESSION_PAGE_SCROLL: c++,
+  SEARCH_FOR_SESSION: c++,
 
   QUERY_LIST_FILTERS: {
     'all': 'All',

@@ -46,6 +46,7 @@ describe('SessionListStore', function() {
     callback(actionReceivedData);
 
     expect(SessionListStore.getState()['data']).toEqual(['data']);
+    expect(SessionListStore.getState()['locked']).toBe(false);
   });
 
   it('merge the data when loadding more from the API', function (){

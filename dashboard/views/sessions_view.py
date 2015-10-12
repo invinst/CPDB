@@ -12,4 +12,9 @@ class AdminSessionsView(viewsets.ModelViewSet):
     authentication_classes = (SessionAuthentication,)
 
     def get_queryset(self):
-        return super(AdminSessionsView, self).get_queryset().order_by('-created_at')
+        queryset = super(AdminSessionsView, self).get_queryset()
+        query = self.request.GET.get('q')
+
+        if query:
+            queryset = queryset.filter(title__contains=query)
+        return queryset.order_by('-created_at')

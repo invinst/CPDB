@@ -14,24 +14,26 @@ var SessionListStore = _.assign(Base(_state), {
 
 AppDispatcher.register(function(action) {
   switch (action.actionType) {
-  case AppConstants.RECEIVED_SESSIONS_DATA:
-    _state['data'] = action.data['results'];
-    SessionListStore.emitChange();
-    break;
+    case AppConstants.RECEIVED_SESSIONS_DATA:
+      _state['data'] = action.data['results'];
+      _state['locked'] = false;
+
+      SessionListStore.emitChange();
+      break;
 
     case AppConstants.LOCK_SESSION_PAGE_SCROLL:
       _state['locked'] = true;
       SessionListStore.emitChange();
-      break;f
+      break;
 
     case AppConstants.RECEIVED_MORE_SESSIONS_DATA:
-     if (!_.isEmpty(action.data)) {
+      if (!_.isEmpty(action.data)) {
         var data = _state['data'].concat(action.data);
         _state['data'] = data;
         _state['locked'] = false;
         SessionListStore.emitChange();
-     }
-     break;
+      }
+      break;
     default:
       break;
   }
