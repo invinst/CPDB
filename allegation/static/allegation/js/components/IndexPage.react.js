@@ -1,16 +1,13 @@
 var _ = require('lodash');
+var navigate = require('react-mini-router').navigate;
 var React = require('react');
 
 var AppConstants = require('constants/AppConstants');
 var Base = require('components/Base.react');
 var SessionStore = require('stores/SessionStore');
-var Nav = require('components/Shared/Nav.react');
-var navigate = require('react-mini-router').navigate;
 
 var IndexPage = React.createClass(_.assign(Base(SessionStore), {
-
   render: function () {
-
     return (
       <div>
         <div className='container'>
