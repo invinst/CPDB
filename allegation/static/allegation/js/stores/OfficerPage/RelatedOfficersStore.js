@@ -4,7 +4,7 @@ var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 
 
-//TODO: How to deal with duplication in OfficerPage components and HomePage components?
+//TODO: How to deal with duplication in OfficerPage components and DataToolPage components?
 var _state = {
   'activeOfficers': []
 };

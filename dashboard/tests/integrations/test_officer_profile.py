@@ -59,6 +59,55 @@ class OfficerProfileTestCase(BaseLiveTestCase):
         officer_data = Officer.objects.get(id=officer.id)
         officer_data.officer_last.should.contain(random_string)
 
+    def test_reset_officer(self):
+        officer = self.officer
+        self.go_to_officer_profile()
+        self.find("#search-officer input").send_keys(officer.officer_first)
+        self.find(".officer").click()
+        self.element_by_tagname_and_text('li', 'Edit information').click()
+        random_string = "abc"
+        
+        text_fields = [
+            'First name',
+            'Last name',
+            'Appt date',
+            'Birth year',
+            'Unit',
+            'Star',
+        ]
+        for field in text_fields:
+            element = self.element_for_label(field)
+            old = element.get_attribute('value')
+            element.send_keys(random_string)
+            element.get_attribute('value').should.equal(old + random_string)
+
+        select_fields = [
+            ('Gender', 'F' if officer.gender=='M' else 'M'),
+            ('Race', 'Black' if officer.gender=='White' else 'White'),
+            ('Rank', 'Lieutenant' if officer.rank=='Detective' else 'Detective'),            
+        ]
+        for (field, value) in select_fields:
+            element = self.element_for_label(field)
+            element.select_by_visible_text(value)
+
+        self.button("Reset").click()
+
+        original_fields = [
+            ('First name', officer.officer_first),
+            ('Last name', officer.officer_last),
+            ('Appt date', officer.appt_date),
+            ('Birth year', officer.birth_year),
+            ('Unit', officer.unit),
+            ('Star', officer.star),
+            ('Gender', officer.gender),
+            ('Race', officer.race),
+            ('Rank', officer.rank),
+        ]        
+        for (field, value) in original_fields:
+            text = self.element_for_label(field).get_attribute('value')
+            if text != '' and value is not None:
+                text.should.equal(str(value))
+
     def test_delete_story(self):
         officer = self.officer
         stories = [StoryFactory(officer=officer) for x in range(2)]

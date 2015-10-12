@@ -12,6 +12,10 @@ class HomePageTestCase(BaseLiveTestCase):
         super(HomePageTestCase, self).tearDown()
         self.allegation_category.delete()
 
+    def visit_home(self):
+        self.visit('/')
+        self.button('View Database').click()
+
     def test_see_tabs(self):
         self.visit('/#!/data-tools')
         links = self.find_all('.chart-row .nav a')
@@ -75,12 +79,63 @@ class HomePageTestCase(BaseLiveTestCase):
     def test_show_disclaimer(self):
         self.visit('/')
         self.button('View Database').click()
-        self.link('Disclaimer').click()
+        self.link('About the data').click()
         self.until(lambda: self.should_see_text('I UNDERSTAND'))
 
     def test_close_disclaimer(self):
         self.visit('/')
         self.button('View Database').click()
-        self.link('Disclaimer').click()
+        self.link('About the data').click()
         self.until(lambda: self.button('I UNDERSTAND').click())
         self.until(lambda: self.should_not_see_text('I UNDERSTAND'))
+
+    def test_complaint_detail_with_investigator_0_officer(self):
+        self.allegation.officer = None
+        self.allegation.save()
+
+        self.visit_home()
+        self.link('Categories').click()
+        self.find('.category-name').click()
+        self.check_complaint_detail_with_n_officers('hidden')
+
+    def test_complaint_detail_with_investigator_1_officer(self):
+        self.open_complaint_detail_with_class()
+        self.check_complaint_detail_with_n_officers('col-md-2')
+
+    def test_complaint_detail_with_investigator_2_officer(self):
+        AllegationFactory.create_batch(1, crid=self.allegation.crid, investigator=self.allegation.investigator)
+        self.open_complaint_detail_with_class()
+        self.check_complaint_detail_with_n_officers('col-md-4')
+
+    def test_complaint_detail_with_investigator_3_officer(self):
+        AllegationFactory.create_batch(2, crid=self.allegation.crid, investigator=self.allegation.investigator)
+        self.open_complaint_detail_with_class()
+        self.check_complaint_detail_with_n_officers('col-md-6')
+
+    def test_complaint_detail_with_investigator_more_than_3_officers(self):
+        AllegationFactory.create_batch(3, crid=self.allegation.crid, investigator=self.allegation.investigator)
+        self.open_complaint_detail_with_class()
+        self.check_complaint_detail_with_n_officers('col-md-6')
+
+    def open_complaint_detail_with_class(self):
+        self.visit_home()
+        self.find('.checkmark').click()
+
+    def check_complaint_detail_with_n_officers(self, class_name):        
+        self.find('.complaint-row .cursor').click()
+        officers_divs = self.find_all('.officers > div')
+        officers_divs[0].has_class(class_name).should.be.true
+        officers_divs[1].has_class('col-md-4').should.be.true
+
+    def test_complaint_detail_without_investigator(self):
+        self.allegation.investigator = None
+        self.allegation.save()
+
+        self.visit_home()
+        self.link('Categories').click()
+        self.find('.category-name').click()
+        self.find('.complaint-row .cursor').click()
+        officers_divs = self.find_all('.officers > div')
+
+        len(officers_divs).should.equal(1)
+        officers_divs[0].has_class('col-md-10')
