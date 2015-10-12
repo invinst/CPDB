@@ -12,7 +12,8 @@ var _state = {
     'new': true,
     'title': '',
     'hash': '',
-    'query': {}
+    'query': {},
+    'readable_query': {}
   }
 };
 

@@ -165,40 +165,35 @@ var FilterStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.MAP_REPLACE_FILTERS:
-            _initialized = false;
-
+      _initialized = false;
       FilterStore.replaceFilters(action.filters);
       break;
 
     case AppConstants.MAP_CHANGE_FILTER:
-            _initialized = false;
-
+      _initialized = false;
       update(action.key, action.value);
       FilterStore.emitChange();
       break;
 
     case AppConstants.MAP_ADD_FILTER:
-            _initialized = false;
-
+      _initialized = false;
       create(action.key, action.value);
       FilterStore.emitCreate();
       break;
 
     case AppConstants.ENTER_EMBED_MODE:
-            _initialized = false;
-
+      _initialized = false;
       FilterStore.emitDisable();
       break;
 
     case AppConstants.LEAVE_EMBED_MODE:
       _initialized = false;
-
       FilterStore.emitEnable();
       break;
 
   case AppConstants.RECEIVED_SESSION_DATA:
       FilterStore.setSession(action.data['data']['query'] || {});
-      _initialized = true;
+      _initialized = action.data['data'].readable_query || {};
       FilterStore.emitChange();
     default:
       break;

@@ -7,7 +7,7 @@ var Search = React.createClass({
       <form className="navbar-form navbar-right" role="search">
         <div id="search-wrapper">
           <input type="text" id="autocomplete" placeholder="Search by name, neighborhood, or complaint"
-                 class="ui-autocomplete-input" autocomplete="off"/>
+                 className="ui-autocomplete-input" autoComplete="off"/>
         </div>
       </form>
     )

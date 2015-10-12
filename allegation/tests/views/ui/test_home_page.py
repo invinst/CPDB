@@ -89,6 +89,20 @@ class HomePageTestCase(BaseLiveTestCase):
         self.until(lambda: self.button('I UNDERSTAND').click())
         self.until(lambda: self.should_not_see_text('I UNDERSTAND'))
 
+    def test_see_session_query_on_reload(self):
+        self.visit('/#!/data-tools')
+        officer = self.allegation.officer
+
+        self.until(lambda: self.find('.ui-autocomplete-input').send_keys(officer.officer_first))
+        self.find(".autocomplete-officer").click()
+        self.should_see_text(officer.officer_first)
+        self.should_see_text(officer.officer_last)
+
+        self.browser.refresh()
+        self.until(self.ajax_complete)
+        self.until(lambda: self.should_see_text(officer.officer_first))
+        self.should_see_text(officer.officer_last)
+
     def test_complaint_detail_with_investigator_0_officer(self):
         self.allegation.officer = None
         self.allegation.save()

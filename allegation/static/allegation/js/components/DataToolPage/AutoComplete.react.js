@@ -79,7 +79,6 @@ var AutoComplete = React.createClass({
     $(element).on('itemAdded', this.tagsChanged)
       .on('itemRemoved', this.tagsChanged);
 
-
     FilterStore.addChangeListener(this._onChange);
     FilterStore.addDisableListener(this._onDisable);
     FilterStore.addEnableListener(this._onEnable);
@@ -120,16 +119,18 @@ var AutoComplete = React.createClass({
     if (event) {
       FilterActions.changeFilter(this.props.filterkey, event.target.value);
     }
+    var filters = FilterStore.isInitialized();
 
-    if (FilterStore.isInitialized()) {
+    if (filters) {
       this.inAction = true;
-      var filters = FilterStore.getAll();
       try {
         var element = this.getDOMNode();
-      } catch(e) {};
+      } catch(e) {
+        return;
+      };
       FilterStore.setInitialized(false);
       for (var key in filters) {
-        var filter = filters[key].value;
+        var filter = filters[key];
 
         for (var i = 0; i < filter.length; i++) {
           if (filter[i].value) {
