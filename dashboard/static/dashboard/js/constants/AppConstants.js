@@ -119,6 +119,7 @@ module.exports = {
   ALIAS_API_ENDPOINT: '/api/dashboard/alias/',
   OFFICER_END_POINT: '/api/dashboard/officers/',
   STORY_END_POINT: '/api/dashboard/stories/',
+  STORY_TYPE_END_POINT: '/api/dashboard/story_types/',
   DOCUMENT_END_POINT: '/api/dashboard/documents/',
   DOCUMENT_REQUEST_END_POINT: '/api/dashboard/document-requests/',
   DOCUMENT_LINK_END_POINT: '/api/dashboard/document-link/'
