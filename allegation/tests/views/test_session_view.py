@@ -11,7 +11,7 @@ class AllegationSessionApiView(SimpleTestCase):
             'new': False,
             'hash': 'ML2dQA',
             'title': 'Chicago Police Database',
-            'query': {'filters': 'some filters'},
+            'query': {'filters': {}},
         }
 
     def call_get_session_api(self, params={}):

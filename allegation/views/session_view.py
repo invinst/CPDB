@@ -77,6 +77,7 @@ class SessionAPIView(View):
                 'new': is_new,
                 'hash': session.hash_id,
                 'query': session.query,
+                'readable_query': session.readable_query,
                 'title': session.title
             }
         }
