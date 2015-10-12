@@ -15,7 +15,7 @@ var Footer = React.createClass({
                 <ul className="list-unstyled">
                     <li className="pull-right">
                       <a className='btn btn-transparent disclaimer-btn' onClick={this.showDisclaimer}>
-                        <i className='fa fa-warning'></i> Disclaimer
+                        <i className='fa fa-warning'></i> About the data
                       </a>
                     </li>
                 </ul>

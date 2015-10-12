@@ -1,8 +1,8 @@
 var React = require('react'),
     RouterMixin = require('react-mini-router').RouterMixin;
-var CPDBApp = require('components/HomePage/CPDBApp.react');
+var DataToolPage = require('components/DataToolPage.react');
 var IndexPage = require('components/IndexPage.react');
-var OfficerPage = require('components/HomePage/OfficerPage.react');
+var OfficerPage = require('components/OfficerPage.react');
 var Router = React.createClass({
   mixins: [RouterMixin],
 
@@ -25,7 +25,7 @@ var Router = React.createClass({
 
   home: function(session, title) {
     session = _.isObject(session) ? '' : session;
-    return (<CPDBApp session={session}/>)
+    return (<DataToolPage session={session}/>)
   },
 
   message: function(text) {

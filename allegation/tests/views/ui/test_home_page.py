@@ -77,13 +77,15 @@ class HomePageTestCase(BaseLiveTestCase):
         return len(officers)
 
     def test_show_disclaimer(self):
-        self.visit_home()
-        self.link('Disclaimer').click()
+        self.visit('/')
+        self.button('View Database').click()
+        self.link('About the data').click()
         self.until(lambda: self.should_see_text('I UNDERSTAND'))
 
     def test_close_disclaimer(self):
-        self.visit_home()
-        self.link('Disclaimer').click()
+        self.visit('/')
+        self.button('View Database').click()
+        self.link('About the data').click()
         self.until(lambda: self.button('I UNDERSTAND').click())
         self.until(lambda: self.should_not_see_text('I UNDERSTAND'))
 
