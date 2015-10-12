@@ -173,7 +173,7 @@ class OfficerProfileTestCase(BaseLiveTestCase):
         self.find(".story_short_description").text.should.equal("Short Description")
         self.find(".story_content").text.should.equal("Content")
 
-        Story.objects.filter(officer=officer)[0].story_type.should.equal('news')
+        Story.objects.filter(officer=self.officer)[0].story_type.should.equal('news')
 
     def test_story_type_suggest(self):
         story = StoryFactory(story_type='Old')
