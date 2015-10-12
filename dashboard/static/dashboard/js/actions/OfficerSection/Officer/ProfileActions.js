@@ -19,6 +19,12 @@ var OfficerAction = {
       officer: officer,
       origin: origin
     });
+  },
+
+  resetForm: function () {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.RESET_OFFICER_DATA
+    });
   }
 };
 
