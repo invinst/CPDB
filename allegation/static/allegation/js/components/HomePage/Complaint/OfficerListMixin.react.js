@@ -1,6 +1,6 @@
 var React = require('react');
 
-var Officer = require('components/HomePage/Officer.react');
+var Officer = require('components/DataToolPage/Officer.react');
 
 var OfficerListMixin = {
   getOfficerCount: function () {
