@@ -7,6 +7,7 @@ var DocumentSectionStore = require('../stores/DocumentSectionStore');
 var DocumentRequestAPI = require('../utils/DocumentRequestAPI');
 var AddDocumentLinkModal = require('./DocumentSection/AddDocumentLinkModal.react');
 var AddDocumentLinkModalActions = require('../actions/DocumentSection/AddDocumentLinkModalActions');
+var DocumentListActions = require('../actions/DocumentSection/DocumentListActions');
 var _ = require('lodash');
 
 var DocumentSection = React.createClass(_.assign(Base(DocumentSectionStore), {
@@ -42,6 +43,12 @@ var DocumentSection = React.createClass(_.assign(Base(DocumentSectionStore), {
     AddDocumentLinkModalActions.show();
   },
 
+  keyEntered: function(e) {
+    if (e.keyCode == 13) {
+      DocumentRequestAPI.loadByCrid(e.target.value);
+    }
+  },
+
   render: function() {
     return (
       <div>
@@ -51,7 +58,10 @@ var DocumentSection = React.createClass(_.assign(Base(DocumentSectionStore), {
               Investigation Documents
             </h1>
           </div>
-          <div className='col-md-6 col-xs-6 text-right'>
+          <div className='col-md-4 col-xs-4 text-right'>
+            <input className='form-control crid-request-search' type="number" placeholder='Enter CRID' onKeyDown={this.keyEntered} defaultValue="" />
+          </div>
+          <div className='col-md-2 col-xs-2 text-right'>
             <button id="add-document" className="btn btn-primary" onClick={this.showAddLinkModal}>
               <i className="fa fa-link"></i> Add document
             </button>

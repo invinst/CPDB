@@ -22,7 +22,12 @@ class AdminAllegationRequestViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         query_set = super(AdminAllegationRequestViewSet, self).get_queryset()
-        query_set = query_set.filter(self.filters[self.request.GET.get('type', 'All')])
+
+        if 'crid' in self.request.GET:
+            query_set = query_set.filter(crid=self.request.GET.get('crid'))
+        else:
+            query_set = query_set.filter(self.filters[self.request.GET.get('type', 'All')])
+
         return query_set
 
     def get_object(self):
