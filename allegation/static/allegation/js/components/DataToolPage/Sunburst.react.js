@@ -163,7 +163,7 @@ var Sunburst = React.createClass({
       'selected': d
     });
 
-    if ((d == selected.parent) && selected.tagValue) {
+    if ((d.parent == selected) && selected.tagValue) {
       FilterStore.tagsInputRemoveItemObject(this.makeTag(selected.tagValue));
     }
 
