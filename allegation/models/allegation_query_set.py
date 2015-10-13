@@ -98,3 +98,10 @@ class AllegationQuerySet(models.query.QuerySet):
             return self.filter(point__distance_lt=(point, D(m=radius)))
 
         return self
+
+    def update(self, *args, **kwargs):
+        if 'document_id' in kwargs and int(kwargs['document_id']) > 0:
+            kwargs['document_requested'] = False
+            kwargs['document_pending'] = False
+
+        return super(AllegationQuerySet, self).update(*args, **kwargs)

@@ -6,9 +6,6 @@ from django.template.defaultfilters import slugify
 from allegation.models.allegation_manager import AllegationManager
 
 
-from allegation.models.allegation_manager import AllegationManager
-
-
 class User(AbstractUser):
     pass
 
@@ -345,13 +342,13 @@ class Allegation(models.Model):
     investigator_name = models.CharField(max_length=255, null=True, db_index=True)
     investigator = models.ForeignKey('common.Investigator', null=True)
     point = models.PointField(srid=4326, null=True, blank=True)
-    objects = models.GeoManager()
-    allegations = AllegationManager()
+    objects = AllegationManager()
 
     document_id = models.IntegerField(null=True)
     document_normalized_title = models.CharField(max_length=255, null=True)
     document_title = models.CharField(max_length=255, null=True)
     document_requested = models.BooleanField(default=False)
+    document_pending = models.BooleanField(default=False)
     number_of_request = models.IntegerField(default=0)
 
     @property

@@ -55,6 +55,7 @@ module.exports = {
   RECEIVED_DOCUMENT: c++,
   DOCUMENT_REQUEST_CANCEL: c++,
   RECEIVED_DOCUMENT_CRID: c++,
+  DOCUMENT_PUT_TO_PENDING: c++,
 
   QUERY_LIST_FILTERS: {
     'all': 'All',
@@ -103,8 +104,12 @@ module.exports = {
       'icon': 'exclamation-circle'
     },
     'requesting': {
-      'text':'Requesting',
+      'text': 'Requesting',
       'icon': 'circle-o-notch'
+    },
+    'pending': {
+      'text': 'Pending',
+      'icon': 'spinner'
     }
   },
 
@@ -123,5 +128,6 @@ module.exports = {
   STORY_TYPE_END_POINT: '/api/dashboard/story_types/',
   DOCUMENT_END_POINT: '/api/dashboard/documents/',
   DOCUMENT_REQUEST_END_POINT: '/api/dashboard/document-requests/',
+  DOCUMENT_REQUEST_STATUS_END_POINT: '/api/dashboard/document-request-status/',
   DOCUMENT_LINK_END_POINT: '/api/dashboard/document-link/'
 };

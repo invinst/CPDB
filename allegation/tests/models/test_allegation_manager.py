@@ -11,14 +11,14 @@ class AllegationManager(SimpleTestCase):
         self.create_allegation_with_officer_name('Kevin')
         self.create_allegation_with_officer_name('SomeThingNotKevin')
 
-        number_of_officer_by_names = Allegation.allegations.by_officer_names(['Kevin']).count()
+        number_of_officer_by_names = Allegation.objects.by_officer_names(['Kevin']).count()
         self.assertEqual(number_of_officer_by_names, 1)
 
     def test_by_latlng(self):
         self.create_allegation_with_latlng((100, 100))
         self.create_allegation_with_latlng((800, 800))
 
-        number_of_officer_by_latlng = Allegation.allegations.by_latlng([100, 100], radius=500).count()
+        number_of_officer_by_latlng = Allegation.objects.by_latlng([100, 100], radius=500).count()
         self.assertEqual(number_of_officer_by_latlng, 1)
 
     @patch('allegation.views.allegation_query_filter.AllegationQueryFilter')
@@ -36,7 +36,7 @@ class AllegationManager(SimpleTestCase):
         instance.complainant_gender.return_value = []
         instance.complainant_race.return_value = []
 
-        number_of_officer = Allegation.allegations.by_allegation_filter(mock_allegation_filter([], [])).count()
+        number_of_officer = Allegation.objects.by_allegation_filter(mock_allegation_filter([], [])).count()
         self.assertEqual(number_of_officer, 1)
 
     def create_allegation_with_latlng(self, latlng):

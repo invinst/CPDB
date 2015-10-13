@@ -39,6 +39,11 @@ AppDispatcher.register(function(action) {
       DocumentListStore.emitChange();
       break;
 
+    case AppConstants.DOCUMENT_PUT_TO_PENDING:
+      action.data.document_pending = true;
+      DocumentListStore.emitChange();
+      break;
+
     default:
       break;
   }

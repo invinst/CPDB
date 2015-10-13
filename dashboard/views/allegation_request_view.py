@@ -16,8 +16,9 @@ class AdminAllegationRequestViewSet(viewsets.ModelViewSet):
     filters = {
         "All": Q(),
         "Missing": Q(document_requested=False) & (Q(document_id=None) | Q(document_id=0)),
-        "Requesting": Q(document_requested=True) & (Q(document_id=None) | Q(document_id=0)),
-        "Fulfilled": Q(document_id__gt=0)
+        "Requesting": Q(document_pending=False) & Q(document_requested=True) & (Q(document_id=None) | Q(document_id=0)),
+        "Fulfilled": Q(document_id__gt=0),
+        "Pending": Q(document_pending=True) & Q(document_requested=True),
     }
 
     def get_queryset(self):
