@@ -70,6 +70,16 @@ var StoryForm = React.createClass(_.assign(Base(StoryFormStore), {
     return (
       <form className="form-horizontal">
         {this.generateFormElement('title', 'Title', 'story_', true)}
+        <div className="form-group">
+          <label htmlFor='story_url' className="col-lg-2 col-md-2 col-xs-2">Enter URL</label>
+          <div className="col-lg-10 col-md-10 col-xs-10">
+            <div className="input-group">
+              <input type="text" className="form-control" id='story_url' name='url'
+                     onChange={this.update('url')} value={this.value('url')} />
+              <div className="input-group-addon"><i className='fa fa-link'></i></div>
+            </div>
+          </div>
+        </div>
         {this.generateFormElement('slug', 'Slug', 'story_', true)}
         {this.generateFormMediumEditorElement('short_description', 'Short Description', 'story_', true)}
         {this.generateFormMediumEditorElement('content', 'Content', 'story_', true)}

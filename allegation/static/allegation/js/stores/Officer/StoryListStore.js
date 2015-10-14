@@ -1,32 +1,37 @@
 /**
  * Created by eastagile on 7/31/15.
  */
-var EventEmitter = require('events').EventEmitter;
-var assign = require('object-assign');
-var ajax = false;
-var CHANGE_EVENT = 'change';
+var _ = require('lodash');
 
-var stories = [];
+var AppConstants = require('../../constants/AppConstants');
+var AppDispatcher = require('../../dispatcher/AppDispatcher');
+var Base = require('stores/Base')
 
-var StoryListStore = assign({}, EventEmitter.prototype, {
-  init: function (officer) {
-    if (ajax) {
-      ajax.abort();
-    }
-    ajax = $.get('/officer/stories/', {officer: officer.id}, function (data) {
-      stories = data.stories;
-      StoryListStore.emit(CHANGE_EVENT);
-    });
-    return this.getStories();
-  },
+var _state = {
+  stories: []
+}
 
-  onChange: function(callback) {
-    this.on(CHANGE_EVENT, callback);
-  },
+var StoryListStore = _.assign(Base(_state), {
 
-  getStories: function() {
-    return stories
+});
+
+AppDispatcher.register(function (action) {
+  switch (action.actionType) {
+    case AppConstants.RECEIVE_STORIES:
+      _state.stories = action.data;
+      StoryListStore.emitChange();
+      break;
+
+    case AppConstants.SET_STORY_DOCUMENT_THUMB:
+      action.story.thumbUrl = action.thumbUrl;
+      StoryListStore.emitChange();
+      break;
+
+    default:
+      break;
   }
 });
 
 module.exports = StoryListStore;
+
+
