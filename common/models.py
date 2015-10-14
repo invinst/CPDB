@@ -47,6 +47,10 @@ class Officer(models.Model):
         return reverse("officer:detail") + "?pk=%d" % self.pk
 
     def __str__(self):
+        return self.display_name
+
+    @property
+    def display_name(self):
         return "{first} {last}".format(
             last=self.officer_last,
             first=self.officer_first
