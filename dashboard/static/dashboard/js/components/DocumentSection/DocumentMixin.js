@@ -42,6 +42,10 @@ var DocumentMixin = {
     DocumentRequestStatusAPI.putTo(allegation, 'pending');
   },
 
+  cancelPending: function (allegation) {
+    DocumentRequestStatusAPI.putTo(allegation, 'requesting');
+  },
+
   onCancelClick: function (allegation) {
     bootbox.confirm("Do you want to cancel document request for #" + allegation.crid, function (yes) {
       if (yes) {
@@ -60,6 +64,20 @@ var DocumentMixin = {
             </button>
             <button className="btn btn-primary" onClick={this.putToPending.bind(this, allegation)}>
               Requested
+            </button>
+            <button className="btn btn-cancel" onClick={this.onCancelClick.bind(this, allegation)}>
+              <i className="fa fa-times"></i> Cancel
+            </button>
+          </div>
+        );
+      case 'pending':
+        return (
+          <div>
+            <button className="btn btn-primary" onClick={this.showAddLinkModal.bind(this, allegation.crid)}>
+              <i className="fa fa-link"></i> Add
+            </button>
+            <button className="btn btn-primary" onClick={this.cancelPending.bind(this, allegation)}>
+              Cancel Pending
             </button>
             <button className="btn btn-cancel" onClick={this.onCancelClick.bind(this, allegation)}>
               <i className="fa fa-times"></i> Cancel

@@ -99,6 +99,8 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         self.assertIn(text, self.find('body').text)
 
     def should_not_see_text(self, text):
+        if not isinstance(text, str):
+            text = str(text)
         self.assertNotIn(text, self.find('body').text)
 
     def login(self, user):

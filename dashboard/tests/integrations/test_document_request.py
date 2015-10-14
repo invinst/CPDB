@@ -60,6 +60,19 @@ class DocumentRequestTestCase(BaseLiveTestCase):
         buttons = [x.text for x in self.find_all("button")]
         buttons.shouldnt.contain("Pending")
 
+    def test_cancel_pending(self):
+        allegation = AllegationFactory(document_requested=True, document_pending=True)
+
+        self.go_to_documents()
+        self.go_to_tab('Pending')
+        self.button('Cancel Pending').click()
+
+        self.until(lambda: self.should_see_text('%s document pending has been cancelled.' % allegation.crid))
+        self.find_all('.status>span')[-1].text.should.equal('Requesting')
+
+        self.go_to_tab('Requesting')
+        self.should_see_text(allegation.crid)
+
     def test_add_document_link(self):
         AllegationFactory()
 

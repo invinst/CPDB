@@ -32,6 +32,14 @@ var DocumentActions = {
       actionType: AppConstants.DOCUMENT_PUT_TO_PENDING,
       data: allegation
     });
+  },
+
+  requestPendingCancelled: function (allegation) {
+    toastr.success(allegation.crid + " document pending has been cancelled.");
+    AppDispatcher.dispatch({
+      actionType: AppConstants.DOCUMENT_PUT_TO_REQUESTING,
+      data: allegation
+    });
   }
 };
 

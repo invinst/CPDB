@@ -16,6 +16,11 @@ var DocumentRequestStatusAPI = {
         case 'pending':
           DocumentActions.requestPutToPending(allegation);
           break;
+        case 'requesting':
+          DocumentActions.requestPendingCancelled(allegation);
+          break;
+        default:
+          break;
       }
     })
   }

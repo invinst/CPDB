@@ -7,6 +7,7 @@ class DocumentRequestStatusForm(forms.Form):
     crid = forms.IntegerField(required=True)
     status = forms.ChoiceField(required=True, choices=[
         ['pending', 'pending'],
+        ['requesting', 'requesting'],
     ])
 
     def clean_crid(self):
@@ -34,4 +35,9 @@ class DocumentRequestStatusForm(forms.Form):
 
     def process(self):
         crid = self.cleaned_data['crid']
-        Allegation.objects.filter(crid=crid).update(document_pending=True)
+        status = self.cleaned_data['status']
+
+        if status == 'pending':
+            Allegation.objects.filter(crid=crid).update(document_pending=True)
+        elif status == 'requesting':
+            Allegation.objects.filter(crid=crid).update(document_pending=False)

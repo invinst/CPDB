@@ -56,6 +56,7 @@ module.exports = {
   DOCUMENT_REQUEST_CANCEL: c++,
   RECEIVED_DOCUMENT_CRID: c++,
   DOCUMENT_PUT_TO_PENDING: c++,
+  DOCUMENT_PUT_TO_REQUESTING: c++,
 
   QUERY_LIST_FILTERS: {
     'all': 'All',

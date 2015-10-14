@@ -99,3 +99,14 @@ class DocumentRequestStatusViewTestCase(SimpleTestCase):
         response.status_code.should.equal(200)
 
         len(Allegation.objects.filter(crid=allegation.crid, document_requested=True, document_pending=True)).should.equal(1)
+
+    def test_set_requesting(self):
+        allegation = AllegationFactory()
+
+        response = self.client.post('/api/dashboard/document-request-status/', {
+            'crid': allegation.crid,
+            'status': 'requesting'
+        })
+        response.status_code.should.equal(200)
+
+        len(Allegation.objects.filter(crid=allegation.crid, document_requested=True)).should.equal(1)
