@@ -8,8 +8,10 @@ var Base = require('../Base.react');
 var SessionsAPI = require('utils/SessionsAPI');
 var SessionsActions = require('actions/SessionSection/SessionsActions');
 var SessionListStore = require('stores/SessionSection/SessionListStore');
+var SessionHistory = require('components/SessionSection/SessionHistory.react');
 
 var SessionList = React.createClass(_.assign(Base(SessionListStore), {
+  // TODO: Consider moving this to Mixins
   _onScroll: function(e) {
     var windowHeight = window.innerHeight;
     var toBottom = jQuery(document).height() - windowHeight - jQuery(window).scrollTop();
@@ -27,17 +29,31 @@ var SessionList = React.createClass(_.assign(Base(SessionListStore), {
 
   renderSessionRow: function() {
     var that = this;
-    return this.state.data.map(function(x) {
-      return (
-        <tr className='session-row'>
+    var rows = [];
+
+    this.state.data.forEach(function(x) {
+      var id = 'session-row-' + x.hash_id;
+      var dataTarget = '#' + id;
+      rows.push(
+        <tr className='session-row pointer' data-toggle='collapse' data-target={dataTarget}>
           <td>{x.hash_id}</td>
           <td>{x.title}</td>
           <td>{_(x.query.filters).values().pluck('value').flatten().size()}</td>
           <td>{x.ip}</td>
           <td>{x.user_agent}</td>
         </tr>
-      )
+      );
+
+      rows.push(
+        <tr className='collapse' id={id}>
+          <td colSpan='5'>
+            <SessionHistory suggestions={x.suggestion_logs} filters={x.filter_logs}/>
+          </td>
+        </tr>
+      );
     });
+
+    return rows;
   },
 
   render: function() {

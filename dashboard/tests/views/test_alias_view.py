@@ -41,7 +41,7 @@ class AliasTestCase(SimpleTestCase):
     def test_get_aliases_should_return_all_aliases(self):
         alias = 'alias'
         AliasFactory(alias=alias)
-        SuggestionLogFactory(query=alias, num_suggestions=1)
+        SuggestionLogFactory(search_query=alias, num_suggestions=1)
 
         response, data = self.get_aliases()
 

@@ -64,6 +64,7 @@ class SessionAPIView(View):
         session.ip = get_client_ip(request)
         session.user_agent = request.user_agent
         session.save()
+        request.session['current_session'] = session.hash_id
         self.update_owned_session(request, session)
 
         return session

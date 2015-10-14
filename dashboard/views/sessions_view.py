@@ -13,8 +13,9 @@ class AdminSessionsView(viewsets.ModelViewSet):
 
     def get_queryset(self):
         queryset = super(AdminSessionsView, self).get_queryset()
-        query = self.request.GET.get('q')
+        query = self.request.GET.get('q', '')
 
         if query:
-            queryset = queryset.filter(title__contains=query)
+            queryset = queryset.filter(title__icontains=query.lower())
+
         return queryset.order_by('-created_at')

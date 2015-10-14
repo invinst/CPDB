@@ -1,4 +1,5 @@
 from common.tests.core import SimpleTestCase
+from search.factories import SuggestionLogFactory, FilterLogFactory
 from share.factories import SessionFactory
 from share.models import Session
 
@@ -32,3 +33,14 @@ class SessionViewTestCase(SimpleTestCase):
         response, data = self.get_sessions(params)
         response.status_code.should.equal(200)
         len(data['results']).should.be(1)
+
+    def test_get_details_with_session(self):
+        session = SessionFactory()
+        suggestion = SuggestionLogFactory(session_id=session.hash_id)
+        filter_log = FilterLogFactory(session_id=session.hash_id)
+
+        response, data = self.get_sessions()
+        response.status_code.should.equal(200)
+        len(data['results']).should.be(1)
+        len(data['results'][0]['suggestion_logs']).should.be(1)
+        len(data['results'][0]['filter_logs']).should.be(1)

@@ -18,7 +18,7 @@ class SuggestionLogFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = SuggestionLog
 
-    query= factory.Sequence(lambda n: fake.name())
+    search_query= factory.Sequence(lambda n: fake.name())
     num_suggestions = factory.Sequence(lambda n: abs(fake.pyint()))
     session_id = factory.Sequence(lambda n: fake.name())
 
@@ -26,6 +26,6 @@ class FilterLogFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = FilterLog
 
-    query = factory.Sequence(lambda n: fake.name())
+    tag_name = factory.Sequence(lambda n: fake.name())
     num_allegations = factory.Sequence(lambda n: abs(fake.pyint()))
     session_id = factory.Sequence(lambda n: fake.name())
