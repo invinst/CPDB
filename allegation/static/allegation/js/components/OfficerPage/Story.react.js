@@ -23,7 +23,7 @@ var Story = React.createClass({
     return (
       <div className="col-md-6 story">
         <h5 className="title">
-          <a href="{story.absolute_url}">{story.title}</a>
+          <a href={story.absolute_url}>{story.title}</a>
         </h5>
         <div className="date">{story.created_date}</div>
         <div className="short-description">{description} {readmore}</div>
