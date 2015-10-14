@@ -6,6 +6,7 @@ var Base = require('stores/Base');
 var FilterStore = require('../stores/FilterStore');
 var MapStore = require('../stores/MapStore');
 var OfficerListStore = require('../stores/OfficerListStore');
+var OfficerPresenter = require('presenters/OfficerPresenter');
 
 var _state = {
   'data': {
@@ -14,7 +15,8 @@ var _state = {
     'hash': '',
     'query': {},
     'readable_query': {}
-  }
+  },
+  'siteTitle': AppConstants.DEFAULT_SITE_TITLE
 };
 
 var SessionStore = _.assign(Base(_state), {
@@ -40,17 +42,25 @@ AppDispatcher.register(function (action) {
     var data = action.data.data;
     data['title'] = data['title'] || AppConstants.DEFAULT_SITE_TITLE;
     _state['data'] = data;
+    _state.siteTitle = data.title;
     SessionStore.emitChange();
     break;
 
     case AppConstants.UPDATE_TITLE:
       var title = action.title;
       _state['data']['title'] = title;
+      _state.siteTitle = title;
+      SessionStore.emitChange();
+      break;
+
+    case AppConstants.RECEIVED_OFFICER_DATA:
+      _state.siteTitle = OfficerPresenter(action.data.officer).displayName.capitalize();
       SessionStore.emitChange();
       break;
 
     case AppConstants.RECEIVED_UPDATED_SESSION_DATA:
       _state['data'] = action.data.data;
+      _state.siteTitle = _state['data'].title;
       SessionStore.emitChange();
       break;
 
