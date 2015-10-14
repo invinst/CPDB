@@ -14,7 +14,7 @@ var Logo = React.createClass({
 
   _onClick: function(e) {
     e.preventDefault();
-    var url = ['/data-tools', SessionStore.getHash(), SessionStore.getTitle()].join('/');
+    var url = ['/data-tools', SessionStore.getHash()].join('/');
     navigate(url);
   }
 });
