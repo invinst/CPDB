@@ -153,3 +153,32 @@ class HomePageTestCase(BaseLiveTestCase):
 
         len(officers_divs).should.equal(1)
         officers_divs[0].has_class('col-md-10')
+
+    def test_sunburst(self):
+        us = 'Unsustained'
+        ns = 'Not Sustained'
+        AllegationFactory(final_finding='NS')
+
+        self.visit_home()
+        self.browser.implicitly_wait(0)
+        self.element_by_classname_and_text('tag', us).shouldnt.be.ok
+        self.element_by_classname_and_text('tag', ns).shouldnt.be.ok
+        self.browser.implicitly_wait(10)
+
+        self.element_by_tagname_and_text('td', us).click()
+        self.until(lambda: self.element_by_classname_and_text('tag', us).should.be.ok)
+        self.browser.implicitly_wait(0)
+        self.element_by_classname_and_text('tag', ns).shouldnt.be.ok
+        self.browser.implicitly_wait(10)
+
+        self.element_by_tagname_and_text('td', ns).click()
+        self.until(lambda: self.element_by_classname_and_text('tag', ns).should.be.ok)
+        self.browser.implicitly_wait(0)
+        self.element_by_classname_and_text('tag', us).shouldnt.be.ok
+        self.browser.implicitly_wait(10)
+
+        self.element_by_tagname_and_text('td', us).click()
+        self.until(lambda: self.element_by_classname_and_text('tag', us).should.be.ok)
+        self.browser.implicitly_wait(0)
+        self.element_by_classname_and_text('tag', ns).shouldnt.be.ok
+        self.browser.implicitly_wait(10)

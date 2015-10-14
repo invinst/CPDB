@@ -4,8 +4,8 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django_extensions.db.fields.json import JSONField
 from hashids import Hashids
-from common.models import Officer, AllegationCategory, Investigator, GENDER_DICT, OUTCOME_TEXT_DICT, \
-    FINAL_FINDING_TEXT_DICT,Area
+from common.models import Officer, AllegationCategory, Investigator, Area
+from common.models import GENDER_DICT, OUTCOME_TEXT_DICT, FINAL_FINDING_TEXT_DICT, FINDINGS_DICT, OUTCOMES_DICT
 
 hash_obj = Hashids(settings.SECRET_KEY, min_length=6)
 
@@ -19,6 +19,8 @@ OTHER_KEYS = {
     'complainant_gender': GENDER_DICT,
     'outcome_text': OUTCOME_TEXT_DICT,
     'final_finding_text': FINAL_FINDING_TEXT_DICT,
+    'final_finding': FINDINGS_DICT,
+    'final_outcome': OUTCOMES_DICT,
 }
 
 

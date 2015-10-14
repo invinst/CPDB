@@ -152,6 +152,7 @@ OUTCOMES = [
     ['800', 'Resigned'],
     ['900', 'Penalty Not Served'],
 ]
+OUTCOMES_DICT = dict(OUTCOMES)
 
 UNITS = [
     ['001', 'District 1 - Central'],
@@ -308,7 +309,7 @@ FINDINGS = [
     ['NA', 'No Affidavit'],
     ['DS', 'Discharged']
 ]
-
+FINDINGS_DICT = dict(FINDINGS)
 
 OUTCOME_TEXT = [
     ['any discipline', 'Any discipline'],
