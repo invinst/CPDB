@@ -42,7 +42,6 @@ var Story = React.createClass(_.assign(Base(StoryStore), {
         <h5 className="title">
           <a href="{story.absolute_url}">{story.title}</a>
         </h5>
-        <div className="date">{story.created_date}</div>
         <div className="short-description" dangerouslySetInnerHTML={{__html: description + ' ' + readmore}}></div>
         { this.renderDocumentLink() }
       </div>

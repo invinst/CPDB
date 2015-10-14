@@ -69,7 +69,6 @@ class OfficerDetailPageTestCase(BaseLiveTestCase):
         self.should_see_texts([
             story.title,
             story.short_description,
-            created_date,
         ])
         self.find('.document-url').get_attribute('href').should.equal(TEST_DOCUMENT_URL)
         self.find('.document-thumbnail').should.be.ok
