@@ -16,11 +16,6 @@ var Nav = React.createClass({
           <Logo />
         </div>
         <div className="navbar-collapse collapse" id="navbar-main">
-          <ul className="nav navbar-nav">
-            <li className='site-title'>
-              <SiteTitle changable={false}/>
-            </li>
-          </ul>
           <Back />
         </div>
       </div>

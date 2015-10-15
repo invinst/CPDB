@@ -1,3 +1,5 @@
+import unittest
+
 from allegation.factories import OfficerFactory
 from common.models import Officer
 from common.tests.core import BaseLiveTestCase
@@ -35,6 +37,7 @@ class OfficerProfileTestCase(BaseLiveTestCase):
         self.should_see_text(officer.gender)
         self.should_see_text(officer.race)
 
+    @unittest.skip("Disabled feature")
     def test_update_officer(self):
         officer = self.officer
         self.go_to_officer_profile()
@@ -60,6 +63,7 @@ class OfficerProfileTestCase(BaseLiveTestCase):
         officer_data = Officer.objects.get(id=officer.id)
         officer_data.officer_last.should.contain(random_string)
 
+    @unittest.skip("Disabled feature")
     def test_reset_officer(self):
         officer = self.officer
         self.go_to_officer_profile()
