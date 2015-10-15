@@ -177,7 +177,24 @@ class OfficerProfileTestCase(BaseLiveTestCase):
         self.find(".story_short_description").text.should.equal("Short Description")
         self.find(".story_content").text.should.equal("Content")
 
-        Story.objects.filter(officer=self.officer)[0].story_type.should.equal('news')
+        story = Story.objects.filter(officer=self.officer)[0]
+        story.story_type.should.equal('news')
+        story.created_date.should.be.ok
+
+    def test_add_story_with_date(self):
+        self.go_to_officer_profile()
+        self.go_to_single_officer(self.officer)
+
+        date = '1997-10-15'
+        self.add_story(
+            'Title',
+            'Short Description',
+            'Content',
+            slug='Slug',
+            date=date
+        )
+
+        len(Story.objects.filter(officer=self.officer, created_date=date)).should.equal(1)
 
     def test_story_type_suggest(self):
         story = StoryFactory(story_type='Old')
@@ -232,12 +249,13 @@ class OfficerProfileTestCase(BaseLiveTestCase):
         self.find("#search-officer input").send_keys(officer.officer_first)
         self.find(".officer").click()
 
-    def add_story(self, title, desc, content, url='', slug=''):
+    def add_story(self, title, desc, content, url='', slug='', date=''):
         self.element_for_label('Title').send_keys(title)
         self.fill_medium_editor(".story_short_description", desc)
         self.fill_medium_editor(".story_content", content)
         self.element_for_label('Enter URL').send_keys(url)
         self.element_for_label('Slug').send_keys(slug)
+        self.element_for_label('Date').send_keys(date)
         self.button("Save").click()
         self.until(self.ajax_complete)
 

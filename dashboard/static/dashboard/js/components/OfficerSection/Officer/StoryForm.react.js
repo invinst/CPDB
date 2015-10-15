@@ -9,6 +9,7 @@ var StoryFormStore = require('../../../stores/OfficerSection/Officer/StoryFormSt
 var StoryFormActions = require('../../../actions/OfficerSection/Officer/StoryFormActions');
 var StoryAPI = require('../../../utils/StoryAPI');
 global.jQuery = require('jquery');
+require('bootstrap-datepicker');
 
 
 var StoryForm = React.createClass(_.assign(Base(StoryFormStore), {
@@ -31,6 +32,8 @@ var StoryForm = React.createClass(_.assign(Base(StoryFormStore), {
     jQuery(this.getDOMNode()).validate({
       ignore: []
     });
+
+    this.addDatepicker();
   },
 
   value: function (field) {
@@ -66,6 +69,16 @@ var StoryForm = React.createClass(_.assign(Base(StoryFormStore), {
     StoryFormActions.updateField(field, text);
   },
 
+  addDatepicker: function () {
+    jQuery("#created_date").datepicker({
+      format: 'yyyy-mm-dd'
+    }).on('changeDate', this.update('created_date'));
+
+    jQuery("#created_date_calendar").click(function () {
+      jQuery("#created_date").datepicker("show");
+    });
+  },
+
   render: function() {
     return (
       <form className="form-horizontal">
@@ -89,6 +102,17 @@ var StoryForm = React.createClass(_.assign(Base(StoryFormStore), {
             <Select asyncOptions={StoryAPI.suggestType} name='story_type' onChange={this.updateStoryType} value={this.value('story_type')}
                     allowCreate={true} addLabelText="New type: {label}" />
             <input type='hidden' value={this.value('story_type')} required />
+          </div>
+        </div>
+        <div className="form-group">
+          <label htmlFor="created_date" className="col-lg-2 col-md-2 col-xs-2">Date</label>
+          <div className="col-lg-10 col-md-10 col-xs-10">
+            <div className="input-group">
+              <input type="text" className="form-control" id="created_date" name="created_date"
+                     onChange={this.update("created_date")} value={this.value('created_date')} />
+              <div className="input-group-addon"><i className="fa fa-calendar" id="created_date_calendar"></i></div>
+            </div>
+            <label htmlFor="created_date" generated="true" className="error"></label>
           </div>
         </div>
         <div className="form-group actions">
