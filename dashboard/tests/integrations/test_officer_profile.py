@@ -238,6 +238,6 @@ class OfficerProfileTestCase(BaseLiveTestCase):
         self.until(self.ajax_complete)
 
     def fill_medium_editor(self, selector, keys):
-        self.find(selector).send_keys('')
+        self.find(selector).click()
         self.sleep(.5)
         self.find(selector).send_keys(keys)
