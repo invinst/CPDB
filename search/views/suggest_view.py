@@ -1,5 +1,6 @@
 from collections import OrderedDict
 import json
+from django.core.cache import cache
 
 from django.http.response import HttpResponseBadRequest, HttpResponse
 from django.views.generic.base import View
@@ -30,15 +31,20 @@ class SuggestView(View):
 
     def get(self, request):
         q = request.GET.get('term', '').lower()
-        if not q:
-            return HttpResponseBadRequest()
+        key = 'search%s' % q
+        ret = cache.get(key)
+        if not ret:
+            if not q:
+                return HttpResponseBadRequest()
 
-        ret = Suggestion().make_suggestion(q)
-        if len(q) > 2:
-            self.track_suggestions_query(ret)
+            ret = Suggestion().make_suggestion(q)
+            if len(q) > 2:
+                self.track_suggestions_query(ret)
 
-        ret = self.to_jquery_ui_autocomplete_format(ret)
-        ret = json.dumps(ret)
+            ret = self.to_jquery_ui_autocomplete_format(ret)
+            ret = json.dumps(ret)
+            cache.set(key, ret, 86400)
+
         return HttpResponse(ret)
 
     def to_jquery_ui_autocomplete_format(self, data):
