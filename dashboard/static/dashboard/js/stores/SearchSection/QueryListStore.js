@@ -23,6 +23,7 @@ var QueryListStore = _.assign(Base(_state), {
 AppDispatcher.register(function(action) {
   switch (action.actionType) {
   case AppConstants.RECEIVED_SEARCH_RESULTS_DATA:
+    QueryListStore.updateState('page', 1);
     QueryListStore.updateState('data', action.data);
     QueryListStore.emitChange();
     break;
