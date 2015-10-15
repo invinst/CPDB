@@ -37,7 +37,7 @@ class AdminQueryDataApi(View):
             page = int(request.GET.get('page', 0))
             start = page * self.PER_PAGE
             q = request.GET.get('q', '').lower()
-            order, order_by = self.order_by(request.GET.get('order_by') or 'search_query')
+            order, order_by = self.order_by(request.GET.get('order_by') or '-updated_at')
             additional_condition = self.num_suggestion_condition(request.GET.get('fail'))
 
             cursor = connection.cursor()
