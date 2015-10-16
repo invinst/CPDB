@@ -34,13 +34,13 @@ var Story = React.createClass(_.assign(Base(StoryStore), {
     if (description.length >= 300) {
       description = description.substr(0, 300) + '...';
       readmore = (
-        <a href="{story.absolute_url}">Read more</a>
+        <a href={story.absolute_url}>Read more</a>
       );
     }
     return (
       <div className="col-md-6 story">
         <h5 className="title">
-          <a href="{story.absolute_url}">{story.title}</a>
+          <a href={story.absolute_url}>{story.title}</a>
         </h5>
         <div className="short-description" dangerouslySetInnerHTML={{__html: description + ' ' + readmore}}></div>
         { this.renderDocumentLink() }
