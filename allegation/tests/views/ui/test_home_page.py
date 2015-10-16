@@ -10,7 +10,7 @@ class IntegrationTestHelperMixin(object):
         self.button('View Database').click()
 
 
-class HomePageTestCase(BaseLiveTestCase):
+class HomePageTestCase(BaseLiveTestCase, IntegrationTestHelperMixin):
     def setUp(self):
         self.allegation_category = AllegationCategoryFactory()
         self.allegation = AllegationFactory(cat=self.allegation_category)

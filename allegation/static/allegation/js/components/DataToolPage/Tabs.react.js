@@ -115,7 +115,7 @@ var Tabs = React.createClass({
           <div role="tabpanel" className="tab-pane" id="categories">
             <Summary tabs={this} />
           </div>
-          <div role='tabpanel' classname='tab-pane' id='race-gender'>
+          <div role='tabpanel' className='tab-pane' id='race-gender'>
             <RaceGenderTab />
           </div>
         </div>
