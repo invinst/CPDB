@@ -4,8 +4,11 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django_extensions.db.fields.json import JSONField
 from hashids import Hashids
+
 from common.models import Officer, AllegationCategory, Investigator, Area
 from common.models import GENDER_DICT, OUTCOME_TEXT_DICT, FINAL_FINDING_TEXT_DICT, FINDINGS_DICT, OUTCOMES_DICT
+from search.models import SuggestionLog, FilterLog
+
 
 hash_obj = Hashids(settings.SECRET_KEY, min_length=6)
 
@@ -29,10 +32,22 @@ class Session(models.Model):
     query = JSONField()
     share_from = models.ForeignKey('share.Session', null=True, default=None)
     share_count = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    ip = models.CharField(default='', max_length=40, null=True) # we could handle IPv6 as well
+    user_agent = models.CharField(max_length=255, null=True)
 
     @property
     def hash_id(self):
         return hash_obj.encode(self.id)
+
+    def get_suggestion_logs(self):
+        suggestion_logs = SuggestionLog.objects.filter(session_id=self.hash_id)
+
+        return suggestion_logs
+
+    def get_filter_logs(self):
+        filter_logs = FilterLog.objects.filter(session_id=self.hash_id)
+        return filter_logs
 
     @staticmethod
     def id_from_hash(hash_id):
