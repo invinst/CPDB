@@ -1,3 +1,5 @@
+from selenium.webdriver.common.keys import Keys
+
 from common.models import AllegationCategory
 from common.tests.core import *
 from allegation.factories import AllegationFactory, AllegationCategoryFactory
@@ -153,3 +155,12 @@ class HomePageTestCase(BaseLiveTestCase):
 
         len(officers_divs).should.equal(1)
         officers_divs[0].has_class('col-md-10')
+
+    def test_sticky_footer(self):
+        self.visit_home()
+        self.is_displayed_in_viewport('.sticky-footer').should.be.false
+
+        self.find('body').send_keys(Keys.PAGE_DOWN)
+        self.until(lambda: self.is_displayed_in_viewport('.sticky-footer').should.be.true)
+        self.find('body').send_keys(Keys.PAGE_UP)
+        self.until(lambda: self.is_displayed_in_viewport('.sticky-footer').should.be.true)

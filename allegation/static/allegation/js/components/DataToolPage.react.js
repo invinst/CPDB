@@ -25,7 +25,24 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
       var target = $(this).data('target');
       var top = $(target).offset().top - 100;
       $("html, body").animate({scrollTop: top}, 500);
-    })
+    });
+
+    this.initStickyFooter();
+  },
+
+  initStickyFooter: function () {
+    function setStickyFooter() {
+      var top = $(window).scrollTop();
+      var screenHeight = $(window).height() ;
+      var documentHeight = $(document).height();
+
+      var isSetStickyFooter = top >= screenHeight || documentHeight - top - screenHeight < 100;
+      if(isSetStickyFooter) {
+        $('body').addClass('stick-footer-bottom');
+        $(window).off('scroll', setStickyFooter);
+      }
+    }
+    $(window).on('scroll', setStickyFooter);
   },
 
   render: function () {
@@ -50,7 +67,8 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
             <div id='officer-cards'><OfficerList /></div>
             <div id='complaint-list'><ComplaintSection /></div>
           </div>
-          <div>
+
+          <div className='sticky-footer'>
             <div id='EmbedBar' className="row">
               <div className="col-md-12">
                 <div className='container'>
@@ -58,10 +76,9 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
                 </div>
               </div>
             </div>
+            <Footer />
           </div>
-        </div>
-        <div className='container-fluid'>
-          <Footer />
+
         </div>
         <Disclaimer />
       </div>
