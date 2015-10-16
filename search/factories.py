@@ -2,7 +2,7 @@ import factory
 from faker import Faker
 
 from search.models.alias import Alias
-from search.models.suggestion import SuggestionLog
+from search.models.suggestion import SuggestionLog, FilterLog
 
 fake = Faker()
 
@@ -18,7 +18,14 @@ class SuggestionLogFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = SuggestionLog
 
-    query= factory.Sequence(lambda n: fake.name())
+    search_query= factory.Sequence(lambda n: fake.name())
     num_suggestions = factory.Sequence(lambda n: abs(fake.pyint()))
     session_id = factory.Sequence(lambda n: fake.name())
-    ip = factory.Sequence(lambda n: '0.0.0.0')
+
+class FilterLogFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = FilterLog
+
+    tag_name = factory.Sequence(lambda n: fake.name())
+    num_allegations = factory.Sequence(lambda n: abs(fake.pyint()))
+    session_id = factory.Sequence(lambda n: fake.name())

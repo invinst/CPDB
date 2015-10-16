@@ -7,8 +7,8 @@ var _state = {
   data: [],
   locked: false,
   page: 1,
-  sortBy: '',
-  order: 1
+  sortBy: 'updated_at',
+  order: -1
 };
 
 var QueryListStore = _.assign(Base(_state), {
