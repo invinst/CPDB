@@ -6,7 +6,7 @@ var FilterStore = require('stores/FilterStore');
 var Sunburst = require('components/DataToolPage/Sunburst.react');
 var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
 var Summary = require('components/DataToolPage/Summary.react');
-
+var RaceGenderTab = require('components/DataToolPage/RaceGenderTab.react');
 
 var Tabs = React.createClass({
   mixins: [EmbedMixin],
@@ -96,8 +96,8 @@ var Tabs = React.createClass({
               Categories
             </a>
           </li>
-          <li role="presentation" className="disabled">
-            <a href="#" aria-controls="profile" role="tab">
+          <li role="presentation">
+            <a href="javascript:void(0)" aria-controls='profile' aria-control='race-gender' role='tab' data-target='#race-gender' className='pointer' data-toggle='tab'>
               Race &amp; Gender
             </a>
           </li>
@@ -114,6 +114,9 @@ var Tabs = React.createClass({
           </div>
           <div role="tabpanel" className="tab-pane" id="categories">
             <Summary tabs={this} />
+          </div>
+          <div role='tabpanel' classname='tab-pane' id='race-gender'>
+            <RaceGenderTab />
           </div>
         </div>
       </div>
