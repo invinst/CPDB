@@ -157,6 +157,7 @@ class HomePageTestCase(BaseLiveTestCase):
         officers_divs[0].has_class('col-md-10')
 
     def test_sticky_footer(self):
+        self.browser.set_window_size(width=1200, height=800)
         self.visit_home()
         self.is_displayed_in_viewport('.sticky-footer').should.be.false
 
