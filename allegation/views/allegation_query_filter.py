@@ -1,4 +1,5 @@
 from django.db.models.query_utils import Q
+from common.constants import FOIA_START_DATE
 from common.models import AllegationCategory, DISCIPLINE_CODES, NO_DISCIPLINE_CODES, Area
 
 FILTERS = [
@@ -20,9 +21,10 @@ FILTERS = [
     'officer__race',
     'investigator',
     'cat__category',
-    'city'
+    'city',
 ]
 DATE_FILTERS = ['incident_date_only']
+DATA_SOURCE_FILTERS = ['data_source']
 
 
 # FIXME: Add more test for this one
@@ -55,6 +57,13 @@ class AllegationQueryFilter(object):
 
         elif value:
             self.filters[field] = value[0]
+
+    def add_data_source_filter(self, field):
+        data_source = self.query_dict.get(field, "")
+        if data_source.lower() == 'pre foia':
+            self.conditions.append(Q(incident_date__lt=FOIA_START_DATE))
+        elif data_source.lower() == 'foia':
+            self.conditions.append(Q(incident_date__gte=FOIA_START_DATE))
 
     def add_date_filter(self, field):
         condition = Q()
@@ -100,6 +109,9 @@ class AllegationQueryFilter(object):
 
         for date_filter in DATE_FILTERS:
             self.add_date_filter(date_filter)
+
+        for data_source_filter in DATA_SOURCE_FILTERS:
+            self.add_data_source_filter(data_source_filter)
 
         return self.conditions, self.filters
 

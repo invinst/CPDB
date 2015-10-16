@@ -9,15 +9,14 @@ from allegation.tests.views.base import AllegationApiTestBase
 from common.models import Allegation, Officer, Area, RACES, DISCIPLINE_CODES, NO_DISCIPLINE_CODES
 
 
-
-class AllegationApiViewTestCase(AllegationApiTestBase):
-    # TODO: Add more tests to confirm about the number of results
+class AllegationFilterMixin(object):
     def fetch_allegations(self, **params):
         response = self.client.get('/api/allegations/', params)
         data = json.loads(response.content.decode())
         allegations = data['allegations']
         return allegations
 
+class AllegationApiViewTestCase(AllegationFilterMixin, AllegationApiTestBase):
     def test_area_data_filter(self):
         area = AreaFactory()
         response = self.client.get('/api/areas/', {'type': area.type})
