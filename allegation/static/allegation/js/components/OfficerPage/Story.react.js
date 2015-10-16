@@ -1,6 +1,7 @@
 var React = require('react');
 var _ = require('lodash');
 var moment = require('moment');
+var classnames = require('classnames');
 
 var Base = require('components/Base.react')
 var StoryStore =require('stores/OfficerPage/StoryStore');
@@ -41,10 +42,10 @@ var Story = React.createClass(_.assign(Base(StoryStore), {
       readmore = '<a href="' + story.url + '">Read more</a>';
     }
 
-    var descCol = 'col-md-12';
-    if (this.props.story.thumbUrl) {
-      descCol = 'col-md-10'
-    }
+    var descCol = classnames({
+      'col-md-12': !this.props.story.thumbUrl,
+      'col-md-10': this.props.story.thumbUrl
+    });
 
     return (
       <div className={descCol}>
