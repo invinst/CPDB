@@ -25,7 +25,7 @@ class AdminAliasApi(View):
             page = int(request.GET.get('page', 0))
             start = page * self.PER_PAGE
             end = start + self.PER_PAGE
-            order_by = request.GET.get('order_by') or 'alias'
+            order_by = request.GET.get('order_by') or '-updated_at'
 
             if order_by.replace('-', '') not in self.SUPPORTED_SORT_ORDER:
                 raise Exception('Unknown sort order')

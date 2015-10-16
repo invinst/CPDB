@@ -40,7 +40,7 @@ var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
     }
     return (
       <div>
-        <Nav dataLink={true} />
+        <Nav />
         <div id='officer-profile'>
           <div className="map-row">
             <div className="container">

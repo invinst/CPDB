@@ -38,14 +38,14 @@ class QueryDataTestCase(SimpleTestCase):
         data['data'][0]['num_suggestions'].should.equal(0)
 
     def test_search_by_query_call(self):
-        SuggestionLogFactory(query='query')
-        SuggestionLogFactory(query='other')
+        SuggestionLogFactory(search_query='query')
+        SuggestionLogFactory(search_query='other')
         q = 'qu'
 
         response, data = self.call_query_data_api({'q': q})
 
         len(data['data']).should.equal(1)
-        data['data'][0]['query'].should.contain(q)
+        data['data'][0]['search_query'].should.contain(q)
 
     def test_bad_request_with_invalid_sort_order(self):
         response, data = self.call_query_data_api({'order_by': 'abcxyz'})
@@ -53,13 +53,13 @@ class QueryDataTestCase(SimpleTestCase):
         data.should.contain('error')
 
     def test_sort_order(self):
-        SuggestionLogFactory.create_batch(query='query1', size=2)
-        SuggestionLogFactory.create_batch(query='query2', size=4)
-        SuggestionLogFactory.create_batch(query='query3', size=3)
+        SuggestionLogFactory.create_batch(search_query='query1', size=2)
+        SuggestionLogFactory.create_batch(search_query='query2', size=4)
+        SuggestionLogFactory.create_batch(search_query='query3', size=3)
 
         response, data = self.call_query_data_api({'order_by': '-num_usage'})
         data = data['data']
 
-        data[0]['query'].should.equal('query2')
-        data[1]['query'].should.equal('query3')
-        data[2]['query'].should.equal('query1')
+        data[0]['search_query'].should.equal('query2')
+        data[1]['search_query'].should.equal('query3')
+        data[2]['search_query'].should.equal('query1')

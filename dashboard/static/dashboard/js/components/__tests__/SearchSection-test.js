@@ -2,7 +2,7 @@
 
 jest.autoMockOff();
 
-describe('PageTitle', function () {
+describe('SearchSection', function () {
   var React = require('react/addons');
   var TestUtils = React.addons.TestUtils;
   var SearchSection = require('../SearchSection.react');

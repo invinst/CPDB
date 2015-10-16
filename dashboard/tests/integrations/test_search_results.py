@@ -25,7 +25,7 @@ class SearchResultTestCase(BaseLiveTestCase):
         results = self.find_all("#queries .query")
 
         len(results).shouldnt.equal(0)
-        self.should_see_text(log.query)
+        self.should_see_text(log.search_query)
         self.should_see_text(log.num_suggestions)
         self.should_see_text(1)
 
@@ -58,8 +58,8 @@ class SearchResultTestCase(BaseLiveTestCase):
         log1 = SuggestionLogFactory(num_suggestions=1)
         self.go_to_search_result()
         self.element_by_tagname_and_text('li', "Fail attempts").click()
-        self.until(lambda: self.should_see_text(log.query))
-        self.should_not_see_text(log1.query)
+        self.until(lambda: self.should_see_text(log.search_query))
+        self.should_not_see_text(log1.search_query)
 
     def test_filter_alias(self):
         log = SuggestionLogFactory(num_suggestions=0)
@@ -67,7 +67,7 @@ class SearchResultTestCase(BaseLiveTestCase):
         self.go_to_search_result()
         self.element_by_tagname_and_text('li', "Alias").click()
         self.until(lambda: self.should_see_text(alias.alias))
-        self.should_not_see_text(log.query)
+        self.should_not_see_text(log.search_query)
 
     def test_add_alias_from_query(self):
         SuggestionLogFactory()

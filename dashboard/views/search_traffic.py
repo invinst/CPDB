@@ -13,8 +13,8 @@ from search.models.suggestion import SuggestionLog
 class AdminSearchTrafficApi(View):
     def get_top_queries(self, start_day, start, end):
 
-        top_queries = SuggestionLog.objects.filter(created_at__gte=start_day).order_by('-count').values('query')
-        top_queries = top_queries.annotate(count=Count('query'))
+        top_queries = SuggestionLog.objects.filter(created_at__gte=start_day).order_by('-count').values('search_query')
+        top_queries = top_queries.annotate(count=Count('search_query'))
         return top_queries[start:end]
 
     def get_period(self, period, start_day, start=0, end=5):
@@ -34,13 +34,13 @@ class AdminSearchTrafficApi(View):
             labels[new_date.strftime(date_format)] = 0
 
         for top_query in top_queries:
-            query = top_query['query']
+            query = top_query['search_query']
             kursor = connection.cursor()
             sql = "SELECT count(*) as total, date_trunc('%s', created_at) as created_at_date " \
                 "FROM search_suggestionlog " \
-                "WHERE created_at >= '%s' AND query = '%s' " \
+                "WHERE created_at >= '%s' AND search_query = '%s' " \
                 "GROUP BY created_at_date " \
-                "ORDER BY total DESC " % (period, start_day, top_query['query'])
+                "ORDER BY total DESC " % (period, start_day, top_query['search_query'])
 
             kursor.execute(sql)
 

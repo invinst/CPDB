@@ -114,4 +114,3 @@ function cpdbAutocomplete($input) {
     }
   });
 }
-

@@ -12,7 +12,6 @@ var Timeline = React.createClass({
     $(container).html("<i class='fa fa-spin fa-spinner'/>");
     $.getJSON('/officer/timeline/', {'officer': officer.id}, function (data) {
       var timeLineItems = [];
-
       var items = data.items;
       for (var i = 0; i < items.length; i++) {
         if (!items[i]) {
@@ -59,16 +58,28 @@ var Timeline = React.createClass({
       }
 
       if (!timeLineItems.length) {
-        return;
+
+          var rangeItem = {
+            id: "range-1",
+            content: "no data for this officer",
+            start: moment("2000-01-01"),
+            end: moment(),
+            type: 'background',
+            className: 'missing-data'
+          };
+          timeLineItems.push(rangeItem);
+
       }
-      timeLineItems.push({
-        id: "range-2",
-        content: "data withheld for this period",
-        start: moment("2006-01-01"),
-        end: moment("2011-01-01"),
-        type: 'background',
-        className: 'missing-data border'
-      });
+      else {
+        timeLineItems.push({
+          id: "range-2",
+          content: "data withheld for this period",
+          start: moment("2006-01-01"),
+          end: moment("2011-01-01"),
+          type: 'background',
+          className: 'missing-data border'
+        });
+      }
       timeLineItems = new vis.DataSet(timeLineItems);
 
       // Configuration for the Timeline
