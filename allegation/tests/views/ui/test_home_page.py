@@ -13,7 +13,10 @@ class HomePageTestCase(BaseLiveTestCase):
     def tearDown(self):
         super(HomePageTestCase, self).tearDown()
         self.allegation_category.delete()
-        self.allegation.officer.delete()
+        if self.allegation.officer:
+            self.allegation.officer.delete()
+        else:
+            self.allegation.delete()
 
     def visit_home(self):
         self.visit('/')
