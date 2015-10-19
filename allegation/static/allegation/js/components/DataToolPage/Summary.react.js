@@ -52,9 +52,23 @@ var Summary = React.createClass({
       that.find(".child-rows").css('max-height', height);
     }, 1000);
 
-    if (this.props.tabs) {
+    if (this.props.tabs.tabs.length > 1) {
+      for(var i =0; i < this.props.tabs.length; i++){
+        var tab = this.props.tabs.tabs[i];
+        if(tab.drawChart) {
+          this.props.tabs.tabs[i] = this;
+          /* I am sorry for this code, blame: Bang!!!! */
+        }
+      }
+    }
+    else {
       this.props.tabs.tabs.push(this);
     }
+  },
+
+  componentWillUnmount: function() {
+    SummaryStore.removeChangeListener(this._onChange);
+    SummaryStore.removeSummaryListener(this._changeView);
   },
 
   render: function () {

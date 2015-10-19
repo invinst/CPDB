@@ -102,10 +102,11 @@ var Map = React.createClass({
     this.embedListener();
   },
 
-  componentDidUnmount: function() {
+  componentWillUnmount: function() {
     _map.remove();
     _baseLayers = {};
     this.first_layer_added = false;
+    this.removeEmbedListener();
   },
 
   mapIntensity: function(markersLength) {

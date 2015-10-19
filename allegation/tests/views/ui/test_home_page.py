@@ -23,7 +23,6 @@ class HomePageTestCase(BaseLiveTestCase):
         link_texts.should.contain('Outcomes')
         link_texts.should.contain('Categories')
         link_texts.should.contain('Race & Gender')
-        link_texts.should.contain('Timeframe')
 
     def filter_complaint_type(self):
         self.visit('/#!/data-tools')

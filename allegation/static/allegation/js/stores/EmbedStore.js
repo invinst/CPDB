@@ -32,6 +32,14 @@ var EmbedStore = assign({}, EventEmitter.prototype, {
     this.on(LEAVE_EVENT, callback);
   },
 
+  removeLeaveListener: function (callback) {
+    this.removeListener(LEAVE_EVENT, callback);
+  },
+
+  removeEnterListener: function (callback) {
+    this.removeListener(ENTER_EVENT, callback);
+  },
+
   emitLeave: function () {
     this.emit(LEAVE_EVENT);
   }
