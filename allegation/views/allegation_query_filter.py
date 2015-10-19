@@ -59,10 +59,14 @@ class AllegationQueryFilter(object):
             self.filters[field] = value[0]
 
     def add_data_source_filter(self, field):
-        data_source = self.query_dict.get(field, "")
-        if data_source.lower() == 'pre foia':
+        data_source = self.query_dict.getlist(field, [])
+
+        if len(data_source) == 2:
+            return
+
+        if 'pre-FOIA' in data_source:
             self.conditions.append(Q(incident_date__lt=FOIA_START_DATE))
-        elif data_source.lower() == 'foia':
+        elif 'FOIA' in data_source:
             self.conditions.append(Q(incident_date__gte=FOIA_START_DATE))
 
     def add_date_filter(self, field):

@@ -11,7 +11,7 @@ from search.utils.zip_code import *
 
 
 AREA_SORT_ORDERS = { 'police-beats': 0, 'neighborhoods': 1, 'ward': 2, 'police-districts': 3, 'school-grounds': 5 }
-DATA_SOURCES = ['FOIA', 'PRE FOIA']
+DATA_SOURCES = ['FOIA', 'pre-FOIA']
 # TODO: More test for this one, especially test for ensure the order, returned format
 class Suggestion(object):
     def make_suggestion_format(self, match):
