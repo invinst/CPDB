@@ -8,9 +8,6 @@ var _state = {
   tabs: [{
     text: 'Add story',
     method: 'storyForm'
-  }, {
-    text: 'Edit information',
-    method: 'officerProfile'
   }],
   active: 'storyForm'
 };

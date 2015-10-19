@@ -9,6 +9,7 @@ from dashboard.views.allegation_request_view import AdminAllegationRequestViewSe
 from dashboard.views.officer_view import AdminOfficerViewSet
 from dashboard.views.query_data_view import AdminQueryDataApi
 from dashboard.views.search_traffic import AdminSearchTrafficApi
+from dashboard.views.sessions_view import AdminSessionsView
 from dashboard.views.story_view import AdminStoryViewSet
 from dashboard.views.document_link_view import DocumentLinkView
 from dashboard.views.story_type_view import StoryTypeView
@@ -20,6 +21,7 @@ router = routers.DefaultRouter()
 router.register(r'officers', AdminOfficerViewSet)
 router.register(r'stories', AdminStoryViewSet)
 router.register(r'document-requests', AdminAllegationRequestViewSet)
+router.register(r'sessions', AdminSessionsView)
 
 
 urlpatterns = [

@@ -19,7 +19,7 @@ var SearchResultsAPI = {
 
   transformAlias: function(data) {
     return _.map(data.data, function (obj){
-      obj.query = obj.alias;
+      obj.search_query = obj.alias;
       return obj;
     });
   },
