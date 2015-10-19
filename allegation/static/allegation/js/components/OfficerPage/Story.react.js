@@ -25,7 +25,6 @@ var Story = React.createClass({
         <h5 className="title">
           <a href={story.url}>{story.title}</a>
         </h5>
-        <div className="date">{story.created_date}</div>
         <div className="short-description">{description} {readmore}</div>
       </div>
     );
