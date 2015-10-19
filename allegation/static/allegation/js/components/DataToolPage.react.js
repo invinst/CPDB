@@ -30,19 +30,36 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
     this.initStickyFooter();
   },
 
-  initStickyFooter: function () {
-    function setStickyFooter() {
-      var top = $(window).scrollTop();
-      var screenHeight = $(window).height() ;
-      var documentHeight = $(document).height();
-
-      var isSetStickyFooter = top >= screenHeight || documentHeight - top - screenHeight < 100;
-      if(isSetStickyFooter) {
-        $('body').addClass('stick-footer-bottom');
-        $(window).off('scroll', setStickyFooter);
-      }
+  isPassAllegationSection: function () {
+    var top = $(window).scrollTop();
+    var documentList = $("#complaint-list");
+    if (!documentList.size()) {
+      return false;
     }
-    $(window).on('scroll', setStickyFooter);
+
+    return top >= $("#complaint-list").offset().top;
+  },
+
+  unsetStickyFooter: function () {
+    var isSetStickyFooter = this.isPassAllegationSection();
+    if (!isSetStickyFooter) {
+      $('body').removeClass('stick-footer-bottom');
+      $(window).on('scroll', this.setStickyFooter);
+      $(window).off('scroll', this.unsetStickyFooter);
+    }
+  },
+
+  setStickyFooter: function () {
+    var isSetStickyFooter = this.isPassAllegationSection();
+    if(isSetStickyFooter) {
+      $('body').addClass('stick-footer-bottom');
+      $(window).off('scroll', this.setStickyFooter);
+      $(window).on('scroll', this.unsetStickyFooter);
+    }
+  },
+
+  initStickyFooter: function () {
+    $(window).on('scroll', this.setStickyFooter);
   },
 
   render: function () {

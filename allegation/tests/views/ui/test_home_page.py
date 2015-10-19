@@ -13,6 +13,7 @@ class HomePageTestCase(BaseLiveTestCase):
     def tearDown(self):
         super(HomePageTestCase, self).tearDown()
         self.allegation_category.delete()
+        self.allegation.officer.delete()
 
     def visit_home(self):
         self.visit('/')
@@ -157,11 +158,15 @@ class HomePageTestCase(BaseLiveTestCase):
         officers_divs[0].has_class('col-md-10')
 
     def test_sticky_footer(self):
+        officer = self.allegation.officer
+        [AllegationFactory(officer=officer) for x in range(40)]
         self.browser.set_window_size(width=1200, height=800)
-        self.visit_home()
+        self.open_complaint_detail_with_class()
+        self.until_ajax_complete()
+
         self.is_displayed_in_viewport('.sticky-footer').should.be.false
 
         self.find('body').send_keys(Keys.PAGE_DOWN)
         self.until(lambda: self.is_displayed_in_viewport('.sticky-footer').should.be.true)
         self.find('body').send_keys(Keys.PAGE_UP)
-        self.until(lambda: self.is_displayed_in_viewport('.sticky-footer').should.be.true)
+        self.until(lambda: self.is_displayed_in_viewport('.sticky-footer').should.be.false)
