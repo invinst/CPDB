@@ -23,7 +23,7 @@ class AllegationSunburstView(AllegationAPIView):
             results = objects.filter(level['condition'])
             obj = {
                 'name': level['name'],
-                'tagValue': level.get('tagValue'),
+                'tagValue': level['tagValue'],
                 'size': results.count(),
             }
             if obj['size'] and 'children' in level:
@@ -124,9 +124,21 @@ class AllegationSunburstView(AllegationAPIView):
             }, {
                 'condition': Q(final_outcome__in=[str(x).zfill(3) for x in range(1, 10)]),  # 001 to 009
                 'name': '1-9 days',
+                'tagValue': {
+                    'label': '1-9 days',
+                    'category': 'final_outcome_text',
+                    'value': '11-9 days',
+                    'removeParent': True                
+                }
             }, {
                 'condition': Q(final_outcome__in=[str(x).zfill(3) for x in range(10, 31)]),  # 010 to 031
                 'name': '10-30 days',
+                'tagValue': {
+                    'label': '10-30 days',
+                    'category': 'final_outcome_text',
+                    'value': '10-30 days',
+                    'removeParent': True                
+                }
             }, {
                 'condition': Q(final_outcome='200'),
                 'name': '30+ days',

@@ -1,10 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.contrib.gis.db import models
 from django.core.urlresolvers import reverse
+from django.db.models.query_utils import Q
 from django.template.defaultfilters import slugify
-
-from allegation.models.allegation_manager import AllegationManager
-
 
 from allegation.models.allegation_manager import AllegationManager
 
@@ -311,16 +309,49 @@ FINDINGS = [
 ]
 FINDINGS_DICT = dict(FINDINGS)
 
-OUTCOME_TEXT = [
-    ['any discipline', 'Any discipline'],
-    ['no discipline', 'No discipline'],
-]
-OUTCOME_TEXT_DICT = dict(OUTCOME_TEXT)
 
-FINAL_FINDING_TEXT = [
-    ['unsustained', 'Unsustained']
-]
-FINAL_FINDING_TEXT_DICT = dict(FINAL_FINDING_TEXT)
+OUTCOME_TEXT_DICT = {
+    'any discipline': {
+        'text': 'Any discipline',
+        'condition': {
+            'final_finding':['SU'],
+            'final_outcome': DISCIPLINE_CODES,
+        }
+    },
+    'no discipline': {
+        'text': 'No discipline',
+        'condition': {
+            'final_finding': ['SU'],
+            'final_outcome': NO_DISCIPLINE_CODES,
+        }
+    },
+    '1-9 days': {
+        'text': '1-9 days',
+        'condition': {
+            'final_outcome': [str(x).zfill(3) for x in range(1, 10)],
+        }
+    },
+    '10-30 days':{
+        'text': '10-30 day',
+        'condition': {
+            'final_outcome': [str(x).zfill(3) for x in range(10, 31)],
+        }
+    },    
+}
+
+FINAL_FINDING_TEXT_DICT = {
+    'unsustained': {
+        'text': 'Unsustained',
+        'condition': {
+            'final_finding': ['DS', 'EX', 'NA', 'NC', 'NS', 'UN']
+        }
+    }
+}
+
+CUSTOM_FILTER_DICT = {
+    'final_finding_text' :  FINAL_FINDING_TEXT_DICT,
+    'outcome_text': OUTCOME_TEXT_DICT,
+}
 
 
 class Allegation(models.Model):

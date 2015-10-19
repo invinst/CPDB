@@ -6,7 +6,7 @@ from django_extensions.db.fields.json import JSONField
 from hashids import Hashids
 
 from common.models import Officer, AllegationCategory, Investigator, Area
-from common.models import GENDER_DICT, OUTCOME_TEXT_DICT, FINAL_FINDING_TEXT_DICT, FINDINGS_DICT, OUTCOMES_DICT
+from common.models import GENDER_DICT, OUTCOME_TEXT_DICT, FINAL_FINDING_TEXT_DICT, FINDINGS_DICT, OUTCOMES_DICT, CUSTOM_FILTER_DICT
 from search.models import SuggestionLog, FilterLog
 
 
@@ -17,12 +17,11 @@ KEYS = {
     'cat': AllegationCategory,
     'investigator': Investigator
 }
+
 OTHER_KEYS = {
     'officer__gender': GENDER_DICT,
     'complainant_gender': GENDER_DICT,
     'outcome_text': OUTCOME_TEXT_DICT,
-    'final_finding_text': FINAL_FINDING_TEXT_DICT,
-    'final_finding': FINDINGS_DICT,
     'final_outcome': OUTCOMES_DICT,
 }
 
@@ -93,8 +92,14 @@ class Session(models.Model):
 
         if key in OTHER_KEYS:
             return [{
-                        'text': OTHER_KEYS[key].get(o),
-                        'value': o,
-                    } for o in values['value']]
+                'text': OTHER_KEYS[key].get(o),
+                'value': o,
+            } for o in values['value']]
+
+        if key in CUSTOM_FILTER_DICT:
+            return [{
+                'text': CUSTOM_FILTER_DICT[key][o]['text'],
+                'value': o,
+            } for o in values['value']]
 
         return values['value']
