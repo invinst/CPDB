@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.cache import cache
 from django.http.response import HttpResponse
 from django.views.generic import View
 
@@ -22,9 +23,8 @@ class AllegationAPIView(View):
     def get_allegations(self, ignore_filters=None):
         allegation_query_filters = AllegationQueryFilter(self.query_dict, ignore_filters)
         allegations = Allegation.objects.by_allegation_filter(allegation_query_filters)
-
+        
         return allegations
-
 
     def get(self, request):
         allegations = self.get_allegations()
