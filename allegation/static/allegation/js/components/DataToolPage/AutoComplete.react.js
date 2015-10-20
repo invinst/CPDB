@@ -135,7 +135,7 @@ var AutoComplete = React.createClass({
         var filter = filters[key];
 
         for (var i = 0; i < filter.length; i++) {
-          if (filter[i].value) {
+          if (filter[i].text) {
             $(element).tagsinput("add", {
               text: tagLabel(key, filter[i].text),
               value: [key, filter[i].value]
