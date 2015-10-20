@@ -45,6 +45,7 @@ class AllegationQueryFilter(object):
     def add_filter(self, field):
         value = self.query_dict.getlist(field, [])
         if value:
+            value = [None if v == 'null' else v for v in value]
             self.filters[field] += value
 
     def add_custom_filter(self, field):
@@ -119,15 +120,24 @@ class AllegationQueryFilter(object):
         for date_filter in DATE_FILTERS:
             self.add_date_filter(date_filter)
 
-        self.filters = self.make_sql_filters(self.filters)
-
         for data_source_filter in DATA_SOURCE_FILTERS:
             self.add_data_source_filter(data_source_filter)
 
-        return self.conditions, self.filters
+        self.build_conditions()
 
-    def make_sql_filters(self, filters):
-        return {"{key}__in".format(key=key): filters[key] for key in filters}
+        return self.conditions
+
+    def build_conditions(self):
+        for a_filter in self.filters:
+            condition = Q()
+
+            for value in self.filters[a_filter]:
+                if value is None:
+                    condition = condition | Q(**{'{field}__isnull'.format(field=a_filter): True})
+                else:
+                    condition = condition | Q(**{'{field}'.format(field=a_filter): value})
+
+            self.conditions.append(condition)
 
     def prepare_categories_filter(self):
         # Merge cat and cat_category

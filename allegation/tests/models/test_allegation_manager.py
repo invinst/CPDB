@@ -1,4 +1,5 @@
 from django.contrib.gis.geos import Point
+from django.db.models import Q
 from mock import patch
 
 from allegation.factories import AllegationFactory, OfficerFactory
@@ -28,11 +29,10 @@ class AllegationManager(SimpleTestCase):
         for i in range(1, 10):
             AllegationFactory()
 
-        conditions = []
-        filters = {'officer': officer.id}
+        conditions = [Q(officer=officer.id)]
 
         instance = mock_allegation_filter.return_value
-        instance.allegation_filters.return_value = (conditions, filters)
+        instance.allegation_filters.return_value = conditions
         instance.complainant_gender.return_value = []
         instance.complainant_race.return_value = []
 
