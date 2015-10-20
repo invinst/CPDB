@@ -126,8 +126,8 @@ class AllegationSunburstView(AllegationAPIView):
                 'name': '1-9 days',
                 'tagValue': {
                     'label': '1-9 days',
-                    'category': 'final_outcome_text',
-                    'value': '11-9 days',
+                    'category': 'outcome_text',
+                    'value': '1-9 days',
                     'removeParent': True                
                 }
             }, {
@@ -135,7 +135,7 @@ class AllegationSunburstView(AllegationAPIView):
                 'name': '10-30 days',
                 'tagValue': {
                     'label': '10-30 days',
-                    'category': 'final_outcome_text',
+                    'category': 'outcome_text',
                     'value': '10-30 days',
                     'removeParent': True                
                 }
