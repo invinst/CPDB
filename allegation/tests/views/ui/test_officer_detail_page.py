@@ -37,7 +37,6 @@ class OfficerDetailPageTestCase(BaseLiveTestCase):
         content.should.contain('Sergeant')
         content.should.contain('Male')
 
-        self.find(".site-title-input").get_attribute("value").should.equal(self.officer.display_name)
         self.browser.title.should.equal(self.officer.display_name)
 
     def test_filter_by_intersected_officer(self):

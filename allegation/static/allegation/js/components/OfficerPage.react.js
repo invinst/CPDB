@@ -13,6 +13,7 @@ var OfficerPageStore = require('stores/OfficerPageStore');
 var RelatedOfficers = require('components/OfficerPage/RelatedOfficers.react');
 var SessionStore = require('stores/SessionStore');
 var StoryList = require('components/OfficerPage/StoryList.react');
+var OfficerPresenter = require('presenters/OfficerPresenter');
 
 
 var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
@@ -27,6 +28,11 @@ var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
     var officerId = nextProps.officerId || '';
     OfficerPageServerActions.getOfficerData(officerId);
     ComplaintListAPI.getAllForOfficer(officerId);
+  },
+
+  componentDidUpdate: function () {
+    var officer = this.state.data['officer'];
+    document.title = OfficerPresenter(officer).displayName;
   },
 
   render: function () {
