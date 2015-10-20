@@ -56,6 +56,8 @@ var AutoComplete = React.createClass({
     FilterStore.setInitialized(true);
     FilterStore.removeChangeListener(this._onChange);
     OfficerListStore.removeChangeListener(this._onChange);
+    FilterStore.removeDisableListener(this._onDisable)
+    FilterStore.removeEnableListener(this._onEnable)
   },
   componentDidMount: function () {
     // TODO: Move this stuff cpdbAutocomplate to be a React one?

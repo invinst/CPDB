@@ -130,9 +130,16 @@ var FilterStore = assign({}, EventEmitter.prototype, {
   addEnableListener: function (callback) {
     this.on(ENABLE_EVENT, callback);
   },
+  removeEnableListener: function(callback) {
+    this.removeListener(ENABLE_EVENT, callback);
+  },
 
   addDisableListener: function (callback) {
     this.on(DISABLE_EVENT, callback);
+  },
+
+  removeDisableListener: function(callback) {
+    this.removeListener(DISABLE_EVENT, callback);
   },
 
   addCreateListener: function (callback) {
