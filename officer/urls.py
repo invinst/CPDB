@@ -13,7 +13,7 @@ cache_view = cache_page(86400)
 urlpatterns = [
     url(r'^count/$', cache_view(CountView.as_view()), name='count'),
     url(r'^timeline/$', cache_view(TimelineView.as_view()), name='timeline'),
-    url(r'^stories/$', cache_view(StoryView.as_view()), name='stories'),
+    url(r'^stories/$', StoryView.as_view(), name='stories'),
     url(r'^$',
         cache_view(OfficerDetailView.as_view()),
         name='detail'),

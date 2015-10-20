@@ -16,8 +16,6 @@ class StoryView(View):
 
         stories = officer.story_set.order_by('-custom_order', '-created_date')
 
-        stories = stories[:4]
-
         content = {
             'stories': stories,
             'success': True,

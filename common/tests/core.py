@@ -96,7 +96,14 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     def should_see_text(self, text):
         if not isinstance(text, str):
             text = str(text)
-        self.assertIn(text, self.find('body').text)
+        self.find('body').text.should.contain(text)
+
+    def should_see_texts(self, texts):
+        body = self.find('body').text
+        for text in texts:
+            if not isinstance(text, str):
+                text = str(text)
+            body.should.contain(text)
 
     def should_not_see_text(self, text):
         self.assertNotIn(text, self.find('body').text)
