@@ -1,6 +1,8 @@
 from allegation.factories import AllegationFactory, OfficerFactory, PoliceWitnessFactory
+from allegation.tests.constants import TEST_DOCUMENT_URL
 from common.models import UNITS
 from common.tests.core import BaseLiveTestCase
+from officer.factories import StoryFactory
 
 
 class OfficerDetailPageTestCase(BaseLiveTestCase):
@@ -56,6 +58,20 @@ class OfficerDetailPageTestCase(BaseLiveTestCase):
             self.find(checkmark).click()
 
         self.number_of_complaints().should.equal(2)
+
+    def test_display_stories(self):
+        story = StoryFactory(officer=self.officer, url=TEST_DOCUMENT_URL)
+        created_date = story.created_date.strftime('%Y-%m-%d %H:%M:%S')
+
+        self.go_to_officer_detail_page(self.officer)
+        
+        self.until(lambda: self.should_see_text('News stories'))
+        self.should_see_texts([
+            story.title,
+            story.short_description,
+        ])
+        self.find('.document-url').get_attribute('href').should.equal(TEST_DOCUMENT_URL)
+        self.find('.document-thumbnail').should.be.ok
 
     def go_to_officer_detail_page(self, officer):
         self.visit('/#!/data-tools')

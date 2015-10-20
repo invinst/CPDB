@@ -1,26 +1,13 @@
 var React = require('react');
+var _ = require('lodash');
 
 var StoryListStore = require('stores/Officer/StoryListStore');
 var Story = require('components/OfficerPage/Story.react');
+var Base = require('components/Base.react');
+var StoryListAPI = require('utils/StoryListAPI');
 
 
-var StoryList = React.createClass({
-  getInitialState: function () {
-    return {
-      stories: StoryListStore.init(this.props.officer)
-    };
-  },
-
-  componentDidMount: function() {
-    StoryListStore.onChange(this.updateStoryList)
-  },
-
-  updateStoryList: function (){
-    this.setState({
-      stories: StoryListStore.getStories()
-    })
-  },
-
+var StoryList = React.createClass(_.assign(Base(StoryListStore), {
   render: function () {
     var stories = [];
     for (var i = 0; i < this.state.stories.length; i++) {
@@ -40,6 +27,6 @@ var StoryList = React.createClass({
     );
   }
 
-});
+}));
 
 module.exports = StoryList;
