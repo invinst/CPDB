@@ -1,3 +1,5 @@
+from selenium.webdriver.common.keys import Keys
+
 from common.models import AllegationCategory
 from common.tests.core import *
 from allegation.factories import AllegationFactory, AllegationCategoryFactory
@@ -11,6 +13,10 @@ class HomePageTestCase(BaseLiveTestCase):
     def tearDown(self):
         super(HomePageTestCase, self).tearDown()
         self.allegation_category.delete()
+        if self.allegation.officer:
+            self.allegation.officer.delete()
+        else:
+            self.allegation.delete()
 
     def visit_home(self):
         self.visit('/')
@@ -152,3 +158,17 @@ class HomePageTestCase(BaseLiveTestCase):
 
         len(officers_divs).should.equal(1)
         officers_divs[0].has_class('col-md-10')
+
+    def test_sticky_footer(self):
+        officer = self.allegation.officer
+        AllegationFactory.create_batch(40, officer=officer)
+        self.browser.set_window_size(width=1200, height=800)
+        self.open_complaint_detail_with_class()
+        self.until_ajax_complete()
+
+        self.is_displayed_in_viewport('.sticky-footer').should.be.false
+
+        self.find('body').send_keys(Keys.PAGE_DOWN)
+        self.until(lambda: self.is_displayed_in_viewport('.sticky-footer').should.be.true)
+        self.find('body').send_keys(Keys.PAGE_UP)
+        self.until(lambda: self.is_displayed_in_viewport('.sticky-footer').should.be.false)

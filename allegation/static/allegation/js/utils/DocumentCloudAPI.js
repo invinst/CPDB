@@ -10,10 +10,10 @@ var DocumentCloudAPI = {
       ajax.abort();
     }
 
-    url = story.url.replace(/\.html$/, '.json');
+    url = story.url.replace(/\.html$/, '.json').replace('/documents/', '/api/documents/');
 
     ajax = jQuery.getJSON(url, function (data) {
-      StoryActions.setThumbUrl(story, data.resources.thumbnail);
+      StoryActions.setThumbUrl(story, data.document.resources.thumbnail);
     });
   }
 };

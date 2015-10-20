@@ -25,7 +25,41 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
       var target = $(this).data('target');
       var top = $(target).offset().top - 100;
       $("html, body").animate({scrollTop: top}, 500);
-    })
+    });
+
+    this.initStickyFooter();
+  },
+
+  isPassAllegationSection: function () {
+    var top = $(window).scrollTop();
+    var documentList = $("#complaint-list");
+    if (!documentList.size()) {
+      return false;
+    }
+
+    return top >= $("#complaint-list").offset().top;
+  },
+
+  unsetStickyFooter: function () {
+    var isSetStickyFooter = this.isPassAllegationSection();
+    if (!isSetStickyFooter) {
+      $('body').removeClass('stick-footer-bottom');
+      $(window).on('scroll', this.setStickyFooter);
+      $(window).off('scroll', this.unsetStickyFooter);
+    }
+  },
+
+  setStickyFooter: function () {
+    var isSetStickyFooter = this.isPassAllegationSection();
+    if(isSetStickyFooter) {
+      $('body').addClass('stick-footer-bottom');
+      $(window).off('scroll', this.setStickyFooter);
+      $(window).on('scroll', this.unsetStickyFooter);
+    }
+  },
+
+  initStickyFooter: function () {
+    $(window).on('scroll', this.setStickyFooter);
   },
 
   render: function () {
@@ -50,7 +84,8 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
             <div id='officer-cards'><OfficerList /></div>
             <div id='complaint-list'><ComplaintSection /></div>
           </div>
-          <div>
+
+          <div className='sticky-footer'>
             <div id='EmbedBar' className="row">
               <div className="col-md-12">
                 <div className='container'>
@@ -58,10 +93,9 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
                 </div>
               </div>
             </div>
+            <Footer />
           </div>
-        </div>
-        <div className='container-fluid'>
-          <Footer />
+
         </div>
         <Disclaimer />
       </div>

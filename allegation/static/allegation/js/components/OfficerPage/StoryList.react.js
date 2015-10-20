@@ -8,12 +8,6 @@ var StoryListAPI = require('utils/StoryListAPI');
 
 
 var StoryList = React.createClass(_.assign(Base(StoryListStore), {
-  componentDidMount: function () {
-    StoryListStore.addChangeListener(this._onChange);
-
-    StoryListAPI.get(this.props.officer.id);
-  },
-
   render: function () {
     var stories = [];
     for (var i = 0; i < this.state.stories.length; i++) {
