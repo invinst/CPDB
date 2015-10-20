@@ -19,20 +19,24 @@ function updateUrlWithSlugifiedTitle(hash, title) {
 var SiteTitle = React.createClass(_.assign(Base(SessionStore), {
   componentDidMount: function() {
     SessionStore.addChangeListener(this._onChange);
+
+    document.title = this.state.siteTitle;
   },
 
   componentWillUpdate: function () {
-    if (!this.props.changable) return;
-    var title = this.state.data.title;
+    var title = this.state.siteTitle;
     document.title = title;
-    updateUrlWithSlugifiedTitle(this.state.data.hash, title);
+
+    if (this.props.changable) {
+      updateUrlWithSlugifiedTitle(this.state.data.hash, title);
+    }
   },
 
   render: function() {
     var disabled = !this.props.changable;
 
     return (
-      <input className='site-title-input' type='text' value={this.state.data.title} disabled={disabled} onChange={this._onTitleChange} />
+      <input className='site-title-input' type='text' value={this.state.siteTitle} disabled={disabled} onChange={this._onTitleChange} />
     )
   },
 
@@ -46,7 +50,7 @@ var SiteTitle = React.createClass(_.assign(Base(SessionStore), {
 
     _timeout = setTimeout(function () {
       SessionAPI.updateSessionInfo({'title': newTitle});
-    }, 500)
+    }, 500);
   },
 
 }));

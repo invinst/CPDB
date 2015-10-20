@@ -39,6 +39,8 @@ class OfficerDetailPageTestCase(BaseLiveTestCase):
         content.should.contain('Sergeant')
         content.should.contain('Male')
 
+        self.browser.title.should.equal(self.officer.display_name)
+
     def test_filter_by_intersected_officer(self):
         self.go_to_officer_detail_page(self.officer)
 

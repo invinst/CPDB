@@ -10,7 +10,7 @@ var OfficerPresenter = function(officer) {
       displayName = officer.officer_first.toLowerCase().substr(0, 1) + ". " + officer.officer_last.toLowerCase();
     }
 
-    return displayName;
+    return displayName.capitalize();
   };
 
   var gender = function() {
