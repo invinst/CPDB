@@ -48,7 +48,7 @@ var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
   renderDocumentList: function() {
     var that = this;
     return this.state.documents.map(function(x) {
-      var status = that.getStatus(x.document_requested, x.document_id);
+      var status = that.getStatus(x);
       var statusObj = that.getStatusObject(status);
       var statusText = statusObj.text;
       var statusIcon = statusObj.icon;

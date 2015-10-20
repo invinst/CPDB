@@ -12,4 +12,5 @@ class AllegationRequestSerializer(serializers.HyperlinkedModelSerializer):
                   'number_of_request',
                   'document_requested',
                   'document_id',
+                  'document_pending',
                   )

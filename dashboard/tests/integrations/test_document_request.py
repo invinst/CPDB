@@ -4,17 +4,21 @@ from common.models import Allegation
 from common.tests.core import BaseLiveTestCase
 
 
-class OfficerProfileTestCase(BaseLiveTestCase):
+class DocumentRequestTestCase(BaseLiveTestCase):
     def setUp(self):
         self.login_user()
         self.visit('/admin/')
 
     def tearDown(self):
-        super(OfficerProfileTestCase, self).tearDown()
+        super(DocumentRequestTestCase, self).tearDown()
         Allegation.objects.all().delete()
 
     def go_to_documents(self):
         self.element_by_tagname_and_text('span', 'Investigation Documents').click()
+
+    def go_to_tab(self, text):
+        self.element_by_tagname_and_text('li', text).click()
+        self.until_ajax_complete()
 
     def tab_should_active(self, text):
         self.element_by_tagname_and_text('li', text).has_class('active').should.be.true
@@ -25,7 +29,7 @@ class OfficerProfileTestCase(BaseLiveTestCase):
         self.find("h1").text.should.equal('Investigation Documents')
         self.button("Add document").should.be.ok
 
-        tabs = ["All", "Missing", "Requesting", "Fulfilled"]
+        tabs = ["All", "Missing", "Requesting", "Fulfilled", "Pending"]
         for tab in tabs:
             self.should_see_text(tab)
 
@@ -34,6 +38,41 @@ class OfficerProfileTestCase(BaseLiveTestCase):
         for tab in tabs:
             self.element_by_tagname_and_text('li', tab).click()
             self.tab_should_active(tab)
+
+    def test_filter_pending_documents(self):
+        allegation = AllegationFactory(document_requested=True, document_pending=True)
+
+        self.go_to_documents()
+        self.go_to_tab('Pending')
+
+        self.should_see_text(allegation.crid)
+
+    def test_change_requesting_to_pending(self):
+        allegation = AllegationFactory(document_requested=True)
+
+        self.go_to_documents()
+        self.go_to_tab('Requesting')
+        self.button('Requested').click()
+
+        self.until(lambda: self.should_see_text('%s document has been requested.' % allegation.crid))
+
+        self.go_to_tab('Pending')
+        self.should_see_text(allegation.crid)
+        buttons = [x.text for x in self.find_all("button")]
+        buttons.shouldnt.contain("Pending")
+
+    def test_cancel_pending(self):
+        allegation = AllegationFactory(document_requested=True, document_pending=True)
+
+        self.go_to_documents()
+        self.go_to_tab('Pending')
+        self.button('Cancel Pending').click()
+
+        self.until(lambda: self.should_see_text('%s document pending has been cancelled.' % allegation.crid))
+        self.find_all('.status>span')[-1].text.should.equal('Requesting')
+
+        self.go_to_tab('Requesting')
+        self.should_see_text(allegation.crid)
 
     def test_add_document_link(self):
         AllegationFactory()

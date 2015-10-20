@@ -36,7 +36,7 @@ var Document = React.createClass(_.assign(Base(DocumentStore), {
       return <div></div>;
     }
 
-    var status = this.getStatus(document.document_requested, document.document_id);
+    var status = this.getStatus(document);
     var statusObj = this.getStatusObject(status);
 
     var statusClass = cx('status', status);

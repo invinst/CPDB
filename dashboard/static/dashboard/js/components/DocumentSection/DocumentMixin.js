@@ -4,14 +4,19 @@ var bootbox = require('bootbox');
 var AppConstants = require('../../constants/AppConstants');
 var AddDocumentLinkModalActions = require('../../actions/DocumentSection/AddDocumentLinkModalActions');
 var DocumentRequestAPI = require('../../utils/DocumentRequestAPI');
+var DocumentRequestStatusAPI = require('../../utils/DocumentRequestStatusAPI');
 
 var DocumentMixin = {
-  getStatus: function (requested, id) {
-    if (id) {
+  getStatus: function (allegation) {
+    if (allegation.document_id) {
       return 'fulfilled';
     }
 
-    if (requested) {
+    if (allegation.document_requested) {
+      if (allegation.document_pending) {
+        return 'pending';
+      }
+
       return 'requesting';
     }
 
@@ -33,6 +38,14 @@ var DocumentMixin = {
     AddDocumentLinkModalActions.show(crid);
   },
 
+  putToPending: function (allegation) {
+    DocumentRequestStatusAPI.putTo(allegation, 'pending');
+  },
+
+  cancelPending: function (allegation) {
+    DocumentRequestStatusAPI.putTo(allegation, 'requesting');
+  },
+
   onCancelClick: function (allegation) {
     bootbox.confirm("Do you want to cancel document request for #" + allegation.crid, function (yes) {
       if (yes) {
@@ -42,25 +55,62 @@ var DocumentMixin = {
   },
 
   renderDocumentActions: function(status, allegation) {
-    if (status != 'fulfilled') {
-      return (
-        <div>
-          <button className="btn btn-primary" onClick={this.showAddLinkModal.bind(this, allegation.crid)}>
-            <i className="fa fa-link"></i> Add
-          </button>
-          <button className="btn btn-cancel" onClick={this.onCancelClick.bind(this, allegation)}>
-            <i className="fa fa-times"></i> Cancel
-          </button>
-        </div>
-      );
-    } else {
-      return (
-        <div>
-          <button className="btn btn-primary inverse" onClick={this.showAddLinkModal.bind(this, allegation.crid)}>
-            <i className="fa fa-refresh"></i> Update
-          </button>
-        </div>
-      );
+    switch (status) {
+      case 'requesting':
+        return (
+          <div>
+            <button className="btn btn-primary" onClick={this.showAddLinkModal.bind(this, allegation.crid)}>
+              <i className="fa fa-link"></i> Add
+            </button>
+            <button className="btn btn-primary" onClick={this.putToPending.bind(this, allegation)}>
+              Requested
+            </button>
+            <button className="btn btn-cancel" onClick={this.onCancelClick.bind(this, allegation)}>
+              <i className="fa fa-times"></i> Cancel
+            </button>
+          </div>
+        );
+      case 'pending':
+        return (
+          <div>
+            <button className="btn btn-primary" onClick={this.showAddLinkModal.bind(this, allegation.crid)}>
+              <i className="fa fa-link"></i> Add
+            </button>
+            <button className="btn btn-primary" onClick={this.cancelPending.bind(this, allegation)}>
+              Cancel Pending
+            </button>
+            <button className="btn btn-cancel" onClick={this.onCancelClick.bind(this, allegation)}>
+              <i className="fa fa-times"></i> Cancel
+            </button>
+          </div>
+        );
+      case 'fulfilled':
+        return (
+          <div>
+            <button className="btn btn-primary inverse" onClick={this.showAddLinkModal.bind(this, allegation.crid)}>
+              <i className="fa fa-refresh"></i> Update
+            </button>
+          </div>
+        );
+      case 'missing':
+        return (
+          <div>
+            <button className="btn btn-primary" onClick={this.showAddLinkModal.bind(this, allegation.crid)}>
+              <i className="fa fa-link"></i> Add
+            </button>
+          </div>
+        ); 
+      default:
+        return (
+          <div>
+            <button className="btn btn-primary" onClick={this.showAddLinkModal.bind(this, allegation.crid)}>
+              <i className="fa fa-link"></i> Add
+            </button>
+            <button className="btn btn-cancel" onClick={this.onCancelClick.bind(this, allegation)}>
+              <i className="fa fa-times"></i> Cancel
+            </button>
+          </div>
+        );
     }
   },
 

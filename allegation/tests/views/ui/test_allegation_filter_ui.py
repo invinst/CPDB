@@ -21,7 +21,7 @@ class AllegationFilterTestCase(BaseLiveTestCase):
 
         # Check all
         self.link("Categories").click()
-        self.link(self.allegation_category.category).click()
+        self.until(lambda: self.link(self.allegation_category.category).click())
         self.until(lambda : self.element_exist('.complaint-row'))
         self.number_of_complaints().should.equal(number_of_all_created_complaints())
 

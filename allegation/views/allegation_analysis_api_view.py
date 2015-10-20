@@ -32,7 +32,7 @@ class AllegationAnalysisAPIView(View):
 
     def get_allegations(self, ignore_filters=None):
         allegation_query_filters = AllegationQueryFilter(self.request.GET, ignore_filters)
-        allegations = Allegation.allegations.by_allegation_filter(allegation_query_filters)
+        allegations = Allegation.objects.by_allegation_filter(allegation_query_filters)
 
         return allegations
 
