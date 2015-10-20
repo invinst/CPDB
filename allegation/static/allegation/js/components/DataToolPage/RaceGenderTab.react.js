@@ -1,8 +1,17 @@
+var _ = require('lodash');
 var React = require('react');
 
+var Base = require('components/Base.react');
 var PercentageRectangleChart = require('components/DataToolPage/RaceGenderTab/PercentageRectangleChart.react');
+var RaceGenderAPI = require('utils/RaceGenderAPI');
+var RaceGenderTabStore = require('stores/DataToolPage/RaceGenderTab/RaceGenderTabStore');
 
-var RaceGenderTab = React.createClass({
+var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
+  componentDidMount: function() {
+    RaceGenderAPI.getData();
+    RaceGenderTabStore.addChangeListener(this._onChange);
+  },
+
   render: function () {
     var options = {
       colors: ['#FF8033', '#FF6000'],
@@ -22,6 +31,7 @@ var RaceGenderTab = React.createClass({
     ];
 
     return (
+
       <div id='gender-race-tab'>
         <div className='content'>
           <div className='row'>
@@ -66,6 +76,6 @@ var RaceGenderTab = React.createClass({
       </div>
     )
   }
-});
+}));
 
 module.exports = RaceGenderTab;
