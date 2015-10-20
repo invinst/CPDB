@@ -63,8 +63,10 @@ class HomePageTestCase(BaseLiveTestCase):
 
         # First, we click a category, we should see the arrow beside the category
         self.filter_complaint_type()
+        self.browser.implicitly_wait(0)
         self.element_exist('.row .arrow-container').should.equal(False)
-        self.link(self.allegation_category.category).click()
+        self.browser.implicitly_wait(10)
+        self.until(lambda: self.link(self.allegation_category.category).click())        
         # TODO: We should have another test to check which main category this arrow belong to?
         self.element_exist('.row .arrow-container').should.equal(True)
 
