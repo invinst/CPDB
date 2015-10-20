@@ -163,11 +163,14 @@ var Sunburst = React.createClass({
       'selected': d
     });
 
-    if ((d.parent == selected) && selected.tagValue) {
+    if ((d == selected.parent) && selected.tagValue) {
       FilterStore.tagsInputRemoveItemObject(this.makeTag(selected.tagValue));
     }
 
     if (d.tagValue) {
+      if (d.tagValue.removeParent) {
+        FilterStore.tagsInputRemoveItemObject(this.makeTag(d.parent.tagValue));
+      }
       $("#cpdb-search").tagsinput("add", this.makeTag(d.tagValue));
     }
 

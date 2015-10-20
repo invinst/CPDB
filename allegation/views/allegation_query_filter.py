@@ -1,6 +1,11 @@
+from collections import defaultdict
+
 from django.db.models.query_utils import Q
+
+
 from common.constants import FOIA_START_DATE
-from common.models import AllegationCategory, DISCIPLINE_CODES, NO_DISCIPLINE_CODES, Area
+from common.models import AllegationCategory, Area
+from common.models import DISCIPLINE_CODES, NO_DISCIPLINE_CODES, CUSTOM_FILTER_DICT
 
 FILTERS = [
     'id',
@@ -33,30 +38,26 @@ class AllegationQueryFilter(object):
         self.query_dict = query_dict
         self.ignore_filters = ignore_filters or []
         self.raw_filters = []
-        self.filters = {}
+        self.custom_filters = []
+        self.filters = defaultdict(list)
         self.conditions = []
 
     def add_filter(self, field):
         value = self.query_dict.getlist(field, [])
-        if field == 'final_outcome':
-            text = self.query_dict.get('outcome_text')
-            if text:
-                added_value = DISCIPLINE_CODES if text == 'any discipline' else NO_DISCIPLINE_CODES
-                value += added_value
-        if field == 'final_finding':
-            text = self.query_dict.get('outcome_text')
-            if text:
-                value += ['SU']  # sustained
+        if value:
+            self.filters[field] += value
 
-            text = self.query_dict.get('final_finding_text')
-            if text == 'unsustained':
-                value += ['DS', 'EX', 'NA', 'NC', 'NS', 'UN']
+    def add_custom_filter(self, field):
+        values = self.query_dict.getlist(field, [])
+        if not values:
+            return
 
-        if len(value) > 1:
-            self.filters["%s__in" % field] = value
-
-        elif value:
-            self.filters[field] = value[0]
+        for value in values:
+            condition = CUSTOM_FILTER_DICT[field][value]['condition']
+            if not condition:
+                return
+            for field in condition:
+                self.filters[field] += condition[field]
 
     def add_data_source_filter(self, field):
         data_source = self.query_dict.getlist(field, [])
@@ -103,6 +104,7 @@ class AllegationQueryFilter(object):
 
     def available_filters(self):
         self.raw_filters = [x for x in FILTERS if x not in self.ignore_filters]
+        self.custom_filters = [x for x in CUSTOM_FILTER_DICT if x not in self.ignore_filters]
         return self
 
     def allegation_filters(self):
@@ -111,13 +113,21 @@ class AllegationQueryFilter(object):
         for filter_field in self.raw_filters:
             self.add_filter(filter_field)
 
+        for field in self.custom_filters:
+            self.add_custom_filter(field)
+
         for date_filter in DATE_FILTERS:
             self.add_date_filter(date_filter)
+
+        self.filters = self.make_sql_filters(self.filters)
 
         for data_source_filter in DATA_SOURCE_FILTERS:
             self.add_data_source_filter(data_source_filter)
 
         return self.conditions, self.filters
+
+    def make_sql_filters(self, filters):
+        return {"{key}__in".format(key=key): filters[key] for key in filters}
 
     def prepare_categories_filter(self):
         # Merge cat and cat_category

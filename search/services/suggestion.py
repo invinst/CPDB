@@ -4,7 +4,7 @@ from django.db.models.query_utils import Q
 
 from allegation.utils.query import OfficerQuery
 from common.models import AllegationCategory, Allegation, Area, Investigator, Officer, FINDINGS, OUTCOMES, UNITS, GENDER, \
-    RACES, OUTCOME_TEXT, RANKS
+    RACES, OUTCOME_TEXT_DICT, RANKS
 from search.models.alias import Alias
 from search.utils.date import *
 from search.utils.zip_code import *
@@ -101,6 +101,15 @@ class Suggestion(object):
 
                 return ["%s/%s" % (year, x) for x in months if x.startswith(month)]
 
+    def suggest_in_custom(self, q, data):
+        results = []
+        for entry in data:
+            text = data[entry]['text']
+            if text.lower().startswith(q):
+                results.append([value['text'], entry])
+
+        return results
+
     def suggest_in(self, q, data):
         results = []
         for entry in data:
@@ -185,7 +194,7 @@ class Suggestion(object):
 
         ret['officer__rank'] = self.suggest_in(q, RANKS)
 
-        ret['outcome_text'] = self.suggest_in(q, OUTCOME_TEXT)
+        ret['outcome_text'] = self.suggest_in_custom(q, OUTCOME_TEXT_DICT)
 
         ret['data_source'] = self.suggest_data_source(q)
 
