@@ -51,10 +51,7 @@ class Officer(models.Model):
 
     @property
     def display_name(self):
-        return "{first} {last}".format(
-            last=self.officer_last,
-            first=self.officer_first
-        )
+        return '{self.officer_last} {self.officer_first}'.format(self=self)
 
     @property
     def tag_value(self):
