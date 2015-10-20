@@ -65,4 +65,3 @@ class RaceGenderAPI(SimpleTestCase):
             data[x]['gender'].shouldnt.contain('M')
             data[x]['race'].shouldnt.contain('black')
             data[x]['race'].should.contain('white')
-

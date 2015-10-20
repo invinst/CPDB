@@ -7,6 +7,7 @@ from common.models import Officer, ComplainingWitness
 def return_dict(l, k, v):
     ret = {}
     for key, value in enumerate(l):
+        if value[k]:
             ret[value[k]] = value[v]
     return ret
 
@@ -39,4 +40,3 @@ class AllegationRaceGenderAPI(AllegationAPIView):
         }
 
         return HttpResponse(json.dumps(data), content_type='application/json')
-
