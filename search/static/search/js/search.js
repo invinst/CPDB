@@ -20,7 +20,8 @@ AUTOCOMPLETE_CATEGORY_NAMES = {
   'complainant_gender': 'Complainant Gender',
   'complainant_race': 'Complainant Race',
   'outcome_text': 'Outcome',
-  'city': 'Zip Code'
+  'city': 'Zip Code',
+  'data_source': 'Data Source'
 };
 
 AUTOCOMPLETE_DISPLAY_CATEGORY_IN_TAG = [
@@ -114,4 +115,3 @@ function cpdbAutocomplete($input) {
     }
   });
 }
-

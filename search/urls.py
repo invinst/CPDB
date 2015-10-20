@@ -8,5 +8,5 @@ cache_view = cache_page(86400)
 
 
 urlpatterns = [
-    url(r'^suggest/$', cache_view(SuggestView.as_view()), name='suggest'),
+    url(r'^suggest/$', SuggestView.as_view(), name='suggest'),
 ]

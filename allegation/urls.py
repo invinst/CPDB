@@ -16,7 +16,7 @@ cache_view = cache_page(86400 * 90)
 
 urlpatterns = [
     url(r'^api/allegations/$', cache_view(AllegationAPIView.as_view()), name='allegation-api'),
-    url(r'^api/allegations/analysis$', cache_view(AllegationAnalysisAPIView.as_view()), name='allegation-api-analysis'),
+    url(r'^api/allegations/analysis$', AllegationAnalysisAPIView.as_view(), name='allegation-api-analysis'),
     url(r'^api/allegations/csv/$', cache_view(AllegationCSVView.as_view()), name='allegation-api-csv'),
     url(r'^api/allegations/gis/$', cache_view(AllegationClusterApiView.as_view()), name='allegation-api-gis'),
     url(r'^api/allegations/cluster/$', cache_view(AllegationClusterApiView.as_view()), name='allegation-api-clusters'),

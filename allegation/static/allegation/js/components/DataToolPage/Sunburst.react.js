@@ -284,12 +284,25 @@ var Sunburst = React.createClass({
 
     SunburstStore.addChangeListener(this._onChange);
 
-    if (this.props.tabs) {
+    if (this.props.tabs.tabs.length > 0) {
+      for(var i =0; i < this.props.tabs.tabs.length; i++){
+        var tab = this.props.tabs.tabs[i];
+        if(tab.drawChart) {
+          this.props.tabs.tabs[i] = this;
+          /* I am sorry for this code, blame: Bang!!!! */
+        }
+      }
+    }
+    else {
       this.props.tabs.tabs.push(this);
     }
 
     SunburstStore.init(this.props.query);
     this.drawChart();
+  },
+
+  componentWillUnmount: function() {
+    SunburstStore.removeChangeListener(this._onChange);
   },
 
   _onChange: function () {
@@ -347,6 +360,7 @@ var Sunburst = React.createClass({
       </li>
     )
   },
+
 
   render: function () {
     var that = this;
@@ -408,7 +422,7 @@ var Sunburst = React.createClass({
               {percentStatement}
             </div>
             <div className="list">
-              <table>{legends}</table>
+              <table><tbody>{legends}</tbody></table>
             </div>
           </div>
         </div>
