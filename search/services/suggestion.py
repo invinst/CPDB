@@ -11,7 +11,7 @@ from search.utils.zip_code import *
 
 
 AREA_SORT_ORDERS = { 'police-beats': 0, 'neighborhoods': 1, 'ward': 2, 'police-districts': 3, 'school-grounds': 5 }
-
+DATA_SOURCES = ['FOIA', 'pre-FOIA']
 # TODO: More test for this one, especially test for ensure the order, returned format
 class Suggestion(object):
     def make_suggestion_format(self, match):
@@ -141,6 +141,11 @@ class Suggestion(object):
 
         return results[:5]
 
+    def suggest_data_source(self, q):
+        if q.startswith('pre') or q.startswith('foi'):
+            return DATA_SOURCES
+        return []
+
     def query_suggestions(self, model_cls, cond, fields_to_get, limit=5, order_bys=None):
         flat = True if len(fields_to_get) == 1 else False
         queryset = model_cls.objects.filter(cond).values_list(*fields_to_get, flat=flat)
@@ -181,6 +186,8 @@ class Suggestion(object):
         ret['officer__rank'] = self.suggest_in(q, RANKS)
 
         ret['outcome_text'] = self.suggest_in(q, OUTCOME_TEXT)
+
+        ret['data_source'] = self.suggest_data_source(q)
 
         ret = OrderedDict((k, v) for k, v in ret.items() if v)
         return ret
