@@ -73,6 +73,13 @@ var Tabs = React.createClass({
     this.embedListener();
   },
 
+  componentWillUnmount: function () {
+    this.removeEmbedListener();
+    this.tabs = [];
+    this.activeTabIndex = 0;
+    this.embedding = false;
+  },
+
   render: function () {
     return (
       <div>
@@ -94,7 +101,7 @@ var Tabs = React.createClass({
               Race &amp; Gender
             </a>
           </li>
-          <li role="presentation" className="disabled">
+          <li role="presentation" className="disabled hidden">
             <a href="#" aria-controls="profile" role="tab">
               Timeframe
             </a>

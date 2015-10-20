@@ -129,6 +129,10 @@ var OfficerList = React.createClass({
     }
   },
 
+  componentWillUnmount: function () {
+    this.removeEmbedListener();
+  },
+
   getDisplaying: function () {
 
     var start = this.state.current_view - OFFICER_PER_PAGE;

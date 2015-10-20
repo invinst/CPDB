@@ -31,6 +31,11 @@ var Bar = React.createClass({
     EmbedStore.addLeaveListener(this._leaveMode);
   },
 
+  componentDidUnmount: function() {
+    EmbedStore.removeEnterListener(this._enterMode);
+    EmbedStore.removeLeaveListener(this._leaveMode);
+  },
+
   onClick: function (e) {
     e.preventDefault();
 
