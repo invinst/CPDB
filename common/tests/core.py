@@ -76,7 +76,7 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         if world.browser is None:
             world.browser = WebDriver()
             world.browser.implicitly_wait(10)
-            world.browser.set_window_size(width=1200, height=800)
+            world.browser.set_window_size(width=1200, height=1200)
         return world.browser
 
     @classmethod
