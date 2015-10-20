@@ -42,11 +42,11 @@ var PoliceWitness = React.createClass({
           )
         }
 
-        var gender = 'fa fa-street-view';
+        var gender = '';
         if (witnesses_obj.witness_officer.gender == 'F') {
-          gender = 'fa fa-venus';
-        } else if (witnesses_obj.witness_officer.gender == 'F') {
-          gender = 'fa fa-mars';
+          gender = 'Female,';
+        } else if (witnesses_obj.witness_officer.gender == 'M') {
+          gender = 'Male,';
         }
 
         witnesses_rows.push(
@@ -56,7 +56,7 @@ var PoliceWitness = React.createClass({
                 {witnesses_obj.witness_officer.officer_first} {witnesses_obj.witness_officer.officer_last}
               </div>
               <div className="legend">
-                <i className={gender} /> {witnesses_obj.witness_officer.race}
+                {gender} {witnesses_obj.witness_officer.race}
               </div>
               <br />
               {rows}
