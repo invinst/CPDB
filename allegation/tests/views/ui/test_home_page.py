@@ -162,7 +162,7 @@ class HomePageTestCase(BaseLiveTestCase):
 
     def test_sticky_footer(self):
         officer = self.allegation.officer
-        [AllegationFactory(officer=officer) for x in range(40)]
+        AllegationFactory.create_batch(40, officer=officer)
         self.browser.set_window_size(width=1200, height=800)
         self.open_complaint_detail_with_class()
         self.until_ajax_complete()
