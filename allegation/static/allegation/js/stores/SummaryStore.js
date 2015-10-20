@@ -83,6 +83,14 @@ var SummaryStore = assign({}, EventEmitter.prototype, {
 
   addSummaryListener: function (callback) {
     this.on(SUMMARY_CHANGE, callback);
+  },
+
+  removeChangeListener: function (callback) {
+    this.removeListener(CHANGE_EVENT, callback);
+  },
+
+  removeSummaryListener: function (callback) {
+    this.removeListener(SUMMARY_CHANGE, callback);
   }
 });
 
