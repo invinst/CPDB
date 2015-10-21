@@ -2,6 +2,7 @@ var React = require('react');
 var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
 var SummaryActions = require('actions/SummaryActions');
 var SunburstStore = require("stores/SunburstStore");
+var FilterTagsActions = require('actions/FilterTagsActions');
 var FilterStore = require("stores/FilterStore");
 var numeral = require('numeral');
 var AppConstants = require('constants/AppConstants');
@@ -164,14 +165,14 @@ var Sunburst = React.createClass({
     });
 
     if ((d == selected.parent) && selected.tagValue) {
-      FilterStore.tagsInputRemoveItemObject(this.makeTag(selected.tagValue));
+      FilterTagsActions.removeTag(selected.tagValue.category, selected.tagValue)
     }
 
     if (d.tagValue) {
       if (d.tagValue.removeParent) {
-        FilterStore.tagsInputRemoveItemObject(this.makeTag(d.parent.tagValue));
+        FilterTagsActions.removeTag(selected.tagValue.category, selected.tagValue)
       }
-      $("#cpdb-search").tagsinput("add", this.makeTag(d.tagValue));
+      FilterTagsActions.addTag(d.tagValue.category, d.tagValue);
     }
 
     path.transition()

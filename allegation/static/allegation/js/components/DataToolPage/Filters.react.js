@@ -2,6 +2,7 @@ var React = require('react');
 var L = require('leaflet');
 
 var AutoComplete = require('components/DataToolPage/AutoComplete.react');
+var FilterTags = require('components/DataToolPage/FilterTags.react');
 var FilterStore = require('stores/FilterStore');
 var MapStore = require('stores/MapStore');
 var _ajax_req = null;
@@ -30,7 +31,7 @@ var Filters = React.createClass({
   render: function () {
     return (
       <div className=''>
-        <AutoComplete />
+        <FilterTags />
       </div>
     )
   },

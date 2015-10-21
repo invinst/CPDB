@@ -27,6 +27,32 @@ var SessionStore = _.assign(Base(_state), {
 
   getHash: function() {
     return _state['data']['hash'];
+  },
+
+  addTag: function (category, filter) {
+    var filterObject = {
+      'text': filter.label,
+      'value': filter.value
+    }
+
+    var tags = _state.data.readable_query[category]
+    if (tags) {
+      tags.push(filterObject);
+    } else {
+      _state.data.readable_query[category] = [filterObject];
+    }
+  },
+
+  removeTag: function (category, filter) {
+    var tags = _state.data.readable_query[category]
+    if (tags) {
+      for (i in tags) {
+        if (tags[i].value == filter.value) {
+          tags.splice(i, 1);
+          break;
+        }
+      }
+    }
   }
 });
 
@@ -61,6 +87,16 @@ AppDispatcher.register(function (action) {
     case AppConstants.RECEIVED_UPDATED_SESSION_DATA:
       _state['data'] = action.data.data;
       _state.siteTitle = _state['data'].title;
+      SessionStore.emitChange();
+      break;
+
+    case AppConstants.ADD_TAG:
+      SessionStore.addTag(action.category, action.filter);
+      SessionStore.emitChange();
+      break;
+
+    case AppConstants.REMOVE_TAG:
+      SessionStore.removeTag(action.category, action.filter);
       SessionStore.emitChange();
       break;
 

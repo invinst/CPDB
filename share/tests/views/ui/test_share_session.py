@@ -25,12 +25,6 @@ class ShareSessionTestCase(BaseLiveTestCase):
         self.find(".ui-autocomplete-input").send_keys(allegation.officer.officer_first)
 
         self.until(lambda: self.find(".autocomplete-officer").click())
-        self.sleep(1)
+        self.until_ajax_complete()
         self.browser.refresh()
-        self.sleep(1)
-        self.until(lambda: self.find("#cpdb-search"))
-        self.browser.execute_script('$("#cpdb-search").tagsinput("items")[0]')
-
-        filters = self.browser.execute_script('return $("#cpdb-search").tagsinput("items")')
-        filter_values = ["%s_%s" % tuple(f['value']) for f in filters]
-        filter_values.should.contain("%s_%s" % ('officer', allegation.officer.id))
+        self.until(lambda: self.find("#filter-tags").text.should.equal(allegation.officer.display_name))

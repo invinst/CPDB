@@ -91,12 +91,19 @@ var FilterStore = assign({}, EventEmitter.prototype, {
       }
     }
   },
-  removeFilter: function (filterName, filterValue) {
+  addFilter: function (category, filterValue) {
+    if (_filters[category]) {
+      _filters[category]['value'].push(filterValue);
+    } else {
+      _filters[category] = {'value': [filterValue]};
+    }
+  },
+  removeFilter: function (category, filterValue) {
     $.each(_filters, function (i) {
-      if (i == filterName) {
-        var index = _filters[filterName].value.indexOf(filterValue);
+      if (i == category) {
+        var index = _filters[category].value.indexOf(filterValue);
         if (index > -1) {
-          _filters[filterName].value.splice(index, 1);
+          _filters[category].value.splice(index, 1);
         }
       }
 
@@ -198,7 +205,17 @@ AppDispatcher.register(function (action) {
       FilterStore.emitEnable();
       break;
 
-  case AppConstants.RECEIVED_SESSION_DATA:
+    case AppConstants.ADD_TAG:
+      FilterStore.addFilter(action.category, action.filter.value);
+      FilterStore.emitChange();
+      break;
+
+    case AppConstants.REMOVE_TAG:
+      FilterStore.removeFilter(action.category, action.filter.value);
+      FilterStore.emitChange();
+      break;
+
+    case AppConstants.RECEIVED_SESSION_DATA:
       FilterStore.setSession(action.data['data']['query'] || {});
       _initialized = action.data['data'].readable_query || {};
       FilterStore.emitChange();

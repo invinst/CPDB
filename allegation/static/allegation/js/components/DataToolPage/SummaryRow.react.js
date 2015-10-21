@@ -2,6 +2,7 @@ var HOST = 'http://localhost:8000';
 var React = require('react');
 var Filters = require('components/DataToolPage/Filters.react');
 var MapStore = require('stores/MapStore');
+var FilterTagsActions = require('actions/FilterTagsActions');
 var FilterStore = require('stores/FilterStore');
 var SummaryStore = require('stores/SummaryStore');
 var SummaryActions = require('actions/SummaryActions');
@@ -117,9 +118,9 @@ var SummaryRow = React.createClass({
     var current = this.props.category;
 
     if (this.isActive(current)) {
-      FilterStore.tagsInputRemoveItemObject(current.tagValue);
+      FilterTagsActions.removeTag('cat__category', {text: current.name, value: current.name});
     } else {
-      $('#cpdb-search').tagsinput("add", current.tagValue);
+      FilterTagsActions.addTag('cat__category', {text: current.name, value: current.name});
     }
 
     SummaryStore.setCurrentActive(current.name);
