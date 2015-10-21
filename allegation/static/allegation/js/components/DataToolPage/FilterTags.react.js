@@ -29,7 +29,7 @@ var FilterTags = React.createClass(_.assign(Base(SessionStore), {
 
   render: function () {
     return (
-      <div id='filter-tags'>
+      <div id='filter-tags' className="bootstrap-tagsinput">
         { this.renderTags() }
       </div>
     );
