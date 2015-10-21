@@ -64,7 +64,7 @@ class HomePageTestCase(BaseLiveTestCase):
 
         # And it should have a an arrow on the category
         self.number_of_active_subcategories().should.equal(AllegationCategory.objects.filter(category=category).count())
-        self.link(self.allegation_category.allegation_name).click()
+        self.until(lambda: self.link(self.allegation_category.allegation_name).click())
         self.until(lambda: self.number_of_active_subcategories().should.equal(1))
 
     def number_of_active_subcategories(self):
