@@ -23,6 +23,7 @@ OTHER_KEYS = {
     'complainant_gender': GENDER_DICT,
     'outcome_text': OUTCOME_TEXT_DICT,
     'final_outcome': OUTCOMES_DICT,
+    'final_finding': FINDINGS_DICT,
 }
 
 

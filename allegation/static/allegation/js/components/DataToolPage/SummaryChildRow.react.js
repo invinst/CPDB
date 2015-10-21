@@ -3,6 +3,7 @@ var React = require('react');
 var Filters = require('components/DataToolPage/Filters.react');
 var MapStore = require('stores/MapStore');
 var SummaryActions = require('actions/SummaryActions');
+var FilterTagsActions = require('actions/FilterTagsActions');
 var FilterStore = require('stores/FilterStore');
 var AppConstants = require('constants/AppConstants');
 var numeral = require('numeral');
@@ -20,13 +21,14 @@ var SummaryChildRow = React.createClass({
   onClick: function (e) {
     e.preventDefault();
 
-    FilterStore.tagsInputRemoveItemObject(this.props.category.tagValue);
-    var tagValue = this.props.subcategory.tagValue;
+    var parent = this.props.category
+    FilterTagsActions.removeTag('cat__category', {text: parent.name, value: parent.name});
 
+    var child = this.props.subcategory;
     if (this.state.selected) {
-      FilterStore.tagsInputRemoveItemObject(tagValue);
+      FilterTagsActions.removeTag('cat', {text: child.name, value: child.cat_id});
     } else {
-      $('#cpdb-search').tagsinput("add", tagValue);
+      FilterTagsActions.addTag('cat', {text: child.name, value: child.cat_id});
     }
 
     this.state.selected = !this.state.selected;

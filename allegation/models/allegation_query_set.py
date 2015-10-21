@@ -17,7 +17,7 @@ class AllegationQuerySet(models.query.QuerySet):
         return apps.get_model('common', 'Allegation')._meta.db_table
 
     def by_allegation_filter(self, allegation_query_filter):
-        conditions, filters = allegation_query_filter.allegation_filters()
+        conditions = allegation_query_filter.allegation_filters()
         officer_names = allegation_query_filter.officer_names()
         latlng = allegation_query_filter.latlng()
         radius = allegation_query_filter.radius()
@@ -25,8 +25,8 @@ class AllegationQuerySet(models.query.QuerySet):
         complainant_race = allegation_query_filter.complainant_race()
 
         result = self
-        if filters or conditions:
-            result = result.by_filter(conditions, filters)
+        if conditions:
+            result = result.by_filter(conditions)
 
         if officer_names:
             result = result.by_officer_names(officer_names)
@@ -81,8 +81,8 @@ class AllegationQuerySet(models.query.QuerySet):
     def by_complainant_race(self, race):
         return self.by_complainant_field('race', race)
 
-    def by_filter(self, conditions, filters):
-        return self.filter(*conditions, **filters)
+    def by_filter(self, conditions):
+        return self.filter(*conditions)
 
     def by_officer_names(self, names):
         cond = Q()
