@@ -29,7 +29,13 @@ var SessionStore = _.assign(Base(_state), {
     return _state['data']['hash'];
   },
 
+  removeTagInCategory: function (category) {
+    _state.data.readable_query[category] = [];
+  },
+
   addTag: function (category, filter) {
+    this.removeTagInCategory(category);
+
     var filterObject = {
       'text': filter.label,
       'value': filter.value

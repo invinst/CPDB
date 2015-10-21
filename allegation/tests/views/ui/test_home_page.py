@@ -203,3 +203,17 @@ class HomePageTestCase(BaseLiveTestCase):
         self.until(lambda: self.is_displayed_in_viewport('.sticky-footer').should.be.true)
         self.find('body').send_keys(Keys.PAGE_UP)
         self.until(lambda: self.is_displayed_in_viewport('.sticky-footer').should.be.false)
+
+    def test_replace_old_filter_in_same_category(self):
+        allegation = AllegationFactory()
+        self.visit_home()
+        self.find("#autocomplete").send_keys(allegation.officer.officer_first)
+        self.find(".ui-autocomplete .ui-menu-item").click()
+
+        self.should_see_text(allegation.officer.display_name)
+
+        self.find("#autocomplete").send_keys(self.allegation.officer.officer_first)
+        self.until(lambda: self.should_see_text(self.allegation.officer.display_name))
+        self.find(".ui-autocomplete .ui-menu-item").click()
+        self.should_see_text(self.allegation.officer.display_name)
+        self.should_not_see_text(allegation.officer.display_name)

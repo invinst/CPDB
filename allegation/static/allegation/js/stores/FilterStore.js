@@ -91,13 +91,21 @@ var FilterStore = assign({}, EventEmitter.prototype, {
       }
     }
   },
+
+  removeFilterInCategory: function (category) {
+    _filters[category] = {value: []};
+  },
+
   addFilter: function (category, filterValue) {
+    this.removeFilterInCategory(category);
+
     if (_filters[category]) {
       _filters[category]['value'].push(filterValue);
     } else {
       _filters[category] = {'value': [filterValue]};
     }
   },
+
   removeFilter: function (category, filterValue) {
     $.each(_filters, function (i) {
       if (i == category) {
@@ -110,6 +118,7 @@ var FilterStore = assign({}, EventEmitter.prototype, {
     });
     this.emitChange();
   },
+
   replaceFilters: function (filters) {
     _filters = {};
 
@@ -124,6 +133,7 @@ var FilterStore = assign({}, EventEmitter.prototype, {
     });
     this.emitChange();
   },
+
   /**
    * @param {function} callback
    */
