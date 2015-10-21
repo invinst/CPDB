@@ -9,7 +9,7 @@ var DISABLE_EVENT = 'disable';
 
 var _initialized = false;
 var _filters = {};
-
+var _pinned = {};
 
 function update(id, updates) {
   _filters[id] = assign({}, _filters[id], updates);
@@ -92,8 +92,24 @@ var FilterStore = assign({}, EventEmitter.prototype, {
     }
   },
 
+  isPinned: function (category, value) {
+    return _pinned[category] && _pinned[category].indexOf(value) != -1;
+  },
+
   removeFilterInCategory: function (category) {
-    _filters[category] = {value: []};
+    if (!_filters[category]) {
+      return;
+    }
+
+    var pinned = [];
+    var values = _filters[category].value;
+    for (i in values) {
+      if (FilterStore.isPinned(category, values[i])) {
+        pinned.push(values[i]);
+      }
+    }
+
+    _filters[category].value = pinned;
   },
 
   addFilter: function (category, filterValue) {
@@ -116,6 +132,14 @@ var FilterStore = assign({}, EventEmitter.prototype, {
       }
 
     });
+    this.emitChange();
+  },
+
+  pinFilter: function (category, filterValue) {
+    if (!_pinned[category]) {
+      _pinned[category] = [];
+    }
+    _pinned[category].push(filterValue);
     this.emitChange();
   },
 
@@ -222,6 +246,11 @@ AppDispatcher.register(function (action) {
 
     case AppConstants.REMOVE_TAG:
       FilterStore.removeFilter(action.category, action.filter.value);
+      FilterStore.emitChange();
+      break;
+
+    case AppConstants.PIN_TAG:
+      FilterStore.pinFilter(action.category, action.filter.value);
       FilterStore.emitChange();
       break;
 

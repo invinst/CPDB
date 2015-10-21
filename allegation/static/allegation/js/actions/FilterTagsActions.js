@@ -29,6 +29,14 @@ var FilterTagsActions = {
     ComplaintListAPI.getData();
     OutcomeAnalysisAPI.getAnalysisInformation();
     SessionAPI.updateSessionInfo({'query': FilterStore.getSession()});
+  },
+
+  pinTag: function (category, filter) {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.PIN_TAG,
+      category: category,
+      filter: filter
+    });
   }
 };
 

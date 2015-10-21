@@ -37,6 +37,7 @@ module.exports = {
 
   ADD_TAG: c++,
   REMOVE_TAG: c++,
+  PIN_TAG: c++,
 
   AVG_COMPLAINTS_NUMBER_GREEN: 20,
   AVG_COMPLAINTS_NUMBER_YELLOW: 60,

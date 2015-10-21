@@ -13,6 +13,10 @@ var FilterTags = React.createClass(_.assign(Base(SessionStore), {
     FilterTagsActions.removeTag(category, filter);
   },
 
+  pinTag: function (category, filter) {
+    FilterTagsActions.pinTag(category, filter);
+  },
+
   renderTags: function () {
     var that = this;
     return _.map(this.state.data.readable_query, function (value, category) {
@@ -20,6 +24,7 @@ var FilterTags = React.createClass(_.assign(Base(SessionStore), {
         return (
           <span className="tag tag label label-info-autocomplete fadeIn">
             {filter.text || filter}
+            <span className='pin' onClick={that.pinTag.bind(that, category, filter)}><i className="fa fa-thumb-tack"></i></span>
             <span data-role="remove" onClick={that.removeTag.bind(that, category, filter)}></span>
           </span>
         );

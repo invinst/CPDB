@@ -30,7 +30,17 @@ var SessionStore = _.assign(Base(_state), {
   },
 
   removeTagInCategory: function (category) {
-    _state.data.readable_query[category] = [];
+    if (!_state.data.readable_query[category]) {
+      return;
+    }
+    var filters = _state.data.readable_query[category];
+    var newValue = [];
+    for (var i in filters) {
+      if (FilterStore.isPinned(category, filters[i].value)) {
+        newValue.push(filters[i]);
+      }
+    }
+    _state.data.readable_query[category] = newValue;
   },
 
   addTag: function (category, filter) {
