@@ -57,7 +57,11 @@ var CheckMark = React.createClass({
     var officer = this.props.officer;
     var presenter = OfficerPresenter(officer);
     var page = this.props.page || 'home';
-    OfficerActions.setActiveOfficer(officer, page);
+    if (page == 'home') {
+      OfficerActions.setActiveOfficer(officer);
+    } else {
+      OfficerActions.setActiveOfficerInOfficerPage(officer);
+    }
     ga('send', 'event', 'officer', 'filter-by', presenter.displayName);
   },
 
