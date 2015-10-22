@@ -9,7 +9,7 @@ var DISABLE_EVENT = 'disable';
 
 var _initialized = false;
 var _filters = {};
-
+var _pinned = {};
 
 function update(id, updates) {
   _filters[id] = assign({}, _filters[id], updates);
@@ -91,13 +91,37 @@ var FilterStore = assign({}, EventEmitter.prototype, {
       }
     }
   },
+
+  isPinned: function (category, value) {
+    return _pinned[category] && _pinned[category].indexOf(value) != -1;
+  },
+
+  removeFilterInCategory: function (category) {
+    if (!_filters[category]) {
+      return;
+    }
+
+    var pinned = [];
+    var values = _filters[category].value;
+    for (i in values) {
+      if (FilterStore.isPinned(category, values[i])) {
+        pinned.push(values[i]);
+      }
+    }
+
+    _filters[category].value = pinned;
+  },
+
   addFilter: function (category, filterValue) {
+    this.removeFilterInCategory(category);
+
     if (_filters[category]) {
       _filters[category]['value'].push(filterValue);
     } else {
       _filters[category] = {'value': [filterValue]};
     }
   },
+
   removeFilter: function (category, filterValue) {
     $.each(_filters, function (i) {
       if (i == category) {
@@ -110,6 +134,15 @@ var FilterStore = assign({}, EventEmitter.prototype, {
     });
     this.emitChange();
   },
+
+  pinFilter: function (category, filterValue) {
+    if (!_pinned[category]) {
+      _pinned[category] = [];
+    }
+    _pinned[category].push(filterValue);
+    this.emitChange();
+  },
+
   replaceFilters: function (filters) {
     _filters = {};
 
@@ -124,6 +157,7 @@ var FilterStore = assign({}, EventEmitter.prototype, {
     });
     this.emitChange();
   },
+
   /**
    * @param {function} callback
    */
@@ -212,6 +246,11 @@ AppDispatcher.register(function (action) {
 
     case AppConstants.REMOVE_TAG:
       FilterStore.removeFilter(action.category, action.filter.value);
+      FilterStore.emitChange();
+      break;
+
+    case AppConstants.PIN_TAG:
+      FilterStore.pinFilter(action.category, action.filter.value);
       FilterStore.emitChange();
       break;
 

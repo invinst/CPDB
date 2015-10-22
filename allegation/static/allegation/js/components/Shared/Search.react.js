@@ -10,7 +10,9 @@ var Search = React.createClass({
   },
 
   select: function (event, ui) {
+    event.preventDefault();
     FilterTagsActions.addTag(ui.item.category, ui.item);
+    $("#autocomplete").val('');
   },
 
   render: function() {

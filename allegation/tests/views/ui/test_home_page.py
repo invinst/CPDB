@@ -203,3 +203,35 @@ class HomePageTestCase(BaseLiveTestCase):
         self.until(lambda: self.is_displayed_in_viewport('.sticky-footer').should.be.true)
         self.find('body').send_keys(Keys.PAGE_UP)
         self.until(lambda: self.is_displayed_in_viewport('.sticky-footer').should.be.false)
+
+    def test_replace_old_filter_in_same_category(self):
+        allegation = AllegationFactory()
+        self.visit_home()
+        self.search_officer(allegation.officer)
+        self.should_see_text(allegation.officer.display_name)
+
+        self.search_officer(self.allegation.officer)
+        self.should_see_text(self.allegation.officer.display_name)
+        self.should_not_see_text(allegation.officer.display_name)
+
+    def test_pin_tag(self):
+        allegation = AllegationFactory()
+        self.visit_home()
+        self.search_officer(allegation.officer)
+        self.should_see_text(allegation.officer.display_name)
+
+        self.find('.tag > .pin').click()
+        self.search_officer(self.allegation.officer)
+        self.should_see_text(self.allegation.officer.display_name)
+        self.should_see_text(allegation.officer.display_name)
+
+        another = AllegationFactory()
+        self.search_officer(another.officer)
+        self.should_see_text(another.officer.display_name)
+        self.should_see_text(allegation.officer.display_name)
+        self.should_not_see_text(self.allegation.officer.display_name)
+
+    def search_officer(self, officer):
+        self.find("#autocomplete").send_keys(officer.officer_first)
+        self.until(lambda: self.should_see_text(officer.display_name))
+        self.find(".ui-autocomplete .ui-menu-item").click()
