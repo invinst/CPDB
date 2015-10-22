@@ -11,7 +11,7 @@ describe('RelatedOfficersStore', function() {
   var AppConstants = require('../../../constants/AppConstants');
 
   var actionSetActiveOfficer = {
-    actionType: AppConstants.SET_ACTIVE_OFFICER,
+    actionType: AppConstants.SET_ACTIVE_OFFICER_IN_OFFICER_PAGE,
     officer: {
       id: 1
     } 
