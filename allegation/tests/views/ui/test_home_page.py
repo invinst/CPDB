@@ -221,6 +221,8 @@ class HomePageTestCase(BaseLiveTestCase):
         self.should_see_text(allegation.officer.display_name)
 
         self.find('.tag > .pin').click()
+        self.until(lambda: self.find('.tag').get_attribute('class').should.contain('pinned'))        
+
         self.search_officer(self.allegation.officer)
         self.should_see_text(self.allegation.officer.display_name)
         self.should_see_text(allegation.officer.display_name)
@@ -231,7 +233,33 @@ class HomePageTestCase(BaseLiveTestCase):
         self.should_see_text(allegation.officer.display_name)
         self.should_not_see_text(self.allegation.officer.display_name)
 
+    def test_unpin_tag(self):
+        allegation = AllegationFactory()
+        self.visit_home()
+        self.search_officer(allegation.officer)
+        self.should_see_text(allegation.officer.display_name)
+
+        self.find('.tag > .pin').click()
+        self.search_officer(self.allegation.officer)
+        self.should_see_text(self.allegation.officer.display_name)
+        self.should_see_text(allegation.officer.display_name)
+
+        element = self.find('.pinned')
+        element.find('.pin').click()
+        self.until(lambda: element.get_attribute('class').shouldnt.contain('pinned'))
+
+        another = AllegationFactory()
+        self.search_officer(another.officer)
+        self.should_see_text(another.officer.display_name)
+        self.should_not_see_text(allegation.officer.display_name)
+        self.should_not_see_text(self.allegation.officer.display_name)
+
+    def autocomplete_available(self, text):
+        items = self.find_all(".ui-autocomplete .ui-menu-item")
+        items = [x.text for x in items]
+        return any(text in x for x in items)
+
     def search_officer(self, officer):
         self.find("#autocomplete").send_keys(officer.officer_first)
-        self.until(lambda: self.should_see_text(officer.display_name))
+        self.until(lambda: self.autocomplete_available(officer.display_name))
         self.find(".ui-autocomplete .ui-menu-item").click()
