@@ -45,7 +45,7 @@ var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
     var hasMap = this.state.data['has_map'];
 
     if (_.isEmpty(officer)) {
-      return <i class="fa fa-spin fa-spinner" />;
+      return <i clasName="fa fa-spin fa-spinner" />;
     }
     return (
       <div>

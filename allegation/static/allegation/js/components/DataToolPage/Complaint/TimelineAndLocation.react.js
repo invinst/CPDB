@@ -11,21 +11,23 @@ var TimelineAndLocation = React.createClass({
   render: function () {
     var complaint = this.props.complaint;
     var allegation = complaint.allegation;
-
+    var wrapperClassName;
     var row = [];
+
     if (allegation.start_date || allegation.incident_date || allegation.end_date) {
-      row.push(<Timeline key="timeline" complaint={complaint} />);
+      row.push(<Timeline key="timeline" className="col-md-offset-1" complaint={complaint} />);
     }
+
     if (allegation.point.lat) {
-      row.push(<Location key="location" complaint={complaint} />);
+      var className = row.length == 0 ? "col-md-offset-1" : "";
+      row.push(<Location key="location" complaint={complaint} className={className} />);
     }
-    var className = "hidden";
-    if (row.length) {
-      row[0].props.className = "col-md-offset-1";
-      className = "row";
-    }
+
+    // don't try to set className for Timeline here since it will trigger a warning
+    wrapperClassName = row.length ? 'row' : 'hidden';
+
     return (
-      <div className={className}>
+      <div className={wrapperClassName}>
         {row}
       </div>
     );

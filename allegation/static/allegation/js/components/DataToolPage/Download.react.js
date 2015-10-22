@@ -52,6 +52,10 @@ var Download = React.createClass({
     OfficerListStore.addChangeListener(this.onChange);
   },
 
+  componentWillUnmount: function () {
+    OfficerListStore.removeChangeListener(this.onChange);
+  },
+
   onChange: function () {
     this.setState({
       query: OfficerListStore.getQueryString()

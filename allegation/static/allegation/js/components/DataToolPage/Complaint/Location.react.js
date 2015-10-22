@@ -41,7 +41,7 @@ var Location = React.createClass({
         map_image = (
           'http://api.tiles.mapbox.com/v4/mapbox.streets/url-' + encodeURIComponent(AppConstants.MAP_MARKER_ICON_URL) +'(' + lng + ',' + lat + ')/' + centerLng + ',' + lat + ',13/' +
           this.getSize() +
-          '.png?access_token=' + token
+          '.png?access_token=' + AppConstants.MAP_TOKEN
         );
         this.setState({
           image: map_image
