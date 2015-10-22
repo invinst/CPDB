@@ -139,7 +139,13 @@ var FilterStore = assign({}, EventEmitter.prototype, {
     if (!_pinned[category]) {
       _pinned[category] = [];
     }
-    _pinned[category].push(filterValue);
+    
+    if (FilterStore.isPinned(category, filterValue)) { 
+      _pinned[category].splice(_pinned[category].indexOf(filterValue));
+    } else {
+      _pinned[category].push(filterValue);
+    }
+
     this.emitChange();
   },
 
