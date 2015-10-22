@@ -29,7 +29,6 @@ var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
     // OfficerPage is not rendered again if we change from OfficerPage to other OfficerPage
     var officerId = nextProps.officerId || '';
     OfficerPageServerActions.getOfficerData(officerId);
-    ComplaintListAPI.getAllForOfficer(officerId);
     StoryListAPI.get(officerId);
   },
 
