@@ -5,6 +5,7 @@ require('leaflet.heat');
 var MapStore = require("stores/MapStore");
 var FilterStore = require('stores/FilterStore');
 var FilterActions = require("actions/FilterActions");
+var FilterTagsActions = require("actions/FilterTagsActions");
 var AppConstants = require('constants/AppConstants');
 var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
 
@@ -27,6 +28,8 @@ var _baseLayers = {};
 var _controlDiv = null;
 var _normalStyle = {"fillColor": "#eeffee", "fillOpacity": 0.0, 'weight': 2};
 var _types = ['police-districts', 'wards', 'police-beats', 'neighborhoods', 'school-grounds'];
+
+var selectedLayers = {};
 
 
 var Map = React.createClass({
@@ -91,8 +94,11 @@ var Map = React.createClass({
     var self = this;
     this.create();
     this.createAreas();
+
     MapStore.addChangeMarkerListener(self.changeMarker);
     MapStore.addBeforeChangeMarkerListener(self.beforeChangeMarker);
+
+    FilterStore.addChangeListener(this._onChange);
 
     // having this code async will not block the immediate rendering of the page
     // on reload. On first load the API needs to be hit so the markers/areas don't block rendering
@@ -188,6 +194,8 @@ var Map = React.createClass({
       if (filters['areas__id']['value'].indexOf(feature.properties.id) > -1) {
         layer.selected = true;
         layer.setStyle(highlightStyle);
+
+        selectedLayers[feature.properties.id] = layer;
       }
     }
 
@@ -204,29 +212,16 @@ var Map = React.createClass({
       }
     });
 
-    var tagValue = {
-      text: area_type + ": " + feature.properties.name,
-      value: ['areas__id', feature.properties.id],
-      layer: layer
-    };
-
-    layer.toggleStyle = function () {
-      if (!layer.selected) {
-        layer.selected = true;
-        layer.setStyle(highlightStyle);
-      }
-      else {
-        layer.selected = false;
-        layer.setStyle(_normalStyle);
-      }
-    };
+    var tagValue = {label: area_type + ": " + feature.properties.name, value: feature.properties.id};
 
     layer.on('click', function () {
-      if (!layer.selected) {
-        $('#cpdb-search').tagsinput("add", tagValue);
+      selectedLayers[feature.properties.id] = layer;
+      layer.selected = !layer.selected;
+      if (layer.selected) {
+        FilterTagsActions.addTag('areas__id', tagValue);
       }
       else {
-        $('#cpdb-search').tagsinput("remove", tagValue);
+        FilterTagsActions.removeTag('areas__id', tagValue);
       }
     });
     if (!(area_type in _layers)) {
@@ -298,6 +293,25 @@ var Map = React.createClass({
     _heat = L.heatLayer(latLngs, heatOpts);
     _map.addLayer(_heat);
 
+  },
+
+  _onChange: function () {
+    var filters = FilterStore.getFilters();
+    if (!filters.areas__id) {
+      return;
+    }
+
+    var values = filters.areas__id.value;
+    for (var k in selectedLayers) {
+      var layer = selectedLayers[k];
+      if (values.indexOf(parseInt(k)) == -1) {
+        layer.selected = false;
+        layer.setStyle(_normalStyle);
+      } else {
+        layer.selected = true;
+        layer.setStyle(highlightStyle);
+      }
+    }
   },
 
   render: function () {
