@@ -123,16 +123,10 @@ var FilterStore = assign({}, EventEmitter.prototype, {
   },
 
   removeFilter: function (category, filterValue) {
-    $.each(_filters, function (i) {
-      if (i == category) {
-        var index = _filters[category].value.indexOf(filterValue);
-        if (index > -1) {
-          _filters[category].value.splice(index, 1);
-        }
-      }
-
-    });
-    this.emitChange();
+    var index = _filters[category].value.indexOf(filterValue);
+    if (index > -1) {
+      _filters[category].value.splice(index, 1);
+    }
   },
 
   pinFilter: function (category, filterValue) {

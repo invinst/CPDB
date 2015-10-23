@@ -2,10 +2,13 @@
  * Created by eastagile on 8/6/15.
  */
 var React = require('react');
+var classnames = require('classnames');
+
 var FilterStore = require('stores/FilterStore');
 var Sunburst = require('components/DataToolPage/Sunburst.react');
 var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
 var Summary = require('components/DataToolPage/Summary.react');
+var Map = require('components/DataToolPage/Map.react');
 
 
 var Tabs = React.createClass({
@@ -80,11 +83,45 @@ var Tabs = React.createClass({
     this.embedding = false;
   },
 
+  renderMapTab: function () {
+    if (!this.props.mobile) {
+      return;
+    }
+
+    return (
+      <li role="presentation" className="active">
+        <a href='javascript:void(0)' data-target="#map" aria-controls="map" role="tab" className='pointer' data-toggle="tab"
+           onClick={this.activeTab.bind(this, 0)}>
+          Map
+        </a>
+      </li>
+    );
+  },
+
+  renderMapContent: function () {
+    if (!this.props.mobile) {
+      return;
+    }
+
+    return (
+      <div role="tabpanel" className='tab-pane active' id="map">
+        <Map tabs={this} />
+      </div>
+    );
+  },
+
   render: function () {
+    var isActive = {
+      'active': !this.props.mobile
+    };
+    var outcomeClassName = classnames(isActive);
+
+    var outcomeContentClassName = classnames('tab-pane', isActive);
     return (
       <div>
         <ul className="nav nav-tabs" role="tablist">
-          <li role="presentation" className="active">
+          { this.renderMapTab() }
+          <li role="presentation" className={outcomeClassName}>
             <a href='javascript:void(0)' data-target="#sunburst" aria-controls="sunburst" role="tab" className='pointer' data-toggle="tab"
                onClick={this.activeTab.bind(this, 0)}>
               Outcomes
@@ -109,7 +146,8 @@ var Tabs = React.createClass({
         </ul>
 
         <div className="tab-content">
-          <div role="tabpanel" className="tab-pane active" id="sunburst">
+          { this.renderMapContent() }
+          <div role="tabpanel" className={outcomeContentClassName} id="sunburst">
             <Sunburst tabs={this} />
           </div>
           <div role="tabpanel" className="tab-pane" id="categories">
