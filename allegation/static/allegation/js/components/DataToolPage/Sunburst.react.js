@@ -341,24 +341,26 @@ var Sunburst = React.createClass({
     }
     var breadcrumb = [];
     var current = node;
+    var key = 0;
     while (current.parent) {
-      breadcrumb.unshift(this.makeBreadcrumb(current.parent));
+      breadcrumb.unshift(this.makeBreadcrumb(current.parent, key++));
       current = current.parent;
     }
-    breadcrumb.push(this.makeBreadcrumb(node));
+    breadcrumb.push(this.makeBreadcrumb(node, key++));
     return (
       <ol className="sunburst-breadcrumb">{breadcrumb}</ol>
     );
   },
 
-  makeBreadcrumb: function (node) {
+  makeBreadcrumb: function (node, key) {
     var total = sum(node);
     var className = "sunburst-legend";
     if (node == this.state.selected) {
       className += " active";
     }
+
     return (
-      <li className={className} onClick={this.select.bind(this, node)}>
+      <li key={key} className={className} onClick={this.select.bind(this, node)}>
         {numeral(total).format(AppConstants.NUMERAL_FORMAT)} <br />
         <span className="name">{node.name}</span>
       </li>

@@ -131,6 +131,7 @@ var OfficerList = React.createClass({
 
   componentWillUnmount: function () {
     this.removeEmbedListener();
+    OfficerListStore.removeChangeListener(this._onChange);
   },
 
   getDisplaying: function () {

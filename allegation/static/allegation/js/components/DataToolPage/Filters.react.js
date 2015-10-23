@@ -27,6 +27,10 @@ var Filters = React.createClass({
       this._onChange();
     }
   },
+  componentWillUnmount: function() {
+    FilterStore.removeChangeListener(this._onChange);
+    FilterStore.removeCreateListener(this._onCreate);
+  },
 
   render: function () {
     return (

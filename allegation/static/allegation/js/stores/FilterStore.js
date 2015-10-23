@@ -192,6 +192,9 @@ var FilterStore = assign({}, EventEmitter.prototype, {
   addCreateListener: function (callback) {
     this.on(CREATE_EVENT, callback);
   },
+  removeCreateListener: function(callback) {
+    this.removeListener(CREATE_EVENT, callback);
+  },
 
   getQueryString: function (ignoreFilters) {
     var query = "";

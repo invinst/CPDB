@@ -12,7 +12,7 @@ var OfficerInformation = React.createClass({
     return ['unitWithName', 'rank', 'star', 'joinedDate', 'race', 'gender'].map(function(x) {
       if (!_.isEmpty(presenter[x])) {
         return (
-          <span className='information-entry'>
+          <span key={x} className='information-entry'>
             <span className='desc'>{AppConstants.OFFICER_INFORMATION_TITLES[x]}</span>
             <span className='val'>{presenter[x]}</span>
             <span className='splitter'></span>

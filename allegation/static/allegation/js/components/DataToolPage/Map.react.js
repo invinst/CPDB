@@ -88,18 +88,24 @@ var Map = React.createClass({
   // end embedding
 
   componentDidMount: function () {
-
+    var self = this;
     this.create();
     this.createAreas();
+    MapStore.addChangeMarkerListener(self.changeMarker);
+    MapStore.addBeforeChangeMarkerListener(self.beforeChangeMarker);
 
-    MapStore.addChangeMarkerListener(this.changeMarker);
-    MapStore.addBeforeChangeMarkerListener(this.beforeChangeMarker);
-    MapStore.update(this.props.query);
-    if (MapStore.getMarkers()) {
-      MapStore.emitChangeMarker();
-    }
+    // having this code async will not block the immediate rendering of the page
+    // on reload. On first load the API needs to be hit so the markers/areas don't block rendering
+    // but on coming back via routing the data is cached and is parsed/loaded immediately blocking
+    // the browser from painting.
+    setTimeout(function() {
+      MapStore.update(self.props.query);
+      if (MapStore.getMarkers()) {
+        MapStore.emitChangeMarker();
+      }
 
-    this.embedListener();
+      self.embedListener();
+    }, 200);
   },
 
   componentWillUnmount: function() {
