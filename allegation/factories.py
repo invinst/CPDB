@@ -19,7 +19,11 @@ class AreaFactory(factory.django.DjangoModelFactory):
 
     name = factory.Sequence(lambda n: fake.first_name())
     type = factory.Sequence(lambda n: 'school-grounds')
-    polygon = factory.Sequence(lambda n: MultiPolygon(Polygon(((0, 0), (0, 1), (1, 1), (0, 0)))))
+    polygon = factory.Sequence(lambda n: MultiPolygon(Polygon(((87.940101, 42.023135),
+                                                               (87.523661, 42.023135),
+                                                               (87.523661, 41.644286),
+                                                               (87.940101, 41.644286),
+                                                               (87.940101, 42.023135)))))
 
 
 class PoliceWitnessFactory(factory.django.DjangoModelFactory):

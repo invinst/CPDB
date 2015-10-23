@@ -1,9 +1,12 @@
 import json
-from django.http.response import HttpResponse, HttpResponseBadRequest, Http404
+from django.contrib.gis.geos.factory import fromstr
+from django.contrib.gis.geos.point import Point
+from django.http.response import HttpResponse, HttpResponseBadRequest, Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.views.generic import View
 
 from common.json_serializer import JSONSerializer
+from common.models import Area
 from common.utils.http_request import get_client_ip
 from share.models import Session
 
@@ -100,3 +103,29 @@ class SessionAPIView(View):
         session.save()
 
         return session
+
+
+class InitSession(SessionAPIView):
+    def get(self, request):
+        lat = float(request.GET.get('lat', 41.850033))
+        lng = float(request.GET.get('lng', -87.6500523))
+
+        point = Point(lng, lat)
+        beats = Area.objects.filter(type='police-beats', polygon__contains=point)
+
+        if beats.exists():
+            beat = beats.first()
+
+            session = Session.objects.create(
+                title="Police Beat %s" % beat.name,
+                query={
+                    'filters': {
+                        'areas__id': {
+                            'value': [beat.id]
+                        }
+                    }
+                }
+            )
+            return HttpResponseRedirect("/#!/data-tools/{session_hash}".format(session_hash=session.hash_id))
+
+        return HttpResponseRedirect("/#!/data-tools/")
