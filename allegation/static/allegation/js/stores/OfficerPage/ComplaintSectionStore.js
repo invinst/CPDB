@@ -100,6 +100,7 @@ AppDispatcher.register(function(action) {
     break;
 
   case AppConstants.SET_ACTIVE_OFFICER:
+  case AppConstants.SET_ACTIVE_OFFICER_IN_OFFICER_PAGE:
     AppDispatcher.waitFor([RelatedOfficersStore.dispatchEvents]);
     updateComplaints();
     _state['analytics'] = analyzeComplaints(_state['complaints']);

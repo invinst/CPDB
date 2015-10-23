@@ -29,7 +29,7 @@ var RelatedOfficersStore = assign({}, EventEmitter.prototype, {
 
 RelatedOfficersStore.dispatchEvents = AppDispatcher.register(function(action) {
   switch (action.actionType) {
-  case AppConstants.SET_ACTIVE_OFFICER:
+  case AppConstants.SET_ACTIVE_OFFICER_IN_OFFICER_PAGE:
     var index = _state.activeOfficers.indexOf(action.officer.id);
 
     if (index == -1) {

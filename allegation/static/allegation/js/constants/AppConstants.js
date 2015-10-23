@@ -16,6 +16,7 @@ module.exports = {
   SET_SUMMARY: c++,
   OFFICER_VIEW_MORE: c++,
   SET_ACTIVE_OFFICER: c++,
+  SET_ACTIVE_OFFICER_IN_OFFICER_PAGE: c++,
   SET_OFFICER_LIST_FILTER: c++,
   INIT: c++,
   SAVE_SESSION: c++,

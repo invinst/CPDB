@@ -19,13 +19,19 @@ var OfficerActions = {
       officer: officer
     });
 
-    if (page == 'home') {
-      // We only do API call on Officer instance on homepage
-      ComplaintListAPI.getData();
-      OutcomeAnalysisAPI.getAnalysisInformation();
-    }
+    // We only do API call on Officer instance on homepage
+    ComplaintListAPI.getData();
+    OutcomeAnalysisAPI.getAnalysisInformation();
     SessionAPI.updateSessionInfo({ 'query': OfficerListStore.getSession()});
   },
+
+  setActiveOfficerInOfficerPage: function (officer) {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.SET_ACTIVE_OFFICER_IN_OFFICER_PAGE,
+      officer: officer
+    });
+  },
+
   setComplaintsCount: function (start, end) {
     AppDispatcher.dispatch({
       actionType: AppConstants.SET_OFFICER_LIST_FILTER,
