@@ -263,3 +263,4 @@ class HomePageTestCase(BaseLiveTestCase):
         self.find("#autocomplete").send_keys(officer.officer_first)
         self.until(lambda: self.autocomplete_available(officer.display_name))
         self.find(".ui-autocomplete .ui-menu-item").click()
+        self.until_ajax_complete()
