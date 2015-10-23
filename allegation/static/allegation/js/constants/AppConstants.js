@@ -215,7 +215,7 @@ module.exports = {
     'unitWithName': 'Unit'
   },
 
-  DEFAULT_SITE_TITLE: "Chicago Police Database",
+  DEFAULT_SITE_TITLE: "Citizens Police Data Project",
 
   MEDIA_URL: '/media/',
 
