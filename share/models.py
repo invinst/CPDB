@@ -103,4 +103,4 @@ class Session(models.Model):
                 'value': o,
             } for o in values['value']]
 
-        return values['value']
+        return [{'value': x, 'text': x} for x in values['value']]
