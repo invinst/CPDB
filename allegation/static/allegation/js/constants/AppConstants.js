@@ -47,7 +47,7 @@ module.exports = {
     'not-sustained': 'NS',
     'exonerated': 'EX',
     'unfounded': 'UN',
-    'other': ['NC', 'NA', 'DS']
+    'other': ['NC', 'NA', 'DS', 'ZZ']
   },
 
   UNITS: {
