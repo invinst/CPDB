@@ -106,7 +106,7 @@ class Suggestion(object):
         for entry in data:
             text = data[entry]['text']
             if text.lower().startswith(q):
-                results.append([value['text'], entry])
+                results.append([text, entry])
 
         return results
 
