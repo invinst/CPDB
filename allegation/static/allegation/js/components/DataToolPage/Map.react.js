@@ -30,8 +30,9 @@ var _normalStyle = {"fillColor": "#eeffee", "fillOpacity": 0.0, 'weight': 2};
 var _types = ['police-districts', 'wards', 'police-beats', 'neighborhoods', 'school-grounds'];
 
 var selectedLayers = {};
-var allLayersIndex = {}
-
+var allLayersIndex = {};
+var _maxBounds = {};
+var _defaultBounds = {};
 
 var Map = React.createClass({
   mixins: [EmbedMixin],
@@ -140,11 +141,10 @@ var Map = React.createClass({
 
     var southWest = L.latLng(41.143501411390766, -88.53057861328125);
     var northEast = L.latLng(42.474122772511485, -85.39947509765625);
-    var maxBounds = L.LatLngBounds(southWest, northEast);
+    _maxBounds = L.latLngBounds(southWest, northEast);
     _map = L.mapbox.map(dom_id, AppConstants.MAP_TYPE, opts).setView(center, defaultZoom);
-
-    _map.on('click', function (event) {
-    }).setMaxBounds(maxBounds);
+    _defaultBounds = _map.getBounds()
+    _map.setMaxBounds(_maxBounds);
 
     _map.on('move', function () {
       var center = this.getCenter();
@@ -153,7 +153,9 @@ var Map = React.createClass({
         'defaultZoom': this.getZoom(),
         'center': center
       });
-      FilterActions.saveSession();
+      try{
+        FilterActions.saveSession();
+      }catch(e){};
     });
   },
 
@@ -257,6 +259,7 @@ var Map = React.createClass({
       }
       else {
         L.control.layers(_baseLayers,{}, {collapsed: false}).addTo(_map);
+        that._onChange();
       }
     }, 'json').fail(function(jqxhr, textStatus, error) {
       var err = textStatus + ", " + error;
@@ -299,7 +302,6 @@ var Map = React.createClass({
   },
 
   _onChange: function () {
-    debugger;
     var filters = FilterStore.getFilters();
     if (!filters.areas__id) {
       return;
@@ -320,6 +322,20 @@ var Map = React.createClass({
         selectedLayers[k] = layer;
       }
     }
+
+    var bounds = L.latLngBounds([]);
+    var hasOneSelected = false;
+    for(var k in selectedLayers) {
+      hasOneSelected = true;
+      bounds.extend(selectedLayers[k].getBounds())
+    }
+    if (hasOneSelected) {
+      _map.fitBounds(bounds);
+    }
+    else if (_defaultBounds) {
+      _map.fitBounds(_defaultBounds);
+    }
+
   },
 
   render: function () {
