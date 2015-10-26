@@ -202,21 +202,24 @@ class Suggestion(object):
         return ret
 
     def make_suggestion(self, q):
-        ret = self._make_suggestion(q)
 
         aliases = Alias.objects.filter(alias__istartswith=q)[0:10]
+        #import pdb; pdb.set_trace()
+        ret = OrderedDict()
         for alias in aliases:
-            alias_suggest = self._make_suggestion(alias.target)
+            ret = self._make_suggestion(alias.target)
 
             if not alias.num_suggestions:
                 alias.num_suggestions = sum([len(v) for k, v in alias_suggest.items()])
             alias.num_usage += 1
             alias.save()
 
-            for key in alias_suggest:
-                if key in ret:
-                    ret[key] = ret[key] + alias_suggest[key]
-                else:
-                    ret[key] = alias_suggest[key]
+        ret_append = self._make_suggestion(q)
+
+        for key in ret_append:
+            if key in ret:
+                ret[key] = ret[key] + ret_append[key]
+            else:
+                ret[key] = ret_append[key]
 
         return ret
