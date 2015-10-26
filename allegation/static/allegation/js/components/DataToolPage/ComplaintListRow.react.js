@@ -63,26 +63,26 @@ var ComplaintListRow = React.createClass(_.assign(Base(ComplaintListStore), {
     return (
       <div className={rowClassName}>
         <div className='row cursor' onClick={this.toggleComplaint}>
-          <div className='col-md-1 text-center'>
+          <div className='col-md-1 col-xs-1 text-center'>
             <i className={caretClasses}></i>
           </div>
-          <div className='col-md-3'>
+          <div className='col-md-3 col-xs-3'>
             <div className='title'>Misconduct</div>
             {category.category}
           </div>
-          <div className='col-md-1'>
+          <div className='col-md-1 col-xs-1'>
             <div className='title'>CRID</div>
             {allegation.crid}
           </div>
-          <div className='col-md-2'>
+          <div className='col-md-2 col-xs-2'>
             <div className='title'>{date_label}</div>
             {date}
           </div>
-          <div className='col-md-3'>
+          <div className='col-md-3 col-xs-3'>
             <div className='title'>Officer</div>
             {officerName}
           </div>
-          <div className='col-md-2'>
+          <div className='col-md-2 col-xs-2'>
             <RequestButton complaint={complaint} />
           </div>
 
