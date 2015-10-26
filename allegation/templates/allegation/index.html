@@ -37,6 +37,11 @@
       {% compress css %}
       <link rel="stylesheet" type="text/sass" href="{% static 'sass/style.sass' %}" />
       {% endcompress %}
+      {% if DJANGO_ENV == 'test' %}
+        {% compress css %}
+          <link rel="stylesheet" type="text/sass" href="{% static 'sass/test.sass' %}" />
+        {% endcompress %}
+      {% endif %}
   </head>
   <body>
   {% csrf_token %}
