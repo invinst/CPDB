@@ -30,6 +30,7 @@ var _normalStyle = {"fillColor": "#eeffee", "fillOpacity": 0.0, 'weight': 2};
 var _types = ['police-districts', 'wards', 'police-beats', 'neighborhoods', 'school-grounds'];
 
 var selectedLayers = {};
+var allLayersIndex = {}
 
 
 var Map = React.createClass({
@@ -199,6 +200,8 @@ var Map = React.createClass({
       }
     }
 
+    allLayersIndex[feature.properties.id] = layer;
+
     var area_type = feature.properties.type;
     layer.on('mouseover', function () {
       $(".leaflet-control-command-interior").show().text(feature.properties.name);
@@ -296,20 +299,25 @@ var Map = React.createClass({
   },
 
   _onChange: function () {
+    debugger;
     var filters = FilterStore.getFilters();
     if (!filters.areas__id) {
       return;
     }
 
     var values = filters.areas__id.value;
-    for (var k in selectedLayers) {
-      var layer = selectedLayers[k];
+    for (var k in allLayersIndex) {
+      var layer = allLayersIndex[k];
       if (values.indexOf(parseInt(k)) == -1) {
         layer.selected = false;
         layer.setStyle(_normalStyle);
+        if (k in selectedLayers) {
+          delete selectedLayers[k];
+        }
       } else {
         layer.selected = true;
         layer.setStyle(highlightStyle);
+        selectedLayers[k] = layer;
       }
     }
   },
