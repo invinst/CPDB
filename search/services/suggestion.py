@@ -210,7 +210,7 @@ class Suggestion(object):
             ret = self._make_suggestion(alias.target)
 
             if not alias.num_suggestions:
-                alias.num_suggestions = sum([len(v) for k, v in alias_suggest.items()])
+                alias.num_suggestions = sum([len(v) for k, v in ret.items()])
             alias.num_usage += 1
             alias.save()
 
