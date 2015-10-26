@@ -114,8 +114,8 @@ var Summary = React.createClass({
       <div id="summary-container" onClick={this.containerClick}>
         <div id='summary' className={className}>
           <div className='row'>
-            <div className='col-md-8'>{rows}</div>
-            <div className='col-md-4 child-row-wrapper'>
+            <div className='col-md-8 col-xs-8'>{rows}</div>
+            <div className='col-md-4 col-xs-4 child-row-wrapper'>
               <div className='child-row-container'>{childRowGroup}</div>
             </div>
             <ExtraInformation />

@@ -98,6 +98,54 @@ var Tabs = React.createClass({
     );
   },
 
+  renderOutcomesTab: function (outcomeClassName) {
+    var label = 'Outcomes';
+    return (
+      <li role="presentation" className={outcomeClassName}>
+        <a href='javascript:void(0)' data-target="#sunburst" aria-controls="sunburst" role="tab" className='pointer' data-toggle="tab"
+           onClick={this.activeTab.bind(this, 0)}>
+          {label}
+        </a>
+      </li>
+    );
+  },
+
+  renderCategoriesTab: function () {
+    var label = 'Categories';
+
+    return (
+      <li role="presentation">
+        <a href='javascript:void(0)' data-target="#categories" aria-controls="profile" role="tab" className='pointer' data-toggle="tab"
+           onClick={this.activeTab.bind(this, 1)}>
+          {label}
+        </a>
+      </li>
+    );
+  },
+
+  renderGenderRaceTab: function () {
+    var label = 'Race & Gender';
+
+    return (
+      <li role="presentation" className="disabled">
+          <a href="#" aria-controls="profile" role="tab">
+            {label}
+          </a>
+        </li>
+      );
+  },
+
+  renderTimeframeTab: function () {
+    var className = classnames('disabled', {'hidden': !this.props.mobile});
+    return (
+      <li role="presentation" className={className}>
+        <a href="#" aria-controls="profile" role="tab">
+          Timeframe
+        </a>
+      </li>
+    );
+  },
+
   renderMapContent: function () {
     if (!this.props.mobile) {
       return;
@@ -121,28 +169,10 @@ var Tabs = React.createClass({
       <div>
         <ul className="nav nav-tabs" role="tablist">
           { this.renderMapTab() }
-          <li role="presentation" className={outcomeClassName}>
-            <a href='javascript:void(0)' data-target="#sunburst" aria-controls="sunburst" role="tab" className='pointer' data-toggle="tab"
-               onClick={this.activeTab.bind(this, 0)}>
-              Outcomes
-            </a>
-          </li>
-          <li role="presentation">
-            <a href='javascript:void(0)' data-target="#categories" aria-controls="profile" role="tab" className='pointer' data-toggle="tab"
-               onClick={this.activeTab.bind(this, 1)}>
-              Categories
-            </a>
-          </li>
-          <li role="presentation" className="disabled">
-            <a href="#" aria-controls="profile" role="tab">
-              Race &amp; Gender
-            </a>
-          </li>
-          <li role="presentation" className="disabled hidden">
-            <a href="#" aria-controls="profile" role="tab">
-              Timeframe
-            </a>
-          </li>
+          { this.renderOutcomesTab(outcomeClassName) }
+          { this.renderCategoriesTab() }
+          { this.renderGenderRaceTab() }
+          { this.renderTimeframeTab() }
         </ul>
 
         <div className="tab-content">
