@@ -1,5 +1,6 @@
 var _ = require("lodash");
 var React = require('react');
+var classnames = require('classnames');
 
 var Base = require("components/Base.react");
 var ComplaintListActions = require("actions/ComplaintList/ComplaintListActions");
@@ -26,12 +27,12 @@ var ComplaintListRow = React.createClass(_.assign(Base(ComplaintListStore), {
 
   render: function () {
     var complaint = this.props.complaint;
-    var caretClasses = 'fa fa-chevron-right';
+
     var detailIsShown = this.detailIsCurrentlyShown();
+
     var showMore = '';
     if (this.detailRendered()) {
       showMore = <Complaint complaint={complaint} hide={!detailIsShown}/>;
-      caretClasses = 'fa fa-chevron-' + (detailIsShown ? 'right' : 'down');
     }
 
     var allegation = complaint.allegation;
@@ -42,7 +43,7 @@ var ComplaintListRow = React.createClass(_.assign(Base(ComplaintListStore), {
     var officerName = "";
     if (complaint.officer) {
       officerName = complaint.officer.officer_first + " " + complaint.officer.officer_last;
-      if(complaint.officers.length > 0){
+      if(complaint.officers.length > 0) {
         officerName += " and " + complaint.officers.length + " more";
       }
     }
@@ -56,8 +57,13 @@ var ComplaintListRow = React.createClass(_.assign(Base(ComplaintListStore), {
       date_label = "Investigation Start";
     }
     var finding = this.props.finding ? this.props.finding.replace(/ /,"-").toLowerCase() : 'other';
-    caretClasses = caretClasses + " complaint-row-outcome " + finding;
-    var rowClassName = 'complaint-row ' + finding + " " + allegation.final_outcome_class;
+
+    var caretClasses = classnames({
+      'fa fa-chevron-right': !detailIsShown,
+      'fa fa-chevron-down': detailIsShown
+    }, 'complaint-row-outcome', finding);
+
+    var rowClassName = classnames('complaint-row', finding, allegation.final_outcome_class);
 
 
     return (
