@@ -4,6 +4,8 @@ var OfficerList = require('components/DataToolPage/Complaint/OfficerList.react')
 var TimelineAndLocation = require('components/DataToolPage/Complaint/TimelineAndLocation.react');
 var PoliceWitness = require('components/DataToolPage/Complaint/PoliceWitness.react');
 var RequestButton = require('components/DataToolPage/Complaint/RequestButton.react');
+var ComplaintListActions = require("actions/ComplaintList/ComplaintListActions");
+var SessionAPI = require('utils/SessionAPI');
 
 
 var Complaint = React.createClass({
@@ -52,7 +54,8 @@ var Complaint = React.createClass({
   },
 
   toggleComplaint: function (e) {
-    $(e.target).parents(".complaint-row").trigger('closeAction');
+    ComplaintListActions.toggleComplaint(this.props.complaint.allegation.id);
+    SessionAPI.updateSessionInfo({'query': { activeComplaints: this.state.activeComplaints}});
   }
 });
 
