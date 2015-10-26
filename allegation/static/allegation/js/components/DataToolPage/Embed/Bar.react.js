@@ -5,6 +5,7 @@ var React = require('react');
 var Download = require('components/DataToolPage/Download.react');
 var EmbedAction = require('actions/EmbedActions');
 var EmbedStore = require('stores/EmbedStore');
+var classnames = require('classnames')
 
 
 var Bar = React.createClass({
@@ -52,8 +53,12 @@ var Bar = React.createClass({
   },
 
   render: function () {
-    var exitClassName = this.state.embedMode ? '' : 'hidden';
-    var embedClassName = this.state.embedMode ? 'col-md-2 active' : 'col-md-2';
+    var exitClassName = classnames({
+      'hidden': !this.state.embedMode
+    });
+    var embedClassName = classnames('col-md-2 col-xs-3', {
+      'active': this.state.embedMode
+    });
 
     if (this.state.embedMode) {
       $("body").addClass("embedding");
@@ -63,12 +68,12 @@ var Bar = React.createClass({
 
     return (
       <div className="row">
-        <div className="col-md-2">
+        <div className="col-md-2 col-xs-3">
           <a href="#" onClick={this.exitMode} className={exitClassName}>
             <i className="fa fa-times"></i> Exit mode
           </a>
         </div>
-        <div className="col-md-2 col-md-offset-4">
+        <div className="col-md-2 col-md-offset-4 col-xs-3">
           <Download />
         </div>
         <div className={embedClassName}>
@@ -76,7 +81,7 @@ var Bar = React.createClass({
             <i className="fa fa-code"></i> Embed Mode
           </a>
         </div>
-        <div className="col-md-2">
+        <div className="col-md-2 col-xs-3">
           <div className='smooth-scroll pointer' data-target='#body'>
             <i className='fa fa-chevron-up' ></i> Back to top
           </div>
