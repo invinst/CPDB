@@ -31,7 +31,7 @@ var ComplaintListRow = React.createClass(_.assign(Base(ComplaintListStore), {
     var showMore = '';
     if (this.detailRendered()) {
       showMore = <Complaint complaint={complaint} hide={!detailIsShown}/>;
-      caretClasses = 'fa fa-chevron-' + (detailIsShown ? 'right' : 'down');
+      caretClasses = 'fa fa-chevron-' + (detailIsShown ? 'down' : 'right');
     }
 
     var allegation = complaint.allegation;
@@ -56,6 +56,7 @@ var ComplaintListRow = React.createClass(_.assign(Base(ComplaintListStore), {
       date_label = "Investigation Start";
     }
     var finding = this.props.finding ? this.props.finding.replace(/ /,"-").toLowerCase() : 'other';
+
     caretClasses = caretClasses + " complaint-row-outcome " + finding;
     var rowClassName = 'complaint-row ' + finding + " " + allegation.final_outcome_class;
 
