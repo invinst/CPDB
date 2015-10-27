@@ -85,11 +85,13 @@
 }
 
 .information-entry .desc {
-    color: #cbcbcb;
+    color: #989898;
+    font-weight: 400;
 }
 
 .information-entry .val {
     color: #333333;
+    font-weight: 400;
 }
 
 .splitter {
