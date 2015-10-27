@@ -9,10 +9,7 @@ var _state = {
   }
 };
 
-console.log(Base(_state));
-
-var AbcTabStore = _.assign(Base(_state), {});
-console.log(AbcTabStore);
+var RaceGenderTabStore = _.assign(Base(_state), {});
 
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
@@ -26,4 +23,4 @@ AppDispatcher.register(function (action) {
   }
 });
 
-module.exports = AbcTabStore;
+module.exports = RaceGenderTabStore;

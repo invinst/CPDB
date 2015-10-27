@@ -1,21 +1,24 @@
 global.jQuery = require('jquery');
 
 var AppConstants = require('../constants/AppConstants');
-var AllegationFetcherQueryBuilder = require('utils/AllegationFetcherQueryBuilder');
 var RaceGenderTabActions = require('actions/DataToolPage/RaceGenderTabActions');
+var OfficerListStore = require('../stores/OfficerListStore');
+var AllegationFetcherQueryBuilder = require('./AllegationFetcherQueryBuilder');
 
 var ajax = null;
 
 var RaceGenderAPI = {
   getData: function() {
+    var queryString = AllegationFetcherQueryBuilder.buildQuery();
+
     if (ajax) {
       ajax.abort();
     };
 
-    var queryString = AllegationFetcherQueryBuilder.buildQuery();
-    var url  = AppConstants.RACE_GENDER_API_ENDPOINT + queryString;
+    var queryString = AllegationFetcherQueryBuilder.buildQuery('all');
+    var url  = AppConstants.RACE_GENDER_API_ENDPOINT + '?' + queryString;
 
-    ajax = $.getJSON(url, function(data){
+    ajax = jQuery.getJSON(url, function(data){
       RaceGenderTabActions.receivedData(data);
     });
   }

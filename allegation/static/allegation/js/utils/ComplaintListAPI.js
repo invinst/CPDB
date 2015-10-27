@@ -1,7 +1,9 @@
-var ComplaintListServerActions = require('../actions/ComplaintList/ComplaintListServerActions');
+var $ = require('jquery');
+
 var AllegationFetcherQueryBuilder = require('./AllegationFetcherQueryBuilder');
 var AppConstants = require('../constants/AppConstants');
-var $ = require('jquery');
+var ComplaintListServerActions = require('../actions/ComplaintList/ComplaintListServerActions');
+var RaceGenderTabActions = require('actions/DataToolPage/RaceGenderTabActions');
 
 var ajax = null;
 
@@ -23,6 +25,7 @@ var ComplaintListAPI = {
     var that = this;
     ComplaintListServerActions.getData();
 
+    console.log(queryString);
     if (queryString) {
       if (ajax) {
         ajax.abort();
@@ -58,6 +61,15 @@ var ComplaintListAPI = {
         ComplaintListServerActions.receivedMoreData(data);
       });
     }
+  },
+
+  getRaceGenderAPI: function() {
+    var queryString = AllegationFetcherQueryBuilder.buildQuery();
+    var url  = AppConstants.RACE_GENDER_API_ENDPOINT + '?' + queryString;
+
+    $.getJSON(url, function(data){
+      RaceGenderTabActions.receivedData(data);
+    });
   }
 };
 

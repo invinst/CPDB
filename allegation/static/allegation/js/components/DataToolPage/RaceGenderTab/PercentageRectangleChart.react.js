@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var _ = require('lodash');
 var cx = require('classnames');
 var d3 = require('d3');
 var React = require('react');
@@ -10,8 +11,10 @@ var PercentageRectangleChart = React.createClass({
     };
   },
 
-  componentDidMount: function () {
+
+  render: function () {
     var data = this.props.data;
+    console.log(data);
     var options = this.props.options
     var colors = options.colors;
     var width = options.width;
@@ -54,15 +57,13 @@ var PercentageRectangleChart = React.createClass({
 
 
       blocks.append('svg:text')
-                  .attr('font-size', 12)
-                  .attr('fill', 'white')
-                  .attr('x', 40)
-                  .attr('y', function(d) { return heightScale(d.value) / 2})
-                  .text(function(d, i) { return d.label + '   ' + (d.value * 100 / sum) + '%';})
+                   .attr('font-size', 12)
+                   .attr('fill', 'white')
+                   .attr('x', 40)
+                   .attr('y', function(d) { return heightScale(d.value) / 2})
+                   .text(function(d, i) { return d.label + '   ' + _.round(d.value * 100 / sum, 2) + '%';})
 
-  },
 
-  render: function () {
     var uniqueId = this.state.uniqueId;
     var className = cx(uniqueId, 'percentage-rectangle-chart');
     return (
