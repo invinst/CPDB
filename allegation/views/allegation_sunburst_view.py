@@ -140,21 +140,12 @@ class AllegationSunburstView(AllegationAPIView):
                     'removeParent': True                
                 }
             }, {
-                'condition': Q(final_outcome__in=["045", "060", "090"]),  # more than 30
-                'name': '45 or more days',
-                'tagValue': {
-                    'label': '45 or more days',
-                    'category': 'outcome_text',
-                    'value': '45 or more days',
-                    'removeParent': True
-                }
-            }, {
-                'condition': Q(final_outcome='200'),
+                'condition': Q(final_outcome_in=['045', '060', '090', '200']),
                 'name': '30+ days',
                 'tagValue': {
                     'label': '30+ days',
-                    'category': 'final_outcome',
-                    'value': '200',
+                    'category': 'outcome_text',
+                    'value': '30+ days',
                     'removeParent': True
                 },
             }, {

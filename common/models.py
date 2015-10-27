@@ -342,10 +342,10 @@ OUTCOME_TEXT_DICT = {
             'final_outcome': [str(x).zfill(3) for x in range(10, 31)],
         }
     },
-    '45 or more days': {
-        'text': '45 or more days',
+    '30+ days': {
+        'text': '30+ days',
         'condition': {
-            'final_outcome': ["045", "060", "090"],
+            'final_outcome': ["045", "060", "090", "200"],
         }
     },
 }
