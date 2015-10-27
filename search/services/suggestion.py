@@ -202,9 +202,8 @@ class Suggestion(object):
         return ret
 
     def make_suggestion(self, q):
-
         aliases = Alias.objects.filter(alias__istartswith=q)[0:10]
-        #import pdb; pdb.set_trace()
+
         ret = OrderedDict()
         for alias in aliases:
             ret = self._make_suggestion(alias.target)
