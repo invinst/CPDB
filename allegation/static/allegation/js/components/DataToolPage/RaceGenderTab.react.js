@@ -3,14 +3,12 @@ var React = require('react');
 
 var Base = require('components/Base.react');
 var PercentageRectangleChart = require('components/DataToolPage/RaceGenderTab/PercentageRectangleChart.react');
-var ComplaintListAPI = require('utils/ComplaintListAPI');
 var RaceGenderAPITransformation = require('utils/RaceGenderAPITransformation');
 var RaceGenderTabStore = require('stores/DataToolPage/RaceGenderTab/RaceGenderTabStore');
 
 var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
   componentDidMount: function() {
     RaceGenderTabStore.addChangeListener(this._onChange);
-    ComplaintListAPI.getRaceGenderAPI();
   },
 
   render: function () {
@@ -30,18 +28,7 @@ var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
       colors: ['#FF8033', '#FF6000'],
       width: 145,
       height: 155
-    }
-
-    var data = [
-      {
-        label: 'Male',
-        value: 30
-      },
-      {
-        label: 'Female',
-        value: 70
-      }
-    ];
+    };
 
     return (
       <div id='gender-race-tab'>

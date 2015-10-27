@@ -11,18 +11,15 @@ var PercentageRectangleChart = React.createClass({
     };
   },
 
-
   render: function () {
     var data = this.props.data;
-    console.log(data);
+    // TODO: defaultOptions
     var options = this.props.options
     var colors = options.colors;
     var width = options.width;
     var height = options.height;
-    var currentY = 0;
 
-    // TODO: defaultOptions
-    var options = this.props.options;
+    var currentY = 0;
     var values = _.pluck(data, 'value');
     var sum = _.sum(values);
     var heightScale = d3.scale.linear()
@@ -36,6 +33,8 @@ var PercentageRectangleChart = React.createClass({
     }
 
     var domCSSPath = '.' + this.state.uniqueId;
+    d3.select(domCSSPath + ' > *').remove();
+
     var blocks = d3.select(domCSSPath)
       .append('svg')
       .attr('width', width)
@@ -44,7 +43,7 @@ var PercentageRectangleChart = React.createClass({
                   .enter().append('g')
                   .attr('transform', function(data, i) {
                     return 'translate(0,' + ys[i] + ')';
-                  })
+                  });
 
       blocks.append('rect')
       .style('fill', function(data, i) {
@@ -53,7 +52,7 @@ var PercentageRectangleChart = React.createClass({
       .attr('width', width)
       .attr('height', function(data, i) {
         return heightScale(data.value);
-      })
+      });
 
 
       blocks.append('svg:text')
@@ -61,13 +60,13 @@ var PercentageRectangleChart = React.createClass({
                    .attr('fill', 'white')
                    .attr('x', 40)
                    .attr('y', function(d) { return heightScale(d.value) / 2})
-                   .text(function(d, i) { return d.label + '   ' + _.round(d.value * 100 / sum, 2) + '%';})
+          .text(function(d, i) { return d.label + '   ' + (d.value * 100 / sum).toFixed(2) + '%';});
 
 
     var uniqueId = this.state.uniqueId;
     var className = cx(uniqueId, 'percentage-rectangle-chart');
     return (
-      <div className={className}></div>
+        <div className={className}></div>
     );
   }
 });

@@ -62,15 +62,6 @@ var ComplaintListAPI = {
       });
     }
   },
-
-  getRaceGenderAPI: function() {
-    var queryString = AllegationFetcherQueryBuilder.buildQuery();
-    var url  = AppConstants.RACE_GENDER_API_ENDPOINT + '?' + queryString;
-
-    $.getJSON(url, function(data){
-      RaceGenderTabActions.receivedData(data);
-    });
-  }
 };
 
 module.exports = ComplaintListAPI;

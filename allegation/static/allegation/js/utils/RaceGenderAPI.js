@@ -2,7 +2,6 @@ global.jQuery = require('jquery');
 
 var AppConstants = require('../constants/AppConstants');
 var RaceGenderTabActions = require('actions/DataToolPage/RaceGenderTabActions');
-var OfficerListStore = require('../stores/OfficerListStore');
 var AllegationFetcherQueryBuilder = require('./AllegationFetcherQueryBuilder');
 
 var ajax = null;

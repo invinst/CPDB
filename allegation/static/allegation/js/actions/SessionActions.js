@@ -1,5 +1,6 @@
 var AppDispatcher = require('dispatcher/AppDispatcher');
 var AppConstants = require('constants/AppConstants');
+var RaceGenderAPI = require('utils/RaceGenderAPI');
 
 var SessionActions = {
   receivedSessionInfoData: function(data) {
@@ -7,6 +8,7 @@ var SessionActions = {
       actionType: AppConstants.RECEIVED_SESSION_DATA,
       data: data
     });
+    RaceGenderAPI.getData();
   },
 
   receivedUpdatedSessionInfoData: function(data) {
