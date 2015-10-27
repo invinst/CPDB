@@ -21,7 +21,6 @@ KEYS = {
 OTHER_KEYS = {
     'officer__gender': GENDER_DICT,
     'complainant_gender': GENDER_DICT,
-    'outcome_text': OUTCOME_TEXT_DICT,
     'final_outcome': OUTCOMES_DICT,
     'final_finding': FINDINGS_DICT,
 }
@@ -103,4 +102,4 @@ class Session(models.Model):
                 'value': o,
             } for o in values['value']]
 
-        return values['value']
+        return [{'value': x, 'text': x} for x in values['value']]

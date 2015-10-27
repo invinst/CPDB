@@ -5,6 +5,7 @@ require('leaflet.heat');
 var MapStore = require("stores/MapStore");
 var FilterStore = require('stores/FilterStore');
 var FilterActions = require("actions/FilterActions");
+var FilterTagsActions = require("actions/FilterTagsActions");
 var AppConstants = require('constants/AppConstants');
 var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
 
@@ -28,6 +29,10 @@ var _controlDiv = null;
 var _normalStyle = {"fillColor": "#eeffee", "fillOpacity": 0.0, 'weight': 2};
 var _types = ['police-districts', 'wards', 'police-beats', 'neighborhoods', 'school-grounds'];
 
+var selectedLayers = {};
+var allLayersIndex = {};
+var _maxBounds = {};
+var _defaultBounds = {};
 
 var Map = React.createClass({
   mixins: [EmbedMixin],
@@ -91,8 +96,11 @@ var Map = React.createClass({
     var self = this;
     this.create();
     this.createAreas();
+
     MapStore.addChangeMarkerListener(self.changeMarker);
     MapStore.addBeforeChangeMarkerListener(self.beforeChangeMarker);
+
+    FilterStore.addChangeListener(this._onChange);
 
     // having this code async will not block the immediate rendering of the page
     // on reload. On first load the API needs to be hit so the markers/areas don't block rendering
@@ -133,11 +141,10 @@ var Map = React.createClass({
 
     var southWest = L.latLng(41.143501411390766, -88.53057861328125);
     var northEast = L.latLng(42.474122772511485, -85.39947509765625);
-    var maxBounds = L.LatLngBounds(southWest, northEast);
+    _maxBounds = L.latLngBounds(southWest, northEast);
     _map = L.mapbox.map(dom_id, AppConstants.MAP_TYPE, opts).setView(center, defaultZoom);
-
-    _map.on('click', function (event) {
-    }).setMaxBounds(maxBounds);
+    _defaultBounds = _map.getBounds()
+    _map.setMaxBounds(_maxBounds);
 
     _map.on('move', function () {
       var center = this.getCenter();
@@ -146,7 +153,9 @@ var Map = React.createClass({
         'defaultZoom': this.getZoom(),
         'center': center
       });
-      FilterActions.saveSession();
+      try{
+        FilterActions.saveSession();
+      }catch(e){};
     });
   },
 
@@ -188,8 +197,12 @@ var Map = React.createClass({
       if (filters['areas__id']['value'].indexOf(feature.properties.id) > -1) {
         layer.selected = true;
         layer.setStyle(highlightStyle);
+
+        selectedLayers[feature.properties.id] = layer;
       }
     }
+
+    allLayersIndex[feature.properties.id] = layer;
 
     var area_type = feature.properties.type;
     layer.on('mouseover', function () {
@@ -204,29 +217,16 @@ var Map = React.createClass({
       }
     });
 
-    var tagValue = {
-      text: area_type + ": " + feature.properties.name,
-      value: ['areas__id', feature.properties.id],
-      layer: layer
-    };
-
-    layer.toggleStyle = function () {
-      if (!layer.selected) {
-        layer.selected = true;
-        layer.setStyle(highlightStyle);
-      }
-      else {
-        layer.selected = false;
-        layer.setStyle(_normalStyle);
-      }
-    };
+    var tagValue = {label: area_type + ": " + feature.properties.name, value: feature.properties.id};
 
     layer.on('click', function () {
-      if (!layer.selected) {
-        $('#cpdb-search').tagsinput("add", tagValue);
+      selectedLayers[feature.properties.id] = layer;
+      layer.selected = !layer.selected;
+      if (layer.selected) {
+        FilterTagsActions.addTag('areas__id', tagValue);
       }
       else {
-        $('#cpdb-search').tagsinput("remove", tagValue);
+        FilterTagsActions.removeTag('areas__id', tagValue);
       }
     });
     if (!(area_type in _layers)) {
@@ -259,6 +259,7 @@ var Map = React.createClass({
       }
       else {
         L.control.layers(_baseLayers,{}, {collapsed: false}).addTo(_map);
+        that._onChange();
       }
     }, 'json').fail(function(jqxhr, textStatus, error) {
       var err = textStatus + ", " + error;
@@ -297,6 +298,43 @@ var Map = React.createClass({
     });
     _heat = L.heatLayer(latLngs, heatOpts);
     _map.addLayer(_heat);
+
+  },
+
+  _onChange: function () {
+    var filters = FilterStore.getFilters();
+    if (!filters.areas__id) {
+      return;
+    }
+
+    var values = filters.areas__id.value;
+    for (var k in allLayersIndex) {
+      var layer = allLayersIndex[k];
+      if (values.indexOf(parseInt(k)) == -1) {
+        layer.selected = false;
+        layer.setStyle(_normalStyle);
+        if (k in selectedLayers) {
+          delete selectedLayers[k];
+        }
+      } else {
+        layer.selected = true;
+        layer.setStyle(highlightStyle);
+        selectedLayers[k] = layer;
+      }
+    }
+
+    var bounds = L.latLngBounds([]);
+    var hasOneSelected = false;
+    for(var k in selectedLayers) {
+      hasOneSelected = true;
+      bounds.extend(selectedLayers[k].getBounds())
+    }
+    if (hasOneSelected) {
+      _map.fitBounds(bounds);
+    }
+    else if (_defaultBounds) {
+      _map.fitBounds(_defaultBounds);
+    }
 
   },
 

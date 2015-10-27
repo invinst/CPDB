@@ -41,7 +41,10 @@ RelatedOfficersStore.dispatchEvents = AppDispatcher.register(function(action) {
     }
     RelatedOfficersStore.emitChange();
     break;
-
+  case AppConstants.OFFICER_COMPLAINT_LIST_RECEIVED_DATA:
+    _state['activeOfficers'] = [];
+    RelatedOfficersStore.emitChange();
+    break;
   default:
       break;
   }

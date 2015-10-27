@@ -95,11 +95,6 @@ AppDispatcher.register(function (action) {
       SessionStore.emitChange();
       break;
 
-    case AppConstants.RECEIVED_OFFICER_DATA:
-      _state.siteTitle = OfficerPresenter(action.data.officer).displayName.capitalize();
-      SessionStore.emitChange();
-      break;
-
     case AppConstants.RECEIVED_UPDATED_SESSION_DATA:
       _state['data'] = action.data.data;
       _state.siteTitle = _state['data'].title;
