@@ -15,8 +15,10 @@ class AllegationRaceGenderAPI(AllegationAPIView):
     def get(self, request):
         allegations = self.get_allegations()
 
-        officer_ids = allegations.distinct().values_list('officer_id', flat=True)
-        crids = allegations.distinct().values_list('crid', flat=True)
+        # We need to cast them to list to get out the risk of Django's bad translated SQL
+        # Anyway, this is fucking slow
+        officer_ids = list(allegations.distinct().values_list('officer_id', flat=True))
+        crids = list(allegations.distinct().values_list('crid', flat=True))
 
         officers = Officer.objects.filter(pk__in=officer_ids)
         officer_genders_list = list(officers.values('gender').annotate(count=Count('gender')))

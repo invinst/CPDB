@@ -25,13 +25,13 @@ var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
     var officerGendersData = RaceGenderAPITransformation.transformGenders(officerGenders);
 
     var genderOptions = {
-      colors: ['#CC3333', '#330066', '669966'], // Female, Male, Trans
+      colors: ['#CC3333', '#330066', '#669966'], // Female, Male, Trans
       width: 145,
       height: 155
     };
 
     var raceOptions = {
-      colors: ['#669966', '#003366', '330066', 'CC3333'], // Female, Male, Trans
+      colors: ['#CC3333', '#003366', '#669966', '#330066'], // White, Black, Hispanic, Others
       width: 145,
       height: 155
     };
@@ -61,10 +61,10 @@ var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
             </div>
             <div className='col-lg-10 col-md-11 col-sm-10 col-xs-0'>
               <div className='officer-gender-chart col-lg-4 col-md-4 col-sm-3 col-xs-4'>
-                <PercentageRectangleChart data={officerGendersData} options={genderOptions} />
+                <PercentageRectangleChart data={officerGendersData} options={genderOptions} filter='officer__gender' />
               </div>
               <div className='complaint-gender-chart col-lg-4 col-md-4 col-sm-3 col-xs-4'>
-                <PercentageRectangleChart data={complaintGendersData} options={genderOptions} />
+                <PercentageRectangleChart data={complaintGendersData} options={genderOptions} filter='complainant_gender' />
               </div>
             </div>
           </div>
@@ -80,10 +80,10 @@ var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
             </div>
             <div className='col-lg-10 col-md-11 col-sm-10 col-xs-0'>
               <div className='officer-race-chart col-lg-4 col-md-4 col-sm-3 col-xs-4'>
-                <PercentageRectangleChart data={officerRacesData} options={raceOptions} />
+                <PercentageRectangleChart data={officerRacesData} options={raceOptions} filter='officer__race' />
               </div>
               <div className='complaint-race-chart col-lg-4 col-md-4 col-sm-3 col-xs-4'>
-                <PercentageRectangleChart data={complaintRacesData} options={raceOptions} />
+                <PercentageRectangleChart data={complaintRacesData} options={raceOptions} filter='complainant_race' />
               </div>
             </div>
           </div>

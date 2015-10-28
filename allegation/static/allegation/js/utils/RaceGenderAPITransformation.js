@@ -10,12 +10,12 @@ var RaceGenderAPITransform = {
     var hispanic = _(complaintRaces).filter(isHispanic).sum();
     var others = all - white - black - hispanic;
 
-    return [
-      { label: 'White', value: white },
-      { label: 'Black', value: black },
-      { label: 'Hispanic', value: hispanic },
-      { label: 'Others', value: others }
-    ];
+    return _([
+      { label: 'White', value: white, filterValue: 'White'},
+      { label: 'Black', value: black, filterValue: 'Black' },
+      { label: 'Hispanic', value: hispanic, filterValue: 'Hispanic' },
+      { label: 'Others', value: others, filterValue: ['Native American', 'Unknown', 'Asian', 'White/Hispanic']}
+    ]).chain().reject(function(x) { return x.value == 0 }).value();
   },
 
   transformGenders: function(genders) {
@@ -24,6 +24,7 @@ var RaceGenderAPITransform = {
     return _(genders).map(function(x, y) {
       return {
         'label': that.genderPresenter(y),
+        'filterValue': y,
         'value': x
       };
     }).sortBy('label').value();

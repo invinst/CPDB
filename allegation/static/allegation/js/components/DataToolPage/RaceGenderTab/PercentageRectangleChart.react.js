@@ -1,8 +1,8 @@
 var _ = require('lodash');
-var _ = require('lodash');
 var cx = require('classnames');
 var d3 = require('d3');
 var React = require('react');
+var FilterTagsActions = require("actions/FilterTagsActions");
 
 var PercentageRectangleChart = React.createClass({
   getInitialState: function() {
@@ -56,23 +56,34 @@ var PercentageRectangleChart = React.createClass({
       .attr('width', width)
       .attr('height', function(data, i) {
         return heightScale(data.value) + minHeight;
-      });
-
+      })
+      .on("click", this.clickHandler);
 
       blocks.append('svg:text')
                    .attr('font-size', 12)
                    .attr('fill', 'white')
                    .attr('x', 20)
                    .attr('y', function(d) { return heightScale(d.value) / 2 + minHeight - 5})
-          .text(function(d, i) { return d.label + ' ' + (d.value * 100 / sum).toFixed(2) + '%';});
-
+                   .text(function(d, i) { return d.label + ' ' + (d.value * 100 / sum).toFixed(2) + '%';})
+                   .on("click", this.clickHandler);
 
     var uniqueId = this.state.uniqueId;
-    var className = cx(uniqueId, 'percentage-rectangle-chart');
+    var className = cx(uniqueId, 'percentage-rectangle-chart', 'pointer');
     return (
         <div className={className}></div>
     );
+  },
+  clickHandler: function(blockData){
+    var vals = typeof(blockData['filterValue']) == 'object' ? blockData['filterValue'] : [blockData['filterValue']];
+
+    for(var i=0; i < vals.length; i++) {
+      var val = vals[i];
+      FilterTagsActions.addTag(this.props.filter, {'label': blockData['label'], 'value': val});
+      //FilterTagsActions.pinTag(this.props.filter, {'label': blockData['label'], 'value': val});
+    }
+    return false;
   }
+
 });
 
 module.exports = PercentageRectangleChart;
