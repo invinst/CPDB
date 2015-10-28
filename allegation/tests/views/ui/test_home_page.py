@@ -58,8 +58,7 @@ class HomePageTestCase(BaseLiveTestCase):
 
     def test_all_subcategories_should_be_selected(self):
         category = self.allegation_category.category
-        for i in range(0, 10):
-            AllegationCategoryFactory(category=category)
+        AllegationCategoryFactory(category=category)
 
         # First, we click a category, we should see the arrow beside the category
         self.filter_complaint_type()
@@ -71,8 +70,9 @@ class HomePageTestCase(BaseLiveTestCase):
         self.element_exist('.row .arrow-container').should.equal(True)
 
         # And it should have a an arrow on the category
-        self.number_of_active_subcategories().should.equal(AllegationCategory.objects.filter(category=category).count())
-        self.until(lambda: self.link(self.allegation_category.allegation_name).click())
+        self.until(lambda: self.number_of_active_subcategories().should.equal(2))
+        self.until(lambda: self.should_see_text(self.allegation_category.allegation_name))
+        self.link(self.allegation_category.allegation_name).click()
         self.until(lambda: self.number_of_active_subcategories().should.equal(1))
 
     def number_of_active_subcategories(self):
@@ -260,6 +260,7 @@ class HomePageTestCase(BaseLiveTestCase):
         return any(text in x for x in items)
 
     def search_officer(self, officer):
-        self.find("#autocomplete").send_keys(officer.officer_first)
-        self.until(lambda: self.autocomplete_available(officer.display_name))
+        self.fill_in("#autocomplete", officer.officer_first)
+        self.until(lambda: self.autocomplete_available(officer.officer_first))
         self.find(".ui-autocomplete .ui-menu-item").click()
+        self.until_ajax_complete()

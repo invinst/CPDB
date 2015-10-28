@@ -170,7 +170,7 @@ var Sunburst = React.createClass({
 
     if (d.tagValue) {
       if (d.tagValue.removeParent) {
-        FilterTagsActions.removeTag(selected.tagValue.category, selected.tagValue)
+        FilterTagsActions.removeTag(d.parent.tagValue.category, d.parent.tagValue);
       }
       FilterTagsActions.addTag(d.tagValue.category, d.tagValue);
     }

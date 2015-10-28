@@ -1,7 +1,7 @@
 from django.db.models import Q
 
 FILTERS = {
-    'Other': ['NC', 'NA', 'DS'],
+    'Other': ['NC', 'NA', 'DS', 'ZZ'],
     'Unfounded': ['UN'],
     'Exonerated': ['EX'],
     'Sustained': ['SU'],

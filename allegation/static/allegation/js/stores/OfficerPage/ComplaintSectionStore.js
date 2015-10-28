@@ -92,11 +92,15 @@ AppDispatcher.register(function(action) {
   case AppConstants.OFFICER_COMPLAINT_LIST_RECEIVED_DATA:
     _state['complaints'] = _state['rawComplaints'] = action.data.allegations;
     _state['analytics'] = action.data.analytics;
+    _state['activeFilter'] = 'all';
+    ComplaintSectionStore.emitChange();
     break;
 
   case AppConstants.SET_ACTIVE_COMPLAINT_LIST_FILTER:
     AppDispatcher.waitFor([RelatedOfficersStore.dispatchEvents]);
     updateComplaints(action.filter);
+    ComplaintSectionStore.emitChange();
+
     break;
 
   case AppConstants.SET_ACTIVE_OFFICER:
@@ -104,12 +108,13 @@ AppDispatcher.register(function(action) {
     AppDispatcher.waitFor([RelatedOfficersStore.dispatchEvents]);
     updateComplaints();
     _state['analytics'] = analyzeComplaints(_state['complaints']);
+    ComplaintSectionStore.emitChange();
+
     break;
 
   default:
       break;
   }
-  ComplaintSectionStore.emitChange();
 });
 
 

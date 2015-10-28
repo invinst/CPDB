@@ -64,7 +64,7 @@ module.exports = {
     'not-sustained': 'NS',
     'exonerated': 'EX',
     'unfounded': 'UN',
-    'other': ['NC', 'NA', 'DS']
+    'other': ['NC', 'NA', 'DS', 'ZZ']
   },
 
   UNITS: {
@@ -215,7 +215,7 @@ module.exports = {
     'unitWithName': 'Unit'
   },
 
-  DEFAULT_SITE_TITLE: "Chicago Police Database",
+  DEFAULT_SITE_TITLE: "Citizens Police Data Project",
 
   MEDIA_URL: '/media/',
 
