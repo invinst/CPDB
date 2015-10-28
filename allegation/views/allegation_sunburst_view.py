@@ -145,7 +145,7 @@ class AllegationSunburstView(AllegationAPIView):
                 'tagValue': {
                     'label': '30+ days',
                     'category': 'outcome_text',
-                    'value': '30+ days',
+                    'value': '30 more days',
                     'removeParent': True
                 },
             }, {
