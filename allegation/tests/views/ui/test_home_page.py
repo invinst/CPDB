@@ -5,8 +5,13 @@ from common.models import AllegationCategory
 from common.tests.core import *
 from allegation.factories import AllegationFactory, AllegationCategoryFactory
 
+class IntegrationTestHelperMixin(object):
+    def visit_home(self):
+        self.visit('/')
+        self.button('View Database').click()
 
-class HomePageTestCase(BaseLiveTestCase):
+
+class HomePageTestCase(BaseLiveTestCase, IntegrationTestHelperMixin):
     def setUp(self):
         self.allegation_category = AllegationCategoryFactory()
         self.allegation = AllegationFactory(cat=self.allegation_category)
@@ -18,10 +23,6 @@ class HomePageTestCase(BaseLiveTestCase):
             self.allegation.officer.delete()
         else:
             self.allegation.delete()
-
-    def visit_home(self):
-        self.visit('/')
-        self.button('View Database').click()
 
     def test_see_tabs(self):
         self.visit('/#!/data-tools')

@@ -1,7 +1,9 @@
-var ComplaintListServerActions = require('../actions/ComplaintList/ComplaintListServerActions');
+var $ = require('jquery');
+
 var AllegationFetcherQueryBuilder = require('./AllegationFetcherQueryBuilder');
 var AppConstants = require('../constants/AppConstants');
-var $ = require('jquery');
+var ComplaintListServerActions = require('../actions/ComplaintList/ComplaintListServerActions');
+var RaceGenderTabActions = require('actions/DataToolPage/RaceGenderTabActions');
 
 var ajax = null;
 
@@ -58,7 +60,7 @@ var ComplaintListAPI = {
         ComplaintListServerActions.receivedMoreData(data);
       });
     }
-  }
+  },
 };
 
 module.exports = ComplaintListAPI;
