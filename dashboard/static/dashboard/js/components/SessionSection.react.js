@@ -20,7 +20,7 @@ var SessionSection = React.createClass({
           </div>
         </div>
         <div>
-          <div className='row'>'
+          <div className='row'>
             <Search />
           </div>
           <div className='row'>

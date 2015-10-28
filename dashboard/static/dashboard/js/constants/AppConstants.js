@@ -63,6 +63,10 @@ module.exports = {
   LOCK_SESSION_PAGE_SCROLL: c++,
   SEARCH_FOR_SESSION: c++,
 
+  RECEIVED_SETTINGS_DATA: c++,
+  UPDATE_SETTING_DATA: c++,
+  UPDATED_SETTING_DATA: c++,
+
   QUERY_LIST_FILTERS: {
     'all': 'All',
     'fail-attempts': 'Fail attempts',
@@ -124,7 +128,8 @@ module.exports = {
     { page: '/search', icon: 'tags', text: 'Search Results' },
     { page: '/officer', icon: 'user', text: 'Officer Profiles' },
     { page: '/document', icon: 'folder-open', text: 'Investigation Documents' },
-    { page: '/session', icon: 'history', text: 'Sessions' }
+    { page: '/session', icon: 'history', text: 'Sessions' },
+    { page: '/setting', icon: 'cogs', text: 'Settings' }
   ],
 
   SEARCH_TRAFFIC_API_ENDPOINT: '/api/dashboard/search-traffic/',
@@ -137,5 +142,7 @@ module.exports = {
   DOCUMENT_REQUEST_END_POINT: '/api/dashboard/document-requests/',
   DOCUMENT_REQUEST_STATUS_END_POINT: '/api/dashboard/document-request-status/',
   DOCUMENT_LINK_END_POINT: '/api/dashboard/document-link/',
-  SESSIONS_API_ENDPOINT: '/api/dashboard/sessions/'
+  SESSIONS_API_ENDPOINT: '/api/dashboard/sessions/',
+  SETTINGS_API_ENDPOINT: '/api/dashboard/settings/',
+  SETTINGS_API_SAVE_ENDPOINT: '/api/dashboard/settings_save/'
 };
