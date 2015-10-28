@@ -1,5 +1,6 @@
 var _ = require('lodash');
 var React = require('react');
+var isMobile = require('ismobilejs');
 
 var AppConstants = require('constants/AppConstants');
 var Base = require('components/Base.react');
@@ -62,6 +63,29 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
     $(window).on('scroll', this.setStickyFooter);
   },
 
+  renderTabs: function () {
+    if (isMobile.any) {
+      return (
+        <div className='row map-row mobile'>
+          <div className='col-md-12 chart-row'>
+            <Tabs mobile='true' />
+          </div>
+        </div>
+      );
+    } else {
+      return (
+        <div className='row map-row'>
+          <div className='col-md-6 map-column relative'>
+            <Map />
+          </div>
+          <div className='col-md-6 chart-row'>
+            <Tabs />
+          </div>
+        </div>
+      );
+    }
+  },
+
   render: function () {
     return (
       <div>
@@ -72,14 +96,7 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
                   <Filters />
                </div>
             </div>
-          <div className='row map-row'>
-            <div className='col-md-6 map-column relative'>
-              <Map />
-            </div>
-            <div className='col-md-6 chart-row'>
-              <Tabs />
-            </div>
-          </div>
+          { this.renderTabs() }
           <div className='container content'>
             <div id='officer-cards'><OfficerList /></div>
             <div id='complaint-list'><ComplaintSection /></div>

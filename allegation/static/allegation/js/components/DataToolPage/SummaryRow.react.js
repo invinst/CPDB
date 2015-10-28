@@ -1,5 +1,6 @@
-var HOST = 'http://localhost:8000';
 var React = require('react');
+var classnames = require('classnames');
+
 var Filters = require('components/DataToolPage/Filters.react');
 var MapStore = require('stores/MapStore');
 var FilterTagsActions = require('actions/FilterTagsActions');
@@ -59,22 +60,15 @@ var SummaryRow = React.createClass({
     var progressStyle = {
       width: category.percentToMax + "%"
     };
-    var className = "category-name";
-    var parentClassName = 'row';
-    var mainCategoryClassName = 'col-md-7 main-category-name-wrapper'
+    var className = classnames("category-name", {
+      'active': this.isActive(category) || this.hasActiveChildren()
+    });
+    var mainCategoryClassName = classnames('col-md-7 col-xs-7 main-category-name-wrapper', {
+      'active': this.props.isCurrentActive
+    });
     var arrow = "";
-    if (this.isActive(category)) {
-
-      className += " active";
-    }
-
-    // Currently do nothing but keep it here for later styling
-    if (this.hasActiveChildren()) {
-      className += " active";
-    }
 
     if (this.props.isCurrentActive) {
-      mainCategoryClassName += ' active';
       arrow = (
         <div className='arrow-container'>
           <i className='fa fa-caret-left fa-28px'></i>
@@ -84,7 +78,7 @@ var SummaryRow = React.createClass({
 
     return (
       <div className="row category main-category" onClickCapture={this.onClick}>
-        <div className='col-md-5'>
+        <div className='col-md-5 col-xs-5'>
           <div className="progress complaint" style={progressStyle}>
             <div className="progress-bar discipline" role="progressbar" aria-valuenow="60" aria-valuemin="0"
                  aria-valuemax="100" style={style}>
@@ -93,14 +87,14 @@ var SummaryRow = React.createClass({
           </div>
         </div>
         <div className={mainCategoryClassName}>
-          <div className={parentClassName}>
-            <div className='col-md-2 category-anlytics'>
+          <div className="row">
+            <div className='col-md-2 col-xs-2 category-anlytics'>
               <span className='count'>{numeral(category.count).format(AppConstants.NUMERAL_FORMAT)}</span>
             </div>
-            <div className='col-md-2 category-anlytics'>
+            <div className='col-md-2 col-xs-2 category-anlytics'>
               <span className='total'>{numeral(category.total).format(AppConstants.NUMERAL_FORMAT)}</span>
             </div>
-            <div className='col-md-8 relative category-name-wrapper'>
+            <div className='col-md-8 col-xs-8 relative category-name-wrapper'>
               {arrow}
               <a href='javascript:void()' className={className}>{category.name}</a>
             </div>

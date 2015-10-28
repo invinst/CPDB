@@ -41,6 +41,7 @@ class HomePageTestCase(BaseLiveTestCase):
         self.filter_complaint_type()
         self.number_of_officers().should.equal(2)
 
+        self.until(lambda: self.link(self.allegation_category.category).is_displayed())
         self.link(self.allegation_category.category).click()
 
         self.number_of_officers().should.equal(1)
@@ -167,6 +168,7 @@ class HomePageTestCase(BaseLiveTestCase):
         AllegationFactory(final_finding='NS')
 
         self.visit_home()
+        self.link("Outcomes").click()
         self.browser.implicitly_wait(0)
         self.element_by_classname_and_text('tag', us).shouldnt.be.ok
         self.element_by_classname_and_text('tag', ns).shouldnt.be.ok

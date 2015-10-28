@@ -54,10 +54,10 @@ var SummaryChildRow = React.createClass({
 
     return (
       <div className="row summary-child-row">
-        <div className="col-md-2 count">
+        <div className="col-md-2 col-xs-2 count">
           {numeral(this.props.subcategory.count).format(AppConstants.NUMERAL_FORMAT)}
         </div>
-        <div className="col-md-10 category-name-wrapper">
+        <div className="col-md-10 col-xs-10 category-name-wrapper">
           <a href="javascript:void()" className={className} onClick={this.onClick}>{this.props.subcategory.name}</a>
         </div>
       </div>
