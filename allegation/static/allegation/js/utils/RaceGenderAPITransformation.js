@@ -21,12 +21,12 @@ var RaceGenderAPITransform = {
   transformGenders: function(genders) {
     var that = this;
 
-    return _.map(genders, function(x, y) {
+    return _(genders).map(function(x, y) {
       return {
         'label': that.genderPresenter(y),
         'value': x
       };
-    });
+    }).sortBy('label').value();
   },
 
   genderPresenter: function(gender) {

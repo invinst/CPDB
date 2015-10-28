@@ -22,14 +22,18 @@ var PercentageRectangleChart = React.createClass({
     var currentY = 0;
     var values = _.pluck(data, 'value');
     var sum = _.sum(values);
+    var n = data.length || 0;
+    var minHeight = 15;
+    var heightWithoutMinHeight = height - minHeight * n;
+
     var heightScale = d3.scale.linear()
                         .domain([0, sum])
-                        .range([0, height]);
+                        .range([0, heightWithoutMinHeight]);
 
     var ys = []
     for (i = 0; i < values.length; i++) {
       ys.push(currentY);
-      currentY += heightScale(values[i])
+      currentY += heightScale(values[i]) + minHeight;
     }
 
     var domCSSPath = '.' + this.state.uniqueId;
@@ -51,16 +55,16 @@ var PercentageRectangleChart = React.createClass({
       })
       .attr('width', width)
       .attr('height', function(data, i) {
-        return heightScale(data.value);
+        return heightScale(data.value) + minHeight;
       });
 
 
       blocks.append('svg:text')
                    .attr('font-size', 12)
                    .attr('fill', 'white')
-                   .attr('x', 40)
-                   .attr('y', function(d) { return heightScale(d.value) / 2})
-          .text(function(d, i) { return d.label + '   ' + (d.value * 100 / sum).toFixed(2) + '%';});
+                   .attr('x', 20)
+                   .attr('y', function(d) { return heightScale(d.value) / 2 + minHeight - 5})
+          .text(function(d, i) { return d.label + ' ' + (d.value * 100 / sum).toFixed(2) + '%';});
 
 
     var uniqueId = this.state.uniqueId;
