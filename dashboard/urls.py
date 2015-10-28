@@ -11,9 +11,11 @@ from dashboard.views.query_data_view import AdminQueryDataApi
 from dashboard.views.search_traffic import AdminSearchTrafficApi
 from dashboard.views.sessions_view import AdminSessionsView
 from dashboard.views.story_view import AdminStoryViewSet
+from dashboard.views.settings_view import AdminSettingsView
 from dashboard.views.document_request_status_view import DocumentRequestStatusView
 from dashboard.views.document_link_view import DocumentLinkView
 from dashboard.views.story_type_view import StoryTypeView
+from dashboard.views.settings_save_view import SettingsSaveView
 
 cache_view = cache_page(86400 * 90)
 
@@ -23,6 +25,7 @@ router.register(r'officers', AdminOfficerViewSet)
 router.register(r'stories', AdminStoryViewSet)
 router.register(r'document-requests', AdminAllegationRequestViewSet)
 router.register(r'sessions', AdminSessionsView)
+router.register(r'settings', AdminSettingsView)
 
 
 urlpatterns = [
@@ -33,4 +36,5 @@ urlpatterns = [
     url(r'^api/dashboard/document-request-status/$', login_required(csrf_exempt(DocumentRequestStatusView.as_view()))),
     url(r'^api/dashboard/document-link/$', login_required(csrf_exempt(DocumentLinkView.as_view()))),
     url(r'^api/dashboard/story_types/$', login_required(csrf_exempt(StoryTypeView.as_view()))),
+    url(r'^api/dashboard/settings_save/$', login_required(csrf_exempt(SettingsSaveView.as_view()))),
 ]

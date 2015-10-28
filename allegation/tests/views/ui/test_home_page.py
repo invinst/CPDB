@@ -1,5 +1,6 @@
 from selenium.webdriver.common.keys import Keys
 
+from api.models import Setting
 from common.models import AllegationCategory
 from common.tests.core import *
 from allegation.factories import AllegationFactory, AllegationCategoryFactory
@@ -66,7 +67,7 @@ class HomePageTestCase(BaseLiveTestCase):
         self.browser.implicitly_wait(0)
         self.element_exist('.row .arrow-container').should.equal(False)
         self.browser.implicitly_wait(10)
-        self.until(lambda: self.link(self.allegation_category.category).click())        
+        self.until(lambda: self.link(self.allegation_category.category).click())
         # TODO: We should have another test to check which main category this arrow belong to?
         self.element_exist('.row .arrow-container').should.equal(True)
 
@@ -143,7 +144,7 @@ class HomePageTestCase(BaseLiveTestCase):
         self.visit_home()
         self.find('.checkmark').click()
 
-    def check_complaint_detail_with_n_officers(self, class_name):        
+    def check_complaint_detail_with_n_officers(self, class_name):
         self.find('.complaint-row .cursor').click()
         officers_divs = self.find_all('.officers > div')
         officers_divs[0].has_class(class_name).should.be.true
@@ -223,7 +224,7 @@ class HomePageTestCase(BaseLiveTestCase):
         self.should_see_text(allegation.officer.display_name)
 
         self.find('.tag > .pin').click()
-        self.until(lambda: self.find('.tag').get_attribute('class').should.contain('pinned'))        
+        self.until(lambda: self.find('.tag').get_attribute('class').should.contain('pinned'))
 
         self.search_officer(self.allegation.officer)
         self.should_see_text(self.allegation.officer.display_name)
@@ -266,3 +267,11 @@ class HomePageTestCase(BaseLiveTestCase):
         self.until(lambda: self.autocomplete_available(officer.officer_first))
         self.find(".ui-autocomplete .ui-menu-item").click()
         self.until_ajax_complete()
+
+    def test_default_site_title_from_settings(self):
+        setting, _ = Setting.objects.get_or_create(key='DEFAULT_SITE_TITLE')
+        setting.value = 'New title'
+        setting.save()
+
+        self.visit("/")
+        self.browser.title.should.equal(setting.value)

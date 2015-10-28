@@ -1,5 +1,4 @@
 from common.tests.core import BaseLiveTestCase
-from allegation.views import DEFAULT_SITE_TITLE
 
 
 class SiteTitleTestCase(BaseLiveTestCase):
@@ -7,7 +6,6 @@ class SiteTitleTestCase(BaseLiveTestCase):
         title = 'This is title'
         slugify_url = 'this-is-title'
         self.visit('/#!/data-tools')
-        self.browser.title.should.equal(DEFAULT_SITE_TITLE)
 
         self.fill_in('.site-title-input', title)
         self.until(self.ajax_complete)

@@ -35,6 +35,7 @@
     "react-select": "^0.6.12",
     "react-tools": "~0.13.3",
     "slug": "^0.9.1",
+    "slugify": "^0.1.1",
     "toastr": "^2.1.2"
   },
   "devDependencies": {

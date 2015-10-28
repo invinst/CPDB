@@ -1,4 +1,8 @@
+if (!global.DEFAULT_SITE_TITLE) {
+  global.DEFAULT_SITE_TITLE = '';
+}
 var c = 0;
+
 module.exports = {
   CHANGE_EVENT: c++,
   SET_ACTIVE_COMPLAINT_LIST_FILTER: c++,
@@ -215,7 +219,7 @@ module.exports = {
     'unitWithName': 'Unit'
   },
 
-  DEFAULT_SITE_TITLE: "Citizens Police Data Project",
+  DEFAULT_SITE_TITLE: DEFAULT_SITE_TITLE,  // from global variable
 
   MEDIA_URL: '/media/',
 
