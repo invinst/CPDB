@@ -2,14 +2,15 @@ var _ = require('lodash');
 
 var AppDispatcher = require('../../../dispatcher/AppDispatcher');
 var AppConstants = require('../../../constants/AppConstants');
-var Base = require('stores/Base');
+var Base = require('../../Base');
 
 var _state = {
   'data': {
   }
 };
 
-var RaceGenderTabStore = _.assign(Base(_state), {});
+var RaceGenderTabStore = _.assign(Base(_state), {
+});
 
 AppDispatcher.register(function (action) {
   switch (action.actionType) {

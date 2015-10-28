@@ -2,8 +2,9 @@
 
 jest.dontMock('../../../../constants/AppConstants');
 jest.dontMock('../RaceGenderTabStore');
-jest.dontMock('stores/Base');
-jest.dontMock('object-assign');
+jest.dontMock('../../../Base');
+jest.dontMock('lodash');
+
 
 describe('RaceGenderTabStore', function() {
   var AppDispatcher;
@@ -19,7 +20,6 @@ describe('RaceGenderTabStore', function() {
   beforeEach(function() {
     AppDispatcher = require('../../../../dispatcher/AppDispatcher');
     RaceGenderTabStore = require('../RaceGenderTabStore');
-    console.log(RaceGenderTabStore);
     callback = AppDispatcher.register.mock.calls[0][0];
   });
 
@@ -29,6 +29,6 @@ describe('RaceGenderTabStore', function() {
 
   it('change loading to true when getting data', function() {
     callback(actionReceivedData);
-    expect(RaceGenderTabStore.getState()).toBe('data');
+    expect(RaceGenderTabStore.getState()['data']).toBe('data');
   });
 });

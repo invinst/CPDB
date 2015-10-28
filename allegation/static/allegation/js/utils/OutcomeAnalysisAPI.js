@@ -6,7 +6,7 @@ var ajax = null;
 var OutcomeAnalysisAPI = {
   getAnalysisInformation: function () {
     var queryString = AllegationFetcherQueryBuilder.buildQuery();
-    console.log(queryString);
+
     if (queryString) {
       if (ajax) {
         ajax.abort();

@@ -25,7 +25,6 @@ var ComplaintListAPI = {
     var that = this;
     ComplaintListServerActions.getData();
 
-    console.log(queryString);
     if (queryString) {
       if (ajax) {
         ajax.abort();
