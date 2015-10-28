@@ -11,16 +11,24 @@ var Nav = React.createClass({
   render: function() {
     return (
       <div className="navbar navbar-default">
-        <div className="navbar-header">
-          <Logo />
-        </div>
-        <div className="navbar-collapse collapse" id="navbar-main">
-          <ul className="nav navbar-nav">
-            <li className='site-title'>
-              <SiteTitle changable={true} />
-            </li>
-          </ul>
-          <Search />
+        <div className="container-fluid">
+          <div className="row">
+            <div className="col-sm-7">
+              <div className="navbar-header">
+                <Logo />
+              </div>
+              <div className="navbar-collapse collapse" id="navbar-main">
+                <ul className="nav navbar-nav">
+                  <li className='site-title'>
+                    <SiteTitle changable={true} />
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div className="col-sm-5">
+              <Search />
+            </div>
+          </div>
         </div>
       </div>
     )

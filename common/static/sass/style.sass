@@ -57,6 +57,9 @@ $font_6: Glyphicons Halflings
 
 @import 'shared/sf-compact-font'
 
+@import 'bootstrap_override'
+@import '_bootstrap'
+
 //@extend-elements
 //original selectors
 //h1, h2, h3, .h1, .h2, .h3
@@ -171,6 +174,16 @@ body
 
     &:focus
       @extend .extend_3
+
+    @media (min-width: $screen-xs-min)
+      img
+        width: 68px
+        height: 55px
+
+    @media (min-width: $screen-sm-min)
+      img
+        width: 89px
+        height: 72px
 
   .navbar-nav > li.site-title > a
     color: $color_mine_shaft_approx
@@ -1229,7 +1242,7 @@ button a:hover
   @extend .extend_2
 
 ul.nav.navbar-nav
-  width: 45%
+  width: 84%
 
 .progress-bar.discipline
   background-color: $color_tall_poppy_approx
@@ -1263,6 +1276,15 @@ canvas.leaflet-heatmap-layer
 
 form.navbar-form.navbar-right
   width: 50%
+
+.bootstrap-tagsinput > .tag
+  opacity: 0
+  //If you use compass, instead of the line below you could use + transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+  transition: all ease-in-out 0.5s
+  &.fadeIn
+    //If you use compass, instead of the line below you could use + transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
+    transition: all ease-in-out 0.5s
+    opacity: 1
 
 #request_modal .modal-dialog
   width: 700px
@@ -1347,6 +1369,9 @@ form.navbar-form.navbar-right
     bottom: 0
 
 .tag
+  margin-left: 5px
+  margin-right: 5px
+
   .pin
     cursor: pointer
     margin-left: 5px
@@ -1356,6 +1381,19 @@ form.navbar-form.navbar-right
     width: 146px
     margin: -174px auto 0
     text-align: center
+
+.bootstrap-tagsinput
+  padding: 4px 0
+
+.navbar-form
+  padding: 0
+
+[class*="col-sm-"], [class*="col-xs-"]
+  padding-left: 10px
+  padding-right: 10px
+  
+#navbar-main
+  margin-top: 5px
 
 @import 'shared'
 @import 'officer-profile'
