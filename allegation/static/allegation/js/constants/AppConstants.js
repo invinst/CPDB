@@ -1,4 +1,8 @@
+if (!global.DEFAULT_SITE_TITLE) {
+  global.DEFAULT_SITE_TITLE = '';
+}
 var c = 0;
+
 module.exports = {
   CHANGE_EVENT: c++,
   SET_ACTIVE_COMPLAINT_LIST_FILTER: c++,
