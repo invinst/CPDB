@@ -25,13 +25,13 @@ var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
     var officerGendersData = RaceGenderAPITransformation.transformGenders(officerGenders);
 
     var genderOptions = {
-      colors: ['#CC3333', '#330066', '#669966'], // Female, Male, Trans
+      colors: ['#003366', '#ff6633', '#669966'], // Female, Male, Trans
       width: 145,
       height: 155
     };
 
     var raceOptions = {
-      colors: ['#CC3333', '#003366', '#669966', '#330066'], // White, Black, Hispanic, Others
+      colors: ['#ff6633', '#003366', '#669966', '#330066'], // White, Black, Hispanic, Others
       width: 145,
       height: 155
     };
