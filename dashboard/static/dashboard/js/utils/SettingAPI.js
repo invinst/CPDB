@@ -30,7 +30,9 @@ var SettingAPI = {
 
     ajax = jQuery.post(AppConstants.SETTINGS_API_SAVE_ENDPOINT, params, function(response) {
       SettingActions.settingsUpdated(response);
-    }, 'json');
+    }, 'json').fail(function (response) {
+      SettingActions.failedToUpdateSettingData(response);
+    });
   }
 };
 

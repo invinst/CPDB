@@ -455,6 +455,11 @@
         }
       }
     },
+    "slugify": {
+      "version": "0.1.1",
+      "from": "slugify@*",
+      "resolved": "https://registry.npmjs.org/slugify/-/slugify-0.1.1.tgz"
+    },
     "toastr": {
       "version": "2.1.2",
       "from": "https://registry.npmjs.org/toastr/-/toastr-2.1.2.tgz",

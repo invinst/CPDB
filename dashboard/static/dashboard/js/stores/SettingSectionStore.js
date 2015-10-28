@@ -23,10 +23,6 @@ AppDispatcher.register(function(action) {
       SettingSectionStore.emitChange();
       break;
 
-    case AppConstants.UPDATED_SETTING_DATA:
-      SettingSectionStore.emitChange();
-      break;
-
     default:
       break;
   }

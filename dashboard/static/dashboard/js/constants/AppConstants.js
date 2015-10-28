@@ -66,6 +66,7 @@ module.exports = {
   RECEIVED_SETTINGS_DATA: c++,
   UPDATE_SETTING_DATA: c++,
   UPDATED_SETTING_DATA: c++,
+  FAILED_TO_UPDATE_SETTING_DATA: c++,
 
   QUERY_LIST_FILTERS: {
     'all': 'All',

@@ -215,7 +215,7 @@ module.exports = {
     'unitWithName': 'Unit'
   },
 
-  DEFAULT_SITE_TITLE: "Citizens Police Data Project",
+  DEFAULT_SITE_TITLE: DEFAULT_SITE_TITLE,  // from global variable
 
   MEDIA_URL: '/media/',
 

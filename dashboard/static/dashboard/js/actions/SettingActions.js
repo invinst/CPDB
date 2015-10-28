@@ -18,11 +18,19 @@ var SettingActions = {
       value: value
     });
   },
-  
+
   settingsUpdated: function (response) {
     toastr.success("All settings are updated.");
     AppDispatcher.dispatch({
       actionType: AppConstants.UPDATED_SETTING_DATA,
+      response: response
+    });
+  },
+
+  failedToUpdateSettingData: function (response) {
+    toastr.error("Server encountered an error while saving settings.");
+    AppDispatcher.dispatch({
+      actionType: AppConstants.FAILED_TO_UPDATE_SETTING_DATA,
       response: response
     });
   },

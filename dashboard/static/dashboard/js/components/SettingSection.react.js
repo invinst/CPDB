@@ -1,5 +1,6 @@
 var React = require('react');
 var _ = require('lodash');
+var slugify = require('slugify');
 
 var Base = require('./Base.react');
 var SettingSectionStore = require('../stores/SettingSectionStore');
@@ -11,11 +12,12 @@ var SettingSection = React.createClass(_.assign(Base(SettingSectionStore), {
   content: function () {
     var that = this;
     return this.state.settings.map(function (setting) {
+      var inputId = 'setting-input-' + slugify(setting.key)
       return (
         <div className="form-group">
-          <label htmlFor='' className="col-lg-2 col-md-2 col-xs-2">{setting.key}</label>
+          <label htmlFor={inputId} className="col-lg-2 col-md-2 col-xs-2">{setting.key}</label>
           <div className="col-lg-10 col-md-10 col-xs-10">
-            <input type='text' className="form-control" value={setting.value} onChange={that.change(setting)} required />
+            <input type='text' id={inputId} className="form-control" value={setting.value} onChange={that.change(setting)} required />
           </div>
         </div>
       );

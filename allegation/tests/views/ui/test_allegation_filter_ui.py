@@ -2,9 +2,9 @@ import random
 
 from allegation.factories import AllegationCategoryFactory, AllegationFactory
 from allegation.tests.utils.outcome_filter import number_of_all_created_complaints
+from allegation.services.outcome_analytics import FILTERS
 from common.tests.core import BaseLiveTestCase
 from common.models import Allegation
-from allegation.services.outcome_analytics import FILTERS
 
 
 class AllegationFilterTestCase(BaseLiveTestCase):
