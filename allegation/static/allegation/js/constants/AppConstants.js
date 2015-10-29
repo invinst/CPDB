@@ -1,4 +1,8 @@
+if (!global.DEFAULT_SITE_TITLE) {
+  global.DEFAULT_SITE_TITLE = '';
+}
 var c = 0;
+
 module.exports = {
   CHANGE_EVENT: c++,
   SET_ACTIVE_COMPLAINT_LIST_FILTER: c++,
@@ -43,6 +47,8 @@ module.exports = {
   AVG_COMPLAINTS_NUMBER_GREEN: 20,
   AVG_COMPLAINTS_NUMBER_YELLOW: 60,
   MAX_OFFICER_NAME_LENGTH: 20,
+
+  RACE_GENDER_TAB_RECEIVED_DATA: c++,
 
   MAP_TOKEN: 'pk.eyJ1Ijoic3RlZmFuZ2VvcmciLCJhIjoiVnBNOEp4byJ9.7i2N7gTV-t_QtAA-kAAlFA',
   MAP_TYPE: 'mapbox.streets',
@@ -215,13 +221,14 @@ module.exports = {
     'unitWithName': 'Unit'
   },
 
-  DEFAULT_SITE_TITLE: "Citizens Police Data Project",
+  DEFAULT_SITE_TITLE: DEFAULT_SITE_TITLE,  // from global variable
 
   MEDIA_URL: '/media/',
 
   MAP_MARKER_ICON_URL: 'http://data.invisible.institute/static/img/64x_map_marker.png',
   OFFICER_PAGE_API_ENDPOINT: '/officer',
   SESSION_API_ENDPOINT: '/api/allegations/session/',
+  RACE_GENDER_API_ENDPOINT: '/api/allegations/race-gender',
 
   DATE_FORMAT: 'D MMM, YYYY'
 };

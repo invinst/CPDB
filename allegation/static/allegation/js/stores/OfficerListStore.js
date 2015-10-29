@@ -14,7 +14,6 @@ var EventEmitter = require('events').EventEmitter;
 var AppConstants = require('../constants/AppConstants');
 var assign = require('object-assign');
 var FilterStore = require('./FilterStore');
-var SessionActions = require("actions/SessionActions");
 
 var CHANGE_EVENT = 'change';
 var SUMMARY_CHANGE = 'summary-change';

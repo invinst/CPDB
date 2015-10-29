@@ -28,6 +28,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
+    'django.contrib.sites',
 
     'django_extensions',
     'djangobower',
@@ -48,6 +49,7 @@ INSTALLED_APPS = (
     'share',
     'embed',
     'dashboard',
+    'api',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -212,3 +214,5 @@ REST_FRAMEWORK = {
 }
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+SITE_ID = 1

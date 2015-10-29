@@ -18,7 +18,6 @@ from common.models import Allegation, Area, AllegationCategory, Investigator, Of
 from common.models import ComplainingWitness, NO_DISCIPLINE_CODES, PoliceWitness
 from share.models import Session
 
-DEFAULT_SITE_TITLE = "Citizens Police Data Project"
 
 OFFICER_COMPLAINT_COUNT_RANGE = [
     [20, 0],  # x >= 9

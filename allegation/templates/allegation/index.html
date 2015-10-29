@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% load staticfiles common_tags compress %}
+{% load staticfiles common_tags compress jsonify %}
 <html>
   <head>
     {% block meta %}
@@ -10,6 +10,7 @@
     <meta name="description"
           content="{% block meta-description %}CPDB{% endblock %}" />
     <meta name="keywords" content="{% block meta-keywords %}{% endblock %}" />
+    <title>{{""|default_site_title}}</title>
     {% endblock %}
       <link rel="shortcut icon" type='image/png' href="{% static 'img/logox2.png' %}" />
       <link rel="home" href="/" />
@@ -35,6 +36,11 @@
       {% compress css %}
       <link rel="stylesheet" type="text/sass" href="{% static 'sass/style.sass' %}" />
       {% endcompress %}
+      {% if DJANGO_ENV == 'test' %}
+        {% compress css %}
+          <link rel="stylesheet" type="text/sass" href="{% static 'sass/test.sass' %}" />
+        {% endcompress %}
+      {% endif %}
   </head>
   <body>
   {% csrf_token %}
@@ -50,6 +56,9 @@
     <script src="{% static 'toastr/toastr.min.js' %}"></script>
     <script src="{% static 'moment/min/moment.min.js' %}"></script>
     <script src="{% static 'underscore/underscore-min.js' %}"></script>
+    <script type="text/javascript">
+    DEFAULT_SITE_TITLE = {{ ""|default_site_title|jsonify }}
+    </script>
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -79,5 +88,25 @@
     })();
     </script>
 
+    <!--Start of HappyFox Live Chat Script-->
+    <script>
+     window.HFCHAT_CONFIG = {
+         EMBED_TOKEN: "31ec3e10-7a4b-11e5-bf4e-83a9062f6735",
+         ACCESS_TOKEN: "0caab5f9fe694a1b8a094b6b0f48619e",
+         HOST_URL: "https://happyfoxchat.com",
+         ASSETS_URL: "https://d1l7z5ofrj6ab8.cloudfront.net/visitor"
+     };
+
+    (function() {
+      var scriptTag = document.createElement('script');
+      scriptTag.type = 'text/javascript';
+      scriptTag.async = true;
+      scriptTag.src = window.HFCHAT_CONFIG.ASSETS_URL + '/js/widget-loader.js';
+
+      var s = document.getElementsByTagName('script')[0];
+      s.parentNode.insertBefore(scriptTag, s);
+    })();
+    </script>
+    <!--End of HappyFox Live Chat Script-->
   </body>
 </html>

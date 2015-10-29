@@ -5,7 +5,8 @@ Created on Jul 29, 2013
 """
 from django import template
 from django.core.urlresolvers import reverse
-from allegation.views import DEFAULT_SITE_TITLE
+
+from api.models import Setting
 
 
 register = template.Library()
@@ -20,8 +21,10 @@ def current_as_back_url(_, __):
 def default_site_title(title):
     if title:
         return title
-    else:
-        return DEFAULT_SITE_TITLE
+    try:
+        return Setting.objects.get(key='DEFAULT_SITE_TITLE').value
+    except Setting.DoesNotExist:
+        return Setting.DEFAULT_SITE_TITLE
 
 class CurrentBackUrlNode(template.Node):
     def render(self, context):

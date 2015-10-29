@@ -2,11 +2,14 @@
  * Created by eastagile on 8/6/15.
  */
 var React = require('react');
+var classnames = require('classnames');
+
 var FilterStore = require('stores/FilterStore');
 var Sunburst = require('components/DataToolPage/Sunburst.react');
 var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
 var Summary = require('components/DataToolPage/Summary.react');
-
+var Map = require('components/DataToolPage/Map.react');
+var RaceGenderTab = require('components/DataToolPage/RaceGenderTab.react');
 
 var Tabs = React.createClass({
   mixins: [EmbedMixin],
@@ -80,40 +83,109 @@ var Tabs = React.createClass({
     this.embedding = false;
   },
 
+  renderMapTab: function () {
+    if (!this.props.mobile) {
+      return;
+    }
+
+    return (
+      <li role="presentation" className="active">
+        <a href='javascript:void(0)' data-target="#map" aria-controls="map" role="tab" className='pointer' data-toggle="tab"
+           onClick={this.activeTab.bind(this, 0)}>
+          Map
+        </a>
+      </li>
+    );
+  },
+
+  renderOutcomesTab: function (outcomeClassName) {
+    var label = 'Outcomes';
+    return (
+      <li role="presentation" className={outcomeClassName}>
+        <a href='javascript:void(0)' data-target="#sunburst" aria-controls="sunburst" role="tab" className='pointer' data-toggle="tab"
+           onClick={this.activeTab.bind(this, 0)}>
+          {label}
+        </a>
+      </li>
+    );
+  },
+
+  renderCategoriesTab: function () {
+    var label = 'Categories';
+
+    return (
+      <li role="presentation">
+        <a href='javascript:void(0)' data-target="#categories" aria-controls="profile" role="tab" className='pointer' data-toggle="tab"
+           onClick={this.activeTab.bind(this, 1)}>
+          {label}
+        </a>
+      </li>
+    );
+  },
+
+  renderGenderRaceTab: function () {
+    var label = 'Race & Gender';
+
+    return (
+      <li role="presentation">
+          <a  href="javascript:void(0)" aria-controls='profile' aria-control='race-gender' role='tab' data-target='#race-gender' className='pointer' data-toggle='tab'>
+            {label}
+          </a>
+        </li>
+      );
+  },
+
+  renderTimeframeTab: function () {
+    var className = classnames('disabled', {'hidden': !this.props.mobile});
+    return (
+      <li role="presentation" className={className}>
+        <a href="#" aria-controls="profile" role="tab">
+          Timeframe
+        </a>
+      </li>
+    );
+  },
+
+  renderMapContent: function () {
+    if (!this.props.mobile) {
+      return;
+    }
+
+    return (
+      <div role="tabpanel" className='tab-pane active' id="map">
+        <Map tabs={this} />
+      </div>
+    );
+  },
+
   render: function () {
+    var isActive = {
+      'active': !this.props.mobile
+    };
+    var outcomeClassName = classnames(isActive);
+
+    var outcomeContentClassName = classnames('tab-pane', isActive);
     return (
       <div>
         <ul className="nav nav-tabs" role="tablist">
-          <li role="presentation" className="active">
-            <a href='javascript:void(0)' data-target="#sunburst" aria-controls="sunburst" role="tab" className='pointer' data-toggle="tab"
-               onClick={this.activeTab.bind(this, 0)}>
-              Outcomes
-            </a>
-          </li>
-          <li role="presentation">
-            <a href='javascript:void(0)' data-target="#categories" aria-controls="profile" role="tab" className='pointer' data-toggle="tab"
-               onClick={this.activeTab.bind(this, 1)}>
-              Categories
-            </a>
-          </li>
-          <li role="presentation" className="disabled">
-            <a href="#" aria-controls="profile" role="tab">
-              Race &amp; Gender
-            </a>
-          </li>
-          <li role="presentation" className="disabled hidden">
-            <a href="#" aria-controls="profile" role="tab">
-              Timeframe
-            </a>
-          </li>
+
+          { this.renderMapTab() }
+          { this.renderOutcomesTab(outcomeClassName) }
+          { this.renderCategoriesTab() }
+          { this.renderGenderRaceTab() }
+          { this.renderTimeframeTab() }
         </ul>
 
         <div className="tab-content">
-          <div role="tabpanel" className="tab-pane active" id="sunburst">
+          { this.renderMapContent() }
+          <div role="tabpanel" className={outcomeContentClassName} id="sunburst">
             <Sunburst tabs={this} />
           </div>
           <div role="tabpanel" className="tab-pane" id="categories">
             <Summary tabs={this} />
+          </div>
+          <div role='tabpanel' className="tab-pane" id='race-gender'>
+            <RaceGenderTab />
           </div>
         </div>
       </div>

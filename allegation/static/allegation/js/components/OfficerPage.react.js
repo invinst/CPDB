@@ -15,6 +15,8 @@ var RelatedOfficers = require('components/OfficerPage/RelatedOfficers.react');
 var SessionStore = require('stores/SessionStore');
 var StoryList = require('components/OfficerPage/StoryList.react');
 var OfficerPresenter = require('presenters/OfficerPresenter');
+var Disclaimer = require('components/HomePage/Disclaimer.react');
+var Footer = require('components/HomePage/Footer.react');
 
 
 var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
@@ -60,7 +62,12 @@ var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
             <StoryList officer={officer} />
             <ComplaintSection officer={officer}/>
           </div>
+
+          <div className='sticky-footer'>
+            <Footer />
+          </div>
         </div>
+        <Disclaimer />
       </div>
     );
   },

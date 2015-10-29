@@ -3,6 +3,7 @@ var AppConstants = require('constants/AppConstants');
 var ComplaintListAPI = require('utils/ComplaintListAPI');
 var OutcomeAnalysisAPI = require('utils/OutcomeAnalysisAPI');
 var SessionAPI = require('utils/SessionAPI');
+var RaceGenderAPI = require('utils/RaceGenderAPI');
 var FilterStore = require('stores/FilterStore');
 
 
@@ -16,6 +17,7 @@ var FilterTagsActions = {
 
     ComplaintListAPI.getData();
     OutcomeAnalysisAPI.getAnalysisInformation();
+    RaceGenderAPI.getData();
     SessionAPI.updateSessionInfo({'query': FilterStore.getSession()});
   },
 
@@ -28,6 +30,7 @@ var FilterTagsActions = {
 
     ComplaintListAPI.getData();
     OutcomeAnalysisAPI.getAnalysisInformation();
+    RaceGenderAPI.getData();
     SessionAPI.updateSessionInfo({'query': FilterStore.getSession()});
   },
 
