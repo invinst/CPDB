@@ -310,7 +310,8 @@ FINDINGS = [
     ['SU', 'Sustained'],
     ['NC', 'No Cooperation'],
     ['NA', 'No Affidavit'],
-    ['DS', 'Discharged']
+    ['DS', 'Discharged'],
+    ['ZZ', 'Unknown']
 ]
 FINDINGS_DICT = dict(FINDINGS)
 
@@ -342,6 +343,7 @@ OUTCOME_TEXT_DICT = {
             'final_outcome': [str(x).zfill(3) for x in range(10, 31)],
         }
     },
+
     '30 more days': {
         'text': '30+ days',
         'condition': {
