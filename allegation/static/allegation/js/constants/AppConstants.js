@@ -41,6 +41,7 @@ module.exports = {
   RECEIVE_STORIES: c++,
 
   ADD_TAG: c++,
+  ADD_TAGS: c++,
   REMOVE_TAG: c++,
   PIN_TAG: c++,
 

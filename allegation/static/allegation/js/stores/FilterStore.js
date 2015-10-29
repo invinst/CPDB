@@ -136,8 +136,8 @@ var FilterStore = assign({}, EventEmitter.prototype, {
     if (!_pinned[category]) {
       _pinned[category] = [];
     }
-    
-    if (FilterStore.isPinned(category, filterValue)) { 
+
+    if (FilterStore.isPinned(category, filterValue)) {
       _pinned[category].splice(_pinned[category].indexOf(filterValue));
     } else {
       _pinned[category].push(filterValue);
@@ -248,7 +248,17 @@ AppDispatcher.register(function (action) {
     case AppConstants.ADD_TAG:
       FilterStore.addFilter(action.category, action.filter.value);
       FilterStore.emitChange();
-      break;
+    break;
+
+    case AppConstants.ADD_TAGS:
+      var filters = action.filters;
+
+      for (var i = 0; i < filters.length; i++) {
+        FilterStore.addFilter(action.category, filters[i].value);
+        FilterStore.pinFilter(action.category, filters[i].value);
+      }
+      FilterStore.emitChange();
+    break;
 
     case AppConstants.REMOVE_TAG:
       FilterStore.removeFilter(action.category, action.filter.value);
@@ -264,6 +274,8 @@ AppDispatcher.register(function (action) {
       FilterStore.setSession(action.data['data']['query'] || {});
       _initialized = action.data['data'].readable_query || {};
       FilterStore.emitChange();
+      break;
+
     default:
       break;
   }
