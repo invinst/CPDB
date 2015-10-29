@@ -12,6 +12,7 @@ from search.utils.zip_code import *
 
 AREA_SORT_ORDERS = { 'police-beats': 0, 'neighborhoods': 1, 'ward': 2, 'police-districts': 3, 'school-grounds': 5 }
 DATA_SOURCES = ['FOIA', 'pre-FOIA']
+SUGGEST_OFFICER_LIMIT = 20
 # TODO: More test for this one, especially test for ensure the order, returned format
 class Suggestion(object):
     def make_suggestion_format(self, match):
@@ -121,8 +122,10 @@ class Suggestion(object):
     def suggest_office_name(self, q):
         # suggestion for officer name
         condition = OfficerQuery.condition_by_name(q)
-        results = self.query_suggestions(Officer, condition, ['officer_first', 'officer_last', 'allegations_count', 'id'],
-                                         order_bys=('-allegations_count', 'officer_first', 'officer_last'))
+        results = self.query_suggestions(Officer, condition,
+            ['officer_first', 'officer_last', 'allegations_count', 'id'],
+            order_bys=('-allegations_count', 'officer_first', 'officer_last'),
+            limit=SUGGEST_OFFICER_LIMIT)
         results = [["%s %s (%s)" % (x[0], x[1], x[2]), x[3] ] for x in results]
         return results
 
