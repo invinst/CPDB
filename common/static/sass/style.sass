@@ -175,7 +175,9 @@ body
     &:focus
       @extend .extend_3
 
-    @media (min-width: $screen-xs-min)
+    @media (min-width: $screen-xs-min) and (max-width: $screen-xs-max)
+      margin-left: -10px
+
       img
         width: 68px
         height: 55px
@@ -187,6 +189,40 @@ body
 
   .navbar-nav > li.site-title > a
     color: $color_mine_shaft_approx
+
+  @media (min-width: $screen-xs-min) and (max-width: $screen-xs-max)
+    min-height: inherit
+
+    .navbar-header
+      display: inline-block
+
+    #navbar-main
+      display: inline-block
+      border-top: none
+      margin: 0 0 2px 10px
+      padding: 0
+      width: 74%
+      vertical-align: bottom
+
+      ul.nav.navbar-nav
+        margin: 0
+        width: 100%
+
+        .site-title
+          margin: 0
+
+    .navbar-form
+      border: none
+
+      #search-wrapper
+        margin-top: 12px
+        border: none
+
+        input
+          width: 89%
+
+        i
+          color: #0079ae
 
 h1
   @extend .extend_1
