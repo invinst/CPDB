@@ -35,7 +35,7 @@ class Suggestion(object):
 
     def suggest_unit_number(self, q):
         results = []
-        matches = filter(lambda x: x[0].startswith(q), UNITS)
+        matches = filter(lambda x: self._matched_query(x[0], q), UNITS)
 
         for match in matches:
             results.append(self.make_suggestion_format(match))
@@ -83,7 +83,7 @@ class Suggestion(object):
 
         if year.isnumeric() and month.isnumeric():
             days = ["%02d" % x for x in range(1, 32)]
-            results = ["%s/%s/%s" % (year, month, x) for x in days if x.startswith(day)]
+            results = ["%s/%s/%s" % (year, month, x) for x in days if self._matched_query(x, day)]
 
             return results
 
@@ -91,7 +91,7 @@ class Suggestion(object):
         if q.count('/') != 0:
             return None
 
-        return [x for x in range(START_SEARCHABLE_YEAR, current_year() + 1) if str(x).startswith(q)]
+        return [x for x in range(START_SEARCHABLE_YEAR, current_year() + 1) if self._matched_query(x, q)]
 
     def suggest_incident_date_only_year_month(self, q):
         if q.count('/') == 1:
@@ -99,13 +99,13 @@ class Suggestion(object):
             if year.isnumeric():
                 months = ["%02d" % x for x in range(1, 13)]
 
-                return ["%s/%s" % (year, x) for x in months if x.startswith(month)]
+                return ["%s/%s" % (year, x) for x in months if self._matched_query(x, month)]
 
     def suggest_in_custom(self, q, data):
         results = []
         for entry in data:
             text = data[entry]['text']
-            if text.lower().startswith(q):
+            if self._matched_query(text.lower(), q):
                 results.append([text, entry])
 
         return results
@@ -113,7 +113,7 @@ class Suggestion(object):
     def suggest_in(self, q, data):
         results = []
         for entry in data:
-            if entry[1].lower().startswith(q):
+            if self._matched_query(entry[1].lower(), q):
                 results.append([entry[1], entry[0]])
 
         return results
@@ -222,3 +222,6 @@ class Suggestion(object):
                 ret[key] = ret_append[key]
 
         return ret
+
+    def _matched_query(self, s, q):
+        return str(q) in str(s)
