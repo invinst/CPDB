@@ -141,6 +141,9 @@ OUTCOMES = [
     ['028', '28 Day Suspension'],
     ['029', '29 Day Suspension'],
     ['030', '30 Day Suspension'],
+    ['045', '45 Day Suspension'],
+    ['060', '60 Day Suspension'],
+    ['090', '90 Day Suspension'],
     ['100', 'Reprimand'],
     ['200', 'Suspended over 30 Days'],
     ['300', 'Administrative Termination'],
@@ -333,12 +336,18 @@ OUTCOME_TEXT_DICT = {
             'final_outcome': [str(x).zfill(3) for x in range(1, 10)],
         }
     },
-    '10-30 days':{
+    '10-30 days': {
         'text': '10-30 day',
         'condition': {
             'final_outcome': [str(x).zfill(3) for x in range(10, 31)],
         }
-    },    
+    },
+    '30 more days': {
+        'text': '30+ days',
+        'condition': {
+            'final_outcome': ["045", "060", "090", "200"],
+        }
+    },
 }
 
 FINAL_FINDING_TEXT_DICT = {
