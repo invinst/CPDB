@@ -36,12 +36,14 @@ var FilterStore = assign({}, EventEmitter.prototype, {
 
   getSession: function () {
     return {
-      filters: _filters
+      filters: _filters,
+      pinned: _pinned
     };
   },
 
   setSession: function (session) {
     _filters = session.filters || {};
+    _pinned = session.pinned || {};
     return _filters;
   },
 
@@ -136,8 +138,8 @@ var FilterStore = assign({}, EventEmitter.prototype, {
     if (!_pinned[category]) {
       _pinned[category] = [];
     }
-    
-    if (FilterStore.isPinned(category, filterValue)) { 
+
+    if (FilterStore.isPinned(category, filterValue)) {
       _pinned[category].splice(_pinned[category].indexOf(filterValue));
     } else {
       _pinned[category].push(filterValue);

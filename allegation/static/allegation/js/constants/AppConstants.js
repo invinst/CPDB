@@ -226,7 +226,7 @@ module.exports = {
     'cat__category': 'Category',
     'cat': 'Allegation type',
     'investigator': 'Investigator',
-    'officer': 'Officer name',
+    'officer': 'Officer',
     'officer__star': 'Badge number',
     'officer__unit': 'Officer Unit',
     'officer__rank': 'Officer Rank',
