@@ -38,10 +38,6 @@ var ComplaintSection = React.createClass({
     var analytics = this.state.analytics;
     var loading = this.state.loading;
 
-    if (!this.state.complaints.length) {
-      return <div></div>;
-    }
-
     return (
       <div className="complaint_list" onScroll={this.onScroll}>
         <div className='row'>

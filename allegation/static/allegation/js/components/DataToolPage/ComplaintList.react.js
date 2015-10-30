@@ -6,6 +6,9 @@ var ComplaintListRow = require('components/DataToolPage/ComplaintListRow.react')
 
 var ComplaintList = React.createClass({
   renderComplaints: function (officer) {
+    if (!this.props.complaints.length) {
+      return (<div>No complaints match the query.</div>);
+    }
     var rows = [];
 
     for (var i = 0; i < this.props.complaints.length; i++) {
