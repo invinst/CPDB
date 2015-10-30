@@ -4,13 +4,13 @@ var _ = require('lodash');
 
 var OfficerPresenter = function(officer) {
   var displayName = function() {
-    var displayName = officer.officer_first.toLowerCase() + " " + officer.officer_last.toLowerCase();
+    var displayName = officer.officer_first + " " + officer.officer_last;
 
     if (displayName.length > AppConstants.MAX_OFFICER_NAME_LENGTH) {
-      displayName = officer.officer_first.toLowerCase().substr(0, 1) + ". " + officer.officer_last.toLowerCase();
+      displayName = officer.officer_first.substr(0, 1) + ". " + officer.officer_last;
     }
 
-    return displayName.capitalize();
+    return displayName;
   };
 
   var gender = function() {
