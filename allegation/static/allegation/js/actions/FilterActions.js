@@ -8,7 +8,7 @@ var FilterActions = {
     AppDispatcher.dispatch({
       actionType: AppConstants.MAP_REPLACE_FILTERS,
       filters: values
-    })
+    });
 
     // call API here
     if (values.length > 0) {

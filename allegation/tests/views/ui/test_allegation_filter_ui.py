@@ -2,9 +2,9 @@ import random
 
 from allegation.factories import AllegationCategoryFactory, AllegationFactory
 from allegation.tests.utils.outcome_filter import number_of_all_created_complaints
+from allegation.services.outcome_analytics import FILTERS
 from common.tests.core import BaseLiveTestCase
 from common.models import Allegation
-from allegation.services.outcome_analytics import FILTERS
 
 
 class AllegationFilterTestCase(BaseLiveTestCase):
@@ -17,11 +17,11 @@ class AllegationFilterTestCase(BaseLiveTestCase):
                                   final_outcome_class='disciplined')
 
     def test_filter_by_final_finding(self):
-        self.visit('/')
+        self.visit('/#!/data-tools')
 
         # Check all
         self.link("Categories").click()
-        self.link(self.allegation_category.category).click()
+        self.until(lambda: self.link(self.allegation_category.category).click())
         self.until(lambda : self.element_exist('.complaint-row'))
         self.number_of_complaints().should.equal(number_of_all_created_complaints())
 

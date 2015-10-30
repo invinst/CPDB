@@ -3,6 +3,7 @@ from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import D
 from django.db import models
 from django.db.models.query_utils import Q
+from allegation.utils.query import OfficerQuery
 
 
 class AllegationQuerySet(models.query.QuerySet):
@@ -16,7 +17,7 @@ class AllegationQuerySet(models.query.QuerySet):
         return apps.get_model('common', 'Allegation')._meta.db_table
 
     def by_allegation_filter(self, allegation_query_filter):
-        conditions, filters = allegation_query_filter.allegation_filters()
+        conditions = allegation_query_filter.allegation_filters()
         officer_names = allegation_query_filter.officer_names()
         latlng = allegation_query_filter.latlng()
         radius = allegation_query_filter.radius()
@@ -24,8 +25,8 @@ class AllegationQuerySet(models.query.QuerySet):
         complainant_race = allegation_query_filter.complainant_race()
 
         result = self
-        if filters:
-            result = result.by_filter(conditions, filters)
+        if conditions:
+            result = result.by_filter(conditions)
 
         if officer_names:
             result = result.by_officer_names(officer_names)
@@ -80,19 +81,14 @@ class AllegationQuerySet(models.query.QuerySet):
     def by_complainant_race(self, race):
         return self.by_complainant_field('race', race)
 
-    def by_filter(self, conditions, filters):
-        return self.filter(*conditions, **filters)
+    def by_filter(self, conditions):
+        return self.filter(*conditions)
 
     def by_officer_names(self, names):
         cond = Q()
 
         for name in names:
-            parts = name.split(' ')
-            if len(parts) > 1:
-                cond = Q(officer__officer_first__istartswith=parts[0])
-                cond = cond | Q(officer__officer_last__istartswith=" ".join(parts[1:]))
-            else:
-                cond = Q(officer__officer_first__istartswith=name) | Q(officer__officer_last__istartswith=name)
+            cond |= OfficerQuery.condition_by_name(name, prefix='officer__')
 
         return self.filter(cond)
 
@@ -102,3 +98,13 @@ class AllegationQuerySet(models.query.QuerySet):
             return self.filter(point__distance_lt=(point, D(m=radius)))
 
         return self
+
+    def update(self, *args, **kwargs):
+        if 'document_id' in kwargs and int(kwargs['document_id']) > 0:
+            kwargs.setdefault('document_requested', False)
+            kwargs.setdefault('document_pending', False)
+        elif 'document_pending' in kwargs and kwargs['document_pending'] == False:
+            kwargs.setdefault('document_requested', True)
+            kwargs.setdefault('document_id', 0)
+
+        return super(AllegationQuerySet, self).update(*args, **kwargs)

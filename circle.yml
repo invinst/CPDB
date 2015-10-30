@@ -25,6 +25,7 @@ test:
     - python manage.py collectstatic --noinput
   override:
     - coverage run manage.py test --processes 8 --process-timeout 2000 --noinput --nologcapture
+    - MOBILE=1 python manage.py test --processes 8 --process-timeout 2000 --noinput --nologcapture
     - npm test
   post:
     - coverage report --omit="/home/ubuntu/virtualenvs/*,common/json_serializer.py"

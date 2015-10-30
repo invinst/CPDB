@@ -7,8 +7,8 @@ var _state = {
   data: [],
   locked: false,
   page: 1,
-  sortBy: '',
-  order: 1
+  sortBy: 'updated_at',
+  order: -1
 };
 
 var QueryListStore = _.assign(Base(_state), {
@@ -23,6 +23,7 @@ var QueryListStore = _.assign(Base(_state), {
 AppDispatcher.register(function(action) {
   switch (action.actionType) {
   case AppConstants.RECEIVED_SEARCH_RESULTS_DATA:
+    QueryListStore.updateState('page', 1);
     QueryListStore.updateState('data', action.data);
     QueryListStore.emitChange();
     break;

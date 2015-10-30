@@ -1,5 +1,4 @@
 from unittest import mock
-from django.http.response import FileResponse
 
 from allegation.factories import AllegationFactory, DownloadFactory
 from allegation.models import Download

@@ -11,7 +11,8 @@ var _queryString = null;
 
 var SunburstStore = assign({}, EventEmitter.prototype, {
   update: function (query) {
-    var queryString = query || FilterStore.getQueryString(['final_outcome', 'final_finding', 'outcome_text']);
+    var filter = FilterStore.getQueryString(['final_outcome', 'final_finding', 'outcome_text', 'final_finding_text']);
+    var queryString = query || filter;
     if (queryString == _queryString) {
       return;
     }
@@ -44,8 +45,11 @@ var SunburstStore = assign({}, EventEmitter.prototype, {
 
   addChangeListener: function (callback) {
     this.on(CHANGE_EVENT, callback);
-  }
+  },
 
+  removeChangeListener: function(callback) {
+    this.removeListener(CHANGE_EVENT, callback);
+  }
 });
 
 // Register callback to handle all updates
@@ -55,6 +59,8 @@ AppDispatcher.register(function (action) {
     case AppConstants.MAP_REPLACE_FILTERS:
     case AppConstants.MAP_CHANGE_FILTER:
     case AppConstants.MAP_ADD_FILTER:
+    case AppConstants.ADD_TAG:
+    case AppConstants.REMOVE_TAG:
       SunburstStore.update();
       break;
     default:

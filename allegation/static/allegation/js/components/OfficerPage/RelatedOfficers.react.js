@@ -1,8 +1,8 @@
 var React = require('react');
 var _ = require('lodash');
 
-var Officer = require('../Officer.react');
-var RelatedOfficersStore = require('../../stores/OfficerPage/RelatedOfficersStore');
+var Officer = require('components/DataToolPage/Officer.react');
+var RelatedOfficersStore = require('stores/OfficerPage/RelatedOfficersStore');
 
 
 var RelatedOfficers = React.createClass({

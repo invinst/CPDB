@@ -1,14 +1,3 @@
-/*
- * Copyright (c) 2014, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * MapStore
- */
-
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var AppConstants = require('../constants/AppConstants');
@@ -17,15 +6,11 @@ var CHANGE_EVENT = 'change';
 var CREATE_EVENT = 'change';
 var ENABLE_EVENT = 'enable';
 var DISABLE_EVENT = 'disable';
+
+var _initialized = false;
 var _filters = {};
+var _pinned = {};
 
-
-/**
- * Update a TODO item.
- * @param  {string} id
- * @param {object} updates An object literal containing only the data to be
- *     updated.
- */
 function update(id, updates) {
   _filters[id] = assign({}, _filters[id], updates);
 
@@ -41,15 +26,25 @@ function create(id, filter) {
 
 
 var FilterStore = assign({}, EventEmitter.prototype, {
+  isInitialized: function() {
+    return _initialized;
+  },
+
+  setInitialized: function(val) {
+    _initialized = val;
+  },
+
   getSession: function () {
     return {
       filters: _filters
     };
   },
+
   setSession: function (session) {
     _filters = session.filters || {};
     return _filters;
   },
+
   getAll: function (type) {
     if (type) {
       return _filters[type];
@@ -96,47 +91,106 @@ var FilterStore = assign({}, EventEmitter.prototype, {
       }
     }
   },
-  removeFilter: function (filterName, filterValue) {
-    $.each(_filters, function (i) {
-      if (i == filterName) {
-        var index = _filters[filterName].value.indexOf(filterValue);
-        if (index > -1) {
-          _filters[filterName].value.splice(index, 1);
-        }
-      }
 
-    });
+  isPinned: function (category, value) {
+    return _pinned[category] && _pinned[category].indexOf(value) != -1;
+  },
+
+  removeFilterInCategory: function (category) {
+    if (!_filters[category]) {
+      return;
+    }
+
+    var pinned = [];
+    var values = _filters[category].value;
+    for (i in values) {
+      if (FilterStore.isPinned(category, values[i])) {
+        pinned.push(values[i]);
+      }
+    }
+
+    _filters[category].value = pinned;
+  },
+
+  addFilter: function (category, filterValue) {
+    this.removeFilterInCategory(category);
+
+    if (_filters[category]) {
+      _filters[category]['value'].push(filterValue);
+    } else {
+      _filters[category] = {'value': [filterValue]};
+    }
+  },
+
+  removeFilter: function (category, filterValue) {
+    if (!_filters[category]) {
+      return;
+    }
+    var index = _filters[category].value.indexOf(filterValue);
+    if (index > -1) {
+      _filters[category].value.splice(index, 1);
+    }
+  },
+
+  pinFilter: function (category, filterValue) {
+    if (!_pinned[category]) {
+      _pinned[category] = [];
+    }
+    
+    if (FilterStore.isPinned(category, filterValue)) { 
+      _pinned[category].splice(_pinned[category].indexOf(filterValue));
+    } else {
+      _pinned[category].push(filterValue);
+    }
+
     this.emitChange();
   },
+
   replaceFilters: function (filters) {
     _filters = {};
+
     $.each(filters, function () {
+      var value = this.value[1];
       if (this.value[0] in _filters) {
-        _filters[this.value[0]]['value'].push(this.value[1])
+        _filters[this.value[0]]['value'].push(value);
       }
       else {
-        _filters[this.value[0]] = {'value': [this.value[1]]};
+        _filters[this.value[0]] = {'value': [value]};
       }
     });
     this.emitChange();
   },
+
   /**
    * @param {function} callback
    */
   addChangeListener: function (callback) {
     this.on(CHANGE_EVENT, callback);
   },
+  removeChangeListener: function(callback) {
+    this.removeListener(CHANGE_EVENT, callback);
+  },
 
   addEnableListener: function (callback) {
     this.on(ENABLE_EVENT, callback);
+  },
+  removeEnableListener: function(callback) {
+    this.removeListener(ENABLE_EVENT, callback);
   },
 
   addDisableListener: function (callback) {
     this.on(DISABLE_EVENT, callback);
   },
 
+  removeDisableListener: function(callback) {
+    this.removeListener(DISABLE_EVENT, callback);
+  },
+
   addCreateListener: function (callback) {
     this.on(CREATE_EVENT, callback);
+  },
+  removeCreateListener: function(callback) {
+    this.removeListener(CREATE_EVENT, callback);
   },
 
   getQueryString: function (ignoreFilters) {
@@ -165,27 +219,51 @@ var FilterStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.MAP_REPLACE_FILTERS:
+      _initialized = false;
       FilterStore.replaceFilters(action.filters);
       break;
 
     case AppConstants.MAP_CHANGE_FILTER:
+      _initialized = false;
       update(action.key, action.value);
       FilterStore.emitChange();
       break;
 
     case AppConstants.MAP_ADD_FILTER:
+      _initialized = false;
       create(action.key, action.value);
       FilterStore.emitCreate();
       break;
 
     case AppConstants.ENTER_EMBED_MODE:
+      _initialized = false;
       FilterStore.emitDisable();
       break;
 
     case AppConstants.LEAVE_EMBED_MODE:
+      _initialized = false;
       FilterStore.emitEnable();
       break;
 
+    case AppConstants.ADD_TAG:
+      FilterStore.addFilter(action.category, action.filter.value);
+      FilterStore.emitChange();
+      break;
+
+    case AppConstants.REMOVE_TAG:
+      FilterStore.removeFilter(action.category, action.filter.value);
+      FilterStore.emitChange();
+      break;
+
+    case AppConstants.PIN_TAG:
+      FilterStore.pinFilter(action.category, action.filter.value);
+      FilterStore.emitChange();
+      break;
+
+    case AppConstants.RECEIVED_SESSION_DATA:
+      FilterStore.setSession(action.data['data']['query'] || {});
+      _initialized = action.data['data'].readable_query || {};
+      FilterStore.emitChange();
     default:
       break;
   }

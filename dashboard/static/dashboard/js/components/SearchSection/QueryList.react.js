@@ -42,12 +42,12 @@ var QueryList = React.createClass(_.assign(Base(QueryListStore), {
     return this.state.data.map(function(x) {
       return (
         <tr className='query'>
-          <td>{x.query}</td>
+          <td>{x.search_query}</td>
           <td>{x.num_suggestions}</td>
           <td>{x.num_usage}</td>
           <td>{moment(x.updated_at).format('hh:mm a, DD MMM YYYY')}</td>
           <td>
-            <a className="add-alias" onClick={that._onClick.bind(that, x.query)} href="#">
+            <a className="add-alias" onClick={that._onClick.bind(that, x.search_query)} href="#">
               <i className='fa fa-plus'/>
             </a>
           </td>
@@ -75,7 +75,7 @@ var QueryList = React.createClass(_.assign(Base(QueryListStore), {
   render: function() {
     return (
       <div className='table-responsive'>
-        <table className='table table-stripped'>
+        <table className='table table-striped'>
           <thead>
             <tr>
               <th>Query</th>

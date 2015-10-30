@@ -2,10 +2,20 @@
   "name": "CPDBFlux",
   "version": "0.0.3",
   "dependencies": {
+    "bootbox": {
+      "version": "4.4.0",
+      "from": "bootbox@>=4.4.0 <5.0.0",
+      "resolved": "https://registry.npmjs.org/bootbox/-/bootbox-4.4.0.tgz"
+    },
     "bootstrap": {
       "version": "3.3.5",
       "from": "bootstrap@*",
       "resolved": "https://registry.npmjs.org/bootstrap/-/bootstrap-3.3.5.tgz"
+    },
+    "bootstrap-datepicker": {
+      "version": "1.4.1",
+      "from": "https://registry.npmjs.org/bootstrap-datepicker/-/bootstrap-datepicker-1.4.1.tgz",
+      "resolved": "https://registry.npmjs.org/bootstrap-datepicker/-/bootstrap-datepicker-1.4.1.tgz"
     },
     "chart.js": {
       "version": "1.0.2",
@@ -16,6 +26,11 @@
       "version": "2.1.3",
       "from": "classnames@",
       "resolved": "https://registry.npmjs.org/classnames/-/classnames-2.1.3.tgz"
+    },
+    "d3": {
+      "version": "3.5.6",
+      "from": "d3@*",
+      "resolved": "https://registry.npmjs.org/d3/-/d3-3.5.6.tgz"
     },
     "flux": {
       "version": "2.1.1",
@@ -63,6 +78,11 @@
         }
       }
     },
+    "ismobilejs": {
+      "version": "0.3.9",
+      "from": "ismobilejs@*",
+      "resolved": "https://registry.npmjs.org/ismobilejs/-/ismobilejs-0.3.9.tgz"
+    },
     "jquery": {
       "version": "2.1.4",
       "from": "https://registry.npmjs.org/jquery/-/jquery-2.1.4.tgz",
@@ -72,6 +92,16 @@
       "version": "1.14.0",
       "from": "jquery-validation@*",
       "resolved": "https://registry.npmjs.org/jquery-validation/-/jquery-validation-1.14.0.tgz"
+    },
+    "jquery.cookie": {
+      "version": "1.4.1",
+      "from": "jquery.cookie@*",
+      "resolved": "https://registry.npmjs.org/jquery.cookie/-/jquery.cookie-1.4.1.tgz"
+    },
+    "jquery.scrollto": {
+      "version": "2.1.2",
+      "from": "jquery.scrollto@>=2.1.2 <3.0.0",
+      "resolved": "https://registry.npmjs.org/jquery.scrollto/-/jquery.scrollto-2.1.2.tgz"
     },
     "keymirror": {
       "version": "0.1.1",
@@ -125,6 +155,11 @@
         }
       }
     },
+    "medium-editor": {
+      "version": "5.8.2",
+      "from": "medium-editor@>=5.8.2 <6.0.0",
+      "resolved": "https://registry.npmjs.org/medium-editor/-/medium-editor-5.8.2.tgz"
+    },
     "moment": {
       "version": "2.10.6",
       "from": "https://registry.npmjs.org/moment/-/moment-2.10.6.tgz",
@@ -160,6 +195,30 @@
       "from": "https://registry.npmjs.org/react-chartjs/-/react-chartjs-0.6.0.tgz",
       "resolved": "https://registry.npmjs.org/react-chartjs/-/react-chartjs-0.6.0.tgz"
     },
+    "react-date-picker": {
+      "version": "3.1.7",
+      "from": "react-date-picker@*",
+      "resolved": "https://registry.npmjs.org/react-date-picker/-/react-date-picker-3.1.7.tgz",
+      "dependencies": {
+        "object-assign": {
+          "version": "4.0.1",
+          "from": "object-assign@>=4.0.1 <5.0.0",
+          "resolved": "https://registry.npmjs.org/object-assign/-/object-assign-4.0.1.tgz"
+        }
+      }
+    },
+    "react-medium-editor": {
+      "version": "1.3.2",
+      "from": "https://registry.npmjs.org/react-medium-editor/-/react-medium-editor-1.3.2.tgz",
+      "resolved": "https://registry.npmjs.org/react-medium-editor/-/react-medium-editor-1.3.2.tgz",
+      "dependencies": {
+        "medium-editor": {
+          "version": "4.12.11",
+          "from": "https://registry.npmjs.org/medium-editor/-/medium-editor-4.12.11.tgz",
+          "resolved": "https://registry.npmjs.org/medium-editor/-/medium-editor-4.12.11.tgz"
+        }
+      }
+    },
     "react-mini-router": {
       "version": "1.1.7",
       "from": "https://registry.npmjs.org/react-mini-router/-/react-mini-router-1.1.7.tgz",
@@ -188,6 +247,18 @@
               "resolved": "https://registry.npmjs.org/xtend/-/xtend-4.0.0.tgz"
             }
           }
+        }
+      }
+    },
+    "react-select": {
+      "version": "0.6.12",
+      "from": "https://registry.npmjs.org/react-select/-/react-select-0.6.12.tgz",
+      "resolved": "https://registry.npmjs.org/react-select/-/react-select-0.6.12.tgz",
+      "dependencies": {
+        "react-input-autosize": {
+          "version": "0.5.3",
+          "from": "https://registry.npmjs.org/react-input-autosize/-/react-input-autosize-0.5.3.tgz",
+          "resolved": "https://registry.npmjs.org/react-input-autosize/-/react-input-autosize-0.5.3.tgz"
         }
       }
     },
@@ -357,6 +428,37 @@
           }
         }
       }
+    },
+    "slug": {
+      "version": "0.9.1",
+      "from": "https://registry.npmjs.org/slug/-/slug-0.9.1.tgz",
+      "resolved": "https://registry.npmjs.org/slug/-/slug-0.9.1.tgz",
+      "dependencies": {
+        "unicode": {
+          "version": "0.6.1",
+          "from": "https://registry.npmjs.org/unicode/-/unicode-0.6.1.tgz",
+          "resolved": "https://registry.npmjs.org/unicode/-/unicode-0.6.1.tgz",
+          "dependencies": {
+            "bufferstream": {
+              "version": "0.6.2",
+              "from": "https://registry.npmjs.org/bufferstream/-/bufferstream-0.6.2.tgz",
+              "resolved": "https://registry.npmjs.org/bufferstream/-/bufferstream-0.6.2.tgz",
+              "dependencies": {
+                "bufferjs": {
+                  "version": "2.0.0",
+                  "from": "https://registry.npmjs.org/bufferjs/-/bufferjs-2.0.0.tgz",
+                  "resolved": "https://registry.npmjs.org/bufferjs/-/bufferjs-2.0.0.tgz"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "slugify": {
+      "version": "0.1.1",
+      "from": "slugify@*",
+      "resolved": "https://registry.npmjs.org/slugify/-/slugify-0.1.1.tgz"
     },
     "toastr": {
       "version": "2.1.2",

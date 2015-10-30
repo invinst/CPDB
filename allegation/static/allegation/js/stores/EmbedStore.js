@@ -32,26 +32,34 @@ var EmbedStore = assign({}, EventEmitter.prototype, {
     this.on(LEAVE_EVENT, callback);
   },
 
+  removeLeaveListener: function (callback) {
+    this.removeListener(LEAVE_EVENT, callback);
+  },
+
+  removeEnterListener: function (callback) {
+    this.removeListener(ENTER_EVENT, callback);
+  },
+
   emitLeave: function () {
     this.emit(LEAVE_EVENT);
   }
 });
 
-module.exports = EmbedStore;
-
-
 // Register callback to handle all updates
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
-    case AppConstants.ENTER_EMBED_MODE:
-      EmbedStore.emitEnter();
-      break;
+  case AppConstants.ENTER_EMBED_MODE:
+    EmbedStore.emitEnter();
+    break;
 
-    case AppConstants.LEAVE_EMBED_MODE:
-      EmbedStore.emitLeave();
-      break;
+  case AppConstants.LEAVE_EMBED_MODE:
+    EmbedStore.emitLeave();
+    break;
 
-    default:
-      break;
+  default:
+    break;
   }
 });
+
+EmbedStore.setMaxListeners(0);
+module.exports = EmbedStore;

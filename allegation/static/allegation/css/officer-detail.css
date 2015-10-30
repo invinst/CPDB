@@ -139,12 +139,8 @@
     height: calc(100% - 50px);
 }
 
-#autocomplete {
-    display: none;
-}
-
 .story {
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid #cbcbcb;
     padding: 20px;
 }
 
@@ -153,14 +149,20 @@
     font-family: 'Vollkorn', serif;
 }
 
+.story .title .fa {
+    color: #67ADC5;
+    margin-left: 10px;
+}
+
 .story .date {
     font-size: 14px;
     color: #989898;
     font-family: 'Vollkorn', serif;
+    font-style: italic;
 }
 
 .story .short-description {
-    height: 3em;
+    height: 5em;
     font-family: "Source Sans Pro", sans-serif;
     font-style: 16px;
 }

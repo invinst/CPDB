@@ -1,10 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.contrib.gis.db import models
 from django.core.urlresolvers import reverse
+from django.db.models.query_utils import Q
 from django.template.defaultfilters import slugify
-
-from allegation.models.allegation_manager import AllegationManager
-
 
 from allegation.models.allegation_manager import AllegationManager
 
@@ -27,35 +25,31 @@ RANKS = [
 
 
 class Officer(models.Model):
-    officer_first = models.CharField(max_length=255, null=True, db_index=True)
-    officer_last = models.CharField(max_length=255, null=True, db_index=True)
-    gender = models.CharField(max_length=1, null=True)
-    race = models.CharField(max_length=50, null=True)
-    appt_date = models.DateField(null=True)
-    unit = models.CharField(max_length=5, null=True)
-    rank = models.CharField(max_length=5, null=True)
-    star = models.FloatField(null=True)
-    allegations_count = models.IntegerField(default=0)
-    discipline_count = models.IntegerField(default=0)
-    birth_year = models.IntegerField(default=0)
+    officer_first = models.CharField(max_length=255, null=True, db_index=True, blank=True)
+    officer_last = models.CharField(max_length=255, null=True, db_index=True, blank=True)
+    gender = models.CharField(max_length=1, null=True, blank=True)
+    race = models.CharField(max_length=50, null=True, blank=True)
+    appt_date = models.DateField(null=True, blank=True)
+    unit = models.CharField(max_length=5, null=True, blank=True)
+    rank = models.CharField(max_length=5, null=True, blank=True)
+    star = models.FloatField(null=True, blank=True)
+    allegations_count = models.IntegerField(default=0, blank=True)
+    discipline_count = models.IntegerField(default=0, blank=True)
+    birth_year = models.IntegerField(default=0, blank=True)
 
     @property
     def absolute_url(self):
         return self.get_absolute_url()
 
     def get_absolute_url(self):
-        return reverse("officer:detail",
-                       kwargs={
-                           'first_name': slugify(self.officer_first),
-                           'last_name': slugify(self.officer_last),
-                           'pk': self.pk
-                       })
+        return reverse("officer:detail") + "?pk=%d" % self.pk
 
     def __str__(self):
-        return "{first} {last}".format(
-            last=self.officer_last,
-            first=self.officer_first
-        )
+        return self.display_name
+
+    @property
+    def display_name(self):
+        return '{self.officer_first} {self.officer_last}'.format(self=self)
 
     @property
     def tag_value(self):
@@ -156,7 +150,9 @@ OUTCOMES = [
     ['700', 'Reinstated by Court Action'],
     ['800', 'Resigned'],
     ['900', 'Penalty Not Served'],
+    [None, 'Unknown'],
 ]
+OUTCOMES_DICT = dict(OUTCOMES)
 
 UNITS = [
     ['001', 'District 1 - Central'],
@@ -313,13 +309,51 @@ FINDINGS = [
     ['NA', 'No Affidavit'],
     ['DS', 'Discharged']
 ]
+FINDINGS_DICT = dict(FINDINGS)
 
 
-OUTCOME_TEXT = [
-    ['any discipline', 'Any discipline'],
-    ['no discipline', 'No discipline'],
-]
-OUTCOME_TEXT_DICT = dict(OUTCOME_TEXT)
+OUTCOME_TEXT_DICT = {
+    'any discipline': {
+        'text': 'Any discipline',
+        'condition': {
+            'final_finding':['SU'],
+            'final_outcome': DISCIPLINE_CODES,
+        }
+    },
+    'no discipline': {
+        'text': 'No discipline',
+        'condition': {
+            'final_finding': ['SU'],
+            'final_outcome': NO_DISCIPLINE_CODES,
+        }
+    },
+    '1-9 days': {
+        'text': '1-9 days',
+        'condition': {
+            'final_outcome': [str(x).zfill(3) for x in range(1, 10)],
+        }
+    },
+    '10-30 days':{
+        'text': '10-30 day',
+        'condition': {
+            'final_outcome': [str(x).zfill(3) for x in range(10, 31)],
+        }
+    },    
+}
+
+FINAL_FINDING_TEXT_DICT = {
+    'unsustained': {
+        'text': 'Unsustained',
+        'condition': {
+            'final_finding': ['DS', 'EX', 'NA', 'NC', 'NS', 'UN']
+        }
+    }
+}
+
+CUSTOM_FILTER_DICT = {
+    'final_finding_text' :  FINAL_FINDING_TEXT_DICT,
+    'outcome_text': OUTCOME_TEXT_DICT,
+}
 
 
 class Allegation(models.Model):
@@ -345,13 +379,14 @@ class Allegation(models.Model):
     investigator_name = models.CharField(max_length=255, null=True, db_index=True)
     investigator = models.ForeignKey('common.Investigator', null=True)
     point = models.PointField(srid=4326, null=True, blank=True)
-    objects = models.GeoManager()
-    allegations = AllegationManager()
+    objects = AllegationManager()
 
     document_id = models.IntegerField(null=True)
     document_normalized_title = models.CharField(max_length=255, null=True)
     document_title = models.CharField(max_length=255, null=True)
     document_requested = models.BooleanField(default=False)
+    document_pending = models.BooleanField(default=False)
+    number_of_request = models.IntegerField(default=0)
 
     @property
     def beat(self):

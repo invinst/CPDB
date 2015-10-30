@@ -4,7 +4,7 @@ var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 
 
-//TODO: How to deal with duplication in OfficerPage components and HomePage components?
+//TODO: How to deal with duplication in OfficerPage components and DataToolPage components?
 var _state = {
   'activeOfficers': []
 };
@@ -29,7 +29,7 @@ var RelatedOfficersStore = assign({}, EventEmitter.prototype, {
 
 RelatedOfficersStore.dispatchEvents = AppDispatcher.register(function(action) {
   switch (action.actionType) {
-  case AppConstants.SET_ACTIVE_OFFICER:
+  case AppConstants.SET_ACTIVE_OFFICER_IN_OFFICER_PAGE:
     var index = _state.activeOfficers.indexOf(action.officer.id);
 
     if (index == -1) {
@@ -41,7 +41,10 @@ RelatedOfficersStore.dispatchEvents = AppDispatcher.register(function(action) {
     }
     RelatedOfficersStore.emitChange();
     break;
-
+  case AppConstants.OFFICER_COMPLAINT_LIST_RECEIVED_DATA:
+    _state['activeOfficers'] = [];
+    RelatedOfficersStore.emitChange();
+    break;
   default:
       break;
   }

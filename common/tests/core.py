@@ -2,6 +2,7 @@ import json
 import os
 import threading
 import time
+from unittest import skipIf, skipUnless
 
 from bs4 import BeautifulSoup
 from django.core import management
@@ -11,6 +12,8 @@ from selenium.common.exceptions import NoSuchElementException, WebDriverExceptio
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.select import Select
+from selenium import webdriver
+
 from common.factories import UserFactory
 
 
@@ -33,12 +36,15 @@ def has_class(self, value):
 WebElement.has_class = has_class
 
 
-class TimeoutException(Exception):
+class TimeoutException(AssertionError):
     pass
 
 
 world = threading.local()
 world.browser = None
+
+
+IS_MOBILE = os.environ.get('MOBILE') == '1'
 
 
 class UserTestBaseMixin(object):
@@ -74,9 +80,16 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     @property
     def browser(self):
         if world.browser is None:
-            world.browser = WebDriver()
+            profile = None
+            if IS_MOBILE:
+                profile = webdriver.FirefoxProfile()
+                profile.set_preference(
+                    "general.useragent.override", 
+                    "Mozilla/5.0 (iPad; CPU OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53"
+                )
+            world.browser = WebDriver(profile)
             world.browser.implicitly_wait(10)
-            world.browser.set_window_size(width=1200, height=800)
+            world.browser.set_window_size(width=1200, height=1200)
         return world.browser
 
     @classmethod
@@ -96,9 +109,18 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     def should_see_text(self, text):
         if not isinstance(text, str):
             text = str(text)
-        self.assertIn(text, self.find('body').text)
+        self.find('body').text.should.contain(text)
+
+    def should_see_texts(self, texts):
+        body = self.find('body').text
+        for text in texts:
+            if not isinstance(text, str):
+                text = str(text)
+            body.should.contain(text)
 
     def should_not_see_text(self, text):
+        if not isinstance(text, str):
+            text = str(text)
         self.assertNotIn(text, self.find('body').text)
 
     def login(self, user):
@@ -187,7 +209,7 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
             time.sleep(interval)
             if time.time() > end_time:
                 break
-        raise TimeoutException(message)
+        raise TimeoutException(message) from error
 
     def is_displayed_in_viewport(self, element):
         """
@@ -206,7 +228,15 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     def ajax_complete(self):
         return 0 == self.browser.execute_script("return jQuery.active")
 
+    def until_ajax_complete(self):
+        self.until(self.ajax_complete)
 
+@skipUnless(IS_MOBILE, "Skip in desktop mode")
+class BaseMobileLiveTestCase(BaseLiveTestCase):
+    pass
+
+
+@skipIf(IS_MOBILE, "Skip in mobile mode")
 class SimpleTestCase(DjangoSimpleTestCase, UserTestBaseMixin):
     response = None
     _soup = None

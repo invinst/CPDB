@@ -14,6 +14,7 @@ var EventEmitter = require('events').EventEmitter;
 var AppConstants = require('../constants/AppConstants');
 var assign = require('object-assign');
 var FilterStore = require('./FilterStore');
+
 var CHANGE_EVENT = 'change';
 var SUMMARY_CHANGE = 'summary-change';
 var firstCall = true;
@@ -27,12 +28,15 @@ var OfficerListStore = assign({}, EventEmitter.prototype, {
   getSession: function () {
     return {'active_officers': _.clone(_state['active_officers'])};
   },
+
   setSession: function (data) {
     this.set('active_officers', data.active_officers || []);
   },
+
   getActiveOfficers: function() {
     return _state.active_officers;
   },
+
   getQueryString: function () {
     var queryString = FilterStore.getQueryString();
     for (var i = 0; i < _state['active_officers'].length; i++) {
@@ -40,6 +44,7 @@ var OfficerListStore = assign({}, EventEmitter.prototype, {
     }
     return queryString;
   },
+
   update: function (query) {
     if (ajax) {
       ajax.abort();
@@ -54,26 +59,37 @@ var OfficerListStore = assign({}, EventEmitter.prototype, {
       OfficerListStore.emitChange();
     });
   },
+
   set: function (key, value) {
     _state[key] = value;
     this.emitChange();
   },
+
   init: function () {
     this.update();
     return _.clone(_state);
   },
+
   getAll: function () {
     return _.clone(_state);
   },
+
   emitChange: function () {
     this.emit(CHANGE_EVENT);
   },
+
   emitSummaryChange: function () {
     this.emit(SUMMARY_CHANGE);
   },
+
   addChangeListener: function (callback) {
     this.on(CHANGE_EVENT, callback);
   },
+
+  removeChangeListener: function(callback) {
+    this.removeListener(CHANGE_EVENT, callback);
+  },
+
   addSummaryListener: function (callback) {
     this.on(SUMMARY_CHANGE, callback);
   }
@@ -87,6 +103,8 @@ OfficerListStore.dispatchEvent = AppDispatcher.register(function (action) {
     case AppConstants.MAP_REPLACE_FILTERS:
     case AppConstants.MAP_CHANGE_FILTER:
     case AppConstants.MAP_ADD_FILTER:
+    case AppConstants.ADD_TAG:
+    case AppConstants.REMOVE_TAG:
       if (!firstCall) {
         OfficerListStore.set('active_officers', []);
       }
@@ -108,7 +126,6 @@ OfficerListStore.dispatchEvent = AppDispatcher.register(function (action) {
       var index = _state.active_officers.indexOf(action.officer.id);
       if (index == -1) {
         _state.active_officers.push(action.officer.id);
-
       }
       else {
         _state.active_officers.splice(index, 1);
@@ -116,8 +133,18 @@ OfficerListStore.dispatchEvent = AppDispatcher.register(function (action) {
       OfficerListStore.emitChange();
       break;
 
+    case AppConstants.RECEIVED_SESSION_DATA:
+      var data = action.data.data;
+      _state['active_officers'] = data['query']['active_officers'] || [];
+      OfficerListStore.emitChange();
+      break;
+
     default:
       break;
+  }
+  if (firstCall){
+    OfficerListStore.update();
+    firstCall = false;
   }
 });
 

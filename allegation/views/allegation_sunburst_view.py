@@ -23,7 +23,7 @@ class AllegationSunburstView(AllegationAPIView):
             results = objects.filter(level['condition'])
             obj = {
                 'name': level['name'],
-                'tagValue': level.get('tagValue'),
+                'tagValue': level['tagValue'],
                 'size': results.count(),
             }
             if obj['size'] and 'children' in level:
@@ -36,6 +36,11 @@ class AllegationSunburstView(AllegationAPIView):
     levels = [{
         'name': 'Unsustained',
         'condition': ~Q(final_finding='SU'),
+        'tagValue': {
+            'label': 'Unsustained',
+            'category': 'final_finding_text',
+            'value': 'unsustained'
+        },
         'children': [{
             'condition': Q(final_finding='DS'),
             'name': 'Discharged',
@@ -43,6 +48,7 @@ class AllegationSunburstView(AllegationAPIView):
                 'label': 'Discharged',
                 'category': 'final_finding',
                 'value': 'DS',
+                'removeParent': True
             },
         }, {
             'condition': Q(final_finding='EX'),
@@ -51,6 +57,7 @@ class AllegationSunburstView(AllegationAPIView):
                 'label': 'Exonerated',
                 'category': 'final_finding',
                 'value': 'EX',
+                'removeParent': True
             },
         }, {
             'condition': Q(final_finding='NA'),
@@ -59,6 +66,7 @@ class AllegationSunburstView(AllegationAPIView):
                 'label': 'No Affidavit',
                 'category': 'final_finding',
                 'value': 'NA',
+                'removeParent': True
             },
         }, {
             'condition': Q(final_finding='NC'),
@@ -67,6 +75,7 @@ class AllegationSunburstView(AllegationAPIView):
                 'label': 'No Cooperation',
                 'category': 'final_finding',
                 'value': 'NC',
+                'removeParent': True
             },
         }, {
             'condition': Q(final_finding='NS'),
@@ -75,6 +84,7 @@ class AllegationSunburstView(AllegationAPIView):
                 'label': 'Not Sustained',
                 'category': 'final_finding',
                 'value': 'NS',
+                'removeParent': True
             },
         }, {
             'condition': Q(final_finding='UN'),
@@ -83,6 +93,7 @@ class AllegationSunburstView(AllegationAPIView):
                 'label': 'Unfounded',
                 'category': 'final_finding',
                 'value': 'UN',
+                'removeParent': True
             },
         }]
     }, {
@@ -108,13 +119,26 @@ class AllegationSunburstView(AllegationAPIView):
                     'label': 'Reprimand',
                     'category': 'final_outcome',
                     'value': '100',
+                    'removeParent': True
                 },
             }, {
                 'condition': Q(final_outcome__in=[str(x).zfill(3) for x in range(1, 10)]),  # 001 to 009
                 'name': '1-9 days',
+                'tagValue': {
+                    'label': '1-9 days',
+                    'category': 'outcome_text',
+                    'value': '1-9 days',
+                    'removeParent': True                
+                }
             }, {
                 'condition': Q(final_outcome__in=[str(x).zfill(3) for x in range(10, 31)]),  # 010 to 031
                 'name': '10-30 days',
+                'tagValue': {
+                    'label': '10-30 days',
+                    'category': 'outcome_text',
+                    'value': '10-30 days',
+                    'removeParent': True                
+                }
             }, {
                 'condition': Q(final_outcome='200'),
                 'name': '30+ days',
@@ -122,6 +146,7 @@ class AllegationSunburstView(AllegationAPIView):
                     'label': '30+ days',
                     'category': 'final_outcome',
                     'value': '200',
+                    'removeParent': True
                 },
             }, {
                 'condition': Q(final_outcome='300'),
@@ -130,6 +155,7 @@ class AllegationSunburstView(AllegationAPIView):
                     'label': 'Termination',
                     'category': 'final_outcome',
                     'value': '300',
+                    'removeParent': True
                 },
             }, {
                 'condition': Q(final_outcome='400'),
@@ -138,6 +164,7 @@ class AllegationSunburstView(AllegationAPIView):
                     'label': 'Separation',
                     'category': 'final_outcome',
                     'value': '400',
+                    'removeParent': True
                 },
             }]
         }, {
@@ -155,6 +182,7 @@ class AllegationSunburstView(AllegationAPIView):
                     'label': 'Unknown',
                     'category': 'final_outcome',
                     'value': None,
+                    'removeParent': True
                 },
             }, {
                 'condition': Q(final_outcome='000'),
@@ -163,6 +191,7 @@ class AllegationSunburstView(AllegationAPIView):
                     'label': 'Noted',
                     'category': 'final_outcome',
                     'value': '000',
+                    'removeParent': True
                 },
 
             }, {
@@ -172,6 +201,7 @@ class AllegationSunburstView(AllegationAPIView):
                     'label': 'Reinstated by Police Board',
                     'category': 'final_outcome',
                     'value': '500',
+                    'removeParent': True
                 },
 
             }, {
@@ -181,6 +211,7 @@ class AllegationSunburstView(AllegationAPIView):
                     'label': 'No action taken',
                     'category': 'final_outcome',
                     'value': '600',
+                    'removeParent': True
                 },
 
             }, {
@@ -190,6 +221,7 @@ class AllegationSunburstView(AllegationAPIView):
                     'label': 'Reinstated by Court Action',
                     'category': 'final_outcome',
                     'value': '700',
+                    'removeParent': True
                 },
 
             }, {
@@ -199,6 +231,7 @@ class AllegationSunburstView(AllegationAPIView):
                     'label': 'ot served (resigned)',
                     'category': 'final_outcome',
                     'value': '800',
+                    'removeParent': True
                 },
 
             }, {
@@ -208,6 +241,7 @@ class AllegationSunburstView(AllegationAPIView):
                     'label': 'Not served (inactive)',
                     'category': 'final_outcome',
                     'value': '900',
+                    'removeParent': True
                 },
 
             }]

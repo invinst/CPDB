@@ -14,13 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
 """
 from django.conf import settings
-from django.conf.urls import include, url
+from django.conf.urls import include, url, patterns
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 from allegation.views import AllegationListView
+from allegation.views.session_view import InitSession
 from dashboard.views.admin_analysis_dashboard_view import AdminAnalysisDashboardView
 
 urlpatterns = [
@@ -34,6 +35,7 @@ urlpatterns = [
     url(r'^$', ensure_csrf_cookie(AllegationListView.as_view()), name='homepage'),
     url(r'^embed/', include('embed.urls', namespace='embed')),
     url(r'^api/', include('api.urls')),
+    url(r'^init/', InitSession.as_view(), name='init'),
     url(r'^', include('dashboard.urls')),
     url(r'^(?P<hash_id>[\w-]+)/$', ensure_csrf_cookie(AllegationListView.as_view()), name='homepage-share'),
     url(r'^(?P<hash_id>[\w-]+)/(?P<slugified_url>[\w-]+)$', ensure_csrf_cookie(AllegationListView.as_view()), name='homepage-share'),
@@ -41,3 +43,10 @@ urlpatterns = [
 
 
 handler404 = 'common.views.handler404'
+
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += patterns('',
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    )

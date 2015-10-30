@@ -2,15 +2,16 @@ from collections import OrderedDict
 
 from django.db.models.query_utils import Q
 
+from allegation.utils.query import OfficerQuery
 from common.models import AllegationCategory, Allegation, Area, Investigator, Officer, FINDINGS, OUTCOMES, UNITS, GENDER, \
-    RACES, OUTCOME_TEXT, RANKS
+    RACES, OUTCOME_TEXT_DICT, RANKS
 from search.models.alias import Alias
 from search.utils.date import *
 from search.utils.zip_code import *
 
 
 AREA_SORT_ORDERS = { 'police-beats': 0, 'neighborhoods': 1, 'ward': 2, 'police-districts': 3, 'school-grounds': 5 }
-
+DATA_SOURCES = ['FOIA', 'pre-FOIA']
 # TODO: More test for this one, especially test for ensure the order, returned format
 class Suggestion(object):
     def make_suggestion_format(self, match):
@@ -90,7 +91,7 @@ class Suggestion(object):
         if q.count('/') != 0:
             return None
 
-        return [x for x in range(2010, current_year()) if str(x).startswith(q)]
+        return [x for x in range(START_SEARCHABLE_YEAR, current_year() + 1) if str(x).startswith(q)]
 
     def suggest_incident_date_only_year_month(self, q):
         if q.count('/') == 1:
@@ -99,6 +100,15 @@ class Suggestion(object):
                 months = ["%02d" % x for x in range(1, 13)]
 
                 return ["%s/%s" % (year, x) for x in months if x.startswith(month)]
+
+    def suggest_in_custom(self, q, data):
+        results = []
+        for entry in data:
+            text = data[entry]['text']
+            if text.lower().startswith(q):
+                results.append([text, entry])
+
+        return results
 
     def suggest_in(self, q, data):
         results = []
@@ -110,13 +120,7 @@ class Suggestion(object):
 
     def suggest_office_name(self, q):
         # suggestion for officer name
-        parts = q.split(' ')
-        if len(parts) > 1:
-            condition = Q(officer_first__istartswith=parts[0]) | Q(Q(officer_last__istartswith=" ".join(parts[1:])) | \
-                                                                                         Q(officer_last__istartswith=q))
-        else:
-            condition = Q(officer_first__icontains=q) | Q(officer_last__icontains=q)
-
+        condition = OfficerQuery.condition_by_name(q)
         results = self.query_suggestions(Officer, condition, ['officer_first', 'officer_last', 'allegations_count', 'id'],
                                          order_bys=('-allegations_count', 'officer_first', 'officer_last'))
         results = [["%s %s (%s)" % (x[0], x[1], x[2]), x[3] ] for x in results]
@@ -145,6 +149,11 @@ class Suggestion(object):
         results.sort(key=lambda x: AREA_SORT_ORDERS.get(x[2], 4))
 
         return results[:5]
+
+    def suggest_data_source(self, q):
+        if q.startswith('pre') or q.startswith('foi'):
+            return DATA_SOURCES
+        return []
 
     def query_suggestions(self, model_cls, cond, fields_to_get, limit=5, order_bys=None):
         flat = True if len(fields_to_get) == 1 else False
@@ -185,27 +194,31 @@ class Suggestion(object):
 
         ret['officer__rank'] = self.suggest_in(q, RANKS)
 
-        ret['outcome_text'] = self.suggest_in(q, OUTCOME_TEXT)
+        ret['outcome_text'] = self.suggest_in_custom(q, OUTCOME_TEXT_DICT)
+
+        ret['data_source'] = self.suggest_data_source(q)
 
         ret = OrderedDict((k, v) for k, v in ret.items() if v)
         return ret
 
     def make_suggestion(self, q):
-        ret = self._make_suggestion(q)
-
         aliases = Alias.objects.filter(alias__istartswith=q)[0:10]
+
+        ret = OrderedDict()
         for alias in aliases:
-            alias_suggest = self._make_suggestion(alias.target)
+            ret = self._make_suggestion(alias.target)
 
             if not alias.num_suggestions:
-                alias.num_suggestions = sum([len(v) for k, v in alias_suggest.items()])
+                alias.num_suggestions = sum([len(v) for k, v in ret.items()])
             alias.num_usage += 1
             alias.save()
 
-            for key in alias_suggest:
-                if key in ret:
-                    ret[key] = ret[key] + alias_suggest[key]
-                else:
-                    ret[key] = alias_suggest[key]
+        ret_append = self._make_suggestion(q)
+
+        for key in ret_append:
+            if key in ret:
+                ret[key] = ret[key] + ret_append[key]
+            else:
+                ret[key] = ret_append[key]
 
         return ret

@@ -34,6 +34,7 @@ $blue: blue
 $wild_sand: #f4f4f4
 $color_nobel_approx: #b2b2b2
 $black_70: rgba(0, 0, 0, .7)
+$color_deep_celurean_approx: #0279AE
 
 //fonts
 $font_0: Source Sans Pro
@@ -233,9 +234,11 @@ footer
   .count
     color: $color_ship_cove_approx
     @extend .extend_4
+    font-weight: 300
 
   .total
     color: $color_cadet_blue_approx
+    font-weight: 300
 
   #summary.selected
     margin-left: 0
@@ -266,6 +269,7 @@ footer
       color: $white
       .category-name
         color: $white
+        font-weight: 300
 
   .child-rows
     max-height: 480px
@@ -304,7 +308,7 @@ footer
   .category-name
     color: $color_deep_cerulean_approx
     font-size: 14px
-    font-weight: 400
+    font-weight: 300
     &:hover
       text-decoration: none
 
@@ -534,6 +538,7 @@ footer
   &:hover
     //If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
     box-shadow: 7px 7px 7px $color_celeste_approx
+    cursor: pointer
 
   &.selected
     a.officer-link
@@ -647,7 +652,7 @@ footer
 
 .complaint-row
   padding: 5px 0 0
-  border-bottom: 1px solid black
+  border-bottom: 1px solid $color_celeste_approx
   font-family: $font_2
   clear: both
   &.disciplined
@@ -794,7 +799,7 @@ footer
 
 @media screen and (max-width: 1024px)
   .btn.btn-request:not(.btn-link):not(.btn-flat)
-    width: 100%
+    width: 90%
     max-width: 100%
 
 #filter-row
@@ -1113,6 +1118,7 @@ footer
         border-radius: 0 !important
         background-color: $seashell !important
         color: $color_deep_cerulean_approx !important
+        font-weight: 400
 
 #sunburst-legend
   color: $color_mine_shaft_approx
@@ -1305,3 +1311,25 @@ form.navbar-form.navbar-right
   color: $white
   &:hover
     background-color: $color_pacific_blue_approx
+
+.disclaimer-btn
+  color: $white !important
+  border: solid 1px $white
+  text-transform: none !important
+
+.stick-footer-bottom
+  padding-bottom: 173px
+  .sticky-footer
+    width: 100%
+    position: fixed
+    bottom: 0
+
+.tag
+  .pin
+    cursor: pointer
+    margin-left: 5px
+
+@import 'shared'
+@import 'officer-profile'
+@import 'mobile'
+@import 'data_tool_page'

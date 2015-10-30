@@ -33,7 +33,7 @@ body
     @media(max-width: 767px)
       height: 71px
       margin-bottom: 1px
-
+f
   .welcome
     padding-top: 18px
 
@@ -44,7 +44,17 @@ body
       font-size: 30px
       color: $title-text-color
 
+label
+  &.error
+    color: red
+
+.pointer
+  cursor: pointer
+
 @import 'bootstrap_override'
 @import 'navigation'
 @import 'overview_section'
 @import 'search_section'
+@import 'officer_section'
+@import 'document_section'
+@import 'session_section'

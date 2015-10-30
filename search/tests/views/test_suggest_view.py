@@ -31,6 +31,9 @@ class SuggestViewTestCase(SimpleTestCase):
         data = self.get_suggestion('genie')
         data.shouldnt.contain('officer')
 
+        data = self.get_suggestion('je e')
+        data.shouldnt.contain('officer')
+
     def test_detect_suggest_type_officer_badge_number(self):
         OfficerFactory(star=123456)
 

@@ -28,6 +28,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.gis',
+    'django.contrib.sites',
 
     'django_extensions',
     'djangobower',
@@ -36,6 +37,7 @@ INSTALLED_APPS = (
     'rest_framework',
     'jsonify',
     'django_nose',
+    'django_user_agents',
 
     'common',
     'allegation',
@@ -47,6 +49,7 @@ INSTALLED_APPS = (
     'share',
     'embed',
     'dashboard',
+    'api',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -55,6 +58,7 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+    'django_user_agents.middleware.UserAgentMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
@@ -144,7 +148,7 @@ BOWER_INSTALLED_APPS = (
     'jquery-ui#1.11.3',
     'datatables-scroller#1.2.2',
     'datatables#1.10.7',
-    'bootstrap#3.3.2',
+    'bootstrap#3.3.5',
     'bootstrap-tagsinput#0.4.2',
     'jquery.cookie#1.4.1',
     'c3',
@@ -210,3 +214,5 @@ REST_FRAMEWORK = {
 }
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+
+SITE_ID = 1

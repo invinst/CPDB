@@ -20,7 +20,8 @@ AUTOCOMPLETE_CATEGORY_NAMES = {
   'complainant_gender': 'Complainant Gender',
   'complainant_race': 'Complainant Race',
   'outcome_text': 'Outcome',
-  'city': 'Zip Code'
+  'city': 'Zip Code',
+  'data_source': 'Data Source'
 };
 
 AUTOCOMPLETE_DISPLAY_CATEGORY_IN_TAG = [
@@ -85,7 +86,7 @@ function tagLabel(category, label){
   return AUTOCOMPLETE_CATEGORY_NAMES[category] + ': ' + label;
 }
 
-function cpdbAutocomplete($input) {
+function cpdbAutocomplete($input, onSelect) {
   $($input).catcomplete({
     autoFocus: true,
     source: function (request, response) {
@@ -105,14 +106,6 @@ function cpdbAutocomplete($input) {
         }
       });
     },
-    select: function (event, ui) {
-      $('#cpdb-search').tagsinput("add", {
-        text: tagLabel(ui.item.category, ui.item.label),
-        value: [ui.item.category, ui.item.value]
-      });
-      $($input).val('');
-    }
+    select: onSelect
   });
 }
-
-cpdbAutocomplete($("#autocomplete"));

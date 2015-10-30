@@ -1,6 +1,8 @@
 from allegation.factories import AllegationFactory, OfficerFactory, PoliceWitnessFactory
+from allegation.tests.constants import TEST_DOCUMENT_URL
 from common.models import UNITS
 from common.tests.core import BaseLiveTestCase
+from officer.factories import StoryFactory
 
 
 class OfficerDetailPageTestCase(BaseLiveTestCase):
@@ -28,11 +30,16 @@ class OfficerDetailPageTestCase(BaseLiveTestCase):
         unit_name = units[self.unit]
         self.go_to_officer_detail_page(self.officer)
         self.until(self.ajax_complete)
-        self.should_see_text(self.unit)
-        self.should_see_text(unit_name)
-        self.should_see_text(self.star)
-        self.should_see_text('Sergeant')
-        self.should_see_text('Male')
+
+        self.until(lambda: self.should_see_text(self.unit))
+
+        content = self.find("body").text
+        content.should.contain(unit_name)
+        content.should.contain(self.star)
+        content.should.contain('Sergeant')
+        content.should.contain('Male')
+
+        self.browser.title.should.equal(self.officer.display_name)
 
     def test_filter_by_intersected_officer(self):
         self.go_to_officer_detail_page(self.officer)
@@ -54,8 +61,22 @@ class OfficerDetailPageTestCase(BaseLiveTestCase):
 
         self.number_of_complaints().should.equal(2)
 
+    def test_display_stories(self):
+        story = StoryFactory(officer=self.officer, url=TEST_DOCUMENT_URL)
+        created_date = story.created_date.strftime('%Y-%m-%d %H:%M:%S')
+
+        self.go_to_officer_detail_page(self.officer)
+        
+        self.until(lambda: self.should_see_text('News stories'))
+        self.should_see_texts([
+            story.title,
+            story.short_description,
+        ])
+        self.find('.document-url').get_attribute('href').should.equal(TEST_DOCUMENT_URL)
+        self.find('.document-thumbnail').should.be.ok
+
     def go_to_officer_detail_page(self, officer):
-        self.visit('/')
+        self.visit('/#!/data-tools')
         self.find('#officer_%s .officer-link' % officer.id).click()
 
     def number_of_complaints(self):

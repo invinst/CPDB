@@ -48,7 +48,7 @@ pytz==2015.4
 PyYAML==3.11
 redis==2.10.3
 requests==2.7.0
-selenium==2.45.0
+selenium==2.48.0
 simplejson==3.7.3
 six==1.9.0
 slimit==0.8.1
@@ -61,4 +61,5 @@ unittest2==1.0.1
 wheel==0.24.0
 whitenoise==1.0.6
 XlsxWriter==0.7.3
-xvfbwrapper==0.2.4
+django-user-agents==0.3.0
+ua-parser==0.4.1

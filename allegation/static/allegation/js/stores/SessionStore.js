@@ -1,48 +1,74 @@
-/*
- * Copyright (c) 2014, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * MapStore
- */
+var _ = require('lodash');
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
-var EventEmitter = require('events').EventEmitter;
 var AppConstants = require('../constants/AppConstants');
-var assign = require('object-assign');
+var Base = require('stores/Base');
+var FilterStore = require('../stores/FilterStore');
 var MapStore = require('../stores/MapStore');
 var OfficerListStore = require('../stores/OfficerListStore');
-var FilterStore = require('../stores/FilterStore')
+var OfficerPresenter = require('presenters/OfficerPresenter');
 
-var _sessionData = {};
+var _state = {
+  'data': {
+    'new': true,
+    'title': '',
+    'hash': '',
+    'query': {},
+    'readable_query': {}
+  },
+  'siteTitle': AppConstants.DEFAULT_SITE_TITLE
+};
 
-var SessionStore = assign({}, EventEmitter.prototype, {
-  saveSession: function (sessionData) {
-    if (!SAVE_STATE) {
+var SessionStore = _.assign(Base(_state), {
+  updateSession: function(data) {
+    _state['data'] =_.assign(_state['data'], data);
+    this.emitChange();
+  },
+
+  getHash: function() {
+    return _state['data']['hash'];
+  },
+
+  removeTagInCategory: function (category) {
+    if (!_state.data.readable_query[category]) {
       return;
     }
-
-    var tempSessionData = sessionData || {};
-    $.extend(tempSessionData, FilterStore.getSession());
-    $.extend(tempSessionData, MapStore.getSession());
-    $.extend(tempSessionData, OfficerListStore.getSession());
-
-    if (! _.isEqual(tempSessionData, _sessionData)) {
-      _sessionData = _.clone(tempSessionData);
+    var filters = _state.data.readable_query[category];
+    var newValue = [];
+    for (var i in filters) {
+      if (FilterStore.isPinned(category, filters[i].value)) {
+        newValue.push(filters[i]);
+      }
     }
-    $.ajax({
-      url: HOME_URL,
-      data: JSON.stringify(_sessionData),
-      success: function (returnData) {
-      },
-      contentType: "application/json; charset=utf-8",
-      dataType: 'json',
-      type: 'POST',
-      weight: 0.1
-    });
+    _state.data.readable_query[category] = newValue;
+  },
+
+  addTag: function (category, filter) {
+    this.removeTagInCategory(category);
+
+    var filterObject = {
+      'text': filter.label,
+      'value': filter.value
+    }
+
+    var tags = _state.data.readable_query[category]
+    if (tags) {
+      tags.push(filterObject);
+    } else {
+      _state.data.readable_query[category] = [filterObject];
+    }
+  },
+
+  removeTag: function (category, filter) {
+    var tags = _state.data.readable_query[category]
+    if (tags) {
+      for (i in tags) {
+        if (tags[i].value == filter.value) {
+          tags.splice(i, 1);
+          break;
+        }
+      }
+    }
   }
 });
 
@@ -50,9 +76,42 @@ var SessionStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.SAVE_SESSION:
-      SessionStore.saveSession();
+    // SessionStore.updateSession(action.data);
+    SessionStore.emitChange();
       break;
 
+  case AppConstants.RECEIVED_SESSION_DATA:
+    var data = action.data.data;
+    data['title'] = data['title'] || AppConstants.DEFAULT_SITE_TITLE;
+    _state['data'] = data;
+    _state.siteTitle = data.title;
+    SessionStore.emitChange();
+    break;
+
+    case AppConstants.UPDATE_TITLE:
+      var title = action.title;
+      _state['data']['title'] = title;
+      _state.siteTitle = title;
+      SessionStore.emitChange();
+      break;
+
+    case AppConstants.RECEIVED_UPDATED_SESSION_DATA:
+      _state['data'] = action.data.data;
+      _state.siteTitle = _state['data'].title;
+      SessionStore.emitChange();
+      break;
+
+    case AppConstants.ADD_TAG:
+      SessionStore.addTag(action.category, action.filter);
+      SessionStore.emitChange();
+      break;
+
+    case AppConstants.REMOVE_TAG:
+      SessionStore.removeTag(action.category, action.filter);
+      SessionStore.emitChange();
+      break;
+
+    default: break;
   }
 });
 

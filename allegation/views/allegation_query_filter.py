@@ -1,5 +1,11 @@
+from collections import defaultdict
+
 from django.db.models.query_utils import Q
-from common.models import AllegationCategory, DISCIPLINE_CODES, NO_DISCIPLINE_CODES, Area
+
+
+from common.constants import FOIA_START_DATE
+from common.models import AllegationCategory, Area
+from common.models import DISCIPLINE_CODES, NO_DISCIPLINE_CODES, CUSTOM_FILTER_DICT
 
 FILTERS = [
     'id',
@@ -20,9 +26,10 @@ FILTERS = [
     'officer__race',
     'investigator',
     'cat__category',
-    'city'
+    'city',
 ]
 DATE_FILTERS = ['incident_date_only']
+DATA_SOURCE_FILTERS = ['data_source']
 
 
 # FIXME: Add more test for this one
@@ -31,26 +38,38 @@ class AllegationQueryFilter(object):
         self.query_dict = query_dict
         self.ignore_filters = ignore_filters or []
         self.raw_filters = []
-        self.filters = {}
+        self.custom_filters = []
+        self.filters = defaultdict(list)
         self.conditions = []
 
     def add_filter(self, field):
         value = self.query_dict.getlist(field, [])
-        if field == 'final_outcome':
-            text = self.query_dict.get('outcome_text')
-            if text:
-                added_value = DISCIPLINE_CODES if text == 'any discipline' else NO_DISCIPLINE_CODES
-                value += added_value
-        if field == 'final_finding':
-            text = self.query_dict.get('outcome_text')
-            if text:
-                value += ['SU']  # sustained
+        if value:
+            value = [None if v == 'null' else v for v in value]
+            self.filters[field] += value
 
-        if len(value) > 1:
-            self.filters["%s__in" % field] = value
+    def add_custom_filter(self, field):
+        values = self.query_dict.getlist(field, [])
+        if not values:
+            return
 
-        elif value:
-            self.filters[field] = value[0]
+        for value in values:
+            condition = CUSTOM_FILTER_DICT[field][value]['condition']
+            if not condition:
+                return
+            for field in condition:
+                self.filters[field] += condition[field]
+
+    def add_data_source_filter(self, field):
+        data_source = self.query_dict.getlist(field, [])
+
+        if len(data_source) == 2:
+            return
+
+        if 'pre-FOIA' in data_source:
+            self.conditions.append(Q(incident_date__lt=FOIA_START_DATE))
+        elif 'FOIA' in data_source:
+            self.conditions.append(Q(incident_date__gte=FOIA_START_DATE))
 
     def add_date_filter(self, field):
         condition = Q()
@@ -86,6 +105,7 @@ class AllegationQueryFilter(object):
 
     def available_filters(self):
         self.raw_filters = [x for x in FILTERS if x not in self.ignore_filters]
+        self.custom_filters = [x for x in CUSTOM_FILTER_DICT if x not in self.ignore_filters]
         return self
 
     def allegation_filters(self):
@@ -94,15 +114,35 @@ class AllegationQueryFilter(object):
         for filter_field in self.raw_filters:
             self.add_filter(filter_field)
 
+        for field in self.custom_filters:
+            self.add_custom_filter(field)
+
         for date_filter in DATE_FILTERS:
             self.add_date_filter(date_filter)
 
-        return self.conditions, self.filters
+        for data_source_filter in DATA_SOURCE_FILTERS:
+            self.add_data_source_filter(data_source_filter)
+
+        self.build_conditions()
+
+        return self.conditions
+
+    def build_conditions(self):
+        for a_filter in self.filters:
+            condition = Q()
+
+            for value in self.filters[a_filter]:
+                if value is None:
+                    condition = condition | Q(**{'{field}__isnull'.format(field=a_filter): True})
+                else:
+                    condition = condition | Q(**{'{field}'.format(field=a_filter): value})
+
+            self.conditions.append(condition)
 
     def prepare_categories_filter(self):
         # Merge cat and cat_category
-        if all(x in self.raw_filters for x in ['cat', 'cat_category']):
-            if all(x in self.query_dict for x in ['cat', 'cat_category']):
+        if all(x in self.raw_filters for x in ['cat', 'cat__category']):
+            if all(x in self.query_dict for x in ['cat', 'cat__category']):
                 category_names = self.query_dict.getlist('cat__category')
                 categories = AllegationCategory.objects.filter(category__in=category_names)
                 cats = list(categories.values_list('cat_id', flat=True))

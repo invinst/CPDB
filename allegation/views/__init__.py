@@ -13,11 +13,11 @@ from django.views.generic import View
 
 from allegation.views.allegation_api_view import AllegationAPIView
 from common.json_serializer import JSONSerializer
-from common.models import Allegation, Area, AllegationCategory, Investigator, Officer, GENDER_DICT, OUTCOME_TEXT_DICT
+from common.models import Allegation, Area, AllegationCategory, Investigator, Officer, GENDER_DICT, OUTCOME_TEXT_DICT, \
+    FINAL_FINDING_TEXT_DICT
 from common.models import ComplainingWitness, NO_DISCIPLINE_CODES, PoliceWitness
 from share.models import Session
 
-DEFAULT_SITE_TITLE = "Chicago Police Database"
 
 OFFICER_COMPLAINT_COUNT_RANGE = [
     [20, 0],  # x >= 9
@@ -30,100 +30,17 @@ OFFICER_COMPLAINT_COUNT_RANGE = getattr(settings, 'OFFICER_COMPLAINT_COUNT_RANGE
 
 
 class AllegationListView(TemplateView):
-    template_name = 'allegation/home.html'
+    template_name = 'allegation/index.html'
     session = None
-    KEYS = {
-        'officer': Officer,
-        'cat': AllegationCategory,
-        'investigator': Investigator
-    }
-    OTHER_KEYS = {
-        'officer__gender': GENDER_DICT,
-        'complainant_gender': GENDER_DICT,
-        'outcome_text': OUTCOME_TEXT_DICT
-    }
-
-    def get_filters(self, key, values):
-        if key == 'areas__id':
-            ret = []
-            for pk in values['value']:
-                area = Area.objects.get(pk=pk)
-                ret.append({'text': "%s: %s" % (area.type, area.name) , 'value': pk})
-            return ret
-
-        if key in self.KEYS:
-            values = self.KEYS[key].objects.filter(pk__in=values['value'])
-            return [o.tag_value for o in values]
-
-        if key in self.OTHER_KEYS:
-            return [{
-                'text': self.OTHER_KEYS[key].get(o),
-                'value': o,
-            } for o in values['value']]
-
-        return values['value']
 
     def get_context_data(self, **kwargs):
         context = super(AllegationListView, self).get_context_data(**kwargs)
-        context['show_site_title'] = True
-        if self.session:
-            filters = {}
-            save_filters = self.session.query.get('filters', {})
-            for key in save_filters:
-                values = save_filters[key]
-                values = self.get_filters(key, values)
-                if values:
-                    filters.update({
-                        key: values
-                    })
-            context['filters'] = filters
-        context['session'] = self.session
         return context
 
     def get(self, request, hash_id=None, *args, **kwargs):
-        if hash_id:
-            ints = Session.id_from_hash(hash_id)
-            owned_sessions = request.session.get('owned_sessions', [])
-            if ints:
-                session_id = ints[0]
-                session = get_object_or_404(Session, pk=session_id)
-                if session_id not in owned_sessions:
-                    new_session = session.clone()
-                    self.session = new_session
-
-                    owned_sessions.append(new_session.id)
-                    request.session['owned_sessions'] = owned_sessions
-                    request.session.modified = True
-
-                    return redirect(new_session)
-                else:
-                    self.session = session
-            else:
-                raise Http404()
-
         return super(AllegationListView, self).get(request, *args, **kwargs)
 
-    def post(self, request, **kwargs):
-        ints = Session.id_from_hash(kwargs.get('hash_id'))
-        session_id = ints[0]
 
-        owned_sessions = request.session.get('owned_sessions', [])
-        if session_id not in owned_sessions:
-            raise Http404()
-
-        session = get_object_or_404(Session, pk=session_id)
-
-        data = json.loads(request.body.decode())
-        query = session.query or {}
-        query.update(data)
-
-        session.query = query
-
-        session.save()
-
-        return HttpResponse(JSONSerializer().serialize({
-            'success': True
-        }), content_type='application/json')
 
 
 class AreaAPIView(View):
