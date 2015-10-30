@@ -22,5 +22,5 @@ class SettingFactory(factory.django.DjangoModelFactory):
 	class Meta:
 		model = Setting
 
-	key = factory.Sequence(lambda n: fake.name())
+	key = factory.Sequence(lambda n: fake.md5(raw_output=False))
 	value = factory.Sequence(lambda n: fake.name())
