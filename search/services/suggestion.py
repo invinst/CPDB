@@ -12,6 +12,7 @@ from search.utils.zip_code import *
 
 AREA_SORT_ORDERS = { 'police-beats': 0, 'neighborhoods': 1, 'ward': 2, 'police-districts': 3, 'school-grounds': 5 }
 DATA_SOURCES = ['FOIA', 'pre-FOIA']
+SUGGEST_OFFICER_LIMIT = 20
 # TODO: More test for this one, especially test for ensure the order, returned format
 class Suggestion(object):
     def make_suggestion_format(self, match):
@@ -24,7 +25,10 @@ class Suggestion(object):
             return []
 
         condition = Q(city__icontains=q)
-        cities = self.query_suggestions(Allegation, condition, ['city'])
+        cities = self.query_suggestions(
+            model_cls=Allegation,
+            cond=condition,
+            fields_to_get=['city'])
 
         # Ugly way to remove the duplicated zip code
         for city in cities:
@@ -62,7 +66,11 @@ class Suggestion(object):
             return None
 
         condition = Q(star__icontains=q)
-        results = self.query_suggestions(Officer, condition, ['star'], order_bys=['star'])
+        results = self.query_suggestions(
+            model_cls=Officer,
+            cond=condition,
+            fields_to_get=['star'],
+            order_bys=['star'])
         results = [int(x) for x in results]
 
         return results
@@ -72,7 +80,11 @@ class Suggestion(object):
             return None
 
         condition = Q(crid__icontains=q)
-        results = self.query_suggestions(Allegation, condition, ['crid'], order_bys=['crid'])
+        results = self.query_suggestions(
+            model_cls=Allegation,
+            cond=condition,
+            fields_to_get=['crid'],
+            order_bys=['crid'])
         return results
 
     def suggest_incident_date_only(self, q):
@@ -121,31 +133,49 @@ class Suggestion(object):
     def suggest_office_name(self, q):
         # suggestion for officer name
         condition = OfficerQuery.condition_by_name(q)
-        results = self.query_suggestions(Officer, condition, ['officer_first', 'officer_last', 'allegations_count', 'id'],
-                                         order_bys=('-allegations_count', 'officer_first', 'officer_last'))
+        results = self.query_suggestions(
+            model_cls=Officer,
+            cond=condition,
+            fields_to_get=('officer_first', 'officer_last', 'allegations_count', 'id'),
+            order_bys=('-allegations_count', 'officer_first', 'officer_last'),
+            limit=SUGGEST_OFFICER_LIMIT)
         results = [["%s %s (%s)" % (x[0], x[1], x[2]), x[3] ] for x in results]
         return results
 
     def suggest_cat_category(self, q):
         condition = Q(category__icontains=q)
-        return self.query_suggestions(AllegationCategory, condition, ['category'], order_bys=['-category_count'])
+        return self.query_suggestions(
+            model_cls=AllegationCategory,
+            cond=condition,
+            fields_to_get=['category'],
+            order_bys=['-category_count'])
 
     def suggest_cat(self, q):
         condition = Q(allegation_name__icontains=q)
-        return self.query_suggestions(AllegationCategory, condition, ['allegation_name', 'cat_id'],
-                                         order_bys=['-allegation_count'])
+        return self.query_suggestions(
+            model_cls=AllegationCategory,
+            cond=condition,
+            fields_to_get=['allegation_name', 'cat_id'],
+            order_bys=['-allegation_count'])
 
     def suggest_investigator(self, q):
         condition = Q(name__icontains=q)
-        results = self.query_suggestions(Investigator, condition, ['name', 'complaint_count', 'id'],
-                                         order_bys=['-complaint_count'])
+        results = self.query_suggestions(
+            model_cls=Investigator,
+            cond=condition,
+            fields_to_get=['name', 'complaint_count', 'id'],
+            order_bys=['-complaint_count'])
         results = [["%s (%s)" % (x[0], x[1]), x[2]] for x in results]
         return results
 
     def suggest_areas(self, q):
         condition = Q(name__icontains=q)
 
-        results = self.query_suggestions(Area, condition, ['name', 'id', 'type'], limit=20)
+        results = self.query_suggestions(
+            model_cls=Area,
+            cond=condition,
+            fields_to_get=['name', 'id', 'type'],
+            limit=20)
         results.sort(key=lambda x: AREA_SORT_ORDERS.get(x[2], 4))
 
         return results[:5]
