@@ -105,7 +105,7 @@ class Suggestion(object):
         results = []
         for entry in data:
             text = data[entry]['text']
-            if self._matched_query(text.lower(), q):
+            if self._matched_query(text, q):
                 results.append([text, entry])
 
         return results
@@ -113,7 +113,7 @@ class Suggestion(object):
     def suggest_in(self, q, data):
         results = []
         for entry in data:
-            if self._matched_query(entry[1].lower(), q):
+            if self._matched_query(entry[1], q):
                 results.append([entry[1], entry[0]])
 
         return results
@@ -224,4 +224,4 @@ class Suggestion(object):
         return ret
 
     def _matched_query(self, s, q):
-        return str(q) in str(s)
+        return str(q).lower() in str(s).lower()
