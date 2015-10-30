@@ -164,6 +164,8 @@ body
   min-height: 72px
   margin-bottom: 0
   border-bottom: 1px solid $color_mountain_mist_approx
+  border-top: none
+
   &.navbar
     @extend .extend_2
 
@@ -189,6 +191,10 @@ body
 
   .navbar-nav > li.site-title > a
     color: $color_mine_shaft_approx
+
+  #search-wrapper
+    i
+      color: #0079ae
 
   @media (min-width: $screen-xs-min) and (max-width: $screen-xs-max)
     min-height: inherit
@@ -220,9 +226,6 @@ body
 
         input
           width: 89%
-
-        i
-          color: #0079ae
 
 h1
   @extend .extend_1
