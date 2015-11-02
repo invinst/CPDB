@@ -13,24 +13,13 @@ var MapStore = require('stores/MapStore');
 var OfficerListStore = require('stores/OfficerListStore');
 var FilterActions = require('actions/FilterActions');
 var SessionAPI = require('utils/SessionAPI');
+var TagUtil = require('utils/TagUtil');
 var cx = require('react/lib/cx');
 var _sessionData = {};
 var init_data = typeof(INIT_DATA) == 'undefined' ? false : INIT_DATA;
 var init_filters = typeof(INIT_FILTERS) == 'undefined' ? {} : INIT_FILTERS;
 
 
-function isSameTag(current, other) {
-  return (current.value[0] == other.value[0] && current.value[1] == other.value[1])
-}
-
-function isDuplicatedTag(tags, tag) {
-  for (var i = 0; i < tags.length; i++) {
-    if (isSameTag(tags[i], tag)) {
-      return true;
-    }
-  }
-  return false;
-}
 
 var AutoComplete = React.createClass({
   tagsChanged: function (event) {
@@ -90,7 +79,7 @@ var AutoComplete = React.createClass({
   beforeItemAdd: function (event) {
     var tags = $(this.getDOMNode()).tagsinput('items');
     var tag = event.item;
-    event.cancel = isDuplicatedTag(tags, tag)
+    event.cancel = TagUtil.isDuplicatedTag(tags, tag)
   },
 
   _onDisable: function () {

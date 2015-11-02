@@ -1,7 +1,10 @@
-var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
-var AppConstants = require('../constants/AppConstants');
 var assign = require('object-assign');
+
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+var AppConstants = require('../constants/AppConstants');
+var TagUtil = require('utils/TagUtil');
+
 var CHANGE_EVENT = 'change';
 var CREATE_EVENT = 'change';
 var ENABLE_EVENT = 'enable';
@@ -16,14 +19,12 @@ function update(id, updates) {
 
 }
 
-
 function create(id, filter) {
   _filters[id] = {
     'items': filter,
     'value': "Select a " + id
   };
 }
-
 
 var FilterStore = assign({}, EventEmitter.prototype, {
   isInitialized: function() {
@@ -77,6 +78,7 @@ var FilterStore = assign({}, EventEmitter.prototype, {
     this.emit(CHANGE_EVENT);
 
   },
+
   tagsInputRemoveItemObject: function (tagValue) {
     var search = $('#cpdb-search');
     var items = search.tagsinput("items");
@@ -136,8 +138,8 @@ var FilterStore = assign({}, EventEmitter.prototype, {
     if (!_pinned[category]) {
       _pinned[category] = [];
     }
-    
-    if (FilterStore.isPinned(category, filterValue)) { 
+
+    if (FilterStore.isPinned(category, filterValue)) {
       _pinned[category].splice(_pinned[category].indexOf(filterValue));
     } else {
       _pinned[category].push(filterValue);
@@ -161,9 +163,17 @@ var FilterStore = assign({}, EventEmitter.prototype, {
     this.emitChange();
   },
 
-  /**
-   * @param {function} callback
-   */
+  toogleFiltersFor: function (category) {
+    return function(value) {
+      if (!TagUtil.isATagIn(_filters)(category, value)) {
+        FilterStore.addFilter(category, value);
+        FilterStore.pinFilter(category, value);
+      } else {
+        FilterStore.removeFilter(category, value);
+      }
+    };
+  },
+
   addChangeListener: function (callback) {
     this.on(CHANGE_EVENT, callback);
   },
@@ -215,7 +225,7 @@ var FilterStore = assign({}, EventEmitter.prototype, {
   }
 });
 
-// Register callback to handle all updates
+
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.MAP_REPLACE_FILTERS:
@@ -248,7 +258,12 @@ AppDispatcher.register(function (action) {
     case AppConstants.ADD_TAG:
       FilterStore.addFilter(action.category, action.filter.value);
       FilterStore.emitChange();
-      break;
+    break;
+
+    case AppConstants.TOGGLE_TAGS:
+      _(action.filters).chain().pluck('value').map(FilterStore.toogleFiltersFor(action.category));
+      FilterStore.emitChange();
+    break;
 
     case AppConstants.REMOVE_TAG:
       FilterStore.removeFilter(action.category, action.filter.value);
@@ -264,6 +279,8 @@ AppDispatcher.register(function (action) {
       FilterStore.setSession(action.data['data']['query'] || {});
       _initialized = action.data['data'].readable_query || {};
       FilterStore.emitChange();
+      break;
+
     default:
       break;
   }
