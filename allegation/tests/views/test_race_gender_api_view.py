@@ -65,3 +65,25 @@ class RaceGenderAPI(SimpleTestCase):
             data[x]['gender'].shouldnt.contain('M')
             data[x]['race'].shouldnt.contain('black')
             data[x]['race'].should.contain('white')
+
+    def test_filter_by_one_graph_does_not_change_others(self):
+        officer_1 = OfficerFactory(race='black', gender='M')
+        officer_2 = OfficerFactory(race='white', gender='F')
+        allegation_1 = AllegationFactory(officer=officer_1)
+        allegation_2 = AllegationFactory(officer=officer_2)
+        ComplainingWitnessFactory(race='black', gender='M', crid=allegation_1.crid)
+        ComplainingWitnessFactory(race='white', gender='F', crid=allegation_2.crid)
+
+        response, data = self.get_race_gender_info(officer__gender='F')
+
+        data['officers']['gender']['M'].should.equal(1)
+        data['officers']['gender']['F'].should.equal(1)
+
+        data['officers']['race'].shouldnt.contain('black')
+        data['officers']['race']['white'].should.equal(1)
+
+        data['complaining_witness']['gender'].shouldnt.contain('M')
+        data['complaining_witness']['gender']['F'].should.equal(1)
+
+        data['complaining_witness']['race'].shouldnt.contain('black')
+        data['complaining_witness']['race']['white'].should.equal(1)

@@ -101,6 +101,18 @@ class RaceGenderTabTest(BaseLiveTestCase, IntegrationTestHelperMixin):
 
         self.ensure_the_correct_race_data_is_shown(analysis, total)
 
+    def test_toggle_filter_tags(self):
+        self.create_allegation_with_genders()
+
+        self.go_to_race_gender_tab()
+        self.until(self.ajax_complete)
+
+        self.find('.female').click()
+        self.until(lambda: self.element_by_classname_and_text('tag', 'Female').should.be.ok)
+
+        self.find('.female').click()
+        self.until(lambda: self.element_by_classname_and_text('tag', 'Female').shouldnt.be.ok)
+
     def ensure_the_correct_gender_data_is_shown(self, ratio):
         complaint_gender_chart = self.find('.complaint-gender-chart').text
         officer_gender_chart = self.find('.officer-gender-chart').text

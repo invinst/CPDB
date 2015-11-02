@@ -12,23 +12,28 @@ def return_dict(l, k, v):
     return ret
 
 class AllegationRaceGenderAPI(AllegationAPIView):
+    # A bit magical here
+    def annotate_count_for(self, items, field):
+        return return_dict(list(items.values(field).annotate(count=Count(field))), field, 'count')
+
     def get(self, request):
         allegations = self.get_allegations()
+        ignore = [x for x in self.request.GET]
+        allegations_without_filters = self.get_allegations(ignore_filters=ignore)
 
         # We need to cast them to list to get out the risk of Django's bad translated SQL
         # Anyway, this is fucking slow
         officer_ids = list(allegations.distinct().values_list('officer_id', flat=True))
         crids = list(allegations.distinct().values_list('crid', flat=True))
+        witness = ComplainingWitness.objects.filter(crid__in=crids)
 
         officers = Officer.objects.filter(pk__in=officer_ids)
-        officer_genders_list = list(officers.values('gender').annotate(count=Count('gender')))
-        officer_genders = return_dict(officer_genders_list, 'gender', 'count')
-
-        officer_races = return_dict(list(officers.values('race').annotate(count=Count('race'))), 'race', 'count')
+        officer_genders = self.annotate_count_for(officers, 'gender')
+        officer_races = self.annotate_count_for(officers, 'race')
 
         witness = ComplainingWitness.objects.filter(crid__in=crids)
-        complaining_genders = return_dict(list(witness.values('gender').annotate(count=Count('gender'))), 'gender', 'count')
-        complaining_races = return_dict(list(witness.values('race').annotate(count=Count('race'))), 'race', 'count')
+        witness_genders = self.annotate_count_for(witness, 'gender')
+        witness_races = self.annotate_count_for(witness, 'race')
 
         data = {
             'officers': {
@@ -36,8 +41,8 @@ class AllegationRaceGenderAPI(AllegationAPIView):
                 'race': officer_races
             },
             'complaining_witness': {
-                'gender': complaining_genders,
-                'race': complaining_races
+                'gender': witness_genders,
+                'race': witness_races
             }
         }
 
