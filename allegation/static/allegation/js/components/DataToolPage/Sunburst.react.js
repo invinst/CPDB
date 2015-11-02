@@ -139,17 +139,11 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
       return;
     }
 
+    var selected = this.state.selected;
+
     if (d == this.state.selected) {
       return;
     }
-
-    SunburstActions.selectArc(d);
-
-    var selected = this.state.selected;
-
-    this.setState({
-      'selected': d
-    });
 
     if ((d == selected.parent) && selected.tagValue) {
       FilterTagsActions.removeTag(selected.tagValue.category, selected.tagValue)
@@ -162,6 +156,10 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
       FilterTagsActions.addTag(d.tagValue.category, d.tagValue);
     }
 
+    SunburstActions.selectArc(d);
+  },
+
+  zoomToSelected: function (d) {
     path.transition()
       .duration(750)
       .attrTween("d", arcTween(d));
@@ -179,44 +177,15 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
   },
 
   mouseleave: function (d) {
-    var that = this;
-    // Deactivate all segments during transition.
-    svg.selectAll("path").on("mouseover", null);
-
-    // Transition each segment to full opacity and then reactivate it.
-    svg.selectAll("path")
-        .transition()
-        .duration(500)
-        .style("opacity", 1)
-        .each("end", function() {
-                d3.select(this).on("mouseover", that.mouseover);
-              });
-
-    d3.select("#explanation")
-        .style("visibility", "hidden");
-
-    this.setState({
-      hovering: false
-    });
+    SunburstActions.leaveArc();
   },
 
   mouseover: function (d) {
-    svg.selectAll("path")
-      .style("opacity", 0.3);
-
-    var sequenceArray = this.getAncestors(d);
-    svg.selectAll("path")
-      .filter(function(node) {
-                return (sequenceArray.indexOf(node) >= 0);
-              })
-      .style("opacity", 1);
-    this.setState({
-      hovering: d
-    });
+    SunburstActions.hoverArc(d);
   },
 
   drawChart: function () {
-    if (this.state.drew) {
+    if (this.state.control.drew) {
       return;
     }
     var data = this.state.data;
@@ -258,25 +227,63 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
         }
       });
     }
-
-    this.setState({
-      drew: true
-    });
   },
 
-  tryZoomOut: function () {
-    if (this.state.zoomOut1) {
-      this.setState({
-        zoomOut1: false
-      });
-
+  controlZoomOut: function () {
+    if (this.state.control.zoomOut1) {
       this.select(this.state.selected.parent);
     }
   },
 
+  controlSelect: function () {
+    if (this.state.control.newSelected) {
+      this.zoomToSelected(this.state.selected);
+    }
+  },
+
+  controlHover: function () {
+    if (this.state.hovering) {
+      svg.selectAll("path")
+        .style("opacity", 0.3);
+
+      var sequenceArray = this.getAncestors(this.state.hovering);
+      svg.selectAll("path")
+        .filter(function (node) {
+          return (sequenceArray.indexOf(node) >= 0);
+        })
+        .style("opacity", 1);
+    }
+    if (this.state.control.mouseLeave) {
+      var that = this;
+      // Deactivate all segments during transition.
+      svg.selectAll("path").on("mouseover", null);
+
+      // Transition each segment to full opacity and then reactivate it.
+      svg.selectAll("path")
+        .transition()
+        .duration(500)
+        .style("opacity", 1)
+        .each("end", function() {
+          d3.select(this).on("mouseover", that.mouseover);
+        });
+
+      d3.select("#explanation")
+          .style("visibility", "hidden");
+    }
+  },
+
+  clearControl: function () {
+    setTimeout(function () { // clear after finish
+      SunburstActions.clearControl();
+    }, 1);
+  },
+
   componentDidUpdate: function () {
     this.drawChart();
-    this.tryZoomOut();
+    this.controlZoomOut();
+    this.controlSelect();
+    this.controlHover();
+    this.clearControl();
   },
 
   componentDidMount: function () {

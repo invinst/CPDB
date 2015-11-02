@@ -5,13 +5,18 @@ var AppConstants = require('constants/AppConstants');
 var FilterStore = require('stores/FilterStore');
 var Base = require('stores/Base');
 
+var _noControl = {
+  zoomOut1: false,
+  newSelected: false,
+  drew: true,
+  mouseLeave: false,
+};
 
 var _state = {
-  data: false,
   selected: false,
-  drew: false,
+  data: false,
   hovering: false,
-  zoomOut1: false
+  control: _.clone(_noControl),
 };
 
 var SunburstStore = _.assign(Base(_state), {
@@ -19,7 +24,7 @@ var SunburstStore = _.assign(Base(_state), {
     var root = data.sunburst;
     _state.data = root;
     _state.selected = root;
-    _state.drew = false;
+    _state.control.drew = false;
     SunburstStore.emitChange();
   },
   tryZoomOut: function (category, filter) {
@@ -28,7 +33,7 @@ var SunburstStore = _.assign(Base(_state), {
       return;
     }
     if (selected.tagValue.category == category && selected.tagValue.value== filter.value) {
-      _state.zoomOut1 = true;
+      _state.control.zoomOut1 = true;
       SunburstStore.emitChange();
     }
   }
@@ -47,6 +52,26 @@ AppDispatcher.register(function (action) {
 
     case AppConstants.SUNBURST_SELECT_ARC:
       _state.selected = action.data;
+      _state.control.newSelected = true;
+      SunburstStore.emitChange();
+      break;
+
+    case AppConstants.SUNBURST_HOVER_ARC:
+      _state.hovering = action.data;
+      SunburstStore.emitChange();
+      break;
+
+    case AppConstants.SUNBURST_LEAVE_ARC:
+      _state.hovering = false;
+      _state.control.mouseLeave = true;
+      SunburstStore.emitChange();
+      break;
+
+    case AppConstants.SUNBURST_CLEAR_CONTROL:
+      if (!_.eq(_state.control, _noControl)) {
+        _state.control = _.clone(_noControl);
+        SunburstStore.emitChange();
+      }
       break;
 
     default:

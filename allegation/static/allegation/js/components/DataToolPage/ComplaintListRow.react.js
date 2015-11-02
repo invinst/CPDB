@@ -14,7 +14,6 @@ var RequestButton = require('components/DataToolPage/Complaint/RequestButton.rea
 var _timeline = false;
 
 
-
 var ComplaintListRow = React.createClass(_.assign(Base(ComplaintListStore), {
 
   detailRendered: function() {

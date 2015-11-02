@@ -15,6 +15,25 @@ var SunburstActions = {
       data: path
     });
   },
+
+  hoverArc: function (path) {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.SUNBURST_HOVER_ARC,
+      data: path
+    });
+  },
+
+  leaveArc: function () {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.SUNBURST_LEAVE_ARC
+    });
+  },
+
+  clearControl: function () {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.SUNBURST_CLEAR_CONTROL
+    });
+  },
 };
 
 module.exports = SunburstActions;
