@@ -27,4 +27,4 @@ class ShareSessionTestCase(BaseLiveTestCase):
         self.until(lambda: self.find(".autocomplete-officer").click())
         self.until_ajax_complete()
         self.browser.refresh()
-        self.until(lambda: self.find("#filter-tags").text.should.equal(allegation.officer.display_name))
+        self.until(lambda: self.find("#filter-tags").text.should.contain(allegation.officer.display_name))
