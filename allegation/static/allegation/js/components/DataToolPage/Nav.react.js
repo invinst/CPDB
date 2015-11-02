@@ -31,7 +31,6 @@ var Nav = React.createClass(_.assign(Base(NavStore), {
     );
     var navbarClass = classnames(
       'navbar-collapse',
-      'collapse',
       {
         'hidden': mobileExpanded
       }
