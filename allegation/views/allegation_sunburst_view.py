@@ -128,24 +128,24 @@ class AllegationSunburstView(AllegationAPIView):
                     'label': '1-9 days',
                     'category': 'outcome_text',
                     'value': '1-9 days',
-                    'removeParent': True                
+                    'removeParent': True
                 }
             }, {
-                'condition': Q(final_outcome__in=[str(x).zfill(3) for x in range(10, 31)]),  # 010 to 031
+                'condition': Q(final_outcome__in=[str(x).zfill(3) for x in range(10, 31)]),  # 010 to 030
                 'name': '10-30 days',
                 'tagValue': {
                     'label': '10-30 days',
                     'category': 'outcome_text',
                     'value': '10-30 days',
-                    'removeParent': True                
+                    'removeParent': True
                 }
             }, {
-                'condition': Q(final_outcome='200'),
+                'condition': Q(final_outcome__in=['045', '060', '090', '200']),
                 'name': '30+ days',
                 'tagValue': {
                     'label': '30+ days',
-                    'category': 'final_outcome',
-                    'value': '200',
+                    'category': 'outcome_text',
+                    'value': '30 more days',
                     'removeParent': True
                 },
             }, {

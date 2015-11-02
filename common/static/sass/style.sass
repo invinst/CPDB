@@ -1,48 +1,61 @@
 //colors
-$white: white
-$color_mountain_mist_approx: #989898
 $black: #000000
-$color_mine_shaft_approx: #333333
-$color_pampas_approx: #f6f6ec
-$color_ship_cove_approx: #709dc0
-$color_cadet_blue_approx: #a5b4be
-$color_deep_cerulean_approx: #0079ae
-$color_ziggurat_approx: #bed4df
-$color_storm_dust_approx: #666
-$color_celeste_approx: #cbcbcb
-$color_japanese_laurel_approx: green
-$color_coral_red_approx: #ff4647
-$color_rajah_approx: #f3b272
-$color_goldenrod_approx: #f2db6d
-$color_swamp_green_approx: #a4c683
-$color_silver_tree_approx: #62b28c
-$seashell: #f1f1f1
-$red: red
-$color_tall_poppy_approx: #c0272d
-$color_fire_bush_approx: #ed9429
-$color_golden_grass_approx: #d8b421
-$color_sushi_approx: #83b247
-$color_chateau_green_approx: #41996d
-$color_azalea_approx: #f2ced3
-$color_pattens_blue_approx: #e2f6ff
-$gray: gray
-$color_spring_wood_approx: #f7f7ed
-$color_pacific_blue_approx: #0a90cb
-$color_star_dust_approx: #9a9a9a
-$color_pippin_approx: #ffe3e7
-$blue: blue
-$wild_sand: #f4f4f4
-$color_nobel_approx: #b2b2b2
 $black_70: rgba(0, 0, 0, .7)
+$blue: blue
+$color_allports_approx: #0f70a8
+$color_azalea_approx: #f2ced3
+$color_cadet_blue_approx: #a5b4be
+$color_celeste_approx: #cbcbcb
+$color_chateau_green_approx: #41996d
+$color_coral_red_approx: #ff4647
+$color_danube_approx: #628fca
+$color_danube_approx: #66aad7
 $color_deep_celurean_approx: #0279AE
+$color_deep_cerulean_approx: #0079ae
+$color_fire_bush_approx: #ed9429
+$color_fountain_blue_approx: #67adc5
+$color_golden_grass_approx: #d8b421
+$color_goldenrod_approx: #f2db6d
+$color_gull_gray_approx: #9faeb9
+$color_japanese_laurel_approx: green
+$color_jordy_blue_approx: #7bb4ff
+$color_kashmir_blue_approx: #4a6c96
+$color_lochmara_approx: #107ac0
+$color_mine_shaft_approx: #333333
+$color_mountain_mist_approx: #989898
+$color_mountain_mist_approx: #989898
+$color_nobel_approx: #b2b2b2
+$color_pacific_blue_approx: #0a90cb
+$color_pampas_approx: #f6f6ec
+$color_pattens_blue_approx: #e2f6ff
+$color_pippin_approx: #ffe3e7
+$color_rajah_approx: #f3b272
+$color_ship_cove_approx: #709dc0
+$color_silver_tree_approx: #62b28c
+$color_spring_wood_approx: #f7f7ed
+$color_star_dust_approx: #9a9a9a
+$color_storm_dust_approx: #666
+$color_sushi_approx: #83b247
+$color_swamp_green_approx: #a4c683
+$color_tall_poppy_approx: #c0272d
+$color_ziggurat_approx: #bed4df
+$gray: gray
+$mercury: #e5e5e5
+$red: red
+$seashell: #f1f1f1
+$white: white
+$wild_sand: #f4f4f4
 
 //fonts
-$font_0: Source Sans Pro
+$font_0: "San Francisco Compact", "San Francisco", "San Francisco Compact Web"
 $font_1: serif
 $font_2: Vollkorn
-$font_3: Helvetica Neue
+$font_3: "Helvetica Neue"
 $font_4: sans-serif
 $font_5: Helvetica
+$font_6: Glyphicons Halflings
+
+@import 'shared/sf-compact-font'
 
 //@extend-elements
 //original selectors
@@ -127,6 +140,16 @@ $font_5: Helvetica
   //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
   border-radius: 0
 
+//original selectors
+//.ui-state-focus, .ui-widget-content .ui-state-focus
+.extend_15
+  font-weight: 300
+  background: none
+  border: none
+  border-left: 4px solid $color_lochmara_approx
+  color: $color_lochmara_approx
+  margin: 0
+
 body
   background-color: $white
   font-family: $font_0, $font_1
@@ -188,7 +211,7 @@ h3
 footer
   .row
     background-color: #172b3a
-    padding: 20px 0
+    padding: 7px 0
 
 #map
   width: 100%
@@ -526,7 +549,7 @@ footer
         padding: 2px 10px 10px 15px
         color: white
         font-size: 14px
-        font-weight: bold
+        font-weight: 400
       .non-intersection
         visibility: hidden
         height: 28px
@@ -651,7 +674,7 @@ footer
   margin-top: 0.3em
 
 .complaint-row
-  padding: 5px 0 0
+  padding: 10px 0 5px
   border-bottom: 1px solid $color_celeste_approx
   font-family: $font_2
   clear: both
@@ -668,7 +691,7 @@ footer
 
   .title
     color: $gray
-    font-size: 12px
+    font-size: 14px
     font-family: $font_0
 
   .show_more
@@ -779,8 +802,8 @@ footer
       text-transform: none
       border: 1px solid $color_pacific_blue_approx
       width: 151px
-      font-size: 16px
-      padding: 5px 10px
+      font-size: 14px
+      font-weight: 400
 
     &:hover:not(.btn-link):not(.btn-flat)
       background-color: $color_pacific_blue_approx
@@ -794,7 +817,8 @@ footer
     border: 1px solid $color_pacific_blue_approx
     width: 151px
     max-width: 151px
-    font-size: 16px
+    font-size: 14px
+    font-weight: 400
     padding: 5px 10px
 
 @media screen and (max-width: 1024px)
@@ -1145,7 +1169,7 @@ footer
   .root
     font-family: $font_0, $font_4
     font-size: 18px
-    font-weight: 600
+    font-weight: 500
     text-transform: uppercase
 
 .sunburst-breadcrumb
@@ -1320,7 +1344,7 @@ form.navbar-form.navbar-right
   text-transform: none !important
 
 .stick-footer-bottom
-  padding-bottom: 173px
+  padding-bottom: 145px
   .sticky-footer
     width: 100%
     position: fixed
@@ -1333,5 +1357,7 @@ form.navbar-form.navbar-right
 
 @import 'shared'
 @import 'officer-profile'
+@import 'officer-detail'
+@import 'search'
 @import 'mobile'
 @import 'data_tool_page'
