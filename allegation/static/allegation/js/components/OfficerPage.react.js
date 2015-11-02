@@ -20,6 +20,17 @@ var Footer = require('components/HomePage/Footer.react');
 
 
 var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
+  getInitialState: function() {
+    return {
+      data: {
+        allegations: [],
+        officer: {},
+        relatedOfficers: [],
+        hasMap: false
+      }
+    }
+  },
+
   componentDidMount: function() {
     var officerId = this.props.officerId || '';
     OfficerPageServerActions.getOfficerData(officerId);
