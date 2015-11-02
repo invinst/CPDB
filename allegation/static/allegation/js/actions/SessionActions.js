@@ -1,6 +1,7 @@
 var AppDispatcher = require('dispatcher/AppDispatcher');
 var AppConstants = require('constants/AppConstants');
 var RaceGenderAPI = require('utils/RaceGenderAPI');
+var SunburstAPI = require('utils/SunburstAPI');
 
 var SessionActions = {
   receivedSessionInfoData: function(data) {
@@ -9,6 +10,7 @@ var SessionActions = {
       data: data
     });
     RaceGenderAPI.getData();
+    SunburstAPI.getData();
   },
 
   receivedUpdatedSessionInfoData: function(data) {

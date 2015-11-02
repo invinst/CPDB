@@ -1,68 +1,54 @@
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var EventEmitter = require('events').EventEmitter;
-var AppConstants = require('../constants/AppConstants');
-var assign = require('object-assign');
-var FilterStore = require('./FilterStore');
-var CHANGE_EVENT = 'change';
-var ajax = null;
+var _ = require('lodash');
 
-var root = null;
-var _queryString = null;
+var AppDispatcher = require('dispatcher/AppDispatcher');
+var AppConstants = require('constants/AppConstants');
+var FilterStore = require('stores/FilterStore');
+var Base = require('stores/Base');
 
-var SunburstStore = assign({}, EventEmitter.prototype, {
-  update: function (query) {
-    var filter = FilterStore.getQueryString(['final_outcome', 'final_finding', 'outcome_text', 'final_finding_text']);
-    var queryString = query || filter;
-    if (queryString == _queryString) {
-      return;
-    }
-    _queryString = queryString;
-    if (ajax) {
-      ajax.abort();
-    }
-    ajax = d3.json("/api/allegations/sunburst/?" + queryString, function (error, data) {
-      if (error) throw error;
-      SunburstStore.setData(data);
-    });
-  },
 
+var _state = {
+  data: false,
+  selected: false,
+  drew: false,
+  hovering: false,
+  zoomOut1: false
+};
+
+var SunburstStore = _.assign(Base(_state), {
   setData: function (data) {
-    root = data.sunburst;
+    var root = data.sunburst;
+    _state.data = root;
+    _state.selected = root;
+    _state.drew = false;
     SunburstStore.emitChange();
   },
-
-  init: function (query) {
-    this.update(query);
-  },
-
-  getRoot: function () {
-    return root;
-  },
-
-  emitChange: function () {
-    this.emit(CHANGE_EVENT);
-  },
-
-  addChangeListener: function (callback) {
-    this.on(CHANGE_EVENT, callback);
-  },
-
-  removeChangeListener: function(callback) {
-    this.removeListener(CHANGE_EVENT, callback);
+  tryZoomOut: function (category, filter) {
+    var selected = _state.selected;
+    if (!selected.tagValue) {
+      return;
+    }
+    if (selected.tagValue.category == category && selected.tagValue.value== filter.value) {
+      _state.zoomOut1 = true;
+      SunburstStore.emitChange();
+    }
   }
 });
 
 // Register callback to handle all updates
 AppDispatcher.register(function (action) {
-
   switch (action.actionType) {
-    case AppConstants.MAP_REPLACE_FILTERS:
-    case AppConstants.MAP_CHANGE_FILTER:
-    case AppConstants.MAP_ADD_FILTER:
-    case AppConstants.ADD_TAG:
-    case AppConstants.REMOVE_TAG:
-      SunburstStore.update();
+    case AppConstants.RECEIVED_SUNBURST_DATA:
+      SunburstStore.setData(action.data);
       break;
+
+    case AppConstants.REMOVED_TAG:
+      SunburstStore.tryZoomOut(action.category, action.filter);
+      break;
+
+    case AppConstants.SUNBURST_SELECT_ARC:
+      _state.selected = action.data;
+      break;
+
     default:
       break;
   }

@@ -1,11 +1,16 @@
 var React = require('react');
-var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
-var SummaryActions = require('actions/SummaryActions');
-var SunburstStore = require("stores/SunburstStore");
-var FilterTagsActions = require('actions/FilterTagsActions');
-var FilterStore = require("stores/FilterStore");
 var numeral = require('numeral');
+var _ = require('lodash');
+
+var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
+var Base = require('components/Base.react');
 var AppConstants = require('constants/AppConstants');
+var SummaryActions = require('actions/SummaryActions');
+var SunburstActions = require('actions/SunburstActions');
+var FilterTagsActions = require('actions/FilterTagsActions');
+var SunburstStore = require("stores/SunburstStore");
+var FilterStore = require("stores/FilterStore");
+var SunburstAPI = require('utils/SunburstAPI');
 
 var width = 390,
   height = 390,
@@ -103,29 +108,8 @@ function sum(d){
   return s;
 }
 
-var Sunburst = React.createClass({
+var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
   mixins: [EmbedMixin],
-  getInitialState: function () {
-    root = SunburstStore.getRoot();
-    if (root) {
-     return {
-       data: root,
-       selected: root,
-       hovering: false,
-       drew: false,
-
-
-     }
-    }
-    else {
-      return {
-        data: false,
-        selected: false,
-        hovering: false,
-        drew: false
-      }
-    }
-  },
 
   // embedding
   getEmbedCode: function () {
@@ -154,9 +138,12 @@ var Sunburst = React.createClass({
     if (this.isEmbedding()) {
       return;
     }
+
     if (d == this.state.selected) {
       return;
     }
+
+    SunburstActions.selectArc(d);
 
     var selected = this.state.selected;
 
@@ -277,8 +264,19 @@ var Sunburst = React.createClass({
     });
   },
 
-  componentDidUpdate: function() {
+  tryZoomOut: function () {
+    if (this.state.zoomOut1) {
+      this.setState({
+        zoomOut1: false
+      });
+
+      this.select(this.state.selected.parent);
+    }
+  },
+
+  componentDidUpdate: function () {
     this.drawChart();
+    this.tryZoomOut();
   },
 
   componentDidMount: function () {
@@ -288,6 +286,13 @@ var Sunburst = React.createClass({
 
     SunburstStore.addChangeListener(this._onChange);
 
+    this.initTabs();
+
+    SunburstAPI.getData(this.props.query);
+    this.drawChart();
+  },
+
+  initTabs: function () {
     if (this.props.tabs.tabs.length > 0) {
       for(var i =0; i < this.props.tabs.tabs.length; i++){
         var tab = this.props.tabs.tabs[i];
@@ -300,22 +305,10 @@ var Sunburst = React.createClass({
     else {
       this.props.tabs.tabs.push(this);
     }
-
-    SunburstStore.init(this.props.query);
-    this.drawChart();
   },
 
   componentWillUnmount: function() {
     SunburstStore.removeChangeListener(this._onChange);
-  },
-
-  _onChange: function () {
-    var root = SunburstStore.getRoot();
-    this.setState({
-      data: root,
-      selected: root,
-      drew: false
-    })
   },
 
   makeLegend: function (node) {
@@ -438,6 +431,6 @@ var Sunburst = React.createClass({
     );
 
   }
-});
+}));
 
 module.exports = Sunburst;

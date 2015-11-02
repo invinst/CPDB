@@ -194,6 +194,11 @@ class HomePageTestCase(BaseLiveTestCase, IntegrationTestHelperMixin):
         self.element_by_classname_and_text('filter-name', ns).shouldnt.be.ok
         self.browser.implicitly_wait(10)
 
+        self.find(".tag .remove").click()
+        self.browser.implicitly_wait(0)
+        self.element_by_tagname_and_text('td', ns).shouldnt.be.ok
+        self.browser.implicitly_wait(10)
+
     def test_sticky_footer(self):
         officer = self.allegation.officer
         AllegationFactory.create_batch(40, officer=officer)

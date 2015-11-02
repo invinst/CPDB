@@ -103,6 +103,7 @@ AppDispatcher.register(function (action) {
     case AppConstants.MAP_ADD_FILTER:
     case AppConstants.ADD_TAG:
     case AppConstants.REMOVE_TAG:
+    case AppConstants.RECEIVED_SESSION_DATA:
       SummaryStore.update();
       break;
 

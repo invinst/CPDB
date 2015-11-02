@@ -4,6 +4,7 @@ var ComplaintListAPI = require('utils/ComplaintListAPI');
 var OutcomeAnalysisAPI = require('utils/OutcomeAnalysisAPI');
 var SessionAPI = require('utils/SessionAPI');
 var RaceGenderAPI = require('utils/RaceGenderAPI');
+var SunburstAPI = require('utils/SunburstAPI');
 var FilterStore = require('stores/FilterStore');
 
 
@@ -18,6 +19,7 @@ var FilterTagsActions = {
     ComplaintListAPI.getData();
     OutcomeAnalysisAPI.getAnalysisInformation();
     RaceGenderAPI.getData();
+    SunburstAPI.getData();
     SessionAPI.updateSessionInfo({'query': FilterStore.getSession()});
   },
 
@@ -31,7 +33,16 @@ var FilterTagsActions = {
     ComplaintListAPI.getData();
     OutcomeAnalysisAPI.getAnalysisInformation();
     RaceGenderAPI.getData();
+    SunburstAPI.getData();
     SessionAPI.updateSessionInfo({'query': FilterStore.getSession()});
+  },
+
+  removedTag: function (category, filter) {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.REMOVED_TAG,
+      category: category,
+      filter: filter
+    });
   },
 
   pinTag: function (category, filter) {
