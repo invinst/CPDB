@@ -1,7 +1,10 @@
-var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
-var AppConstants = require('../constants/AppConstants');
 var assign = require('object-assign');
+
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+var AppConstants = require('../constants/AppConstants');
+var TagUtil = require('utils/TagUtil');
+
 var CHANGE_EVENT = 'change';
 var CREATE_EVENT = 'change';
 var ENABLE_EVENT = 'enable';
@@ -16,14 +19,12 @@ function update(id, updates) {
 
 }
 
-
 function create(id, filter) {
   _filters[id] = {
     'items': filter,
     'value': "Select a " + id
   };
 }
-
 
 var FilterStore = assign({}, EventEmitter.prototype, {
   isInitialized: function() {
@@ -77,6 +78,7 @@ var FilterStore = assign({}, EventEmitter.prototype, {
     this.emit(CHANGE_EVENT);
 
   },
+
   tagsInputRemoveItemObject: function (tagValue) {
     var search = $('#cpdb-search');
     var items = search.tagsinput("items");
@@ -161,9 +163,17 @@ var FilterStore = assign({}, EventEmitter.prototype, {
     this.emitChange();
   },
 
-  /**
-   * @param {function} callback
-   */
+  toogleFiltersFor: function (category) {
+    return function(value) {
+      if (!TagUtil.isATagIn(_filters)(category, value)) {
+        FilterStore.addFilter(category, value);
+        FilterStore.pinFilter(category, value);
+      } else {
+        FilterStore.removeFilter(category, value);
+      }
+    };
+  },
+
   addChangeListener: function (callback) {
     this.on(CHANGE_EVENT, callback);
   },
@@ -215,7 +225,7 @@ var FilterStore = assign({}, EventEmitter.prototype, {
   }
 });
 
-// Register callback to handle all updates
+
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.MAP_REPLACE_FILTERS:
@@ -250,13 +260,8 @@ AppDispatcher.register(function (action) {
       FilterStore.emitChange();
     break;
 
-    case AppConstants.ADD_TAGS:
-      var filters = action.filters;
-
-      for (var i = 0; i < filters.length; i++) {
-        FilterStore.addFilter(action.category, filters[i].value);
-        FilterStore.pinFilter(action.category, filters[i].value);
-      }
+    case AppConstants.TOGGLE_TAGS:
+      _(action.filters).chain().pluck('value').map(FilterStore.toogleFiltersFor(action.category));
       FilterStore.emitChange();
     break;
 

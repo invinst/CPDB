@@ -24,9 +24,9 @@ var FilterTagsActions = {
     updateSiteData();
   },
 
-  addTags: function (category, filters) {
+  toggleTags: function (category, filters) {
     AppDispatcher.dispatch({
-      actionType: AppConstants.ADD_TAGS,
+      actionType: AppConstants.TOGGLE_TAGS,
       category: category,
       filters: filters
     });
