@@ -2,7 +2,7 @@ var React = require('react');
 var classnames = require('classnames');
 var pluralize = require('pluralize');
 
-var OfficerListMixin = require('components/HomePage/Complaint/OfficerListMixin.react');
+var OfficerListMixin = require('components/DataToolPage/Complaint/OfficerListMixin.react');
 
 var OfficerListWithoutInvestigator = React.createClass({
   mixins: [OfficerListMixin],
@@ -25,7 +25,7 @@ var OfficerListWithoutInvestigator = React.createClass({
           <div className="row">
             {this.renderOfficerList()}
           </div>
-        </div>        
+        </div>
       </div>
     );
   }

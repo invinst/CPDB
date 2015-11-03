@@ -3,7 +3,7 @@ var classnames = require('classnames');
 var pluralize = require('pluralize');
 
 var Investigator = require('components/DataToolPage/Complaint/Investigator.react');
-var OfficerListMixin = require('components/HomePage/Complaint/OfficerListMixin.react');
+var OfficerListMixin = require('components/DataToolPage/Complaint/OfficerListMixin.react');
 
 var OfficerListWithInvestigator = React.createClass({
   mixins: [OfficerListMixin],
