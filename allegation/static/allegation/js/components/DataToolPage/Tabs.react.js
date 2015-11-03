@@ -135,17 +135,6 @@ var Tabs = React.createClass({
       );
   },
 
-  renderTimeframeTab: function () {
-    var className = classnames('disabled', {'hidden': !this.props.mobile});
-    return (
-      <li role="presentation" className={className}>
-        <a href="#" aria-controls="profile" role="tab">
-          Timeframe
-        </a>
-      </li>
-    );
-  },
-
   renderMapContent: function () {
     if (!this.props.mobile) {
       return;
@@ -173,7 +162,6 @@ var Tabs = React.createClass({
           { this.renderOutcomesTab(outcomeClassName) }
           { this.renderCategoriesTab() }
           { this.renderGenderRaceTab() }
-          { this.renderTimeframeTab() }
         </ul>
 
         <div className="tab-content">
