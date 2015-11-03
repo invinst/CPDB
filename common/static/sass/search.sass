@@ -51,18 +51,50 @@ input:-ms-input-placeholder
 .ui-state-focus
   @extend .extend_15
 
-.bootstrap-tagsinput
+#filter-tags
   border: none
   //If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
   box-shadow: none
   margin: 10px 0
   background-color: transparent
+  height: 40px
   .tag
-    font-size: 1em
-    font-weight: 300
+    font-weight: 400
+    display: inline-block
+    background: transparent
+    border: 1px solid $color_cadet_blue_approx
+    color: $color_mountain_mist_approx
+    margin-right: 10px
+    height: 36px
+    &.pinned
+      border: 2px solid $color_deep_celurean_approx
+      background: $seashell
+      .pin
+        color: $color_deep_celurean_approx
+    .action
+      padding: 0 5px
+      line-height: 30px
+      &.remove
+        margin-right: 3px
+    .filter
+      font-size: 12px
+      text-align: left
+    &> span
+      display: inline-block
+      line-height: 15px
+      vertical-align: top
+      font-size: 18px
+    .filter-name
+      display: block
+      color: $color_deep_celurean_approx
+    .filter-category-name
+      display: block
+      text-transform: uppercase
+      font-size: 11px
+    &.fadeIn
+      opacity: 1
 
   input
-    font-size: 1em
     font-weight: 300
 
 

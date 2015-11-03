@@ -222,6 +222,34 @@ module.exports = {
     'unitWithName': 'Unit'
   },
 
+  AUTOCOMPLETE_CATEGORY_NAMES: {
+    'crid': 'Complaint ID',
+    'cat__category': 'Category',
+    'cat': 'Allegation type',
+    'investigator': 'Investigator',
+    'officer': 'Officer',
+    'officer__star': 'Badge number',
+    'officer__unit': 'Officer Unit',
+    'officer__rank': 'Officer Rank',
+    'officer__gender': 'Officer Gender',
+    'officer__race': 'Officer Race',
+    'recc_outcome': 'Recommended Outcome',
+    'recc_finding': 'Recommended Finding',
+    'final_outcome': 'Final Outcome',
+    'final_outcome_class': 'Final Outcome',
+    'final_finding': 'Final Finding',
+    'final_finding_text': 'Final Finding',
+    'incident_date_only__year': 'Incident Year',
+    'incident_date_only__year_month': 'Incident Year/Month',
+    'incident_date_only': 'Incident Date',
+    'areas__id': 'Area',
+    'complainant_gender': 'Complainant Gender',
+    'complainant_race': 'Complainant Race',
+    'outcome_text': 'Outcome',
+    'city': 'Zip Code',
+    'data_source': 'Data Source'
+  },
+
   DEFAULT_SITE_TITLE: DEFAULT_SITE_TITLE,  // from global variable
 
   MEDIA_URL: '/media/',

@@ -37,12 +37,14 @@ var FilterStore = assign({}, EventEmitter.prototype, {
 
   getSession: function () {
     return {
-      filters: _filters
+      filters: _filters,
+      pinned: _pinned
     };
   },
 
   setSession: function (session) {
     _filters = session.filters || {};
+    _pinned = session.pinned || {};
     return _filters;
   },
 

@@ -50,6 +50,7 @@ var FilterTagsActions = {
       category: category,
       filter: filter
     });
+    SessionAPI.updateSessionInfo({'query': FilterStore.getSession()});
   }
 };
 

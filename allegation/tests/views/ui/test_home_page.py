@@ -172,26 +172,26 @@ class HomePageTestCase(BaseLiveTestCase, IntegrationTestHelperMixin):
         self.visit_home()
         self.link("Outcomes").click()
         self.browser.implicitly_wait(0)
-        self.element_by_classname_and_text('tag', us).shouldnt.be.ok
-        self.element_by_classname_and_text('tag', ns).shouldnt.be.ok
+        self.element_by_classname_and_text('filter-name', us).shouldnt.be.ok
+        self.element_by_classname_and_text('filter-name', ns).shouldnt.be.ok
         self.browser.implicitly_wait(10)
 
         self.element_by_tagname_and_text('td', us).click()
-        self.until(lambda: self.element_by_classname_and_text('tag', us).should.be.ok)
+        self.until(lambda: self.element_by_classname_and_text('filter-name', us).should.be.ok)
         self.browser.implicitly_wait(0)
-        self.element_by_classname_and_text('tag', ns).shouldnt.be.ok
+        self.element_by_classname_and_text('filter-name', ns).shouldnt.be.ok
         self.browser.implicitly_wait(10)
 
         self.element_by_tagname_and_text('td', ns).click()
-        self.until(lambda: self.element_by_classname_and_text('tag', ns).should.be.ok)
+        self.until(lambda: self.element_by_classname_and_text('filter-name', ns).should.be.ok)
         self.browser.implicitly_wait(0)
-        self.element_by_classname_and_text('tag', us).shouldnt.be.ok
+        self.element_by_classname_and_text('filter-name', us).shouldnt.be.ok
         self.browser.implicitly_wait(10)
 
         self.element_by_tagname_and_text('td', us).click()
-        self.until(lambda: self.element_by_classname_and_text('tag', us).should.be.ok)
+        self.until(lambda: self.element_by_classname_and_text('filter-name', us).should.be.ok)
         self.browser.implicitly_wait(0)
-        self.element_by_classname_and_text('tag', ns).shouldnt.be.ok
+        self.element_by_classname_and_text('filter-name', ns).shouldnt.be.ok
         self.browser.implicitly_wait(10)
 
     def test_sticky_footer(self):
