@@ -31,7 +31,7 @@ var OfficerDetail = React.createClass({
       height: '240px'
     };
 
-    var columnClass = hasMap ? "col-md-4" : "col-md-6";
+    var columnClass = hasMap ? "col-sm-4" : "col-sm-6";
     var mapDiv = "";
     var radius = 8;
     if(hasMap){
@@ -50,11 +50,11 @@ var OfficerDetail = React.createClass({
     return (
       <div id='OfficerDetail' className={complaintRate}>
         <div className='row'>
-          <div className="col-md-9 h3">
+          <div className="col-sm-9 h3">
             <span className="star">{officer.star}</span>
             {officer.officer_first} {officer.officer_last}
           </div>
-          <div className='col-md-3 tright complaint-rate-label'>{complaintRateLabel}</div>
+          <div className='col-sm-3 tright complaint-rate-label'>{complaintRateLabel}</div>
         </div>
         <OfficerInformation officer={officer} />
         <div className="row visualization-information">

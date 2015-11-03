@@ -48,9 +48,9 @@ var DonutChart = React.createClass({
     span += '<span style="font-size: 28px"><strong>' + officer.discipline_count +
             " / " + officer.allegations_count + '</strong><br /></span>';
     span += '<span style="font-size: 16px;">' +
-      '<span style="color: ' + chartColors['undisciplined'] + '">complaints</span>' +
+      '<span style="color: ' + chartColors['disciplined'] + '">disciplined</span>' +      
       ' ' +
-      '<span style="color: ' + chartColors['disciplined'] + '">disciplined</span>' +
+      '<span style="color: ' + chartColors['undisciplined'] + '">complaints</span>' +
       '</span>';
     span += '</span>';
 
