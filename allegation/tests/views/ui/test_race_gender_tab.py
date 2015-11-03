@@ -108,10 +108,10 @@ class RaceGenderTabTest(BaseLiveTestCase, IntegrationTestHelperMixin):
         self.until(self.ajax_complete)
 
         self.find('.female').click()
-        self.until(lambda: self.element_by_classname_and_text('tag', 'Female').should.be.ok)
+        self.until(lambda: self.element_by_classname_and_text('filter-name', 'Female').should.be.ok)
 
         self.find('.female').click()
-        self.until(lambda: self.element_by_classname_and_text('tag', 'Female').shouldnt.be.ok)
+        self.until(lambda: self.element_by_classname_and_text('filter-name', 'Female').shouldnt.be.ok)
 
     def ensure_the_correct_gender_data_is_shown(self, ratio):
         complaint_gender_chart = self.find('.complaint-gender-chart').text
