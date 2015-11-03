@@ -250,6 +250,13 @@ module.exports = {
     'data_source': 'Data Source'
   },
 
+  AUTOCOMPLETE_DISPLAY_CATEGORY_IN_TAG: [
+    'officer__gender',
+    'complainant_gender',
+    'officer__race',
+    'complainant_race'
+  ],
+
   DEFAULT_SITE_TITLE: DEFAULT_SITE_TITLE,  // from global variable
 
   MEDIA_URL: '/media/',
