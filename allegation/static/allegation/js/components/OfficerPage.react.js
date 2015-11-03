@@ -17,6 +17,7 @@ var StoryList = require('components/OfficerPage/StoryList.react');
 var OfficerPresenter = require('presenters/OfficerPresenter');
 var Disclaimer = require('components/HomePage/Disclaimer.react');
 var Footer = require('components/HomePage/Footer.react');
+var HappyFox = require('components/Shared/HappyFox.react');
 
 
 var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
@@ -79,6 +80,7 @@ var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
           </div>
         </div>
         <Disclaimer />
+        <HappyFox />
       </div>
     );
   },

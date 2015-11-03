@@ -231,5 +231,12 @@ module.exports = {
   SESSION_API_ENDPOINT: '/api/allegations/session/',
   RACE_GENDER_API_ENDPOINT: '/api/allegations/race-gender',
 
-  DATE_FORMAT: 'D MMM, YYYY'
+  DATE_FORMAT: 'D MMM, YYYY',
+
+  HAPPYFOX_CONF: {
+    EMBED_TOKEN: "31ec3e10-7a4b-11e5-bf4e-83a9062f6735",
+    ACCESS_TOKEN: "0caab5f9fe694a1b8a094b6b0f48619e",
+    HOST_URL: "https://happyfoxchat.com",
+    ASSETS_URL: "https://d1l7z5ofrj6ab8.cloudfront.net/visitor"
+  }
 };
