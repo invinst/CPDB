@@ -107,11 +107,26 @@ class RaceGenderTabTest(BaseLiveTestCase, IntegrationTestHelperMixin):
         self.go_to_race_gender_tab()
         self.until(self.ajax_complete)
 
-        self.find('.female').click()
-        self.until(lambda: self.element_by_classname_and_text('filter-name', 'Female').should.be.ok)
+        self.officer_gender_chart_block('.female').click()
+        self.until_ajax_complete()
+        self.element_by_classname_and_text('tag', 'Female').should.be.ok
 
-        self.find('.female').click()
-        self.until(lambda: self.element_by_classname_and_text('filter-name', 'Female').shouldnt.be.ok)
+        self.officer_gender_chart_block('.female').click()
+        self.until_ajax_complete()
+        self.element_by_classname_and_text('tag', 'Female').shouldnt.be.ok
+
+        self.officer_gender_chart_block('.female').click()
+        self.until_ajax_complete()
+        self.element_by_classname_and_text('tag', 'Female').should.be.ok
+
+        self.officer_gender_chart_block('.male').click()
+        self.until_ajax_complete()
+        self.element_by_classname_and_text('tag', 'Female').shouldnt.be.ok
+        self.element_by_classname_and_text('tag', 'Male').should.be.ok
+
+    def officer_gender_chart_block(self, block_class):
+        block_css_path = ".officer-gender-chart {block_class} text".format(block_class=block_class)
+        return self.find(block_css_path)
 
     def ensure_the_correct_gender_data_is_shown(self, ratio):
         complaint_gender_chart = self.find('.complaint-gender-chart').text
