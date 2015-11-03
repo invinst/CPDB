@@ -73,14 +73,14 @@ var PercentageRectangleChart = React.createClass({
         <div className={className}></div>
     );
   },
+
   clickHandler: function(blockData){
     var vals = typeof(blockData['filterValue']) == 'object' ? blockData['filterValue'] : [blockData['filterValue']];
+    var tags = vals.map(function(value) {
+      return { 'label': blockData['label'], 'value': value };
+    });
 
-    for(var i=0; i < vals.length; i++) {
-      var val = vals[i];
-      FilterTagsActions.addTag(this.props.filter, {'label': blockData['label'], 'value': val});
-      //FilterTagsActions.pinTag(this.props.filter, {'label': blockData['label'], 'value': val});
-    }
+    FilterTagsActions.toggleTags(this.props.filter, tags);
     return false;
   }
 

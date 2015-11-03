@@ -1,0 +1,82 @@
+#search-wrapper
+  width: 96%
+  padding: 0
+  font-family: $font_0, $font_4
+  border-bottom: solid 1px $color_danube_approx
+  input
+    border: none
+    //If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+    box-shadow: none
+    //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
+    border-radius: 0
+    width: 96%
+    padding-left: 4px
+
+  &:before
+    content: "\e003"
+    font-family: $font_6
+    line-height: 1
+    display: inline-block
+    color: $color_deep_cerulean_approx
+
+
+input::-webkit-input-placeholder
+  color: $color_mountain_mist_approx
+
+input:-moz-placeholder
+  color: $color_mountain_mist_approx
+
+input::-moz-placeholder
+  color: $color_mountain_mist_approx
+
+input:-ms-input-placeholder
+  color: $color_mountain_mist_approx
+
+.ui-autocomplete
+  z-index: 100000
+  padding: 1em 0
+  > li
+    padding: 0 1em
+    border-left: 4px solid transparent
+
+
+.ui-autocomplete-category
+  font-size: 0.9em
+  padding: 0.5em 0
+  color: $color_mountain_mist_approx
+
+.ui-widget
+  font-family: $font_0, $font_1
+
+.ui-state-focus
+  @extend .extend_15
+
+.bootstrap-tagsinput
+  border: none
+  //If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+  box-shadow: none
+  margin: 10px 0
+  background-color: transparent
+  .tag
+    font-size: 1em
+    font-weight: 300
+
+  input
+    font-size: 1em
+    font-weight: 300
+
+
+.label-info-autocomplete
+  background-color: $color_deep_cerulean_approx
+
+.ui-menu .ui-menu-item
+  padding: 0 1em
+  border-left: 4px solid transparent
+  text-transform: capitalize
+  padding: 0.2em 1.76em
+
+.ui-widget-content .ui-state-focus
+  @extend .extend_15
+
+span.term
+  font-weight: 400
