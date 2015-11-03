@@ -231,7 +231,13 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
 
   controlZoomOut: function () {
     if (this.state.control.zoomOut1) {
-      this.select(this.state.selected.parent);
+      if (this.state.selected.parent) {
+        var that = this;
+        var parent = this.state.selected.parent;
+        setTimeout(function () {
+          that.select(parent);
+        }, 1);
+      }
     }
   },
 
@@ -280,10 +286,10 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
 
   componentDidUpdate: function () {
     this.drawChart();
+    this.clearControl();
     this.controlZoomOut();
     this.controlSelect();
     this.controlHover();
-    this.clearControl();
   },
 
   componentDidMount: function () {
