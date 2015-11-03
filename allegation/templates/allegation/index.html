@@ -14,7 +14,7 @@
     {% endblock %}
       <link rel="shortcut icon" type='image/png' href="{% static 'img/logox2.png' %}" />
       <link rel="home" href="/" />
-      <link href='//fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700|Vollkorn:400italic,400' rel='stylesheet' type='text/css'>
+      <link href='//fonts.googleapis.com/css?family=Vollkorn:400italic,400' rel='stylesheet' type='text/css'>
       <link href="//cdnjs.cloudflare.com/ajax/libs/vis/4.2.0/vis.css" rel="stylesheet" type="text/css" />
       <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
       <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" />
@@ -28,12 +28,10 @@
       <link rel="stylesheet" href="{% static 'jquery-ui/themes/base/menu.css' %}" />
       <link rel="stylesheet" href="{% static 'jquery-ui/themes/base/slider.css' %}" />
       <link rel="stylesheet" href="{% static 'bootstrap-tagsinput/dist/bootstrap-tagsinput.css' %}" />
-      <link rel="stylesheet" href="{% static 'search/css/search.css' %}" />
       <link rel="stylesheet" href="{% static 'allegation/css/MarkerCluster.Default.css' %}" />
       <link rel="stylesheet" href="{% static 'allegation/css/MarkerCluster.css' %}" />
       <link rel="stylesheet" href="{% static 'c3/c3.min.css' %}" />
       <link rel="stylesheet" href="{% static 'graph/css/complained-officers.css' %}" />
-      <link rel="stylesheet" href="{% static 'allegation/css/officer-detail.css' %}" />
 
       {% compress css %}
       <link rel="stylesheet" type="text/sass" href="{% static 'sass/style.sass' %}" />
@@ -89,26 +87,5 @@
     setTimeout(ldinsp, 500); document.readyState != "complete" ? (window.attachEvent ? window.attachEvent('onload', ldinsp) : window.addEventListener('load', ldinsp, false)) : ldinsp();
     })();
     </script>
-
-    <!--Start of HappyFox Live Chat Script-->
-    <script>
-     window.HFCHAT_CONFIG = {
-         EMBED_TOKEN: "31ec3e10-7a4b-11e5-bf4e-83a9062f6735",
-         ACCESS_TOKEN: "0caab5f9fe694a1b8a094b6b0f48619e",
-         HOST_URL: "https://happyfoxchat.com",
-         ASSETS_URL: "https://d1l7z5ofrj6ab8.cloudfront.net/visitor"
-     };
-
-    (function() {
-      var scriptTag = document.createElement('script');
-      scriptTag.type = 'text/javascript';
-      scriptTag.async = true;
-      scriptTag.src = window.HFCHAT_CONFIG.ASSETS_URL + '/js/widget-loader.js';
-
-      var s = document.getElementsByTagName('script')[0];
-      s.parentNode.insertBefore(scriptTag, s);
-    })();
-    </script>
-    <!--End of HappyFox Live Chat Script-->
   </body>
 </html>

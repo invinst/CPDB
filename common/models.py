@@ -141,6 +141,9 @@ OUTCOMES = [
     ['028', '28 Day Suspension'],
     ['029', '29 Day Suspension'],
     ['030', '30 Day Suspension'],
+    ['045', '45 Day Suspension'],
+    ['060', '60 Day Suspension'],
+    ['090', '90 Day Suspension'],
     ['100', 'Reprimand'],
     ['200', 'Suspended over 30 Days'],
     ['300', 'Administrative Termination'],
@@ -298,7 +301,7 @@ RACES = [
 RACES = [[x, x] for x in RACES]
 RACES_DICT = dict(RACES)
 
-NO_DISCIPLINE_CODES = ('600', '000', '500', '700', '800', '900', ' ', None)
+NO_DISCIPLINE_CODES = ('600', '000', '500', '700', '800', '900', '', None)
 DISCIPLINE_CODES = [x[0] for x in OUTCOMES if x[0] not in NO_DISCIPLINE_CODES]
 FINDINGS = [
     ['UN', 'Unfounded'],
@@ -307,7 +310,8 @@ FINDINGS = [
     ['SU', 'Sustained'],
     ['NC', 'No Cooperation'],
     ['NA', 'No Affidavit'],
-    ['DS', 'Discharged']
+    ['DS', 'Discharged'],
+    ['ZZ', 'Unknown']
 ]
 FINDINGS_DICT = dict(FINDINGS)
 
@@ -333,12 +337,19 @@ OUTCOME_TEXT_DICT = {
             'final_outcome': [str(x).zfill(3) for x in range(1, 10)],
         }
     },
-    '10-30 days':{
+    '10-30 days': {
         'text': '10-30 day',
         'condition': {
             'final_outcome': [str(x).zfill(3) for x in range(10, 31)],
         }
-    },    
+    },
+
+    '30 more days': {
+        'text': '30+ days',
+        'condition': {
+            'final_outcome': ["045", "060", "090", "200"],
+        }
+    },
 }
 
 FINAL_FINDING_TEXT_DICT = {

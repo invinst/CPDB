@@ -15,6 +15,7 @@ var SessionAPI = require('utils/SessionAPI');
 var SessionStore = require('stores/SessionStore');
 var Tabs = require('components/DataToolPage/Tabs.react');
 var Nav = require('components/DataToolPage/Nav.react');
+var HappyFox = require('components/Shared/HappyFox.react');
 
 
 var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
@@ -115,6 +116,7 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
 
         </div>
         <Disclaimer />
+        <HappyFox />
       </div>
     );
   }

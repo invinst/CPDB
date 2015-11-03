@@ -9,13 +9,9 @@ var ajax = null;
 
 var ComplaintListAPI = {
   preloadDataForOtherTab: function () {
-    var params = {
-      'ignore_tracking': 1
-    };
-
     for (filter in AppConstants.FILTERS) {
       var queryString = AllegationFetcherQueryBuilder.buildQuery(filter);
-      ajax = $.getJSON('/api/allegations/?' + queryString, params, function (data) {
+      ajax = $.getJSON('/api/allegations/?' + queryString, function (data) {
       });
     }
   },

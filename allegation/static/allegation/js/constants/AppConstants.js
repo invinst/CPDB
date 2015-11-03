@@ -41,6 +41,7 @@ module.exports = {
   RECEIVE_STORIES: c++,
 
   ADD_TAG: c++,
+  TOGGLE_TAGS: c++,
   REMOVE_TAG: c++,
   PIN_TAG: c++,
 
@@ -221,6 +222,34 @@ module.exports = {
     'unitWithName': 'Unit'
   },
 
+  AUTOCOMPLETE_CATEGORY_NAMES: {
+    'crid': 'Complaint ID',
+    'cat__category': 'Category',
+    'cat': 'Allegation type',
+    'investigator': 'Investigator',
+    'officer': 'Officer',
+    'officer__star': 'Badge number',
+    'officer__unit': 'Officer Unit',
+    'officer__rank': 'Officer Rank',
+    'officer__gender': 'Officer Gender',
+    'officer__race': 'Officer Race',
+    'recc_outcome': 'Recommended Outcome',
+    'recc_finding': 'Recommended Finding',
+    'final_outcome': 'Final Outcome',
+    'final_outcome_class': 'Final Outcome',
+    'final_finding': 'Final Finding',
+    'final_finding_text': 'Final Finding',
+    'incident_date_only__year': 'Incident Year',
+    'incident_date_only__year_month': 'Incident Year/Month',
+    'incident_date_only': 'Incident Date',
+    'areas__id': 'Area',
+    'complainant_gender': 'Complainant Gender',
+    'complainant_race': 'Complainant Race',
+    'outcome_text': 'Outcome',
+    'city': 'Zip Code',
+    'data_source': 'Data Source'
+  },
+
   DEFAULT_SITE_TITLE: DEFAULT_SITE_TITLE,  // from global variable
 
   MEDIA_URL: '/media/',
@@ -230,5 +259,12 @@ module.exports = {
   SESSION_API_ENDPOINT: '/api/allegations/session/',
   RACE_GENDER_API_ENDPOINT: '/api/allegations/race-gender',
 
-  DATE_FORMAT: 'D MMM, YYYY'
+  DATE_FORMAT: 'D MMM, YYYY',
+
+  HAPPYFOX_CONF: {
+    EMBED_TOKEN: "31ec3e10-7a4b-11e5-bf4e-83a9062f6735",
+    ACCESS_TOKEN: "0caab5f9fe694a1b8a094b6b0f48619e",
+    HOST_URL: "https://happyfoxchat.com",
+    ASSETS_URL: "https://d1l7z5ofrj6ab8.cloudfront.net/visitor"
+  }
 };
