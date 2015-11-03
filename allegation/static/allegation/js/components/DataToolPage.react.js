@@ -93,7 +93,7 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
         <Nav />
         <div className='container-fluid'>
             <div className="row" id='filter-row'>
-               <div className="col-md-10 col-md-offset-1">
+               <div className="col-md-10">
                   <Filters />
                </div>
             </div>
