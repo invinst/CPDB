@@ -98,11 +98,12 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
                </div>
             </div>
           { this.renderTabs() }
-          <div className='container content'>
-            <div id='officer-cards'><OfficerList /></div>
-            <div id='complaint-list'><ComplaintSection /></div>
-          </div>
-
+        </div>
+        <div className='container-fluid content'>
+          <div id='officer-cards'><OfficerList /></div>
+          <div id='complaint-list'><ComplaintSection /></div>
+        </div>
+        <div className='container-fluid'>
           <div className='sticky-footer'>
             <div id='EmbedBar' className="row">
               <div className="col-md-12">
@@ -113,7 +114,6 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
             </div>
             <Footer />
           </div>
-
         </div>
         <Disclaimer />
         <HappyFox />
