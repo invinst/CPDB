@@ -78,6 +78,15 @@ class RaceGenderTabTest(BaseLiveTestCase, IntegrationTestHelperMixin):
 
         self.ensure_the_correct_gender_data_is_shown(ratio)
 
+    def test_trigger_4_different_filters_when_click_on_other_block(self):
+        self.create_allegation_with_races()
+        self.go_to_race_gender_tab()
+
+        self.find('.officer-race-chart .others text').click()
+        self.until_ajax_complete()
+
+        len(self.find_all('.filter-name')).should.equal(4)
+
     def test_race_chart_by_filter(self):
         analysis = {
             'White': 1,
@@ -109,20 +118,20 @@ class RaceGenderTabTest(BaseLiveTestCase, IntegrationTestHelperMixin):
 
         self.officer_gender_chart_block('.female').click()
         self.until_ajax_complete()
-        self.element_by_classname_and_text('tag', 'Female').should.be.ok
+        self.element_by_classname_and_text('filter-name', 'Female').should.be.ok
 
         self.officer_gender_chart_block('.female').click()
         self.until_ajax_complete()
-        self.element_by_classname_and_text('tag', 'Female').shouldnt.be.ok
+        self.element_by_classname_and_text('filter-name', 'Female').shouldnt.be.ok
 
         self.officer_gender_chart_block('.female').click()
         self.until_ajax_complete()
-        self.element_by_classname_and_text('tag', 'Female').should.be.ok
+        self.element_by_classname_and_text('filter-name', 'Female').should.be.ok
 
         self.officer_gender_chart_block('.male').click()
         self.until_ajax_complete()
-        self.element_by_classname_and_text('tag', 'Female').shouldnt.be.ok
-        self.element_by_classname_and_text('tag', 'Male').should.be.ok
+        self.element_by_classname_and_text('filter-name', 'Female').shouldnt.be.ok
+        self.element_by_classname_and_text('filter-name', 'Male').should.be.ok
 
     def officer_gender_chart_block(self, block_class):
         block_css_path = ".officer-gender-chart {block_class} text".format(block_class=block_class)

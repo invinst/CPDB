@@ -4,6 +4,7 @@ from django.http.response import HttpResponse
 from allegation.views.allegation_api_view import AllegationAPIView
 from common.models import Officer, ComplainingWitness
 
+
 def return_dict(l, k, v):
     ret = {}
     for key, value in enumerate(l):
@@ -43,8 +44,7 @@ class AllegationRaceGenderAPI(AllegationAPIView):
     def get_allegations_with_ignored_tags(self, filter_tag):
         if filter_tag not in self.ignores:
             return self.get_allegation_without_filters()
-        else:
-            return self.get_allegation_with_filter()
+        return self.get_allegation_with_filter()
 
     def get_officer_genders(self):
         allegations = self.get_allegations_with_ignored_tags('officer__gender')

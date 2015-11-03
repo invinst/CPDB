@@ -176,10 +176,12 @@ var FilterStore = assign({}, EventEmitter.prototype, {
     };
   },
 
-  pinFor: function (category) {
+  justUnpinFor: function (category) {
     var self = this;
     return function(value) {
-      self.pinFilter(category, value);
+      if (self.isPinned(category, value)) {
+        self.pinFilter(category, value);
+      }
     };
   },
 
@@ -275,7 +277,7 @@ AppDispatcher.register(function (action) {
       // When adding completely, we pin one more time to `unpin` it
       // This will help us for not adding a new exception to API
       values.map(FilterStore.toogleFiltersFor(action.category));
-      values.map(FilterStore.pinFor(action.category));
+      values.map(FilterStore.justUnpinFor(action.category));
       FilterStore.emitChange();
     break;
 
