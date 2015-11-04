@@ -12,11 +12,17 @@ var Nav = React.createClass({
   render: function() {
     return (
       <div className="navbar navbar-default">
-        <div className="navbar-header">
-          <Logo />
-        </div>
-        <div className="navbar-collapse" id="navbar-main">
-          <Back />
+        <div className="container-fluid">
+          <div className="row">
+            <div className='col-xs-11 col-sm-7'>
+              <div className="navbar-header">
+                <Logo />
+              </div>
+              <div className="navbar-collapse" id="navbar-main">
+                <Back />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     )
