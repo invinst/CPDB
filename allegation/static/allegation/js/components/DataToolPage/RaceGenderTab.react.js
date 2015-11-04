@@ -45,7 +45,7 @@ var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
                 <span className='chart-title'>Officer</span>
               </div>
               <div className='col-lg-4 col-md-4 col-sm-3 col-xs-4'>
-                <span className='chart-title'>Complaint</span>
+                <span className='chart-title'>Complainant</span>
               </div>
             </div>
           </div>
