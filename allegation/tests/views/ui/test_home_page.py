@@ -9,6 +9,7 @@ class IntegrationTestHelperMixin(object):
     def visit_home(self):
         self.visit('/')
         self.button('View Database').click()
+        self.until(lambda: self.link("Outcomes"))
 
 
 class HomePageTestCase(BaseLiveTestCase, IntegrationTestHelperMixin):
