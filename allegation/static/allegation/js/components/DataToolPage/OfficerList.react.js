@@ -204,6 +204,77 @@ var OfficerList = React.createClass({
   },
 
   render: function () {
+    return (
+      <div id="officer_list">
+        <div className='row'>
+          <div className='col-md-12'>
+            <h3>Officers (<Counter to={this.state.officers.length} />)</h3>
+          </div>
+        </div>
+        { this.renderOfficerSection() }
+      </div>
+    );
+  },
+
+  renderOfficerSection: function () {
+    if (!this.state.officers.length) {
+      return (<div>No officers match the query.</div>);
+    }
+
+    var sliderClassName = classNames('col-md-12', 'overview-container', {
+      'filtered': this.state.filtered
+    });
+
+    return (
+      <div>
+        <div className="row">
+          <div className={sliderClassName}>
+            <div className="overview-box">
+              { this.renderOverview() }
+              <div className="clearfix"></div>
+            </div>
+            <div id="overview-slider"></div>
+          </div>
+        </div>
+        <div className="row">
+          <div className="col-md-12">
+            <div className="officer-control officer-control-left" onClick={this.slideToRight} onDbClick={this.prevent}>
+              <i className="fa fa-angle-left" />
+            </div>
+            <div className="officer-vertical-scroll">
+              <div className="officers-container">
+                { this.renderOfficerList () }
+                <div className="clearfix"></div>
+              </div>
+            </div>
+            <div className="officer-control officer-control-right" onClick={this.slideToLeft} onDbClick={this.prevent}>
+              <i className="fa fa-angle-right" />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  },
+
+  renderOverview: function () {
+    var overview = [];
+    var total = 0;
+    for (i = 0; i < this.state.overview.length; i++) {
+      total += this.state.overview[i];
+    }
+    for (i = 0; i < this.state.overview.length; i++) {
+      var className = "overview overview-" + i;
+      var style = {
+        width: this.state.overview[i] * 100 / total + '%'
+      };
+      overview.push(
+        <div className={className} key={i} style={style} />
+      );
+    }
+    return overview;
+  },
+
+  renderOfficerList: function () {
     var displayCount = OFFICER_PER_DISPLAY;  // 2 time need for view port
     var officers = [];
     var count = 0, i;
@@ -259,59 +330,7 @@ var OfficerList = React.createClass({
       )
     }
 
-    var overview = [];
-    var total = 0;
-    for (i = 0; i < this.state.overview.length; i++) {
-      total += this.state.overview[i];
-    }
-    for (i = 0; i < this.state.overview.length; i++) {
-      var className = "overview overview-" + i;
-      var style = {
-        width: this.state.overview[i] * 100 / total + '%'
-      };
-      overview.push(
-        <div className={className} key={i} style={style} />
-      );
-    }
-
-    var sliderClassName = classNames('col-md-12', 'overview-container', {
-      'filtered': this.state.filtered
-    });
-
-    return (
-      <div id="officer_list">
-        <div className='row'>
-          <div className='col-md-12'>
-            <h3>Officers (<Counter to={this.state.officers.length} />)</h3>
-          </div>
-        </div>
-        <div className="row">
-          <div className={sliderClassName}>
-            <div className="overview-box">
-              {overview}
-              <div className="clearfix"></div>
-            </div>
-            <div id="overview-slider"></div>
-          </div>
-        </div>
-        <div className="row">
-          <div className="col-md-12">
-            <div className="officer-control officer-control-left" onClick={this.slideToRight} onDbClick={this.prevent}>
-              <i className="fa fa-angle-left" />
-            </div>
-            <div className="officer-vertical-scroll">
-              <div className="officers-container">
-                {officerCols}
-                <div className="clearfix"></div>
-              </div>
-            </div>
-            <div className="officer-control officer-control-right" onClick={this.slideToLeft} onDbClick={this.prevent}>
-              <i className="fa fa-angle-right" />
-            </div>
-          </div>
-        </div>
-      </div>
-    );
+    return officerCols;
   },
 
   componentDidUpdate: function(){
