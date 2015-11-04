@@ -15,7 +15,7 @@ var Nav = React.createClass({
         <div className="navbar-header">
           <Logo />
         </div>
-        <div className="navbar-collapse collapse" id="navbar-main">
+        <div className="navbar-collapse" id="navbar-main">
           <Back />
         </div>
       </div>
