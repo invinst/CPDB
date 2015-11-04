@@ -15,11 +15,23 @@ var RelatedOfficers = require('components/OfficerPage/RelatedOfficers.react');
 var SessionStore = require('stores/SessionStore');
 var StoryList = require('components/OfficerPage/StoryList.react');
 var OfficerPresenter = require('presenters/OfficerPresenter');
-var Disclaimer = require('components/HomePage/Disclaimer.react');
-var Footer = require('components/HomePage/Footer.react');
+var Disclaimer = require('components/DataToolPage/Disclaimer.react');
+var Footer = require('components/DataToolPage/Footer.react');
+var HappyFox = require('components/Shared/HappyFox.react');
 
 
 var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
+  getInitialState: function() {
+    return {
+      data: {
+        allegations: [],
+        officer: {},
+        relatedOfficers: [],
+        hasMap: false
+      }
+    }
+  },
+
   componentDidMount: function() {
     var officerId = this.props.officerId || '';
     OfficerPageServerActions.getOfficerData(officerId);
@@ -68,6 +80,7 @@ var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
           </div>
         </div>
         <Disclaimer />
+        <HappyFox />
       </div>
     );
   },

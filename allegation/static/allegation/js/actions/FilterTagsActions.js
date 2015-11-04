@@ -8,6 +8,14 @@ var SunburstAPI = require('utils/SunburstAPI');
 var FilterStore = require('stores/FilterStore');
 
 
+function updateSiteData() {
+  ComplaintListAPI.getData();
+  OutcomeAnalysisAPI.getAnalysisInformation();
+  RaceGenderAPI.getData();
+  SunburstAPI.getData();
+  SessionAPI.updateSessionInfo({'query': FilterStore.getSession()});
+};
+
 var FilterTagsActions = {
   addTag: function (category, filter) {
     AppDispatcher.dispatch({
@@ -15,12 +23,17 @@ var FilterTagsActions = {
       category: category,
       filter: filter
     });
+    updateSiteData();
+  },
 
-    ComplaintListAPI.getData();
-    OutcomeAnalysisAPI.getAnalysisInformation();
-    RaceGenderAPI.getData();
-    SunburstAPI.getData();
-    SessionAPI.updateSessionInfo({'query': FilterStore.getSession()});
+  toggleTags: function (category, filters) {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.TOGGLE_TAGS,
+      category: category,
+      filters: filters
+    });
+
+    updateSiteData();
   },
 
   removeTag: function (category, filter) {
@@ -30,11 +43,7 @@ var FilterTagsActions = {
       filter: filter
     });
 
-    ComplaintListAPI.getData();
-    OutcomeAnalysisAPI.getAnalysisInformation();
-    RaceGenderAPI.getData();
-    SunburstAPI.getData();
-    SessionAPI.updateSessionInfo({'query': FilterStore.getSession()});
+    updateSiteData();
   },
 
   removedTag: function (category, filter) {

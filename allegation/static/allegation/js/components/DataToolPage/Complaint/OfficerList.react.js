@@ -1,7 +1,7 @@
 var React = require('react');
 
-var OfficerListWithInvestigator = require('components/HomePage/Complaint/OfficerListWithInvestigator.react');
-var OfficerListWithoutInvestigator = require('components/HomePage/Complaint/OfficerListWithoutInvestigator.react');
+var OfficerListWithInvestigator = require('components/DataToolPage/Complaint/OfficerListWithInvestigator.react');
+var OfficerListWithoutInvestigator = require('components/DataToolPage/Complaint/OfficerListWithoutInvestigator.react');
 
 
 var OfficerList = React.createClass({

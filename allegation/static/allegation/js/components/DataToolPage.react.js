@@ -5,9 +5,9 @@ var isMobile = require('ismobilejs');
 var AppConstants = require('constants/AppConstants');
 var Base = require('components/Base.react');
 var ComplaintSection = require('components/DataToolPage/ComplaintSection.react');
-var Disclaimer = require('components/HomePage/Disclaimer.react');
+var Disclaimer = require('components/DataToolPage/Disclaimer.react');
 var EmbedBar = require('components/DataToolPage/Embed/Bar.react');
-var Footer = require('components/HomePage/Footer.react');
+var Footer = require('components/DataToolPage/Footer.react');
 var Filters = require('components/DataToolPage/Filters.react');
 var Map = require('components/DataToolPage/Map.react');
 var OfficerList = require('components/DataToolPage/OfficerList.react');
@@ -15,6 +15,7 @@ var SessionAPI = require('utils/SessionAPI');
 var SessionStore = require('stores/SessionStore');
 var Tabs = require('components/DataToolPage/Tabs.react');
 var Nav = require('components/DataToolPage/Nav.react');
+var HappyFox = require('components/Shared/HappyFox.react');
 
 
 var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
@@ -115,6 +116,7 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
 
         </div>
         <Disclaimer />
+        <HappyFox />
       </div>
     );
   }

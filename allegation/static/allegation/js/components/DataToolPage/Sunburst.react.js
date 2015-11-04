@@ -425,7 +425,7 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
         <div className="col-md-12">
           {breadcrumb}
         </div>
-        <div className="col-md-5">
+        <div className="col-md-5 col-xs-5">
           <div id="sunburst-legend">
             <div className="root">
               {numeral(total).format(AppConstants.NUMERAL_FORMAT)} {hovering.name}
@@ -438,7 +438,7 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
             </div>
           </div>
         </div>
-        <div id="sunburst-chart" className="col-md-7">
+        <div id="sunburst-chart" className="col-md-7 col-xs-7">
         </div>
       </div>
     );

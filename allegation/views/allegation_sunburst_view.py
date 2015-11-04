@@ -106,7 +106,7 @@ class AllegationSunburstView(AllegationAPIView):
         },
         'children': [{
             'name': 'Disciplined',
-            'condition': Q(final_outcome__in=DISCIPLINE_CODES),
+            'condition': Q(final_outcome__in=DISCIPLINE_CODES) or Q(final_outcome__isnull=True),
             'tagValue': {
                 'label': 'Any Disciplined',
                 'category': 'outcome_text',
