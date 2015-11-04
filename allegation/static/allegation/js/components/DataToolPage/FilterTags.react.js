@@ -13,7 +13,7 @@ var AppConstants = require('constants/AppConstants');
 var FilterTags = React.createClass(_.assign(Base(SessionStore), {
 
   removeTag: function (category, filter) {
-    FilterTagsActions.removeTag(category, filter);
+    FilterTagsActions.removeTag(category, filter, true);
     FilterTagsActions.removedTag(category, filter);
   },
 
