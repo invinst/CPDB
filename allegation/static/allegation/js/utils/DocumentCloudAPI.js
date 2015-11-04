@@ -1,4 +1,4 @@
-var jQuery = require('jquery');
+require('utils/jQuery');
 var StoryActions = require('actions/OfficerPage/StoryActions')
 
 

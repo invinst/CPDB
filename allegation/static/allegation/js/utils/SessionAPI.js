@@ -1,6 +1,5 @@
-var $ = require('jquery');
+require('utils/jQuery');
 var _ = require('lodash');
-require('jquery.cookie');
 
 var AppConstants = require('constants/AppConstants');
 var ComplaintListAPI = require('utils/ComplaintListAPI');
@@ -8,6 +7,7 @@ var SessionActions = require('actions/SessionActions');
 var SessionStore = require('stores/SessionStore');
 
 var ajax = null;
+
 
 var SessionAPI = {
   getSessionInfo: function(session) {
@@ -37,7 +37,7 @@ var SessionAPI = {
     }
 
     if (!_.isEmpty(data.hash)) {
-      ajax = $.ajax({
+      ajax = jQuery.ajax({
         url: AppConstants.SESSION_API_ENDPOINT,
         data: requestData,
         dataType: 'json',
