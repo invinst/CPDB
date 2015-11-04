@@ -38,12 +38,13 @@ class AllegationRaceGenderAPI(AllegationAPIView):
 
     def get_allegation_with_filter(self):
         if len(self.with_filters) == 0:
-            self.with_filters = self.get_allegations(ignore_filters=self.ignores)
+            self.with_filters = self.get_allegations(self.ignores)
         return self.with_filters
 
     def get_allegations_with_ignored_tags(self, filter_tag):
         if filter_tag not in self.ignores:
             return self.get_allegation_without_filters()
+
         return self.get_allegation_with_filter()
 
     def get_officer_genders(self):
