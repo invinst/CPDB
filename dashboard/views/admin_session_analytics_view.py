@@ -14,7 +14,7 @@ class AdminNewSessionsAnalyticsViewSet(viewsets.ModelViewSet):
     authentication_classes = (SessionAuthentication,)
     filter_backends = (filters.OrderingFilter,)
     ordering_fields = ('created_date')
-    ordering = ('-created_date',)
+    ordering = ('created_date',)
 
     def get_queryset(self):
         begin = self.request.GET.get('begin', START_UNIX_TIME_DATE)

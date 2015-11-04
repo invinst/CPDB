@@ -68,6 +68,8 @@ module.exports = {
   UPDATED_SETTING_DATA: c++,
   FAILED_TO_UPDATE_SETTING_DATA: c++,
 
+  RECEIVED_NEW_SESSIONS_DATA: c++,
+
   QUERY_LIST_FILTERS: {
     'all': 'All',
     'fail-attempts': 'Fail attempts',
@@ -133,6 +135,9 @@ module.exports = {
     { page: '/setting', icon: 'cogs', text: 'Settings' }
   ],
 
+  DATE_ONLY_FORMAT: 'YYYY-M-DD',
+  NUMBER_OF_DAYS_SHOWN_IN_NEW_SESSION_CHART: 30,
+
   SEARCH_TRAFFIC_API_ENDPOINT: '/api/dashboard/search-traffic/',
   SEARCH_RESULTS_API_ENDPOINT: '/api/dashboard/query-data/',
   ALIAS_API_ENDPOINT: '/api/dashboard/alias/',
@@ -145,5 +150,6 @@ module.exports = {
   DOCUMENT_LINK_END_POINT: '/api/dashboard/document-link/',
   SESSIONS_API_ENDPOINT: '/api/dashboard/sessions/',
   SETTINGS_API_ENDPOINT: '/api/dashboard/settings/',
-  SETTINGS_API_SAVE_ENDPOINT: '/api/dashboard/settings_save/'
+  SETTINGS_API_SAVE_ENDPOINT: '/api/dashboard/settings_save/',
+  NEW_SESSION_ANALYTICS_API_ENDPOINT: '/api/dashboard/new-sessions-analytics/',
 };
