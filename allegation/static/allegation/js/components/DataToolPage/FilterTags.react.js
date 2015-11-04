@@ -14,6 +14,7 @@ var FilterTags = React.createClass(_.assign(Base(SessionStore), {
 
   removeTag: function (category, filter) {
     FilterTagsActions.removeTag(category, filter);
+    FilterTagsActions.removedTag(category, filter);
   },
 
   pinTag: function (category, filter) {
