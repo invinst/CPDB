@@ -18,6 +18,7 @@ from django.conf.urls import include, url, patterns
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 from allegation.views import AllegationListView
@@ -40,6 +41,9 @@ urlpatterns = [
     url(r'^(?P<hash_id>[\w-]+)/$', ensure_csrf_cookie(AllegationListView.as_view()), name='homepage-share'),
     url(r'^(?P<hash_id>[\w-]+)/(?P<slugified_url>[\w-]+)$', ensure_csrf_cookie(AllegationListView.as_view()), name='homepage-share'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if settings.DJANGO_ENV == 'test':
+    urlpatterns += [url(r'^favicon\.ico$', lambda request: HttpResponse())]
 
 
 handler404 = 'common.views.handler404'
