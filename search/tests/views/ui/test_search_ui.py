@@ -1,3 +1,5 @@
+from selenium.webdriver.common.keys import Keys
+
 from allegation.factories import OfficerFactory
 from common.models import Officer
 from common.tests.core import BaseLiveTestCase
@@ -14,9 +16,13 @@ class SearchUITestCase(BaseLiveTestCase):
 
     def test_display_suggestions_upon_typing(self):
         officer = OfficerFactory(officer_first='Jerry')
+        OfficerFactory(officer_first='Jee')
 
         self.visit('/#!/data-tools')
         search_text = 'Je'
         self.until(lambda: self.find('.ui-autocomplete-input').send_keys(search_text))
         self.until(lambda: self.should_see_text(search_text))
         self.until(lambda: self.should_see_text(officer.officer_last))
+
+        self.find('.ui-autocomplete-input').send_keys(Keys.ARROW_DOWN)
+        self.find('.ui-autocomplete-input').get_attribute('value').should.equal(search_text)
