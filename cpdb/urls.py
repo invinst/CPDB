@@ -42,7 +42,7 @@ urlpatterns = [
     url(r'^(?P<hash_id>[\w-]+)/(?P<slugified_url>[\w-]+)$', ensure_csrf_cookie(AllegationListView.as_view()), name='homepage-share'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-if settings.DEBUG:
+if settings.DJANGO_ENV == 'test':
     urlpatterns += [url(r'^favicon\.ico$', lambda request: HttpResponse())]
 
 
