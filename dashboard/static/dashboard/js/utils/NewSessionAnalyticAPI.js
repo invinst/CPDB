@@ -8,12 +8,12 @@ var AppConstants = require('../constants/AppConstants');
 var ajax = null;
 
 // Fill django-rest returned date data
-function fill(data, begin) {
+function fill(data, begin, end) {
   index = begin;
-  today = moment().format(AppConstants.DATE_ONLY_FORMAT);
+  end = moment(end).subtract(1, 'd').format(AppConstants.DATE_ONLY_FORMAT);
   filledData = _(data['results']).pluck('created_date').value();
 
-  while (index != today) {
+  while (index != end) {
     index = moment(index).add(1, 'd').format(AppConstants.DATE_ONLY_FORMAT);
     if (!_(filledData).contains(index)) {
       data['results'].push({
