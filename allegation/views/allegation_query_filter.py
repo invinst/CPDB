@@ -147,7 +147,7 @@ class AllegationQueryFilter(object):
                 categories = AllegationCategory.objects.filter(category__in=category_names)
                 cats = list(categories.values_list('cat_id', flat=True))
                 value = self.query_dict.getlist('cat') + cats
-                self.filters['cat__in'] = value
+                self.filters['cat'] = value
                 self.raw_filters.remove('cat')
                 self.raw_filters.remove('cat__category')
 
