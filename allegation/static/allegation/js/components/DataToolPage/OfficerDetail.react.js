@@ -1,3 +1,5 @@
+var classnames = require('classnames');
+
 var AppConstants = require('constants/AppConstants');
 var React = require('react');
 var MapStore = require("stores/MapStore");
@@ -31,7 +33,10 @@ var OfficerDetail = React.createClass({
       height: '240px'
     };
 
-    var columnClass = hasMap ? "col-sm-4" : "col-sm-6";
+    var columnClass = classnames({
+      'col-sm-4' : hasMap,
+      'col-sm-6' : !hasMap
+    });
     var mapDiv = "";
     var radius = 8;
     if(hasMap){
