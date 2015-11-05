@@ -126,6 +126,17 @@ module.exports = {
     }
   },
 
+  LINE_CHART_COLOR_OPTIONS: {
+    fillColor: "rgba(220,220,220,0.2)",
+    strokeColor: "rgba(220,220,220,1)",
+    pointColor: "rgba(220,220,220,1)",
+    pointStrokeColor: "#fff",
+    pointHighlightFill: "#fff",
+    pointHighlightStroke: "rgba(220,220,220,1)",
+  },
+
+  LINE_CHART_OPTIONS: { responsive: true, aspectRatio: true },
+
   NAVIGATION_ITEMS: [
     { page: '/', icon: 'bar-chart', text: 'Overview'},
     { page: '/search', icon: 'tags', text: 'Search Results' },

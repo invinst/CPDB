@@ -13,26 +13,9 @@ var NewSessionPerDayChart = React.createClass(_.assign(Base(NewSessionPerDayChar
   },
 
   render: function() {
-    var results = this.state.data.results;
-    var xs = _.pluck(results, 'created_date');
-    var ys = _.pluck(results, 'count');
-    var data = {
-      labels: xs,
-      datasets: [
-        {
-          data: ys,
-          fillColor: "rgba(220,220,220,0.2)",
-          strokeColor: "rgba(220,220,220,1)",
-          pointColor: "rgba(220,220,220,1)",
-          pointStrokeColor: "#fff",
-          pointHighlightFill: "#fff",
-          pointHighlightStroke: "rgba(220,220,220,1)"
-        }
-      ]
-    };
     return (
       <div>
-        <LineChart data={data} options={this.state.options} width={700} redraw={true} />
+        <LineChart data={this.state.chartData} options={this.state.options} width={700} redraw={true} />
       </div>
     );
   }
