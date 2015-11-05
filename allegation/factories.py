@@ -26,7 +26,7 @@ class AreaFactory(factory.django.DjangoModelFactory):
                                                                (87.940101, 42.023135)))))
 
 def capitalize_word():
-    return fake.word().capitalize()
+    return "{word}xa".format(word=fake.word()).capitalize()
 
 
 class PoliceWitnessFactory(factory.django.DjangoModelFactory):
