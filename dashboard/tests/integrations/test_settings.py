@@ -15,7 +15,7 @@ class SettingsEditTestCase(BaseLiveTestCase):
         super(SettingsEditTestCase, self).tearDown()
 
     def test_update_setting(self):
-        input_field = self.element_for_label(self.setting.key)
+        input_field = self.until(lambda: self.element_for_label(self.setting.key))
 
         self.should_see_text(self.setting.key)
         input_field.get_attribute('value').should.equal(self.setting.value)

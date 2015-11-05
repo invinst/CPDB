@@ -273,6 +273,7 @@ module.exports = {
   SESSION_API_ENDPOINT: '/api/allegations/session/',
   RACE_GENDER_API_ENDPOINT: '/api/allegations/race-gender',
 
+
   DATE_FORMAT: 'D MMM, YYYY',
 
   HAPPYFOX_CONF: {
