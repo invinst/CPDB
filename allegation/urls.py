@@ -11,8 +11,9 @@ from allegation.views.allegation_download_view import AllegationDownloadView
 from allegation.views.allegation_race_gender_api import AllegationRaceGenderAPI
 from allegation.views.allegation_sunburst_view import AllegationSunburstView
 from allegation.views.session_view import SessionAPIView
+from common.middleware.cache import orderless_cache_page
 
-cache_view = cache_page(86400 * 90)
+cache_view = orderless_cache_page(86400 * 90)
 
 
 urlpatterns = [
