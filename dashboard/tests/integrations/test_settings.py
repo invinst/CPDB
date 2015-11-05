@@ -5,10 +5,10 @@ from api.models import Setting
 
 class SettingsEditTestCase(BaseLiveTestCase):
     def setUp(self):
+        self.setting = SettingFactory()
         self.login_user()
         self.visit('/admin/')
         self.element_by_tagname_and_text('span', 'Settings').click()
-        self.setting = SettingFactory()
 
     def tearDown(self):
         self.setting.delete()
