@@ -9,6 +9,7 @@ class IntegrationTestHelperMixin(object):
     def visit_home(self):
         self.visit('/')
         self.button('View Database').click()
+        self.until(lambda: self.link("Outcomes"))
 
 
 class HomePageTestCase(BaseLiveTestCase, IntegrationTestHelperMixin):
@@ -36,22 +37,25 @@ class HomePageTestCase(BaseLiveTestCase, IntegrationTestHelperMixin):
         self.visit('/#!/data-tools')
         self.link("Categories").click()
 
+    def check_number_officer(self, num):
+        self.until(lambda: self.number_of_officers().should.equal(num))
+
     def test_click_on_category_only_show_allegation_belong_to_it(self):
         other_category = AllegationCategoryFactory()
         other_allegation = AllegationFactory(cat=other_category)
-
         self.filter_complaint_type()
-        self.number_of_officers().should.equal(2)
+
+        self.check_number_officer(2)
 
         self.until(lambda: self.link(self.allegation_category.category).is_displayed())
         self.link(self.allegation_category.category).click()
 
-        self.number_of_officers().should.equal(1)
+        self.check_number_officer(1)
 
     def test_click_on_officer_will_show_compliant(self):
         self.filter_complaint_type()
 
-        self.number_of_officers().should.equal(1)
+        self.check_number_officer(1)
 
         self.find('.checkmark').click()
         self.until(lambda: self.element_exist('.complaint_list'))
