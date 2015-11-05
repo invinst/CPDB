@@ -118,7 +118,8 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         for text in texts:
             if not isinstance(text, str):
                 text = str(text)
-            body.should.contain(text)
+            for x in text.split("\n"):
+                body.should.contain(x)
 
     def should_not_see_text(self, text):
         if not isinstance(text, str):
