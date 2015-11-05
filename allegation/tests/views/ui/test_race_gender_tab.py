@@ -119,6 +119,6 @@ class RaceGenderTabTest(BaseLiveTestCase, IntegrationTestHelperMixin):
             officer_race_chart.should.contain(self.percent_text(race, ratio))
 
     def percent_text(self, label, ratio):
-        percent = ratio *  100
-        text = "{0:.2f}%".format(percent)
+        percent = int(ratio *  100)
+        text = "%d" % percent
         return "{label} {percent}".format(label=label, percent=text)
