@@ -118,12 +118,6 @@ var OfficerList = React.createClass({
     this.embedListener();
     OfficerListStore.addChangeListener(this._onChange);
 
-    $(".officer-vertical-scroll")
-      .swipeleft(this.slideToLeft)
-      .swiperight(this.slideToRight);
-
-    $(".officer-control").disableSelection();
-
     if (this.props.query != undefined) {
       OfficerListStore.update(this.props.query);
     }
@@ -334,6 +328,15 @@ var OfficerList = React.createClass({
   },
 
   componentDidUpdate: function(){
+
+    $(".officer-control").disableSelection();
+
+    var officersDiv = $(".officer-vertical-scroll");
+    officersDiv
+      .off('swipeleft', this.slideToLeft)
+      .off('swiperight', this.slideToRight)
+      .swipeleft(this.slideToLeft)
+      .swiperight(this.slideToRight);
 
     var container = $(".officers-container");
 
