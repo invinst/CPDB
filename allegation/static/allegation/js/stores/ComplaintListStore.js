@@ -84,6 +84,7 @@ AppDispatcher.register(function(action) {
 
     case AppConstants.COMPLAINT_LIST_RECEIVED_DATA:
       _state['complaints'] = action.data.allegations;
+      _state.noQuery = action.data.noQuery;
       _state['loading'] = false;
       _state['pageNumber'] = 1;
       ComplaintListStore.emitChange();
