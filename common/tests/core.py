@@ -69,6 +69,8 @@ class UserTestBaseMixin(object):
 
 
 class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
+    _multiprocess_can_split_ = True
+
     source = 0
     source_dir = os.environ.get('CIRCLE_ARTIFACTS')
 
