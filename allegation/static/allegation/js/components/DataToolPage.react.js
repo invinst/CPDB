@@ -69,7 +69,7 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
       return (
         <div className='row map-row mobile'>
           <div className='col-md-12 chart-row'>
-            <Tabs mobile='true' />
+            <Tabs />
           </div>
         </div>
       );

@@ -58,6 +58,8 @@ module.exports = {
 
   RACE_GENDER_TAB_RECEIVED_DATA: c++,
 
+  SET_ACTIVE_TAB: c++,
+
   MAP_TOKEN: 'pk.eyJ1Ijoic3RlZmFuZ2VvcmciLCJhIjoiVnBNOEp4byJ9.7i2N7gTV-t_QtAA-kAAlFA',
   MAP_TYPE: 'mapbox.streets',
 
@@ -281,5 +283,12 @@ module.exports = {
     ACCESS_TOKEN: "0caab5f9fe694a1b8a094b6b0f48619e",
     HOST_URL: "https://happyfoxchat.com",
     ASSETS_URL: "https://d1l7z5ofrj6ab8.cloudfront.net/visitor"
+  },
+
+  TABS: {
+    'outcomes': 0,
+    'categories': 1,
+    'race_gender': 2,
+    'map': 3,
   }
 };

@@ -14,7 +14,8 @@ var _state = {
     'title': '',
     'hash': '',
     'query': {},
-    'readable_query': {}
+    'readable_query': {},
+    'active_tab': ''
   },
   'siteTitle': AppConstants.DEFAULT_SITE_TITLE
 };
@@ -27,6 +28,10 @@ var SessionStore = _.assign(Base(_state), {
 
   getHash: function() {
     return _state['data']['hash'];
+  },
+
+  getActiveTab: function () {
+    return _state['data']['active_tab'];
   },
 
   removeTagInCategory: function (category) {
@@ -69,7 +74,7 @@ var SessionStore = _.assign(Base(_state), {
         }
       }
     }
-  }
+  },
 });
 
 // Register callback to handle all updates
@@ -85,6 +90,7 @@ AppDispatcher.register(function (action) {
     data['title'] = data['title'] || AppConstants.DEFAULT_SITE_TITLE;
     _state['data'] = data;
     _state.siteTitle = data.title;
+    _state['data']['active_tab'] = data.active_tab;
     SessionStore.emitChange();
     break;
 
@@ -109,6 +115,10 @@ AppDispatcher.register(function (action) {
     case AppConstants.REMOVE_TAG:
       SessionStore.removeTag(action.category, action.filter);
       SessionStore.emitChange();
+      break;
+
+    case AppConstants.SET_ACTIVE_TAB:
+      _state['active_tab'] = action.data;
       break;
 
     default: break;
