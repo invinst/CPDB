@@ -14,7 +14,7 @@ var OfficerListWithInvestigator = React.createClass({
     var officerCount = this.getOfficerCount();
     switch (officerCount) {
       case 1:
-        return 'col-md-12 col-xs-6 col-sm-12';
+        return 'col-md-12 col-xs-6 col-sm-6';
       case 2:
         return 'col-md-6 col-xs-6 col-sm-6';
       default:
