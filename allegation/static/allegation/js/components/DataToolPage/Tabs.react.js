@@ -4,6 +4,7 @@
 var React = require('react');
 var classnames = require('classnames');
 var slugify = require('slugify');
+var isMobile = require('ismobilejs');
 
 global.jQuery = require('jquery');
 
@@ -102,7 +103,7 @@ var Tabs = React.createClass({
     var data_target = '#' + target;
     var tab = target.replace('-', '_')
 
-    if (tab == 'map' && !this.props.mobile) {
+    if (tab == 'map' && !isMobile.any) {
       return;
     }
 
@@ -121,7 +122,7 @@ var Tabs = React.createClass({
   },
 
   renderTabContent: function (id, Component) {
-    if (id == 'map' && !this.props.mobile) {
+    if (id == 'map' && !isMobile.any) {
       return;
     }
 
@@ -138,7 +139,7 @@ var Tabs = React.createClass({
 
   render: function () {
     var isActive = {
-      'active': !this.props.mobile
+      'active': !isMobile.any
     };
 
     var outcomeClassName = classnames(isActive);
