@@ -77,6 +77,7 @@ class AllegationSessionApiView(SimpleTestCase):
         response.status_code.should.equal(200)
 
     def test_update_active_tab(self):
+        Session.objects.all().delete();
         active_tab = 'map'
         update_params = self.update_params.copy()
         update_params['active_tab'] = active_tab
