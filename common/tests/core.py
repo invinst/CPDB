@@ -215,7 +215,7 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
 
         if self.source_dir:
             BaseLiveTestCase.source += 1
-            self.browser.get_screenshot_as_png(os.path.join(self.source_dir, '{s}.png'.format(s=BaseLiveTestCase.source)))
+            self.browser.save_screenshot(os.path.join(self.source_dir, '{s}.png'.format(s=BaseLiveTestCase.source)))
         raise TimeoutException(message) from error
 
     def is_displayed_in_viewport(self, element):
