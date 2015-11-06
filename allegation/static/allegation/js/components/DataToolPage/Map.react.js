@@ -163,6 +163,12 @@ var Map = React.createClass({
     if (_geo_json_layer) {
       _map.removeLayer(_geo_json_layer);
     }
+    if (typeof(HIGHLIGHT_STYLE) != 'undefined') {
+      highlightStyle = HIGHLIGHT_STYLE;
+    }
+    if (typeof(NORMAL_STYLE) != 'undefined') {
+      _normalStyle = NORMAL_STYLE;
+    }
 
     this.getAreaBoundaries(_types[0]);
 
@@ -280,6 +286,9 @@ var Map = React.createClass({
     var latLngs = [];
     var features = markers.features;
     var heatOpts = { radius: 10, max: this.mapIntensity(features.length) };
+    if(typeof(HEATMAP_OVERRIDES) != 'undefined') {
+      heatOpts = HEATMAP_OVERRIDES;
+    }
 
     if (_heat) {
       _map.removeLayer(_heat);
