@@ -1,5 +1,6 @@
 var React = require('react');
 require('utils/jQuery');
+var classnames = require('classnames');
 
 var Filters = require('components/DataToolPage/Filters.react');
 var ComplaintList = require('components/DataToolPage/ComplaintList.react');
@@ -37,8 +38,12 @@ var ComplaintSection = React.createClass({
     var analytics = this.state.analytics;
     var loading = this.state.loading;
 
+    var className = classnames('complaint_list', {
+      'hidden': this.state.noQuery
+    });
+
     return (
-      <div className="complaint_list" onScroll={this.onScroll}>
+      <div className={className} onScroll={this.onScroll}>
         <div className='row'>
           <div className='col-md-2'>
             <h3 className="margin-top-0">Complaints (<Counter to={analytics.All} />)</h3>
