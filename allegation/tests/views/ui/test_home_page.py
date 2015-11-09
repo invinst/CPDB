@@ -215,6 +215,7 @@ class HomePageTestCase(BaseLiveTestCase, IntegrationTestHelperMixin):
         self.find('body').send_keys(Keys.PAGE_DOWN)
         self.until(lambda: self.is_displayed_in_viewport('.sticky-footer').should.be.true)
         self.find('body').send_keys(Keys.PAGE_UP)
+        self.find('body').send_keys(Keys.PAGE_UP)
         self.until(lambda: self.is_displayed_in_viewport('.sticky-footer').should.be.false)
 
     def test_replace_old_filter_in_same_category(self):
@@ -272,10 +273,17 @@ class HomePageTestCase(BaseLiveTestCase, IntegrationTestHelperMixin):
         items = [x.text for x in items]
         return any(text in x for x in items)
 
+    def autocomplete_select(self, text):
+        items = self.find_all(".ui-autocomplete .ui-menu-item")
+        for item in items:
+            if text in item.text:
+                item.click()
+
     def search_officer(self, officer):
         self.fill_in("#autocomplete", officer.officer_first)
-        self.until(lambda: self.autocomplete_available(officer.officer_first))
-        self.find(".ui-autocomplete .ui-menu-item").click()
+        self.until_ajax_complete()
+        self.until(lambda: self.autocomplete_available(officer.display_name))
+        self.autocomplete_select(officer.display_name)
         self.until_ajax_complete()
 
     def test_default_site_title_from_settings(self):

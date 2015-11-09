@@ -75,8 +75,10 @@ var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
             <ComplaintSection officer={officer}/>
           </div>
 
-          <div className='sticky-footer'>
-            <Footer />
+          <div className='container-fluid'>
+            <div className='sticky-footer'>
+              <Footer />
+            </div>
           </div>
         </div>
         <Disclaimer />

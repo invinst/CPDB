@@ -176,6 +176,15 @@ var FilterStore = assign({}, EventEmitter.prototype, {
     };
   },
 
+  justUnpinFor: function (category) {
+    var self = this;
+    return function(value) {
+      if (self.isPinned(category, value)) {
+        self.pinFilter(category, value);
+      }
+    };
+  },
+
   addChangeListener: function (callback) {
     this.on(CHANGE_EVENT, callback);
   },
@@ -263,7 +272,12 @@ AppDispatcher.register(function (action) {
     break;
 
     case AppConstants.TOGGLE_TAGS:
-      _(action.filters).chain().pluck('value').map(FilterStore.toogleFiltersFor(action.category));
+      var values = _(action.filters).chain().pluck('value');
+      // We do a trick here, first we add it in, then we pin it
+      // When adding completely, we pin one more time to `unpin` it
+      // This will help us for not adding a new exception to API
+      values.map(FilterStore.toogleFiltersFor(action.category));
+      values.map(FilterStore.justUnpinFor(action.category));
       FilterStore.emitChange();
     break;
 

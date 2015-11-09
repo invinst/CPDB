@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -31,13 +32,17 @@ class Session(models.Model):
     query = JSONField()
     share_from = models.ForeignKey('share.Session', null=True, default=None)
     share_count = models.IntegerField(default=0)
-    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    created_at = models.DateTimeField(default=timezone.now, null=True)
     ip = models.CharField(default='', max_length=40, null=True) # we could handle IPv6 as well
     user_agent = models.CharField(max_length=255, null=True)
 
     @property
     def hash_id(self):
         return hash_obj.encode(self.id)
+
+    @property
+    def created_date(self):
+        return date(self.created_at)
 
     def get_suggestion_logs(self):
         suggestion_logs = SuggestionLog.objects.filter(session_id=self.hash_id)
