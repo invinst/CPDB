@@ -1,16 +1,19 @@
 var React = require('react');
+var _ = require('lodash');
 
+var Base = require('components/Base.react');
 var AppConstants = require('constants/AppConstants');
-var OfficerListStore = require('stores/OfficerListStore');
+var DownloadActions = require('actions/DownloadActions');
+var DownloadStore = require('stores/DownloadStore');
+var DownloadAPI = require('utils/DownloadAPI');
 
-var Download = React.createClass({
-  getInitialState: function () {
-    return {
-      processing: false,
-      href: false,
-      query: null
-    };
-  },
+
+global.redirect = function (href) {
+  location.href = href;
+}
+
+
+var Download = React.createClass(_.assign(Base(DownloadStore), {
 
   onClick: function (e) {
     e.preventDefault();
@@ -24,42 +27,15 @@ var Download = React.createClass({
       return;
     }
 
-    this.setState({
-      processing: true
-    });
+    DownloadAPI.process(this.state.query);
+    DownloadActions.process();
 
-    var that = this;
-
-    $.post('/allegations/download/?' + this.state.query, function (data) {
-      var listener = null;
-      listener = setInterval(function () {
-        $.getJSON('/allegations/download/', {id: data.download.id}, function (result) {
-          if (result.download.finished) {
-            clearInterval(listener);
-            var href = AppConstants.MEDIA_URL + result.download.url;
-            that.setState({
-              processing: false,
-              href: href
-            });
-            location.href = href;
-          }
-        });
-      }, 1000);
-    });
   },
 
-  componentDidMount: function () {
-    OfficerListStore.addChangeListener(this.onChange);
-  },
-
-  componentWillUnmount: function () {
-    OfficerListStore.removeChangeListener(this.onChange);
-  },
-
-  onChange: function () {
-    this.setState({
-      query: OfficerListStore.getQueryString()
-    });
+  componentDidUpdate: function () {
+    if (this.state.href) {
+      redirect(this.state.href);
+    }
   },
 
   render: function () {
@@ -86,6 +62,6 @@ var Download = React.createClass({
       </div>
     );
   }
-});
+}));
 
 module.exports = Download;
