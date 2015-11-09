@@ -6,7 +6,6 @@ var React = require('react');
 
 var Base = require('components/Base.react');
 var Logo = require('components/Shared/Logo.react');
-var Search = require('components/Shared/Search.react');
 var SessionStore = require('stores/SessionStore');
 var SiteTitle = require('components/Shared/SiteTitle.react');
 var NavStore = require('stores/NavStore');
@@ -51,9 +50,6 @@ var Nav = React.createClass(_.assign(Base(NavStore), {
                   </li>
                 </ul>
               </div>
-            </div>
-            <div className={rightColClass}>
-              <Search mobileExpanded={mobileExpanded} />
             </div>
           </div>
         </div>

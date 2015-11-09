@@ -16,6 +16,7 @@ var SessionStore = require('stores/SessionStore');
 var Tabs = require('components/DataToolPage/Tabs.react');
 var Nav = require('components/DataToolPage/Nav.react');
 var HappyFox = require('components/Shared/HappyFox.react');
+var Search = require('components/Shared/Search.react');
 
 
 var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
@@ -65,10 +66,13 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
   },
 
   renderTabs: function () {
+    var mobileExpanded = isMobile.any && this.state.searchExpanded;
+
     if (isMobile.any) {
       return (
         <div className='row map-row mobile'>
           <div className='col-md-12 chart-row'>
+            <Search mobileExpanded={mobileExpanded} />
             <Tabs mobile='true' />
           </div>
         </div>
@@ -80,9 +84,8 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
             <Map />
           </div>
           <div className='col-md-6'>
-            <div className="row">
-              <Tabs />
-            </div>
+            <Search mobileExpanded={mobileExpanded} />
+            <Tabs />
           </div>
         </div>
       );

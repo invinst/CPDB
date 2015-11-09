@@ -155,9 +155,8 @@ var Tabs = React.createClass({
 
     var outcomeContentClassName = classnames('tab-pane', isActive);
     return (
-      <div className="chart-row">
+      <div className="row chart-row">
         <ul className="nav nav-tabs" role="tablist">
-
           { this.renderMapTab() }
           { this.renderOutcomesTab(outcomeClassName) }
           { this.renderCategoriesTab() }

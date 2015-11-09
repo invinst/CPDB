@@ -74,13 +74,15 @@ var Search = React.createClass({
     );
 
     return (
-      <form className="navbar-form" role="search">
-        <div id="search-wrapper" className="pull-right">
-          <input type="text" id="autocomplete" placeholder="Search by name, neighborhood, or complaint"
-                 className={inputClass} autoComplete="off"/>
-          <i onClick={this.onSearchClick} className={searchIconClass}></i>
-        </div>
-      </form>
+      <div className="row search-row">
+        <form className="navbar-form" role="search">
+          <div id="search-wrapper" className="pull-right">
+            <input type="text" id="autocomplete" placeholder="Search by name, neighborhood, or complaint"
+                   className={inputClass} autoComplete="off"/>
+            <i onClick={this.onSearchClick} className={searchIconClass}></i>
+          </div>
+        </form>
+      </div>
     )
   }
 });
