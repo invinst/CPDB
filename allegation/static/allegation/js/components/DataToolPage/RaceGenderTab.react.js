@@ -52,7 +52,7 @@ var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
           <div className='row'>
 
             <div className='col-lg-10 col-md-11 col-sm-10 col-xs-0 col-md-offset-1'>
-              <div className='officer-gender-chart col-lg-4 col-md-4 col-sm-3 col-xs-4 relative'>
+              <div className='complaint-race-chart col-lg-4 col-md-4 col-sm-3 col-xs-4 relative'>
                 <span className='vertical-title'>Complainant</span>
                 <PercentageRectangleChart data={complaintRacesData} options={raceOptions} filter='complainant_race' />
               </div>
@@ -68,7 +68,7 @@ var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
                 <span className='vertical-title'>Officer</span>
                 <PercentageRectangleChart data={officerRacesData} options={raceOptions} filter='officer__race' />
               </div>
-              <div className='complaint-race-chart col-lg-4 col-md-4 col-sm-3 col-xs-4'>
+              <div className='officer-gender-chart col-lg-4 col-md-4 col-sm-3 col-xs-4'>
                 <PercentageRectangleChart data={officerGendersData} options={genderOptions} filter='officer__gender' />
               </div>
             </div>
