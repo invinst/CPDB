@@ -89,6 +89,8 @@ class AllegationCategory(models.Model):
     allegation_name = models.CharField(max_length=255, null=True, db_index=True)
     allegation_count = models.IntegerField(default=0)
     category_count = models.IntegerField(default=0)
+    on_duty = models.BooleanField(default=False)
+    citizen = models.BooleanField(default=True)  # False = dept
 
     def __str__(self):
         return str(self.allegation_name)
