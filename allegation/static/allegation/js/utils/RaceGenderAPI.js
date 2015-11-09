@@ -1,4 +1,4 @@
-global.jQuery = require('jquery');
+require('utils/jQuery');
 
 var AppConstants = require('../constants/AppConstants');
 var RaceGenderTabActions = require('actions/DataToolPage/RaceGenderTabActions');

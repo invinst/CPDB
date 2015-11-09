@@ -79,8 +79,10 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
           <div className='col-md-6 map-column relative'>
             <Map />
           </div>
-          <div className='col-md-6 chart-row'>
-            <Tabs />
+          <div className='col-md-6'>
+            <div className="row">
+              <Tabs />
+            </div>
           </div>
         </div>
       );
