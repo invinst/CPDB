@@ -9,18 +9,13 @@ var _ = require('lodash');
 var _state = {
   chartData: {
     labels: [],
-    datasets: [{
-      label: "Search Traffic Chart",
-      fillColor: "rgba(220,220,220,0.2)",
-      strokeColor: "rgba(220,220,220,1)",
-      pointColor: "rgba(220,220,220,1)",
-      pointStrokeColor: "#fff",
-      pointHighlightFill: "#fff",
-      pointHighlightStroke: "rgba(220,220,220,1)",
+    datasets: [
+      _.assign(AppConstants.LINE_CHART_COLOR_OPTIONS, {
       data: []
-    }]
+      })
+    ]
   },
-  options: {responsive: true, aspectRatio: true},
+  options: AppConstants.LINE_CHART_OPTIONS,
   rawData: {}
 };
 

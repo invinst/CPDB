@@ -17,13 +17,16 @@ class AreaFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Area
 
-    name = factory.Sequence(lambda n: fake.first_name())
+    name = factory.Sequence(lambda n: capitalize_word())
     type = factory.Sequence(lambda n: 'school-grounds')
     polygon = factory.Sequence(lambda n: MultiPolygon(Polygon(((87.940101, 42.023135),
                                                                (87.523661, 42.023135),
                                                                (87.523661, 41.644286),
                                                                (87.940101, 41.644286),
                                                                (87.940101, 42.023135)))))
+
+def capitalize_word():
+    return "{word}xa".format(word=fake.word()).capitalize()
 
 
 class PoliceWitnessFactory(factory.django.DjangoModelFactory):
@@ -36,8 +39,8 @@ class OfficerFactory(factory.django.DjangoModelFactory):
         model = Officer
         django_get_or_create = ('officer_first', 'officer_last')
 
-    officer_first = factory.Sequence(lambda n: fake.first_name())
-    officer_last = factory.Sequence(lambda n: fake.last_name())
+    officer_first = factory.Sequence(lambda n: capitalize_word())
+    officer_last = factory.Sequence(lambda n: capitalize_word())
     star = factory.Sequence(lambda n: n)
     gender = factory.Sequence(lambda n: random.choice(list(GENDER_DICT.keys())))
     race = factory.Sequence(lambda n: random.choice(list(RACES_DICT.keys())))
@@ -48,7 +51,7 @@ class InvestigatorFactory(factory.django.DjangoModelFactory):
         model = Investigator
         django_get_or_create = ('name',)
 
-    name = factory.Sequence(lambda n: fake.name())
+    name = factory.Sequence(lambda n: capitalize_word())
     complaint_count = factory.Sequence(lambda n: fake.random_int())
 
 
@@ -56,8 +59,8 @@ class AllegationCategoryFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = AllegationCategory
     cat_id = factory.Sequence(lambda n: "cat_%d" % n)
-    allegation_name = factory.Sequence(lambda n: fake.name())
-    category = factory.Sequence(lambda n: fake.name())
+    allegation_name = factory.Sequence(lambda n: fake.text(max_nb_chars=50))
+    category = factory.Sequence(lambda n: fake.text(max_nb_chars=50))
 
 
 class ComplainingWitnessFactory(factory.django.DjangoModelFactory):
@@ -101,6 +104,6 @@ class AllegationFactory(factory.django.DjangoModelFactory):
 class DownloadFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Download
-    query = factory.Sequence(lambda n: fake.name())
+    query = factory.Sequence(lambda n: capitalize_word())
     finished = factory.Sequence(lambda n: n % 2)
     url = factory.Sequence(lambda n: fake.url())

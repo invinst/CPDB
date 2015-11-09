@@ -16,6 +16,7 @@ from dashboard.views.document_request_status_view import DocumentRequestStatusVi
 from dashboard.views.document_link_view import DocumentLinkView
 from dashboard.views.story_type_view import StoryTypeView
 from dashboard.views.settings_save_view import SettingsSaveView
+from dashboard.views.admin_session_analytics_view import AdminNewSessionsAnalyticsViewSet
 
 cache_view = cache_page(86400 * 90)
 
@@ -25,6 +26,7 @@ router.register(r'officers', AdminOfficerViewSet)
 router.register(r'stories', AdminStoryViewSet)
 router.register(r'document-requests', AdminAllegationRequestViewSet)
 router.register(r'sessions', AdminSessionsView)
+router.register(r'new-sessions-analytics', AdminNewSessionsAnalyticsViewSet)
 router.register(r'settings', AdminSettingsView)
 
 

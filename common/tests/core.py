@@ -69,6 +69,8 @@ class UserTestBaseMixin(object):
 
 
 class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
+    _multiprocess_can_split_ = True
+
     source = 0
     source_dir = os.environ.get('CIRCLE_ARTIFACTS')
 
@@ -84,7 +86,7 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
             if IS_MOBILE:
                 profile = webdriver.FirefoxProfile()
                 profile.set_preference(
-                    "general.useragent.override", 
+                    "general.useragent.override",
                     "Mozilla/5.0 (iPad; CPU OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53"
                 )
             world.browser = WebDriver(profile)
@@ -116,7 +118,8 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         for text in texts:
             if not isinstance(text, str):
                 text = str(text)
-            body.should.contain(text)
+            for x in text.split("\n"):
+                body.should.contain(x)
 
     def should_not_see_text(self, text):
         if not isinstance(text, str):
@@ -209,6 +212,10 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
             time.sleep(interval)
             if time.time() > end_time:
                 break
+
+        if self.source_dir:
+            BaseLiveTestCase.source += 1
+            self.browser.save_screenshot(os.path.join(self.source_dir, '{s}.png'.format(s=BaseLiveTestCase.source)))
         raise TimeoutException(message) from error
 
     def is_displayed_in_viewport(self, element):
@@ -253,6 +260,9 @@ class SimpleTestCase(DjangoSimpleTestCase, UserTestBaseMixin):
     def visit(self, path, *args, **kwargs):
         self.response = self.client.get(path, *args, **kwargs)
         self._soup = None
+
+    def find(self, selector):
+        return self.find_all(selector)[0]
 
     def find_all(self, selector):
         return self.soup.select(selector)

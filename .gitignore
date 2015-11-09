@@ -79,3 +79,4 @@ dump.rdb
 allegation/static/admin/js/bundle.min.js
 dashboard/static/dashboard/js/.bundle.js
 .noseids
+.bundle.js

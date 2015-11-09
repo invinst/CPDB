@@ -56,7 +56,7 @@ var Bar = React.createClass({
     var exitClassName = classnames({
       'hidden': !this.state.embedMode
     });
-    var embedClassName = classnames('col-md-2 col-xs-3', {
+    var embedClassName = classnames('embed-button', {
       'active': this.state.embedMode
     });
 
@@ -68,23 +68,27 @@ var Bar = React.createClass({
 
     return (
       <div className="row">
-        <div className="col-md-2 col-xs-3">
-          <a href="#" onClick={this.exitMode} className={exitClassName}>
-            <i className="fa fa-times"></i> Exit mode
-          </a>
-        </div>
-        <div className="col-md-2 col-md-offset-4 col-xs-3">
-          <Download />
-        </div>
-        <div className={embedClassName}>
-          <a href="#" onClick={this.onClick}>
-            <i className="fa fa-code"></i> Embed Mode
-          </a>
-        </div>
-        <div className="col-md-2 col-xs-3">
-          <div className='smooth-scroll pointer' data-target='#body'>
-            <i className='fa fa-chevron-up' ></i> Back to top
+        <div className="col-md-12">
+          <div className="embed-button">
+            <a href="#" onClick={this.exitMode} className={exitClassName}>
+              <i className="fa fa-times"></i> Exit mode
+            </a>
           </div>
+          <ul id="embed-lists" className="pull-right">
+            <li className="embed-button">
+              <Download />
+            </li>
+            <li className={embedClassName}>
+              <a href="javascript: void()" onClick={this.onClick}>
+                <i className="fa fa-code"></i> Embed Mode
+              </a>
+            </li>
+            <li className="embed-button">
+              <div className='smooth-scroll pointer' data-target='body'>
+                <i className='fa fa-chevron-up' ></i> Back to top
+              </div>  
+            </li>
+          </ul>
         </div>
       </div>
     );
