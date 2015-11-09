@@ -1,7 +1,6 @@
 var _ = require('lodash');
 var React = require('react');
-global.jQuery = require('jquery');
-require('bootstrap');
+require('utils/jQuery');
 var classnames = require('classnames');
 
 var Base = require('components/Base.react');
@@ -10,10 +9,10 @@ var FilterTagsActions = require('actions/FilterTagsActions');
 var FilterStore = require('stores/FilterStore');
 var AppConstants = require('constants/AppConstants');
 
-var FilterTags = React.createClass(_.assign(Base(SessionStore), {
 
+var FilterTags = React.createClass(_.assign(Base(SessionStore), {
   removeTag: function (category, filter) {
-    FilterTagsActions.removeTag(category, filter);
+    FilterTagsActions.removeTag(category, filter, true);
     FilterTagsActions.removedTag(category, filter);
   },
 

@@ -79,8 +79,10 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
           <div className='col-md-6 map-column relative'>
             <Map />
           </div>
-          <div className='col-md-6 chart-row'>
-            <Tabs />
+          <div className='col-md-6'>
+            <div className="row">
+              <Tabs />
+            </div>
           </div>
         </div>
       );
@@ -97,14 +99,15 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
                   <Filters />
                </div>
             </div>
-          <div className='container-fluid'>
-            { this.renderTabs() }
-          </div>
-          <div className='container content'>
-            <div id='officer-cards'><OfficerList /></div>
-            <div id='complaint-list'><ComplaintSection /></div>
-          </div>
-
+        </div>
+        <div className='container-fluid'>
+          { this.renderTabs() }
+        </div>
+        <div className='container-fluid content'>
+          <div id='officer-cards'><OfficerList /></div>
+          <div id='complaint-list'><ComplaintSection /></div>
+        </div>
+        <div className='container-fluid'>
           <div className='sticky-footer'>
             <div id='EmbedBar' className="row">
               <div className="col-md-12">
@@ -115,7 +118,6 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
             </div>
             <Footer />
           </div>
-
         </div>
         <Disclaimer />
         <HappyFox />

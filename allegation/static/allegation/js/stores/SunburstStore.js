@@ -3,40 +3,75 @@ var _ = require('lodash');
 var AppDispatcher = require('dispatcher/AppDispatcher');
 var AppConstants = require('constants/AppConstants');
 var FilterStore = require('stores/FilterStore');
+var SessionStore = require('stores/SessionStore');
 var Base = require('stores/Base');
 
-var _noControl = {
-  zoomOut1: false,
-  newSelected: false,
-  drew: true,
-  mouseLeave: false,
-};
+var DATA_CHANGE_EVENT = 'data-change';
+var SELECTED_CHANGE_EVENT = 'selected-change';
+
 
 var _state = {
   selected: false,
   data: false,
-  hovering: false,
-  control: _.clone(_noControl),
+  hovering: false
 };
 
 var SunburstStore = _.assign(Base(_state), {
   setData: function (data) {
     var root = data.sunburst;
     _state.data = root;
-    _state.selected = root;
-    _state.control.drew = false;
-    SunburstStore.emitChange();
+    SunburstStore.emitDataChange();
   },
-  tryZoomOut: function (category, filter) {
+
+  isSelected: function (category, value) {
     var selected = _state.selected;
-    if (!selected.tagValue) {
-      return;
-    }
-    if (selected.tagValue.category == category && selected.tagValue.value== filter.value) {
-      _state.control.zoomOut1 = true;
+    return selected && selected.tagValue && selected.tagValue.category == category && selected.tagValue.value== value
+  },
+
+  getSelectedParentTag: function () {
+    return _state.selected.parent;
+  },
+
+  tryZoomOut: function (category, filter) {
+    if (this.isSelected(category, filter.value)) {
+      var parent = _state.selected = _state.selected.parent;
+
+      if (parent.tagValue) {
+        FilterStore.addFilter(parent.tagValue.category, parent.tagValue.value);
+        FilterStore.emitChange();
+
+        SessionStore.addTag(parent.tagValue.category, parent.tagValue);
+        SessionStore.emitChange();
+      }
+
       SunburstStore.emitChange();
     }
+  },
+
+  addDataChangeListener: function(callback) {
+    this.on(DATA_CHANGE_EVENT, callback);
+  },
+
+  removeDataChangeListener: function(callback) {
+    this.removeListener(DATA_CHANGE_EVENT, callback);
+  },
+
+  emitDataChange: function() {
+    this.emit(DATA_CHANGE_EVENT);
+  },
+
+  addSelectedChangeListener: function(callback) {
+    this.on(SELECTED_CHANGE_EVENT, callback);
+  },
+
+  removeSelectedChangeListener: function(callback) {
+    this.removeListener(SELECTED_CHANGE_EVENT, callback);
+  },
+
+  emitSelectedChange: function() {
+    this.emit(SELECTED_CHANGE_EVENT);
   }
+
 });
 
 // Register callback to handle all updates
@@ -51,9 +86,13 @@ AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.SUNBURST_SELECT_ARC:
+      selected  = _state.selected
       _state.selected = action.data;
-      _state.control.newSelected = true;
       SunburstStore.emitChange();
+
+      if (selected != _state.selected) {
+        SunburstStore.emitSelectedChange();
+      }
       break;
 
     case AppConstants.SUNBURST_HOVER_ARC:
@@ -63,15 +102,7 @@ AppDispatcher.register(function (action) {
 
     case AppConstants.SUNBURST_LEAVE_ARC:
       _state.hovering = false;
-      _state.control.mouseLeave = true;
       SunburstStore.emitChange();
-      break;
-
-    case AppConstants.SUNBURST_CLEAR_CONTROL:
-      if (!_.eq(_state.control, _noControl)) {
-        _state.control = _.clone(_noControl);
-        SunburstStore.emitChange();
-      }
       break;
 
     default:

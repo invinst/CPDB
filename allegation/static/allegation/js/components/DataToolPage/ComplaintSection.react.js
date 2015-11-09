@@ -1,6 +1,5 @@
-var HOST = 'http://localhost:8000';
 var React = require('react');
-var $ = require('jquery');
+require('utils/jQuery');
 var classnames = require('classnames');
 
 var Filters = require('components/DataToolPage/Filters.react');
@@ -22,12 +21,12 @@ var ComplaintSection = React.createClass({
 
   componentDidMount: function () {
     ComplaintListStore.addChangeListener(this._onChange);
-    $(window).on('scroll', this._onScroll);
+    jQuery(window).on('scroll', this._onScroll);
   },
 
   componentWillUnmount: function () {
     ComplaintListStore.removeChangeListener(this._onChange);
-    $(window).off('scroll', this._onScroll);
+    jQuery(window).off('scroll', this._onScroll);
   },
 
   rowGetter: function (rowIndex) {
@@ -63,7 +62,7 @@ var ComplaintSection = React.createClass({
   },
 
   _onScroll: function () {
-    if ($(window).scrollTop() / $(document).height() > .35 && !this.state.scrollLock) {
+    if (jQuery(window).scrollTop() / jQuery(document).height() > .35 && !this.state.scrollLock) {
       ComplaintListActions.getMoreData(this.state.pageNumber);
       ComplaintListStore.lockScroll();
     }

@@ -1,7 +1,6 @@
 var _ = require('lodash');
 var React = require('react');
-global.jQuery = require('jquery');
-require('bootstrap');
+require('utils/jQuery');
 
 var Base = require('components/Base.react');
 var DisclaimerStore = require('stores/DisclaimerStore');
