@@ -2,14 +2,6 @@ var d3 = require('d3');
 var _ = require('lodash');
 
 var PercentageRectangleChart = {
-  textFormatter: function textFormatter(d, i) {
-    var percent = d.value * 100 / sum;
-    if (percent < 1) {
-      percent = 1;
-    }
-    return d.label + ' ' + (Math.floor(percent)) + '%';
-  },
-
   draw: function(data, options, domCSSPath, clickHandler) {
     // TODO: defaultOptions
     var colors = options.colors;
@@ -61,7 +53,13 @@ var PercentageRectangleChart = {
                    .attr('fill', 'white')
                    .attr('x', 20)
                    .attr('y', function(d) { return heightScale(d.value) / 2 + minHeight - 5})
-                   .text(this.textFormatter)
+                   .text(function(d, i) {
+                     var percent = d.value * 100 / sum;
+                     if (percent < 1) {
+                      percent = 1;
+                     }
+                     return d.label + ' ' + (Math.floor(percent)) + '%';
+                   })
                    .on("click", this.clickHandler);
   }
 };
