@@ -11,9 +11,9 @@ var RaceGenderAPITransform = {
     var others = all - white - black - hispanic;
 
     return _([
-      { label: 'White', value: white, filterValue: 'White'},
-      { label: 'Black', value: black, filterValue: 'Black' },
-      { label: 'Hispanic', value: hispanic, filterValue: 'Hispanic' },
+      { label: 'White officers', value: white, filterValue: 'White'},
+      { label: 'Black officers', value: black, filterValue: 'Black' },
+      { label: 'Hispanic officers', value: hispanic, filterValue: 'Hispanic' },
       { label: 'Others', value: others, filterValue: ['Native American', 'Unknown', 'Asian', 'White/Hispanic']}
     ]).chain().reject(function(x) { return x.value == 0 }).value();
   },
