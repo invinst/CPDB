@@ -252,15 +252,8 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
     return path;
   },
 
-  _onChange: function () {
-    var that = this;
-    var newState = SunburstStore.getState();
-
-    if (newState.selected != this.state.selected) {
-      that.zoomToSelected(newState.selected);
-    }
-
-    this.setState(newState);
+  onSelectedChange: function () {
+    this.zoomToSelected(this.state.selected);
   },
 
   controlHover: function () {
@@ -301,6 +294,7 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
 
     SunburstStore.addChangeListener(this._onChange);
     SunburstStore.addDataChangeListener(this.drawChart);
+    SunburstStore.addSelectedChangeListener(this.onSelectedChange);
 
     this.initTabs();
 
@@ -325,6 +319,8 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
 
   componentWillUnmount: function() {
     SunburstStore.removeChangeListener(this._onChange);
+    SunburstStore.removeDataChangeListener(this.drawChart);
+    SunburstStore.removeSelectedChangeListener(this.onSelectedChange);
   },
 
   makeLegend: function (node) {

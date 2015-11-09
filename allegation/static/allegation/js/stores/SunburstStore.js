@@ -7,6 +7,8 @@ var SessionStore = require('stores/SessionStore');
 var Base = require('stores/Base');
 
 var DATA_CHANGE_EVENT = 'data-change';
+var SELECTED_CHANGE_EVENT = 'selected-change';
+
 
 var _state = {
   selected: false,
@@ -56,6 +58,18 @@ var SunburstStore = _.assign(Base(_state), {
 
   emitDataChange: function() {
     this.emit(DATA_CHANGE_EVENT);
+  },
+
+  addSelectedChangeListener: function(callback) {
+    this.on(SELECTED_CHANGE_EVENT, callback);
+  },
+
+  removeSelectedChangeListener: function(callback) {
+    this.removeListener(SELECTED_CHANGE_EVENT, callback);
+  },
+
+  emitSelectedChange: function() {
+    this.emit(SELECTED_CHANGE_EVENT);
   }
 
 });
@@ -72,8 +86,13 @@ AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.SUNBURST_SELECT_ARC:
+      selected  = _state.selected
       _state.selected = action.data;
       SunburstStore.emitChange();
+
+      if (selected != _state.selected) {
+        SunburstStore.emitSelectedChange();
+      }
       break;
 
     case AppConstants.SUNBURST_HOVER_ARC:
