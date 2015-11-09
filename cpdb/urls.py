@@ -23,6 +23,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 
 from allegation.views import AllegationListView
 from allegation.views.session_view import InitSession
+from allegation.views.landing_view import LandingView
 from dashboard.views.admin_analysis_dashboard_view import AdminAnalysisDashboardView
 
 urlpatterns = [
@@ -37,6 +38,7 @@ urlpatterns = [
     url(r'^embed/', include('embed.urls', namespace='embed')),
     url(r'^api/', include('api.urls')),
     url(r'^init/', InitSession.as_view(), name='init'),
+    url(r'^landing/', LandingView.as_view(), name='init'),
     url(r'^', include('dashboard.urls')),
     url(r'^(?P<hash_id>[\w-]+)/$', ensure_csrf_cookie(AllegationListView.as_view()), name='homepage-share'),
     url(r'^(?P<hash_id>[\w-]+)/(?P<slugified_url>[\w-]+)$', ensure_csrf_cookie(AllegationListView.as_view()), name='homepage-share'),
