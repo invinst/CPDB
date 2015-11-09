@@ -8,7 +8,7 @@ var TabActions = {
       actionType: AppConstants.SET_ACTIVE_TAB,
       data: tab
     });
-  	SessionAPI.updateSessionInfo({'active_tab': tab});
+    SessionAPI.updateSessionInfo({'active_tab': tab});
   }
 };
 
