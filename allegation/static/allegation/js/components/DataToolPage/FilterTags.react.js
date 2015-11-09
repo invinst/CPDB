@@ -30,7 +30,7 @@ var FilterTags = React.createClass(_.assign(Base(SessionStore), {
 
         return (
           <span className={tagClassName}>
-            <span className="action remove" onClick={that.removeTag.bind(that, category, filter)}><i className="fa fa-times"></i></span>
+            <a href='javascript:void(0);' className="action remove" onClick={that.removeTag.bind(that, category, filter)}><i className="fa fa-times"></i></a>
             <span className="filter">
               <span className='filter-name'>{filter.text || filter}</span>
               <span className='filter-category-name'>{AppConstants.AUTOCOMPLETE_CATEGORY_NAMES[category]}</span>
