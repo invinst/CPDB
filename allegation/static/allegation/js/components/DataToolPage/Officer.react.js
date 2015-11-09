@@ -89,7 +89,9 @@ var Officer = React.createClass({
         <a className='officer-link' onClick={this._onClick.bind(this, officer)} target="_parent">
           <div className='officer_name'>
             <strong>
-              { presenter.displayName }
+              <span>{officer.officer_first}</span>
+              &nbsp;
+              <span>{officer.officer_last}</span>
             </strong>
           </div>
           <div className={intersectionClass}>
@@ -103,21 +105,31 @@ var Officer = React.createClass({
             </div>
             <div className='complaint-discipline-row'>
               <div className='row'>
-                <div className='col-xs-6'>
-                  <div className=''>
-                    complaints
+                <div className='hidden-xs hidden-sm hidden-md'>
+                  <div className='col-md-6'>
+                    <div>
+                      complaints
+                    </div>
+                    <div>
+                      {officer.allegations_count}
+                    </div>
                   </div>
-                  <div className=''>
-                    {officer.allegations_count}
+                  <div className='vertical-line'></div>
+                  <div className='col-md-6 officer-disciplines'>
+                    <div>
+                      disciplines
+                    </div>
+                    <div>
+                      {officer.discipline_count}
+                    </div>
                   </div>
                 </div>
-                <div className='vertical-line'></div>
-                <div className='col-xs-6 officer-disciplines'>
-                  <div className=''>
-                    disciplines
+                <div className='hidden-lg'>
+                  <div className='col-xs-12'>
+                    complaints {officer.allegations_count}
                   </div>
-                  <div className=''>
-                    {officer.discipline_count}
+                  <div className='col-xs-12'>
+                    disciplines {officer.discipline_count}
                   </div>
                 </div>
               </div>

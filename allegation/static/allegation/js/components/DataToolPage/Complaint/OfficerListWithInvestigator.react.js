@@ -4,6 +4,8 @@ var pluralize = require('pluralize');
 
 var Investigator = require('components/DataToolPage/Complaint/Investigator.react');
 var OfficerListMixin = require('components/DataToolPage/Complaint/OfficerListMixin.react');
+var Officer = require('components/DataToolPage/Officer.react');
+
 
 var OfficerListWithInvestigator = React.createClass({
   mixins: [OfficerListMixin],
@@ -12,12 +14,35 @@ var OfficerListWithInvestigator = React.createClass({
     var officerCount = this.getOfficerCount();
     switch (officerCount) {
       case 1:
-        return 'col-md-12 col-xs-6 col-sm-12';
+        return 'col-md-12 col-xs-6 col-sm-6';
       case 2:
         return 'col-md-6 col-xs-6 col-sm-6';
       default:
         return 'col-md-4 col-xs-4 col-sm-4';
     }
+  },
+
+  renderOfficerList: function () {
+    var complaint = this.props.complaint;
+    var officerClass = this.getOfficerClass();
+
+    var officers = complaint.officers.map(function (officer) {
+      return (
+        <div className={officerClass} key={officer.id}>
+          <Officer active={true} officer={officer} noClick={true}/>
+        </div>
+      );
+    });
+
+    if (complaint.officer) {
+      officers.unshift(
+        <div className={officerClass} key={complaint.officer.id}>
+          <Officer active={true} officer={complaint.officer} noClick={true}/>
+        </div>
+      );
+    }
+
+    return officers;
   },
 
   render: function () {
