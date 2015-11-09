@@ -85,17 +85,23 @@ class Command(BaseCommand):
             except MultipleObjectsReturned:
                 print("CRID: %s has an issue with multiple officers: %s %s %s" % (crid,first_name, last_name, star))
                 return
+            except Officer.DoesNotExist:
+                print("CRID: %s officer does not exist: %s %s %s" % (crid,first_name, last_name, star))
+                return
 
-        except ValueError:
+        except:
             print ("CRID: %s has no star  %s %s %s" % (crid,first_name, last_name, star))
 
 
-    def get_allegation(self, crid, officer):
+    def get_allegation(self, crid, officer=None):
+
         try:
             return Allegation.objects.get(crid=crid, officer=officer)
 
         except Allegation.DoesNotExist:
-            return
+            if officer:
+                return self.get_allegation(crid)
+        return 
 
 
     def handle(self, *args, **options):
@@ -171,8 +177,18 @@ class Command(BaseCommand):
                     allegation_kw['officer'] = officer
 
                     if not allegation:
-                        allegation = Allegation.objects.create(**allegation_kw)
-                        self.counters['created'] +=1
+                        try:
+                            allegation = Allegation.objects.filter(crid=allegation_kw['crid']).first()
+                            if not allegation:
+                                raise Allegation.DoesNotExist
+
+                            allegation.pk = None
+                            allegation.save()
+                            Allegation.objects.filter(pk=allegation.pk).update(**allegation_kw)
+
+                        except Allegation.DoesNotExist:
+                            allegation = Allegation.objects.create(**allegation_kw)
+                            self.counters['created'] +=1
 
                     else:
                         Allegation.objects.filter(pk=allegation.pk).update(**allegation_kw)
