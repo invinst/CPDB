@@ -1,0 +1,66 @@
+#sunburst-legend
+  color: $color_mine_shaft_approx
+  padding-top: 44px
+  padding-left: 15px
+  table
+    width: 100%
+    td
+      padding-right: 10px
+      padding-bottom: 5px
+      vertical-align: top
+      &.size
+        text-align: right
+        width: 50px
+
+      &.color
+        width: 20px
+
+  .percent
+    min-height: 3em
+
+  .root
+    font-family: $font_0, $font_4
+    font-size: 18px
+    font-weight: 500
+    text-transform: uppercase
+
+.sunburst-breadcrumb
+  list-style: none
+  margin: 0px 30px 0 0
+  padding: 10px 0px 10px 30px
+  border-bottom: 1px solid $color_celeste_approx
+  > li
+    display: inline-block
+    margin-right: 17px
+    &:after
+      content: "\25B6"
+      position: relative
+      bottom: 13px
+      font-family: $font_4
+      font-size: 12px
+      color: $color_mountain_mist_approx
+      right: -8px
+    &:last-child:after
+      display: none
+
+.sunburst-legend
+  cursor: pointer
+
+  &.active
+    font-weight: 700
+
+  .name
+    color: $color_deep_cerulean_approx
+
+  .list
+    margin-top: 30px
+
+#sunburst-chart
+  overflow: hidden
+  svg
+    position: relative
+
+  path
+    stroke: $color_pampas_approx
+    fill-rule: evenodd
+    cursor: pointer

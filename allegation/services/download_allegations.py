@@ -54,7 +54,7 @@ class AllegationsDownload(AllegationAPIView):
 
         DISCLAIMER = """DISCLAIMER:
 
-This dataset is compiled from three lists of complaints against Chicago Police Department officers,
+This dataset is compiled from three lists of allegations against Chicago Police Department officers,
 spanning approximately 2002 - 2008 and 2010 - 2014, produced by the City of Chicago in response
 to litigation and to FOIA requests.
 

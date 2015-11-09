@@ -1,7 +1,5 @@
 var React = require('react');
-if (typeof($) == 'undefined'){
-  $ = require('jquery');
-}
+require('utils/jQuery');
 
 var AppDispatcher = require('dispatcher/AppDispatcher');
 var RequestDocumentConstants = require('constants/RequestDocumentConstants');
@@ -18,21 +16,21 @@ var RequestModal = (function () {
       return {};
     },
     show: function () {
-      $(this.getDOMNode()).modal("show");
-      var emailInput = $(this.getDOMNode()).find("input[name='email']");
+      jQuery(this.getDOMNode()).modal("show");
+      var emailInput = jQuery(this.getDOMNode()).find("input[name='email']");
       setTimeout(function () {
         emailInput.focus();
       }, 500);
     },
     hide: function () {
-      $(this.getDOMNode()).modal("hide");
+      jQuery(this.getDOMNode()).modal("hide");
     },
     componentDidMount: function () {
       mountedInstant = this;
     },
     render: function () {
       var style = {
-        'marginTop': $(window).height() / 2 - 100 + 'px'
+        'marginTop': jQuery(window).height() / 2 - 100 + 'px'
       };
       return (
         <div className="modal fade" id="request_modal" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -58,7 +56,7 @@ var RequestModal = (function () {
       );
     },
     email: function () {
-      return $(this.getDOMNode()).find("input[name='email']").val();
+      return jQuery(this.getDOMNode()).find("input[name='email']").val();
     },
     register: function () {
       RequestDocumentActions.registerEmail(allegation.crid, this.email());

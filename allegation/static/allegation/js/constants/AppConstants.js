@@ -51,6 +51,11 @@ module.exports = {
   SUNBURST_HOVER_ARC: c++,
   SUNBURST_LEAVE_ARC: c++,
   SUNBURST_CLEAR_CONTROL: c++,
+  MOBILE_SEARCH_CLICK: c++,
+  MOBILE_SEARCH_COLLAPSE: c++,
+
+  DOWNLOAD_PROCESS: c++,
+  GENERATED_DOWNLOAD: c++,
 
   AVG_COMPLAINTS_NUMBER_GREEN: 20,
   AVG_COMPLAINTS_NUMBER_YELLOW: 60,
@@ -61,7 +66,7 @@ module.exports = {
   SET_ACTIVE_TAB: c++,
 
   MAP_TOKEN: 'pk.eyJ1Ijoic3RlZmFuZ2VvcmciLCJhIjoiVnBNOEp4byJ9.7i2N7gTV-t_QtAA-kAAlFA',
-  MAP_TYPE: 'mapbox.streets',
+  MAP_TYPE: 'mapbox.light',
 
   NUMERAL_FORMAT: '0,0',
 
@@ -232,7 +237,7 @@ module.exports = {
   },
 
   AUTOCOMPLETE_CATEGORY_NAMES: {
-    'crid': 'Complaint ID',
+    'crid': 'Allegation ID',
     'cat__category': 'Category',
     'cat': 'Allegation type',
     'investigator': 'Investigator',

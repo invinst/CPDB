@@ -50,7 +50,7 @@ var PercentageRectangleChart = React.createClass({
                     return 'translate(0,' + ys[i] + ')';
                   });
 
-      blocks.append('rect')
+    blocks.append('rect')
       .style('fill', function(data, i) {
         return colors[i];
       })
@@ -60,13 +60,22 @@ var PercentageRectangleChart = React.createClass({
       })
       .on("click", this.clickHandler);
 
-      blocks.append('svg:text')
-                   .attr('font-size', 12)
-                   .attr('fill', 'white')
-                   .attr('x', 20)
-                   .attr('y', function(d) { return heightScale(d.value) / 2 + minHeight - 5})
-                   .text(function(d, i) { return d.label + ' ' + (d.value * 100 / sum).toFixed(2) + '%';})
-                   .on("click", this.clickHandler);
+
+    function textFormatter(d, i) {
+      var percent = d.value * 100 / sum;
+      if (percent < 1) {
+        percent = 1;
+      }
+      return d.label + ' ' + (Math.floor(percent)) + '%';
+    }
+
+    blocks.append('svg:text')
+                 .attr('font-size', 12)
+                 .attr('fill', 'white')
+                 .attr('x', 20)
+                 .attr('y', function(d) { return heightScale(d.value) / 2 + minHeight - 5})
+                 .text(textFormatter)
+                 .on("click", this.clickHandler);
 
     var uniqueId = this.state.uniqueId;
     var className = cx(uniqueId, 'percentage-rectangle-chart', 'pointer');

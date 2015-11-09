@@ -95,6 +95,15 @@ class AllegationSunburstView(AllegationAPIView):
                 'value': 'UN',
                 'removeParent': True
             },
+        }, {
+            'condition': Q(final_finding='ZZ'),
+            'name': 'Unknown',
+            'tagValue': {
+                'label': 'Unknown',
+                'category': 'final_finding',
+                'value': None,
+                'removeParent': True
+            },
         }]
     }, {
         'name': 'Sustained',

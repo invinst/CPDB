@@ -215,6 +215,7 @@ class HomePageTestCase(BaseLiveTestCase, IntegrationTestHelperMixin):
         self.find('body').send_keys(Keys.PAGE_DOWN)
         self.until(lambda: self.is_displayed_in_viewport('.sticky-footer').should.be.true)
         self.find('body').send_keys(Keys.PAGE_UP)
+        self.find('body').send_keys(Keys.PAGE_UP)
         self.until(lambda: self.is_displayed_in_viewport('.sticky-footer').should.be.false)
 
     def test_replace_old_filter_in_same_category(self):

@@ -1,7 +1,6 @@
 var _ = require('lodash');
 var React = require('react');
-global.jQuery = require('jquery');
-require('bootstrap');
+require('utils/jQuery');
 var classnames = require('classnames');
 
 var Base = require('components/Base.react');
@@ -10,10 +9,10 @@ var FilterTagsActions = require('actions/FilterTagsActions');
 var FilterStore = require('stores/FilterStore');
 var AppConstants = require('constants/AppConstants');
 
-var FilterTags = React.createClass(_.assign(Base(SessionStore), {
 
+var FilterTags = React.createClass(_.assign(Base(SessionStore), {
   removeTag: function (category, filter) {
-    FilterTagsActions.removeTag(category, filter);
+    FilterTagsActions.removeTag(category, filter, true);
     FilterTagsActions.removedTag(category, filter);
   },
 
@@ -31,7 +30,7 @@ var FilterTags = React.createClass(_.assign(Base(SessionStore), {
 
         return (
           <span className={tagClassName}>
-            <span className="action remove" onClick={that.removeTag.bind(that, category, filter)}><i className="fa fa-times"></i></span>
+            <a href='javascript:void(0);' className="action remove" onClick={that.removeTag.bind(that, category, filter)}><i className="fa fa-times"></i></a>
             <span className="filter">
               <span className='filter-name'>{filter.text || filter}</span>
               <span className='filter-category-name'>{AppConstants.AUTOCOMPLETE_CATEGORY_NAMES[category]}</span>

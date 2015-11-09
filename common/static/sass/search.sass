@@ -1,6 +1,8 @@
 #search-wrapper
   width: 96%
+  max-width: 487px
   padding: 0
+  margin-top: 10px
   font-family: $font_0, $font_4
   border-bottom: solid 1px $color_danube_approx
   input
@@ -9,16 +11,14 @@
     box-shadow: none
     //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
     border-radius: 0
-    width: 96%
-    padding-left: 4px
+    width: 94%
+    padding-right: 6px
 
-  &:before
-    content: "\e003"
-    font-family: $font_6
-    line-height: 1
-    display: inline-block
-    color: $color_deep_cerulean_approx
+  .search-icon-link
+    cursor: default
 
+    &:hover
+      opacity: 1
 
 input::-webkit-input-placeholder
   color: $color_mountain_mist_approx
