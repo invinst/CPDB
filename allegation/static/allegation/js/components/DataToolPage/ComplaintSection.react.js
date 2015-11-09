@@ -45,7 +45,7 @@ var ComplaintSection = React.createClass({
     return (
       <div className={className} onScroll={this.onScroll}>
         <div className='row'>
-          <div className='col-md-2'>
+          <div className='col-md-2 complaint-count'>
             <h3 className="margin-top-0">Complaints (<Counter to={analytics.All} />)</h3>
           </div>
           <div className='col-md-10 text-right'>

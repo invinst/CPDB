@@ -56,7 +56,7 @@ var PercentageRectangleChart = {
                    .text(function(d, i) {
                      var percent = d.value * 100 / sum;
                      if (percent < 1) {
-                      percent = 1;
+                       percent = 1;
                      }
                      return d.label + ' ' + (Math.floor(percent)) + '%';
                    })
