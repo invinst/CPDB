@@ -421,9 +421,11 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
     var breadcrumb = this.renderBreadcrumb(hovering);
 
     return (
-      <div className="row">
+      <div className="">
         <div className="col-md-12">
-          {breadcrumb}
+          <div className="row">
+            {breadcrumb}
+          </div>
         </div>
         <div className="col-md-5 col-xs-5">
           <div id="sunburst-legend">

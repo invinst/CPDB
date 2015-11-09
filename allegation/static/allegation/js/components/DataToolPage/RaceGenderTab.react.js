@@ -38,7 +38,7 @@ var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
 
     return (
       <div id='gender-race-tab'>
-        <div className='content'>
+        <div className='col-lg-12 col-md-12 content'>
           <div className='row'>
             <div className='col-lg-10 col-md-11 col-sm-10 col-xs-0 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1'>
               <div className='col-lg-4 col-md-4 col-sm-3 col-xs-4'>
