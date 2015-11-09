@@ -12,7 +12,8 @@ var _state = {
   'activeComplaints': [],
   'scrollLock': false,
   'pageNumber': 1,
-  'loading': false
+  'loading': false,
+  'noQuery': true
 };
 
 var ComplaintListStore = assign({}, EventEmitter.prototype, {
