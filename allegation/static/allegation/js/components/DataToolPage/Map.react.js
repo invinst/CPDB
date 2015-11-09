@@ -27,7 +27,7 @@ var _layers = {};
 var _baseLayers = {};
 var _controlDiv = null;
 var _normalStyle = {"fillColor": "#eeffee", "fillOpacity": 0.0, 'weight': 2};
-var _types = ['police-districts', 'wards', 'police-beats', 'neighborhoods', 'school-grounds'];
+var _types = ['police-districts', 'wards', 'police-beats', 'neighborhoods'];
 
 var selectedLayers = {};
 var allLayersIndex = {};
