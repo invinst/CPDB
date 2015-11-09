@@ -76,7 +76,7 @@ var Search = React.createClass({
     return (
       <form className="navbar-form" role="search">
         <div id="search-wrapper" className="pull-right">
-          <input type="text" id="autocomplete" placeholder="Search by name, neighborhood, or complaint"
+          <input type="text" id="autocomplete" placeholder="Search by name, neighborhood, or allegation"
                  className={inputClass} autoComplete="off"/>
           <a className='search-icon-link' href='javascript:void(0);' onClick={this.onSearchClick}>
             <i className={searchIconClass}></i>

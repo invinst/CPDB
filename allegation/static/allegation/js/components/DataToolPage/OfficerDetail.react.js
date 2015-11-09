@@ -24,9 +24,9 @@ var OfficerDetail = React.createClass({
     var hasMap = !!this.props.hasMap;
     var complaintRate = this.getAvgClass();
 
-    var complaintRateLabel = 'Below the average complaint rate';
+    var complaintRateLabel = 'Below the average allegation rate';
     if (officer.allegations_count > 20) {
-      complaintRateLabel = 'Above the average complaint rate';
+      complaintRateLabel = 'Above the average allegation rate';
     }
 
     var mapStyle = {
