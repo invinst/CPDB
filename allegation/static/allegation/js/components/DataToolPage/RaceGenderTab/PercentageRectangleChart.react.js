@@ -45,6 +45,7 @@ var PercentageRectangleChart = React.createClass({
       .attr('height', height)
       .selectAll('rect').data(data)
                   .enter().append('g')
+                  .attr('class', function (data, i) { return data.label.toLowerCase() })
                   .attr('transform', function(data, i) {
                     return 'translate(0,' + ys[i] + ')';
                   });

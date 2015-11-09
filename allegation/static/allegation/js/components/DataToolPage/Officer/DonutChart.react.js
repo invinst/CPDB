@@ -1,5 +1,11 @@
 var React = require('react');
 
+
+var chartColors = {
+  'disciplined': '#a5b4be',
+  'undisciplined': '#0079ae'
+};
+
 var chart = null;
 // Moving data to Store?
 var DonutChart = React.createClass({
@@ -13,11 +19,11 @@ var DonutChart = React.createClass({
     var data = [{
       name: "Disciplined",
       y: officer.discipline_count,
-      color: "#a5b4be"
+      color: chartColors['disciplined']
     }, {
       name: "Not disciplined",
       y: nonDisciplines,
-      color: '#0079ae'
+      color: chartColors['undisciplined']
     }];
     dataLen = data.length;
 
@@ -35,24 +41,21 @@ var DonutChart = React.createClass({
   },
 
   updateTextInsideDonutChart: function(chart, officer) {
-    chart = chart || this.chart;
     officer = officer || this.props.officer;
 
-    var textX = chart.plotLeft + (chart.plotWidth  * 0.5);
-    var textY = chart.plotTop  + (chart.plotHeight * 0.5);
     $("#addText").html("");
-    var span = '<span id="pieChartInfoText" style="position:absolute; text-align:center;">';
+    var span = '<span id="pieChartInfoText">';
     span += '<span style="font-size: 28px"><strong>' + officer.discipline_count +
             " / " + officer.allegations_count + '</strong><br /></span>';
-    span += '<span style="font-size: 16px;">complaints disciplined</span>';
+    span += '<span style="font-size: 16px;">' +
+      '<span style="color: ' + chartColors['disciplined'] + '">disciplined</span>' +      
+      ' ' +
+      '<span style="color: ' + chartColors['undisciplined'] + '">complaints</span>' +
+      '</span>';
     span += '</span>';
 
     $("#addText").append(span);
     span = $('#pieChartInfoText');
-
-    span.css('left', textX + (span.width() * -0.5));
-    span.css('top', textY + (span.height() * -0.5));
-
   },
 
   componentWillReceiveProps: function(newProps) {
@@ -65,6 +68,10 @@ var DonutChart = React.createClass({
 
   componentWillUnmount: function() {
     $(window).unbind('resize');
+  },
+
+  componentDidUpdate: function () {
+    this.chart.reflow();
   },
 
   componentDidMount: function () {
@@ -90,8 +97,14 @@ var DonutChart = React.createClass({
         plotOptions: {
           pie: {
             shadow: false,
-            center: ['50%', '50%']
+            center: ['50%', '50%'],
+            states: {
+              hover: {
+                enabled: false
+              }
+            }
           }
+
         },
         tooltip: false,
         series: [{
@@ -114,7 +127,7 @@ var DonutChart = React.createClass({
   render: function () {
     return <div className="relative">
         <div className='donut-chart' id='donut-chart'></div>
-        <div id="addText" className='top-left absolute' ></div>
+        <div id="addText"></div>
       </div>
   }
 });

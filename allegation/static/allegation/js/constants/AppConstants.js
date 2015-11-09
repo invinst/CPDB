@@ -51,6 +51,8 @@ module.exports = {
   SUNBURST_HOVER_ARC: c++,
   SUNBURST_LEAVE_ARC: c++,
   SUNBURST_CLEAR_CONTROL: c++,
+  MOBILE_SEARCH_CLICK: c++,
+  MOBILE_SEARCH_COLLAPSE: c++,
 
   AVG_COMPLAINTS_NUMBER_GREEN: 20,
   AVG_COMPLAINTS_NUMBER_YELLOW: 60,
@@ -272,6 +274,7 @@ module.exports = {
   OFFICER_PAGE_API_ENDPOINT: '/officer',
   SESSION_API_ENDPOINT: '/api/allegations/session/',
   RACE_GENDER_API_ENDPOINT: '/api/allegations/race-gender',
+
 
   DATE_FORMAT: 'D MMM, YYYY',
 
