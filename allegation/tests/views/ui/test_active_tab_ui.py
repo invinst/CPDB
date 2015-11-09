@@ -12,6 +12,7 @@ class ActiveTabAssertationMixin(object):
         active_tab = self.find('.chart-row li.active a')
         active_tab.text.should.equal(expected_tab)
 
+
 @skipIf(IS_MOBILE, "Skip in mobile mode")
 class ActiveTabTestCase(BaseLiveTestCase, ActiveTabAssertationMixin):
     def test_site_default_active_tab(self):
