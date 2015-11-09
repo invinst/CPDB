@@ -60,7 +60,7 @@ var PercentageRectangleChart = {
                      }
                      return d.label + ' ' + (Math.floor(percent)) + '%';
                    })
-                   .on("click", this.clickHandler);
+                   .on("click", clickHandler);
   }
 };
 
