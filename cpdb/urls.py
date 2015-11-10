@@ -38,7 +38,7 @@ urlpatterns = [
     url(r'^embed/', include('embed.urls', namespace='embed')),
     url(r'^api/', include('api.urls')),
     url(r'^init/', InitSession.as_view(), name='init'),
-    url(r'^landing/', LandingView.as_view(), name='init'),
+    url(r'^landing/', LandingView.as_view(), name='landing'),
     url(r'^', include('dashboard.urls')),
     url(r'^(?P<hash_id>[\w-]+)/$', ensure_csrf_cookie(AllegationListView.as_view()), name='homepage-share'),
     url(r'^(?P<hash_id>[\w-]+)/(?P<slugified_url>[\w-]+)$', ensure_csrf_cookie(AllegationListView.as_view()), name='homepage-share'),
