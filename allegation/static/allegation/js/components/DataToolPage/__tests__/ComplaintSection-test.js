@@ -23,6 +23,6 @@ describe('ComplaintList', function () {
       <ComplaintSection />
     );
     var div = TestUtils.findRenderedDOMComponentWithClass(complaints, 'no-complaints');
-    expect(div.props.children).toBe('No complaints match the query.');
+    expect(div.props.children).toBe('No allegations match the query.');
   });
 });

@@ -1,9 +1,9 @@
 /**
  * Created by eastagile on 11/2/15.
  */
-var $ = require('jquery');
+global.jQuery = require('jquery');
 var _ = require('lodash');
-require('jquery.cookie');
+
 
 var AppConstants = require('constants/AppConstants');
 var SunburstActions = require('actions/SunburstActions');
@@ -27,8 +27,7 @@ var SunburstAPI = {
       ajax.abort();
     }
 
-    ajax = d3.json("/api/allegations/sunburst/?" + queryString, function (error, data) {
-      if (error) throw error;
+    ajax = jQuery.getJSON("/api/allegations/sunburst/?" + queryString, function (data) {
       SunburstActions.receivedData(data);
     });
   }

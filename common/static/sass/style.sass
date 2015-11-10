@@ -67,6 +67,10 @@ $screen-md-min: 992px
 $screen-md-max: 1199px
 $screen-lg-min: 1200px
 
+// Normalize user agent's stylesheet
+input
+  padding: 0
+
 //@extend-elements
 //original selectors
 //h1, h2, h3, .h1, .h2, .h3
@@ -239,6 +243,7 @@ body
 
   @media (min-width: $screen-xs-min) and (max-width: $screen-xs-max)
     min-height: inherit
+    height: 55px
 
     .navbar-header
       display: inline-block
@@ -246,10 +251,10 @@ body
     #navbar-main
       display: inline-block
       border-top: none
-      margin: 0 0 2px 10px
+      margin: 10px 0 0 10px
       padding: 0
       width: 73%
-      vertical-align: bottom
+      vertical-align: top
 
       ul.nav.navbar-nav
         margin: 0
@@ -328,7 +333,7 @@ footer
   font-style: italic
   font-size: 30px
   font-family: $font_2, $font_1
-  margin: 10px 0 0 10px
+  margin: 0 0 0 10px
   width: 100%
   input
     border: none
@@ -1370,10 +1375,11 @@ form.navbar-form.navbar-right
     display: block
 
 
-.container.content
+.container-fluid.content
   background-color: $white
   padding-bottom: 20px
   margin-top: 28px
+  max-width: 1230px
 
 .checkmark.embed
   background-color: $color_ship_cove_approx
@@ -1416,7 +1422,7 @@ form.navbar-form.navbar-right
   padding: 0
 
 #navbar-main
-  margin-top: 5px
+  margin-top: 16px
 
 #complaint-list
   .modal-backdrop

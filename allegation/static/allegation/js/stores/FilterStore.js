@@ -3,6 +3,7 @@ var assign = require('object-assign');
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
+
 var TagUtil = require('utils/TagUtil');
 
 var CHANGE_EVENT = 'change';
@@ -13,6 +14,7 @@ var DISABLE_EVENT = 'disable';
 var _initialized = false;
 var _filters = {};
 var _pinned = {};
+
 
 function update(id, updates) {
   _filters[id] = assign({}, _filters[id], updates);
@@ -301,5 +303,6 @@ AppDispatcher.register(function (action) {
       break;
   }
 });
+
 
 module.exports = FilterStore;

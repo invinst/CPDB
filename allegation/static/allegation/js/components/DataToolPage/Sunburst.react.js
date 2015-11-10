@@ -145,6 +145,13 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
       return;
     }
 
+    this.zoomToSelected(d);
+
+    setTimeout(this.selectAnimationDone.bind(this, d, selected), 750);
+
+  },
+
+  selectAnimationDone: function (d, selected) {
     if ((d == selected.parent) && selected.tagValue) {
       FilterTagsActions.removeTag(selected.tagValue.category, selected.tagValue)
     }
@@ -185,10 +192,7 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
   },
 
   drawChart: function () {
-    if (this.state.control.drew) {
-      return;
-    }
-    var data = this.state.data;
+    var data = SunburstStore.getState().data;
     if (!data) {
       return;
     }
@@ -219,32 +223,37 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
 
     d3.select("#container").on("mouseleave", this.mouseleave);
 
-    var selectedName = this.props.selected;
-    if (selectedName) {
-      svg.selectAll("path").each(function (d) {
-        if (d.name == selectedName) {
-          that.select(d);
-        }
-      });
-    }
+    // update new state
+    this.doAfterDraw();
   },
 
-  controlZoomOut: function () {
-    if (this.state.control.zoomOut1) {
-      if (this.state.selected.parent) {
-        var that = this;
-        var parent = this.state.selected.parent;
-        setTimeout(function () {
-          that.select(parent);
-        }, 1);
+  doAfterDraw: function () {
+    var selected = 'Allegations';
+    if (this.props.selected) {
+      selected = this.props.selected;
+    }
+    if (this.state.selected) {
+      selected = this.state.selected.name;
+    }
+
+    selected = this.findPathByName(selected);
+    setTimeout(function () {
+      SunburstActions.selectArc(selected);
+    }, 1);
+  },
+
+  findPathByName: function (name) {
+    var path;
+    svg.selectAll("path").each(function (d) {
+      if (d.name == name) {
+        path = d;
       }
-    }
+    });
+    return path;
   },
 
-  controlSelect: function () {
-    if (this.state.control.newSelected) {
-      this.zoomToSelected(this.state.selected);
-    }
+  onSelectedChange: function () {
+    this.zoomToSelected(this.state.selected);
   },
 
   controlHover: function () {
@@ -278,26 +287,14 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
     }
   },
 
-  clearControl: function () {
-    setTimeout(function () { // clear after finish
-      SunburstActions.clearControl();
-    }, 1);
-  },
-
-  componentDidUpdate: function () {
-    this.drawChart();
-    this.clearControl();
-    this.controlZoomOut();
-    this.controlSelect();
-    this.controlHover();
-  },
-
   componentDidMount: function () {
     if ($(window).width() <= 1200) {
       $("#sunburst-chart").addClass("small");
     }
 
     SunburstStore.addChangeListener(this._onChange);
+    SunburstStore.addDataChangeListener(this.drawChart);
+    SunburstStore.addSelectedChangeListener(this.onSelectedChange);
 
     this.initTabs();
 
@@ -322,6 +319,8 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
 
   componentWillUnmount: function() {
     SunburstStore.removeChangeListener(this._onChange);
+    SunburstStore.removeDataChangeListener(this.drawChart);
+    SunburstStore.removeSelectedChangeListener(this.onSelectedChange);
   },
 
   makeLegend: function (node) {
