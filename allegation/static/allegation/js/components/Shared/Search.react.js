@@ -77,15 +77,17 @@ var Search = React.createClass({
 
     return (
       <div className="row search-row">
-        <form role="search">
-          <div className="input-group">
-            <input type="text" id="autocomplete" placeholder="Search by a name/place/category, or click inside the graphs below"
-                 className={inputClass} autoComplete="off"/>
-            <span className="input-group-btn">
-              <button className="btn btn-primary" id="btn-search" type="button" onClick={this.onSearchClick}><i className={searchIconClass}></i></button>
-            </span>
-          </div>
-        </form>
+        <div className="col-md-12">
+          <form role="search">
+            <div className="input-group">
+              <input type="text" id="autocomplete" placeholder="Search by a name/place/category, or click inside the graphs below"
+                   className={inputClass} autoComplete="off"/>
+              <span className="input-group-btn">
+                <button className="btn btn-primary" id="btn-search" type="button" onClick={this.onSearchClick}><i className={searchIconClass}></i></button>
+              </span>
+            </div>
+          </form>
+        </div>
       </div>
     )
   }
