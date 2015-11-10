@@ -1,4 +1,5 @@
 var React = require('react');
+var pluralize = require('pluralize');
 
 
 var PoliceWitness = React.createClass({
@@ -29,8 +30,10 @@ var PoliceWitness = React.createClass({
 
           rows.push(
             <div key={j}>
-              <div>{officer_data.officer.officer_first} {officer_data.officer.officer_last} ({officer_data.num_complaints}
-                cases)
+              <div>
+                {officer_data.officer.officer_first} {officer_data.officer.officer_last}
+                &nbsp;
+                ({officer_data.num_complaints} {pluralize('case', officer_data.num_complaints)})
               </div>
               <div className="progress complaint" style={progressStyle}>
                 <div className="progress-bar discipline" role="progressbar" aria-valuenow="60" aria-valuemin="0"

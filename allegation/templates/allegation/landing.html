@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+{% load staticfiles common_tags compress jsonify %}
+<html>
+  <head>
+      <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" />
+      {% compress css %}
+      <link rel="stylesheet" type="text/sass" href="{% static 'sass/style.sass' %}" />
+      {% endcompress %}
+      {% if DJANGO_ENV == 'test' %}
+        {% compress css %}
+          <link rel="stylesheet" type="text/sass" href="{% static 'sass/test.sass' %}" />
+        {% endcompress %}
+      {% endif %}
+
+  </head>
+  <body id='landing-page'>
+      {% csrf_token %}
+      <div class='welcome'>
+        <div class='page-logo'>
+          <img src='/static/img/ii-logo.svg' alt='logo'/>
+        </div>
+        <div class='page-banner'>
+          <p>Until recently, records of police misconduct in Chicago have been kept secret.</p>
+          <p>In 2014, the court decision <i>Kalven v. Chicago</i> opened those files to the public.</p>
+        </div>
+      </div>
+      <nav class='landing-nav'>
+        <div class='items clearfix'>
+          <img class='pull-left' src='/static/img/cpdp-logo.svg'/>
+          <ul class="pull-right" role="tablist">
+            <li><a href="/#!/data-tools">Data</a></li>
+            <li><a href="#methodology-page" aria-controls="methodology-page" role="tab" data-toggle="tab">Methods</a></li>
+            <li><a href="#story-page" aria-controls="story-page" role="tab" data-toggle="tab">Stories</a></li>
+            <li class="active"><a href="#find-page" aria-controls="find-page" role="tab" data-toggle="tab">Findings</a></li>
+          </ul>
+        </div>
+        <div class='sub-nav hidden'>
+        </div>
+      </nav>
+      <div class='main'>
+        <div class='tab-content'>
+          {% include "allegation/landing/find_page.html" %}
+          {% include "allegation/landing/story_page.html" %}
+          {% include "allegation/landing/methodology_page.html" %}
+        </div>
+      </div>
+      <div class='footer'>
+        <div class='container'>
+          <div class='col-sm-4'>
+            <h4>
+              What is the CPDP?
+            </h4>
+            <p>
+              Welcome to the Citizens Police Data Project. After years of litigation by the Invisible institute, more than 56,000 records of police misconduct complaints have been released to the public.
+            </p>
+            <a href="#disclaimer" class='btn' data-toggle="modal" data-target="#disclaimer">Disclaimer</a><br/>
+            <a class='btn'>Glossary</a>
+          </div>
+          <div class='col-sm-4'>
+            <h4>
+              Get Updates
+            </h4>
+            <p>
+              Sign up for our mailing list for updates from the Invisible Institute and the Citizens Police Data Project.
+              {% include "allegation/landing/sign_up_form.html" %}
+            </p>
+          </div>
+          <div class='col-sm-4'>
+            <h4>
+              Download the Data
+            </h4>
+            <p>
+              Are you a researcher, journalist, data professional or community member interested in analyzing the data? Sign up with your name, organization/affiliation and email address to request the full data files used in the Citizens Police Data Project.
+              {% include "allegation/landing/request_file_form.html" %}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade" id="disclaimer" tabindex="-1" role="dialog" aria-labelledby="disclaimer" style="width:600px; margin: 0 auto;">
+      <div class='modal-dialog' role='document'>
+          <div class='modal-content'>
+              <div class='modal-header'>
+                  <h2>Disclaimer</h2>
+              </div>
+              <div class='modal-body'>
+                  <p>The information contained on this website comes primarily from three datasets provided by the Chicago
+                      Police Department (CPD), spanning approximately 2002 to 2008 and 2011 to 2015. The CPD has released
+                      these lists in response to litigation and to FOIA Requests.</p>
+
+                  <p>The City of Chicago’s release of this information was accompanied by a disclaimer that not all of the
+                      information contained in the City’s database may be completely accurate. No independent verification
+                      of the City’s records has taken place and this public database does not purport to be an accurate
+                      reflection of either the City’s internal database or of its truthfulness.</p>
+
+                  <p>Slight changes to the spelling of officer names and to the wording of abuse categories have been made
+                      to accommodate a consistent appearance. A glossary of our understanding of common CPD terms has been
+                      provided. No other editing of the City’s original datasets has taken place.</p>
+
+                  <p>This public database also contains other readily available data that has been linked to the City’s
+                      original datasets, including: CPD beat geographies, Chicago ward boundaries, Chicago neighborhood
+                      boundaries, et cetera.</p>
+
+                  <p>By entering this website, you acknowledge that the Citizens’ Police Database (CPDB) is not
+                      responsible for any derivative work performed by or published by users of this public database.</p>
+              </div>
+              <div class='modal-footer' data-dismiss='modal'>
+                  <button class='btn btn-sm btn-view'>I UNDERSTAND</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  </body>
+  <footer>
+    <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="{% static 'allegation/js/landing_page.js' %}"></script>
+      <script>
+        $(function(){
+            var page_pos = document.location.href.indexOf("#");
+            var tab = document.location.href.substr(page_pos);
+            if (page_pos > -1) {
+                $("#landing-page a[href=" + tab + "]").tab('show');
+            }
+            $("#disclaimer").modal('show');
+        })
+    </script>
+  </footer>
+</html>

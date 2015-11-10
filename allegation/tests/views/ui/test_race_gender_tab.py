@@ -7,7 +7,7 @@ from common.models import Allegation, ComplainingWitness, Officer
 class RaceGenderTabTest(BaseLiveTestCase, IntegrationTestHelperMixin):
     RACES = ['White', 'Black', 'Hispanic', 'White/Hispanic', 'Black/Hispanic',
              'Indigenous', 'Asian', 'Unknown']
-    DISPLAY_RACES = ['White', 'Black', 'Hispanic', 'Others']
+    DISPLAY_RACES = ['White officers', 'Black officers', 'Hispanic officers', 'Others']
     NON_DISPLAY_RACES = ['Indigenous', 'Asian', 'Unknown', 'White/Hispanic',
                          'Black/Hispanic']
     GENDERS = ['M', 'F', 'X']
@@ -40,9 +40,9 @@ class RaceGenderTabTest(BaseLiveTestCase, IntegrationTestHelperMixin):
     def test_race_chart(self):
         # See RACES and how we create allegation for more information why
         analysis = {
-            'White': 1,
-            'Black': 1,
-            'Hispanic': 3,
+            'White officers': 1,
+            'Black officers': 1,
+            'Hispanic officers': 3,
             'Others': 3
         }
         total = 8
@@ -89,9 +89,9 @@ class RaceGenderTabTest(BaseLiveTestCase, IntegrationTestHelperMixin):
 
     def test_race_chart_by_filter(self):
         analysis = {
-            'White': 1,
-            'Black': 1,
-            'Hispanic': 3,
+            'White officers': 1,
+            'Black officers': 1,
+            'Hispanic officers': 3,
             'Others': 3
         }
         total = 8

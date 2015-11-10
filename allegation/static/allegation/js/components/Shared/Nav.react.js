@@ -8,6 +8,7 @@ var Base = require('components/Base.react');
 var Logo = require('components/Shared/Logo.react');
 var SessionStore = require('stores/SessionStore');
 var SiteTitle = require('components/Shared/SiteTitle.react');
+var SiteLinks = require('components/Shared/SiteLinks.react');
 var NavStore = require('stores/NavStore');
 
 
@@ -21,13 +22,7 @@ var Nav = React.createClass(_.assign(Base(NavStore), {
       },
       'col-sm-7'
     );
-    var rightColClass = classnames(
-      {
-        'col-xs-9': mobileExpanded,
-        'col-xs-1': !mobileExpanded
-      },
-      'col-sm-5'
-    );
+
     var navbarClass = classnames(
       'navbar-collapse',
       {
@@ -50,6 +45,9 @@ var Nav = React.createClass(_.assign(Base(NavStore), {
                   </li>
                 </ul>
               </div>
+            </div>
+            <div className='col-md-3 col-sm-4 hidden-xs site-links-wrapper pull-right'>
+              <SiteLinks />
             </div>
           </div>
         </div>
