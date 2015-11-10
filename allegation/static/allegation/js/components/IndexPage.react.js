@@ -32,6 +32,7 @@ var IndexPage = React.createClass(_.assign(Base(SessionStore), {
     //   return false;
     // });
 
+
   //   $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
   //     if ($(e.target).attr('href') == '#story-page') {
   //       $welcome.hide();
@@ -45,15 +46,7 @@ var IndexPage = React.createClass(_.assign(Base(SessionStore), {
   //     toggleShow();
   //   })
 
-  //   $('.tab-navigate').on('click', function() {
-  //     var tab = $(this).attr('tab-navigate');
-  //     $('a[aria-controls=' + tab + ']').trigger('click');
-  //     $('html, body').animate({
-  //         scrollTop: 0
-  //     }, 1000);
-  //     return false;
-  //   });
-  // },
+
   },
 
   render: function () {
@@ -73,7 +66,7 @@ var IndexPage = React.createClass(_.assign(Base(SessionStore), {
             <img className="pull-left" src="/static/img/cpdp-logo.svg" />
             <ul className="pull-right" role="tablist">
               <li><a href="/#!/data-tools">Data</a></li>
-              <li><a href="#story-page" aria-controls="story-page" role="tab" data-toggle="tab">Stories</a></li>
+              <li><a href="#story" aria-controls="story-page" role="tab" data-toggle="tab">Stories</a></li>
               <li className="active"><a href="#find-page" aria-controls="find-page" role="tab" data-toggle="tab">Findings</a></li>
             </ul>
           </div>
