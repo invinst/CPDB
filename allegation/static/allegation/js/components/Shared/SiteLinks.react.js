@@ -10,10 +10,10 @@ var SiteLinks = React.createClass({
             <a href='/landing'>Findings</a>
           </li>
           <li>
-            <a href='/landing/#story-page'>Story</a>
+            <a href='/landing/#story-page'>Stories</a>
           </li>
           <li>
-            <a href='/landing/#methodology-page'>Method</a>
+            <a href='/landing/#methodology-page'>Methods</a>
           </li>
           <li>
             <a href='#!/data-tools'>Data</a>

@@ -63,8 +63,8 @@ module.exports = {
 
   RACE_GENDER_TAB_RECEIVED_DATA: c++,
 
-  MAP_TOKEN: 'pk.eyJ1IjoiaW52aXNpYmxlaW5zdGl0dXRlIiwiYSI6ImNpZ3NwN2pmNzA1OTZ1eG0xZG9hNHByY3kifQ.3ZsdVMWxRWtM1N3uVZ3MTA',
-  MAP_TYPE: 'mapbox.light',
+  MAP_TOKEN: 'pk.eyJ1IjoiZGF0YW1hZGUiLCJhIjoiaXhhVGNrayJ9.0yaccougI3vSAnrKaB00vA',
+  MAP_TYPE: 'datamade.7e795301',
 
   NUMERAL_FORMAT: '0,0',
 
