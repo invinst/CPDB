@@ -16,7 +16,7 @@ var ComplaintListAPI = {
     }
   },
 
-  getData: function () {
+  getData: function (fromFilter) {
     var queryString = AllegationFetcherQueryBuilder.buildQuery();
     var that = this;
     ComplaintListServerActions.getData();
@@ -27,11 +27,13 @@ var ComplaintListAPI = {
       }
 
       ajax = jQuery.getJSON('/api/allegations/?' + queryString, function (data) {
-        ComplaintListServerActions.receivedData(data);
-        that.preloadDataForOtherTab();
+        ComplaintListServerActions.receivedData(data, fromFilter);
+        if (!fromFilter) {
+          that.preloadDataForOtherTab();
+        }
       });
     } else {
-      ComplaintListServerActions.receivedData({'allegations': [], 'analytics': {}, noQuery: true});
+      ComplaintListServerActions.receivedData({'allegations': [], 'analytics': {}, noQuery: true}, fromFilter);
     }
   },
 

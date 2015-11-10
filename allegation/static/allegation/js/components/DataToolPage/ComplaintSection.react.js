@@ -62,7 +62,9 @@ var ComplaintSection = React.createClass({
   },
 
   _onScroll: function () {
-    if (jQuery(window).scrollTop() / jQuery(document).height() > .35 && !this.state.scrollLock) {
+    var windowHeight = window.innerHeight;
+    var toBottom = jQuery(document).height() - windowHeight - jQuery(window).scrollTop();
+    if (toBottom <= 200 && !this.state.scrollLock) {
       ComplaintListActions.getMoreData(this.state.pageNumber);
       ComplaintListStore.lockScroll();
     }

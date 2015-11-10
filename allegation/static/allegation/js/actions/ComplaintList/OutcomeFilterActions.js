@@ -9,7 +9,7 @@ var OutcomeFilterActions = {
       filter: val
     });
 
-    ComplaintListAPI.getData();
+    ComplaintListAPI.getData(true);
   }
 };
 

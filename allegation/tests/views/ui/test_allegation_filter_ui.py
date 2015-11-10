@@ -26,6 +26,7 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         self.number_of_complaints().should.equal(number_of_all_created_complaints())
 
         # On each filter
+        import pdb; pdb.set_trace()
         for filter_text in FILTERS:
             self.element_by_tagname_and_text('span', filter_text, parent=".filters").click()
             self.until(self.ajax_complete)
