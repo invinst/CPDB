@@ -1,12 +1,15 @@
-function toggleShow(cond) {
+window.$welcome = $('.welcome');
+window.$subNav = $('.sub-nav');
+window.scrollValue = 243;
+
+function toggleShow() {
+  var cond = $(window).scrollTop() >= scrollValue;
   $('.landing-nav').toggleClass('fixed-nav', cond);
   $('.main').toggleClass('margin-top-90', cond);
-  $('.sub-nav').toggleClass('hidden', !cond);
+  $subNav.toggleClass('hidden', !cond);
 }
 
-$(window).on('scroll', function(e) {
-  toggleShow($(window).scrollTop() >= 243);
-});
+$(window).on('scroll', toggleShow);
 
 $(document).on('click', '.story-nav a', function() {
   $element = $($(this).data('target'));
@@ -18,8 +21,13 @@ $(document).on('click', '.story-nav a', function() {
 
 $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
   if ($(e.target).attr('href') == '#story-page') {
-    $('.sub-nav').html($('.story-nav').clone());
+    $welcome.hide();
+    $subNav.html($('.story-nav').clone());
+    scrollValue = 0;
   } else {
-    $('.sub-nav').html('');
+    $welcome.show();
+    $subNav.html('');
+    scrollValue = 243;
   }
+  toggleShow();
 })

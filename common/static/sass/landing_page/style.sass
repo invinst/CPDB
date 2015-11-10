@@ -19,10 +19,6 @@
     &:hover, &:focus
       text-decoration: none
 
-  .padding-side-75
-    padding-left: 75px !important
-    padding-right: 75px !important
-
   .font-size-22
     font-size: 17px !important
     line-height: 22px !important
@@ -44,6 +40,7 @@
     margin: auto
     font-size: 17px
     line-height: 22px
+    letter-spacing: -0.3px
 
   nav.landing-nav
     background-color: #fff
@@ -65,8 +62,8 @@
           content: ''
           display: inline-block
           background: $light_blue
-          width: 15px
-          height: 15px
+          width: 14px
+          height: 14px
           position: absolute
           top: 40px
           right: 30px
@@ -81,7 +78,7 @@
 
   .sub-nav
     background: $light_blue
-    height: 45px
+    height: 11px
 
   .margin-top-90
     margin-top: 45px
@@ -122,16 +119,21 @@
     [class^="col-sm"]
       padding: 0 25px
 
-    .col-sm-12 p
-      padding: 0 50px
+    .col-sm-12
+      p, h1
+        width: 588px
+        margin-left: auto
+        margin-right: auto
+
+      h1
+        margin: 0 auto
 
   .page-logo
     height: 90px
     margin-left: 25px
     img
       position: relative
-      top: 50%
-      transform: translateY(-50%)
+      top: 25px
 
   .items
     margin-right: 25px
@@ -146,14 +148,10 @@
       margin: 0 27.5px
 
   #story-page
-    .story-img-section
-      padding-top: 0
-
     h1
-      font-size: 40px
+      font-size: 34px
       line-height: 48px
       color: $dark_blue
-
 
   .footer
     background: #2F2F2F
