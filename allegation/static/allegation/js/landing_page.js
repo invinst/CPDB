@@ -31,3 +31,12 @@ $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
   }
   toggleShow();
 })
+
+$('.tab-navigate').on('click', function() {
+  var tab = $(this).attr('tab-navigate');
+  $('a[aria-controls=' + tab + ']').trigger('click');
+  $('html, body').animate({
+      scrollTop: 0
+  }, 1000);
+  return false;
+});
