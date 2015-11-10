@@ -88,11 +88,11 @@ var Officer = React.createClass({
       <div className={className}  data-state={selection_state} id={officerId}>
         <a className='officer-link' onClick={this._onClick.bind(this, officer)} target="_parent">
           <div className='officer_name'>
-            <strong>
+            <span>
               <span>{officer.officer_first}</span>
               &nbsp;
               <span>{officer.officer_last}</span>
-            </strong>
+            </span>
           </div>
           <div className={intersectionClass}>
             <div className='row'>
