@@ -1,9 +1,9 @@
 from selenium.webdriver.common.keys import Keys
 
 from api.models import Setting
-from common.models import AllegationCategory
 from common.tests.core import *
 from allegation.factories import AllegationFactory, AllegationCategoryFactory
+
 
 class IntegrationTestHelperMixin(object):
     def visit_home(self):
@@ -293,17 +293,3 @@ class HomePageTestCase(BaseLiveTestCase, IntegrationTestHelperMixin):
 
         self.visit("/")
         self.browser.title.should.equal(setting.value)
-
-    # Since we lost this marker many times, so we write this test to ensure it's available
-    # In case this test failed, please take a look on its url in allegation/constants/AppConstants.js
-    def test_complaint_detail_marker_available(self):
-        AllegationFactory(add1=None, add2=None)
-        self.visit_home()
-        self.find('.checkmark').click()
-        self.until(lambda: self.element_exist('.complaint_list'))
-        self.find('.complaint-row > .row').click()
-        self.element_exist('.complaint_detail').should.equal(True)
-
-        image_source = self.find('.location img').get_attribute('src')
-
-        self.client.get(image_source).status_code.should.equal(200)
