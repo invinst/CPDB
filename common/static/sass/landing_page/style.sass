@@ -1,184 +1,184 @@
-$light_blue: #E8F0F9
-$dark_blue: #1464f1
-$font_weight: 300
+#landing-page
+  $light_blue: #E8F0F9
+  $dark_blue: #1464f1
+  $font_weight: 300
 
-body
   color: #013270
   font-family: 'San Francisco Compact Web'
   font-weight: $font_weight
 
-a
-  color: $dark_blue
-  &.btn
-    font-weight: $font_weight
-    background: #E8ECF5
-    font-size: 19px
-    padding: 10px 40px
-    border: 0
-    margin-top: 20px
-  &:hover, &:focus
-    text-decoration: none
-
-.padding-side-75
-  padding-left: 75px !important
-  padding-right: 75px !important
-
-.font-size-22
-  font-size: 22px !important
-  line-height: 25px !important
-
-.font-size-19
-  font-size: 19px !important
-  line-height: 22px !important
-
-.welcome
-  height: 268px
-  background: #fff
-
-.page-banner
-  width: 500px
-  margin: 38px auto 50px auto
-  font-size: 22px
-  line-height: 25px
-
-nav.landing-nav
-  background-color: #fff
-  z-index: 10
-  [role=tablist]
-    margin: 0
-  li
-    float: right
-    list-style: none
-    text-align: center
-    margin-left: 65px
-    a
+  a
+    color: $dark_blue
+    &.btn
+      font-weight: $font_weight
+      background: #E8ECF5
       font-size: 19px
-    &.active
-      position: relative
-      a
-        color: #013270
-      &:after
-        content: ''
-        display: inline-block
-        background: $light_blue
-        width: 15px
-        height: 15px
-        position: absolute
-        top: 40px
-        right: 30px
-        transform: rotate(90deg)
-        -webkit-transform: rotate(45deg)
+      padding: 10px 40px
+      border: 0
+      margin-top: 20px
+    &:hover, &:focus
+      text-decoration: none
 
-.fixed-nav
-  position: fixed
-  width: 100%
-  top: 0
-  left: 0
+  .padding-side-75
+    padding-left: 75px !important
+    padding-right: 75px !important
 
-.sub-nav
-  background: $light_blue
-  height: 45px
+  .font-size-22
+    font-size: 22px !important
+    line-height: 25px !important
 
-.margin-top-90
-  margin-top: 45px
+  .font-size-19
+    font-size: 19px !important
+    line-height: 22px !important
 
-.container
-  margin-left: auto
-  margin-right: auto
-  padding: 0
-  width: 100% !important
-  height: auto
-  max-width: 1200px
+  .welcome
+    height: 268px
+    background: #fff
 
-.section
-  padding: 70px 25px 80px 25px
-  background: #fff
-  font-size: 19px
-  line-height: 22px
-  margin: 0
-  &:nth-of-type(odd)
-    background: $light_blue
+  .page-banner
+    width: 500px
+    margin: 38px auto 50px auto
     font-size: 22px
     line-height: 25px
 
-  img + p, img + img
-    margin-top: 38px
+  nav.landing-nav
+    background-color: #fff
+    z-index: 10
+    [role=tablist]
+      margin: 0
+    li
+      float: right
+      list-style: none
+      text-align: center
+      margin-left: 65px
+      a
+        font-size: 19px
+      &.active
+        position: relative
+        a
+          color: #013270
+        &:after
+          content: ''
+          display: inline-block
+          background: $light_blue
+          width: 15px
+          height: 15px
+          position: absolute
+          top: 40px
+          right: 30px
+          transform: rotate(90deg)
+          -webkit-transform: rotate(45deg)
 
-  .col-sm-6
-    padding: 25px
-
-  img
+  .fixed-nav
+    position: fixed
     width: 100%
+    top: 0
+    left: 0
+
+  .sub-nav
+    background: $light_blue
+    height: 45px
+
+  .margin-top-90
+    margin-top: 45px
+
+  .container
+    margin-left: auto
+    margin-right: auto
+    padding: 0
+    width: 100% !important
     height: auto
+    max-width: 1200px
 
-  .btn
-    background-color: rgba(20,100,241,0.1)
-
-  [class^="col-sm"]
-    padding: 0 25px
-
-  .col-sm-12 p
-    padding: 0 50px
-
-.page-logo
-  height: 90px
-  margin-left: 25px
-  img
-    position: relative
-    top: 50%
-    transform: translateY(-50%)
-    width: 200px
-
-.items
-  margin-right: 25px
-  a
-    line-height: 45px
-
-.story-nav
-  height: 45px
-  background: $light_blue
-  a
-    line-height: 45px
-    margin: 0 27.5px
-
-#story-page
-  .story-img-section
-    padding-top: 0
-
-  h1
-    font-size: 40px
-    line-height: 48px
-    color: $dark_blue
-
-
-.footer
-  background: #2F2F2F
-  padding: 38px 1.5% 80px 1.5%
-  color: #fff
-  font-size: 16px
-  line-height: 20px
-  .col-sm-4
-    padding: 1.5%
-  h4
+  .section
+    padding: 70px 25px 80px 25px
+    background: #fff
     font-size: 19px
-    font-weight: $font_weight
-    opacity: 0.7
-    margin-bottom: 20px
-  .btn
-    color: #fff
-    background-color: rgba(0,0,0,0.2)
-  form
-    margin-top: 40px
+    line-height: 22px
+    margin: 0
+    &:nth-of-type(odd)
+      background: $light_blue
+      font-size: 22px
+      line-height: 25px
 
-    input[type=email], input[type=text]
-      background: #3E3E3E
+    img + p, img + img
+      margin-top: 38px
+
+    .col-sm-6
+      padding: 25px
+
+    img
       width: 100%
-      border: none
-      padding: 15px 20px
-      border-radius: 4px
-      margin-bottom: 10px
+      height: auto
 
-    input[type=submit]
+    .btn
+      background-color: rgba(20,100,241,0.1)
+
+    [class^="col-sm"]
+      padding: 0 25px
+
+    .col-sm-12 p
+      padding: 0 50px
+
+  .page-logo
+    height: 90px
+    margin-left: 25px
+    img
+      position: relative
+      top: 50%
+      transform: translateY(-50%)
+      width: 200px
+
+  .items
+    margin-right: 25px
+    a
+      line-height: 45px
+
+  .story-nav
+    height: 45px
+    background: $light_blue
+    a
+      line-height: 45px
+      margin: 0 27.5px
+
+  #story-page
+    .story-img-section
+      padding-top: 0
+
+    h1
+      font-size: 40px
+      line-height: 48px
+      color: $dark_blue
+
+
+  .footer
+    background: #2F2F2F
+    padding: 38px 1.5% 80px 1.5%
+    color: #fff
+    font-size: 16px
+    line-height: 20px
+    .col-sm-4
+      padding: 1.5%
+    h4
       font-size: 19px
-      margin-top: 20px
-      padding: 10px 40px
+      font-weight: $font_weight
+      opacity: 0.7
+      margin-bottom: 20px
+    .btn
+      color: #fff
+      background-color: rgba(0,0,0,0.2)
+    form
+      margin-top: 40px
+
+      input[type=email], input[type=text]
+        background: #3E3E3E
+        width: 100%
+        border: none
+        padding: 15px 20px
+        border-radius: 4px
+        margin-bottom: 10px
+
+      input[type=submit]
+        font-size: 19px
+        margin-top: 20px
+        padding: 10px 40px
