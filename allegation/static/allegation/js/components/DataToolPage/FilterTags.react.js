@@ -1,18 +1,19 @@
 var _ = require('lodash');
 var React = require('react');
-global.jQuery = require('jquery');
-require('bootstrap');
+require('utils/jQuery');
 var classnames = require('classnames');
 
 var Base = require('components/Base.react');
 var SessionStore = require('stores/SessionStore');
 var FilterTagsActions = require('actions/FilterTagsActions');
 var FilterStore = require('stores/FilterStore');
+var AppConstants = require('constants/AppConstants');
+
 
 var FilterTags = React.createClass(_.assign(Base(SessionStore), {
-
   removeTag: function (category, filter) {
-    FilterTagsActions.removeTag(category, filter);
+    FilterTagsActions.removeTag(category, filter, true);
+    FilterTagsActions.removedTag(category, filter);
   },
 
   pinTag: function (category, filter) {
@@ -29,9 +30,12 @@ var FilterTags = React.createClass(_.assign(Base(SessionStore), {
 
         return (
           <span className={tagClassName}>
-            {filter.text || filter}
-            <span className='pin' onClick={that.pinTag.bind(that, category, filter)}><i className="fa fa-thumb-tack"></i></span>
-            <span data-role="remove" onClick={that.removeTag.bind(that, category, filter)}></span>
+            <a href='javascript:void(0);' className="action remove" onClick={that.removeTag.bind(that, category, filter)}><i className="fa fa-times"></i></a>
+            <span className="filter">
+              <span className='filter-name'>{filter.text || filter}</span>
+              <span className='filter-category-name'>{AppConstants.AUTOCOMPLETE_CATEGORY_NAMES[category]}</span>
+            </span>
+            <span className='action pin' onClick={that.pinTag.bind(that, category, filter)}><i className="fa fa-thumb-tack"></i></span>
           </span>
         );
       });
@@ -40,7 +44,7 @@ var FilterTags = React.createClass(_.assign(Base(SessionStore), {
 
   render: function () {
     return (
-      <div id='filter-tags' className="bootstrap-tagsinput">
+      <div id='filter-tags'>
         { this.renderTags() }
       </div>
     );

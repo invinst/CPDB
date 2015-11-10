@@ -18,11 +18,11 @@ describe('ComplaintList', function () {
 
   it('render nothing when do not have any complaints', function () {
     ComplaintListStore.getState = jest.genMockFunction();
-    ComplaintListStore.getState.mockReturnValue({'complaints': [], 'loading': false});
+    ComplaintListStore.getState.mockReturnValue({complaints: [], loading: false, analytics: {}});
     complaints = TestUtils.renderIntoDocument(
       <ComplaintSection />
     );
-    var divs = TestUtils.scryRenderedDOMComponentsWithTag(complaints, 'div');
-    expect(divs.length).toBe(1);
+    var div = TestUtils.findRenderedDOMComponentWithClass(complaints, 'no-complaints');
+    expect(div.props.children).toBe('No allegations match the query.');
   });
 });

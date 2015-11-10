@@ -1,14 +1,15 @@
 from selenium.webdriver.common.keys import Keys
 
 from api.models import Setting
-from common.models import AllegationCategory
 from common.tests.core import *
 from allegation.factories import AllegationFactory, AllegationCategoryFactory
+
 
 class IntegrationTestHelperMixin(object):
     def visit_home(self):
         self.visit('/')
         self.button('View Database').click()
+        self.until(lambda: self.link("Outcomes"))
 
 
 class HomePageTestCase(BaseLiveTestCase, IntegrationTestHelperMixin):
@@ -36,22 +37,25 @@ class HomePageTestCase(BaseLiveTestCase, IntegrationTestHelperMixin):
         self.visit('/#!/data-tools')
         self.link("Categories").click()
 
+    def check_number_officer(self, num):
+        self.until(lambda: self.number_of_officers().should.equal(num))
+
     def test_click_on_category_only_show_allegation_belong_to_it(self):
         other_category = AllegationCategoryFactory()
         other_allegation = AllegationFactory(cat=other_category)
-
         self.filter_complaint_type()
-        self.number_of_officers().should.equal(2)
+
+        self.check_number_officer(2)
 
         self.until(lambda: self.link(self.allegation_category.category).is_displayed())
         self.link(self.allegation_category.category).click()
 
-        self.number_of_officers().should.equal(1)
+        self.check_number_officer(1)
 
     def test_click_on_officer_will_show_compliant(self):
         self.filter_complaint_type()
 
-        self.number_of_officers().should.equal(1)
+        self.check_number_officer(1)
 
         self.find('.checkmark').click()
         self.until(lambda: self.element_exist('.complaint_list'))
@@ -172,26 +176,31 @@ class HomePageTestCase(BaseLiveTestCase, IntegrationTestHelperMixin):
         self.visit_home()
         self.link("Outcomes").click()
         self.browser.implicitly_wait(0)
-        self.element_by_classname_and_text('tag', us).shouldnt.be.ok
-        self.element_by_classname_and_text('tag', ns).shouldnt.be.ok
+        self.element_by_classname_and_text('filter-name', us).shouldnt.be.ok
+        self.element_by_classname_and_text('filter-name', ns).shouldnt.be.ok
         self.browser.implicitly_wait(10)
 
         self.element_by_tagname_and_text('td', us).click()
-        self.until(lambda: self.element_by_classname_and_text('tag', us).should.be.ok)
+        self.until(lambda: self.element_by_classname_and_text('filter-name', us).should.be.ok)
         self.browser.implicitly_wait(0)
-        self.element_by_classname_and_text('tag', ns).shouldnt.be.ok
+        self.element_by_classname_and_text('filter-name', ns).shouldnt.be.ok
         self.browser.implicitly_wait(10)
 
         self.element_by_tagname_and_text('td', ns).click()
-        self.until(lambda: self.element_by_classname_and_text('tag', ns).should.be.ok)
+        self.until(lambda: self.element_by_classname_and_text('filter-name', ns).should.be.ok)
         self.browser.implicitly_wait(0)
-        self.element_by_classname_and_text('tag', us).shouldnt.be.ok
+        self.element_by_classname_and_text('filter-name', us).shouldnt.be.ok
         self.browser.implicitly_wait(10)
 
         self.element_by_tagname_and_text('td', us).click()
-        self.until(lambda: self.element_by_classname_and_text('tag', us).should.be.ok)
+        self.until(lambda: self.element_by_classname_and_text('filter-name', us).should.be.ok)
         self.browser.implicitly_wait(0)
-        self.element_by_classname_and_text('tag', ns).shouldnt.be.ok
+        self.element_by_classname_and_text('filter-name', ns).shouldnt.be.ok
+        self.browser.implicitly_wait(10)
+
+        self.find(".tag .remove").click()
+        self.browser.implicitly_wait(0)
+        self.element_by_tagname_and_text('td', ns).shouldnt.be.ok
         self.browser.implicitly_wait(10)
 
     def test_sticky_footer(self):
@@ -205,6 +214,7 @@ class HomePageTestCase(BaseLiveTestCase, IntegrationTestHelperMixin):
 
         self.find('body').send_keys(Keys.PAGE_DOWN)
         self.until(lambda: self.is_displayed_in_viewport('.sticky-footer').should.be.true)
+        self.find('body').send_keys(Keys.PAGE_UP)
         self.find('body').send_keys(Keys.PAGE_UP)
         self.until(lambda: self.is_displayed_in_viewport('.sticky-footer').should.be.false)
 
@@ -263,10 +273,17 @@ class HomePageTestCase(BaseLiveTestCase, IntegrationTestHelperMixin):
         items = [x.text for x in items]
         return any(text in x for x in items)
 
+    def autocomplete_select(self, text):
+        items = self.find_all(".ui-autocomplete .ui-menu-item")
+        for item in items:
+            if text in item.text:
+                item.click()
+
     def search_officer(self, officer):
         self.fill_in("#autocomplete", officer.officer_first)
-        self.until(lambda: self.autocomplete_available(officer.officer_first))
-        self.find(".ui-autocomplete .ui-menu-item").click()
+        self.until_ajax_complete()
+        self.until(lambda: self.autocomplete_available(officer.display_name))
+        self.autocomplete_select(officer.display_name)
         self.until_ajax_complete()
 
     def test_default_site_title_from_settings(self):

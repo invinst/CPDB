@@ -147,7 +147,7 @@ class AllegationQueryFilter(object):
                 categories = AllegationCategory.objects.filter(category__in=category_names)
                 cats = list(categories.values_list('cat_id', flat=True))
                 value = self.query_dict.getlist('cat') + cats
-                self.filters['cat__in'] = value
+                self.filters['cat'] = value
                 self.raw_filters.remove('cat')
                 self.raw_filters.remove('cat__category')
 
@@ -163,7 +163,11 @@ class AllegationQueryFilter(object):
         return self.query_dict.get('radius', 500)
 
     def complainant_gender(self):
-        return self.query_dict.getlist('complainant_gender', [])
+        if 'complainant_gender' not in self.ignore_filters:
+            return self.query_dict.getlist('complainant_gender', [])
+        return []
 
     def complainant_race(self):
-        return self.query_dict.getlist('complainant_race', [])
+        if 'complainant_race' not in self.ignore_filters:
+            return self.query_dict.getlist('complainant_race', [])
+        return []

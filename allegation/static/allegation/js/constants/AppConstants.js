@@ -41,8 +41,21 @@ module.exports = {
   RECEIVE_STORIES: c++,
 
   ADD_TAG: c++,
+  TOGGLE_TAGS: c++,
   REMOVE_TAG: c++,
+  REMOVED_TAG: c++,
   PIN_TAG: c++,
+
+  RECEIVED_SUNBURST_DATA: c++,
+  SUNBURST_SELECT_ARC: c++,
+  SUNBURST_HOVER_ARC: c++,
+  SUNBURST_LEAVE_ARC: c++,
+  SUNBURST_CLEAR_CONTROL: c++,
+  MOBILE_SEARCH_CLICK: c++,
+  MOBILE_SEARCH_COLLAPSE: c++,
+
+  DOWNLOAD_PROCESS: c++,
+  GENERATED_DOWNLOAD: c++,
 
   AVG_COMPLAINTS_NUMBER_GREEN: 20,
   AVG_COMPLAINTS_NUMBER_YELLOW: 60,
@@ -50,8 +63,8 @@ module.exports = {
 
   RACE_GENDER_TAB_RECEIVED_DATA: c++,
 
-  MAP_TOKEN: 'pk.eyJ1Ijoic3RlZmFuZ2VvcmciLCJhIjoiVnBNOEp4byJ9.7i2N7gTV-t_QtAA-kAAlFA',
-  MAP_TYPE: 'mapbox.streets',
+  MAP_TOKEN: 'pk.eyJ1IjoiaW52aXNpYmxlaW5zdGl0dXRlIiwiYSI6ImNpZ3NwN2pmNzA1OTZ1eG0xZG9hNHByY3kifQ.3ZsdVMWxRWtM1N3uVZ3MTA',
+  MAP_TYPE: 'mapbox.light',
 
   NUMERAL_FORMAT: '0,0',
 
@@ -221,14 +234,57 @@ module.exports = {
     'unitWithName': 'Unit'
   },
 
+  AUTOCOMPLETE_CATEGORY_NAMES: {
+    'crid': 'Allegation ID',
+    'cat__category': 'Category',
+    'cat': 'Allegation type',
+    'investigator': 'Investigator',
+    'officer': 'Officer',
+    'officer__star': 'Badge number',
+    'officer__unit': 'Officer Unit',
+    'officer__rank': 'Officer Rank',
+    'officer__gender': 'Officer Gender',
+    'officer__race': 'Officer Race',
+    'recc_outcome': 'Recommended Outcome',
+    'recc_finding': 'Recommended Finding',
+    'final_outcome': 'Final Outcome',
+    'final_outcome_class': 'Final Outcome',
+    'final_finding': 'Final Finding',
+    'final_finding_text': 'Final Finding',
+    'incident_date_only__year': 'Incident Year',
+    'incident_date_only__year_month': 'Incident Year/Month',
+    'incident_date_only': 'Incident Date',
+    'areas__id': 'Area',
+    'complainant_gender': 'Complainant Gender',
+    'complainant_race': 'Complainant Race',
+    'outcome_text': 'Outcome',
+    'city': 'Zip Code',
+    'data_source': 'Data Source'
+  },
+
+  AUTOCOMPLETE_DISPLAY_CATEGORY_IN_TAG: [
+    'officer__gender',
+    'complainant_gender',
+    'officer__race',
+    'complainant_race'
+  ],
+
   DEFAULT_SITE_TITLE: DEFAULT_SITE_TITLE,  // from global variable
 
   MEDIA_URL: '/media/',
 
-  MAP_MARKER_ICON_URL: 'http://data.invisible.institute/static/img/64x_map_marker.png',
+  MAP_MARKER_ICON_URL: 'http://cpdb.co/static/img/64x_map_marker.png', // it must be a full url
   OFFICER_PAGE_API_ENDPOINT: '/officer',
   SESSION_API_ENDPOINT: '/api/allegations/session/',
-  RACE_GENDER_API_ENDPOINT: '/api/allegations/race-gender',
+  RACE_GENDER_API_ENDPOINT: '/api/allegations/race-gender/',
 
-  DATE_FORMAT: 'D MMM, YYYY'
+
+  DATE_FORMAT: 'D MMM, YYYY',
+
+  HAPPYFOX_CONF: {
+    EMBED_TOKEN: "31ec3e10-7a4b-11e5-bf4e-83a9062f6735",
+    ACCESS_TOKEN: "0caab5f9fe694a1b8a094b6b0f48619e",
+    HOST_URL: "https://happyfoxchat.com",
+    ASSETS_URL: "https://d1l7z5ofrj6ab8.cloudfront.net/visitor"
+  }
 };

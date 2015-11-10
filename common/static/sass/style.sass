@@ -1,48 +1,76 @@
 //colors
-$white: white
-$color_mountain_mist_approx: #989898
 $black: #000000
-$color_mine_shaft_approx: #333333
-$color_pampas_approx: #f6f6ec
-$color_ship_cove_approx: #709dc0
-$color_cadet_blue_approx: #a5b4be
-$color_deep_cerulean_approx: #0079ae
-$color_ziggurat_approx: #bed4df
-$color_storm_dust_approx: #666
-$color_celeste_approx: #cbcbcb
-$color_japanese_laurel_approx: green
-$color_coral_red_approx: #ff4647
-$color_rajah_approx: #f3b272
-$color_goldenrod_approx: #f2db6d
-$color_swamp_green_approx: #a4c683
-$color_silver_tree_approx: #62b28c
-$seashell: #f1f1f1
-$red: red
-$color_tall_poppy_approx: #c0272d
-$color_fire_bush_approx: #ed9429
-$color_golden_grass_approx: #d8b421
-$color_sushi_approx: #83b247
-$color_chateau_green_approx: #41996d
-$color_azalea_approx: #f2ced3
-$color_pattens_blue_approx: #e2f6ff
-$gray: gray
-$color_spring_wood_approx: #f7f7ed
-$color_pacific_blue_approx: #0a90cb
-$color_star_dust_approx: #9a9a9a
-$color_pippin_approx: #ffe3e7
-$blue: blue
-$wild_sand: #f4f4f4
-$color_nobel_approx: #b2b2b2
 $black_70: rgba(0, 0, 0, .7)
+$blue: blue
+$color_allports_approx: #0f70a8
+$color_azalea_approx: #f2ced3
+$color_cadet_blue_approx: #a5b4be
+$color_celeste_approx: #cbcbcb
+$color_chateau_green_approx: #41996d
+$color_coral_red_approx: #dc3747
+$color_danube_approx: #628fca
+$color_danube_approx: #66aad7
 $color_deep_celurean_approx: #0279AE
+$color_deep_cerulean_approx: #0079ae
+$color_eastern_blue_approx: #1385b5
+$color_fire_bush_approx: #ed9429
+$color_fountain_blue_approx: #67adc5
+$color_golden_grass_approx: #d8b421
+$color_goldenrod_approx: #f69833
+$color_gull_gray_approx: #9faeb9
+$color_hippie_green_approx: #5d924e
+$color_japanese_laurel_approx: green
+$color_jordy_blue_approx: #7bb4ff
+$color_kashmir_blue_approx: #4a6c96
+$color_lochmara_approx: #107ac0
+$color_mine_shaft_approx: #333333
+$color_mountain_mist_approx: #989898
+$color_mountain_mist_approx: #989898
+$color_nobel_approx: #b2b2b2
+$color_pacific_blue_approx: #0a90cb
+$color_pampas_approx: #f6f6ec
+$color_pattens_blue_approx: #e2f6ff
+$color_pippin_approx: #ffe3e7
+$color_rajah_approx: #f46937
+$color_ship_cove_approx: #709dc0
+$color_silver_tree_approx: #62b28c
+$color_spring_wood_approx: #f7f7ed
+$color_star_dust_approx: #9a9a9a
+$color_storm_dust_approx: #666
+$color_sushi_approx: #83b247
+$color_swamp_green_approx: #f0c41b
+$color_tall_poppy_approx: #c0272d
+$color_ziggurat_approx: #bed4df
+$gray: gray
+$mercury: #e5e5e5
+$red: red
+$seashell: #f1f1f1
+$white: white
+$wild_sand: #f4f4f4
 
 //fonts
-$font_0: Source Sans Pro
+$font_0: "San Francisco Compact", "San Francisco", "San Francisco Compact Web"
 $font_1: serif
 $font_2: Vollkorn
-$font_3: Helvetica Neue
+$font_3: "Helvetica Neue"
 $font_4: sans-serif
 $font_5: Helvetica
+$font_6: Glyphicons Halflings
+
+@import 'shared/sf-compact-font'
+
+// Bootstrap's default breakpoints
+$screen-xs-min: 320px
+$screen-xs-max: 767px
+$screen-sm-min: 768px
+$screen-sm-max: 991px
+$screen-md-min: 992px
+$screen-md-max: 1199px
+$screen-lg-min: 1200px
+
+// Normalize user agent's stylesheet
+input
+  padding: 0
 
 //@extend-elements
 //original selectors
@@ -127,6 +155,16 @@ $font_5: Helvetica
   //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
   border-radius: 0
 
+//original selectors
+//.ui-state-focus, .ui-widget-content .ui-state-focus
+.extend_15
+  font-weight: 300
+  background: none
+  border: none
+  border-left: 4px solid $color_lochmara_approx
+  color: $color_lochmara_approx
+  margin: 0
+
 body
   background-color: $white
   font-family: $font_0, $font_1
@@ -134,10 +172,47 @@ body
   &.embedding
     background-color: $color_cadet_blue_approx
 
+#autocomplete
+  line-height: normal
+  height: 50px
+  display: block
+  width: 100%
+  padding: 15px 18px
+  background-color: white
+  background-image: none
+  border: 1px solid $color_celeste_approx
+  border-radius: 4px
+  border-top-right-radius: 0
+  border-bottom-right-radius: 0
+
+  &:focus
+    border-color: $color_eastern_blue_approx
+
+#btn-search
+  border-top-left-radius: 0
+  border-bottom-left-radius: 0
+  margin-left: -1px
+  padding: 6px 12px
+  height: 50px
+  width: 48px
+  background-color: $color_eastern_blue_approx
+
+  i
+    font-size: 17px
+    color: $white
+
+#autocomplete-container
+  position: absolute
+
+.search-row
+  margin-bottom: 24px
+
 .navbar
   min-height: 72px
   margin-bottom: 0
   border-bottom: 1px solid $color_mountain_mist_approx
+  border-top: none
+
   &.navbar
     @extend .extend_2
 
@@ -149,8 +224,61 @@ body
     &:focus
       @extend .extend_3
 
+    @media (min-width: $screen-xs-min) and (max-width: $screen-xs-max)
+      margin-left: -10px
+
+      img
+        width: 68px
+        height: 55px
+
+    @media (min-width: $screen-sm-min)
+      img
+        width: 89px
+        height: 72px
+
   .navbar-nav > li.site-title > a
     color: $color_mine_shaft_approx
+
+  .navbar-form
+    margin-top: 16px
+
+  @media (min-width: $screen-xs-min) and (max-width: $screen-xs-max)
+    min-height: inherit
+    height: 55px
+
+    .navbar-header
+      display: inline-block
+
+    #navbar-main
+      display: inline-block
+      border-top: none
+      margin: 10px 0 0 10px
+      padding: 0
+      width: 73%
+      vertical-align: top
+
+      ul.nav.navbar-nav
+        margin: 0
+        width: 100%
+
+        .site-title
+          margin: 0
+
+    .navbar-form
+      border: none
+
+      #search-wrapper
+        margin-top: 2px
+        border: none
+        width: 100%
+        position: relative
+
+        input
+          width: 89%
+
+        i
+          position: absolute
+          right: 0
 
 h1
   @extend .extend_1
@@ -188,11 +316,15 @@ h3
 footer
   .row
     background-color: #172b3a
-    padding: 20px 0
+    padding: 8px 0
 
 #map
   width: 100%
-  height: 500px
+  height: 576px
+
+.mobile
+  #map
+    height: 500px
 
 #officer-complaint-map
   width: 100%
@@ -202,16 +334,13 @@ footer
   font-style: italic
   font-size: 30px
   font-family: $font_2, $font_1
-  margin: 10px 0 0 10px
+  margin: 0 0 0 10px
   width: 100%
   input
     border: none
     width: 100%
 
 .map-row
-  background-color: $color_pampas_approx
-  .map-column
-    padding: 0
 
 #map-arrow-down
   position: absolute
@@ -226,7 +355,7 @@ footer
   overflow: hidden
   margin-left: 30px
   padding-left: 0
-  margin-top: 44px
+  padding-top: 44px
   .category-anlytics
     text-align: right
     font-size: 14px
@@ -251,7 +380,6 @@ footer
   font-family: $font_0, $font_4
   font-size: 12px
   padding-top: 10px
-  background-color: $color_pampas_approx
   //If you use compass, instead of the line below you could use + transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
   transition: left 1s
   position: relative
@@ -281,7 +409,6 @@ footer
     position: absolute
     width:  calc(100% - 18px)
     visibility: hidden
-    background: $color_pampas_approx
     &.active
       left: calc(1em - 5px)
       visibility: visible
@@ -452,7 +579,7 @@ footer
   background-color: $color_swamp_green_approx
 
 .overview-4
-  background-color: $color_silver_tree_approx
+  background-color: $color_hippie_green_approx
 
 .officers-container
   width: 6000px
@@ -526,7 +653,7 @@ footer
         padding: 2px 10px 10px 15px
         color: white
         font-size: 14px
-        font-weight: bold
+        font-weight: 400
       .non-intersection
         visibility: hidden
         height: 28px
@@ -549,19 +676,19 @@ footer
     > .checkmark:hover
       background-color: $color_celeste_approx
   &.avg-0
-    border-top-color: $color_tall_poppy_approx
+    border-top-color: $color_coral_red_approx
 
   &.avg-1
-    border-top-color: $color_fire_bush_approx
+    border-top-color: $color_rajah_approx
 
   &.avg-2
-    border-top-color: $color_golden_grass_approx
+    border-top-color: $color_goldenrod_approx
 
   &.avg-3
-    border-top-color: $color_sushi_approx
+    border-top-color: $color_swamp_green_approx
 
   &.avg-4
-    border-top-color: $color_chateau_green_approx
+    border-top-color: $color_hippie_green_approx
 
   .complaint-discipline-row
     padding: 2px 10px 10px 15px
@@ -606,7 +733,7 @@ footer
   white-space: nowrap
   padding: 10px 10px 0 15px
 
-@media only screen and (max-width: 1024px)
+@media only screen and (max-width: 1320px)
   .officer-control
     display: none
 
@@ -651,7 +778,7 @@ footer
   margin-top: 0.3em
 
 .complaint-row
-  padding: 5px 0 0
+  padding: 10px 0 5px
   border-bottom: 1px solid $color_celeste_approx
   font-family: $font_2
   clear: both
@@ -668,7 +795,7 @@ footer
 
   .title
     color: $gray
-    font-size: 12px
+    font-size: 14px
     font-family: $font_0
 
   .show_more
@@ -779,8 +906,8 @@ footer
       text-transform: none
       border: 1px solid $color_pacific_blue_approx
       width: 151px
-      font-size: 16px
-      padding: 5px 10px
+      font-size: 14px
+      font-weight: 400
 
     &:hover:not(.btn-link):not(.btn-flat)
       background-color: $color_pacific_blue_approx
@@ -794,7 +921,8 @@ footer
     border: 1px solid $color_pacific_blue_approx
     width: 151px
     max-width: 151px
-    font-size: 16px
+    font-size: 14px
+    font-weight: 400
     padding: 5px 10px
 
 @media screen and (max-width: 1024px)
@@ -1094,100 +1222,42 @@ footer
     font-family: $font_0, $font_4
 
 .chart-row
-  padding-left: 0
-  padding-right: 0
+  background-color: $white
+  border: 1px solid $color_celeste_approx
+
+  .tab-content
+    min-height: 456px
+
   .nav-tabs
     background-color: $seashell !important
+    border: 0
     > li
       padding-top: 4px
-      border-top: 0 solid $seashell !important
-      border-right: 1px solid $color_celeste_approx !important
-      border-bottom: 1px solid $color_celeste_approx !important
+      border-top: 0 solid $seashell
+      border-right: 1px solid $color_celeste_approx
+      border-bottom: 1px solid $color_celeste_approx
       width: 33.3333%
       text-align: center
+
+      &:last-child
+        border-right: 0 !important
+
       &.active
         padding-top: 0
         border-top: 4px solid $color_deep_cerulean_approx !important
-        border-right: 0 !important
-        border-bottom: 1px solid $color_pampas_approx !important
-        > a
-          background-color: $color_pampas_approx !important
+        border-bottom: 0 !important
+
+        > a, > a:hover
+          opacity: 1
+          background-color: $white !important
           color: $color_mine_shaft_approx !important
-          border-right: 1px solid $color_celeste_approx !important
 
       > a
         //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
-        border-radius: 0 !important
-        background-color: $seashell !important
+        border-radius: 0
+        background-color: $seashell
         color: $color_deep_cerulean_approx !important
         font-weight: 400
-
-#sunburst-legend
-  color: $color_mine_shaft_approx
-  padding-top: 44px
-  padding-left: 30px
-  table
-    width: 100%
-    td
-      padding-right: 10px
-      padding-bottom: 5px
-      vertical-align: top
-      &.size
-        text-align: right
-        width: 50px
-
-      &.color
-        width: 20px
-
-  .percent
-    min-height: 3em
-
-  .root
-    font-family: $font_0, $font_4
-    font-size: 18px
-    font-weight: 600
-    text-transform: uppercase
-
-.sunburst-breadcrumb
-  list-style: none
-  margin: 0px 30px 0 0
-  padding: 10px 0px 10px 30px
-  border-bottom: 1px solid $color_celeste_approx
-  > li
-    display: inline-block
-    margin-right: 17px
-    &:after
-      content: "\25B6"
-      position: relative
-      bottom: 13px
-      font-family: $font_4
-      font-size: 12px
-      color: $color_mountain_mist_approx
-      right: -8px
-    &:last-child:after
-      display: none
-
-.sunburst-legend
-  cursor: pointer
-
-  &.active
-    font-weight: 700
-
-  .name
-    color: $color_deep_cerulean_approx
-
-  .list
-    margin-top: 30px
-
-#sunburst-chart
-  overflow: hidden
-  svg
-    position: relative
-
-  path
-    stroke: $color_pampas_approx
-    fill-rule: evenodd
-    cursor: pointer
 
 #loading
   margin-top: 20px
@@ -1205,7 +1275,7 @@ button a:hover
   @extend .extend_2
 
 ul.nav.navbar-nav
-  width: 45%
+  width: 84%
 
 .progress-bar.discipline
   background-color: $color_tall_poppy_approx
@@ -1261,7 +1331,6 @@ form.navbar-form.navbar-right
     width: 1230px
 
 #EmbedBar
-  margin-top: 15px
   background-color: $color_cadet_blue_approx
   color: $white
   a
@@ -1270,8 +1339,6 @@ form.navbar-form.navbar-right
   .active
     background-color: $color_deep_cerulean_approx
 
-  .row > div
-    padding: 20px 10px
 
 .embed-code
   background-color: $white
@@ -1287,6 +1354,14 @@ form.navbar-form.navbar-right
     padding: 0
     margin-left: 5px
 
+#embed-lists
+  list-style: none
+  margin-right: -10px
+  margin-bottom: 5px
+
+.embed-button
+  padding: 17px 10px
+  display: inline-block
 
 .embed
   .tooltip
@@ -1303,10 +1378,11 @@ form.navbar-form.navbar-right
     display: block
 
 
-.container.content
+.container-fluid.content
   background-color: $white
   padding-bottom: 20px
   margin-top: 28px
+  max-width: 1230px
 
 .checkmark.embed
   background-color: $color_ship_cove_approx
@@ -1320,18 +1396,52 @@ form.navbar-form.navbar-right
   text-transform: none !important
 
 .stick-footer-bottom
-  padding-bottom: 173px
+  padding-bottom: 145px
   .sticky-footer
-    width: 100%
+    width: calc(100% - 30px)
     position: fixed
     bottom: 0
 
-.tag
+.bootstrap-tagsinput .tag
+  margin-left: 5px
+  margin-right: 5px
+
   .pin
     cursor: pointer
     margin-left: 5px
 
+#donut-chart
+  &+#addText
+    width: 146px
+    margin: -174px auto 0
+    text-align: center
+
+.bootstrap-tagsinput
+  padding: 4px 0
+
+.navbar-form
+  margin-left: 0
+  margin-right: 0
+  padding: 0
+
+#navbar-main
+  margin-top: 16px
+
+#complaint-list
+  .modal-backdrop
+    &.in
+      z-index: 0
+
+@media (min-width: $screen-xs-min) and (max-width: $screen-sm-max)
+  [class*=col-xs-], [class*=col-sm-]
+    padding-left: 10px
+    padding-right: 10px
+
 @import 'shared'
+@import 'sunburst'
+@import 'officer_page'
 @import 'officer-profile'
+@import 'officer-detail'
+@import 'search'
 @import 'mobile'
 @import 'data_tool_page'

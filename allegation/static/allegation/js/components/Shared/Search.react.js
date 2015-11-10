@@ -1,12 +1,49 @@
+var classnames = require('classnames');
 var navigate = require('react-mini-router').navigate;
 var React = require('react');
 
+var AppConstants = require('constants/AppConstants');
 var FilterTagsActions = require('actions/FilterTagsActions');
+var NavActions = require('actions/NavActions');
 
 
 var Search = React.createClass({
   componentDidMount: function () {
-    cpdbAutocomplete($("#autocomplete"), this.select);
+    this.initAutocomplete();
+  },
+
+  initAutocomplete: function () {
+    $("#autocomplete").catcomplete({
+      autoFocus: true,
+      source: function (request, response) {
+        $.ajax({
+          url: "/search/suggest/",
+          dataType: "json",
+          data: {
+            term: request.term
+          },
+          success: function (data) {
+            var newData = [];
+            $.each(data, function (i, subdata) {
+              newData = newData.concat(subdata);
+            });
+
+            response(newData);
+          }
+        });
+      },
+      appendTo: '#autocomplete-container',
+      select: this.select,
+      focus: function (event) {
+        event.preventDefault();
+      },
+      categoryNames: AppConstants.AUTOCOMPLETE_CATEGORY_NAMES,
+      categoriesDisplayInTag: AppConstants.AUTOCOMPLETE_DISPLAY_CATEGORY_IN_TAG
+    });
+  },
+
+  componentDidUpdate: function () {
+    $('#autocomplete').focus();
   },
 
   select: function (event, ui) {
@@ -15,14 +52,36 @@ var Search = React.createClass({
     $("#autocomplete").val('');
   },
 
+  onSearchClick: function () {
+    if (!this.props.mobileExpanded) {
+      NavActions.mobileSearchClick();
+    } else {
+      NavActions.mobileSearchCollapse();
+    }
+  },
+
   render: function() {
+    var searchIconClass = classnames(
+      {
+        'glyphicon glyphicon-search': !this.props.mobileExpanded,
+        'glyphicon glyphicon-remove': this.props.mobileExpanded
+      }
+    );
+
     return (
-      <form className="navbar-form navbar-right" role="search">
-        <div id="search-wrapper">
-          <input type="text" id="autocomplete" placeholder="Search by name, neighborhood, or complaint"
-                 className="ui-autocomplete-input" autoComplete="off"/>
+      <div className="row search-row">
+        <div className="col-md-12">
+          <form role="search">
+            <div className="input-group">
+              <input type="text" id="autocomplete" placeholder="Search by a name/place/category, or click inside the graphs below"
+                   className="ui-autocomplete-input form-control" autoComplete="off"/>
+              <span className="input-group-btn">
+                <button className="btn btn-primary" id="btn-search" type="button" onClick={this.onSearchClick}><i className={searchIconClass}></i></button>
+              </span>
+            </div>
+          </form>
         </div>
-      </form>
+      </div>
     )
   }
 });

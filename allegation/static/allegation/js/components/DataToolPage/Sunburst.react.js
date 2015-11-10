@@ -1,11 +1,16 @@
 var React = require('react');
-var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
-var SummaryActions = require('actions/SummaryActions');
-var SunburstStore = require("stores/SunburstStore");
-var FilterTagsActions = require('actions/FilterTagsActions');
-var FilterStore = require("stores/FilterStore");
 var numeral = require('numeral');
+var _ = require('lodash');
+
+var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
+var Base = require('components/Base.react');
 var AppConstants = require('constants/AppConstants');
+var SummaryActions = require('actions/SummaryActions');
+var SunburstActions = require('actions/SunburstActions');
+var FilterTagsActions = require('actions/FilterTagsActions');
+var SunburstStore = require("stores/SunburstStore");
+var FilterStore = require("stores/FilterStore");
+var SunburstAPI = require('utils/SunburstAPI');
 
 var width = 390,
   height = 390,
@@ -103,29 +108,8 @@ function sum(d){
   return s;
 }
 
-var Sunburst = React.createClass({
+var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
   mixins: [EmbedMixin],
-  getInitialState: function () {
-    root = SunburstStore.getRoot();
-    if (root) {
-     return {
-       data: root,
-       selected: root,
-       hovering: false,
-       drew: false,
-
-
-     }
-    }
-    else {
-      return {
-        data: false,
-        selected: false,
-        hovering: false,
-        drew: false
-      }
-    }
-  },
 
   // embedding
   getEmbedCode: function () {
@@ -154,16 +138,20 @@ var Sunburst = React.createClass({
     if (this.isEmbedding()) {
       return;
     }
+
+    var selected = this.state.selected;
+
     if (d == this.state.selected) {
       return;
     }
 
-    var selected = this.state.selected;
+    this.zoomToSelected(d);
 
-    this.setState({
-      'selected': d
-    });
+    setTimeout(this.selectAnimationDone.bind(this, d, selected), 750);
 
+  },
+
+  selectAnimationDone: function (d, selected) {
     if ((d == selected.parent) && selected.tagValue) {
       FilterTagsActions.removeTag(selected.tagValue.category, selected.tagValue)
     }
@@ -175,6 +163,10 @@ var Sunburst = React.createClass({
       FilterTagsActions.addTag(d.tagValue.category, d.tagValue);
     }
 
+    SunburstActions.selectArc(d);
+  },
+
+  zoomToSelected: function (d) {
     path.transition()
       .duration(750)
       .attrTween("d", arcTween(d));
@@ -192,47 +184,15 @@ var Sunburst = React.createClass({
   },
 
   mouseleave: function (d) {
-    var that = this;
-    // Deactivate all segments during transition.
-    svg.selectAll("path").on("mouseover", null);
-
-    // Transition each segment to full opacity and then reactivate it.
-    svg.selectAll("path")
-        .transition()
-        .duration(500)
-        .style("opacity", 1)
-        .each("end", function() {
-                d3.select(this).on("mouseover", that.mouseover);
-              });
-
-    d3.select("#explanation")
-        .style("visibility", "hidden");
-
-    this.setState({
-      hovering: false
-    });
+    SunburstActions.leaveArc();
   },
 
   mouseover: function (d) {
-    svg.selectAll("path")
-      .style("opacity", 0.3);
-
-    var sequenceArray = this.getAncestors(d);
-    svg.selectAll("path")
-      .filter(function(node) {
-                return (sequenceArray.indexOf(node) >= 0);
-              })
-      .style("opacity", 1);
-    this.setState({
-      hovering: d
-    });
+    SunburstActions.hoverArc(d);
   },
 
   drawChart: function () {
-    if (this.state.drew) {
-      return;
-    }
-    var data = this.state.data;
+    var data = SunburstStore.getState().data;
     if (!data) {
       return;
     }
@@ -263,22 +223,68 @@ var Sunburst = React.createClass({
 
     d3.select("#container").on("mouseleave", this.mouseleave);
 
-    var selectedName = this.props.selected;
-    if (selectedName) {
-      svg.selectAll("path").each(function (d) {
-        if (d.name == selectedName) {
-          that.select(d);
-        }
-      });
-    }
-
-    this.setState({
-      drew: true
-    });
+    // update new state
+    this.doAfterDraw();
   },
 
-  componentDidUpdate: function() {
-    this.drawChart();
+  doAfterDraw: function () {
+    var selected = 'Allegations';
+    if (this.props.selected) {
+      selected = this.props.selected;
+    }
+    if (this.state.selected) {
+      selected = this.state.selected.name;
+    }
+
+    selected = this.findPathByName(selected);
+    setTimeout(function () {
+      SunburstActions.selectArc(selected);
+    }, 1);
+  },
+
+  findPathByName: function (name) {
+    var path;
+    svg.selectAll("path").each(function (d) {
+      if (d.name == name) {
+        path = d;
+      }
+    });
+    return path;
+  },
+
+  onSelectedChange: function () {
+    this.zoomToSelected(this.state.selected);
+  },
+
+  controlHover: function () {
+    if (this.state.hovering) {
+      svg.selectAll("path")
+        .style("opacity", 0.3);
+
+      var sequenceArray = this.getAncestors(this.state.hovering);
+      svg.selectAll("path")
+        .filter(function (node) {
+          return (sequenceArray.indexOf(node) >= 0);
+        })
+        .style("opacity", 1);
+    }
+    if (this.state.control.mouseLeave) {
+      var that = this;
+      // Deactivate all segments during transition.
+      svg.selectAll("path").on("mouseover", null);
+
+      // Transition each segment to full opacity and then reactivate it.
+      svg.selectAll("path")
+        .transition()
+        .duration(500)
+        .style("opacity", 1)
+        .each("end", function() {
+          d3.select(this).on("mouseover", that.mouseover);
+        });
+
+      d3.select("#explanation")
+          .style("visibility", "hidden");
+    }
   },
 
   componentDidMount: function () {
@@ -287,7 +293,16 @@ var Sunburst = React.createClass({
     }
 
     SunburstStore.addChangeListener(this._onChange);
+    SunburstStore.addDataChangeListener(this.drawChart);
+    SunburstStore.addSelectedChangeListener(this.onSelectedChange);
 
+    this.initTabs();
+
+    SunburstAPI.getData(this.props.query);
+    this.drawChart();
+  },
+
+  initTabs: function () {
     if (this.props.tabs.tabs.length > 0) {
       for(var i =0; i < this.props.tabs.tabs.length; i++){
         var tab = this.props.tabs.tabs[i];
@@ -300,22 +315,12 @@ var Sunburst = React.createClass({
     else {
       this.props.tabs.tabs.push(this);
     }
-
-    SunburstStore.init(this.props.query);
-    this.drawChart();
   },
 
   componentWillUnmount: function() {
     SunburstStore.removeChangeListener(this._onChange);
-  },
-
-  _onChange: function () {
-    var root = SunburstStore.getRoot();
-    this.setState({
-      data: root,
-      selected: root,
-      drew: false
-    })
+    SunburstStore.removeDataChangeListener(this.drawChart);
+    SunburstStore.removeSelectedChangeListener(this.onSelectedChange);
   },
 
   makeLegend: function (node) {
@@ -415,11 +420,13 @@ var Sunburst = React.createClass({
     var breadcrumb = this.renderBreadcrumb(hovering);
 
     return (
-      <div className="row">
+      <div className="">
         <div className="col-md-12">
-          {breadcrumb}
+          <div className="row">
+            {breadcrumb}
+          </div>
         </div>
-        <div className="col-md-5">
+        <div className="col-md-5 col-xs-5">
           <div id="sunburst-legend">
             <div className="root">
               {numeral(total).format(AppConstants.NUMERAL_FORMAT)} {hovering.name}
@@ -432,12 +439,12 @@ var Sunburst = React.createClass({
             </div>
           </div>
         </div>
-        <div id="sunburst-chart" className="col-md-7">
+        <div id="sunburst-chart" className="col-md-7 col-xs-7">
         </div>
       </div>
     );
 
   }
-});
+}));
 
 module.exports = Sunburst;

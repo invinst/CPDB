@@ -19,8 +19,8 @@ class SessionFactory(factory.django.DjangoModelFactory):
 
 
 class SettingFactory(factory.django.DjangoModelFactory):
-	class Meta:
-		model = Setting
+    class Meta:
+        model = Setting
 
-	key = factory.Sequence(lambda n: fake.name())
-	value = factory.Sequence(lambda n: fake.name())
+    key = factory.Sequence(lambda n: "key_{number}".format(number=n))
+    value = factory.Sequence(lambda n: fake.name())

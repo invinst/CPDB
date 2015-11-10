@@ -4,8 +4,19 @@ var ComplaintListAPI = require('utils/ComplaintListAPI');
 var OutcomeAnalysisAPI = require('utils/OutcomeAnalysisAPI');
 var SessionAPI = require('utils/SessionAPI');
 var RaceGenderAPI = require('utils/RaceGenderAPI');
+var SunburstAPI = require('utils/SunburstAPI');
 var FilterStore = require('stores/FilterStore');
 
+
+function updateSiteData(dontUpdateSession) {
+  ComplaintListAPI.getData();
+  OutcomeAnalysisAPI.getAnalysisInformation();
+  RaceGenderAPI.getData();
+  SunburstAPI.getData();
+  if (!dontUpdateSession) {
+    SessionAPI.updateSessionInfo({'query': FilterStore.getSession()});
+  }
+};
 
 var FilterTagsActions = {
   addTag: function (category, filter) {
@@ -14,23 +25,36 @@ var FilterTagsActions = {
       category: category,
       filter: filter
     });
-
-    ComplaintListAPI.getData();
-    OutcomeAnalysisAPI.getAnalysisInformation();
-    RaceGenderAPI.getData();
-    SessionAPI.updateSessionInfo({'query': FilterStore.getSession()});
+    updateSiteData();
   },
 
-  removeTag: function (category, filter) {
+  toggleTags: function (category, filters) {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.TOGGLE_TAGS,
+      category: category,
+      filters: filters
+    });
+
+    updateSiteData();
+  },
+
+  removeTag: function (category, filter, dontUpdateSession) {
     AppDispatcher.dispatch({
       actionType: AppConstants.REMOVE_TAG,
       category: category,
       filter: filter
     });
 
-    ComplaintListAPI.getData();
-    OutcomeAnalysisAPI.getAnalysisInformation();
-    RaceGenderAPI.getData();
+    updateSiteData(dontUpdateSession);
+  },
+
+  removedTag: function (category, filter) {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.REMOVED_TAG,
+      category: category,
+      filter: filter
+    });
+
     SessionAPI.updateSessionInfo({'query': FilterStore.getSession()});
   },
 
@@ -40,6 +64,7 @@ var FilterTagsActions = {
       category: category,
       filter: filter
     });
+    SessionAPI.updateSessionInfo({'query': FilterStore.getSession()});
   }
 };
 

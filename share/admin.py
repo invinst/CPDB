@@ -1,14 +1,16 @@
 import json
-from django.contrib import admin
 
-# Register your models here.
+from django.contrib import admin
 from django.utils.html import format_html
+
+from common.actions import make_export_action
 from share.models import Session
 
 
 class ShareSessionAdmin(admin.ModelAdmin):
     search_fields = ['query']
     list_display = ['hash_id', 'session_type', 'session_title', 'search_tags', 'shared_from', 'shared_to']
+    actions = make_export_action("Export Shares to CSV")
 
     def format_as_session_link(self, obj):
         return format_html("<a href='/dashboard/share/session/{}'>{}</a>", obj.id, obj.hash_id)
@@ -61,5 +63,6 @@ class ShareSessionAdmin(admin.ModelAdmin):
 
     shared_from.allow_tags = True
     shared_to.allow_tags = True
+
 
 admin.site.register(Session, ShareSessionAdmin)

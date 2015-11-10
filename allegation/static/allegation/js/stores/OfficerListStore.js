@@ -105,6 +105,7 @@ OfficerListStore.dispatchEvent = AppDispatcher.register(function (action) {
     case AppConstants.MAP_ADD_FILTER:
     case AppConstants.ADD_TAG:
     case AppConstants.REMOVE_TAG:
+    case AppConstants.TOGGLE_TAGS:
       if (!firstCall) {
         OfficerListStore.set('active_officers', []);
       }

@@ -135,17 +135,6 @@ var Tabs = React.createClass({
       );
   },
 
-  renderTimeframeTab: function () {
-    var className = classnames('disabled', {'hidden': !this.props.mobile});
-    return (
-      <li role="presentation" className={className}>
-        <a href="#" aria-controls="profile" role="tab">
-          Timeframe
-        </a>
-      </li>
-    );
-  },
-
   renderMapContent: function () {
     if (!this.props.mobile) {
       return;
@@ -166,26 +155,28 @@ var Tabs = React.createClass({
 
     var outcomeContentClassName = classnames('tab-pane', isActive);
     return (
-      <div>
-        <ul className="nav nav-tabs" role="tablist">
+      <div className="row">
+        <div className="col-md-12">
+          <div className="chart-row clearfix">
+            <ul className="nav nav-tabs" role="tablist">
+              { this.renderMapTab() }
+              { this.renderOutcomesTab(outcomeClassName) }
+              { this.renderCategoriesTab() }
+              { this.renderGenderRaceTab() }
+            </ul>
 
-          { this.renderMapTab() }
-          { this.renderOutcomesTab(outcomeClassName) }
-          { this.renderCategoriesTab() }
-          { this.renderGenderRaceTab() }
-          { this.renderTimeframeTab() }
-        </ul>
-
-        <div className="tab-content">
-          { this.renderMapContent() }
-          <div role="tabpanel" className={outcomeContentClassName} id="sunburst">
-            <Sunburst tabs={this} />
-          </div>
-          <div role="tabpanel" className="tab-pane" id="categories">
-            <Summary tabs={this} />
-          </div>
-          <div role='tabpanel' className="tab-pane" id='race-gender'>
-            <RaceGenderTab />
+            <div className="tab-content">
+              { this.renderMapContent() }
+              <div role="tabpanel" className={outcomeContentClassName} id="sunburst">
+                <Sunburst tabs={this} />
+              </div>
+              <div role="tabpanel" className="tab-pane" id="categories">
+                <Summary tabs={this} />
+              </div>
+              <div role='tabpanel' className="tab-pane" id='race-gender'>
+                <RaceGenderTab />
+              </div>
+            </div>
           </div>
         </div>
       </div>

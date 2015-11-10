@@ -1,68 +1,110 @@
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var EventEmitter = require('events').EventEmitter;
-var AppConstants = require('../constants/AppConstants');
-var assign = require('object-assign');
-var FilterStore = require('./FilterStore');
-var CHANGE_EVENT = 'change';
-var ajax = null;
+var _ = require('lodash');
 
-var root = null;
-var _queryString = null;
+var AppDispatcher = require('dispatcher/AppDispatcher');
+var AppConstants = require('constants/AppConstants');
+var FilterStore = require('stores/FilterStore');
+var SessionStore = require('stores/SessionStore');
+var Base = require('stores/Base');
 
-var SunburstStore = assign({}, EventEmitter.prototype, {
-  update: function (query) {
-    var filter = FilterStore.getQueryString(['final_outcome', 'final_finding', 'outcome_text', 'final_finding_text']);
-    var queryString = query || filter;
-    if (queryString == _queryString) {
-      return;
-    }
-    _queryString = queryString;
-    if (ajax) {
-      ajax.abort();
-    }
-    ajax = d3.json("/api/allegations/sunburst/?" + queryString, function (error, data) {
-      if (error) throw error;
-      SunburstStore.setData(data);
-    });
-  },
+var DATA_CHANGE_EVENT = 'data-change';
+var SELECTED_CHANGE_EVENT = 'selected-change';
 
+
+var _state = {
+  selected: false,
+  data: false,
+  hovering: false
+};
+
+var SunburstStore = _.assign(Base(_state), {
   setData: function (data) {
-    root = data.sunburst;
-    SunburstStore.emitChange();
+    var root = data.sunburst;
+    _state.data = root;
+    SunburstStore.emitDataChange();
   },
 
-  init: function (query) {
-    this.update(query);
+  isSelected: function (category, value) {
+    var selected = _state.selected;
+    return selected && selected.tagValue && selected.tagValue.category == category && selected.tagValue.value== value
   },
 
-  getRoot: function () {
-    return root;
+  getSelectedParentTag: function () {
+    return _state.selected.parent;
   },
 
-  emitChange: function () {
-    this.emit(CHANGE_EVENT);
+  tryZoomOut: function (category, filter) {
+    if (this.isSelected(category, filter.value)) {
+      var parent = _state.selected = _state.selected.parent;
+
+      if (parent.tagValue) {
+        FilterStore.addFilter(parent.tagValue.category, parent.tagValue.value);
+        FilterStore.emitChange();
+
+        SessionStore.addTag(parent.tagValue.category, parent.tagValue);
+        SessionStore.emitChange();
+      }
+
+      SunburstStore.emitChange();
+    }
   },
 
-  addChangeListener: function (callback) {
-    this.on(CHANGE_EVENT, callback);
+  addDataChangeListener: function(callback) {
+    this.on(DATA_CHANGE_EVENT, callback);
   },
 
-  removeChangeListener: function(callback) {
-    this.removeListener(CHANGE_EVENT, callback);
+  removeDataChangeListener: function(callback) {
+    this.removeListener(DATA_CHANGE_EVENT, callback);
+  },
+
+  emitDataChange: function() {
+    this.emit(DATA_CHANGE_EVENT);
+  },
+
+  addSelectedChangeListener: function(callback) {
+    this.on(SELECTED_CHANGE_EVENT, callback);
+  },
+
+  removeSelectedChangeListener: function(callback) {
+    this.removeListener(SELECTED_CHANGE_EVENT, callback);
+  },
+
+  emitSelectedChange: function() {
+    this.emit(SELECTED_CHANGE_EVENT);
   }
+
 });
 
 // Register callback to handle all updates
 AppDispatcher.register(function (action) {
-
   switch (action.actionType) {
-    case AppConstants.MAP_REPLACE_FILTERS:
-    case AppConstants.MAP_CHANGE_FILTER:
-    case AppConstants.MAP_ADD_FILTER:
-    case AppConstants.ADD_TAG:
-    case AppConstants.REMOVE_TAG:
-      SunburstStore.update();
+    case AppConstants.RECEIVED_SUNBURST_DATA:
+      SunburstStore.setData(action.data);
       break;
+
+    case AppConstants.REMOVED_TAG:
+      SunburstStore.tryZoomOut(action.category, action.filter);
+      break;
+
+    case AppConstants.SUNBURST_SELECT_ARC:
+      selected  = _state.selected
+      _state.selected = action.data;
+      SunburstStore.emitChange();
+
+      if (selected != _state.selected) {
+        SunburstStore.emitSelectedChange();
+      }
+      break;
+
+    case AppConstants.SUNBURST_HOVER_ARC:
+      _state.hovering = action.data;
+      SunburstStore.emitChange();
+      break;
+
+    case AppConstants.SUNBURST_LEAVE_ARC:
+      _state.hovering = false;
+      SunburstStore.emitChange();
+      break;
+
     default:
       break;
   }
