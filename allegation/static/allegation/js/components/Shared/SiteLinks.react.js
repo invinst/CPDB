@@ -7,10 +7,13 @@ var SiteLinks = React.createClass({
       <div>
         <ul className='nav nav-tabs site-links pull-right'>
           <li>
-            <a href='#!/'>Findings</a>
+            <a href='/landing'>Findings</a>
           </li>
           <li>
-            <a href='#!/story'>Story</a>
+            <a href='/landing/#story-page'>Story</a>
+          </li>
+          <li>
+            <a href='/landing/#methodology-page'>Method</a>
           </li>
           <li>
             <a href='#!/data-tools'>Data</a>

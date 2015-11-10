@@ -20,14 +20,19 @@ $(document).on('click', '.story-nav a', function() {
 });
 
 $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-  if ($(e.target).attr('href') == '#story-page') {
+  var currentPage = $(e.target).attr('href');
+  if (currentPage == '#story-page') {
     $welcome.hide();
     $subNav.html($('.story-nav').clone());
     scrollValue = 0;
-  } else {
+  } else if (currentPage == '#find-page') {
     $welcome.show();
     $subNav.html('');
     scrollValue = 243;
+  } else {
+    $welcome.hide();
+    $subNav.html('');
+    scrollValue = 0;
   }
   toggleShow();
 })
