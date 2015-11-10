@@ -32,6 +32,7 @@ var Search = React.createClass({
           }
         });
       },
+      appendTo: '#autocomplete-container',
       select: this.select,
       focus: function (event) {
         event.preventDefault();
@@ -62,6 +63,7 @@ var Search = React.createClass({
   render: function() {
     var inputClass = classnames(
       "ui-autocomplete-input",
+      "form-control",
       {
         'hidden-xs': !this.props.mobileExpanded
       }
@@ -75,11 +77,13 @@ var Search = React.createClass({
 
     return (
       <div className="row search-row">
-        <form className="navbar-form" role="search">
-          <div id="search-wrapper" className="pull-right">
-            <input type="text" id="autocomplete" placeholder="Search by name, neighborhood, or complaint"
-                   className={inputClass} autoComplete="off"/>
-            <i onClick={this.onSearchClick} className={searchIconClass}></i>
+        <form role="search">
+          <div className="input-group">
+            <input type="text" id="autocomplete" placeholder="Search by a name/place/category, or click inside the graphs below"
+                 className={inputClass} autoComplete="off"/>
+            <span className="input-group-btn">
+              <button className="btn btn-primary" id="btn-search" type="button" onClick={this.onSearchClick}><i className={searchIconClass}></i></button>
+            </span>
           </div>
         </form>
       </div>
