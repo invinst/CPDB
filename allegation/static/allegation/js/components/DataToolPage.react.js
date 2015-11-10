@@ -14,7 +14,7 @@ var OfficerList = require('components/DataToolPage/OfficerList.react');
 var SessionAPI = require('utils/SessionAPI');
 var SessionStore = require('stores/SessionStore');
 var Tabs = require('components/DataToolPage/Tabs.react');
-var Nav = require('components/DataToolPage/Nav.react');
+var Nav = require('components/Shared/Nav.react');
 var HappyFox = require('components/Shared/HappyFox.react');
 var Search = require('components/Shared/Search.react');
 
