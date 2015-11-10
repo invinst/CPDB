@@ -61,13 +61,6 @@ var Search = React.createClass({
   },
 
   render: function() {
-    var inputClass = classnames(
-      "ui-autocomplete-input",
-      "form-control",
-      {
-        'hidden-xs': !this.props.mobileExpanded
-      }
-    );
     var searchIconClass = classnames(
       {
         'glyphicon glyphicon-search': !this.props.mobileExpanded,
@@ -81,7 +74,7 @@ var Search = React.createClass({
           <form role="search">
             <div className="input-group">
               <input type="text" id="autocomplete" placeholder="Search by a name/place/category, or click inside the graphs below"
-                   className={inputClass} autoComplete="off"/>
+                   className="ui-autocomplete-input form-control" autoComplete="off"/>
               <span className="input-group-btn">
                 <button className="btn btn-primary" id="btn-search" type="button" onClick={this.onSearchClick}><i className={searchIconClass}></i></button>
               </span>
