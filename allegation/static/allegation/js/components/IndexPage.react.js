@@ -5,6 +5,9 @@ var React = require('react');
 var AppConstants = require('constants/AppConstants');
 var Base = require('components/Base.react');
 var SessionStore = require('stores/SessionStore');
+var Disclaimer = require('components/DataToolPage/Disclaimer.react');
+var DisclaimerActions = require('actions/DisclaimerActions');
+
 
 var IndexPage = React.createClass(_.assign(Base(SessionStore), {
   componentDidMount: function() {
@@ -21,37 +24,38 @@ var IndexPage = React.createClass(_.assign(Base(SessionStore), {
 
     $(window).on('scroll', toggleShow);
 
-    $(document).on('click', '.story-nav a', function() {
-      $element = $($(this).data('target'));
-      $('html, body').animate({
-          scrollTop: $element.offset().top - 90
-      }, 1000);
-      return false;
-    });
+    // $(document).on('click', '.story-nav a', function() {
+    //   $element = $($(this).data('target'));
+    //   $('html, body').animate({
+    //       scrollTop: $element.offset().top - 90
+    //   }, 1000);
+    //   return false;
+    // });
 
-    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-      if ($(e.target).attr('href') == '#story-page') {
-        $welcome.hide();
-        $subNav.html($('.story-nav').clone());
-        scrollValue = 0;
-      } else {
-        $welcome.show();
-        $subNav.html('');
-        scrollValue = 243;
-      }
-      toggleShow();
-    })
+  //   $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+  //     if ($(e.target).attr('href') == '#story-page') {
+  //       $welcome.hide();
+  //       $subNav.html($('.story-nav').clone());
+  //       scrollValue = 0;
+  //     } else {
+  //       $welcome.show();
+  //       $subNav.html('');
+  //       scrollValue = 243;
+  //     }
+  //     toggleShow();
+  //   })
 
-    $('.tab-navigate').on('click', function() {
-      var tab = $(this).attr('tab-navigate');
-      $('a[aria-controls=' + tab + ']').trigger('click');
-      $('html, body').animate({
-          scrollTop: 0
-      }, 1000);
-      return false;
-    });
+  //   $('.tab-navigate').on('click', function() {
+  //     var tab = $(this).attr('tab-navigate');
+  //     $('a[aria-controls=' + tab + ']').trigger('click');
+  //     $('html, body').animate({
+  //         scrollTop: 0
+  //     }, 1000);
+  //     return false;
+  //   });
+  // },
   },
-  
+
   render: function () {
    return (
       <div id='landing-page'>
@@ -180,7 +184,7 @@ var IndexPage = React.createClass(_.assign(Base(SessionStore), {
               <p>
                 Lorem ipsum, welcome to the Citizens Police Data Project. After years of litigation by the Invisible institute, more than 56,000 records of police misconduct complaints have been released to the public.
               </p>
-              <a className="btn">Disclaimer</a><br />
+              <a className="btn" onClick={this.showDisclaimer}>Disclaimer</a><br />
               <a className="btn">Glossary</a>
             </div>
             <div className="col-sm-4">
@@ -230,13 +234,18 @@ var IndexPage = React.createClass(_.assign(Base(SessionStore), {
             </div>
           </div>
         </div>
+        <Disclaimer />
       </div>
     );
   },
 
   _onClick: function() {
     navigate("/data-tools");
-  }
+  },
+
+  showDisclaimer: function() {
+    DisclaimerActions.show();
+  },
 }));
 
 module.exports = IndexPage;
