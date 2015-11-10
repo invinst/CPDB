@@ -49,9 +49,10 @@ $white: white
 $wild_sand: #f4f4f4
 
 //fonts
-$font_0: "San Francisco Compact", "San Francisco", "San Francisco Compact Web"
-$font_1: serif
-$font_2: Vollkorn
+$font_0: "San Francisco Text", "San Francisco", "San Francisco Text Web"
+$font_1: "San Francisco Display", "San Francisco", "San Francisco Display Web"
+// $font_1: serif
+// $font_2: Vollkorn
 $font_3: "Helvetica Neue"
 $font_4: sans-serif
 $font_5: Helvetica
@@ -76,7 +77,7 @@ input
 //original selectors
 //h1, h2, h3, .h1, .h2, .h3
 .extend_1
-  font-family: $font_2, $font_1
+  font-family: $font_0, $font_4
 
 //original selectors
 //.navbar.navbar, .navbar-default.navbar
@@ -167,7 +168,7 @@ input
 
 body
   background-color: $white
-  font-family: $font_0, $font_1
+  font-family: $font_0, $font_4
   transition: 0.5s background-color
   &.embedding
     background-color: $color_cadet_blue_approx
@@ -184,6 +185,9 @@ body
   border-radius: 4px
   border-top-right-radius: 0
   border-bottom-right-radius: 0
+  font-family: $font_1, $font_4
+  font-size: 14px
+  color: $color_mountain_mist_approx
 
   &:focus
     border-color: $color_eastern_blue_approx
@@ -332,8 +336,8 @@ footer
 
 .site-title
   font-style: italic
-  font-size: 30px
-  font-family: $font_2, $font_1
+  font-size: 21px
+  font-family: $font_1, $font_4
   margin: 0 0 0 10px
   width: 100%
   input
@@ -516,6 +520,12 @@ footer
 #officer_list
   .officers .col-sm-2
     padding-right: 5px
+
+.officer-count, .complaint-count
+  font-family: $font_1, $font_4
+  font-size: 21px
+  font-weight: 500
+  color: $color_mine_shaft_approx
 
 .officer-vertical-scroll
   width: 100%
@@ -724,9 +734,9 @@ footer
 
 .officer_name
   text-transform: capitalize
-  font-size: 16px
-  font-style: italic
-  font-family: $font_2
+  font-size: 14px
+  font-family: $font_0, $font_4
+  font-weight: 500
   overflow: hidden
   text-overflow: ellipsis
   width: 100%
@@ -780,7 +790,9 @@ footer
 .complaint-row
   padding: 10px 0 5px
   border-bottom: 1px solid $color_celeste_approx
-  font-family: $font_2
+  font-family: $font_0, $font_4
+  font-size: 16px
+  color: $color_mine_shaft_approx
   clear: both
   &.disciplined
     background: $color_pippin_approx
@@ -788,6 +800,8 @@ footer
       background-color: $color_azalea_approx
 
     .fa.fa-chevron-right
+      color: $color_tall_poppy_approx
+    .fa.fa-chevron-down
       color: $color_tall_poppy_approx
 
   &:hover
@@ -809,11 +823,11 @@ footer
 
 .timeline-title
   color: $color_mountain_mist_approx
-  font-size: 12px
+  font-size: 14px
 
 .timeline-date
-  color: $black
-  font-size: 14px
+  color: $color_mine_shaft_approx
+  font-size: 16px
   &.start
     color: $color_ship_cove_approx
 
@@ -840,9 +854,10 @@ footer
     width: 40%
     padding-left: 10px
 
-  .investigator-name
-    color: $color_ship_cove_approx
-    font-family: $font_2, $font_1
+.investigator-name
+  color: $color_mine_shaft_approx
+  font-family: $font_0, $font_4
+  font-weight: 500
 
 .legend
   font-size: 14px
@@ -873,7 +888,7 @@ footer
   .uppercase
     font-weight: bold
     font-size: 18px
-    font-family: $font_0, $font_1
+    font-family: $font_0, $font_4
 
   .allegation-name
     color: $color_mountain_mist_approx
@@ -959,7 +974,7 @@ footer
     @extend .extend_10
 
 .leaflet-container
-  font-family: $font_0, $font_1
+  font-family: $font_0, $font_4
   .marker-cluster-large
     //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
     border-radius: 30px
@@ -970,6 +985,12 @@ footer
 
   .leaflet-control-attribution
     display: none
+
+  .leaflet-control-command-interior
+    font-family: $font_0, $font_4
+    font-size: 16px
+    color: $color_mine_shaft_approx
+    font-weight: 500
 
 .fa
   &.open-investigation
@@ -1097,7 +1118,7 @@ footer
   background-color: $white
   display: none
   font-size: 18px
-  font-family: $font_2
+  font-family: $font_0
   border-top: 3px solid $color_mine_shaft_approx
   &:hover
     background-color: $wild_sand
@@ -1425,7 +1446,7 @@ form.navbar-form.navbar-right
   padding: 0
 
 #navbar-main
-  margin-top: 16px
+  margin-top: 21px
 
 #complaint-list
   .modal-backdrop
