@@ -276,7 +276,7 @@ module.exports = {
   MAP_MARKER_ICON_URL: 'http://data.invisible.institute/static/img/64x_map_marker.png',
   OFFICER_PAGE_API_ENDPOINT: '/officer',
   SESSION_API_ENDPOINT: '/api/allegations/session/',
-  RACE_GENDER_API_ENDPOINT: '/api/allegations/race-gender',
+  RACE_GENDER_API_ENDPOINT: '/api/allegations/race-gender/',
 
 
   DATE_FORMAT: 'D MMM, YYYY',
