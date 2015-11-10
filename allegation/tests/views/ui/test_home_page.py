@@ -1,9 +1,9 @@
 from selenium.webdriver.common.keys import Keys
 
 from api.models import Setting
-from common.models import AllegationCategory
 from common.tests.core import *
 from allegation.factories import AllegationFactory, AllegationCategoryFactory
+
 
 class IntegrationTestHelperMixin(object):
     def visit_home(self):
