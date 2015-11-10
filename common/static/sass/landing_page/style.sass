@@ -1,13 +1,16 @@
-$dark_background: #E8F0F9
+$light_blue: #E8F0F9
+$dark_blue: #1464f1
+$font_weight: 300
 
 body
   color: #013270
   font-family: 'San Francisco Compact Web'
-  font-weight: 400
+  font-weight: $font_weight
 
 a
-  color: #1464F1
+  color: $dark_blue
   &.btn
+    font-weight: $font_weight
     background: #E8ECF5
     font-size: 19px
     padding: 10px 40px
@@ -15,6 +18,18 @@ a
     margin-top: 20px
   &:hover, &:focus
     text-decoration: none
+
+.padding-side-10
+  padding-left: 10% !important
+  padding-right: 10% !important
+
+.font-size-22
+  font-size: 22px !important
+  line-height: 25px !important
+
+.font-size-19
+  font-size: 19px !important
+  line-height: 22px !important
 
 .welcome
   height: 268px
@@ -45,7 +60,7 @@ nav.landing-nav
       &:after
         content: ''
         display: inline-block
-        background: $dark_background
+        background: $light_blue
         width: 15px
         height: 15px
         position: absolute
@@ -61,7 +76,7 @@ nav.landing-nav
   left: 0
 
 .sub-nav
-  background: $dark_background
+  background: $light_blue
   height: 45px
 
 .margin-top-90
@@ -76,18 +91,17 @@ nav.landing-nav
   max-width: 1200px
 
 .section
-  padding: 70px 0 80px
-  padding: 3%
+  padding: 70px 3% 80px 3%
   background: #fff
   font-size: 19px
   line-height: 22px
   margin: 0
   &:nth-of-type(odd)
-    background: $dark_background
+    background: $light_blue
     font-size: 22px
     line-height: 25px
 
-  img + p
+  img + p, img + img
     margin-top: 38px
 
   .col-sm-6
@@ -120,13 +134,21 @@ nav.landing-nav
   a
     line-height: 45px
 
-#story-page
-  .story-nav
-    height: 45px
-    background: $dark_background
+.story-nav
+  height: 45px
+  background: $light_blue
+  a
+    line-height: 45px
+    margin: 0 27.5px
 
+#story-page
   .story-img-section
     padding-top: 0
+
+  h1
+    font-size: 40px
+    line-height: 48px
+    color: $dark_blue
 
 
 .footer
@@ -139,7 +161,7 @@ nav.landing-nav
     padding: 1.5%
   h4
     font-size: 19px
-    font-weight: 400
+    font-weight: $font_weight
     opacity: 0.7
     margin-bottom: 20px
   .btn
