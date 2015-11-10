@@ -5,7 +5,7 @@ function toggleShow(cond) {
 }
 
 $(window).on('scroll', function(e) {
-  toggleShow($(window).scrollTop() >= 268);
+  toggleShow($(window).scrollTop() >= 243);
 });
 
 $(document).on('click', '.story-nav a', function() {
