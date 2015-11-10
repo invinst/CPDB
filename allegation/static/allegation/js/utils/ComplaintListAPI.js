@@ -31,7 +31,7 @@ var ComplaintListAPI = {
         that.preloadDataForOtherTab();
       });
     } else {
-      ComplaintListServerActions.receivedData({'allegations': [], 'analytics': {}});
+      ComplaintListServerActions.receivedData({'allegations': [], 'analytics': {}, noQuery: true});
     }
   },
 

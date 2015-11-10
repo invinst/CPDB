@@ -64,7 +64,7 @@ module.exports = {
   RACE_GENDER_TAB_RECEIVED_DATA: c++,
 
   MAP_TOKEN: 'pk.eyJ1Ijoic3RlZmFuZ2VvcmciLCJhIjoiVnBNOEp4byJ9.7i2N7gTV-t_QtAA-kAAlFA',
-  MAP_TYPE: 'mapbox.streets',
+  MAP_TYPE: 'mapbox.light',
 
   NUMERAL_FORMAT: '0,0',
 
@@ -235,7 +235,7 @@ module.exports = {
   },
 
   AUTOCOMPLETE_CATEGORY_NAMES: {
-    'crid': 'Complaint ID',
+    'crid': 'Allegation ID',
     'cat__category': 'Category',
     'cat': 'Allegation type',
     'investigator': 'Investigator',

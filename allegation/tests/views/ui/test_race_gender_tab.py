@@ -133,6 +133,9 @@ class RaceGenderTabTest(BaseLiveTestCase, IntegrationTestHelperMixin):
         self.element_by_classname_and_text('filter-name', 'Female').shouldnt.be.ok
         self.element_by_classname_and_text('filter-name', 'Male').should.be.ok
 
+        self.find('.officer-count').text.should.contain('1')
+        self.find('.complaint-count').text.should.contain('1')
+
     def officer_gender_chart_block(self, block_class):
         block_css_path = ".officer-gender-chart {block_class} text".format(block_class=block_class)
         return self.find(block_css_path)
@@ -155,6 +158,6 @@ class RaceGenderTabTest(BaseLiveTestCase, IntegrationTestHelperMixin):
             officer_race_chart.should.contain(self.percent_text(race, ratio))
 
     def percent_text(self, label, ratio):
-        percent = ratio *  100
-        text = "{0:.2f}%".format(percent)
+        percent = int(ratio *  100)
+        text = "%d" % percent
         return "{label} {percent}".format(label=label, percent=text)
