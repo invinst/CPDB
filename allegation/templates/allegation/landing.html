@@ -117,6 +117,10 @@
     <script src="{% static 'allegation/js/landing_page.js' %}"></script>
       <script>
         $(function(){
+            $('#myTab a').click(function (e) {
+                e.preventDefault();
+                $(this).tab('show');
+            })
             var page_pos = document.location.href.indexOf("#");
             var tab = document.location.href.substr(page_pos);
             if (page_pos > -1) {

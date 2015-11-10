@@ -20,21 +20,21 @@ $(document).on('click', '.story-nav a', function() {
 });
 
 $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+
   var currentPage = $(e.target).attr('href');
   if (currentPage == '#story-page') {
-    $welcome.hide();
+    $welcome.slideUp('slow');
     $subNav.html($('.story-nav').clone());
     scrollValue = 0;
   } else if (currentPage == '#find-page') {
-    $welcome.show();
+    $welcome.slideDown('slow');
     $subNav.html('');
     scrollValue = 243;
   } else {
-    $welcome.hide();
+    $welcome.slideUp('slow');
     $subNav.html('');
     scrollValue = 0;
   }
-  toggleShow();
 })
 
 $('.tab-navigate').on('click', function() {
