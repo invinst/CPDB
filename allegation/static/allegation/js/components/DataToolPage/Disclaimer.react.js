@@ -1,5 +1,6 @@
 var _ = require('lodash');
 var React = require('react');
+var cookie = require('react-cookie');
 require('utils/jQuery');
 
 var Base = require('components/Base.react');
@@ -19,6 +20,9 @@ var Disclaimer = React.createClass(_.assign(Base(DisclaimerStore), {
 
   componentDidMount: function () {
     DisclaimerStore.addChangeListener(this._onChange);
+    if (!cookie.load('disclaimered') && SHOW_DISCLAIMER) {
+      DisclaimerActions.show();
+    }
     jQuery('#disclaimer').on('hidden.bs.modal', this.hiddenModal);
   },
 
