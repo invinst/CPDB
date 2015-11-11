@@ -46,7 +46,7 @@ var Nav = React.createClass(_.assign(Base(NavStore), {
                 </ul>
               </div>
             </div>
-            <div className='col-md-3 col-sm-4 hidden-xs site-links-wrapper pull-right'>
+            <div className='col-md-4 col-sm-5 hidden-xs site-links-wrapper pull-right'>
               <SiteLinks />
             </div>
           </div>
