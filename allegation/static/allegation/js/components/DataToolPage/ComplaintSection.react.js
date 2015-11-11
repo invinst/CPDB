@@ -21,16 +21,12 @@ var ComplaintSection = React.createClass({
 
   componentDidMount: function () {
     ComplaintListStore.addChangeListener(this._onChange);
-    jQuery(window).on('scroll', this._onScroll);
+    // jQuery(window).on('scroll', this._onScroll);
   },
 
   componentWillUnmount: function () {
-    ComplaintListStore.removeChangeListener(this._onChange);
+    // ComplaintListStore.removeChangeListener(this._onChange);
     jQuery(window).off('scroll', this._onScroll);
-  },
-
-  rowGetter: function (rowIndex) {
-    return rows[rowIndex];
   },
 
   render: function () {
