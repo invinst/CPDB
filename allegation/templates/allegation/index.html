@@ -60,6 +60,9 @@
   {% csrf_token %}
     <div id="autocomplete-container"></div>
     <div id='router'></div>
+    <script>
+      var SHOW_DISCLAIMER = {% if DJANGO_ENV != 'test' or request.GET.with_disclaimer %}true{% else %} false {% endif %};
+    </script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/vis/4.2.0/vis.min.js"></script>
     {% compress js %}
         <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
@@ -145,10 +148,7 @@
           </div>
       </div>
   </div>
-  <script>
-      $(function() {
-          $("#disclaimer").modal('show');
-      })
-  </script>
+
+
   </body>
 </html>
