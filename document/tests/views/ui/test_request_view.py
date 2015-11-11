@@ -33,7 +33,7 @@ class RequestViewTestCase(BaseLiveTestCase):
         self.check_button_requested()
 
     def see_notify_text(self):
-        self.should_see_text("We'll notify you when the document is made available.")
+        self.should_see_text("Thank you! Someone from our")
 
     def check_button_requested(self):
         self.find(".complaint-row .btn-request").text.should.equal('Requested')
