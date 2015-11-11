@@ -4,6 +4,12 @@
   $font_weight: 400
   h2.title
     font-size: 16px
+  position: absolute
+  top: 343px
+  transition: top 1s
+  -webkit-transition: top 1s
+  -moz-transition: top 1s
+  width: 100%
 
   color: #013270
   font-family: 'San Francisco Text Web'
@@ -36,6 +42,10 @@
   .welcome
     height: 343px
     background: #fff
+    position: fixed
+    width: 100%
+    z-index: -1
+    top: 0
 
   .page-banner
     width: 380px
@@ -74,6 +84,7 @@
           right: 30px
           transform: rotate(90deg)
           -webkit-transform: rotate(45deg)
+          -moz-transform: rotate(45deg)
 
   .fixed-nav
     position: fixed
@@ -205,3 +216,6 @@
         font-weight: $font_weight
         margin-top: 19px
         padding: 10px 25px
+
+  &.scroll-to-top
+    top: 0

@@ -1,58 +1,60 @@
-window.$welcome = $('.welcome');
-window.$subNav = $('.sub-nav');
-window.scrollValue = 343;
+var $welcome = $('.welcome');
+var $subNav = $('.sub-nav');
+var $body = $('#landing-page');
+var $landingNav = $('.landing-nav');
+var $main = $('.main');
+var scrollValue = 343;
 
 function toggleShow() {
   var cond = $(window).scrollTop() >= scrollValue;
-  $('.landing-nav').toggleClass('fixed-nav', cond);
-  $('.main').toggleClass('margin-top-90', cond);
+  $landingNav.toggleClass('fixed-nav', cond);
+  $main.toggleClass('margin-top-90', cond);
   $subNav.toggleClass('hidden', !cond);
 }
 
 function scrollTop(callback) {
-  $('body').animate({
+  $body.animate({
     scrollTop: 0
-  }, 300, callback);
+  }, 1000, callback);
 }
 
 $(window).on('scroll', toggleShow);
 
 $(document).on('click', '.story-nav a', function() {
   $element = $($(this).data('target'));
-  $('html, body').animate({
+  $('body').animate({
       scrollTop: $element.offset().top - 90
   }, 1000);
   return false;
 });
 
 $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-
   var currentPage = $(e.target).attr('href');
-
-  if (currentPage != '#find-page' && $('body').scrollTop() > 343) { // Hide Welcome before animate if it does not appear on current view port
-    $welcome.hide()
-  }
+  $(window).off('scroll');
 
   if (currentPage == '#story-page') {
-    $welcome.slideUp('slow', function() {
-      scrollTop()
-    })
-    scrollValue = 0;
-  } else if (currentPage == '#find-page') {
-    $subNav.html('');
-    scrollValue = 343;
-    scrollTop(function() {
-      $welcome.slideDown('slow');
-    });
-    toggleShow();
-  } else {
-    $welcome.slideUp('slow', function() {
-      scrollTop()
-    })
-    $subNav.html('');
-    scrollValue = 0;
+    $subNav.html($('.story-nav').clone());
   }
-})
+
+  if (currentPage == '#find-page') {
+    scrollValue = 343;
+    $subNav.html('');
+    $body.animate({
+      scrollTop: 0
+    }, Math.min(500, $('body').scrollTop()), function() {
+      toggleShow();
+      $body.removeClass('scroll-to-top');
+      $(window).on('scroll', toggleShow);
+    });
+  } else {
+    scrollValue = 0;
+    $subNav.html('');
+    $body.addClass('scroll-to-top');
+    scrollTop(function() {
+      $(window).on('scroll', toggleShow);
+    });
+  }
+});
 
 $('.tab-navigate').on('click', function() {
   var tab = $(this).attr('tab-navigate');
