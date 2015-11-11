@@ -2,6 +2,7 @@ require('utils/jQuery');
 
 var AllegationFetcherQueryBuilder = require('./AllegationFetcherQueryBuilder');
 var AppConstants = require('../constants/AppConstants');
+var ComplaintListStore = require('stores/ComplaintListStore');
 var ComplaintListServerActions = require('../actions/ComplaintList/ComplaintListServerActions');
 var RaceGenderTabActions = require('actions/DataToolPage/RaceGenderTabActions');
 
@@ -51,12 +52,16 @@ var ComplaintListAPI = {
 
   getMoreData: function (pageNumber) {
     var queryString = AllegationFetcherQueryBuilder.buildQuery();
-    var pagedQuery = [queryString, 'page=' + pageNumber, 'length=25'].join('&');
+    var pagedQuery = [queryString, 'page=' + pageNumber, 'length=50'].join('&');
 
     if (queryString) {
+
       jQuery.getJSON('/api/allegations/?' + pagedQuery, function (data) {
         ComplaintListServerActions.receivedMoreData(data);
       });
+    }
+    else {
+      ComplaintListStore.unlockScroll();
     }
   },
 };

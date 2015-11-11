@@ -15,6 +15,8 @@ var ComplaintListActions = require('actions/ComplaintList/ComplaintListActions')
 
 
 var ComplaintSection = React.createClass({
+  _lastBottom: 0,
+
   getInitialState: function () {
     return ComplaintListStore.getState();
   },
@@ -27,6 +29,7 @@ var ComplaintSection = React.createClass({
   componentWillUnmount: function () {
     ComplaintListStore.removeChangeListener(this._onChange);
     jQuery(window).off('scroll', this._onScroll);
+    this._lastBottom = 0;
   },
 
   rowGetter: function (rowIndex) {
@@ -64,10 +67,17 @@ var ComplaintSection = React.createClass({
   _onScroll: function () {
     var windowHeight = window.innerHeight;
     var toBottom = jQuery(document).height() - windowHeight - jQuery(window).scrollTop();
-    if (toBottom <= 200 && !this.state.scrollLock) {
-      ComplaintListActions.getMoreData(this.state.pageNumber);
-      ComplaintListStore.lockScroll();
+    if (toBottom < this._lastBottom) {
+      if (toBottom <= 800 && !this.state.scrollLock) {
+        var pageNumber = this.state.pageNumber > 1 ? this.state.pageNumber : 2;
+        ComplaintListStore.lockScroll();
+        setTimeout(function () {
+          //for smoothness and give filter store time to fetch API results
+          ComplaintListActions.getMoreData(pageNumber);
+        }, 100);
+      }
     }
+    this._lastBottom = toBottom;
   },
 });
 
