@@ -4,11 +4,13 @@ from allegation.factories import AllegationCategoryFactory, AllegationFactory
 from allegation.tests.utils.outcome_filter import number_of_all_created_complaints
 from allegation.services.outcome_analytics import FILTERS
 from common.tests.core import BaseLiveTestCase
-from common.models import Allegation
+from common.models import Allegation, AllegationCategory
 
 
 class AllegationFilterTestCase(BaseLiveTestCase):
     def setUp(self):
+        Allegation.objects.all().delete()
+        AllegationCategory.objects.all().delete()
         self.allegation_category = AllegationCategoryFactory()
         for filter in FILTERS:
             for final_finding in FILTERS[filter]:
