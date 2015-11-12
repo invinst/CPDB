@@ -16,7 +16,7 @@ class RequestViewTestCase(BaseLiveTestCase):
 
         # the modal should shown
         self.find("#request_modal").is_displayed().should.be.true
-        self.see_notify_text()
+        self.see_header_text()
 
         # enter email
         self.find("#request_modal input[name='email']").send_keys(faker.Faker().email())
@@ -24,6 +24,7 @@ class RequestViewTestCase(BaseLiveTestCase):
 
         # wait until modal hide
         self.until(lambda: not self.find("#request_modal").is_displayed())
+        self.see_notify_text()
         # still see the text as successfully notification
 
         self.check_button_requested()
@@ -34,6 +35,9 @@ class RequestViewTestCase(BaseLiveTestCase):
 
     def see_notify_text(self):
         self.should_see_text("Thank you! Someone from our")
+
+    def see_header_text(self):
+        self.should_see_text("We'll notify you when the document is made available.")
 
     def check_button_requested(self):
         self.find(".complaint-row .btn-request").text.should.equal('Requested')
