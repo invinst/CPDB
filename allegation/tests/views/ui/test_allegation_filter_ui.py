@@ -20,6 +20,7 @@ class AllegationFilterTestCase(BaseLiveTestCase):
 
     def test_filter_by_final_finding(self):
         self.visit('/#!/data-tools')
+        self.browser.execute_script('jQuery("#hfc-cleanslate").hide();')
 
         # Check all
         self.link("Categories").click()
