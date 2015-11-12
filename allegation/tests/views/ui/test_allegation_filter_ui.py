@@ -4,11 +4,13 @@ from allegation.factories import AllegationCategoryFactory, AllegationFactory
 from allegation.tests.utils.outcome_filter import number_of_all_created_complaints
 from allegation.services.outcome_analytics import FILTERS
 from common.tests.core import BaseLiveTestCase
-from common.models import Allegation
+from common.models import Allegation, AllegationCategory
 
 
 class AllegationFilterTestCase(BaseLiveTestCase):
     def setUp(self):
+        Allegation.objects.all().delete()
+        AllegationCategory.objects.all().delete()
         self.allegation_category = AllegationCategoryFactory()
         for filter in FILTERS:
             for final_finding in FILTERS[filter]:
@@ -30,6 +32,7 @@ class AllegationFilterTestCase(BaseLiveTestCase):
             self.element_by_tagname_and_text('span', filter_text, parent=".filters").click()
             self.until(self.ajax_complete)
             number_of_final_findings = len(FILTERS[filter_text])
+            self.browser.get_screenshot_as_file('final_finding.png')
             self.number_of_complaints().should.equal(number_of_final_findings)
 
         self.element_by_tagname_and_text('span', 'Disciplined').click()
