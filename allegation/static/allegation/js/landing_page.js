@@ -3,27 +3,58 @@ var $subNav = $('.sub-nav');
 var $body = $('#landing-page');
 var $landingNav = $('.landing-nav');
 var $main = $('.main');
-var scrollValue = 343;
+var navBarHeight = 90;
+
+function syncNavState() {
+  var navItems = $('.landing-nav .sub-nav a');
+  var currentPos = $(window).scrollTop() + navBarHeight;
+  var breakloop = false;
+  for(var index = 0; index < navItems.length; index++) {
+    var item = $(navItems[index]);
+    var $control = $(item.data('target'));
+    if (currentPos >= $control.offset().top) {
+      navItems.removeClass('active');
+      item.addClass('active');
+      break;
+    }
+  }
+}
 
 function toggleShow() {
-  var cond = $(window).scrollTop() >= scrollValue;
+  var scrollTop = $(window).scrollTop();
+  var cond = scrollTop >= $welcome.height();
   $landingNav.toggleClass('fixed-nav', cond);
   $main.toggleClass('margin-top-90', cond);
   $subNav.toggleClass('hidden', !cond);
+  syncNavState()
 }
 
-function scrollTop(callback) {
+function scrollTop(callback, elapseTime) {
   $body.animate({
     scrollTop: 0
-  }, 1000, callback);
+  }, elapseTime, callback);
+}
+
+function getScrollTime() {
+  return Math.min(500, $body.scrollTop());
+}
+
+function onScrollTopFindPage() {
+  $body.removeClass('scroll-to-top');
+  toggleShow();
+  onScrollTop();
+}
+
+function onScrollTop() {
+  $(window).on('scroll', toggleShow);
 }
 
 $(window).on('scroll', toggleShow);
 
 $(document).on('click', '.story-nav a', function() {
   $element = $($(this).data('target'));
-  $('body').animate({
-      scrollTop: $element.offset().top - 90
+  $body.animate({
+      scrollTop: $element.offset().top - navBarHeight
   }, 1000);
   return false;
 });
@@ -34,25 +65,15 @@ $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 
   if (currentPage == '#story-page') {
     $subNav.html($('.story-nav').clone());
+  } else {
+    $subNav.html('');
   }
 
   if (currentPage == '#find-page') {
-    scrollValue = 343;
-    $subNav.html('');
-    $body.animate({
-      scrollTop: 0
-    }, Math.min(500, $('body').scrollTop()), function() {
-      toggleShow();
-      $body.removeClass('scroll-to-top');
-      $(window).on('scroll', toggleShow);
-    });
+    scrollTop(onScrollTopFindPage, getScrollTime());
   } else {
-    scrollValue = 0;
-    $subNav.html('');
     $body.addClass('scroll-to-top');
-    scrollTop(function() {
-      $(window).on('scroll', toggleShow);
-    });
+    scrollTop(onScrollTop, 1000);
   }
 });
 

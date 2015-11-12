@@ -1,17 +1,18 @@
 #landing-page
   $light_blue: #E8F0F9
   $dark_blue: #1464f1
+  $text_color: #013270
   $font_weight: 400
   h2.title
     font-size: 16px
   position: absolute
   top: 343px
-  transition: top 1s
-  -webkit-transition: top 1s
-  -moz-transition: top 1s
+  transition: top 1s cubic-bezier(0, 0, 0.16, 1.08)
+  -webkit-transition: top 1s cubic-bezier(0, 0, 0.16, 1.08)
+  -moz-transition: top 1s cubic-bezier(0, 0, 0.16, 1.08)
   width: 100%
 
-  color: #013270
+  color: $text_color
   font-family: 'San Francisco Text Web'
   font-weight: $font_weight
 
@@ -26,6 +27,8 @@
       margin-top: 20px
     &:hover, &:focus
       text-decoration: none
+      color: $text_color
+      opacity: 1
 
   .font-size-22
     font-size: 17px !important
@@ -69,10 +72,12 @@
         font-size: 16px
         font-family: "San Francisco Compact Web Bold"
         font-weight: 600
+        transition: color 500ms
+
       &.active
         position: relative
         a
-          color: #013270
+          color: $text_color
         &:after
           content: ''
           display: inline-block
@@ -175,6 +180,11 @@
       line-height: 45px
       margin: 0 27.5px
 
+      &:focus
+        color: $dark_blue
+      &.active
+        color: $text_color
+
   .full-width
     width: 100%
 
@@ -231,3 +241,13 @@
 
   &.scroll-to-top
     top: 0
+    .welcome
+      height: 0
+
+@media screen and (min-width: 1200px)
+  #landing-page
+    top: 562px
+    .welcome
+      height: 562px
+    .page-banner
+      padding-top: 7em

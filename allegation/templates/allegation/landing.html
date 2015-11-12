@@ -28,7 +28,7 @@
         <div class='page-banner'>
           <p>Until recently, records of police misconduct in Chicago have been kept secret.</p>
           <p>In 2014, the court decision <i>Kalven v. Chicago</i> opened those files to the public.</p>
-          <p>Here they are.</p>
+          <p><a href="/#!/data-tools">Explore the data.</a></p>
         </div>
       </div>
       <nav class='landing-nav'>
@@ -54,25 +54,24 @@
       <div class='footer'>
         <div class='container'>
           <div class='col-sm-4'>
-            <a href="#disclaimer" class='btn' data-toggle="modal" data-target="#disclaimer">Disclaimer</a><br/>
-            <a class='btn' href="http://cpdb.datamade.us/glossary.html" target="_blank">Glossary</a>
             <a class='btn' href="{% static 'img/complaint_process.png' %}" target="_blank">Complaints Process</a>
+            <a class='btn' href="http://cpdb.datamade.us/glossary.html" target="_blank">Glossary of Terms</a>
+            <a href="#disclaimer" class='btn' data-toggle="modal" data-target="#disclaimer">Legal Disclaimer</a><br/>
           </div>
           <div class='col-sm-4'>
             <h4>
-              Get Updates
+              Get updates
             </h4>
             <p>
-              Sign up for our mailing list for updates from the Invisible Institute and the Citizens Police Data Project.
               {% include "allegation/landing/sign_up_form.html" %}
             </p>
           </div>
           <div class='col-sm-4'>
             <h4>
-              Download the Data
+              Work the data
             </h4>
             <p>
-              Are you a researcher, journalist, data professional or community member interested in analyzing the data? Sign up with your name, organization and email address to request the full data files used in the Citizens Police Data Project.
+              Are you a researcher, journalist, data professional or community member interested in analyzing the data? Sign up with your name and email address to request access to the full dataset within the Citizens Police Data Project.
               {% include "allegation/landing/request_file_form.html" %}
             </p>
           </div>
