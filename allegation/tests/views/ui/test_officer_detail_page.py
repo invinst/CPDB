@@ -1,8 +1,10 @@
 from allegation.factories import AllegationFactory, OfficerFactory, PoliceWitnessFactory
 from allegation.tests.constants import TEST_DOCUMENT_URL
+from api.models import Setting
 from common.models import UNITS
 from common.tests.core import BaseLiveTestCase
 from officer.factories import StoryFactory
+from share.factories import SettingFactory
 
 
 class OfficerDetailPageTestCase(BaseLiveTestCase):
@@ -24,6 +26,9 @@ class OfficerDetailPageTestCase(BaseLiveTestCase):
         AllegationFactory(officer=self.officer, crid=self.crid_3)
         AllegationFactory(officer=self.involved_officer, crid=self.crid_1)
         PoliceWitnessFactory(officer=self.witness_officer, crid=self.crid_2)
+
+        Setting.objects.all().delete()
+        self.setting = SettingFactory()
 
     def test_click_to_officer_card_lead_to_detail_page_with_basic_information_about_officer(self):
         units = dict(UNITS)
@@ -65,15 +70,26 @@ class OfficerDetailPageTestCase(BaseLiveTestCase):
         self.number_of_complaints().should.equal(2)
 
     def test_display_stories(self):
-        story = StoryFactory(officer=self.officer, url=TEST_DOCUMENT_URL)
-        created_date = story.created_date.strftime('%Y-%m-%d %H:%M:%S')
+        story1 = StoryFactory(officer=self.officer, url=TEST_DOCUMENT_URL)
+        story2 = StoryFactory(officer=self.officer, url=TEST_DOCUMENT_URL)
+        story_types_order = [story2.story_type, story1.story_type]
+
+        self.setting.story_types_order = ",".join(story_types_order)
+        self.setting.save()
 
         self.go_to_officer_detail_page(self.officer)
 
-        self.until(lambda: self.should_see_text('News stories'))
+        self.until_ajax_complete()
+
+        story_types = self.find_all("#story_list h3")
+        story_types = [x.text for x in story_types]
+        story_types.should.equal(story_types_order)
+
         self.should_see_texts([
-            story.title,
-            story.short_description,
+            story1.title,
+            story1.short_description,
+            story2.title,
+            story2.short_description,
         ])
         self.find('.document-url').get_attribute('href').should.equal(TEST_DOCUMENT_URL)
         self.find('.document-thumbnail').should.be.ok

@@ -22,5 +22,5 @@ class SettingFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Setting
 
-    key = factory.Sequence(lambda n: "key_{number}".format(number=n))
-    value = factory.Sequence(lambda n: fake.name())
+    default_site_title = factory.Sequence(lambda n: fake.name())
+    story_types_order = factory.Sequence(lambda n: fake.name())

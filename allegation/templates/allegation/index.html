@@ -22,7 +22,7 @@
       <link rel="prefetch" href="{% url "allegation:allegation-race-gender-api" %}?"/>
       <link rel="prefetch" href="{% url "allegation:allegation-api-summary" %}?"/>
     <meta name="keywords" content="{% block meta-keywords %}{% endblock %}" />
-    <title>{{""|default_site_title}}</title>
+    <title>{{ admin_settings.default_site_title }}</title>
     {% endblock %}
       <link rel="shortcut icon" type='image/png' href="{% static 'img/favicon.ico' %}" />
       <link rel="home" href="/" />
@@ -85,7 +85,8 @@
         <script src="{% static 'highcharts/highcharts.js' %}"></script>
     {% endcompress %}
     <script type="text/javascript">
-    DEFAULT_SITE_TITLE = {{ ""|default_site_title|jsonify }};
+    DEFAULT_SITE_TITLE = "{{ admin_settings.default_site_title }}";
+    STORY_TYPES_ORDER = "{{ admin_settings.story_types_order }}";
     DJANGO_ENV = {{ DJANGO_ENV | jsonify }};
     </script>
     {% if DJANGO_ENV != 'test' %}

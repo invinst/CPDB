@@ -17,3 +17,4 @@ class StoryFactory(factory.django.DjangoModelFactory):
     slug = "slug"
     short_description = factory.Sequence(lambda n: fake.text(max_nb_chars=200))
     content = factory.Sequence(lambda n: "\n".join(fake.paragraphs(nb=3)))
+    story_type = factory.Sequence(lambda n: fake.word())

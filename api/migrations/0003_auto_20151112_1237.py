@@ -9,6 +9,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         ('api', '0002_auto_20151028_0420'),
+        ('officer', '0005_auto_20151015_1023')
     ]
 
     operations = [
@@ -22,7 +23,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='setting',
-            name='site_title',
+            name='default_site_title',
             field=models.CharField(default='Police Misconduct in Chicago', max_length=255),
         ),
         migrations.AddField(
