@@ -1,12 +1,18 @@
 #landing-page
   $light_blue: #E8F0F9
   $dark_blue: #1464f1
-  $font_weight: 300
+  $font_weight: 400
   h2.title
     font-size: 16px
+  position: absolute
+  top: 343px
+  transition: top 1s
+  -webkit-transition: top 1s
+  -moz-transition: top 1s
+  width: 100%
 
   color: #013270
-  font-family: 'San Francisco Compact Web'
+  font-family: 'San Francisco Text Web'
   font-weight: $font_weight
 
   a
@@ -15,7 +21,7 @@
       font-weight: $font_weight
       background: #E8ECF5
       font-size: 19px
-      padding: 10px 40px
+      padding: 10px 30px
       border: 0
       margin-top: 20px
     &:hover, &:focus
@@ -36,6 +42,10 @@
   .welcome
     height: 343px
     background: #fff
+    position: fixed
+    width: 100%
+    z-index: -1
+    top: 0
 
   .page-banner
     width: 380px
@@ -74,6 +84,7 @@
           right: 30px
           transform: rotate(90deg)
           -webkit-transform: rotate(45deg)
+          -moz-transform: rotate(45deg)
 
   .fixed-nav
     position: fixed
@@ -205,3 +216,6 @@
         font-weight: $font_weight
         margin-top: 19px
         padding: 10px 25px
+
+  &.scroll-to-top
+    top: 0
