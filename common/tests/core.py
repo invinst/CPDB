@@ -197,6 +197,13 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     def sleep(self, seconds):
         time.sleep(seconds)
 
+    def get_screen_shot(self, name=None):
+        if self.source_dir:
+            BaseLiveTestCase.source += 1
+            if name is None:
+                name = '{s}.png'.format(s=BaseLiveTestCase.source)
+            self.browser.save_screenshot(os.path.join(self.source_dir, name))
+
     def until(self, method, timeout=60, message='', interval=0.5):
         """Calls the method provided with the driver as an argument until the \
         return value is not False."""
@@ -213,9 +220,8 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
             if time.time() > end_time:
                 break
 
-        if self.source_dir:
-            BaseLiveTestCase.source += 1
-            self.browser.save_screenshot(os.path.join(self.source_dir, '{s}.png'.format(s=BaseLiveTestCase.source)))
+        self.get_screen_shot()
+
         raise TimeoutException(message) from error
 
     def is_displayed_in_viewport(self, element):
