@@ -16,7 +16,7 @@ class AllegationDetailTestCase(BaseLiveTestCase, IntegrationTestHelperMixin):
         self.find('.complaint-row > .row').click()
         self.element_exist('.complaint_detail').should.equal(True)
 
-        image = self.find('.location img')
+        image = self.until(lambda: self.find('.location img'))
         alternative_text = image.get_attribute('src')
 
         len(alternative_text).shouldnt.equal(0)
