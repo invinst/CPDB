@@ -32,6 +32,7 @@ class AllegationFilterTestCase(BaseLiveTestCase):
             self.element_by_tagname_and_text('span', filter_text, parent=".filters").click()
             self.until(self.ajax_complete)
             number_of_final_findings = len(FILTERS[filter_text])
+            self.browser.get_screenshot_as_file('final_finding.png')
             self.number_of_complaints().should.equal(number_of_final_findings)
 
         self.element_by_tagname_and_text('span', 'Disciplined').click()
