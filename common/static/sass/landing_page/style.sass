@@ -153,13 +153,22 @@
     padding-bottom: 0
     padding-top: 0
 
-    img
-      width: 650px
-      margin-left: -50px
+    .map-image
+      width: 592px
+      height: 384px
+      background: url("/static/img/map-fade.png") no-repeat
+      background-size: 100% 100%
+      margin-left: -125px
+      &:hover
+        background-image: url("/static/img/map-fade-hover.png")
     .map-explain
-      margin-top: 20px
+      padding: 70px 0 80px 50px
       font-size: 15px
       line-height: 17px
+
+    .static-map
+      padding: 0
+      overflow: hidden
 
   .page-logo
     height: 90px
