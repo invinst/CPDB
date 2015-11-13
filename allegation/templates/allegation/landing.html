@@ -23,17 +23,18 @@
       {% csrf_token %}
       <div class='welcome'>
         <div class='page-logo'>
-          <img src='/static/img/ii-logo.svg' alt='logo'/>
         </div>
         <div class='page-banner'>
           <p>Until recently, records of police misconduct in Chicago have been kept secret.</p>
+          <div class='explore-data'><a href='/#!/data-tools' class='btn'>Explore the data</a></div>
           <p>In 2014, the court decision <i>Kalven v. Chicago</i> opened those files to the public.</p>
-          <p><a href="/#!/data-tools">Explore the data.</a></p>
+          <br>
+          <p class='text-center'><a class='btn view-findings'>View the Findings</a></p>
         </div>
       </div>
       <nav class='landing-nav'>
         <div class='items clearfix'>
-          <img class='pull-left' src='/static/img/cpdp-logo.svg'/>
+          <img class='pull-left cpdp-logo' src='/static/img/cpdp-logo.svg'/>
           <ul class="pull-right" role="tablist">
             <li><a href="/#!/data-tools">Data</a></li>
             <li><a href="#methodology-page" aria-controls="methodology-page" role="tab" data-toggle="tab">Methods</a></li>
