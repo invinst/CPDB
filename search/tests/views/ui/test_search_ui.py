@@ -18,7 +18,7 @@ class SearchUITestCase(BaseLiveTestCase):
         officer = OfficerFactory(officer_first='Jerry')
         OfficerFactory(officer_first='Jee')
 
-        self.visit('/#!/data-tools')
+        self.visit('/?no_disclaimer=1#!/data-tools')
         search_text = 'Je'
         self.until(lambda: self.find('.ui-autocomplete-input').send_keys(search_text))
         self.until(lambda: self.should_see_text(search_text))
