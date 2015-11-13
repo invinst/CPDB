@@ -85,7 +85,8 @@
         <script src="{% static 'highcharts/highcharts.js' %}"></script>
     {% endcompress %}
     <script type="text/javascript">
-    DEFAULT_SITE_TITLE = {{ ""|default_site_title|jsonify }}
+    DEFAULT_SITE_TITLE = {{ ""|default_site_title|jsonify }};
+    DJANGO_ENV = {{ DJANGO_ENV | jsonify }};
     </script>
     {% if DJANGO_ENV != 'test' %}
     <script id="google-analytics">
@@ -146,9 +147,11 @@
       </div>
   </div>
   <script>
+    {% if DJANGO_ENV != 'test' or request.GET.with_disclaimer %}
       $(function() {
           $("#disclaimer").modal('show');
       })
+    {% endif %}
   </script>
   </body>
 </html>
