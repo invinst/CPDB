@@ -3,6 +3,9 @@ var $subNav = $('.sub-nav');
 var $body = $('#landing-page');
 var $landingNav = $('.landing-nav');
 var $main = $('.main');
+var $cpdpLogo = $('.cpdp-logo');
+var $findingBtn = $('.view-findings');
+var $mapSection = $('.map-section');
 var navBarHeight = 90;
 
 function syncNavState() {
@@ -26,7 +29,9 @@ function toggleShow() {
   $landingNav.toggleClass('fixed-nav', cond);
   $main.toggleClass('margin-top-90', cond);
   $subNav.toggleClass('hidden', !cond);
-  syncNavState()
+  var opacity = scrollTop / $welcome.height()
+  $cpdpLogo.css('opacity', opacity);
+  syncNavState();
 }
 
 function scrollTop(callback, elapseTime) {
@@ -80,5 +85,12 @@ $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 $('.tab-navigate').on('click', function() {
   var tab = $(this).attr('tab-navigate');
   $('a[aria-controls=' + tab + ']').trigger('click');
+  return false;
+});
+
+$findingBtn.on('click', function() {
+  $body.animate({
+      scrollTop: $mapSection.offset().top - 45
+  }, 1000);
   return false;
 });
