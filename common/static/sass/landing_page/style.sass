@@ -3,13 +3,15 @@
   $dark_blue: #1464f1
   $text_color: #013270
   $font_weight: 400
+  $cubic_bezier: cubic-bezier(0, 0, 0.16, 1.08)
+
   h2.title
     font-size: 16px
   position: absolute
   top: 343px
-  transition: top 1s cubic-bezier(0, 0, 0.16, 1.08)
-  -webkit-transition: top 1s cubic-bezier(0, 0, 0.16, 1.08)
-  -moz-transition: top 1s cubic-bezier(0, 0, 0.16, 1.08)
+  transition: top 1s $cubic_bezier
+  -webkit-transition: top 1s $cubic_bezier
+  -moz-transition: top 1s $cubic_bezier
   width: 100%
 
   color: $text_color
@@ -50,13 +52,63 @@
     z-index: -1
     top: 0
 
+    p
+      margin: 0
+
+    .view-findings
+      font-weight: 300
+      position: relative
+
+      &:after
+        content: ''
+        width: 26px
+        height: 13px
+        background: url('/static/allegation/img/arrow_down.png') no-repeat
+        display: inline-block
+        position: absolute
+        top: 100%
+        left: calc(50% - 13px)
+        margin-top: 10px
+
+      &:hover
+        background: #D2E3FC
+        color: #1464EF
+        &:after
+          margin-top: 6px
+
+    .explore-data
+      text-align: right
+      padding-right: 43px
+      a
+        font-weight: 300
+        position: relative
+        margin-top: 0
+        &:after
+          content: ''
+          width: 13px
+          height: 26px
+          background: url('/static/allegation/img/arrow_right.png') no-repeat
+          display: inline-block
+          position: absolute
+          left: 100%
+          top: calc(50% - 13px)
+          margin-top: 0px
+          margin-left: 10px
+        &:hover
+          background: #D2E3FC
+          color: #1464EF
+          &:after
+            margin-left: 6px
+
   .page-banner
-    width: 380px
     margin: auto
     font-size: 17px
     line-height: 22px
     letter-spacing: -0.3px
-    padding-top: 3em
+    padding-top: 0
+    p
+      padding: 0 calc(50% - 190px)
+
 
   nav.landing-nav
     background-color: #fff
@@ -70,7 +122,7 @@
       margin-left: 65px
       a
         font-size: 16px
-        font-family: "San Francisco Compact Web Bold"
+        font-family: 'San Francisco Text Web'
         font-weight: 600
         transition: color 500ms
 
@@ -90,6 +142,10 @@
           transform: rotate(90deg)
           -webkit-transform: rotate(45deg)
           -moz-transform: rotate(45deg)
+
+    .cpdp-logo
+      opacity: 0
+      transition: opacity 1s $cubic_bezier
 
   .fixed-nav
     position: fixed
@@ -153,20 +209,30 @@
     padding-bottom: 0
     padding-top: 0
 
-    img
-      width: 650px
-      margin-left: -50px
+    .map-image
+      width: 592px
+      height: 384px
+      background: url("/static/img/map-fade.png") no-repeat
+      background-size: 100% 100%
+      margin-left: -125px
+      &:hover
+        background-image: url("/static/img/map-fade-hover.png")
     .map-explain
-      margin-top: 20px
+      padding: 70px 0 80px 50px
       font-size: 15px
       line-height: 17px
 
+    .static-map
+      padding: 0
+      overflow: hidden
+
   .page-logo
     height: 90px
-    margin-left: 25px
-    img
-      position: relative
-      top: 25px
+    width: 180px
+    background: url('/static/img/ii-logo.svg') no-repeat 25px
+
+    &:hover
+      background-image: url('/static/img/ii-logo-hover.svg')
 
   .items
     margin-right: 25px
@@ -244,10 +310,15 @@
     .welcome
       height: 0
 
+    nav.landing-nav
+      .cpdp-logo
+        opacity: 1 !important
+        transition: opacity 1s $cubic_bezier
+
 @media screen and (min-width: 1200px)
   #landing-page
     top: 562px
     .welcome
       height: 562px
     .page-banner
-      padding-top: 7em
+      padding-top: 5em
