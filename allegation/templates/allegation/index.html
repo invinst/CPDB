@@ -152,7 +152,7 @@
   <script>
     {% if DJANGO_ENV != 'test' or request.GET.with_disclaimer %}
       $(function() {
-          //$("#disclaimer").modal('show');
+          $("#disclaimer").modal('show');
       })
     {% endif %}
   </script>
