@@ -1,5 +1,4 @@
 from common.tests.core import BaseLiveTestCase
-from share.factories import SettingFactory
 from api.models import Setting
 from officer.factories import StoryFactory
 
@@ -7,15 +6,16 @@ from officer.factories import StoryFactory
 class SettingsEditTestCase(BaseLiveTestCase):
     def setUp(self):
         self.story = StoryFactory()
-        Setting.objects.all().delete()
-        self.setting = SettingFactory(story_types_order='')
+        self.setting = self.get_admin_settings()
+        self.setting.story_types_order = ''
+        self.setting.save()
+
         self.login_user()
         self.visit('/admin/')
         self.element_by_tagname_and_text('span', 'Settings').click()
         self.until_ajax_complete()
 
     def tearDown(self):
-        self.setting.delete()
         super(SettingsEditTestCase, self).tearDown()
 
     def test_update_setting(self):

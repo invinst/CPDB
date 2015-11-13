@@ -4,7 +4,6 @@ from api.models import Setting
 from common.models import UNITS
 from common.tests.core import BaseLiveTestCase
 from officer.factories import StoryFactory
-from share.factories import SettingFactory
 
 
 class OfficerDetailPageTestCase(BaseLiveTestCase):
@@ -27,8 +26,7 @@ class OfficerDetailPageTestCase(BaseLiveTestCase):
         AllegationFactory(officer=self.involved_officer, crid=self.crid_1)
         PoliceWitnessFactory(officer=self.witness_officer, crid=self.crid_2)
 
-        Setting.objects.all().delete()
-        self.setting = SettingFactory()
+        self.setting = self.get_admin_settings()
 
     def test_click_to_officer_card_lead_to_detail_page_with_basic_information_about_officer(self):
         units = dict(UNITS)
