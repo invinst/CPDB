@@ -20,7 +20,9 @@ var Base = function(Store) {
     },
 
     _onChange: function() {
-      this.setState(Store.getState())
+      if (this.isMounted()) {
+        this.setState(Store.getState())
+      }
     }
   }
 };
