@@ -115,9 +115,9 @@
     z-index: 10
 
     &.border-top
-      -webkit-box-shadow: 0px -5px 5px -1px $light_blue
-      -moz-box-shadow: 0px -5px 5px -1px $light_blue
-      box-shadow: 0px -5px 5px -1px $light_blue
+      -webkit-box-shadow: 0px -13px 100px 0px $light_blue
+      -moz-box-shadow: 0px -13px 100px 0px $light_blue
+      box-shadow: 0px -13px 100px 0px $light_blue
 
     [role=tablist]
       margin: 0
@@ -135,18 +135,18 @@
         position: relative
         a
           color: $text_color
-        &:after
-          content: ''
-          display: inline-block
-          background: $light_blue
-          width: 14px
-          height: 14px
-          position: absolute
-          top: 40px
-          right: 30px
-          transform: rotate(90deg)
-          -webkit-transform: rotate(45deg)
-          -moz-transform: rotate(45deg)
+    .moving-arrow
+      content: ''
+      display: inline-block
+      background: $light_blue
+      width: 14px
+      height: 14px
+      position: absolute
+      top: 40px
+      right: 405px
+      transform: rotate(90deg)
+      -webkit-transform: rotate(45deg)
+      -moz-transform: rotate(45deg)
 
     .cpdp-logo
       opacity: 0

@@ -8,6 +8,7 @@
   var $iiLogo = $('.page-logo');
   var $findingBtn = $('.view-findings');
   var $mapSection = $('.map-section');
+  var $movingArrow = $('.moving-arrow');
   var navBarHeight = 90;
 
   function syncNavState() {
@@ -69,8 +70,12 @@
   });
 
   $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-    var currentPage = $(e.target).attr('href');
+    $target = $(e.target);
+    var currentPage = $target.attr('href');
     $(window).off('scroll');
+    $movingArrow.animate({
+      left: $target.offset().left + $target.width() / 2 - 10
+    }, 500);
 
     if (currentPage == '#story-page') {
       $subNav.html($('.story-nav').clone());
