@@ -27,7 +27,7 @@ var FilterTags = React.createClass(_.assign(Base(SessionStore), {
         var tagClassName = classnames('tag label label-info-autocomplete fadeIn', {
           'pinned': FilterStore.isPinned(category, filter.value)
         });
-
+        console.log(filter)
         return (
           <span className={tagClassName}>
             <a href='javascript:void(0);' className="action remove" onClick={that.removeTag.bind(that, category, filter)}><i className="fa fa-times"></i></a>
