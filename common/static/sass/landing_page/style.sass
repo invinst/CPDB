@@ -20,6 +20,8 @@
 
   a
     color: $dark_blue
+    transition: color 1s
+
     &.btn
       font-weight: $font_weight
       background: #E8ECF5
@@ -51,9 +53,6 @@
     width: 100%
     z-index: -1
     top: 0
-
-    p
-      margin: 0
 
     .view-findings
       font-weight: 300
@@ -105,14 +104,19 @@
     font-size: 17px
     line-height: 22px
     letter-spacing: -0.3px
-    padding-top: 0
+    padding-top: 3em
     p
       padding: 0 calc(50% - 190px)
-
 
   nav.landing-nav
     background-color: #fff
     z-index: 10
+
+    &.border-top
+      -webkit-box-shadow: 0px -5px 5px -1px $light_blue
+      -moz-box-shadow: 0px -5px 5px -1px $light_blue
+      box-shadow: 0px -5px 5px -1px $light_blue
+
     [role=tablist]
       margin: 0
     li
@@ -124,7 +128,6 @@
         font-size: 16px
         font-family: 'San Francisco Text Web'
         font-weight: 600
-        transition: color 500ms
 
       &.active
         position: relative
@@ -212,9 +215,11 @@
     .map-image
       width: 592px
       height: 384px
-      background: url("/static/img/map-fade.png") no-repeat
+      background-image: url("/static/img/map-fade.png")
+      background-repeat: no-repeat
       background-size: 100% 100%
-      margin-left: -125px
+      margin-left: -90px
+      transition: background-image 1s
       &:hover
         background-image: url("/static/img/map-fade-hover.png")
     .map-explain
@@ -259,7 +264,7 @@
       font-size: 34px
       line-height: 48px
       color: $dark_blue
-      font-family: 'San Francisco Compact Web'
+      font-family: 'San Francisco Text Web'
       font-weight: $font_weight
 
   #methodology-page
@@ -321,4 +326,4 @@
     .welcome
       height: 562px
     .page-banner
-      padding-top: 5em
+      padding-top: 7em
