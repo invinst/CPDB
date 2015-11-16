@@ -13,7 +13,8 @@ MAP_BOX_API_KEY = 'sk.eyJ1Ijoic3RlZmFuZ2VvcmciLCJhIjoiMTNLSkhyTSJ9.b6k_KvDsuacf7
 ALLEGATION_LIST_ITEM_COUNT = 25
 CACHES = {
     'default': {
-        'BACKEND': 'redis_cache.RedisCache',
+        #'BACKEND': 'redis_cache.RedisCache',
+        'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
         'LOCATION': 'redis://localhost:6379/0',
         'OPTIONS': {
             'MAX_ENTRIES': 20000

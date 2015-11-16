@@ -158,3 +158,6 @@ class SuggestViewTestCase(SimpleTestCase):
 
         alias = Alias.objects.get(id=alias.id)
         alias.num_usage.should.equal(1)
+
+    def test_search_with_repeater(self):
+        False.should.equal(True)

@@ -14,3 +14,7 @@ class OfficerQuery(object):
         else:
             cond = Q(**{officer_first_key: name}) | Q(**{officer_last_key: name})
         return cond
+
+    @staticmethod
+    def condition_by_count(count, field, prefix='', direction='gt'):
+        return Q(**{'{prefix}{field}__{direction}'.format(field=field, direction=direction, prefix=prefix):count})
