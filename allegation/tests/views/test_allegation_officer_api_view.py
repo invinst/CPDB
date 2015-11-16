@@ -28,8 +28,7 @@ class AllegationOfficerApiTestCase(AllegationApiTestBase):
 
         response = self.client.get("/api/allegations/officers/?officer__allegations_count__gt=9")
         data = json.loads(response.content.decode())
-        returned_officer = data['officers'][0]
-        repeater.id.should.equal(returned_officer['id'])
+        any([officer['id'] == repeater.id for officer in data['officers']]).should.be.true
 
     def test_query_for_discipline_count(self):
         officer_1 = OfficerFactory()
@@ -45,6 +44,3 @@ class AllegationOfficerApiTestCase(AllegationApiTestBase):
         officer_2.id.should.equal(returned_officer['id'])
 
         len(data['officers']).should.equal(1)
-
-
-
