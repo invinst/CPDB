@@ -21,7 +21,7 @@ var Base = function(Store) {
 
     _onChange: function() {
       if (this.isMounted()) {
-        this.setState(Store.getState())
+        this.setState(Store.getState());
       }
     }
   }
