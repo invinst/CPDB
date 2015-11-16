@@ -108,6 +108,6 @@ class Session(models.Model):
                 'value': o,
             } for o in values['value']]
         if key == 'officer__allegations_count__gt':
-            return [{'text': 'Repeat Offenders', 'value': values['value'][0]}]
+            return [{'text': 'Repeater (10+ complaints)', 'value': values['value'][0]}]
 
         return [{'value': x, 'text': x} for x in values['value']]

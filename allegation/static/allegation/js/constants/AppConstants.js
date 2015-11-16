@@ -260,7 +260,7 @@ module.exports = {
     'outcome_text': 'Outcome',
     'city': 'Zip Code',
     'data_source': 'Data Source',
-    'officer__allegations_count__gt': 'Repeat Offenders',
+    'officer__allegations_count__gt': 'Repeater (10+ complaints)'
   },
 
   AUTOCOMPLETE_DISPLAY_CATEGORY_IN_TAG: [

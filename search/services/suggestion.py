@@ -187,7 +187,7 @@ class Suggestion(object):
 
     def suggest_repeat_offenders(self, q):
         if q.startswith('rep'):
-            return [['Repeat Offenders', 10]]
+            return [['Repeater (10+ complaints)', 10]]
 
     def query_suggestions(self, model_cls, cond, fields_to_get, limit=5, order_bys=None):
         flat = True if len(fields_to_get) == 1 else False
