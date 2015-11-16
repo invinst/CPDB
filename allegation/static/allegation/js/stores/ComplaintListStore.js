@@ -10,9 +10,9 @@ var _state = {
   'activeFilter': 'all',
   'analytics': [],
   'activeComplaints': [],
+  'scrollLock': false,
   'pageNumber': 1,
-  'handleInfiniteLoad': false,
-  'stopHandleInfiniteLoad': false,
+  'loading': false,
   'noQuery': true
 };
 
@@ -28,6 +28,15 @@ var ComplaintListStore = assign({}, EventEmitter.prototype, {
 
   setActiveFilter: function(activeFilter) {
     _state['activeFilter'] = activeFilter;
+  },
+
+  lockScroll: function() {
+    _state['scrollLock'] = true;
+    this.emitChange();
+  },
+
+  unlockScroll: function() {
+    _state['scrollLock'] = false;
   },
 
   getState: function () {
@@ -62,18 +71,15 @@ AppDispatcher.register(function(action) {
 
     case AppConstants.COMPLAINT_LIST_RECEIVED_MORE_DATA:
       if (!_.isEmpty(action.data.allegations)) {
+        ComplaintListStore.unlockScroll();
         _state['pageNumber']++;
         $.merge(_state['complaints'], action.data.allegations);
-        ComplaintListStore.emitChange();
-      } else {
-        _state['handleInfiniteLoad'] = false;
-        _state['stopHandleInfiniteLoad'] = true;
         ComplaintListStore.emitChange();
       }
       break;
 
     case AppConstants.COMPLAINT_LIST_GET_DATA:
-      _state['handleInfiniteLoad'] = false;
+      _state['loading'] = true;
       ComplaintListStore.emitChange();
       break;
 
@@ -83,9 +89,8 @@ AppDispatcher.register(function(action) {
         _state['analytics'] = action.data.analytics;
       }
       _state.noQuery = action.data.noQuery;
+      _state['loading'] = false;
       _state['pageNumber'] = 1;
-      _state['handleInfiniteLoad'] = false;
-      _state['stopHandleInfiniteLoad'] = false;
       ComplaintListStore.emitChange();
       break;
 
