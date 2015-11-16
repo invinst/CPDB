@@ -106,5 +106,7 @@ class Session(models.Model):
                 'text': CUSTOM_FILTER_DICT[key][o]['text'],
                 'value': o,
             } for o in values['value']]
+        if key == 'officer__allegations_count__gt':
+            return [{'text': 'Repeater (10+ complaints)', 'value': values['value'][0]}]
 
         return [{'value': x, 'text': x} for x in values['value']]
