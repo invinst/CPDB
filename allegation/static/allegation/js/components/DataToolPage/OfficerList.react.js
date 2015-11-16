@@ -232,16 +232,21 @@ var OfficerList = React.createClass({
         </div>
         <div className="row">
           <div className="col-md-12">
-            <div className="officer-control officer-control-left" onClick={this.slideToRight} onDbClick={this.prevent}>
-              <i className="fa fa-angle-left" />
-            </div>
             <div className="officer-vertical-scroll">
               <div className="officers-container">
                 { this.renderOfficerList () }
                 <div className="clearfix"></div>
               </div>
             </div>
-            <div className="officer-control officer-control-right" onClick={this.slideToLeft} onDbClick={this.prevent}>
+          </div>
+          <div className="col-md-12 officer-control officer-horizontal-scroll-control">
+            <div className="pull-left" onClick={this.slideToRight} onDbClick={this.prevent}>
+              <i className="fa fa-angle-left" />
+              <button className="btn btn-officer-horizontal-scroll">Previous</button>
+            </div>
+
+            <div className="pull-right" onClick={this.slideToLeft} onDbClick={this.prevent}>
+              <button className="btn btn-officer-horizontal-scroll">Next</button>
               <i className="fa fa-angle-right" />
             </div>
           </div>
@@ -387,7 +392,7 @@ var OfficerList = React.createClass({
 
     var overview = $(".overview-container");
     var controller = $(".officer-control");
-    if (max <= 1) {
+    if (max <= 0) {
       overview.hide();
       controller.addClass('off');
     } else {
