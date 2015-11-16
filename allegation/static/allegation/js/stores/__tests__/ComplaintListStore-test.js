@@ -28,14 +28,4 @@ describe('ComplaintListStore', function() {
   it('registers a callback with the dispatcher', function() {
     expect(AppDispatcher.register.mock.calls.length).toBe(1);
   });
-
-  it('change loading to true when getting data', function() {
-    callback(actionComplaintListGetData);
-    expect(ComplaintListStore.getState()['loading']).toBe(true);
-  });
-
-  it('change loading to false when received data', function() {
-    callback(actionComplaintListReceivedData);
-    expect(ComplaintListStore.getState()['loading']).toBe(false);
-  });
 });
