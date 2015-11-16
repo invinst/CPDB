@@ -137,6 +137,7 @@ OfficerListStore.dispatchEvent = AppDispatcher.register(function (action) {
     case AppConstants.RECEIVED_SESSION_DATA:
       var data = action.data.data;
       _state['active_officers'] = data['query']['active_officers'] || [];
+      OfficerListStore.update();
       OfficerListStore.emitChange();
       break;
 
