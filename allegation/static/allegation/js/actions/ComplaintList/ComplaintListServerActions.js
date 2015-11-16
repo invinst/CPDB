@@ -8,10 +8,11 @@ var ComplaintListServerActions = {
     })
   },
 
-  receivedData: function(data) {
+  receivedData: function(data, fromFilter) {
     AppDispatcher.dispatch({
       actionType: AppConstants.COMPLAINT_LIST_RECEIVED_DATA,
-      data: data
+      data: data,
+      fromFilter: fromFilter
     })
   },
 

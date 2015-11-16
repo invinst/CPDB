@@ -14,6 +14,10 @@ var HappyFox = React.createClass({
 
 
   initialize: function () {
+    if (global.DJANGO_ENV == 'test') {
+      return;
+    }
+
     if (jQuery("#happyfox-js").size()) {
       return;
     }

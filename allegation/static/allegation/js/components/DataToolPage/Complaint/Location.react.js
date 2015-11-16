@@ -61,7 +61,7 @@ var Location = React.createClass({
           <div className='address'>
             {this.state.address}
           </div>
-          <img src={this.state.image}/>
+          <img alt='Marker is currently not available' src={this.state.image}/>
         </div>
       ) ;
     } else {

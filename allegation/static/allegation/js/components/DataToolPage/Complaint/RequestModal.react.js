@@ -91,7 +91,10 @@ AppDispatcher.register(function (action) {
       RequestModal.show(action.value);
       break;
     case RequestDocumentConstants.DOCUMENT_REQUESTED:
-      toastr.success("We'll notify you when the document is made available.");
+      toastr.success(
+        "Thank you! Someone from our team will write a Freedom of Information Act Request for this document, and e-mail FOIA@chicagopolice.org. We will wait to hear back."
+        + " If we receive a responsive document, we will update this database. Check back in a few weeks!"
+      );
       RequestModal.hide();
       break;
     default:

@@ -2,6 +2,11 @@
 {% load staticfiles common_tags compress jsonify %}
 <html>
   <head>
+      <script>
+          if (document.location.href.indexOf("#") == -1) {
+              document.location.href = '/landing';
+          }
+      </script>
     {% block meta %}
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,14 +15,21 @@
     <meta name="language" content="{{ LANGUAGE_CODE }}" />
     <meta name="description"
           content="{% block meta-description %}CPDB{% endblock %}" />
+      <link rel="prefetch" href="{% url "allegation:allegation-race-gender-api" %}?"/>
+      <link rel="prefetch" href="{% url "allegation:allegation-api-sunburst" %}?"/>
+      <link rel="prefetch" href="{% url "allegation:allegation-api-officers" %}?"/>
+      <link rel="prefetch" href="{% url "allegation:allegation-api-clusters" %}?"/>
+      <link rel="prefetch" href="{% url "allegation:allegation-race-gender-api" %}?"/>
+      <link rel="prefetch" href="{% url "allegation:allegation-api-summary" %}?"/>
     <meta name="keywords" content="{% block meta-keywords %}{% endblock %}" />
     <title>{{""|default_site_title}}</title>
     {% endblock %}
-      <link rel="shortcut icon" type='image/png' href="{% static 'img/logox2.png' %}" />
+      <link rel="shortcut icon" type='image/png' href="{% static 'img/favicon.ico' %}" />
       <link rel="home" href="/" />
       <link href='//fonts.googleapis.com/css?family=Vollkorn:400italic,400' rel='stylesheet' type='text/css'>
       <link href="//cdnjs.cloudflare.com/ajax/libs/vis/4.2.0/vis.css" rel="stylesheet" type="text/css" />
       <link href='https://api.tiles.mapbox.com/mapbox.js/v2.1.9/mapbox.css' rel='stylesheet' />
+      {% compress css %}
       <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" />
       <link rel="stylesheet" type="text/css" href="{% static 'bootstrap-material-design/dist/css/material-fullpalette.min.css' %}" />
       <link rel="stylesheet" type="text/css" href="{% static 'bootstrap-material-design/dist/css/roboto.min.css' %}" />
@@ -33,6 +45,7 @@
       <link rel="stylesheet" href="{% static 'allegation/css/MarkerCluster.css' %}" />
       <link rel="stylesheet" href="{% static 'c3/c3.min.css' %}" />
       <link rel="stylesheet" href="{% static 'graph/css/complained-officers.css' %}" />
+      {% endcompress %}
 
       {% compress css %}
       <link rel="stylesheet" type="text/sass" href="{% static 'sass/style.sass' %}" />
@@ -45,20 +58,38 @@
   </head>
   <body>
   {% csrf_token %}
+    <div id="autocomplete-container"></div>
     <div id='router'></div>
-    <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+    <script>
+      var SHOW_DISCLAIMER = {% if DJANGO_ENV != 'test' or request.GET.with_disclaimer %}true{% else %} false {% endif %};
+    </script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/vis/4.2.0/vis.min.js"></script>
-    <script src="{% static 'js/jquery.mobile.custom.min.js' %}"></script>
-    <script src="{% static 'js/jquery-ui.custom.min.js' %}"></script>
-    <script src="{% static 'jquery.cookie/jquery.cookie.js' %}"></script>
-    <script src="{% static 'js/head_define.js' %}"></script>
-    <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'bootstrap-material-design/dist/js/material.min.js' %}"></script>
-    <script src="{% static 'toastr/toastr.min.js' %}"></script>
-    <script src="{% static 'moment/min/moment.min.js' %}"></script>
-    <script src="{% static 'underscore/underscore-min.js' %}"></script>
+    {% compress js %}
+        <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+
+        <script src="{% static 'js/jquery.mobile.custom.min.js' %}"></script>
+        <script src="{% static 'js/jquery-ui.custom.min.js' %}"></script>
+        <script src="{% static 'jquery.cookie/jquery.cookie.js' %}"></script>
+        <script src="{% static 'js/head_define.js' %}"></script>
+        <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
+        <script src="{% static 'bootstrap-material-design/dist/js/material.min.js' %}"></script>
+        <script src="{% static 'toastr/toastr.min.js' %}"></script>
+        <script src="{% static 'moment/min/moment.min.js' %}"></script>
+        <script src="{% static 'underscore/underscore-min.js' %}"></script>
+        <script src="{% static 'jqueryui-touch-punch/jquery.ui.touch-punch.min.js' %}"></script>
+        <script src="{% static 'bootstrap-tagsinput/src/bootstrap-tagsinput.js' %}"></script>
+        <script src="{% static 'search/js/search.js' %}"></script>
+        <script src="{% static 'd3/d3.min.js' %}"></script>
+        <script src="{% static 'c3/c3.min.js' %}"></script>
+        <script src="{% static 'pluralize/pluralize.js' %}"></script>
+        <script src="{% static 'js/ajax_loading_animation.js' %}"></script>
+        <script src="{% static 'zeroclipboard/dist/ZeroClipboard.min.js' %}"></script>
+        <script src="{% static 'jquery-countTo/jquery.countTo.js' %}"></script>
+        <script src="{% static 'highcharts/highcharts.js' %}"></script>
+    {% endcompress %}
     <script type="text/javascript">
-    DEFAULT_SITE_TITLE = {{ ""|default_site_title|jsonify }}
+    DEFAULT_SITE_TITLE = {{ ""|default_site_title|jsonify }};
+    DJANGO_ENV = {{ DJANGO_ENV | jsonify }};
     </script>
     {% if DJANGO_ENV != 'test' %}
     <script id="google-analytics">
@@ -75,16 +106,7 @@
     function ga() {}  // ignore ga function call
     </script>
     {% endif %}
-    <script src="{% static 'jqueryui-touch-punch/jquery.ui.touch-punch.min.js' %}"></script>
-    <script src="{% static 'bootstrap-tagsinput/src/bootstrap-tagsinput.js' %}"></script>
-    <script src="{% static 'search/js/search.js' %}"></script>
-    <script src="{% static 'd3/d3.min.js' %}"></script>
-    <script src="{% static 'c3/c3.min.js' %}"></script>
-    <script src="{% static 'pluralize/pluralize.js' %}"></script>
-    <script src="{% static 'js/ajax_loading_animation.js' %}"></script>
-    <script src="{% static 'zeroclipboard/dist/ZeroClipboard.min.js' %}"></script>
-    <script src="{% static 'jquery-countTo/jquery.countTo.js' %}"></script>
-    <script src="{% static 'highcharts/highcharts.js' %}"></script>
+
     <script src="{% static 'allegation/js/bundle.js' %}"></script>
     <script type="text/javascript" id="inspectletjs">
     window.__insp = window.__insp || [];
@@ -94,5 +116,45 @@
     setTimeout(ldinsp, 500); document.readyState != "complete" ? (window.attachEvent ? window.attachEvent('onload', ldinsp) : window.addEventListener('load', ldinsp, false)) : ldinsp();
     })();
     </script>
+   <div class="modal fade" id="disclaimer" tabindex="-1" role="dialog" aria-labelledby="disclaimer" style="width:600px; margin: 0 auto;">
+      <div class='modal-dialog' role='document'>
+          <div class='modal-content'>
+              <div class='modal-header'>
+                  <h2>Disclaimer</h2>
+              </div>
+              <div class='modal-body'>
+                  <p>The information contained on this website comes primarily from three datasets provided by the Chicago
+                      Police Department (CPD), spanning approximately 2002 to 2008 and 2011 to 2015. The CPD has released
+                      these lists in response to litigation and to FOIA Requests.</p>
+
+                  <p>The City of Chicago’s release of this information was accompanied by a disclaimer that not all of the
+                      information contained in the City’s database may be completely accurate. No independent verification
+                      of the City’s records has taken place and this public database does not purport to be an accurate
+                      reflection of either the City’s internal database or of its truthfulness.</p>
+
+                  <p>Slight changes to the spelling of officer names and to the wording of abuse categories have been made
+                      to accommodate a consistent appearance. A glossary of our understanding of common CPD terms has been
+                      provided. No other editing of the City’s original datasets has taken place.</p>
+
+                  <p>This public database also contains other readily available data that has been linked to the City’s
+                      original datasets, including: CPD beat geographies, Chicago ward boundaries, Chicago neighborhood
+                      boundaries, et cetera.</p>
+
+                  <p>By entering this website, you acknowledge that the Citizens’ Police Database (CPDB) is not
+                      responsible for any derivative work performed by or published by users of this public database.</p>
+              </div>
+              <div class='modal-footer' data-dismiss='modal'>
+                  <button class='btn btn-sm btn-view'>I UNDERSTAND</button>
+              </div>
+          </div>
+      </div>
+  </div>
+  <script>
+    {% if DJANGO_ENV != 'test' or request.GET.with_disclaimer %}
+      $(function() {
+          $("#disclaimer").modal('show');
+      })
+    {% endif %}
+  </script>
   </body>
 </html>

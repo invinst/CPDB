@@ -3,6 +3,9 @@ var React = require('react'),
 var DataToolPage = require('components/DataToolPage.react');
 var IndexPage = require('components/IndexPage.react');
 var OfficerPage = require('components/OfficerPage.react');
+var StoryPage = require('components/StoryPage.react');
+
+
 var Router = React.createClass({
   mixins: [RouterMixin],
 
@@ -12,7 +15,8 @@ var Router = React.createClass({
     '/data-tools/:session': 'home',
     '/data-tools/:session/:title': 'home',
     '/message/:text': 'message',
-    '/officer/:officerSlug/:id': 'officer'
+    '/officer/:officerSlug/:id': 'officer',
+    '/story': 'story'
   },
 
   render: function() {
@@ -34,6 +38,10 @@ var Router = React.createClass({
 
   officer: function(officerSlug, officerId) {
     return <OfficerPage officerId={officerId} />;
+  },
+
+  story: function() {
+    return <StoryPage />;
   },
 
   notFound: function(path) {

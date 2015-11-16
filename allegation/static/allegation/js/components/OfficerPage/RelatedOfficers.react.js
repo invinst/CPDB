@@ -13,11 +13,11 @@ var RelatedOfficers = React.createClass({
   componentDidMount: function() {
     RelatedOfficersStore.addChangeListener(this._onChange);
   },
-  
+
   componentWillUnmount: function() {
     RelatedOfficersStore.removeChangeListener(this._onChange);
   },
-  
+
   renderRelatedOfficerList: function() {
     var activeOfficers = this.state['activeOfficers'];
 
@@ -37,7 +37,7 @@ var RelatedOfficers = React.createClass({
   },
 
   renderTitle: function() {
-    var title = this.props.relatedOfficers.length ? 'Co-accused & Witness Officers' : '';
+    var title = this.props.relatedOfficers.length ? 'Co-accused Officers' : '';
     return (
       <div className='row'>
         <h3 className='col-md-12'>{title}</h3>

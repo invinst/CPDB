@@ -1,0 +1,253 @@
+#landing-page
+  $light_blue: #E8F0F9
+  $dark_blue: #1464f1
+  $text_color: #013270
+  $font_weight: 400
+  h2.title
+    font-size: 16px
+  position: absolute
+  top: 343px
+  transition: top 1s cubic-bezier(0, 0, 0.16, 1.08)
+  -webkit-transition: top 1s cubic-bezier(0, 0, 0.16, 1.08)
+  -moz-transition: top 1s cubic-bezier(0, 0, 0.16, 1.08)
+  width: 100%
+
+  color: $text_color
+  font-family: 'San Francisco Text Web'
+  font-weight: $font_weight
+
+  a
+    color: $dark_blue
+    &.btn
+      font-weight: $font_weight
+      background: #E8ECF5
+      font-size: 19px
+      padding: 10px 30px
+      border: 0
+      margin-top: 20px
+    &:hover, &:focus
+      text-decoration: none
+      color: $text_color
+      opacity: 1
+
+  .font-size-22
+    font-size: 17px !important
+    line-height: 22px !important
+
+  .font-size-17
+    font-size: 17px !important
+    line-height: 20px !important
+
+  .font-size-19
+    font-size: 19px !important
+    line-height: 22px !important
+
+  .welcome
+    height: 343px
+    background: #fff
+    position: fixed
+    width: 100%
+    z-index: -1
+    top: 0
+
+  .page-banner
+    width: 380px
+    margin: auto
+    font-size: 17px
+    line-height: 22px
+    letter-spacing: -0.3px
+    padding-top: 3em
+
+  nav.landing-nav
+    background-color: #fff
+    z-index: 10
+    [role=tablist]
+      margin: 0
+    li
+      float: right
+      list-style: none
+      text-align: center
+      margin-left: 65px
+      a
+        font-size: 16px
+        font-family: "San Francisco Compact Web Bold"
+        font-weight: 600
+        transition: color 500ms
+
+      &.active
+        position: relative
+        a
+          color: $text_color
+        &:after
+          content: ''
+          display: inline-block
+          background: $light_blue
+          width: 14px
+          height: 14px
+          position: absolute
+          top: 40px
+          right: 30px
+          transform: rotate(90deg)
+          -webkit-transform: rotate(45deg)
+          -moz-transform: rotate(45deg)
+
+  .fixed-nav
+    position: fixed
+    width: 100%
+    top: 0
+    left: 0
+
+  .sub-nav
+    background: $light_blue
+    height: 11px
+
+  .margin-top-90
+    margin-top: 45px
+
+  .container
+    margin-left: auto
+    margin-right: auto
+    padding: 0
+    width: 100% !important
+    height: auto
+    max-width: 768px
+
+  .section
+    padding: 70px 25px 80px 25px
+    background: #fff
+    font-size: 19px
+    line-height: 22px
+    margin: 0
+    &:nth-of-type(odd)
+      background: $light_blue
+      font-size: 17px
+      line-height: 22px
+
+    img + p, img + img
+      margin-top: 38px
+
+    .col-sm-6
+      padding: 25px
+
+    img
+      width: 100%
+      height: auto
+
+    .btn
+      background-color: rgba(20,100,241,0.1)
+      margin-top: 9px
+
+    [class^="col-sm"]
+      padding: 0 25px
+
+    .col-sm-12
+      p, h1, h2
+        width: 588px
+        margin-left: auto
+        margin-right: auto
+
+      h1
+        margin: 0 auto
+
+  .map-section
+    padding-bottom: 0
+    padding-top: 0
+
+    img
+      width: 650px
+      margin-left: -50px
+    .map-explain
+      margin-top: 20px
+      font-size: 15px
+      line-height: 17px
+
+  .page-logo
+    height: 90px
+    margin-left: 25px
+    img
+      position: relative
+      top: 25px
+
+  .items
+    margin-right: 25px
+    a
+      line-height: 45px
+
+  .story-nav
+    height: 45px
+    background: $light_blue
+    a
+      line-height: 45px
+      margin: 0 27.5px
+
+      &:focus
+        color: $dark_blue
+      &.active
+        color: $text_color
+
+  .full-width
+    width: 100%
+
+  #story-page
+    h1
+      font-size: 34px
+      line-height: 48px
+      color: $dark_blue
+      font-family: 'San Francisco Compact Web'
+      font-weight: $font_weight
+
+  #methodology-page
+    img.license
+      width: 200px
+      margin-top: 40px
+
+    .title
+      font-size: 16px
+
+  .footer
+    background: #2F2F2F
+    padding: 38px 1.5% 80px 1.5%
+    color: #fff
+    font-size: 16px
+    line-height: 20px
+    .col-sm-4
+      padding: 25px
+      padding-bottom: 0
+    p
+      margin-bottom: 8px
+    h4
+      font-size: 19px
+      font-weight: $font_weight
+      opacity: 0.7
+      margin-bottom: 20px
+    .btn
+      margin-top: 11px
+      color: #fff
+      background-color: rgba(0,0,0,0.2)
+    form
+      input[type=email], input[type=text]
+        background: #3E3E3E
+        width: 100%
+        border: none
+        padding: 15px 20px
+        border-radius: 4px
+        margin-top: 11px
+
+      input[type=submit]
+        font-size: 19px
+        font-weight: $font_weight
+        margin-top: 19px
+        padding: 10px 25px
+
+  &.scroll-to-top
+    top: 0
+    .welcome
+      height: 0
+
+@media screen and (min-width: 1200px)
+  #landing-page
+    top: 562px
+    .welcome
+      height: 562px
+    .page-banner
+      padding-top: 7em

@@ -39,7 +39,6 @@ def _generate_orderless_cache_key(request, method, headerlist, key_prefix):
     url = hashlib.md5(force_bytes(_generate_orderless_cache_url(request)))
     cache_key = 'views.decorators.cache.cache_page.%s.%s.%s.%s' % (
         key_prefix, method, url.hexdigest(), ctx.hexdigest())
-    print(cache_key)
     return _i18n_cache_key_suffix(request, cache_key)
 
 

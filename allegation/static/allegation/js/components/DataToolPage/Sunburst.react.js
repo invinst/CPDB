@@ -408,10 +408,18 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
 
 
       if (max) {
+        var connectString = 'complaints were';
+
+        if (hovering.name == 'Allegations') {
+          connectString = 'of misconduct were'
+        } else if (hovering.name == 'Unsustained') {
+          connectString = 'complaints were found'
+        }
+
         percent = (max * 100 / total).toFixed(2);
         percentStatement = (
           <div>
-            <strong>{percent}%</strong> of "{hovering.name}" complaints were "{theMax.name}"
+            <strong>{percent}%</strong> of "{hovering.name}" {connectString} "{theMax.name}"
           </div>
         )
       }
