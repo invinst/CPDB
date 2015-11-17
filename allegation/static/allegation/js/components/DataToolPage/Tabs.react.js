@@ -3,13 +3,21 @@
  */
 var React = require('react');
 var classnames = require('classnames');
+var slugify = require('slugify');
+var isMobile = require('ismobilejs');
 
+global.jQuery = require('jquery');
+
+var AppConstants = require('../../constants/AppConstants');
 var FilterStore = require('stores/FilterStore');
+var SessionStore = require('stores/SessionStore');
+var TabsStore = require('stores/DataToolPage/TabsStore');
 var Sunburst = require('components/DataToolPage/Sunburst.react');
 var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
 var Summary = require('components/DataToolPage/Summary.react');
 var Map = require('components/DataToolPage/Map.react');
 var RaceGenderTab = require('components/DataToolPage/RaceGenderTab.react');
+var TabActions = require('actions/DataToolPage/TabActions');
 
 var Tabs = React.createClass({
   mixins: [EmbedMixin],
@@ -22,7 +30,7 @@ var Tabs = React.createClass({
   },
 
   // embedding
-  activeTab: function (number, e) {
+  activeTab: function (number, tab, e) {
     this.activeTabIndex = number;
 
     if (this.embedding) {
@@ -32,6 +40,7 @@ var Tabs = React.createClass({
     var target = $(e.target).data('target');
     $(".tab-pane").removeClass('active');
     $(target).addClass('active');
+    TabActions.setActiveTab(tab);
   },
 
   getActiveTab: function () {
@@ -74,110 +83,82 @@ var Tabs = React.createClass({
 
   componentDidMount: function () {
     this.embedListener();
+    TabsStore.addChangeListener(this._onChange);
+  },
+
+  _onChange: function () {
+    this.setState(TabsStore.getState());
   },
 
   componentWillUnmount: function () {
     this.removeEmbedListener();
+    TabsStore.removeChangeListener(this._onChange);
     this.tabs = [];
     this.activeTabIndex = 0;
     this.embedding = false;
   },
 
-  renderMapTab: function () {
-    if (!this.props.mobile) {
+  renderNavTab: function (label) {
+    var target = slugify(label.toLowerCase().replace('&', ''));
+    var data_target = '#' + target;
+    var tab = target.replace('-', '_')
+
+    if (tab == 'map' && !isMobile.any) {
       return;
     }
 
-    return (
-      <li role="presentation" className="active">
-        <a href='javascript:void(0)' data-target="#map" aria-controls="map" role="tab" className='pointer' data-toggle="tab"
-           onClick={this.activeTab.bind(this, 0)}>
-          Map
-        </a>
-      </li>
-    );
-  },
-
-  renderOutcomesTab: function (outcomeClassName) {
-    var label = 'Outcomes';
-    return (
-      <li role="presentation" className={outcomeClassName}>
-        <a href='javascript:void(0)' data-target="#sunburst" aria-controls="sunburst" role="tab" className='pointer' data-toggle="tab"
-           onClick={this.activeTab.bind(this, 0)}>
-          {label}
-        </a>
-      </li>
-    );
-  },
-
-  renderCategoriesTab: function () {
-    var label = 'Categories';
+    var tabClass = classnames({
+      'active': this.state['active_tab'] == target
+    });
 
     return (
-      <li role="presentation">
-        <a href='javascript:void(0)' data-target="#categories" aria-controls="profile" role="tab" className='pointer' data-toggle="tab"
-           onClick={this.activeTab.bind(this, 1)}>
-          {label}
-        </a>
-      </li>
-    );
-  },
-
-  renderGenderRaceTab: function () {
-    var label = 'Race & Gender';
-
-    return (
-      <li role="presentation">
-          <a  href="javascript:void(0)" aria-controls='profile' aria-control='race-gender' role='tab' data-target='#race-gender' className='pointer' data-toggle='tab'>
+      <li role="presentation" className={tabClass}>
+          <a  href="javascript:void(0)" aria-controls='profile' aria-control={target} role='tab' data-target={data_target}
+            className='pointer' data-toggle='tab' onClick={this.activeTab.bind(this, AppConstants.TABS[tab], target)}>
             {label}
           </a>
         </li>
       );
   },
 
-  renderMapContent: function () {
-    if (!this.props.mobile) {
+  renderTabContent: function (id, Component) {
+    if (id == 'map' && !isMobile.any) {
       return;
     }
 
+    var tabClass = classnames('tab-pane', {
+      'active': this.state['active_tab'] == id || !this.state['active_tab']
+    });
+
     return (
-      <div role="tabpanel" className='tab-pane active' id="map">
-        <Map tabs={this} />
+      <div role="tabpanel" className={tabClass} id={id}>
+        <Component tabs={this} />
       </div>
     );
   },
 
   render: function () {
     var isActive = {
-      'active': !this.props.mobile
+      'active': !isMobile.any
     };
+
     var outcomeClassName = classnames(isActive);
 
     var outcomeContentClassName = classnames('tab-pane', isActive);
     return (
-      <div className="row">
-        <div className="col-md-12">
-          <div className="chart-row clearfix">
-            <ul className="nav nav-tabs" role="tablist">
-              { this.renderMapTab() }
-              { this.renderOutcomesTab(outcomeClassName) }
-              { this.renderCategoriesTab() }
-              { this.renderGenderRaceTab() }
-            </ul>
+      <div className="chart-row">
+        <ul className="nav nav-tabs" role="tablist">
+          { this.renderNavTab('Map') }
+          { this.renderNavTab('Outcomes') }
+          { this.renderNavTab('Categories') }
+          { this.renderNavTab('Race & Gender') }
+        </ul>
 
-            <div className="tab-content">
-              { this.renderMapContent() }
-              <div role="tabpanel" className={outcomeContentClassName} id="sunburst">
-                <Sunburst tabs={this} />
-              </div>
-              <div role="tabpanel" className="tab-pane" id="categories">
-                <Summary tabs={this} />
-              </div>
-              <div role='tabpanel' className="tab-pane" id='race-gender'>
-                <RaceGenderTab />
-              </div>
-            </div>
-          </div>
+        <div className="tab-content">
+          { this.renderTabContent('map', Map) }
+          { this.renderTabContent('outcomes', Sunburst)}
+          { this.renderTabContent('categories', Summary)}
+          { this.renderTabContent('race-gender', RaceGenderTab)}
         </div>
       </div>
     );
