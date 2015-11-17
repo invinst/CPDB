@@ -24,6 +24,7 @@ $color_japanese_laurel_approx: green
 $color_jordy_blue_approx: #7bb4ff
 $color_kashmir_blue_approx: #4a6c96
 $color_lochmara_approx: #107ac0
+$color_mariner_approx: #1f6bec
 $color_mine_shaft_approx: #333333
 $color_mountain_mist_approx: #989898
 $color_mountain_mist_approx: #989898
@@ -533,6 +534,40 @@ footer
   width: 100%
   overflow: hidden
 
+.officer-horizontal-scroll-control
+  .fa
+    font-size: 30px
+    color: $color_mariner_approx
+    vertical-align: middle
+
+    &.fa-angle-left
+      margin-left: 5px
+
+    &.fa-angle-right
+      margin-right: 5px
+
+  .pull-left:hover
+    .fa-angle-left
+      margin-left: 0
+      margin-right: 5px
+
+  .pull-right:hover
+    .fa-angle-right
+      margin-right: 0
+      margin-left: 5px
+
+  .btn-officer-horizontal-scroll
+    width: 80px
+    padding: 6px 10px
+    text-transform: none
+    background-color: $mercury !important
+    color: $color_mariner_approx !important
+    vertical-align: middle
+    margin: 0 10px
+
+.officer-control.off
+  display: none
+
 .overview-box
   padding: 3px 0
   opacity: .4
@@ -612,28 +647,6 @@ footer
   float: left
   margin-left: 25px
 
-.officer-control
-  background-color: $color_mountain_mist_approx
-  width: 46px
-  height: 66px
-  position: absolute
-  font-size: 64px
-  text-align: center
-  color: $white
-  line-height: 0
-  top: 72px
-  cursor: pointer
-  &.off
-    display: none
-
-  &:hover
-    opacity: .6
-
-.officer-control-left
-  left: -43px
-
-.officer-control-right
-  right: -43px
 
 .officer
   background-color: $seashell
@@ -745,10 +758,6 @@ footer
   white-space: nowrap
   padding: 10px 10px 0 15px
 
-@media only screen and (max-width: 1320px)
-  .officer-control
-    display: none
-
 @media only screen and (max-width: 320px)
   .officers-container
     width: 600%
@@ -756,9 +765,6 @@ footer
   .officer-block
     width: 16.666666%
     margin: 0
-
-  .officer-control
-    display: none
 
   .officer
     padding: 2px
