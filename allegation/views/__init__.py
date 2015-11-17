@@ -199,8 +199,8 @@ class AllegationSummaryApiView(AllegationAPIView):
         for summary_row in summary:
             summary_row['subcategories'] = sorted(summary_row['subcategories'], key=lambda x: -x['count'])
 
-        if summary:
-            maximum = summary[0]['total'] if summary[0]['total'] else 1
+        if summary and summary[0]['total']:
+            maximum = summary[0]['total']
         else:
             maximum = 1
 
