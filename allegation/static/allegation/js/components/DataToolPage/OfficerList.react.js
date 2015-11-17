@@ -201,7 +201,7 @@ var OfficerList = React.createClass({
     return (
       <div id="officer_list">
         <div className='row'>
-          <div className='col-md-12'>
+          <div className='col-md-12 officer-count'>
             <h3>Officers (<Counter to={this.state.officers.length} />)</h3>
           </div>
         </div>

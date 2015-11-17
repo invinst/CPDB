@@ -4,8 +4,7 @@ from common.tests.core import BaseMobileLiveTestCase
 
 class MobileDisplayTestCase(BaseMobileLiveTestCase):
     def test_data_tool_page_display(self):
-        self.visit('/')
-        self.button('View Database').click()
+        self.visit('/#!/data-tools')
         self.until(lambda: self.should_see_text('Map'))
 
         self.link('Outcomes').click()

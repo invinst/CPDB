@@ -1,14 +1,13 @@
 from selenium.webdriver.common.keys import Keys
 
 from api.models import Setting
-from common.models import AllegationCategory
 from common.tests.core import *
 from allegation.factories import AllegationFactory, AllegationCategoryFactory
 
+
 class IntegrationTestHelperMixin(object):
     def visit_home(self):
-        self.visit('/')
-        self.button('View Database').click()
+        self.visit('/#!/data-tools')
         self.until(lambda: self.link("Outcomes"))
 
 
@@ -91,14 +90,12 @@ class HomePageTestCase(BaseLiveTestCase, IntegrationTestHelperMixin):
         return len(officers)
 
     def test_show_disclaimer(self):
-        self.visit('/')
-        self.button('View Database').click()
-        self.link('About the data').click()
-        self.until(lambda: self.should_see_text('I UNDERSTAND'))
+        self.visit('/?with_disclaimer=1#!/data-tools')
+        self.button('I UNDERSTAND').click()
+
 
     def test_close_disclaimer(self):
-        self.visit('/')
-        self.button('View Database').click()
+        self.visit_home()
         self.link('About the data').click()
         self.until(lambda: self.button('I UNDERSTAND').click())
         self.until(lambda: self.should_not_see_text('I UNDERSTAND'))
@@ -291,5 +288,5 @@ class HomePageTestCase(BaseLiveTestCase, IntegrationTestHelperMixin):
         setting.value = 'New title'
         setting.save()
 
-        self.visit("/")
+        self.visit("/#!/data-tools")
         self.browser.title.should.equal(setting.value)

@@ -7,16 +7,19 @@ $color_azalea_approx: #f2ced3
 $color_cadet_blue_approx: #a5b4be
 $color_celeste_approx: #cbcbcb
 $color_chateau_green_approx: #41996d
-$color_coral_red_approx: #ff4647
+$color_coral_red_approx: #dc3747
 $color_danube_approx: #628fca
 $color_danube_approx: #66aad7
+$color_dark_grey: #212121
 $color_deep_celurean_approx: #0279AE
 $color_deep_cerulean_approx: #0079ae
+$color_eastern_blue_approx: #1385b5
 $color_fire_bush_approx: #ed9429
 $color_fountain_blue_approx: #67adc5
 $color_golden_grass_approx: #d8b421
-$color_goldenrod_approx: #f2db6d
+$color_goldenrod_approx: #f69833
 $color_gull_gray_approx: #9faeb9
+$color_hippie_green_approx: #5d924e
 $color_japanese_laurel_approx: green
 $color_jordy_blue_approx: #7bb4ff
 $color_kashmir_blue_approx: #4a6c96
@@ -29,14 +32,14 @@ $color_pacific_blue_approx: #0a90cb
 $color_pampas_approx: #f6f6ec
 $color_pattens_blue_approx: #e2f6ff
 $color_pippin_approx: #ffe3e7
-$color_rajah_approx: #f3b272
+$color_rajah_approx: #f46937
 $color_ship_cove_approx: #709dc0
 $color_silver_tree_approx: #62b28c
 $color_spring_wood_approx: #f7f7ed
 $color_star_dust_approx: #9a9a9a
 $color_storm_dust_approx: #666
 $color_sushi_approx: #83b247
-$color_swamp_green_approx: #a4c683
+$color_swamp_green_approx: #f0c41b
 $color_tall_poppy_approx: #c0272d
 $color_ziggurat_approx: #bed4df
 $gray: gray
@@ -46,16 +49,19 @@ $seashell: #f1f1f1
 $white: white
 $wild_sand: #f4f4f4
 
+@import 'shared/sf-compact-font'
+
 //fonts
-$font_0: "San Francisco Compact", "San Francisco", "San Francisco Compact Web"
-$font_1: serif
-$font_2: Vollkorn
+$font_0: "San Francisco Text Web"
+$font_1: "San Francisco Display Web"
+// $font_1: serif
+// $font_2: Vollkorn
 $font_3: "Helvetica Neue"
 $font_4: sans-serif
 $font_5: Helvetica
 $font_6: Glyphicons Halflings
 
-@import 'shared/sf-compact-font'
+
 
 // Bootstrap's default breakpoints
 $screen-xs-min: 320px
@@ -74,7 +80,7 @@ input
 //original selectors
 //h1, h2, h3, .h1, .h2, .h3
 .extend_1
-  font-family: $font_2, $font_1
+  font-family: $font_0, $font_4
 
 //original selectors
 //.navbar.navbar, .navbar-default.navbar
@@ -165,10 +171,48 @@ input
 
 body
   background-color: $white
-  font-family: $font_0, $font_1
+  font-family: $font_0, $font_4
   transition: 0.5s background-color
   &.embedding
     background-color: $color_cadet_blue_approx
+
+#autocomplete
+  line-height: normal
+  height: 50px
+  display: block
+  width: 100%
+  padding: 15px 18px
+  background-color: white
+  background-image: none
+  border: 1px solid $color_celeste_approx
+  border-radius: 4px
+  border-top-right-radius: 0
+  border-bottom-right-radius: 0
+  font-family: $font_1, $font_4
+  font-size: 14px
+  color: $color_mountain_mist_approx
+
+  &:focus
+    border-color: $color_eastern_blue_approx
+
+#btn-search
+  border-top-left-radius: 0
+  border-bottom-left-radius: 0
+  margin-left: -1px
+  padding: 6px 12px
+  height: 50px
+  width: 48px
+  background-color: $color_eastern_blue_approx
+
+  i
+    font-size: 17px
+    color: $white
+
+#autocomplete-container
+  position: absolute
+
+.search-row
+  margin-bottom: 24px
 
 .navbar
   min-height: 72px
@@ -201,12 +245,6 @@ body
 
   .navbar-nav > li.site-title > a
     color: $color_mine_shaft_approx
-
-  #search-wrapper
-    max-width: 487px
-
-    i
-      color: #0079ae
 
   .navbar-form
     margin-top: 16px
@@ -289,16 +327,19 @@ footer
 
 #map
   width: 100%
-  height: 500px
+  height: 576px
+
+.mobile
+  #map
+    height: 500px
 
 #officer-complaint-map
   width: 100%
   height: 200px
 
 .site-title
-  font-style: italic
-  font-size: 30px
-  font-family: $font_2, $font_1
+  font-size: 21px
+  font-family: $font_1, $font_4
   margin: 0 0 0 10px
   width: 100%
   input
@@ -306,9 +347,6 @@ footer
     width: 100%
 
 .map-row
-  background-color: $color_pampas_approx
-  .map-column
-    padding: 0
 
 #map-arrow-down
   position: absolute
@@ -323,7 +361,7 @@ footer
   overflow: hidden
   margin-left: 30px
   padding-left: 0
-  margin-top: 44px
+  padding-top: 44px
   .category-anlytics
     text-align: right
     font-size: 14px
@@ -348,7 +386,6 @@ footer
   font-family: $font_0, $font_4
   font-size: 12px
   padding-top: 10px
-  background-color: $color_pampas_approx
   //If you use compass, instead of the line below you could use + transition($transition-1, $transition-2, $transition-3, $transition-4, $transition-5, $transition-6, $transition-7, $transition-8, $transition-9, $transition-10)
   transition: left 1s
   position: relative
@@ -378,7 +415,6 @@ footer
     position: absolute
     width:  calc(100% - 18px)
     visibility: hidden
-    background: $color_pampas_approx
     &.active
       left: calc(1em - 5px)
       visibility: visible
@@ -487,6 +523,12 @@ footer
   .officers .col-sm-2
     padding-right: 5px
 
+.officer-count, .complaint-count
+  font-family: $font_1, $font_4
+  font-size: 21px
+  font-weight: 500
+  color: $color_mine_shaft_approx
+
 .officer-vertical-scroll
   width: 100%
   overflow: hidden
@@ -511,7 +553,7 @@ footer
   background: none
   cursor: pointer
   &.ui-slider .ui-slider-handle
-    border: 2px solid $white
+    border: 2px solid $color_dark_grey
     height: 28px
     min-width: 16px
     margin-left: -8px
@@ -549,7 +591,7 @@ footer
   background-color: $color_swamp_green_approx
 
 .overview-4
-  background-color: $color_silver_tree_approx
+  background-color: $color_hippie_green_approx
 
 .officers-container
   width: 6000px
@@ -646,19 +688,19 @@ footer
     > .checkmark:hover
       background-color: $color_celeste_approx
   &.avg-0
-    border-top-color: $color_tall_poppy_approx
+    border-top-color: $color_coral_red_approx
 
   &.avg-1
-    border-top-color: $color_fire_bush_approx
+    border-top-color: $color_rajah_approx
 
   &.avg-2
-    border-top-color: $color_golden_grass_approx
+    border-top-color: $color_goldenrod_approx
 
   &.avg-3
-    border-top-color: $color_sushi_approx
+    border-top-color: $color_swamp_green_approx
 
   &.avg-4
-    border-top-color: $color_chateau_green_approx
+    border-top-color: $color_hippie_green_approx
 
   .complaint-discipline-row
     padding: 2px 10px 10px 15px
@@ -694,9 +736,9 @@ footer
 
 .officer_name
   text-transform: capitalize
-  font-size: 16px
-  font-style: italic
-  font-family: $font_2
+  font-size: 14px
+  font-family: $font_0, $font_4
+  font-weight: 500
   overflow: hidden
   text-overflow: ellipsis
   width: 100%
@@ -750,7 +792,9 @@ footer
 .complaint-row
   padding: 10px 0 5px
   border-bottom: 1px solid $color_celeste_approx
-  font-family: $font_2
+  font-family: $font_0, $font_4
+  font-size: 16px
+  color: $color_mine_shaft_approx
   clear: both
   &.disciplined
     background: $color_pippin_approx
@@ -758,6 +802,8 @@ footer
       background-color: $color_azalea_approx
 
     .fa.fa-chevron-right
+      color: $color_tall_poppy_approx
+    .fa.fa-chevron-down
       color: $color_tall_poppy_approx
 
   &:hover
@@ -779,11 +825,11 @@ footer
 
 .timeline-title
   color: $color_mountain_mist_approx
-  font-size: 12px
+  font-size: 14px
 
 .timeline-date
-  color: $black
-  font-size: 14px
+  color: $color_mine_shaft_approx
+  font-size: 16px
   &.start
     color: $color_ship_cove_approx
 
@@ -810,9 +856,11 @@ footer
     width: 40%
     padding-left: 10px
 
-  .investigator-name
-    color: $color_ship_cove_approx
-    font-family: $font_2, $font_1
+.investigator-name
+  color: $color_mine_shaft_approx
+  font-family: $font_0, $font_4
+  font-weight: 500
+  font-size: 14px
 
 .legend
   font-size: 14px
@@ -843,7 +891,7 @@ footer
   .uppercase
     font-weight: bold
     font-size: 18px
-    font-family: $font_0, $font_1
+    font-family: $font_0, $font_4
 
   .allegation-name
     color: $color_mountain_mist_approx
@@ -929,7 +977,7 @@ footer
     @extend .extend_10
 
 .leaflet-container
-  font-family: $font_0, $font_1
+  font-family: $font_0, $font_4
   .marker-cluster-large
     //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
     border-radius: 30px
@@ -940,6 +988,12 @@ footer
 
   .leaflet-control-attribution
     display: none
+
+  .leaflet-control-command-interior
+    font-family: $font_0, $font_4
+    font-size: 16px
+    color: $color_mine_shaft_approx
+    font-weight: 500
 
 .fa
   &.open-investigation
@@ -1067,7 +1121,7 @@ footer
   background-color: $white
   display: none
   font-size: 18px
-  font-family: $font_2
+  font-family: $font_0
   border-top: 3px solid $color_mine_shaft_approx
   &:hover
     background-color: $wild_sand
@@ -1121,7 +1175,6 @@ footer
 
   .modal-footer
     text-align: left
-    padding: 0 0 20px 25px
 
   p
     font-size: 16px
@@ -1192,34 +1245,42 @@ footer
     font-family: $font_0, $font_4
 
 .chart-row
-  padding-left: 0
-  padding-right: 0
+  background-color: $white
+  border: 1px solid $color_celeste_approx
+
+  .tab-content
+    min-height: 456px
+
   .nav-tabs
     background-color: $seashell !important
+    border: 0
     > li
       padding-top: 4px
-      border-top: 0 solid $seashell !important
-      border-right: 1px solid $color_celeste_approx !important
-      border-bottom: 1px solid $color_celeste_approx !important
+      border-top: 0 solid $seashell
+      border-right: 1px solid $color_celeste_approx
+      border-bottom: 1px solid $color_celeste_approx
       width: 33.3333%
       text-align: center
+
+      &:last-child
+        border-right: 0 !important
+
       &.active
         padding-top: 0
         border-top: 4px solid $color_deep_cerulean_approx !important
-        border-right: 0 !important
-        border-bottom: 1px solid $color_pampas_approx !important
-        > a
-          background-color: $color_pampas_approx !important
+        border-bottom: 0 !important
+
+        > a, > a:hover
+          opacity: 1
+          background-color: $white !important
           color: $color_mine_shaft_approx !important
-          border-right: 1px solid $color_celeste_approx !important
 
       > a
         //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
-        border-radius: 0 !important
-        background-color: $seashell !important
+        border-radius: 0
+        background-color: $seashell
         color: $color_deep_cerulean_approx !important
         font-weight: 400
-
 
 #loading
   margin-top: 20px
@@ -1376,6 +1437,7 @@ form.navbar-form.navbar-right
   &+#addText
     width: 146px
     margin: -174px auto 0
+    padding-bottom: 100px
     text-align: center
 
 .bootstrap-tagsinput
@@ -1387,7 +1449,7 @@ form.navbar-form.navbar-right
   padding: 0
 
 #navbar-main
-  margin-top: 16px
+  margin-top: 21px
 
 #complaint-list
   .modal-backdrop
@@ -1407,3 +1469,4 @@ form.navbar-form.navbar-right
 @import 'search'
 @import 'mobile'
 @import 'data_tool_page'
+@import 'landing_page/style.sass'

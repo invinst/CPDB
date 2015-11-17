@@ -3,7 +3,7 @@ var _ = require('lodash');
 isHispanic = function (x, y) { return _(y.toLowerCase()).contains('hispanic') };
 
 var RaceGenderAPITransform = {
-  transformRaces: function(complaintRaces) {
+  transformRacesForComplaint: function(complaintRaces, isOfficer) {
     var all = _(complaintRaces).sum();
     var white = _(complaintRaces).get('White', 0);
     var black = _(complaintRaces).get('Black', 0);
@@ -11,11 +11,19 @@ var RaceGenderAPITransform = {
     var others = all - white - black - hispanic;
 
     return _([
-      { label: 'White', value: white, filterValue: 'White'},
-      { label: 'Black', value: black, filterValue: 'Black' },
-      { label: 'Hispanic', value: hispanic, filterValue: 'Hispanic' },
+      { label: this.raceLabel('White', isOfficer), value: white, filterValue: 'White'},
+      { label: this.raceLabel('Black', isOfficer), value: black, filterValue: 'Black' },
+      { label: this.raceLabel('Hispanic', isOfficer), value: hispanic, filterValue: 'Hispanic' },
       { label: 'Others', value: others, filterValue: ['Native American', 'Unknown', 'Asian', 'White/Hispanic']}
     ]).chain().reject(function(x) { return x.value == 0 }).value();
+  },
+
+  transformRacesForOfficer: function(complaintRaces) {
+    return this.transformRacesForComplaint(complaintRaces, true);
+  },
+
+  raceLabel: function (race, isOfficer) {
+    return isOfficer ? race + ' officers' : race;
   },
 
   transformGenders: function(genders) {

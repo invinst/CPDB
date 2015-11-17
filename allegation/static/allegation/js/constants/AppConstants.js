@@ -63,8 +63,8 @@ module.exports = {
 
   RACE_GENDER_TAB_RECEIVED_DATA: c++,
 
-  MAP_TOKEN: 'pk.eyJ1Ijoic3RlZmFuZ2VvcmciLCJhIjoiVnBNOEp4byJ9.7i2N7gTV-t_QtAA-kAAlFA',
-  MAP_TYPE: 'mapbox.light',
+  MAP_TOKEN: 'pk.eyJ1IjoiZGF0YW1hZGUiLCJhIjoiaXhhVGNrayJ9.0yaccougI3vSAnrKaB00vA',
+  MAP_TYPE: 'datamade.7e795301',
 
   NUMERAL_FORMAT: '0,0',
 
@@ -273,10 +273,10 @@ module.exports = {
 
   MEDIA_URL: '/media/',
 
-  MAP_MARKER_ICON_URL: 'http://data.invisible.institute/static/img/64x_map_marker.png',
+  MAP_MARKER_ICON_URL: 'http://cpdb.co/static/img/64x_map_marker.png', // it must be a full url
   OFFICER_PAGE_API_ENDPOINT: '/officer',
   SESSION_API_ENDPOINT: '/api/allegations/session/',
-  RACE_GENDER_API_ENDPOINT: '/api/allegations/race-gender',
+  RACE_GENDER_API_ENDPOINT: '/api/allegations/race-gender/',
 
 
   DATE_FORMAT: 'D MMM, YYYY',

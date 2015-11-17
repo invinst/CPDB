@@ -15,6 +15,8 @@ var ComplaintListActions = require('actions/ComplaintList/ComplaintListActions')
 
 
 var ComplaintSection = React.createClass({
+  _lastBottom: 0,
+
   getInitialState: function () {
     return ComplaintListStore.getState();
   },
@@ -27,6 +29,7 @@ var ComplaintSection = React.createClass({
   componentWillUnmount: function () {
     ComplaintListStore.removeChangeListener(this._onChange);
     jQuery(window).off('scroll', this._onScroll);
+    this._lastBottom = 0;
   },
 
   rowGetter: function (rowIndex) {
@@ -45,7 +48,7 @@ var ComplaintSection = React.createClass({
     return (
       <div className={className} onScroll={this.onScroll}>
         <div className='row'>
-          <div className='col-md-2'>
+          <div className='col-md-2 complaint-count'>
             <h3 className="margin-top-0">Complaints (<Counter to={analytics.All} />)</h3>
           </div>
           <div className='col-md-10 text-right'>
@@ -62,10 +65,19 @@ var ComplaintSection = React.createClass({
   },
 
   _onScroll: function () {
-    if (jQuery(window).scrollTop() / jQuery(document).height() > .35 && !this.state.scrollLock) {
-      ComplaintListActions.getMoreData(this.state.pageNumber);
-      ComplaintListStore.lockScroll();
+    var windowHeight = window.innerHeight;
+    var toBottom = jQuery(document).height() - windowHeight - jQuery(window).scrollTop();
+    if (toBottom < this._lastBottom) {
+      if (toBottom <= 800 && !this.state.scrollLock) {
+        var pageNumber = this.state.pageNumber > 1 ? this.state.pageNumber : 2;
+        ComplaintListStore.lockScroll();
+        setTimeout(function () {
+          //for smoothness and give filter store time to fetch API results
+          ComplaintListActions.getMoreData(pageNumber);
+        }, 100);
+      }
     }
+    this._lastBottom = toBottom;
   },
 });
 

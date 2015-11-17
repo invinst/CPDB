@@ -13,10 +13,10 @@ var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
 
   render: function () {
     var complaintRaces = _.get(this.state.data, 'complaining_witness.race', []);
-    var complaintRacesData = RaceGenderAPITransformation.transformRaces(complaintRaces);
+    var complaintRacesData = RaceGenderAPITransformation.transformRacesForComplaint(complaintRaces);
 
     var officerRaces = _.get(this.state.data, 'officers.race', []);
-    var officerRacesData = RaceGenderAPITransformation.transformRaces(officerRaces);
+    var officerRacesData = RaceGenderAPITransformation.transformRacesForOfficer(officerRaces);
 
     var complaintGenders = _.get(this.state.data, 'complaining_witness.gender', []);
     var complaintGendersData = RaceGenderAPITransformation.transformGenders(complaintGenders);
@@ -42,19 +42,19 @@ var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
           <div className='row'>
             <div className='col-lg-10 col-md-11 col-sm-10 col-xs-0 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1'>
               <div className='col-lg-4 col-md-4 col-sm-3 col-xs-4'>
-                <span className='chart-title'>Officer</span>
+                <span className='chart-title'>Race</span>
               </div>
               <div className='col-lg-4 col-md-4 col-sm-3 col-xs-4'>
-                <span className='chart-title'>Complainant</span>
+                <span className='chart-title'>Gender</span>
               </div>
             </div>
           </div>
           <div className='row'>
 
             <div className='col-lg-10 col-md-11 col-sm-10 col-xs-0 col-md-offset-1'>
-              <div className='officer-gender-chart col-lg-4 col-md-4 col-sm-3 col-xs-4 relative'>
-                <span className='vertical-title'>Gender</span>
-                <PercentageRectangleChart data={officerGendersData} options={genderOptions} filter='officer__gender' />
+              <div className='complaint-race-chart col-lg-4 col-md-4 col-sm-3 col-xs-4 relative'>
+                <span className='vertical-title'>Complainant</span>
+                <PercentageRectangleChart data={complaintRacesData} options={raceOptions} filter='complainant_race' />
               </div>
               <div className='complaint-gender-chart col-lg-4 col-md-4 col-sm-3 col-xs-4'>
                 <PercentageRectangleChart data={complaintGendersData} options={genderOptions} filter='complainant_gender' />
@@ -65,11 +65,11 @@ var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
 
             <div className='col-lg-10 col-md-11 col-sm-10 col-xs-0 col-md-offset-1'>
               <div className='officer-race-chart col-lg-4 col-md-4 col-sm-3 col-xs-4 relative'>
-                <span className='vertical-title'>Race</span>
+                <span className='vertical-title'>Officer</span>
                 <PercentageRectangleChart data={officerRacesData} options={raceOptions} filter='officer__race' />
               </div>
-              <div className='complaint-race-chart col-lg-4 col-md-4 col-sm-3 col-xs-4'>
-                <PercentageRectangleChart data={complaintRacesData} options={raceOptions} filter='complainant_race' />
+              <div className='officer-gender-chart col-lg-4 col-md-4 col-sm-3 col-xs-4'>
+                <PercentageRectangleChart data={officerGendersData} options={genderOptions} filter='officer__gender' />
               </div>
             </div>
           </div>

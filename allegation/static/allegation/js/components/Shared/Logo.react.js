@@ -6,7 +6,7 @@ var SessionStore = require('stores/SessionStore');
 var Logo = React.createClass({
   render: function() {
     return (
-      <a onClick={this._onClick} className="navbar-brand pointer">
+      <a href="/landing" className="navbar-brand pointer">
         <img src="/static/img/logo.png" alt="CPDB Logo"/>
       </a>
     )
