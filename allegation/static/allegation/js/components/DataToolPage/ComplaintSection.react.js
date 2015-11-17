@@ -76,6 +76,8 @@ var ComplaintSection = React.createClass({
     } else {
       complaintList = (
         <Infinite elementHeight={80}
+            preloadBatchSize={Infinite.containerHeightScaleFactor(2)}
+            preloadAdditionalHeight={2000}
             infiniteLoadBeginEdgeOffset={100}
             onInfiniteLoad={this.handleInfiniteLoad}
             loadingSpinnerDelegate={this.elementInfiniteLoad()}
