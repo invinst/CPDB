@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 from django.contrib.gis.db import models
 from django.core.urlresolvers import reverse
@@ -398,6 +399,7 @@ class Allegation(models.Model):
     document_requested = models.BooleanField(default=False)
     document_pending = models.BooleanField(default=False)
     number_of_request = models.IntegerField(default=0)
+    last_requested = models.DateTimeField(default=timezone.now)
 
     @property
     def beat(self):

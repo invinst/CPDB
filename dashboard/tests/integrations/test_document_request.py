@@ -29,7 +29,7 @@ class DocumentRequestTestCase(BaseLiveTestCase):
         self.find("h1").text.should.equal('Investigation Documents')
         self.button("Add document").should.be.ok
 
-        tabs = ["All", "Missing", "Requesting", "Fulfilled", "Pending"]
+        tabs = ["All", "Missing", "Requested", "Fulfilled", "Pending"]
         for tab in tabs:
             self.should_see_text(tab)
 
@@ -51,7 +51,7 @@ class DocumentRequestTestCase(BaseLiveTestCase):
         allegation = AllegationFactory(document_requested=True)
 
         self.go_to_documents()
-        self.go_to_tab('Requesting')
+        self.go_to_tab('Requested')
         self.button('Requested').click()
 
         self.until(lambda: self.should_see_text('%s document has been requested.' % allegation.crid))
@@ -71,7 +71,7 @@ class DocumentRequestTestCase(BaseLiveTestCase):
         self.until(lambda: self.should_see_text('%s document pending has been cancelled.' % allegation.crid))
         self.find_all('.status>span')[-1].text.should.equal('Requesting')
 
-        self.go_to_tab('Requesting')
+        self.go_to_tab('Requested')
         self.should_see_text(allegation.crid)
 
     def test_add_document_link(self):
