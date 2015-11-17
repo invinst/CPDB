@@ -9,6 +9,6 @@ class SettingSerializer(serializers.HyperlinkedModelSerializer):
         model = Setting
         fields = (
                   'id',
-                  'key',
-                  'value',
+                  'default_site_title',
+                  'story_types_order',
                   )
