@@ -21,6 +21,8 @@
   a
     color: $dark_blue
     transition: color 1s
+    -webkit-transition: color 1s
+    -moz-transition: color 1s
 
     &.btn
       font-weight: $font_weight
@@ -220,6 +222,8 @@
       background-size: 100% 100%
       margin-left: -90px
       transition: background-image 1s
+      -webkit-transition: background-image 1s
+      -moz-transition: background-image 1s
       &:hover
         background-image: url("/static/img/map-fade-hover.png")
     .map-explain
@@ -319,6 +323,8 @@
       .cpdp-logo
         opacity: 1 !important
         transition: opacity 1s $cubic_bezier
+        -webkit-transition: opacity 1s $cubic_bezier
+        -moz-transition: opacity 1s $cubic_bezier
 
 @media screen and (min-width: 1200px)
   #landing-page
