@@ -117,7 +117,7 @@ module.exports = {
       'icon': 'exclamation-circle'
     },
     'requesting': {
-      'text': 'Requesting',
+      'text': 'Requested',
       'icon': 'circle-o-notch'
     },
     'pending': {
