@@ -25,7 +25,6 @@
     }
   }
 
-
   function toggleShow() {
     var scrollTop = $(window).scrollTop();
     var cond = scrollTop >= $welcome.height();
