@@ -18,7 +18,6 @@ var DocumentListStore = _.assign(Base(_state), {
       return (_state['order'] > 0 ? '' : '-') + _state['sortBy'];
     }
     return '';
-    p
   }
 });
 

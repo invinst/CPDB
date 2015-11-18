@@ -30,10 +30,6 @@ var DocumentRequestAPI = {
     });
   },
 
-  buildSortOrderParams: function() {
-
-  },
-
   loadDocument: function (id) {
     if (ajax) {
       ajax.abort();
