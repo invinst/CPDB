@@ -85,7 +85,8 @@ class SessionAPIView(View):
                 'hash': session.hash_id,
                 'query': session.query,
                 'readable_query': session.readable_query,
-                'title': session.title
+                'title': session.title,
+                'active_tab': session.active_tab
             }
         }
 
@@ -99,7 +100,10 @@ class SessionAPIView(View):
     def update_session_data(self, session, data):
         updates = data['query'] or {}
         session.query.update(**updates)
-        session.title = data['title'] or ''
+        if 'active_tab' in data:
+            session.active_tab = data['active_tab']
+        if 'title' in data:
+            session.title = data['title']
         session.save()
 
         return session

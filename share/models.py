@@ -30,6 +30,7 @@ OTHER_KEYS = {
 class Session(models.Model):
     title = models.CharField(max_length=255)
     query = JSONField()
+    active_tab = models.CharField(max_length=40, default='')
     share_from = models.ForeignKey('share.Session', null=True, default=None)
     share_count = models.IntegerField(default=0)
     created_at = models.DateTimeField(default=timezone.now, null=True)
@@ -68,6 +69,7 @@ class Session(models.Model):
         session = Session()
         session.title = self.title
         session.query = self.query
+        session.active_tab = self.active_tab
         session.share_from = self
         session.save()
         return session
