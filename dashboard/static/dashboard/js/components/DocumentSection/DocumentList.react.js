@@ -47,6 +47,10 @@ var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
     return this.setActiveAllegation.bind(this, allegation);
   },
 
+  _onHeaderClick: function(sortBy) {
+    DocumentListActions.sortBy(sortBy);
+    DocumentRequestAPI.get();
+  },
 
   renderDocumentList: function() {
     var that = this;
@@ -72,6 +76,22 @@ var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
     });
   },
 
+  renderSortIcon: function(sortName) {
+    var sortBy = this.state.sortBy;
+    var isSorting = _(sortBy).contains(sortName);
+    var isDesc = this.state.order < 0;
+
+    var cx = classnames({
+      'fa': true,
+      'fa-sort': !isSorting,
+      'sort-active': isSorting,
+      'fa-sort-desc': isSorting && isDesc,
+      'fa-sort-asc': isSorting && !isDesc
+    });
+
+    return (<i className={cx}></i>)
+  },
+
   render: function() {
     return (
       <div className='table-responsive'>
@@ -80,8 +100,8 @@ var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
             <tr>
               <th>CRID</th>
               <th>Status</th>
-              <th>No. of requests</th>
-              <th>Last time requested</th>
+              <th onClick={this._onHeaderClick.bind(this, 'number_of_request')}>No. of requests {this.renderSortIcon('number_of_request')}</th>
+              <th onClick={this._onHeaderClick.bind(this, 'last_requested')}>Last requested {this.renderSortIcon('last_requested')}</th>
               <th>Action</th>
             </tr>
           </thead>

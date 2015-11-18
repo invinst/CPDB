@@ -7,14 +7,22 @@ var Base = require('../Base');
 
 var _state = {
   documents: [],
-  locked: false
+  locked: false,
+  sortBy: 'number_of_request',
+  order: -1
 };
 
 var DocumentListStore = _.assign(Base(_state), {
-  
+  getSortOrder: function () {
+    if (_state['sortBy']) {
+      return (_state['order'] > 0 ? '' : '-') + _state['sortBy'];
+    }
+    return '';
+    p
+  }
 });
 
-AppDispatcher.register(function(action) {
+AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.RECEIVED_DOCUMENT_LIST:
       _state.documents = action.data;
@@ -47,6 +55,20 @@ AppDispatcher.register(function(action) {
     case AppConstants.DOCUMENT_PUT_TO_REQUESTING:
       action.data.document_pending = false;
       action.data.document_requested = true;
+      DocumentListStore.emitChange();
+      break;
+
+    case AppConstants.DOCUMENT_SORT_LIST:
+      var currentSortBy = _state['sortBy'];
+      var order = _state['order'];
+      var sortBy = action.data;
+
+      if (currentSortBy == sortBy) {
+        order = -order;
+      }
+
+      DocumentListStore.updateState('sortBy', action.data);
+      DocumentListStore.updateState('order', order);
       DocumentListStore.emitChange();
       break;
 
