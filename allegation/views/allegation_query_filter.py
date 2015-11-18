@@ -24,6 +24,8 @@ FILTERS = [
     'officer__rank',
     'officer__gender',
     'officer__race',
+    'officer__allegations_count__gt',
+    'officer__discipline_count__gt',
     'investigator',
     'cat__category',
     'city',
@@ -155,6 +157,12 @@ class AllegationQueryFilter(object):
 
     def officer_names(self):
         return self.query_dict.getlist('officer_name', [])
+
+    def officer_allegation_count(self):
+        return self.query_dict.get('officer__allegations_count__gt')
+
+    def officer_discipline_count(self):
+        return self.query_dict.get('officer__discipline_count__gt')
 
     def latlng(self):
         return self.query_dict.get('latlng', '').split(',')

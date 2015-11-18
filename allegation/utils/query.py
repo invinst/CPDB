@@ -13,3 +13,7 @@ class OfficerQuery(object):
             cond = (Q(**{officer_last_key: " ".join(parts[1:])}) & Q(**{officer_first_key: parts[0]})) | cond
 
         return cond
+
+    @staticmethod
+    def condition_by_count(count, field, prefix='', direction='gt'):
+        return Q(**{'{prefix}{field}__{direction}'.format(field=field, direction=direction, prefix=prefix):count})

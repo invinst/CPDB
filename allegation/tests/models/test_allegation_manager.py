@@ -35,6 +35,8 @@ class AllegationManager(SimpleTestCase):
         instance.allegation_filters.return_value = conditions
         instance.complainant_gender.return_value = []
         instance.complainant_race.return_value = []
+        instance.officer_allegation_count.return_value = 0
+        instance.officer_discipline_count.return_value = 0
 
         number_of_officer = Allegation.objects.by_allegation_filter(mock_allegation_filter([], [])).count()
         self.assertEqual(number_of_officer, 1)
