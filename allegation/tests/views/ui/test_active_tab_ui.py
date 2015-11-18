@@ -1,6 +1,8 @@
 import os
 from unittest import skipIf, skipUnless
 
+from selenium import webdriver
+
 from common.tests.core import BaseLiveTestCase, BaseMobileLiveTestCase
 
 
@@ -21,9 +23,15 @@ class ActiveTabTestCase(BaseLiveTestCase, ActiveTabAssertationMixin):
         self.assert_current_active_tab('Outcomes')
 
         self.link('Categories').click()
-        self.browser.refresh()
+        self.until_ajax_complete()
 
+        self.browser.refresh()
         self.assert_current_active_tab('Categories')
+
+        browser = webdriver.Firefox()
+        browser.get(self.browser.current_url)
+        browser.find_element_by_css_selector('.chart-row li.active a').text.should.equal('Categories')
+        browser.quit()
 
 
 class ActiveTabMobileTestCase(BaseMobileLiveTestCase, ActiveTabAssertationMixin):
