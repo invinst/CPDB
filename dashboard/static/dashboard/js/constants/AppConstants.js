@@ -58,6 +58,7 @@ module.exports = {
   DOCUMENT_PUT_TO_PENDING: c++,
   DOCUMENT_PUT_TO_REQUESTING: c++,
   DOCUMENT_SORT_LIST: c++,
+  RECEIVED_DOCUMENT_REQUEST_ANALYSIS: c++,
 
   RECEIVED_SESSIONS_DATA: c++,
   RECEIVED_MORE_SESSIONS_DATA: c++,
@@ -160,6 +161,7 @@ module.exports = {
   DOCUMENT_END_POINT: '/api/dashboard/documents/',
   DOCUMENT_REQUEST_END_POINT: '/api/dashboard/document-requests/',
   DOCUMENT_REQUEST_STATUS_END_POINT: '/api/dashboard/document-request-status/',
+  DOCUMENT_REQUEST_ANALYSIS_END_POINT: '/api/dashboard/document-requests-analysis/',
   DOCUMENT_LINK_END_POINT: '/api/dashboard/document-link/',
   SESSIONS_API_ENDPOINT: '/api/dashboard/sessions/',
   SETTINGS_API_ENDPOINT: '/api/dashboard/settings/',

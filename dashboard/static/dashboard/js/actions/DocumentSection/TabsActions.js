@@ -8,6 +8,13 @@ var TabsActions = {
       actionType: AppConstants.SET_DOCUMENT_ACTIVE_TAB,
       data: tab
     });
+  },
+
+  receivedDocumentRequestAnalysis: function (data) {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.RECEIVED_DOCUMENT_REQUEST_ANALYSIS,
+      data: data
+    });
   }
 };
 
