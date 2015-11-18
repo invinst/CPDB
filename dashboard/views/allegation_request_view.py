@@ -23,6 +23,7 @@ class AdminAllegationRequestViewSet(viewsets.ModelViewSet):
     serializer_class = AllegationRequestSerializer
     authentication_classes = (SessionAuthentication,)
     filter_backends = (filters.OrderingFilter,)
+    ordering = ('-number_of_request',)
     ordering_fields = ('last_requested', 'number_of_request',)
 
     def get_queryset(self):

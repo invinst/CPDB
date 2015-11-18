@@ -117,3 +117,33 @@ class DocumentRequestTestCase(BaseLiveTestCase):
         self.find('.crid-request-search').send_keys('%s\n' % 123456)
         self.until(self.ajax_complete)
         self.until(lambda: self.should_see_text('CRID not found'))
+
+    def test_get_document_request_analysis(self):
+        AllegationFactory(document_requested=False, document_id=0)  # Missing
+        AllegationFactory(document_pending=False, document_requested=True, document_id=0)  # Requested
+        AllegationFactory(document_id=1)  # Fulfilled
+        AllegationFactory(document_pending=True, document_requested=True)  # Pending
+
+        self.go_to_documents()
+        self.until_ajax_complete()
+        for tab in ['missing', 'requested', 'fulfilled', 'pending']:
+            tab_selector = '.tab-{tab_name} .analysis'.format(tab_name=tab)
+            self.find(tab_selector).text.should.contain('1')
+        self.find('.tab-all .analysis').text.should.contain('4')
+
+    def test_sort_document_request(self):
+        no_request_allegation = AllegationFactory(number_of_request=0)
+        one_request_allegation = AllegationFactory(number_of_request=1)
+
+        self.go_to_documents()
+        self.until_ajax_complete()
+
+        documents = self.find_all('tbody tr')
+        documents[0].text.should.contain(str(one_request_allegation.crid))
+        documents[1].text.should.contain(str(no_request_allegation.crid))
+
+        self.element_by_tagname_and_text('th', 'No. of requests').click()
+        self.until_ajax_complete()
+        documents = self.find_all('tbody tr')
+        documents[0].text.should.contain(str(no_request_allegation.crid))
+        documents[1].text.should.contain(str(one_request_allegation.crid))
