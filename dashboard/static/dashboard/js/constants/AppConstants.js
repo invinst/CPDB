@@ -57,6 +57,7 @@ module.exports = {
   RECEIVED_DOCUMENT_CRID: c++,
   DOCUMENT_PUT_TO_PENDING: c++,
   DOCUMENT_PUT_TO_REQUESTING: c++,
+  DOCUMENT_SORT_LIST: c++,
 
   RECEIVED_SESSIONS_DATA: c++,
   RECEIVED_MORE_SESSIONS_DATA: c++,
@@ -117,7 +118,7 @@ module.exports = {
       'icon': 'exclamation-circle'
     },
     'requesting': {
-      'text': 'Requesting',
+      'text': 'Requested',
       'icon': 'circle-o-notch'
     },
     'pending': {
@@ -147,6 +148,7 @@ module.exports = {
   ],
 
   DATE_ONLY_FORMAT: 'YYYY-M-DD',
+  HUMAN_READABLE_FORMAT: 'hh:mm a, DD MMM YYYY',
   NUMBER_OF_DAYS_SHOWN_IN_NEW_SESSION_CHART: 30,
 
   SEARCH_TRAFFIC_API_ENDPOINT: '/api/dashboard/search-traffic/',

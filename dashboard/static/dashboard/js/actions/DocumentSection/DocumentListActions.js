@@ -32,6 +32,13 @@ var DocumentListActions = {
 
   requestNotFound: function() {
     toastr.error('CRID not found');
+  },
+
+  sortBy: function (sortBy) {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.DOCUMENT_SORT_LIST,
+      data: sortBy
+    });
   }
 };
 
