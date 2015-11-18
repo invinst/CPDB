@@ -1,7 +1,6 @@
 var _ = require('lodash');
 var navigate = require('react-mini-router').navigate;
 var React = require('react');
-var jQuery = require('utils/jQuery');
 
 var AppConstants = require('constants/AppConstants');
 var Base = require('components/Base.react');
@@ -16,111 +15,25 @@ var Route = ReactRouter.Route;
 var Link = ReactRouter.Link;
 
 var IndexPage = React.createClass(_.assign(Base(SessionStore), {
-  componentDidMount: function () {
-    var $welcome = jQuery('.welcome');
-    var $subNav = jQuery('.sub-nav');
-    var $body = jQuery('#landing-page');
-    var $landingNav = jQuery('.landing-nav');
-    var $main = jQuery('.main');
-    var $cpdpLogo = jQuery('.cpdp-logo');
-    var $iiLogo = jQuery('.page-logo');
-    var $findingBtn = jQuery('.view-findings');
-    var $mapSection = jQuery('.map-section');
-    var $movingArrow = jQuery('.moving-arrow');
-    var navBarHeight = 90;
 
-    function syncNavState() {
-      var navItems = jQuery('.landing-nav .sub-nav a');
-      var currentPos = jQuery(window).scrollTop() + navBarHeight;
-      var breakloop = false;
-      for(var index = 0; index < navItems.length; index++) {
-        var item = jQuery(navItems[index]);
-        var $control = jQuery(item.data('target'));
-        if (currentPos >= $control.offset().top) {
-          navItems.removeClass('active');
-          item.addClass('active');
-          break;
-        }
-      }
-    }
 
-    function toggleShow() {
-      var scrollTop = jQuery(window).scrollTop();
-      var cond = scrollTop >= $welcome.height();
-      $landingNav.toggleClass('fixed-nav', cond);
-      $landingNav.toggleClass('border-top', scrollTop != 0);
-      $main.toggleClass('margin-top-90', cond);
-      $subNav.toggleClass('hidden', !cond);
-      var opacity = scrollTop / $welcome.height()
-      $cpdpLogo.css('opacity', opacity);
-      $iiLogo.css('opacity', 1 - opacity);
-      syncNavState();
-    }
-
-    function scrollTop(callback, elapseTime) {
-      $body.animate({
-        scrollTop: 0
-      }, elapseTime, callback);
-    }
-
-    function getScrollTime() {
-      return Math.min(500, $body.scrollTop());
-    }
-
-    function onScrollTopFindPage() {
-      $body.removeClass('scroll-to-top');
-      toggleShow();
-      onScrollTop();
-    }
-
-    function onScrollTop() {
-      jQuery(window).on('scroll', toggleShow);
-    }
-
-    jQuery(window).on('scroll', toggleShow);
-
-    jQuery(document).on('click', '.story-nav a', function() {
-      $element = jQuery(jQuery(this).data('target'));
-      $body.animate({
-          scrollTop: $element.offset().top - navBarHeight
-      }, 1000);
-      return false;
-    });
-
-    jQuery('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-      $target = jQuery(e.target);
-      var currentPage = $target.attr('href');
-      jQuery(window).off('scroll');
-      $movingArrow.animate({
-        left: $target.offset().left + $target.width() / 2 - 10
-      }, 500);
-
-      if (currentPage == '#story-page') {
-        $subNav.html(jQuery('.story-nav').clone());
-      } else {
-        $subNav.html('');
-      }
-
-      if (currentPage == '#find-page') {
-        scrollTop(onScrollTopFindPage, getScrollTime());
-      } else {
-        $body.addClass('scroll-to-top');
-        scrollTop(onScrollTop, 1000);
-      }
-    });
-
-    jQuery('.tab-navigate').on('click', function() {
-      var tab = jQuery(this).attr('tab-navigate');
-      jQuery('a[aria-controls=' + tab + ']').trigger('click');
-      return false;
-    });
-
-    $findingBtn.on('click', function() {
-      $body.animate({
-          scrollTop: $mapSection.offset().top - 45
-      }, 1000);
-      return false;
-    });
+  renderNavigation: function () {
+    return (
+      <nav className="landing-nav">
+        <div className="items clearfix">
+          <img className="pull-left cpdp-logo" src="/static/img/cpdp-logo.svg" />
+          <ul className="pull-right" role="tablist">
+            <span className="moving-arrow" />
+            <li><a href="/#!/data-tools">Data</a></li>
+            <li><a href="#methodology-page" aria-controls="methodology-page" role="tab" data-toggle="tab">Methods</a></li>
+            <li><a href="#story-page" aria-controls="story-page" role="tab" data-toggle="tab">Stories</a></li>
+            <li className="active"><a href="#find-page" aria-controls="find-page" role="tab" data-toggle="tab">Findings</a></li>
+          </ul>
+        </div>
+        <div className="sub-nav hidden">
+        </div>
+      </nav>
+    )
   },
 
   render: function() {
@@ -138,20 +51,7 @@ var IndexPage = React.createClass(_.assign(Base(SessionStore), {
             <p><a href="/#!/data-tools">Explore the data.</a></p>
           </div>
         </div>
-        <nav className="landing-nav">
-          <div className="items clearfix">
-            <img className="pull-left cpdp-logo" src="/static/img/cpdp-logo.svg" />
-            <ul className="pull-right" role="tablist">
-              <span className="moving-arrow" />
-              <li><a href="/#!/data-tools">Data</a></li>
-              <li><a href="#methodology-page" aria-controls="methodology-page" role="tab" data-toggle="tab">Methods</a></li>
-              <li><a href="#story-page" aria-controls="story-page" role="tab" data-toggle="tab">Stories</a></li>
-              <li className="active"><a href="#find-page" aria-controls="find-page" role="tab" data-toggle="tab">Findings</a></li>
-            </ul>
-          </div>
-          <div className="sub-nav hidden">
-          </div>
-        </nav>
+        { this.renderNavigation() }
         <div className="main">
           <div className="tab-content">
             <div role="tabpanel" className="tab-pane active" id="find-page">
