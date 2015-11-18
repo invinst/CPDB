@@ -8,7 +8,7 @@ IS_MOBILE = os.environ.get('MOBILE') == '1'
 
 
 class ActiveTabAssertationMixin(object):
-    def assertCurrentActiveTab(self, expected_tab):
+    def assert_current_active_tab(self, expected_tab):
         active_tab = self.find('.chart-row li.active a')
         active_tab.text.should.equal(expected_tab)
 
@@ -18,15 +18,15 @@ class ActiveTabTestCase(BaseLiveTestCase, ActiveTabAssertationMixin):
     def test_site_default_active_tab(self):
         self.visit('/#!/data-tools')
 
-        self.assertCurrentActiveTab('Outcomes')
+        self.assert_current_active_tab('Outcomes')
 
         self.link('Categories').click()
         self.browser.refresh()
 
-        self.assertCurrentActiveTab('Categories')
+        self.assert_current_active_tab('Categories')
 
 
 class ActiveTabMobileTestCase(BaseMobileLiveTestCase, ActiveTabAssertationMixin):
     def test_site_default_active_tab(self):
         self.visit('/#!/data-tools')
-        self.assertCurrentActiveTab('Map')
+        self.assert_current_active_tab('Map')
