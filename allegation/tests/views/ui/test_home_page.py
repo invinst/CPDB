@@ -64,7 +64,8 @@ class HomePageTestCase(BaseLiveTestCase, IntegrationTestHelperMixin):
 
     def test_all_subcategories_should_be_selected(self):
         category = self.allegation_category.category
-        AllegationCategoryFactory(category=category)
+        allegation_category = AllegationCategoryFactory(category=category)
+        AllegationFactory(cat=allegation_category)
 
         # First, we click a category, we should see the arrow beside the category
         self.filter_complaint_type()
