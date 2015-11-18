@@ -24,7 +24,7 @@ var Router = React.createClass({
   },
 
   index: function() {
-    return (<IndexPage />);
+    return this.home();/* FIXME */
   },
 
   home: function(session, title) {
