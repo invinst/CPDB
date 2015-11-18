@@ -1,5 +1,7 @@
 var _ = require('lodash');
 var AppConstants = require('../constants/AppConstants');
+
+var DocumentListStore = require('stores/DocumentSection/DocumentListStore');
 var DocumentListActions = require('../actions/DocumentSection/DocumentListActions');
 var DocumentActions = require('../actions/DocumentSection/DocumentActions');
 var TabsStore = require('../stores/DocumentSection/TabsStore');
@@ -18,13 +20,18 @@ var DocumentRequestAPI = {
     }
 
     var params = {
-      type: TabsStore.getState().active
+      type: TabsStore.getState().active,
+      ordering: DocumentListStore.getSortOrder()
     };
 
     ajax = jQuery.getJSON(AppConstants.DOCUMENT_REQUEST_END_POINT, params, function(data) {
       limit = 0;
       DocumentListActions.receivedDocumentList(data.results);
     });
+  },
+
+  buildSortOrderParams: function() {
+
   },
 
   loadDocument: function (id) {
@@ -46,7 +53,8 @@ var DocumentRequestAPI = {
     var params = {
       type: TabsStore.getState().active,
       limit: limit,
-      offset: limit + count
+      offset: limit + count,
+      ordering: DocumentListStore.getSortOrder()
     };
 
     ajax = jQuery.getJSON(AppConstants.DOCUMENT_REQUEST_END_POINT, params, function(data) {

@@ -1,5 +1,6 @@
 from django.db.models.query_utils import Q
 from rest_framework import viewsets
+from rest_framework import filters
 
 from api.serializers.allegation_request_serializer import AllegationRequestSerializer
 from api.serializers.allegation_request_single_serializer import AllegationRequestSingleSerializer
@@ -18,9 +19,11 @@ DOCUMENT_REQUEST_FILTERS = {
 
 
 class AdminAllegationRequestViewSet(viewsets.ModelViewSet):
-    queryset = Allegation.objects.all().distinct('crid')
+    queryset = Allegation.objects.all()
     serializer_class = AllegationRequestSerializer
     authentication_classes = (SessionAuthentication,)
+    filter_backends = (filters.OrderingFilter,)
+    ordering_fields = ('last_requested', 'number_of_request',)
 
     def get_queryset(self):
         query_set = super(AdminAllegationRequestViewSet, self).get_queryset()
@@ -28,6 +31,8 @@ class AdminAllegationRequestViewSet(viewsets.ModelViewSet):
         if 'crid' in self.request.GET:
             query_set = query_set.filter(crid=self.request.GET.get('crid'))
         else:
+            ids = Allegation.objects.all().distinct('crid').values_list('id', flat=True)
+            query_set = query_set.filter(id__in=ids)
             query_set = query_set.filter(DOCUMENT_REQUEST_FILTERS[self.request.GET.get('type', 'All')])
 
         return query_set
