@@ -1,12 +1,15 @@
-var React = require('react');
 var _ = require('lodash');
 var classnames = require('classnames');
+var moment = require('moment');
+var React = require('react');
+
 var Base = require('../Base.react');
+var AppConstants = require('../../constants/AppConstants');
+
 var DocumentListStore = require('../../stores/DocumentSection/DocumentListStore');
 var DocumentListActions = require('../../actions/DocumentSection/DocumentListActions');
 var DocumentRequestAPI = require('../../utils/DocumentRequestAPI');
 var DocumentMixin = require('./DocumentMixin');
-var AppConstants = require('../../constants/AppConstants');
 var DocumentRequestAPI = require('../../utils/DocumentRequestAPI');
 var AddDocumentLinkModalActions = require('../../actions/DocumentSection/AddDocumentLinkModalActions');
 
@@ -60,6 +63,7 @@ var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
           <td onClick={that.onClick(x)} className="pointer">{x.crid}</td>
           <td className="status"><i className={className}></i> {statusText}</td>
           <td>{x.number_of_request}</td>
+          <td>{moment(x.last_requested).format(AppConstants.HUMAN_READABLE_FORMAT)}</td>
           <td className="actions">
             { that.renderDocumentActions(status, x) }
           </td>
@@ -77,6 +81,7 @@ var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
               <th>CRID</th>
               <th>Status</th>
               <th>No. of requests</th>
+              <th>Last time requested</th>
               <th>Action</th>
             </tr>
           </thead>
