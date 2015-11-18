@@ -1,53 +1,31 @@
-var React = require('react'),
-    RouterMixin = require('react-mini-router').RouterMixin;
-var DataToolPage = require('components/DataToolPage.react');
+var React = require('react');
+var ReactRouter = require('react-router');
+var History = require('history');
+
+var Router = ReactRouter.Router;
+var Route = ReactRouter.Route;
+var Link = ReactRouter.Link;
+var IndexRoute = ReactRouter.IndexRoute;
+
 var IndexPage = require('components/IndexPage.react');
-var OfficerPage = require('components/OfficerPage.react');
-var StoryPage = require('components/StoryPage.react');
+var DataToolPage = require('components/DataToolPage.react');
 
 
-var Router = React.createClass({
-  mixins: [RouterMixin],
-
-  routes: {
-    '/': 'index',
-    '/data-tools': 'home',
-    '/data-tools/:session': 'home',
-    '/data-tools/:session/:title': 'home',
-    '/message/:text': 'message',
-    '/officer/:officerSlug/:id': 'officer',
-    '/story': 'story'
-  },
-
+var RootRouter = React.createClass({
   render: function() {
-    return this.renderCurrentRoute();
+    var history = History.useBasename(History.createHistory)({
+      basename: '/'
+    });
+
+    return (
+      <Router history={history}>
+        <Route path="/" component={IndexPage}>
+        </Route>
+        <Route path="/data-tools" component={DataToolPage}>
+        </Route>
+      </Router>
+    );
   },
-
-  index: function() {
-    return this.home();/* FIXME */
-  },
-
-  home: function(session, title) {
-    session = _.isObject(session) ? '' : session;
-    return (<DataToolPage session={session}/>)
-  },
-
-  message: function(text) {
-    return <div>{text}</div>;
-  },
-
-  officer: function(officerSlug, officerId) {
-    return <OfficerPage officerId={officerId} />;
-  },
-
-  story: function() {
-    return <StoryPage />;
-  },
-
-  notFound: function(path) {
-    return <div className="not-found">Page Not Found: {path}</div>;
-  }
-
 });
 
-module.exports = Router;
+module.exports = RootRouter;
