@@ -52,7 +52,7 @@ class DocumentRequestTestCase(BaseLiveTestCase):
 
         self.go_to_documents()
         self.go_to_tab('Requested')
-        self.button('Requested').click()
+        self.button('Request').click()
 
         self.until(lambda: self.should_see_text('%s document has been requested.' % allegation.crid))
 
@@ -69,7 +69,7 @@ class DocumentRequestTestCase(BaseLiveTestCase):
         self.button('Cancel Pending').click()
 
         self.until(lambda: self.should_see_text('%s document pending has been cancelled.' % allegation.crid))
-        self.find_all('.status>span')[-1].text.should.equal('Requesting')
+        self.find_all('.status>span')[-1].text.should.equal('Requested')
 
         self.go_to_tab('Requested')
         self.should_see_text(allegation.crid)
