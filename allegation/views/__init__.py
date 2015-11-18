@@ -205,7 +205,11 @@ class AllegationSummaryApiView(AllegationAPIView):
         for summary_row in summary:
             summary_row['subcategories'] = sorted(summary_row['subcategories'], key=lambda x: -x['count'])
 
-        maximum = summary[0]['total'] if summary else 1
+        if summary and summary[0]['total']:
+            maximum = summary[0]['total']
+        else:
+            maximum = 1
+
         for value in summary:
             value['percentToMax'] = value['total'] * 100.0 / maximum
 
