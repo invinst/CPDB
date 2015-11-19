@@ -41,7 +41,7 @@ urlpatterns = [
     url(r'^', include('dashboard.urls')),
     url(r'^/session/(?P<hash_id>[\w-]+)/$', ensure_csrf_cookie(AllegationListView.as_view()), name='homepage-share'),
     url(r'^/session/(?P<hash_id>[\w-]+)/(?P<slugified_url>[\w-]+)$', ensure_csrf_cookie(AllegationListView.as_view()), name='homepage-share-with-title'),
-    url(r'^(findings|story|method|data|officer/\w+-\w+/\d+)?$', ensure_csrf_cookie(AllegationListView.as_view()), name='homepage'),
+    url(r'^(findings|story|method|data|officer/[^/]+/\d+)?$', ensure_csrf_cookie(AllegationListView.as_view()), name='homepage'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DJANGO_ENV == 'test':

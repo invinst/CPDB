@@ -41,6 +41,10 @@ var AppStore = _.assign(Base(_state), {
 
   isFindingPage: function () {
     return _state.page == 'findings';
+  },
+
+  isDataToolPage: function () {
+    return _state.page == 'data';
   }
 
 });

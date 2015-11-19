@@ -54,30 +54,6 @@ var MapStore = assign({}, EventEmitter.prototype, {
     return _polygons;
   },
 
-  update: function (query) {
-    var queryString = query || FilterStore.getQueryString(['areas__id']);
-    this.changeQuery(queryString);
-  },
-
-  changeQuery: function (queryString) {
-    if (queryString == _queryString) {
-      return;
-    }
-    _queryString = queryString;
-    if (_ajax_req) {
-      _ajax_req.abort();
-    }
-
-    this.emitBeforeChangeMarker();
-
-    _ajax_req = $.getJSON("/api/allegations/cluster/?" + queryString, function (data) {
-      _markers = data;
-      if (AppStore.isDataToolInit()) {
-        MapStore.emitChangeMarker();
-      }
-    });
-  },
-
   removeChangeMarkerListener: function(callback) {
     this.removeListener(CHANGE_MARKER_EVENT, callback);
   },
@@ -106,6 +82,14 @@ var MapStore = assign({}, EventEmitter.prototype, {
 
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
+    case AppConstants.MAP_CHANGE_MARKERS:
+      _markers = action.markers;
+      if (AppStore.isDataToolInit()) {
+        MapStore.emitBeforeChangeMarker();
+        MapStore.emitChangeMarker();
+      }
+      break;
+
     default:
       break;
   }
