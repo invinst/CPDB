@@ -25,6 +25,7 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
   componentDidMount: function () {
     AppStore.addChangeListener(this._onChange);
     SessionAPI.getSessionInfo('');
+    $(window).on('scroll', this.scrollToggleShow);
   },
 
   componentWillMount: function () {
@@ -38,6 +39,88 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
       'landing-page': tab != 'data',
       'active': tab == this.state.page
     });
+  },
+
+  componentDidUpdate: function () {
+    this.attachScroll();
+  },
+
+  navigate: function (e) {
+    NavActions.goToPage($(e.target).data('target'));
+    return false;
+  },
+
+  scrollToggleShow: function () {
+    var $welcome = $('.welcome');
+    var $landingNav = $('.landing-nav');
+    var $main = $('.main');
+    var $cpdpLogo = $('.cpdp-logo');
+    var $iiLogo = $('.page-logo');
+
+    var scrollTop = $(window).scrollTop();
+    var cond = scrollTop >= $welcome.height();
+    $landingNav.toggleClass('fixed-nav', cond);
+    $landingNav.toggleClass('border-top', scrollTop != 0);
+    $main.toggleClass('margin-top-90', cond);
+    var opacity = scrollTop / $welcome.height()
+    $cpdpLogo.css('opacity', opacity);
+    $iiLogo.css('opacity', 1 - opacity);
+    this.syncNavState();
+  },
+
+  syncNavState: function () {
+    var navBarHeight = 90;
+    var navItems = $('.landing-nav .sub-nav a');
+    var currentPos = $(window).scrollTop() + navBarHeight;
+
+    for(var index = 0; index < navItems.length; index++) {
+      var item = $(navItems[index]);
+      var $control = $(item.data('target'));
+      if (currentPos >= $control.offset().top) {
+        navItems.removeClass('active');
+        item.addClass('active');
+        break;
+      }
+    }
+  },
+
+  scrollTop: function (callback, elapseTime) {
+    var $body = $('body');
+
+    $body.animate({
+      scrollTop: 0
+    }, elapseTime, callback);
+  },
+
+  getScrollTime: function () {
+    var $body = $('body');
+
+    return Math.min(500, $body.scrollTop());
+  },
+
+  onScrollTop: function () {
+    $(window).on('scroll', this.scrollToggleShow);
+  },
+
+  onScrollTopFindPage: function () {
+    var $landingPageContainer = $("#landing-page");
+
+    $landingPageContainer.removeClass('scroll-to-top');
+    this.scrollToggleShow();
+    this.onScrollTop();
+  },
+
+  attachScroll: function () {
+    var $landingPageContainer = $("#landing-page");
+
+    $(window).off('scroll', this.scrollToggleShow);
+
+    if (AppStore.isFindingPage()) {
+      this.scrollTop(this.onScrollTopFindPage, this.getScrollTime());
+    } else {
+      $landingPageContainer.addClass('scroll-to-top');
+      this.scrollTop(this.onScrollTop, 1000);
+    }
   },
 
   render: function() {
@@ -54,7 +137,7 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
             <div className="page-banner">
               <p>Until recently, records of police misconduct in Chicago have been kept secret.</p>
               <p>In 2014, the court decision <i>Kalven v. Chicago</i> opened those files to the public.</p>
-              <p><a href="/#!/data-tools">Explore the data.</a></p>
+              <p><Link data-target="data" to="/data" onClick={this.navigate}>Explore the data.</Link></p>
             </div>
           </div>
           <Nav />
@@ -65,7 +148,7 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
               <div className="row section map-section">
                 <div className="container">
                   <div className="col-sm-6 static-map">
-                    <a href="/#!/data-tools"><div className="map-image" /></a>
+                    <Link data-target="data" to="data" onClick={this.navigate}><div className="map-image" /></Link>
                   </div>
                   <div className="col-sm-6 map-explain">
                     <p>
@@ -130,12 +213,12 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
               <div className="row section font-size-19">
                 <div className="container">
                   <div className="col-sm-6">
-                    <a className="pointer tab-navigate" tab-navigate="story"><img src="/static/allegation/img/story-ad.png" alt /></a>
-                    <a className="tab-navigate btn full-width" tab-navigate="story">Stories</a>
+                    <Link data-target="story" className="pointer tab-navigate" to="story" onClick={this.navigate}><img src="/static/allegation/img/story-ad.png" alt /></Link>
+                    <Link data-target="story" className="tab-navigate btn full-width" to="story" onClick={this.navigate}>Stories</Link>
                   </div>
                   <div className="col-sm-6">
-                    <a href="/#!/data-tools"><img src="/static/allegation/img/data-ad.png" alt /></a>
-                    <a className="btn full-width" href="/#!/data-tools">Data</a>
+                    <Link data-target="data" to="/data" onClick={this.navigate}><img src="/static/allegation/img/data-ad.png" alt /></Link>
+                    <Link className="btn full-width" data-target="data" to="/data" onClick={this.navigate}>Data</Link>
                   </div>
                 </div>
               </div>
@@ -223,12 +306,12 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
               <div className="row section font-size-19">
                 <div className="container">
                   <div className="col-sm-6">
-                    <a className="pointer tab-navigate" tab-navigate="findings"><img src="/static/allegation/img/finding-ad.png" alt /></a>
-                    <a className="tab-navigate btn full-width" tab-navigate="findings">Findings</a>
+                    <Link className="pointer tab-navigate" data-target="findings" to="/findings" onClick={this.navigate}><img src="/static/allegation/img/finding-ad.png" alt /></Link>
+                    <Link className="tab-navigate btn full-width" data-target="findings" to="/findings" onClick={this.navigate}>Findings</Link>
                   </div>
                   <div className="col-sm-6">
-                    <a href="/#!/data-tools"><img src="/static/allegation/img/data-ad.png" alt /></a>
-                    <a className="btn full-width" href="/#!/data-tools">Data</a>
+                    <Link data-target="data" to="/data" onClick={this.navigate}><img src="/static/allegation/img/data-ad.png" alt /></Link>
+                    <Link className="btn full-width" data-target="data" to="/data" onClick={this.navigate}>Data</Link>
                   </div>
                 </div>
               </div>
@@ -350,11 +433,11 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
                 <div className="container">
                   <div className="col-sm-6">
                     <img src="/static/allegation/img/finding-ad.png" alt />
-                    <a className="tab-navigate btn full-width" tab-navigate="findings">Findings</a>
+                    <Link className="tab-navigate btn full-width" data-target="findings" to="/findings" onClick={this.navigate}>Findings</Link>
                   </div>
                   <div className="col-sm-6">
                     <img src="/static/allegation/img/data-ad.png" alt />
-                    <a className="btn full-width" href="/#!/data-tools">Data</a>
+                    <Link className="btn full-width" data-target="data" to="/data" onClick={this.navigate}>Data</Link>
                   </div>
                 </div>
               </div>

@@ -15,19 +15,24 @@ var SessionAPI = require('utils/SessionAPI');
 
 
 var Nav = React.createClass(_.assign(Base(AppStore), {
+  goToPage: function (page) {
+    NavActions.goToPage(page);
+  },
+
   goToDataTool: function () {
-    NavActions.goToPage('data');
+    this.goToPage('data');
   },
 
   goToStoryPage: function () {
-    NavActions.goToPage('story');
+    this.goToPage('story');
   },
 
   goToFindingPage: function () {
-    NavActions.goToPage('findings');
+    this.goToPage('findings');
   },
+
   goToMethodPage: function () {
-    NavActions.goToPage('method');
+    this.goToPage('method');
   },
 
   getNavClass: function (tab) {
@@ -42,6 +47,31 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
 
   componentDidMount: function () {
     this.moveArrow();
+    this.attachWindowScroll();
+  },
+
+  attachWindowScroll: function () {
+    var $welcome = $('.welcome');
+    var $subNav = $('.sub-nav');
+    var $body = $('body');
+    var $landingPageContainer = $("#landing-page");
+    var $landingNav = $('.landing-nav');
+    var $main = $('.main');
+    var $cpdpLogo = $('.cpdp-logo');
+    var $iiLogo = $('.page-logo');
+    var $findingBtn = $('.view-findings');
+    var $mapSection = $('.map-section');
+    var $movingArrow = $('.moving-arrow');
+    var navBarHeight = 90;
+
+
+    $(document).on('click', '.story-nav a', function() {
+      $element = $($(this).data('target'));
+      $body.animate({
+          scrollTop: $element.offset().top - navBarHeight
+      }, 1000);
+      return false;
+    });
   },
 
   moveArrow: function () {
@@ -55,6 +85,11 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
     var storyNavClass = classnames('story-nav', {
       'hidden': !AppStore.isStoryPage()
     });
+
+    var navClass = classnames('landing-nav', {
+      'fixed-nav': this.state.page != 'findings'
+    });
+
     return (
       <nav className="landing-nav">
         <div className="items clearfix">
