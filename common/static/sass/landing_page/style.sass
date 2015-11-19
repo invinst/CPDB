@@ -1,7 +1,4 @@
 #landing-page
-
-  h2.title
-    font-size: 16px
   position: absolute
   top: 343px
   transition: top 1s $cubic_bezier
@@ -12,6 +9,23 @@
   color: $text_color
   font-family: 'San Francisco Text Web'
   font-weight: $font_weight
+
+  &.scroll-to-top
+    top: 0
+    .welcome
+      height: 0
+
+    nav.landing-nav
+      .cpdp-logo
+        opacity: 1 !important
+        transition: opacity 1s $cubic_bezier
+        -webkit-transition: opacity 1s $cubic_bezier
+        -moz-transition: opacity 1s $cubic_bezier
+
+.landing-page
+
+  h2.title
+    font-size: 16px
 
   a
     color: $dark_blue
@@ -309,17 +323,6 @@
         margin-top: 19px
         padding: 10px 25px
 
-  &.scroll-to-top
-    top: 0
-    .welcome
-      height: 0
-
-    nav.landing-nav
-      .cpdp-logo
-        opacity: 1 !important
-        transition: opacity 1s $cubic_bezier
-        -webkit-transition: opacity 1s $cubic_bezier
-        -moz-transition: opacity 1s $cubic_bezier
 
 @media screen and (min-width: 1200px)
   #landing-page

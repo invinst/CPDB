@@ -35,6 +35,7 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
 
   getPanelClass: function (tab) {
     return classnames('tab-pane', {
+      'landing-page': tab != 'data',
       'active': tab == this.state.page
     });
   },
@@ -46,16 +47,18 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
 
     return (
       <div id="landing-page" className={landingClassName}>
-        <div className="welcome">
-          <div className="page-logo">
+        <div className="landing-page">
+          <div className="welcome">
+            <div className="page-logo">
+            </div>
+            <div className="page-banner">
+              <p>Until recently, records of police misconduct in Chicago have been kept secret.</p>
+              <p>In 2014, the court decision <i>Kalven v. Chicago</i> opened those files to the public.</p>
+              <p><a href="/#!/data-tools">Explore the data.</a></p>
+            </div>
           </div>
-          <div className="page-banner">
-            <p>Until recently, records of police misconduct in Chicago have been kept secret.</p>
-            <p>In 2014, the court decision <i>Kalven v. Chicago</i> opened those files to the public.</p>
-            <p><a href="/#!/data-tools">Explore the data.</a></p>
-          </div>
+          <Nav />
         </div>
-        <Nav />
         <div className="main">
           <div className="tab-content">
             <div role="tabpanel" className={this.getPanelClass('findings')} id="findings">
@@ -361,7 +364,9 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
             </div>
           </div>
         </div>
-        <LandingFooter />
+        <div className="landing-page">
+          <LandingFooter />
+        </div>
         <div className="modal fade" id="disclaimer" tabIndex={-1} role="dialog" aria-labelledby="disclaimer" style={{width: 600, margin: '0 auto'}}>
           <div className="modal-dialog" role="document">
             <div className="modal-content">
