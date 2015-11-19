@@ -1,11 +1,13 @@
 from django.core.urlresolvers import reverse
 
 from allegation.factories import AllegationFactory
+from common.models import Allegation
 from common.tests.core import SimpleTestCase
 
 
 class AllegationRequestViewTestCase(SimpleTestCase):
     def setUp(self):
+        Allegation.objects.all().delete()
         self.no_request_allegation = AllegationFactory(number_of_request=0)
         self.one_request_allegation = AllegationFactory(number_of_request=1)
 
