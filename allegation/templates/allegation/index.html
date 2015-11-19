@@ -8,14 +8,7 @@
     <meta http-equiv="cache-control" content="public" />
     <meta name="robots" content="follow, all" />
     <meta name="language" content="{{ LANGUAGE_CODE }}" />
-    <meta name="description"
-          content="{% block meta-description %}CPDB{% endblock %}" />
-      <link rel="prefetch" href="{% url "allegation:allegation-race-gender-api" %}?"/>
-      <link rel="prefetch" href="{% url "allegation:allegation-api-sunburst" %}?"/>
-      <link rel="prefetch" href="{% url "allegation:allegation-api-officers" %}?"/>
-      <link rel="prefetch" href="{% url "allegation:allegation-api-clusters" %}?"/>
-      <link rel="prefetch" href="{% url "allegation:allegation-race-gender-api" %}?"/>
-      <link rel="prefetch" href="{% url "allegation:allegation-api-summary" %}?"/>
+    <meta name="description" content="{% block meta-description %}CPDB{% endblock %}" />
     <meta name="keywords" content="{% block meta-keywords %}{% endblock %}" />
     <title>{{""|default_site_title}}</title>
     {% endblock %}

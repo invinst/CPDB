@@ -37,9 +37,6 @@ var Tabs = React.createClass({
       $(this.getDOMNode()).parent().find(".embed-code input").val(this.getEmbedCode());
     }
 
-    var target = $(e.target).data('target');
-    $(".tab-pane").removeClass('active');
-    $(target).addClass('active');
     TabActions.setActiveTab(tab);
   },
 
@@ -98,6 +95,10 @@ var Tabs = React.createClass({
     this.embedding = false;
   },
 
+  isActive: function (target) {
+    return this.state['active_tab'] == target || (!this.state['active_tab'] && target == 'outcomes');
+  },
+
   renderNavTab: function (label) {
     var target = slugify(label.toLowerCase().replace('&', ''));
     var data_target = '#' + target;
@@ -108,13 +109,13 @@ var Tabs = React.createClass({
     }
 
     var tabClass = classnames({
-      'active': this.state['active_tab'] == target
+      'active': this.isActive(target)
     });
 
     return (
       <li role="presentation" className={tabClass}>
-          <a  href="javascript:void(0)" aria-controls='profile' aria-control={target} role='tab' data-target={data_target}
-            className='pointer' data-toggle='tab' onClick={this.activeTab.bind(this, AppConstants.TABS[tab], target)}>
+          <a  href={data_target} aria-controls='profile' aria-control={target} role='tab' className='pointer' data-toggle='tab'
+          onClick={this.activeTab.bind(this, AppConstants.TABS[tab], target)}>
             {label}
           </a>
         </li>
@@ -127,7 +128,7 @@ var Tabs = React.createClass({
     }
 
     var tabClass = classnames('tab-pane', {
-      'active': this.state['active_tab'] == id || !this.state['active_tab']
+      'active': this.isActive(id)
     });
 
     return (

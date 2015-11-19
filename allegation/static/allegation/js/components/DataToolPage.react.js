@@ -22,7 +22,6 @@ var Search = require('components/Shared/Search.react');
 var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
   componentDidMount: function () {
     var session = this.props.session || '';
-    SessionAPI.getSessionInfo(session);
 
     $('.smooth-scroll').click(function() {
       var target = $(this).data('target');
@@ -94,8 +93,7 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
 
   render: function () {
     return (
-      <div>
-        <Nav />
+      <div id="data-tool">
         <div className='container-fluid'>
             <div className="row" id='filter-row'>
                <div className="col-md-10">

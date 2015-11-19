@@ -2,12 +2,14 @@ var _ = require('lodash');
 var React = require('react');
 require('mapbox.js');
 require('leaflet.heat');
+
 var MapStore = require("stores/MapStore");
 var FilterStore = require('stores/FilterStore');
 var FilterActions = require("actions/FilterActions");
 var FilterTagsActions = require("actions/FilterTagsActions");
 var AppConstants = require('constants/AppConstants');
 var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
+var AppStore = require('stores/AppStore');
 
 L.mapbox.accessToken = AppConstants.MAP_TOKEN;
 
@@ -92,11 +94,16 @@ var Map = React.createClass({
   },
   // end embedding
 
-  componentDidMount: function () {
-    var self = this;
+  onDataToolInit: function () {
     this.create();
     this.createAreas();
+    this.changeMarker();
+  },
 
+  componentDidMount: function () {
+    var self = this;
+
+    AppStore.addDataToolInitListener(self.onDataToolInit);
     MapStore.addChangeMarkerListener(self.changeMarker);
     MapStore.addBeforeChangeMarkerListener(self.beforeChangeMarker);
 
@@ -117,6 +124,10 @@ var Map = React.createClass({
   },
 
   componentWillUnmount: function() {
+    AppStore.removeDataToolInitListener(self.onDataToolInit);
+    MapStore.removeChangeMarkerListener(self.changeMarker);
+    MapStore.removeBeforeChangeMarkerListener(self.beforeChangeMarker);
+
     _map.remove();
     _baseLayers = {};
     this.first_layer_added = false;

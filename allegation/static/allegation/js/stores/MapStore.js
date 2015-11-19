@@ -14,6 +14,7 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var AppConstants = require('../constants/AppConstants');
 var FilterStore = require('./FilterStore');
+var AppStore = require('stores/AppStore');
 var FilterActions = require('../actions/FilterActions');
 var assign = require('object-assign');
 
@@ -59,7 +60,6 @@ var MapStore = assign({}, EventEmitter.prototype, {
   },
 
   changeQuery: function (queryString) {
-    var store = this;
     if (queryString == _queryString) {
       return;
     }
@@ -72,8 +72,14 @@ var MapStore = assign({}, EventEmitter.prototype, {
 
     _ajax_req = $.getJSON("/api/allegations/cluster/?" + queryString, function (data) {
       _markers = data;
-      store.emitChangeMarker();
+      if (AppStore.isDataToolInit()) {
+        MapStore.emitChangeMarker();
+      }
     });
+  },
+
+  removeChangeMarkerListener: function(callback) {
+    this.removeListener(CHANGE_MARKER_EVENT, callback);
   },
 
   addChangeMarkerListener: function (callback) {
@@ -84,6 +90,10 @@ var MapStore = assign({}, EventEmitter.prototype, {
     this.emit(CHANGE_MARKER_EVENT);
   },
 
+  removeBeforeChangeMarkerListener: function(callback) {
+    this.removeListener(BEFORE_CHANGE_MARKER_EVENT, callback);
+  },
+
   addBeforeChangeMarkerListener: function (callback) {
     this.on(BEFORE_CHANGE_MARKER_EVENT, callback);
   },
@@ -92,5 +102,14 @@ var MapStore = assign({}, EventEmitter.prototype, {
     this.emit(BEFORE_CHANGE_MARKER_EVENT);
   }
 });
+
+
+AppDispatcher.register(function (action) {
+  switch (action.actionType) {
+    default:
+      break;
+  }
+});
+
 
 module.exports = MapStore;

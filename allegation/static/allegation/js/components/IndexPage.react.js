@@ -1,47 +1,49 @@
 var _ = require('lodash');
 var navigate = require('react-mini-router').navigate;
 var React = require('react');
-
-var AppConstants = require('constants/AppConstants');
-var Base = require('components/Base.react');
-var SessionStore = require('stores/SessionStore');
-var Disclaimer = require('components/DataToolPage/Disclaimer.react');
-var DisclaimerActions = require('actions/DisclaimerActions');
 var ReactRouter = require('react-router');
 var History = require('history');
+var classnames = require('classnames');
 
 var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
 var Link = ReactRouter.Link;
 
-var IndexPage = React.createClass(_.assign(Base(SessionStore), {
+var AppConstants = require('constants/AppConstants');
+var Base = require('components/Base.react');
+var AppStore = require('stores/AppStore');
+var Disclaimer = require('components/DataToolPage/Disclaimer.react');
+var DataToolPage = require('components/DataToolPage.react');
+var DisclaimerActions = require('actions/DisclaimerActions');
+var Nav = require('components/Shared/Nav2.react')
+var LandingFooter = require('components/Shared/LandingFooter.react');
+var SessionAPI = require('utils/SessionAPI');
+var NavActions = require('actions/NavActions');
 
 
-  renderNavigation: function () {
-    return (
-      <nav className="landing-nav">
-        <div className="items clearfix">
-          <img className="pull-left cpdp-logo" src="/static/img/cpdp-logo.svg" />
-          <ul className="pull-right" role="tablist">
-            <span className="moving-arrow" />
-            <li><a href="/#!/data-tools">Data</a></li>
-            <li><a href="#methodology-page" aria-controls="methodology-page" role="tab" data-toggle="tab">Methods</a></li>
-            <li><a href="#story-page" aria-controls="story-page" role="tab" data-toggle="tab">Stories</a></li>
-            <li className="active"><a href="#find-page" aria-controls="find-page" role="tab" data-toggle="tab">Findings</a></li>
-          </ul>
-        </div>
-        <div className="sub-nav hidden">
-        </div>
-      </nav>
-    )
+var IndexPage = React.createClass(_.assign(Base(AppStore), {
+  componentDidMount: function () {
+    AppStore.addChangeListener(this._onChange);
+    SessionAPI.getSessionInfo('');
+  },
+
+  componentWillMount: function () {
+    AppStore.updatePage(this.props.location.pathname);
+  },
+
+  getPanelClass: function (tab) {
+    return classnames('tab-pane', {
+      'active': tab == this.state.page
+    });
   },
 
   render: function() {
-    var updateUrl = '//invisibleinstitute.us1.list-manage.com/subscribe/post?u=5c80c1740c24b198f0f284cd3&id=8dfb7bdd4b';
-    var subscribeUrl = '//invisibleinstitute.us1.list-manage.com/subscribe/post?u=5c80c1740c24b198f0f284cd3&id=dee1a647b0';
+    var landingClassName = classnames({
+      'scroll-to-top': !AppStore.isFindingPage()
+    });
 
     return (
-      <div id="landing-page">
+      <div id="landing-page" className={landingClassName}>
         <div className="welcome">
           <div className="page-logo">
           </div>
@@ -51,10 +53,10 @@ var IndexPage = React.createClass(_.assign(Base(SessionStore), {
             <p><a href="/#!/data-tools">Explore the data.</a></p>
           </div>
         </div>
-        { this.renderNavigation() }
+        <Nav />
         <div className="main">
           <div className="tab-content">
-            <div role="tabpanel" className="tab-pane active" id="find-page">
+            <div role="tabpanel" className={this.getPanelClass('findings')} id="findings">
               <div className="row section map-section">
                 <div className="container">
                   <div className="col-sm-6 static-map">
@@ -123,8 +125,8 @@ var IndexPage = React.createClass(_.assign(Base(SessionStore), {
               <div className="row section font-size-19">
                 <div className="container">
                   <div className="col-sm-6">
-                    <a className="pointer tab-navigate" tab-navigate="story-page"><img src="/static/allegation/img/story-ad.png" alt /></a>
-                    <a className="tab-navigate btn full-width" tab-navigate="story-page">Stories</a>
+                    <a className="pointer tab-navigate" tab-navigate="story"><img src="/static/allegation/img/story-ad.png" alt /></a>
+                    <a className="tab-navigate btn full-width" tab-navigate="story">Stories</a>
                   </div>
                   <div className="col-sm-6">
                     <a href="/#!/data-tools"><img src="/static/allegation/img/data-ad.png" alt /></a>
@@ -133,12 +135,7 @@ var IndexPage = React.createClass(_.assign(Base(SessionStore), {
                 </div>
               </div>
             </div>
-            <div role="tabpanel" className="tab-pane" id="story-page">
-              <nav className="story-nav">
-                <a href="#" className="pull-right" data-target="#next-steps">Next Steps</a>
-                <a href="#" className="pull-right" data-target="#invisible-institute">The Invisible Institute</a>
-                <a href="#" className="pull-right active" data-target="#stateway">Stateway Gardens Litigation</a>
-              </nav>
+            <div role="tabpanel" className={this.getPanelClass('story')} id="story">
               <div className="row section single-img" id="stateway">
                 <div className="container">
                   <div className="col-sm-12">
@@ -221,8 +218,8 @@ var IndexPage = React.createClass(_.assign(Base(SessionStore), {
               <div className="row section font-size-19">
                 <div className="container">
                   <div className="col-sm-6">
-                    <a className="pointer tab-navigate" tab-navigate="find-page"><img src="/static/allegation/img/finding-ad.png" alt /></a>
-                    <a className="tab-navigate btn full-width" tab-navigate="find-page">Findings</a>
+                    <a className="pointer tab-navigate" tab-navigate="findings"><img src="/static/allegation/img/finding-ad.png" alt /></a>
+                    <a className="tab-navigate btn full-width" tab-navigate="findings">Findings</a>
                   </div>
                   <div className="col-sm-6">
                     <a href="/#!/data-tools"><img src="/static/allegation/img/data-ad.png" alt /></a>
@@ -231,7 +228,7 @@ var IndexPage = React.createClass(_.assign(Base(SessionStore), {
                 </div>
               </div>
             </div>
-            <div role="tabpanel" className="tab-pane" id="methodology-page">
+            <div role="tabpanel" className={this.getPanelClass('method')} id="method">
               <div className="row section">
                 <div className="container">
                   <div className="col-sm-12">
@@ -348,7 +345,7 @@ var IndexPage = React.createClass(_.assign(Base(SessionStore), {
                 <div className="container">
                   <div className="col-sm-6">
                     <img src="/static/allegation/img/finding-ad.png" alt />
-                    <a className="tab-navigate btn full-width" tab-navigate="find-page">Findings</a>
+                    <a className="tab-navigate btn full-width" tab-navigate="findings">Findings</a>
                   </div>
                   <div className="col-sm-6">
                     <img src="/static/allegation/img/data-ad.png" alt />
@@ -357,62 +354,12 @@ var IndexPage = React.createClass(_.assign(Base(SessionStore), {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div className="footer">
-          <div className="container">
-            <div className="col-sm-4">
-              <a className="btn" href="/static/img/complaint_process.png" target="_blank">Complaints Process</a>
-              <a className="btn" href="http://cpdb.datamade.us/glossary.html" target="_blank">Glossary of Terms</a>
-              <a href="#disclaimer" className="btn" data-toggle="modal" data-target="#disclaimer">Legal Disclaimer</a><br />
-            </div>
-            <div className="col-sm-4">
-              <h4>
-                Get updates
-              </h4>
-              <p>
-              </p><form action={updateUrl} method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" className="validate" target="_blank" noValidate>
-                <div id="mc_embed_signup_scroll">
-                  <div className="mc-field-group">
-                    <input type="email" placeholder="Email Address" name="EMAIL" className="required email" id="mce-EMAIL" />
-                  </div>
-                  <div id="mce-responses" className="clear">
-                    <div className="response" id="mce-error-response" style={{display: 'none'}} />
-                    <div className="response" id="mce-success-response" style={{display: 'none'}} />
-                  </div>    {/* real people should not fill this in and expect good things - do not remove this or risk form bot signups*/}
-                  <div style={{position: 'absolute', left: '-5000px'}}><input type="text" name="b_5c80c1740c24b198f0f284cd3_8dfb7bdd4b" tabIndex={-1} /></div>
-                  <div className="clear"><input type="submit" defaultValue="Sign up" name="subscribe" id="mc-embedded-subscribe" className="btn" /></div>
-                </div>
-              </form>
-              <p />
-            </div>
-            <div className="col-sm-4">
-              <h4>
-                Work the data
-              </h4>
-              <p>
-                Are you a researcher, journalist, data professional or community member interested in analyzing the data? Sign up with your name and email address to request access to the full dataset within the Citizens Police Data Project.
-                {/* Begin MailChimp Download Data Form */}
-              </p><form action={subscribeUrl} method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" className="validate" target="_blank" noValidate>
-                <div id="mc_embed_signup_scroll">
-                  <div className="mc-field-group">
-                    <input placeholder="Full Name" type="text" name="FNAME" className id="mce-FNAME" />
-                  </div>
-                  <div className="mc-field-group">
-                    <input placeholder="Email Address" type="email" name="EMAIL" className="required email" id="mce-EMAIL" />
-                  </div>
-                  <div id="mce-responses" className="clear">
-                    <div className="response" id="mce-error-response" style={{display: 'none'}} />
-                    <div className="response" id="mce-success-response" style={{display: 'none'}} />
-                  </div>    {/* real people should not fill this in and expect good things - do not remove this or risk form bot signups*/}
-                  <div style={{position: 'absolute', left: '-5000px'}}><input type="text" name="b_5c80c1740c24b198f0f284cd3_dee1a647b0" tabIndex={-1} /></div>
-                  <div className="clear"><input type="submit" defaultValue="Collaborate" name="subscribe" id="mc-embedded-subscribe" className="btn" /></div>
-                </div>
-              </form>
-              <p />
+            <div role="tabpanel" className={this.getPanelClass('data')} id="data">
+              <DataToolPage />
             </div>
           </div>
         </div>
+        <LandingFooter />
         <div className="modal fade" id="disclaimer" tabIndex={-1} role="dialog" aria-labelledby="disclaimer" style={{width: 600, margin: '0 auto'}}>
           <div className="modal-dialog" role="document">
             <div className="modal-content">

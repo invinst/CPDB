@@ -1,7 +1,8 @@
 (function(){
   var $welcome = $('.welcome');
   var $subNav = $('.sub-nav');
-  var $body = $('#landing-page');
+  var $body = $('body');
+  var $landingPageContainer = $("#landing-page");
   var $landingNav = $('.landing-nav');
   var $main = $('.main');
   var $cpdpLogo = $('.cpdp-logo');
@@ -32,7 +33,6 @@
     $landingNav.toggleClass('fixed-nav', cond);
     $landingNav.toggleClass('border-top', scrollTop != 0);
     $main.toggleClass('margin-top-90', cond);
-    $subNav.toggleClass('hidden', !cond);
     var opacity = scrollTop / $welcome.height()
     $cpdpLogo.css('opacity', opacity);
     $iiLogo.css('opacity', 1 - opacity);
@@ -50,7 +50,7 @@
   }
 
   function onScrollTopFindPage() {
-    $body.removeClass('scroll-to-top');
+    $landingPageContainer.removeClass('scroll-to-top');
     toggleShow();
     onScrollTop();
   }
@@ -69,24 +69,14 @@
     return false;
   });
 
-  $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+  $('.landing-nav a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
     $target = $(e.target);
     var currentPage = $target.attr('href');
     $(window).off('scroll');
-    $movingArrow.animate({
-      left: $target.offset().left + $target.width() / 2 - 10
-    }, 500);
-
-    if (currentPage == '#story-page') {
-      $subNav.html($('.story-nav').clone());
-    } else {
-      $subNav.html('');
-    }
-
-    if (currentPage == '#find-page') {
+    if (currentPage == '#findings') {
       scrollTop(onScrollTopFindPage, getScrollTime());
     } else {
-      $body.addClass('scroll-to-top');
+      $landingPageContainer.addClass('scroll-to-top');
       scrollTop(onScrollTop, 1000);
     }
   });

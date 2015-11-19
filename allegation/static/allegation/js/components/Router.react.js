@@ -21,7 +21,13 @@ var RootRouter = React.createClass({
       <Router history={history}>
         <Route path="/" component={IndexPage}>
         </Route>
-        <Route path="/data-tools" component={DataToolPage}>
+        <Route path="/findings" component={IndexPage}>
+        </Route>
+        <Route path="/method" component={IndexPage}>
+        </Route>
+        <Route path="/story" component={IndexPage}>
+        </Route>
+        <Route path="/data" component={IndexPage}>
         </Route>
       </Router>
     );
