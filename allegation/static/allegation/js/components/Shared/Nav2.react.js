@@ -17,9 +17,6 @@ var SessionAPI = require('utils/SessionAPI');
 var Nav = React.createClass(_.assign(Base(AppStore), {
   goToDataTool: function () {
     NavActions.goToPage('data');
-    setTimeout(function () {  // wait for scroll animation done
-      NavActions.initDataTool();
-    }, 1200);
   },
 
   goToStoryPage: function () {

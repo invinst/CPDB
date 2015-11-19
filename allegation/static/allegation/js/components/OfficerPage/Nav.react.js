@@ -11,20 +11,12 @@ var SiteTitle = require('components/Shared/SiteTitle.react');
 var Nav = React.createClass({
   render: function() {
     return (
-      <div className="navbar navbar-default">
-        <div className="container-fluid">
-          <div className="row">
-            <div className='col-xs-11 col-sm-7'>
-              <div className="navbar-header">
-                <Logo />
-              </div>
-              <div className="navbar-collapse" id="navbar-main">
-                <Back />
-              </div>
-            </div>
-          </div>
+      <nav className="landing-nav">
+        <div className="items clearfix">
+          <img className="pull-left cpdp-logo" src="/static/img/cpdp-logo.svg" />
+          <Back />
         </div>
-      </div>
+      </nav>
     )
   }
 });

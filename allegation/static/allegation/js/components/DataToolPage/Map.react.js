@@ -103,9 +103,9 @@ var Map = React.createClass({
   componentDidMount: function () {
     var self = this;
 
-    AppStore.addDataToolInitListener(self.onDataToolInit);
-    MapStore.addChangeMarkerListener(self.changeMarker);
-    MapStore.addBeforeChangeMarkerListener(self.beforeChangeMarker);
+    AppStore.addDataToolInitListener(this.onDataToolInit);
+    MapStore.addChangeMarkerListener(this.changeMarker);
+    MapStore.addBeforeChangeMarkerListener(this.beforeChangeMarker);
 
     FilterStore.addChangeListener(this._onChange);
 
@@ -124,9 +124,9 @@ var Map = React.createClass({
   },
 
   componentWillUnmount: function() {
-    AppStore.removeDataToolInitListener(self.onDataToolInit);
-    MapStore.removeChangeMarkerListener(self.changeMarker);
-    MapStore.removeBeforeChangeMarkerListener(self.beforeChangeMarker);
+    AppStore.removeDataToolInitListener(this.onDataToolInit);
+    MapStore.removeChangeMarkerListener(this.changeMarker);
+    MapStore.removeBeforeChangeMarkerListener(this.beforeChangeMarker);
 
     _map.remove();
     _baseLayers = {};

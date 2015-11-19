@@ -9,6 +9,7 @@ var IndexRoute = ReactRouter.IndexRoute;
 
 var IndexPage = require('components/IndexPage.react');
 var DataToolPage = require('components/DataToolPage.react');
+var OfficerPage = require('components/OfficerPage.react');
 
 
 var RootRouter = React.createClass({
@@ -28,6 +29,8 @@ var RootRouter = React.createClass({
         <Route path="/story" component={IndexPage}>
         </Route>
         <Route path="/data" component={IndexPage}>
+        </Route>
+        <Route path="/officer/:slug/:id" component={OfficerPage}>
         </Route>
       </Router>
     );

@@ -28,7 +28,9 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
   },
 
   componentWillMount: function () {
-    AppStore.updatePage(this.props.location.pathname);
+    if (this.props.location.pathname != '/') {
+      NavActions.goToPage(this.props.location.pathname);
+    }
   },
 
   getPanelClass: function (tab) {

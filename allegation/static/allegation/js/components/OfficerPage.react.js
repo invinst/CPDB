@@ -33,7 +33,7 @@ var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
   },
 
   componentDidMount: function() {
-    var officerId = this.props.officerId || '';
+    var officerId = this.props.params.id || '';
     OfficerPageServerActions.getOfficerData(officerId);
     OfficerPageStore.addChangeListener(this._onChange);
     StoryListAPI.get(officerId);
@@ -41,7 +41,7 @@ var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
 
   componentWillReceiveProps: function(nextProps) {
     // OfficerPage is not rendered again if we change from OfficerPage to other OfficerPage
-    var officerId = nextProps.officerId || '';
+    var officerId = nextProps.params.id || '';
     OfficerPageServerActions.getOfficerData(officerId);
     StoryListAPI.get(officerId);
   },

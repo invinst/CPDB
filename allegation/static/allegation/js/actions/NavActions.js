@@ -25,6 +25,14 @@ var NavActions = {
       actionType: AppConstants.NAV_GO_TO_PAGE,
       page: page
     });
+
+    if (page == 'data') {
+      setTimeout(function () {  // wait scroll animation done
+        AppDispatcher.dispatch({
+          actionType: AppConstants.INIT_DATA_TOOL
+        });
+      }, 1200);
+    }
   }
 };
 
