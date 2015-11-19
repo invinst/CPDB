@@ -16,12 +16,16 @@ class DocumentRequestTestCase(BaseLiveTestCase):
     def go_to_documents(self):
         self.element_by_tagname_and_text('span', 'Investigation Documents').click()
 
+    def tab(self, text):
+        selector = '.tab-{tabname}'.format(tabname=text.lower())
+        return self.find(selector)
+
     def go_to_tab(self, text):
-        self.element_by_tagname_and_text('li', text).click()
+        self.tab(text).click()
         self.until_ajax_complete()
 
     def tab_should_active(self, text):
-        self.element_by_tagname_and_text('li', text).has_class('active').should.be.true
+        self.tab(text).has_class('active').should.be.true
 
     def test_see_document_request_tab(self):
         self.should_see_text('Investigation Documents')
@@ -36,7 +40,7 @@ class DocumentRequestTestCase(BaseLiveTestCase):
         self.tab_should_active("All")
 
         for tab in tabs:
-            self.element_by_tagname_and_text('li', tab).click()
+            self.go_to_tab(tab)
             self.tab_should_active(tab)
 
     def test_filter_pending_documents(self):
