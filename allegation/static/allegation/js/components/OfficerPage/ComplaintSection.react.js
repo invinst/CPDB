@@ -2,7 +2,7 @@ var React = require('react');
 
 var ComplaintSectionStore = require('stores/OfficerPage/ComplaintSectionStore');
 var ComplaintListAPI = require('utils/ComplaintListAPI');
-var ComplaintList = require('components/DataToolPage/ComplaintList.react');
+var ComplaintList = require('components/OfficerPage/ComplaintList.react');
 var Counter = require("components/DataToolPage/Counter.react");
 var OutcomeFilter = require('components/DataToolPage/ComplaintList/OutcomeFilter.react');
 var RequestModal = require('components/DataToolPage/Complaint/RequestModal.react');
