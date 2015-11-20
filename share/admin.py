@@ -61,6 +61,14 @@ class ShareSessionAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         return Session.objects.all()
 
+    def get_search_results(self, request, queryset, search_term):
+        queryset, use_distinct = super(ShareSessionAdmin, self).get_search_results(request, queryset, search_term)
+        id = Session.id_from_hash(search_term)
+        if id:
+            queryset = Session.objects.filter(id=id[0])
+
+        return queryset, use_distinct
+
     shared_from.allow_tags = True
     shared_to.allow_tags = True
 
