@@ -108,6 +108,11 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     def visit(self, page):
         self.browser.get('%s%s' % (self.live_server_url, page))
 
+    def visit_home(self):
+        self.visit('/')
+        self.until(lambda: self.link("Outcomes"))
+        self.until_ajax_complete()
+
     def should_see_text(self, text):
         if not isinstance(text, str):
             text = str(text)
@@ -243,6 +248,7 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
 
     def until_ajax_complete(self):
         self.until(self.ajax_complete)
+
 
 @skipUnless(IS_MOBILE, "Skip in desktop mode")
 class BaseMobileLiveTestCase(BaseLiveTestCase):

@@ -5,7 +5,7 @@ class SiteTitleTestCase(BaseLiveTestCase):
     def test_site_title(self):
         title = 'This is title'
         slugify_url = 'this-is-title'
-        self.visit('/#!/data-tools')
+        self.visit_home()
 
         self.fill_in('.site-title-input', title)
         self.until(self.ajax_complete)

@@ -19,7 +19,7 @@ class AllegationFilterTestCase(BaseLiveTestCase):
                                   final_outcome_class='disciplined')
 
     def test_filter_by_final_finding(self):
-        self.visit('/#!/data-tools')
+        self.visit_home()
         self.browser.execute_script('jQuery("#hfc-cleanslate").hide();')
 
         # Check all
