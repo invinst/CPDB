@@ -37,7 +37,11 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
 
   componentWillMount: function () {
     this.displayTabByPath();
-    SessionAPI.getSessionInfo(this.props.params.session || '');
+    var session = this.props.params.session;
+    if (this.props.location.hash.search("data-tools")) {
+      session = this.props.location.hash.split("/")[2];
+    }
+    SessionAPI.getSessionInfo(session || '');
   },
 
   componentDidUpdate: function () {
