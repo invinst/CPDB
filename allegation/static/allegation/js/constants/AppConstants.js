@@ -24,6 +24,8 @@ module.exports = {
   SET_OFFICER_LIST_FILTER: c++,
   INIT: c++,
   SAVE_SESSION: c++,
+  SESSION_CREATED: c++,
+
   ENTER_EMBED_MODE: c++,
   LEAVE_EMBED_MODE: c++,
 

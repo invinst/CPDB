@@ -24,13 +24,38 @@ var NavActions = require('actions/NavActions');
 var IndexPage = React.createClass(_.assign(Base(AppStore), {
   componentDidMount: function () {
     AppStore.addChangeListener(this._onChange);
-    SessionAPI.getSessionInfo('');
+    AppStore.addChangePageListener(this.onChangePage);
+
     $(window).on('scroll', this.scrollToggleShow);
+    this.attachScroll();
+  },
+
+  componentWillUnmount: function () {
+    AppStore.removeChangeListener(this._onChange);
+    AppStore.removeChangePageListener(this.onChangePage);
   },
 
   componentWillMount: function () {
-    if (this.props.location.pathname != '/') {
-      NavActions.goToPage(this.props.location.pathname);
+    this.displayTabByPath();
+    SessionAPI.getSessionInfo(this.props.params.session || '');
+  },
+
+  componentDidUpdate: function () {
+    this.displayTabByPath();
+
+  },
+
+  onChangePage: function () {
+    this.attachScroll();
+  },
+
+  displayTabByPath: function () {
+    var page = this.props.location.pathname.split("/")[0];
+    if (page == '') {
+      page = 'data';
+    }
+    if (!AppStore.isPage(page)) {
+      NavActions.goToPage(page, this.params);
     }
   },
 
@@ -39,10 +64,6 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
       'landing-page': tab != 'data',
       'active': tab == this.state.page
     });
-  },
-
-  componentDidUpdate: function () {
-    this.attachScroll();
   },
 
   navigate: function (e) {
@@ -450,35 +471,7 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
         <div className="landing-page">
           <LandingFooter />
         </div>
-        <div className="modal fade" id="disclaimer" tabIndex={-1} role="dialog" aria-labelledby="disclaimer" style={{width: 600, margin: '0 auto'}}>
-          <div className="modal-dialog" role="document">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h2>Disclaimer</h2>
-              </div>
-              <div className="modal-body">
-                <p>The information contained on this website comes primarily from three datasets provided by the Chicago
-                  Police Department (CPD), spanning approximately 2002 to 2008 and 2011 to 2015. The CPD has released
-                  these lists in response to litigation and to FOIA Requests.</p>
-                <p>The City of Chicago’s release of this information was accompanied by a disclaimer that not all of the
-                  information contained in the City’s database may be completely accurate. No independent verification
-                  of the City’s records has taken place and this public database does not purport to be an accurate
-                  reflection of either the City’s internal database or of its truthfulness.</p>
-                <p>Slight changes to the spelling of officer names and to the wording of abuse categories have been made
-                  to accommodate a consistent appearance. A glossary of our understanding of common CPD terms has been
-                  provided. No other editing of the City’s original datasets has taken place.</p>
-                <p>This public database also contains other readily available data that has been linked to the City’s
-                  original datasets, including: CPD beat geographies, Chicago ward boundaries, Chicago neighborhood
-                  boundaries, et cetera.</p>
-                <p>By entering this website, you acknowledge that the Citizens’ Police Database (CPDB) is not
-                  responsible for any derivative work performed by or published by users of this public database.</p>
-              </div>
-              <div className="modal-footer" data-dismiss="modal">
-                <button className="btn btn-sm btn-view">I UNDERSTAND</button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <Disclaimer />
       </div>
     );
   }

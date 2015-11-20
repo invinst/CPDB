@@ -20,7 +20,7 @@ var NavActions = {
     });
   },
 
-  goToPage: function (page) {
+  goToPage: function (page, params) {
     AppDispatcher.dispatch({
       actionType: AppConstants.NAV_GO_TO_PAGE,
       page: page

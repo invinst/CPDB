@@ -30,6 +30,10 @@ var RootRouter = React.createClass({
         </Route>
         <Route path="/data" component={IndexPage}>
         </Route>
+        <Route path="/data/:session/" component={IndexPage}>
+        </Route>
+        <Route path="/data/:session/:title" component={IndexPage}>
+        </Route>
         <Route path="/officer/:slug/:id" component={OfficerPage}>
         </Route>
       </Router>

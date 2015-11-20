@@ -3,6 +3,7 @@ var React = require('react');
 var classnames = require('classnames');
 var ReactRouter = require('react-router');
 var History = require('history');
+var isMobile = require('ismobilejs');
 
 var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
@@ -12,6 +13,7 @@ var Base = require('components/Base.react');
 var AppStore = require('stores/AppStore');
 var NavActions = require('actions/NavActions');
 var SessionAPI = require('utils/SessionAPI');
+var SiteTitle = require('components/Shared/SiteTitle.react');
 
 
 var Nav = React.createClass(_.assign(Base(AppStore), {
@@ -43,6 +45,15 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
 
   componentDidUpdate: function () {
     this.moveArrow();
+    this.updateBrowserAddress();
+  },
+
+  updateBrowserAddress: function () {
+    setTimeout(function () {
+      if (AppStore.isDataToolPage()) {
+        history.replaceState(null, null, AppStore.getDataToolUrl());
+      }
+    }, 1);
   },
 
   componentDidMount: function () {
@@ -51,17 +62,7 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
   },
 
   attachWindowScroll: function () {
-    var $welcome = $('.welcome');
-    var $subNav = $('.sub-nav');
     var $body = $('body');
-    var $landingPageContainer = $("#landing-page");
-    var $landingNav = $('.landing-nav');
-    var $main = $('.main');
-    var $cpdpLogo = $('.cpdp-logo');
-    var $iiLogo = $('.page-logo');
-    var $findingBtn = $('.view-findings');
-    var $mapSection = $('.map-section');
-    var $movingArrow = $('.moving-arrow');
     var navBarHeight = 90;
 
 
@@ -82,6 +83,8 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
   },
 
   render: function () {
+    var mobileExpanded = isMobile.any && this.state.searchExpanded;
+
     var storyNavClass = classnames('story-nav', {
       'hidden': !AppStore.isStoryPage()
     });
@@ -90,13 +93,28 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
       'fixed-nav': this.state.page != 'findings'
     });
 
+    var navbarClass = classnames(
+      'navbar-collapse',
+      {
+        'hidden': mobileExpanded
+      }
+    );
+
+    var dataToolUrl = AppStore.getDataToolUrl();
+    var siteTitleClass = classnames('site-title pull-left', {
+      hidden: !AppStore.isDataToolPage()
+    });
+
     return (
       <nav className="landing-nav">
         <div className="items clearfix">
           <img className="pull-left cpdp-logo" src="/static/img/cpdp-logo.svg" />
+          <div className={siteTitleClass}>
+            <SiteTitle changable={true} />
+          </div>
           <ul className="pull-right" role="tablist">
             <span className="moving-arrow" />
-            <li className={this.getNavClass("data")}><Link onClick={this.goToDataTool} to="/data" aria-controls="data">Data</Link></li>
+            <li className={this.getNavClass("data")}><Link onClick={this.goToDataTool} to={dataToolUrl} aria-controls="data">Data</Link></li>
             <li className={this.getNavClass("method")}><Link onClick={this.goToMethodPage} to="/method" aria-controls="method">Methods</Link></li>
             <li className={this.getNavClass("story")}><Link onClick={this.goToStoryPage} to="/story" aria-controls="story">Stories</Link></li>
             <li className={this.getNavClass("findings")}><Link onClick={this.goToFindingPage} to="/findings" aria-controls="findings">Findings</Link></li>

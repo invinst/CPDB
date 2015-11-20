@@ -5,7 +5,6 @@ var isMobile = require('ismobilejs');
 var AppConstants = require('constants/AppConstants');
 var Base = require('components/Base.react');
 var ComplaintSection = require('components/DataToolPage/ComplaintSection.react');
-var Disclaimer = require('components/DataToolPage/Disclaimer.react');
 var EmbedBar = require('components/DataToolPage/Embed/Bar.react');
 var Footer = require('components/DataToolPage/Footer.react');
 var Filters = require('components/DataToolPage/Filters.react');
@@ -120,7 +119,6 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
             <Footer />
           </div>
         </div>
-        <Disclaimer />
         <HappyFox />
       </div>
     );

@@ -1,5 +1,5 @@
 var _ = require('lodash');
-var navigate = require('react-mini-router').navigate;
+var classnames = require('classnames');
 var React = require('react');
 
 var Base = require('components/Base.react');
@@ -60,30 +60,38 @@ var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
     var relatedOfficers = this.state.data['related_officers'];
     var hasMap = this.state.data['has_map'];
 
+    var content = '';
     if (_.isEmpty(officer)) {
-      return <i clasName="fa fa-spin fa-spinner" />;
-    }
-    return (
-      <div>
-        <Nav />
-        <div id='officer-profile'>
-          <div className="map-row">
-            <div className="container">
-              <OfficerDetail officer={officer} hasMap={hasMap} />
+      content = (<i clasName='fa fa-spin fa-spinner' />);
+    } else {
+      content = (
+        <div>
+          <Nav />
+          <div id='officer-profile'>
+            <div className="map-row">
+              <div className="container">
+                <OfficerDetail officer={officer} hasMap={hasMap} />
+              </div>
             </div>
-          </div>
-          <div className="container">
-            <RelatedOfficers relatedOfficers={relatedOfficers} />
-            <StoryList officer={officer} />
-            <ComplaintSection officer={officer}/>
-          </div>
+            <div className="container">
+              <RelatedOfficers relatedOfficers={relatedOfficers} />
+              <StoryList officer={officer} />
+              <ComplaintSection officer={officer}/>
+            </div>
 
-          <div className='container-fluid'>
-            <div className='sticky-footer'>
-              <Footer />
+            <div className='container-fluid'>
+              <div className='sticky-footer'>
+                <Footer />
+              </div>
             </div>
           </div>
         </div>
+      );
+    }
+
+    return (
+      <div>
+        {content}
         <Disclaimer />
         <HappyFox />
       </div>
