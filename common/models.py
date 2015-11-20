@@ -83,6 +83,13 @@ class ComplainingWitness(models.Model):
     age = models.IntegerField(null=True)
 
 
+CITIZEN_DEPTS = [
+    ('citizen', 'Citizen'),
+    ('dept', 'Dept'),
+    ('?', 'Unknown')
+]
+
+
 class AllegationCategory(models.Model):
     cat_id = models.CharField(primary_key=True, max_length=255)
     category = models.CharField(max_length=255, null=True, db_index=True)
@@ -90,7 +97,7 @@ class AllegationCategory(models.Model):
     allegation_count = models.IntegerField(default=0)
     category_count = models.IntegerField(default=0)
     on_duty = models.BooleanField(default=False)
-    citizen = models.BooleanField(default=True)  # False = dept
+    citizen_dept = models.CharField(max_length=50, default='citizen', choices=CITIZEN_DEPTS)
 
     def __str__(self):
         return str(self.allegation_name)
