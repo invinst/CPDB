@@ -8,7 +8,7 @@ from faker import Faker
 
 from allegation.models import Download
 from common.models import AllegationCategory, Officer, Area, Allegation, Investigator, ComplainingWitness, RACES, \
-    OUTCOMES, PoliceWitness, GENDER_DICT, RACES_DICT
+    OUTCOMES, PoliceWitness, GENDER_DICT, RACES_DICT, FINDINGS
 
 fake = Faker()
 
@@ -78,6 +78,7 @@ class AllegationFactory(factory.django.DjangoModelFactory):
     crid = factory.Sequence(lambda n: fake.random_int(min=1000))
     cat = factory.SubFactory(AllegationCategoryFactory)
     final_outcome = factory.Sequence(lambda n: fake.random_element(x[0] for x in OUTCOMES))
+    final_finding = factory.Sequence(lambda n: fake.random_element(x[0] for x in FINDINGS))
     incident_date = factory.Sequence(lambda n: datetime.date(random.randint(2000, 2015), random.randint(1, 12), random.randint(1, 28)))
     incident_date_only = factory.LazyAttribute(lambda o: o.incident_date)
     investigator = factory.SubFactory(InvestigatorFactory)

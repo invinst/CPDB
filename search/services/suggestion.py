@@ -185,6 +185,10 @@ class Suggestion(object):
             return DATA_SOURCES
         return []
 
+    def suggest_repeat_offenders(self, q):
+        if q.startswith('rep'):
+            return [['Repeater (10+ complaints)', 10]]
+
     def query_suggestions(self, model_cls, cond, fields_to_get, limit=5, order_bys=None):
         flat = True if len(fields_to_get) == 1 else False
         queryset = model_cls.objects.filter(cond).values_list(*fields_to_get, flat=flat)
@@ -227,6 +231,8 @@ class Suggestion(object):
         ret['outcome_text'] = self.suggest_in_custom(q, OUTCOME_TEXT_DICT)
 
         ret['data_source'] = self.suggest_data_source(q)
+
+        ret['officer__allegations_count__gt'] = self.suggest_repeat_offenders(q)
 
         ret = OrderedDict((k, v) for k, v in ret.items() if v)
         return ret

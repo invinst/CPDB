@@ -274,86 +274,6 @@
         }
       }
     },
-    "react-infinite": {
-      "version": "0.7.1",
-      "from": "react-infinite@*",
-      "resolved": "https://registry.npmjs.org/react-infinite/-/react-infinite-0.7.1.tgz",
-      "dependencies": {
-        "lodash.isarray": {
-          "version": "3.0.4",
-          "from": "lodash.isarray@3.0.4",
-          "resolved": "https://registry.npmjs.org/lodash.isarray/-/lodash.isarray-3.0.4.tgz"
-        },
-        "lodash.isfinite": {
-          "version": "3.2.0",
-          "from": "lodash.isfinite@3.2.0",
-          "resolved": "https://registry.npmjs.org/lodash.isfinite/-/lodash.isfinite-3.2.0.tgz"
-        },
-        "object-assign": {
-          "version": "4.0.1",
-          "from": "object-assign@4.0.1",
-          "resolved": "https://registry.npmjs.org/object-assign/-/object-assign-4.0.1.tgz"
-        },
-        "react": {
-          "version": "0.14.3",
-          "from": "react@>=0.14.0 <0.15.0",
-          "resolved": "https://registry.npmjs.org/react/-/react-0.14.3.tgz",
-          "dependencies": {
-            "fbjs": {
-              "version": "0.3.2",
-              "from": "fbjs@>=0.3.1 <0.4.0",
-              "resolved": "https://registry.npmjs.org/fbjs/-/fbjs-0.3.2.tgz",
-              "dependencies": {
-                "core-js": {
-                  "version": "1.2.6",
-                  "from": "core-js@>=1.0.0 <2.0.0",
-                  "resolved": "https://registry.npmjs.org/core-js/-/core-js-1.2.6.tgz"
-                },
-                "loose-envify": {
-                  "version": "1.1.0",
-                  "from": "loose-envify@>=1.0.0 <2.0.0",
-                  "resolved": "https://registry.npmjs.org/loose-envify/-/loose-envify-1.1.0.tgz",
-                  "dependencies": {
-                    "js-tokens": {
-                      "version": "1.0.2",
-                      "from": "js-tokens@>=1.0.1 <2.0.0",
-                      "resolved": "https://registry.npmjs.org/js-tokens/-/js-tokens-1.0.2.tgz"
-                    }
-                  }
-                },
-                "promise": {
-                  "version": "7.0.4",
-                  "from": "promise@>=7.0.3 <8.0.0",
-                  "resolved": "https://registry.npmjs.org/promise/-/promise-7.0.4.tgz",
-                  "dependencies": {
-                    "asap": {
-                      "version": "2.0.3",
-                      "from": "asap@>=2.0.3 <2.1.0",
-                      "resolved": "https://registry.npmjs.org/asap/-/asap-2.0.3.tgz"
-                    }
-                  }
-                },
-                "ua-parser-js": {
-                  "version": "0.7.9",
-                  "from": "ua-parser-js@>=0.7.9 <0.8.0",
-                  "resolved": "https://registry.npmjs.org/ua-parser-js/-/ua-parser-js-0.7.9.tgz"
-                },
-                "whatwg-fetch": {
-                  "version": "0.9.0",
-                  "from": "whatwg-fetch@>=0.9.0 <0.10.0",
-                  "resolved": "https://registry.npmjs.org/whatwg-fetch/-/whatwg-fetch-0.9.0.tgz"
-                }
-              }
-            }
-          }
-        },
-        "react-dom": {
-          "version": "0.14.3",
-          "from": "react-dom@>=0.14.0 <0.15.0",
-          "resolved": "https://registry.npmjs.org/react-dom/-/react-dom-0.14.3.tgz"
-        }
-      }
-    },
     "react-medium-editor": {
       "version": "1.3.2",
       "from": "https://registry.npmjs.org/react-medium-editor/-/react-medium-editor-1.3.2.tgz",
@@ -643,7 +563,7 @@
                 },
                 "buffertools": {
                   "version": "2.1.3",
-                  "from": "buffertools@>=1.0.3",
+                  "from": "https://registry.npmjs.org/buffertools/-/buffertools-2.1.3.tgz",
                   "resolved": "https://registry.npmjs.org/buffertools/-/buffertools-2.1.3.tgz"
                 }
               }
