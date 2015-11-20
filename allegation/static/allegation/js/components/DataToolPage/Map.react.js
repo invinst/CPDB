@@ -297,6 +297,9 @@ var Map = React.createClass({
   },
 
   setMarkers: function (markers) {
+    if (!markers) {
+      return;
+    }
     var latLngs = [];
     var features = markers.features;
     var heatOpts = { radius: 10, max: this.mapIntensity(features.length) };
