@@ -103,8 +103,12 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
         <div className='container-fluid'>
           { this.renderTabs() }
         </div>
+        <div className="white-background">
+          <div className='container-fluid content'>
+            <div id='officer-cards'><OfficerList /></div>
+          </div>
+        </div>
         <div className='container-fluid content'>
-          <div id='officer-cards'><OfficerList /></div>
           <div id='complaint-list'><ComplaintSection /></div>
         </div>
         <div className='container-fluid'>
