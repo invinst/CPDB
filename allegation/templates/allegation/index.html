@@ -3,6 +3,11 @@
 <html>
   <head>
     {% block meta %}
+    <script type="text/javascript">
+    if (location.hash.search('officer/') != -1) {
+      location.href = location.hash.substr(2)
+    }
+    </script>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="cache-control" content="public" />
