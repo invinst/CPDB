@@ -37,6 +37,7 @@ $color_rajah_approx: #f46937
 $color_ship_cove_approx: #709dc0
 $color_silver_tree_approx: #62b28c
 $color_spring_wood_approx: #f7f7ed
+$color_spring_wood_approx2: #faf6f3
 $color_star_dust_approx: #9a9a9a
 $color_storm_dust_approx: #666
 $color_sushi_approx: #83b247
@@ -1258,8 +1259,12 @@ footer
     font-family: $font_0, $font_4
 
 #data-tool
-  background-color: $light_blue
+  background-color: $color_spring_wood_approx2
   color: $color_mine_shaft_approx
+  .white-background
+    background-color: $white
+    .container-fluid.content
+      background-color: $white
 
 .chart-row
   background-color: $white
@@ -1416,10 +1421,11 @@ form.navbar-form.navbar-right
 
 
 .container-fluid.content
-  background-color: $white
+  background-color: $color_spring_wood_approx2
   padding-bottom: 20px
   margin-top: 28px
   max-width: 1230px
+
 
 .checkmark.embed
   background-color: $color_ship_cove_approx
