@@ -10,7 +10,7 @@ var INIT_DATA_TOOL_EVENT = 'INIT_DATA_TOOL_EVENT';
 var CHANGE_PAGE_EVENT = 'CHANGE_PAGE_EVENT';
 
 var _state = {
-  isDataToolInit: false,
+  isDataToolInit: true,
   page: 'data',
   session_title: null,
   session_hash: null
