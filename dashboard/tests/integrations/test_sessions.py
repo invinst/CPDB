@@ -38,16 +38,15 @@ class SessionManagementTestCase(BaseLiveTestCase):
         self.go_to_sessions()
         self.number_of_sessions().should.equal(2)
 
-        self.search_for_session_with_title(query)
+        self.search_for_session(query)
         self.until_ajax_complete()
         self.number_of_sessions().should.equal(1)
         self.should_see_text(match_title)
 
-        self.search_for_session_with_title(uppercase_query)
+        self.search_for_session(uppercase_query)
         self.until_ajax_complete()
         self.number_of_sessions().should.equal(1)
         self.should_see_text(match_title)
-
 
     def test_see_history_of_session(self):
         category = 'category'
@@ -61,10 +60,22 @@ class SessionManagementTestCase(BaseLiveTestCase):
         self.should_see_text(suggestion.search_query)
         self.should_see_text(category)
 
+    def test_search_by_session_id(self):
+        session = SessionFactory()
+        SessionFactory()
+
+        self.go_to_sessions()
+        self.number_of_sessions().should.equal(2)
+
+        self.search_for_session(session.hash_id)
+        self.until_ajax_complete()
+
+        self.number_of_sessions().should.equal(1)
+
     def number_of_sessions(self):
         return len(self.find_all("#sessions .session-row"))
 
-    def search_for_session_with_title(self, query):
+    def search_for_session(self, query):
         search_input = self.find('#search input')
         search_input.clear()
         search_input.send_keys(query)

@@ -34,6 +34,16 @@ class SessionViewTestCase(SimpleTestCase):
         response.status_code.should.equal(200)
         len(data['results']).should.be(1)
 
+    def test_get_sessions_with_query_for_id_included(self):
+        SessionFactory()
+        session = SessionFactory()
+
+        params = {'q': session.hash_id }
+        response, data = self.get_sessions(params)
+        response.status_code.should.equal(200)
+
+        len(data['results']).should.be(1)
+
     def test_get_details_with_session(self):
         session = SessionFactory()
         suggestion = SuggestionLogFactory(session_id=session.hash_id)
