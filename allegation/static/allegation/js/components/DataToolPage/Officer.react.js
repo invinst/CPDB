@@ -1,17 +1,22 @@
-var HOST = 'http://localhost:8000';
 var React = require('react');
+var ReactRouter = require('react-router');
+var History = require('history');
+var classnames = require('classnames');
+var pluralize = require('pluralize');
+
+var Router = ReactRouter.Router;
+var Route = ReactRouter.Route;
+var Link = ReactRouter.Link;
 
 var Filters = require('components/DataToolPage/Filters.react');
 var OfficerActions = require('actions/OfficerActions');
 var OfficerMixin = require('components/DataToolPage/Officer/OfficerMixin.react');
 var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
 var CheckMark = require('components/DataToolPage/Officer/CheckMark.react');
-
 var OfficerPresenter = require('presenters/OfficerPresenter');
-var $ = require('jquery');
-var pluralize = require('pluralize');
+var jQuery = require('utils/jQuery');
 var StringUtil = require('utils/StringUtil');
-var navigate = require('react-mini-router').navigate;
+
 
 
 var Officer = React.createClass({
@@ -24,12 +29,12 @@ var Officer = React.createClass({
   },
 
   copyEmbed: function () {
-    $(this.getDOMNode()).find(".embed").each(function () {
+    jQuery(this.getDOMNode()).find(".embed").each(function () {
       var client = new ZeroClipboard(this);
       var that = this;
       client.on( "ready", function( readyEvent ) {
         client.on("aftercopy", function () {
-          var inner = $(that).find(".tooltip-inner");
+          var inner = jQuery(that).find(".tooltip-inner");
           var text = inner.text();
           inner.text("Copied");
           setTimeout(function() {
@@ -87,7 +92,7 @@ var Officer = React.createClass({
 
     return (
       <div className={className}  data-state={selection_state} id={officerId}>
-        <a className='officer-link' onClick={this._onClick.bind(this, officer)} target="_parent">
+        <Link className='officer-link' to={this.officerLink(officer)}>
           <div className='officer_name'>
             <span>
               <span>{officer.officer_first}</span>
@@ -136,16 +141,15 @@ var Officer = React.createClass({
               </div>
             </div>
           </div>
-        </a>
+        </Link>
         <CheckMark clickable={!this.props.noClick} officer={officer} page={this.props.page}/>
       </div>
     );
   },
 
-  _onClick: function(officer) {
+  officerLink: function (officer) {
     var presenter = OfficerPresenter(officer);
-    var officerPageLink = '/officer/' + StringUtil.slugify(presenter.displayName) + '/' + officer.id;
-    navigate(officerPageLink);
+    return '/officer/' + StringUtil.slugify(presenter.displayName) + '/' + officer.id;
   }
 });
 
