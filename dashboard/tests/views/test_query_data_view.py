@@ -63,3 +63,11 @@ class QueryDataTestCase(SimpleTestCase):
         data[0]['search_query'].should.equal('query2')
         data[1]['search_query'].should.equal('query3')
         data[2]['search_query'].should.equal('query1')
+
+    def test_does_not_return_less_than_2_chars_query(self):
+        SuggestionLogFactory(search_query='long_long_query')
+        SuggestionLogFactory(search_query='12')
+
+        response, data = self.call_query_data_api()
+
+        len(data['data']).should.equal(1)
