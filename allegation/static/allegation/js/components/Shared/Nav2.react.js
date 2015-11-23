@@ -108,7 +108,7 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
     return (
       <nav className="landing-nav">
         <div className="items clearfix">
-          <img className="pull-left cpdp-logo" src="/static/img/cpdp-logo.svg" />
+          <Link to={dataToolUrl}><img className="pull-left cpdp-logo" src="/static/img/cpdp-logo.svg" /></Link>
           <div className={siteTitleClass}>
             <SiteTitle changable={true} />
           </div>
