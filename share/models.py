@@ -30,7 +30,7 @@ OTHER_KEYS = {
 
 class Session(models.Model):
     title = models.CharField(max_length=255, blank=True)
-    query = JSONField()
+    query = JSONField(blank=True)
     active_tab = models.CharField(max_length=40, default='', blank=True)
     share_from = models.ForeignKey('share.Session', null=True, default=None, blank=True)
     share_count = models.IntegerField(default=0, blank=True)
