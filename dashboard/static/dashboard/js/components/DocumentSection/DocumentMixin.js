@@ -63,7 +63,7 @@ var DocumentMixin = {
               <i className="fa fa-link"></i> Add
             </button>
             <button className="btn btn-primary" onClick={this.putToPending.bind(this, allegation)}>
-              Requested
+              Request
             </button>
             <button className="btn btn-cancel" onClick={this.onCancelClick.bind(this, allegation)}>
               <i className="fa fa-times"></i> Cancel
@@ -99,7 +99,7 @@ var DocumentMixin = {
               <i className="fa fa-link"></i> Add
             </button>
           </div>
-        ); 
+        );
       default:
         return (
           <div>
