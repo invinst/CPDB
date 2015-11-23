@@ -1,12 +1,4 @@
 #landing-page
-  $light_blue: #E8F0F9
-  $dark_blue: #1464f1
-  $text_color: #013270
-  $font_weight: 400
-  $cubic_bezier: cubic-bezier(0, 0, 0.16, 1.08)
-
-  h2.title
-    font-size: 16px
   position: absolute
   top: 343px
   transition: top 1s $cubic_bezier
@@ -17,6 +9,26 @@
   color: $text_color
   font-family: 'San Francisco Text Web'
   font-weight: $font_weight
+
+  &.scroll-to-top
+    top: 0
+    .welcome
+      height: 0
+
+    nav.landing-nav
+      .cpdp-logo
+        opacity: 1 !important
+        transition: opacity 1s $cubic_bezier
+        -webkit-transition: opacity 1s $cubic_bezier
+        -moz-transition: opacity 1s $cubic_bezier
+
+.main.margin-top-90
+  margin-top: 45px
+
+.landing-page
+
+  h2.title
+    font-size: 16px
 
   a
     color: $dark_blue
@@ -112,7 +124,7 @@
 
   nav.landing-nav
     background-color: #fff
-    z-index: 10
+    z-index: 1001
 
     &.border-top
       -webkit-box-shadow: 0px -13px 100px 0px $light_blue
@@ -161,9 +173,6 @@
   .sub-nav
     background: $light_blue
     height: 11px
-
-  .margin-top-90
-    margin-top: 45px
 
   .container
     margin-left: auto
@@ -314,17 +323,6 @@
         margin-top: 19px
         padding: 10px 25px
 
-  &.scroll-to-top
-    top: 0
-    .welcome
-      height: 0
-
-    nav.landing-nav
-      .cpdp-logo
-        opacity: 1 !important
-        transition: opacity 1s $cubic_bezier
-        -webkit-transition: opacity 1s $cubic_bezier
-        -moz-transition: opacity 1s $cubic_bezier
 
 @media screen and (min-width: 1200px)
   #landing-page

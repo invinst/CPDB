@@ -18,7 +18,7 @@ class ActiveTabAssertationMixin(object):
 @skipIf(IS_MOBILE, "Skip in mobile mode")
 class ActiveTabTestCase(BaseLiveTestCase, ActiveTabAssertationMixin):
     def test_site_default_active_tab(self):
-        self.visit('/#!/data-tools')
+        self.visit_home()
 
         self.assert_current_active_tab('Outcomes')
 
@@ -36,5 +36,5 @@ class ActiveTabTestCase(BaseLiveTestCase, ActiveTabAssertationMixin):
 
 class ActiveTabMobileTestCase(BaseMobileLiveTestCase, ActiveTabAssertationMixin):
     def test_site_default_active_tab(self):
-        self.visit('/#!/data-tools')
+        self.visit_home()
         self.assert_current_active_tab('Map')

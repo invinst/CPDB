@@ -1,10 +1,9 @@
-from allegation.tests.views.ui.test_home_page import IntegrationTestHelperMixin
 from allegation.factories import AllegationFactory, OfficerFactory, ComplainingWitnessFactory, AllegationCategoryFactory
 from common.tests.core import BaseLiveTestCase
 from common.models import Allegation, ComplainingWitness, Officer
 
 
-class RaceGenderTabTest(BaseLiveTestCase, IntegrationTestHelperMixin):
+class RaceGenderTabTest(BaseLiveTestCase):
     RACES = ['White', 'Black', 'Hispanic', 'White/Hispanic', 'Black/Hispanic',
              'Indigenous', 'Asian', 'Unknown']
     DISPLAY_RACES_FOR_COMPLAINANTS = ['White', 'Black', 'Hispanic', 'Others']

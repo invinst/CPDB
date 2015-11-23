@@ -5,13 +5,7 @@ from common.tests.core import *
 from allegation.factories import AllegationFactory, AllegationCategoryFactory
 
 
-class IntegrationTestHelperMixin(object):
-    def visit_home(self):
-        self.visit('/#!/data-tools')
-        self.until(lambda: self.link("Outcomes"))
-
-
-class HomePageTestCase(BaseLiveTestCase, IntegrationTestHelperMixin):
+class HomePageTestCase(BaseLiveTestCase):
     def setUp(self):
         self.allegation_category = AllegationCategoryFactory()
         self.allegation = AllegationFactory(cat=self.allegation_category)
@@ -25,7 +19,7 @@ class HomePageTestCase(BaseLiveTestCase, IntegrationTestHelperMixin):
             self.allegation.delete()
 
     def test_see_tabs(self):
-        self.visit('/#!/data-tools')
+        self.visit_home()
         links = self.find_all('.chart-row .nav a')
         link_texts = [x.text for x in links]
         link_texts.should.contain('Outcomes')
@@ -33,7 +27,7 @@ class HomePageTestCase(BaseLiveTestCase, IntegrationTestHelperMixin):
         link_texts.should.contain('Race & Gender')
 
     def filter_complaint_type(self):
-        self.visit('/#!/data-tools')
+        self.visit_home()
         self.link("Categories").click()
 
     def check_number_officer(self, num):
@@ -89,11 +83,6 @@ class HomePageTestCase(BaseLiveTestCase, IntegrationTestHelperMixin):
         officers = self.find_all('.officer')
         return len(officers)
 
-    def test_show_disclaimer(self):
-        self.visit('/?with_disclaimer=1#!/data-tools')
-        self.button('I UNDERSTAND').click()
-
-
     def test_close_disclaimer(self):
         self.visit_home()
         self.link('About the data').click()
@@ -101,7 +90,7 @@ class HomePageTestCase(BaseLiveTestCase, IntegrationTestHelperMixin):
         self.until(lambda: self.should_not_see_text('I UNDERSTAND'))
 
     def test_see_session_query_on_reload(self):
-        self.visit('/#!/data-tools')
+        self.visit_home()
         officer = self.allegation.officer
 
         self.until(lambda: self.find('.ui-autocomplete-input').send_keys(officer.officer_first))
@@ -209,9 +198,8 @@ class HomePageTestCase(BaseLiveTestCase, IntegrationTestHelperMixin):
 
         self.is_displayed_in_viewport('.sticky-footer').should.be.false
 
-        self.find('body').send_keys(Keys.PAGE_DOWN)
+        self.browser.execute_script("jQuery(window).scrollTop(jQuery('#complaint-list').offset().top + 100);")
         self.until(lambda: self.is_displayed_in_viewport('.sticky-footer').should.be.true)
-        self.find('body').send_keys(Keys.PAGE_UP)
         self.find('body').send_keys(Keys.PAGE_UP)
         self.until(lambda: self.is_displayed_in_viewport('.sticky-footer').should.be.false)
 
@@ -288,5 +276,5 @@ class HomePageTestCase(BaseLiveTestCase, IntegrationTestHelperMixin):
         setting.value = 'New title'
         setting.save()
 
-        self.visit("/#!/data-tools")
+        self.visit_home()
         self.browser.title.should.equal(setting.value)

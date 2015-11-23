@@ -8,7 +8,7 @@ class DownloadAllegationTestCase(BaseLiveTestCase):
     def test_download(self):
         AllegationFactory()
 
-        self.visit('/#!/data-tools')
+        self.visit_home()
         self.find('.officer .checkmark').click()
 
         self.browser.execute_script("window.redirect = function () {};")  # disable redirect to download excel file on testing

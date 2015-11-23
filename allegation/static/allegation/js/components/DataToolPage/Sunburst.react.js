@@ -299,7 +299,6 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
 
     this.initTabs();
 
-    SunburstAPI.getData(this.props.query);
     this.drawChart();
   },
 
