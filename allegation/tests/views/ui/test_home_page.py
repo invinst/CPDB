@@ -83,11 +83,6 @@ class HomePageTestCase(BaseLiveTestCase):
         officers = self.find_all('.officer')
         return len(officers)
 
-    def test_show_disclaimer(self):
-        self.visit_home()
-        self.button('I UNDERSTAND').click()
-
-
     def test_close_disclaimer(self):
         self.visit_home()
         self.link('About the data').click()
