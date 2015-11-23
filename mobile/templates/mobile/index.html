@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+{% load staticfiles common_tags compress jsonify %}
+<html>
+  <head>
+    {% block meta %}
+      <title>Mail</title>
+      <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+      <meta http-equiv="cache-control" content="public" />
+      <meta name="apple-mobile-web-app-capable" content="yes">
+      <meta name="apple-mobile-web-app-status-bar-style" content="black">
+      <meta name="robots" content="follow, all" />
+      <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+      <link rel="shortcut icon" type='image/png' href="{% static 'img/favicon.ico' %}" />
+    {% endblock %}
+
+    {% compress css %}
+      <link rel="stylesheet" type="text/css" href="{% static 'ratchet/dist/css/ratchet.min.css' %}" />
+      <link rel="stylesheet" type="text/css" href="{% static 'ratchet/dist/css/ratchet-theme-ios.min.css' %}" />
+    {% endcompress %}
+
+    {% compress css %}
+      <link rel="stylesheet" type="text/sass" href="{% static 'sass/style.sass' %}" />
+    {% endcompress %}
+  </head>
+  <body>
+    {% csrf_token %}
+    <div id='router'></div>
+    {% compress js %}
+        <script src="{% static 'ratchet/dist/js/ratchet.min.js' %}"></script>
+    {% endcompress %}
+    <script src="{% static 'mobile/js/bundle.js' %}"></script>
+  </body>
+</html>
