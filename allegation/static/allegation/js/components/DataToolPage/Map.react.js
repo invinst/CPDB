@@ -54,6 +54,40 @@ var Map = React.createClass({
     return state;
   },
 
+  componentDidMount: function () {
+    var self = this;
+    if (AppStore.isDataToolInit()) {
+      this.onDataToolInit();
+    } else {
+      AppStore.addDataToolInitListener(this.onDataToolInit);
+    }
+
+    MapStore.addChangeMarkerListener(this.changeMarker);
+    MapStore.addBeforeChangeMarkerListener(this.beforeChangeMarker);
+
+    FilterStore.addChangeListener(this._onChange);
+    this.embedListener();
+
+    // having this code async will not block the immediate rendering of the page
+    // on reload. On first load the API needs to be hit so the markers/areas don't block rendering
+    // but on coming back via routing the data is cached and is parsed/loaded immediately blocking
+    // the browser from painting.
+    setTimeout(function() {
+      MapAPI.getMarkers();
+    }, 200);
+  },
+
+  componentWillUnmount: function() {
+    AppStore.removeDataToolInitListener(this.onDataToolInit);
+    MapStore.removeChangeMarkerListener(this.changeMarker);
+    MapStore.removeBeforeChangeMarkerListener(this.beforeChangeMarker);
+
+    _map.remove();
+    _baseLayers = {};
+    this.first_layer_added = false;
+    this.removeEmbedListener();
+  },
+
   // embedding
   getEmbedCode: function () {
     var node = this.getDOMNode();
@@ -101,40 +135,6 @@ var Map = React.createClass({
     this.create();
     this.createAreas();
     this.changeMarker();
-  },
-
-  componentDidMount: function () {
-    var self = this;
-    if (!AppStore.isDataToolInit()) {
-      AppStore.addDataToolInitListener(this.onDataToolInit);
-    } else {
-      this.onDataToolInit();
-    }
-
-    MapStore.addChangeMarkerListener(this.changeMarker);
-    MapStore.addBeforeChangeMarkerListener(this.beforeChangeMarker);
-
-    FilterStore.addChangeListener(this._onChange);
-    this.embedListener();
-
-    // having this code async will not block the immediate rendering of the page
-    // on reload. On first load the API needs to be hit so the markers/areas don't block rendering
-    // but on coming back via routing the data is cached and is parsed/loaded immediately blocking
-    // the browser from painting.
-    setTimeout(function() {
-      MapAPI.getMarkers();
-    }, 200);
-  },
-
-  componentWillUnmount: function() {
-    AppStore.removeDataToolInitListener(this.onDataToolInit);
-    MapStore.removeChangeMarkerListener(this.changeMarker);
-    MapStore.removeBeforeChangeMarkerListener(this.beforeChangeMarker);
-
-    _map.remove();
-    _baseLayers = {};
-    this.first_layer_added = false;
-    this.removeEmbedListener();
   },
 
   mapIntensity: function(markersLength) {

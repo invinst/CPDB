@@ -1,6 +1,7 @@
 "use strict";
 
 jest.dontMock('../../../constants/AppConstants');
+jest.dontMock('../../../stores/Base');
 jest.dontMock('../ComplaintSectionStore');
 jest.dontMock('object-assign');
 jest.dontMock('lodash');

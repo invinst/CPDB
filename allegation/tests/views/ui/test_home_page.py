@@ -84,11 +84,6 @@ class HomePageTestCase(BaseLiveTestCase):
         officers = self.find_all('.officer')
         return len(officers)
 
-    def test_show_disclaimer(self):
-        self.visit_home()
-        self.button('I UNDERSTAND').click()
-
-
     def test_close_disclaimer(self):
         self.visit_home()
         self.link('About the data').click()
@@ -204,9 +199,8 @@ class HomePageTestCase(BaseLiveTestCase):
 
         self.is_displayed_in_viewport('.sticky-footer').should.be.false
 
-        self.find('body').send_keys(Keys.PAGE_DOWN)
+        self.browser.execute_script("jQuery(window).scrollTop(jQuery('#complaint-list').offset().top + 100);")
         self.until(lambda: self.is_displayed_in_viewport('.sticky-footer').should.be.true)
-        self.find('body').send_keys(Keys.PAGE_UP)
         self.find('body').send_keys(Keys.PAGE_UP)
         self.until(lambda: self.is_displayed_in_viewport('.sticky-footer').should.be.false)
 

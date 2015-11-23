@@ -90,7 +90,7 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
     });
 
     var navClass = classnames('landing-nav', {
-      'fixed-nav': this.state.page != 'findings'
+      'fixed-nav': !AppStore.isFindingPage()
     });
 
     var navbarClass = classnames(
