@@ -50,8 +50,9 @@ class ShareSessionAdmin(admin.ModelAdmin):
             queries = obj.query['filters']
 
         for filter_type in queries:
-            for tag in queries[filter_type]['value']:
-                tags.append(str(tag))
+            if 'value' in queries[filter_type]:
+                for tag in queries[filter_type]['value']:
+                    tags.append(str(tag))
 
         return ', '.join(tags)
 
