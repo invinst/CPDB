@@ -94,6 +94,9 @@ AppDispatcher.register(function (action) {
 
     case AppConstants.NAV_GO_TO_PAGE:
       _state.page = action.page;
+      if (action.first) {
+        _state.isDataToolInit = AppStore.isDataToolPage();
+      }
       AppStore.emitChange();
       AppStore.emitChangePage();
       break;
