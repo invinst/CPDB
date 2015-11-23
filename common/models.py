@@ -348,7 +348,7 @@ OUTCOME_TEXT_DICT = {
     '30 more days': {
         'text': '30+ days',
         'condition': {
-            'final_outcome': ["045", "060", "090", "200"],
+            'final_outcome': ["045", "060", "090", "180", "200"],
         }
     },
 }
