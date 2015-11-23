@@ -1,5 +1,7 @@
+var _ = require('lodash');
 var React = require('react');
 
+var Base = require('components/Base.react');
 var ComplaintSectionStore = require('stores/OfficerPage/ComplaintSectionStore');
 var ComplaintListAPI = require('utils/ComplaintListAPI');
 var ComplaintList = require('components/OfficerPage/ComplaintList.react');
@@ -7,11 +9,7 @@ var Counter = require("components/DataToolPage/Counter.react");
 var OutcomeFilter = require('components/DataToolPage/ComplaintList/OutcomeFilter.react');
 var RequestModal = require('components/DataToolPage/Complaint/RequestModal.react');
 
-var ComplaintSection = React.createClass({
-  getInitialState: function () {
-    return ComplaintSectionStore.getState();
-  },
-
+var ComplaintSection = React.createClass(_.assign(Base(ComplaintSectionStore), {
   componentDidMount: function() {
     var officer = this.props.officer.id || '';
     ComplaintSectionStore.addChangeListener(this._onChange);
@@ -21,10 +19,6 @@ var ComplaintSection = React.createClass({
   componentWillReceiveProps: function(newProps) {
     var officer = newProps.officer.id || '';
     ComplaintListAPI.getAllForOfficer(officer);
-  },
-
-  componentWillUnmount: function() {
-    ComplaintSectionStore.removeChangeListener(this._onChange);
   },
 
   render: function() {
@@ -45,12 +39,12 @@ var ComplaintSection = React.createClass({
           </div>
         </div>
       </div>
-    )
+    );
   },
 
   _onChange: function() {
     this.setState(ComplaintSectionStore.getState());
   }
-});
+}));
 
 module.exports = ComplaintSection;
