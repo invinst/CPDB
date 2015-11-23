@@ -149,7 +149,7 @@ class AllegationSunburstView(AllegationAPIView):
                     'removeParent': True
                 }
             }, {
-                'condition': Q(final_outcome__in=['045', '060', '090', '200']),
+                'condition': Q(final_outcome__in=['045', '060', '090', '180', '200']),
                 'name': '30+ days',
                 'tagValue': {
                     'label': '30+ days',
