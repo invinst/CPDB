@@ -4,6 +4,7 @@ global.jQuery = require('jquery');
 var moment = require('moment');
 var React = require('react');
 
+var AddAliasModalActions = require('actions/SearchSection/AddAliasModalActions');
 var Base = require('../Base.react');
 var SessionsAPI = require('utils/SessionsAPI');
 var SessionsActions = require('actions/SessionSection/SessionsActions');
@@ -20,6 +21,14 @@ var SessionList = React.createClass(_.assign(Base(SessionListStore), {
       SessionsAPI.getMore();
       SessionsActions.lockScroll();
     }
+  },
+
+  _onClick: function (target, e) {
+    e.preventDefault();
+    AddAliasModalActions.show({
+      alias: '',
+      target: target
+    });
   },
 
   componentDidMount: function () {
@@ -41,6 +50,11 @@ var SessionList = React.createClass(_.assign(Base(SessionListStore), {
           <td>{_(x.query.filters).values().pluck('value').flatten().size()}</td>
           <td>{x.ip}</td>
           <td>{x.user_agent}</td>
+          <td>
+            <a className="add-alias" onClick={that._onClick.bind(that, x.hash_id)} href="#">
+              <i className='fa fa-plus'/>
+            </a>
+          </td>
         </tr>
       );
 

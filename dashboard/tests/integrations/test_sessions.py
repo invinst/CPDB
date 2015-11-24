@@ -1,5 +1,6 @@
 from common.tests.core import BaseLiveTestCase
 from search.factories import SuggestionLogFactory, FilterLogFactory
+from search.models.alias import Alias
 from share.factories import SessionFactory
 from share.models import Session
 
@@ -71,6 +72,20 @@ class SessionManagementTestCase(BaseLiveTestCase):
         self.until_ajax_complete()
 
         self.number_of_sessions().should.equal(1)
+
+    def test_add_alias(self):
+        alias = 'session alias'
+        session = SessionFactory()
+
+        self.go_to_sessions()
+
+        self.find('.add-alias').click()
+        self.until(lambda: self.should_see_text('Add Alias'))
+
+        self.find('.alias-input').send_keys(alias)
+        self.button('SUBMIT').click()
+        self.until(lambda: self.should_see_text('Add new alias successfully'))
+        Alias.objects.get(alias=alias).target.should.equal(session.hash_id)
 
     def number_of_sessions(self):
         return len(self.find_all("#sessions .session-row"))
