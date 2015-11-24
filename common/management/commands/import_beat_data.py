@@ -20,6 +20,9 @@ class Command(BaseCommand):
 
             success = 0
             fail = 0
+            duplicated_beat = Area.objects.filter(name='3100', type='police-beats')
+            if duplicated_beat.count() > 1:
+                duplicated_beat.first().delete()
             for row in c:
                 try:
                     allegation = Allegation.objects.get(pk=row[0])
@@ -27,13 +30,16 @@ class Command(BaseCommand):
                         beat_name = row[BEAT_COL]
                         if len(beat_name) < 4:
                             beat_name = beat_name.zfill(4)
-                        print(beat_name)
                         beat = Area.objects.get(name=beat_name, type='police-beats')
                         allegation.beat = beat
                         allegation.areas.add(beat)
                         allegation.save()
                         success += 1
                 except Area.DoesNotExist:
+                    fail += 1
+                    print(beat_name)
+                except Area.MultipleObjectsReturned:
+                    print(beat_name)
                     fail += 1
             print("success: %s fails: %s" % (success, fail))
 
