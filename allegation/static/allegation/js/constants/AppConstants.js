@@ -76,7 +76,7 @@ module.exports = {
   RACE_GENDER_TAB_RECEIVED_DATA: c++,
 
   SET_ACTIVE_TAB: c++,
-  MAP_TOKEN: 'pk.eyJ1IjoiZGF0YW1hZGUiLCJhIjoiaXhhVGNrayJ9.0yaccougI3vSAnrKaB00vA',
+  MAP_TOKEN: '***REMOVED***',
   MAP_TYPE: 'datamade.7e795301',
 
   NUMERAL_FORMAT: '0,0',
