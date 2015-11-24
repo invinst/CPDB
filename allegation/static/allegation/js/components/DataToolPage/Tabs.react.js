@@ -1,6 +1,7 @@
 /**
  * Created by eastagile on 8/6/15.
  */
+var _ = require('lodash');
 var React = require('react');
 var classnames = require('classnames');
 var slugify = require('slugify');
@@ -8,9 +9,8 @@ var isMobile = require('ismobilejs');
 
 global.jQuery = require('jquery');
 
-var AppConstants = require('../../constants/AppConstants');
-var FilterStore = require('stores/FilterStore');
-var SessionStore = require('stores/SessionStore');
+var Base = require('components/Base.react');
+var AppConstants = require('constants/AppConstants');
 var TabsStore = require('stores/DataToolPage/TabsStore');
 var Sunburst = require('components/DataToolPage/Sunburst.react');
 var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
@@ -19,15 +19,26 @@ var Map = require('components/DataToolPage/Map.react');
 var RaceGenderTab = require('components/DataToolPage/RaceGenderTab.react');
 var TabActions = require('actions/DataToolPage/TabActions');
 
-var Tabs = React.createClass({
+var Tabs = React.createClass(_.assign(Base(TabsStore), {
   mixins: [EmbedMixin],
   tabs: [],
   activeTabIndex: 0,
   embedding: false,
 
-  getInitialState: function () {
-    return {};
+  componentDidMount: function () {
+    TabsStore.addChangeListener(this._onChange);
+    this.embedListener();
   },
+
+  componentWillUnmount: function () {
+    TabsStore.removeChangeListener(this._onChange);
+    this.removeEmbedListener();
+
+    this.tabs = [];
+    this.activeTabIndex = 0;
+    this.embedding = false;
+  },
+
 
   // embedding
   activeTab: function (number, tab, e) {
@@ -78,23 +89,6 @@ var Tabs = React.createClass({
   },
   // end embedding
 
-  componentDidMount: function () {
-    this.embedListener();
-    TabsStore.addChangeListener(this._onChange);
-  },
-
-  _onChange: function () {
-    this.setState(TabsStore.getState());
-  },
-
-  componentWillUnmount: function () {
-    this.removeEmbedListener();
-    TabsStore.removeChangeListener(this._onChange);
-    this.tabs = [];
-    this.activeTabIndex = 0;
-    this.embedding = false;
-  },
-
   isActive: function (target) {
     return this.state['active_tab'] == target || (!this.state['active_tab'] && target == 'outcomes');
   },
@@ -144,8 +138,8 @@ var Tabs = React.createClass({
     };
 
     var outcomeClassName = classnames(isActive);
-
     var outcomeContentClassName = classnames('tab-pane', isActive);
+
     return (
       <div className="chart-row">
         <ul className="nav nav-tabs" role="tablist">
@@ -164,6 +158,6 @@ var Tabs = React.createClass({
       </div>
     );
   }
-});
+}));
 
 module.exports = Tabs;

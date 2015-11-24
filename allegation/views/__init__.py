@@ -187,6 +187,8 @@ class AllegationSummaryApiView(AllegationAPIView):
                 summary.append(summary_value)
 
             count = count_by_category.get(category.cat_id, 0)
+            if not count:
+                continue
             summary_value['total'] += count
             summary_value['count'] += discipline_count_by_category.get(category.cat_id, 0)
             summary_value['subcategories'].append({
@@ -196,6 +198,8 @@ class AllegationSummaryApiView(AllegationAPIView):
             })
 
         summary = sorted(summary, key=lambda x: -x['total'])
+        summary = [x for x in summary if x['total']]
+
         for summary_row in summary:
             summary_row['subcategories'] = sorted(summary_row['subcategories'], key=lambda x: -x['count'])
 
