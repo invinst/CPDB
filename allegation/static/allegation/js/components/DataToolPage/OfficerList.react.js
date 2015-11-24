@@ -1,6 +1,5 @@
 var React = require('react');
 var classnames = require('classnames');
-var isMobile = require('ismobilejs');
 
 var Filters = require('components/DataToolPage/Filters.react');
 var OfficerActions = require('actions/OfficerActions');
@@ -220,13 +219,8 @@ var OfficerList = React.createClass({
       'filtered': this.state.filtered
     });
 
-    var officerListClass = classnames('', {
-      'mobile-officer-list': isMobile.any,
-      'desktop-officer-list': !isMobile.any,
-    });
-
     return (
-      <div className={officerListClass}>
+      <div>
         <div className="row">
           <div className={sliderClassName}>
             <div className="overview-box">
