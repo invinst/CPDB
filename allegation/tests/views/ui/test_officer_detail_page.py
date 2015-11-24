@@ -64,6 +64,14 @@ class OfficerDetailPageTestCase(BaseLiveTestCase):
 
         self.number_of_complaints().should.equal(2)
 
+    def test_logo_link_back_to_current_data_tool_session(self):
+        self.visit_home()
+        session_url = self.browser.current_url
+
+        self.find('#officer_%s .officer-link' % self.officer.id).click()
+        logo_link = self.find('.cpdp-logo').find_element_by_xpath('..')
+        logo_link.get_attribute('href').should.equal(session_url)
+
     def test_display_stories(self):
         story = StoryFactory(officer=self.officer, url=TEST_DOCUMENT_URL)
         created_date = story.created_date.strftime('%Y-%m-%d %H:%M:%S')
