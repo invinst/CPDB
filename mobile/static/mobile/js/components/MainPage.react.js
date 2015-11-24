@@ -1,39 +1,32 @@
+var _ = require('lodash');
+var cx = require('classnames');
 var React = require('react');
-var Select = require('react-select');
 
+var Base = require('components/Base.react');
+
+var MainPageStore = require('stores/MainPageStore');
 var Logo = require('components/Shared/Logo.react');
 var About = require('components/Shared/About.react');
+var Search = require('components/Shared/Search.react');
 var SuggestionSection = require('components/MainPage/SuggestionSection.react');
+var SearchResultSection =  require('components/MainPage/SearchResultSection.react');
 
-var jQuery = require('jquery');
-
-var MainPage = React.createClass({
-  onFocus: function() {
-    jQuery('#logo').addClass('top-left')
-    jQuery('.search-wrapper').addClass('top-left')
-    jQuery('#suggestion-section').removeClass('hidden')
+var MainPage = React.createClass(_.assign(Base(MainPageStore), {
+  getInitialState: function () {
+    return {
+      'searchStatus': 'blank'
+    }
   },
 
-  onBlur: function() {
-    jQuery('#logo').removeClass('top-left')
-    jQuery('.search-wrapper').removeClass('top-left')
-    jQuery('#suggestion-section').addClass('hidden')
-  },
-
-  onChange: function () {
-
-  },
-  
   render: function () {
+    var classNames = cx('search-wrapper', 'pad', 'animation', { 'top-left': this.state.searchStatus != 'blank'});
     return (
       <div id='main-page'>
-        <Logo />
-        <div className="search-wrapper pad animation">
-          <input className='search' type="search" placeholder="Search"
-                 onFocus={this.onFocus.bind(this)}
-                 onBlur={this.onBlur.bind(this)}
-                 onChange={this.onChange.bind(this)}/>
-          <SuggestionSection/>
+        <Logo topLeft={this.state.searchStatus != 'blank'} />
+        <div className={classNames}>
+          <Search />
+          <SuggestionSection visible={this.state.searchStatus == 'suggesting'} />
+          <SearchResultSection visible={this.state.searchStatus == 'results'} />
         </div>
 
         <div className='bar bar-standard bar-footer'>
@@ -42,6 +35,6 @@ var MainPage = React.createClass({
       </div>
     )
   }
-});
+}));
 
 module.exports = MainPage;
