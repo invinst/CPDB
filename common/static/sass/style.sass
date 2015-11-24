@@ -4,6 +4,7 @@ $black_70: rgba(0, 0, 0, .7)
 $blue: blue
 $color_allports_approx: #0f70a8
 $color_azalea_approx: #f2ced3
+$color_blue_ribbon_approx: #1464f1
 $color_cadet_blue_approx: #a5b4be
 $color_celeste_approx: #cbcbcb
 $color_chateau_green_approx: #41996d
@@ -14,6 +15,7 @@ $color_dark_grey: #212121
 $color_deep_celurean_approx: #0279AE
 $color_deep_cerulean_approx: #0079ae
 $color_eastern_blue_approx: #1385b5
+$color_ebb_approx: #eae7e5
 $color_fire_bush_approx: #ed9429
 $color_fountain_blue_approx: #67adc5
 $color_golden_grass_approx: #d8b421
@@ -23,10 +25,11 @@ $color_hippie_green_approx: #5d924e
 $color_japanese_laurel_approx: green
 $color_jordy_blue_approx: #7bb4ff
 $color_kashmir_blue_approx: #4a6c96
+$color_link_water_approx: #d8e1ef
 $color_lochmara_approx: #107ac0
 $color_mariner_approx: #1f6bec
 $color_mine_shaft_approx: #333333
-$color_mountain_mist_approx: #989898
+$color_mine_shaft_approx2: #2f2f2f
 $color_mountain_mist_approx: #989898
 $color_nobel_approx: #b2b2b2
 $color_pacific_blue_approx: #0a90cb
@@ -44,6 +47,7 @@ $color_sushi_approx: #83b247
 $color_swamp_green_approx: #f0c41b
 $color_tall_poppy_approx: #c0272d
 $color_ziggurat_approx: #bed4df
+$color_blumine_approx: #26527f
 $gray: gray
 $mercury: #e5e5e5
 $red: red
@@ -147,7 +151,7 @@ input
 //original selectors
 //.fa.not.sustained, .fa.not-sustained
 .extend_11
-  color: $color_deep_cerulean_approx
+  color: $text_color
 
 //original selectors
 //.fa.other, .fa.no-affidavit
@@ -157,7 +161,7 @@ input
 //original selectors
 //.leaflet-control-layers-base label input:checked + span, .leaflet-control-layers-base label:hover input + span
 .extend_13
-  background-color: $color_deep_cerulean_approx
+  background-color: $text_color
   color: $white
 
 //original selectors
@@ -197,7 +201,7 @@ body
   border-bottom-right-radius: 0
   font-family: $font_1, $font_4
   font-size: 14px
-  color: $color_mountain_mist_approx
+  color: $text_color
 
   &:focus
     border-color: $color_eastern_blue_approx
@@ -209,7 +213,7 @@ body
   padding: 6px 12px
   height: 50px
   width: 48px
-  background-color: $color_eastern_blue_approx
+  background-color: $text_color
 
   i
     font-size: 17px
@@ -329,10 +333,11 @@ h3
 
 footer
   .row
-    background-color: #172b3a
+    background-color: $color_mine_shaft_approx2
     padding: 8px 0
 
 #map
+  border: 1px solid $color_celeste_approx
   width: 100%
   height: 576px
 
@@ -375,12 +380,12 @@ footer
     font-size: 14px
 
   .count
-    color: $color_ship_cove_approx
+    color: $text_color
     @extend .extend_4
     font-weight: 300
 
   .total
-    color: $color_cadet_blue_approx
+    color: $color_mountain_mist_approx
     font-weight: 300
 
   #summary.selected
@@ -447,7 +452,7 @@ footer
       @extend .extend_5
 
   .category-name
-    color: $color_deep_cerulean_approx
+    color: $color_blue_ribbon_approx
     font-size: 14px
     font-weight: 300
     &:hover
@@ -465,7 +470,7 @@ footer
     line-height: 25px
 
   .discipline
-    background: $color_ship_cove_approx
+    background: $text_color
 
   .complaint
     background: $color_cadet_blue_approx
@@ -683,7 +688,7 @@ footer
 
 
 .officer
-  background-color: $seashell
+  background-color: $color_spring_wood_approx2
   border: none
   //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
   border-radius: 0
@@ -696,14 +701,14 @@ footer
   margin-bottom: 20px
   //If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
   box-shadow: 3px 3px 3px $color_celeste_approx
-  max-height: 93px
+  max-height: 110px
   overflow: hidden
 
     background-color: #0079AE
     color: white
   &.has-intersection
     &:hover, &.selected
-      background-color: #0079AE
+      background-color: $text_color
       color: white
       .officer_name
         color: white
@@ -726,14 +731,26 @@ footer
     box-shadow: 7px 7px 7px $color_celeste_approx
     cursor: pointer
 
+
+  > .checkmark
+    position: absolute
+    padding: 4px 6px 3px
+    right: 0
+    bottom: 0
+    background-color: $color_celeste_approx
+    color: $white
+
+    &.justChange, &.justChange:hover
+      background: $color_blumine_approx
+    &:hover
+      background-color: $color_blumine_approx
+
   &.selected
     a.officer-link
       @extend .extend_6
 
     > .checkmark, .checkmark.justChange:hover
-      background-color: $color_ship_cove_approx
-    > .checkmark:hover
-      background-color: $color_celeste_approx
+      background-color: $color_blumine_approx
   &.avg-0
     border-top-color: $color_coral_red_approx
 
@@ -758,19 +775,6 @@ footer
 
   &.active a.officer-link
     @extend .extend_6
-
-  > .checkmark
-    position: absolute
-    padding: 4px 6px 3px
-    right: 0
-    bottom: 0
-    background-color: $color_celeste_approx
-    color: $white
-
-    &.justChange, &.justChange:hover
-      background: $color_celeste_approx
-    &:hover
-      background-color: $color_ship_cove_approx
 
   .officer_name + .row
     padding-left: 10px
@@ -807,23 +811,24 @@ footer
 .complaint_list
   margin-top: 2em
   .filters
-    margin-left: -14px
-  .filters > span
-    display: inline-block
-    padding: 5px 0
-    border-bottom: 2px solid transparent
-    margin: 0 14px
-    cursor: pointer
-    &.active
-      @extend .extend_7
-
-    &:hover
-      @extend .extend_7
-
-    i
-      margin-right: 5px
+    margin-left: -5px
+    color: $color_mountain_mist_approx
+    > span
       display: inline-block
-      font-size: 0.7em
+      padding: 5px 0
+      border-bottom: 2px solid transparent
+      margin: 0 5px
+      cursor: pointer
+      &.active
+        @extend .extend_7
+
+      &:hover
+        @extend .extend_7
+
+      i
+        margin-right: 5px
+        display: inline-block
+        font-size: 0.7em
 
 .complaint-row-outcome
   font-size: 2em
@@ -960,11 +965,10 @@ footer
 
   &.btn-view
     &:not(.btn-link):not(.btn-flat)
-      background-color: $color_deep_cerulean_approx
+      background-color: $text_color
       color: $white
       font-family: $font_0
       text-transform: none
-      border: 1px solid $color_pacific_blue_approx
       width: 151px
       font-size: 14px
       font-weight: 400
@@ -974,11 +978,10 @@ footer
       color: $white
 
   &.btn-request:not(.btn-link):not(.btn-flat)
-    background-color: $white
-    color: $color_pacific_blue_approx
+    background-color: $color_link_water_approx
+    color: $color_blue_ribbon_approx
     font-family: $font_0
     text-transform: none
-    border: 1px solid $color_pacific_blue_approx
     width: 151px
     max-width: 151px
     font-size: 14px
@@ -1042,7 +1045,7 @@ footer
     color: $color_golden_grass_approx
 
   &.sustained
-    color: $color_golden_grass_approx
+    color: $color_swamp_green_approx
 
   &.not-sustained
     @extend .extend_11
@@ -1051,10 +1054,10 @@ footer
     color: $color_mine_shaft_approx
 
   &.disciplined
-    color: $color_tall_poppy_approx
+    color: $color_coral_red_approx
 
   &.exonerated
-    color: $color_silver_tree_approx
+    color: $color_hippie_green_approx
 
   &.other
     @extend .extend_12
@@ -1111,7 +1114,7 @@ footer
       display: block
       padding: 2px
       padding-left: 15px
-      color: $color_deep_cerulean_approx
+      color: $color_blue_ribbon_approx
 
     input:checked + span
       @extend .extend_13
@@ -1264,8 +1267,13 @@ footer
   line-height: 1.1em
   min-height: 15px
 
-.officer-disciplines
-  margin-left: -10px
+.border-top-row
+  border-top: 1px solid $color_mountain_mist_approx
+  width: 85%
+  margin: 6px 11px
+
+.officer-complaints-disciplines
+  text-align: right
 
 .vertical-line
   border-left: solid 1px $color_mountain_mist_approx
@@ -1289,10 +1297,10 @@ footer
 #data-tool
   background-color: $color_spring_wood_approx2
   color: $color_mine_shaft_approx
-  .white-background
+.white-background
+  background-color: $white
+  .container-fluid.content
     background-color: $white
-    .container-fluid.content
-      background-color: $white
 
 .chart-row
   background-color: $white
@@ -1317,7 +1325,7 @@ footer
 
       &.active
         padding-top: 0
-        border-top: 4px solid $color_deep_cerulean_approx !important
+        border-top: 4px solid $text_color !important
         border-bottom: 0 !important
 
         > a, > a:hover
@@ -1328,8 +1336,8 @@ footer
       > a
         //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
         border-radius: 0
-        background-color: $seashell
-        color: $color_deep_cerulean_approx !important
+        background-color: $color_ebb_approx
+        color: $color_blue_ribbon_approx !important
         font-weight: 400
 
 #loading
@@ -1463,8 +1471,8 @@ form.navbar-form.navbar-right
 
 .disclaimer-btn
   color: $white !important
-  border: solid 1px $white
   text-transform: none !important
+  background-color: $black !important
 
 .stick-footer-bottom
   #data-tool

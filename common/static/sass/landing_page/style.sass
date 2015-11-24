@@ -23,7 +23,7 @@
         -moz-transition: opacity 1s $cubic_bezier
 
 .main.margin-top-90
-  margin-top: 56px
+  margin-top: 45px
 
 .landing-page
 
@@ -150,15 +150,12 @@
     .moving-arrow
       content: ''
       display: inline-block
-      background: $light_blue
-      width: 14px
-      height: 14px
+      background: $text_color
+      height: 5px
       position: absolute
       top: 40px
       right: 405px
-      transform: rotate(90deg)
-      -webkit-transform: rotate(45deg)
-      -moz-transform: rotate(45deg)
+      transition: left 0.5s, width 0.5s
 
     .cpdp-logo
       opacity: 0

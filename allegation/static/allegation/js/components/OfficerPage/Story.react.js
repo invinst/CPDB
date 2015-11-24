@@ -12,8 +12,6 @@ var AppConstants = require('constants/AppConstants');
 var Story = React.createClass(_.assign(Base(StoryStore), {
 
   componentDidMount: function() {
-    StoryStore.addChangeListener(this._onChange);
-
     if (this.props.story.url){
       DocumentCloudAPI.getThumbnail(this.props.story);
     } else {

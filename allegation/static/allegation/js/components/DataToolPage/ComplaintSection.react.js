@@ -91,10 +91,10 @@ var ComplaintSection = React.createClass({
     return (
       <div className={className}>
         <div className='row'>
-          <div className='col-md-2 complaint-count'>
-            <h3 className="margin-top-0">Complaints (<Counter to={analytics.All} />)</h3>
+          <div className='col-md-3 complaint-count'>
+            <h3 className="margin-top-0">Complaints <Counter to={analytics.All} /></h3>
           </div>
-          <div className='col-md-10 text-right'>
+          <div className='col-md-9 text-right'>
             <OutcomeFilter loading={loading} activeFilter={activeFilter} analytics={analytics}/>
           </div>
         </div>

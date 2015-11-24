@@ -111,31 +111,15 @@ var Officer = React.createClass({
             </div>
             <div className='complaint-discipline-row'>
               <div className='row'>
-                <div className='hidden-xs hidden-sm hidden-md'>
-                  <div className='col-md-6'>
-                    <div>
-                      complaints
-                    </div>
-                    <div>
-                      {officer.allegations_count}
-                    </div>
+                <div className="col-xs-12 border-top-row" />
+                <div>
+                  <div className='col-xs-7'>
+                    <div>complaints</div>
+                    <div>disciplines</div>
                   </div>
-                  <div className='vertical-line'></div>
-                  <div className='col-md-6 officer-disciplines'>
-                    <div>
-                      disciplines
-                    </div>
-                    <div>
-                      {officer.discipline_count}
-                    </div>
-                  </div>
-                </div>
-                <div className='hidden-lg'>
-                  <div className='col-xs-12'>
-                    complaints {officer.allegations_count}
-                  </div>
-                  <div className='col-xs-12'>
-                    disciplines {officer.discipline_count}
+                  <div className='col-xs-3 officer-complaints-disciplines'>
+                    <div>{officer.allegations_count}</div>
+                    <div>{officer.discipline_count}</div>
                   </div>
                 </div>
               </div>
