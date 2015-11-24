@@ -401,12 +401,7 @@ class Allegation(models.Model):
     number_of_request = models.IntegerField(default=0)
     last_requested = models.DateTimeField(default=timezone.now)
 
-    @property
-    def beat(self):
-        beats = self.areas.filter(type='police-beats')
-        if beats:
-            return beats[0]
-        return False
+    beat = models.ForeignKey('Area', null=True, blank=True, related_name='beats')
 
     def __str__(self):
         return "%s" % self.crid

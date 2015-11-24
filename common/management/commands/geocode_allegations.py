@@ -29,9 +29,13 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         counter = 0
+        Allegation.objects.update(point=None)
 
         for allegation in Allegation.objects.filter(point=None):
-            city = ''
+            for area in allegation.areas.all():
+                allegation.areas.remove(area)
+
+            city = ""
             add1 = ""
             add2 = ""
             if allegation.add1:
@@ -43,10 +47,7 @@ class Command(BaseCommand):
                 if len(splitted) > 2:
                     city = allegation.city
 
-            point = None
-            allegation.point = None
-
-            if add1 or add2 or city:
+            if add2 or city:
                 address_lookup = "%s %s, %s" % (add1, add2, city)
                 point = self.geocode_address(address_lookup, allegation.beat)
             elif allegation.beat:
