@@ -16,12 +16,16 @@ class DocumentRequestTestCase(BaseLiveTestCase):
     def go_to_documents(self):
         self.element_by_tagname_and_text('span', 'Investigation Documents').click()
 
+    def tab(self, text):
+        selector = '.tab-{tabname}'.format(tabname=text.lower())
+        return self.find(selector)
+
     def go_to_tab(self, text):
-        self.element_by_tagname_and_text('li', text).click()
+        self.tab(text).click()
         self.until_ajax_complete()
 
     def tab_should_active(self, text):
-        self.element_by_tagname_and_text('li', text).has_class('active').should.be.true
+        self.tab(text).has_class('active').should.be.true
 
     def test_see_document_request_tab(self):
         self.should_see_text('Investigation Documents')
@@ -29,14 +33,14 @@ class DocumentRequestTestCase(BaseLiveTestCase):
         self.find("h1").text.should.equal('Investigation Documents')
         self.button("Add document").should.be.ok
 
-        tabs = ["All", "Missing", "Requesting", "Fulfilled", "Pending"]
+        tabs = ["All", "Missing", "Requested", "Fulfilled", "Pending"]
         for tab in tabs:
             self.should_see_text(tab)
 
         self.tab_should_active("All")
 
         for tab in tabs:
-            self.element_by_tagname_and_text('li', tab).click()
+            self.go_to_tab(tab)
             self.tab_should_active(tab)
 
     def test_filter_pending_documents(self):
@@ -51,8 +55,8 @@ class DocumentRequestTestCase(BaseLiveTestCase):
         allegation = AllegationFactory(document_requested=True)
 
         self.go_to_documents()
-        self.go_to_tab('Requesting')
-        self.button('Requested').click()
+        self.go_to_tab('Requested')
+        self.button('Request').click()
 
         self.until(lambda: self.should_see_text('%s document has been requested.' % allegation.crid))
 
@@ -69,9 +73,9 @@ class DocumentRequestTestCase(BaseLiveTestCase):
         self.button('Cancel Pending').click()
 
         self.until(lambda: self.should_see_text('%s document pending has been cancelled.' % allegation.crid))
-        self.find_all('.status>span')[-1].text.should.equal('Requesting')
+        self.find_all('.status>span')[-1].text.should.equal('Requested')
 
-        self.go_to_tab('Requesting')
+        self.go_to_tab('Requested')
         self.should_see_text(allegation.crid)
 
     def test_add_document_link(self):
@@ -117,3 +121,33 @@ class DocumentRequestTestCase(BaseLiveTestCase):
         self.find('.crid-request-search').send_keys('%s\n' % 123456)
         self.until(self.ajax_complete)
         self.until(lambda: self.should_see_text('CRID not found'))
+
+    def test_get_document_request_analysis(self):
+        AllegationFactory(document_requested=False, document_id=0)  # Missing
+        AllegationFactory(document_pending=False, document_requested=True, document_id=0)  # Requested
+        AllegationFactory(document_id=1)  # Fulfilled
+        AllegationFactory(document_pending=True, document_requested=True)  # Pending
+
+        self.go_to_documents()
+        self.until_ajax_complete()
+        for tab in ['missing', 'requested', 'fulfilled', 'pending']:
+            tab_selector = '.tab-{tab_name} .analysis'.format(tab_name=tab)
+            self.find(tab_selector).text.should.contain('1')
+        self.find('.tab-all .analysis').text.should.contain('4')
+
+    def test_sort_document_request(self):
+        no_request_allegation = AllegationFactory(number_of_request=0)
+        one_request_allegation = AllegationFactory(number_of_request=1)
+
+        self.go_to_documents()
+        self.until_ajax_complete()
+
+        documents = self.find_all('tbody tr')
+        documents[0].text.should.contain(str(one_request_allegation.crid))
+        documents[1].text.should.contain(str(no_request_allegation.crid))
+
+        self.element_by_tagname_and_text('th', 'No. of requests').click()
+        self.until_ajax_complete()
+        documents = self.find_all('tbody tr')
+        documents[0].text.should.contain(str(no_request_allegation.crid))
+        documents[1].text.should.contain(str(one_request_allegation.crid))

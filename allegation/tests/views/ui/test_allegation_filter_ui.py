@@ -19,7 +19,7 @@ class AllegationFilterTestCase(BaseLiveTestCase):
                                   final_outcome_class='disciplined')
 
     def test_filter_by_final_finding(self):
-        self.visit('/#!/data-tools')
+        self.visit_home()
         self.browser.execute_script('jQuery("#hfc-cleanslate").hide();')
 
         # Check all
@@ -39,6 +39,21 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         self.element_by_tagname_and_text('span', 'Disciplined').click()
         self.until(self.ajax_complete)
         self.number_of_complaints().should.equal(Allegation.objects.filter(final_outcome_class='disciplined').count())
+
+    def test_suggest_repeater(self):
+        self.visit('/#!/data-tools')
+        self.browser.execute_script('jQuery("#hfc-cleanslate").hide();')
+
+        self.find('#autocomplete').send_keys('rep')
+        self.until(lambda: self.element_by_classname_and_text('ui-autocomplete-category', 'Repeater (10+ complaints)').should.be.ok)
+
+    def test_filter_by_repeater(self):
+        self.visit('/#!/data-tools')
+        self.browser.execute_script('jQuery("#hfc-cleanslate").hide();')
+
+        self.find('#autocomplete').send_keys('rep')
+        self.until(lambda: self.find('.autocomplete-officer__allegations_count__gt').click())
+        self.until(lambda: self.element_by_classname_and_text('filter-name', 'Repeater (10+ complaints)').should.be.ok)
 
     def number_of_complaints(self):
         return len(self.find_all('.complaint-row'))

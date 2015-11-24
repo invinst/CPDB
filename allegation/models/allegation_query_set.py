@@ -19,6 +19,8 @@ class AllegationQuerySet(models.query.QuerySet):
     def by_allegation_filter(self, allegation_query_filter):
         conditions = allegation_query_filter.allegation_filters()
         officer_names = allegation_query_filter.officer_names()
+        officer_allegation_count = allegation_query_filter.officer_allegation_count()
+        officer_discipline_count = allegation_query_filter.officer_discipline_count()
         latlng = allegation_query_filter.latlng()
         radius = allegation_query_filter.radius()
         complainant_gender = allegation_query_filter.complainant_gender()
@@ -30,6 +32,12 @@ class AllegationQuerySet(models.query.QuerySet):
 
         if officer_names:
             result = result.by_officer_names(officer_names)
+
+        if officer_allegation_count:
+            result = result.by_officer_count(officer_allegation_count, 'allegations_count')
+
+        if officer_discipline_count:
+            result = result.by_officer_count(officer_discipline_count, 'discipline_count')
 
         if latlng:
             result = result.by_latlng(latlng, radius)
@@ -98,6 +106,9 @@ class AllegationQuerySet(models.query.QuerySet):
             return self.filter(point__distance_lt=(point, D(m=radius)))
 
         return self
+
+    def by_officer_count(self, count, field='allegations_count'):
+        return self.filter(OfficerQuery.condition_by_count(count, field=field, prefix='officer__'))
 
     def update(self, *args, **kwargs):
         if 'document_id' in kwargs and int(kwargs['document_id']) > 0:

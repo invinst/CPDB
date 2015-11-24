@@ -44,7 +44,7 @@ class AdminQueryDataApi(View):
             cursor.execute('''
             SELECT DISTINCT search_query, COUNT(search_query) as num_usage, MAX(created_at) as updated_at, MAX(num_suggestions) as max_num_suggestions
             FROM search_suggestionlog
-            WHERE lower(search_query) LIKE '%{search_query}%' {additional_condition}
+            WHERE lower(search_query) LIKE '%{search_query}%' AND char_length(search_query) > 2 {additional_condition}
             GROUP BY search_query ORDER BY {order_by} {order} OFFSET {start} LIMIT {limit}
             '''.format(
                 search_query=q,

@@ -79,7 +79,7 @@ class OfficerDetailPageTestCase(BaseLiveTestCase):
         self.find('.document-thumbnail').should.be.ok
 
     def go_to_officer_detail_page(self, officer):
-        self.visit('/#!/data-tools')
+        self.visit_home()
         self.find('#officer_%s .officer-link' % officer.id).click()
 
     def number_of_complaints(self):

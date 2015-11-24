@@ -14,6 +14,7 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var AppConstants = require('../constants/AppConstants');
 var FilterStore = require('./FilterStore');
+var AppStore = require('stores/AppStore');
 var FilterActions = require('../actions/FilterActions');
 var assign = require('object-assign');
 
@@ -53,27 +54,8 @@ var MapStore = assign({}, EventEmitter.prototype, {
     return _polygons;
   },
 
-  update: function (query) {
-    var queryString = query || FilterStore.getQueryString(['areas__id']);
-    this.changeQuery(queryString);
-  },
-
-  changeQuery: function (queryString) {
-    var store = this;
-    if (queryString == _queryString) {
-      return;
-    }
-    _queryString = queryString;
-    if (_ajax_req) {
-      _ajax_req.abort();
-    }
-
-    this.emitBeforeChangeMarker();
-
-    _ajax_req = $.getJSON("/api/allegations/cluster/?" + queryString, function (data) {
-      _markers = data;
-      store.emitChangeMarker();
-    });
+  removeChangeMarkerListener: function(callback) {
+    this.removeListener(CHANGE_MARKER_EVENT, callback);
   },
 
   addChangeMarkerListener: function (callback) {
@@ -84,6 +66,10 @@ var MapStore = assign({}, EventEmitter.prototype, {
     this.emit(CHANGE_MARKER_EVENT);
   },
 
+  removeBeforeChangeMarkerListener: function(callback) {
+    this.removeListener(BEFORE_CHANGE_MARKER_EVENT, callback);
+  },
+
   addBeforeChangeMarkerListener: function (callback) {
     this.on(BEFORE_CHANGE_MARKER_EVENT, callback);
   },
@@ -92,5 +78,22 @@ var MapStore = assign({}, EventEmitter.prototype, {
     this.emit(BEFORE_CHANGE_MARKER_EVENT);
   }
 });
+
+
+AppDispatcher.register(function (action) {
+  switch (action.actionType) {
+    case AppConstants.MAP_CHANGE_MARKERS:
+      _markers = action.markers;
+      if (AppStore.isDataToolInit()) {
+        MapStore.emitBeforeChangeMarker();
+        MapStore.emitChangeMarker();
+      }
+      break;
+
+    default:
+      break;
+  }
+});
+
 
 module.exports = MapStore;

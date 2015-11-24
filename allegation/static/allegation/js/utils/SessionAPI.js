@@ -21,6 +21,9 @@ var SessionAPI = {
 
     ajax = $.getJSON(AppConstants.SESSION_API_ENDPOINT, params, function(data) {
       SessionActions.receivedSessionInfoData(data);
+      if (session == '') {
+        SessionActions.createdSession();
+      }
       ComplaintListAPI.getData()
     });
   },

@@ -37,6 +37,7 @@ $color_rajah_approx: #f46937
 $color_ship_cove_approx: #709dc0
 $color_silver_tree_approx: #62b28c
 $color_spring_wood_approx: #f7f7ed
+$color_spring_wood_approx2: #faf6f3
 $color_star_dust_approx: #9a9a9a
 $color_storm_dust_approx: #666
 $color_sushi_approx: #83b247
@@ -49,6 +50,11 @@ $red: red
 $seashell: #f1f1f1
 $white: white
 $wild_sand: #f4f4f4
+$light_blue: #E8F0F9
+$dark_blue: #1464f1
+$text_color: #013270
+$font_weight: 400
+$cubic_bezier: cubic-bezier(0, 0, 0.16, 1.08)
 
 @import 'shared/sf-compact-font'
 
@@ -341,8 +347,8 @@ footer
 .site-title
   font-size: 21px
   font-family: $font_1, $font_4
-  margin: 0 0 0 10px
-  width: 100%
+  margin: 8px 0 0 10px
+  width: 50%
   input
     border: none
     width: 100%
@@ -922,6 +928,8 @@ footer
   font-weight: 700
 
 .btn
+  text-transform: none
+
   &.btn-view
     &:not(.btn-link):not(.btn-flat)
       background-color: $color_deep_cerulean_approx
@@ -1250,6 +1258,14 @@ footer
     padding: 0 10px
     font-family: $font_0, $font_4
 
+#data-tool
+  background-color: $color_spring_wood_approx2
+  color: $color_mine_shaft_approx
+  .white-background
+    background-color: $white
+    .container-fluid.content
+      background-color: $white
+
 .chart-row
   background-color: $white
   border: 1px solid $color_celeste_approx
@@ -1302,9 +1318,6 @@ button a:hover
 
 .navbar-default.navbar
   @extend .extend_2
-
-ul.nav.navbar-nav
-  width: 84%
 
 .progress-bar.discipline
   background-color: $color_tall_poppy_approx
@@ -1408,10 +1421,11 @@ form.navbar-form.navbar-right
 
 
 .container-fluid.content
-  background-color: $white
+  background-color: $color_spring_wood_approx2
   padding-bottom: 20px
   margin-top: 28px
   max-width: 1230px
+
 
 .checkmark.embed
   background-color: $color_ship_cove_approx

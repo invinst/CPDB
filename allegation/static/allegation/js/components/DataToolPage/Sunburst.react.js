@@ -219,6 +219,7 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
         return colors[d.name];
       })
       .on("click", this.select)
+      .on("touchstart", this.select)
       .on("mouseover", this.mouseover);
 
     d3.select("#container").on("mouseleave", this.mouseleave);
@@ -298,7 +299,6 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
 
     this.initTabs();
 
-    SunburstAPI.getData(this.props.query);
     this.drawChart();
   },
 

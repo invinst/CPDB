@@ -2,25 +2,18 @@
 {% load staticfiles common_tags compress jsonify %}
 <html>
   <head>
-      <script>
-          if (document.location.href.indexOf("#") == -1) {
-              document.location.href = '/landing';
-          }
-      </script>
     {% block meta %}
+    <script type="text/javascript">
+    if (location.hash.search('officer/') != -1) {
+      location.href = location.hash.substr(2)
+    }
+    </script>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="cache-control" content="public" />
     <meta name="robots" content="follow, all" />
     <meta name="language" content="{{ LANGUAGE_CODE }}" />
-    <meta name="description"
-          content="{% block meta-description %}CPDB{% endblock %}" />
-      <link rel="prefetch" href="{% url "allegation:allegation-race-gender-api" %}?"/>
-      <link rel="prefetch" href="{% url "allegation:allegation-api-sunburst" %}?"/>
-      <link rel="prefetch" href="{% url "allegation:allegation-api-officers" %}?"/>
-      <link rel="prefetch" href="{% url "allegation:allegation-api-clusters" %}?"/>
-      <link rel="prefetch" href="{% url "allegation:allegation-race-gender-api" %}?"/>
-      <link rel="prefetch" href="{% url "allegation:allegation-api-summary" %}?"/>
+    <meta name="description" content="{% block meta-description %}CPDB{% endblock %}" />
     <meta name="keywords" content="{% block meta-keywords %}{% endblock %}" />
     <title>{{""|default_site_title}}</title>
     {% endblock %}
@@ -108,6 +101,7 @@
     {% endif %}
 
     <script src="{% static 'allegation/js/bundle.js' %}"></script>
+    <script src="{% static 'allegation/js/landing_page.js' %}"></script>
     <script type="text/javascript" id="inspectletjs">
     window.__insp = window.__insp || [];
     __insp.push(['wid', 452127049]);
@@ -149,12 +143,5 @@
           </div>
       </div>
   </div>
-  <script>
-    {% if DJANGO_ENV != 'test' or request.GET.with_disclaimer %}
-      $(function() {
-          $("#disclaimer").modal('show');
-      })
-    {% endif %}
-  </script>
   </body>
 </html>

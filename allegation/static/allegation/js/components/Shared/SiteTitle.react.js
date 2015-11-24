@@ -7,29 +7,23 @@ var Base = require('components/Base.react');
 var SessionAPI = require('utils/SessionAPI');
 var SessionActions = require('actions/SessionActions');
 var SessionStore = require("stores/SessionStore");
+var AppStore = require("stores/AppStore");
 var StringUtil = require('utils/StringUtil');
 
 var _timeout = false;
 
-function updateUrlWithSlugifiedTitle(hash, title) {
-  var slugifiedTitle = StringUtil.slugify(title);
-  window.history.replaceState([], "", "#!/data-tools/" + hash + "/" + slugifiedTitle);
-}
 
 var SiteTitle = React.createClass(_.assign(Base(SessionStore), {
   componentDidMount: function() {
     SessionStore.addChangeListener(this._onChange);
-
-    document.title = this.state.siteTitle;
   },
 
-  componentWillUpdate: function () {
-    var title = this.state.siteTitle;
-    document.title = title;
+  componentDidUpdate: function () {
+    document.title = this.state.siteTitle
+  },
 
-    if (this.props.changable) {
-      updateUrlWithSlugifiedTitle(this.state.data.hash, title);
-    }
+  componentWillUnmount: function () {
+    SessionStore.removeChangeListener(this._onChange);
   },
 
   render: function() {

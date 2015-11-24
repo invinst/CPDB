@@ -9,16 +9,16 @@
  * TodoActions
  */
 
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var AppConstants = require('../constants/AppConstants');
+var AppDispatcher = require('dispatcher/AppDispatcher');
+var AppConstants = require('constants/AppConstants');
 
 var MapActions = {
-
-  /**
-   * @param  {string} text
-   */
-
-
+  changeMarkers: function (markers) {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.MAP_CHANGE_MARKERS,
+      markers: markers
+    });
+  },
 };
 
 module.exports = MapActions;
