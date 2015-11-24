@@ -569,6 +569,7 @@ footer
   right: -30px
 
 .officer-horizontal-scroll-control
+  display: none
 
   &.off
     display: none !important
@@ -594,19 +595,12 @@ footer
       &.fa-angle-right
         padding-left: 3px
 
-.mobile-officer-list
+@media screen and (max-width: 1330px)
   .officer-control
     display: none
 
   .officer-horizontal-scroll-control
     display: block
-
-.desktop-officer-list
-  .officer-control
-    display: block
-
-  .officer-horizontal-scroll-control
-    display: none
 
 .overview-box
   padding: 3px 0
