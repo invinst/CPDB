@@ -540,39 +540,72 @@ footer
   width: 100%
   overflow: hidden
 
-.officer-horizontal-scroll-control
+.officer-control
+  background-color: $mercury !important
+  color: $color_mariner_approx
+  width: 30px
+  height: 50px
+  position: absolute
+  font-size: 37px
+  text-align: center
+  line-height: 0
+  top: 80px
+  cursor: pointer
+
   .fa
-    font-size: 30px
-    color: $color_mariner_approx
-    vertical-align: middle
+    margin-top: 5px
 
-    &.fa-angle-left
-      margin-left: 5px
+  &.off
+    display: none !important
 
-    &.fa-angle-right
-      margin-right: 5px
+  &:hover
+    opacity: .6
 
-  .pull-left:hover
-    .fa-angle-left
-      margin-left: 0
-      margin-right: 5px
+.officer-control-left
+  left: -30px
 
-  .pull-right:hover
-    .fa-angle-right
-      margin-right: 0
-      margin-left: 5px
+.officer-control-right
+  right: -30px
+
+.officer-horizontal-scroll-control
+
+  &.off
+    display: none !important
 
   .btn-officer-horizontal-scroll
-    width: 80px
-    padding: 6px 10px
+    width: 40px
+    height: 32px
+    padding: 0
     text-transform: none
     background-color: $mercury !important
     color: $color_mariner_approx !important
     vertical-align: middle
-    margin: 0 10px
 
-.officer-control.off
-  display: none
+    .fa
+      font-size: 28px
+      color: $color_mariner_approx
+      line-height: 0
+      padding-top: 12px
+
+      &.fa-angle-left
+        padding-left: -1px
+
+      &.fa-angle-right
+        padding-left: 3px
+
+.mobile-officer-list
+  .officer-control
+    display: none
+
+  .officer-horizontal-scroll-control
+    display: block
+
+.desktop-officer-list
+  .officer-control
+    display: block
+
+  .officer-horizontal-scroll-control
+    display: none
 
 .overview-box
   padding: 3px 0
