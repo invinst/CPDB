@@ -16,12 +16,18 @@ var Bar = React.createClass({
   },
 
   _enterMode: function () {
+    if (!this.isMounted()) {
+      return;
+    }
     this.setState({
       embedMode: true
     });
   },
 
   _leaveMode: function () {
+    if (!this.isMounted()) {
+      return;
+    }
     this.setState({
       embedMode: false
     });
@@ -86,7 +92,7 @@ var Bar = React.createClass({
             <li className="embed-button">
               <div className='smooth-scroll pointer' data-target='body'>
                 <i className='fa fa-chevron-up' ></i> Back to top
-              </div>  
+              </div>
             </li>
           </ul>
         </div>

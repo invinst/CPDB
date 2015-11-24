@@ -1,9 +1,12 @@
 var React = require('react');
 
 
+var DISCIPLINED_COLOR = '#a5b4be';
+var UNDISCIPLINED_COLOR = '#013270';
+
 var chartColors = {
-  'disciplined': '#a5b4be',
-  'undisciplined': '#0079ae'
+  'disciplined': DISCIPLINED_COLOR,
+  'undisciplined': UNDISCIPLINED_COLOR
 };
 
 var chart = null;
@@ -11,7 +14,7 @@ var chart = null;
 var DonutChart = React.createClass({
   buildBrowserData: function(officer) {
     var nonDisciplines = officer.allegations_count - officer.discipline_count;
-    var colors = ["#a5b4be", '#0079ae'],
+    var colors = [DISCIPLINED_COLOR, UNDISCIPLINED_COLOR],
       browserData = [],
       i,
       dataLen;
@@ -48,7 +51,7 @@ var DonutChart = React.createClass({
     span += '<span style="font-size: 28px"><strong>' + officer.discipline_count +
             " / " + officer.allegations_count + '</strong><br /></span>';
     span += '<span style="font-size: 16px;">' +
-      '<span style="color: ' + chartColors['disciplined'] + '">disciplined</span>' +      
+      '<span style="color: ' + chartColors['disciplined'] + '">disciplined</span>' +
       ' ' +
       '<span style="color: ' + chartColors['undisciplined'] + '">allegations</span>' +
       '</span>';
@@ -77,7 +80,7 @@ var DonutChart = React.createClass({
   componentDidMount: function () {
     var container = this.getDOMNode();
     var that = this;
-    var colors = ["#a5b4be", '#0079ae'],
+    var colors = [DISCIPLINED_COLOR, UNDISCIPLINED_COLOR],
       browserData = [],
       i,
       dataLen;

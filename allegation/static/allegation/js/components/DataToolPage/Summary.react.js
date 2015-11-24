@@ -120,6 +120,10 @@ var Summary = React.createClass({
             </div>
             <ExtraInformation />
           </div>
+          <div className="row">
+            <div className="col-md-12">
+            </div>
+          </div>
         </div>
       </div>
     );

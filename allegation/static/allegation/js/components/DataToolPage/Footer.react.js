@@ -1,5 +1,6 @@
 var React = require('react');
 var DisclaimerActions = require('actions/DisclaimerActions');
+var Bar = require('components/DataToolPage/Embed/Bar.react');
 
 var Footer = React.createClass({
   showDisclaimer: function() {
@@ -13,11 +14,11 @@ var Footer = React.createClass({
             <div className="col-lg-12">
               <div className="container">
                 <ul className="list-unstyled">
-                    <li className="pull-right">
-                      <a className='btn btn-transparent disclaimer-btn' onClick={this.showDisclaimer}>
-                        <i className='fa fa-warning'></i> About the data
-                      </a>
-                    </li>
+                  <li className="pull-right">
+                    <a className='btn btn-transparent disclaimer-btn' onClick={this.showDisclaimer}>
+                      <i className='fa fa-warning'></i> About the data
+                    </a>
+                  </li>
                 </ul>
                 <div id="powered-by">
                   <a href="/">

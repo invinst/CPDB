@@ -77,15 +77,16 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
 
   moveArrow: function () {
     $target = jQuery('.nav-link.active');
-    jQuery(".moving-arrow").animate({
-      left: $target.offset().left + $target.width() / 2 - 10
+    jQuery(".moving-arrow").css({
+      left: $target.offset().left - 5,
+      width: $target.width() + 10,
     }, 500);
   },
 
   render: function () {
     var mobileExpanded = isMobile.any && this.state.searchExpanded;
 
-    var storyNavClass = classnames('story-nav', {
+    var subNavClass = classnames('sub-nav', {
       'hidden': !AppStore.isStoryPage()
     });
 
@@ -120,8 +121,8 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
             <li className={this.getNavClass("findings")}><Link onClick={this.goToFindingPage} to="/findings" aria-controls="findings">Findings</Link></li>
           </ul>
         </div>
-        <div className="sub-nav">
-          <nav className={storyNavClass}>
+        <div className={subNavClass}>
+          <nav className='story-nav'>
             <a href="#" className="pull-right" data-target="#next-steps">Next Steps</a>
             <a href="#" className="pull-right" data-target="#invisible-institute">The Invisible Institute</a>
             <a href="#" className="pull-right active" data-target="#stateway">Stateway Gardens Litigation</a>

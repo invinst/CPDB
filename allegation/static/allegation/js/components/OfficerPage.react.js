@@ -73,12 +73,15 @@ var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
                 <OfficerDetail officer={officer} hasMap={hasMap} />
               </div>
             </div>
+            <div className="white-background">
+              <div className="container">
+                <RelatedOfficers relatedOfficers={relatedOfficers} />
+                <StoryList officer={officer} />
+              </div>
+            </div>
             <div className="container">
-              <RelatedOfficers relatedOfficers={relatedOfficers} />
-              <StoryList officer={officer} />
               <ComplaintSection officer={officer}/>
             </div>
-
             <div className='container-fluid'>
               <div className='sticky-footer'>
                 <Footer />
