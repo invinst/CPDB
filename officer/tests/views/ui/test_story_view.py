@@ -10,7 +10,7 @@ class StoryViewTestCase(BaseLiveTestCase):
         self.allegation = AllegationFactory()
 
     def visit_officer(self):
-        self.visit("/#!/data-tools")
+        self.visit_home()
         self.find(".officer-link").click()
 
     def test_display_stories(self):
