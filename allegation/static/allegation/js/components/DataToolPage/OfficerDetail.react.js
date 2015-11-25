@@ -25,7 +25,7 @@ var OfficerDetail = React.createClass({
     var complaintRate = this.getAvgClass();
 
     var complaintRateLabel = 'Below the average allegation rate';
-    if (officer.allegations_count > 20) {
+    if (officer.allegations_count > 10) {
       complaintRateLabel = 'Above the average allegation rate';
     }
 
