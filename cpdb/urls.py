@@ -25,6 +25,7 @@ from allegation.views import AllegationListView
 from allegation.views.session_view import InitSession
 from allegation.views.landing_view import LandingView
 from dashboard.views.admin_analysis_dashboard_view import AdminAnalysisDashboardView
+from mobile.views import MobileSiteView
 
 urlpatterns = [
     url(r'^admin/$', login_required(AdminAnalysisDashboardView.as_view()), name='my-view'),
@@ -34,6 +35,7 @@ urlpatterns = [
     url(r'^share/', include('share.urls', namespace='share')),
     url(r'^officer/', include('officer.urls', namespace='officer')),
     url(r'^document/', include('document.urls', namespace='document')),
+    url(r'^mobile/', MobileSiteView.as_view(), name='mobile'),
     url(r'^embed/', include('embed.urls', namespace='embed')),
     url(r'^api/', include('api.urls')),
     url(r'^init/', InitSession.as_view(), name='init'),
