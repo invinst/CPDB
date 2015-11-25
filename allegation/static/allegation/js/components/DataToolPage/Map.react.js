@@ -73,7 +73,7 @@ var Map = React.createClass({
     // but on coming back via routing the data is cached and is parsed/loaded immediately blocking
     // the browser from painting.
     setTimeout(function() {
-      MapAPI.getMarkers();
+      MapAPI.getMarkers(self.props.query);
     }, 200);
   },
 
