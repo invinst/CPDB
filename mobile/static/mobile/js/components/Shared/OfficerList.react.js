@@ -9,6 +9,8 @@ var OfficerList =  React.createClass({
         <OfficerCard fullName='John Angelopoulos' description='Female Native American'/>
         <OfficerCard fullName='John Angelopoulos' description='Female Native American'/>
         <OfficerCard fullName='John Angelopoulos' description='Female Native American'/>
+        <OfficerCard fullName='John Angelopoulos' description='Female Native American'/>
+        <OfficerCard fullName='John Angelopoulos' description='Female Native American'/>
       </div>
     )
   }
