@@ -133,11 +133,16 @@
 
     [role=tablist]
       margin: 0
+    ul
+      padding-left: 0
     li
       float: right
       list-style: none
       text-align: center
       margin-left: 65px
+
+      &:last-child
+        margin-left: 0
       a
         font-size: 16px
         font-family: 'San Francisco Text Web'
@@ -147,6 +152,7 @@
         position: relative
         a
           color: $text_color
+
     .moving-arrow
       content: ''
       display: inline-block
