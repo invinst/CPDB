@@ -91,8 +91,8 @@ var Map = React.createClass({
   // embedding
   getEmbedCode: function () {
     var node = this.getDOMNode();
-    var width = $(node).width();
-    var height = $(node).height();
+    var width = $(node).width() + 2;
+    var height = $(node).height() + 2;
     var src = "/embed/?page=map&query=" + encodeURIComponent(FilterStore.getQueryString());
     var state = MapStore.getState();
     state = {
