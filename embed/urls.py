@@ -8,5 +8,5 @@ cache_view = cache_page(86400 * 90)
 
 
 urlpatterns = [
-    url(r'^$', cache_view(xframe_options_exempt(EmbedView.as_view())), name='embed'),
+    url(r'^$', xframe_options_exempt(cache_view(EmbedView.as_view())), name='embed'),
 ]

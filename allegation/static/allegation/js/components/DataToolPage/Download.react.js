@@ -14,6 +14,15 @@ global.redirect = function (href) {
 
 
 var Download = React.createClass(_.assign(Base(DownloadStore), {
+  componentDidMount: function () {
+    DownloadStore.addChangeListener(this._onChange);
+    DownloadStore.addHrefChangeListener(this.onChangeHref);
+  },
+
+  componentWillUnmount: function () {
+    DownloadStore.removeChangeListener(this._onChange);
+    DownloadStore.removeHrefChangeListener(this.onChangeHref);
+  },
 
   onClick: function (e) {
     e.preventDefault();
@@ -32,7 +41,7 @@ var Download = React.createClass(_.assign(Base(DownloadStore), {
 
   },
 
-  componentDidUpdate: function () {
+  onChangeHref: function () {
     if (this.state.href) {
       redirect(this.state.href);
     }

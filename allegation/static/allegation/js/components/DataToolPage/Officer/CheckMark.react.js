@@ -1,10 +1,14 @@
 var React = require('react');
+
+var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
 var OfficerPresenter = require('presenters/OfficerPresenter');
 var CheckMarkStore = require('stores/Officer/CheckMarkStore');
 var OfficerActions = require('actions/OfficerActions');
 var CheckMarkActions = require('actions/Officer/CheckMarkActions');
 
 var CheckMark = React.createClass({
+  mixins: [EmbedMixin],
+
   getInitialState: function () {
     return CheckMarkStore.getState();
   },
@@ -15,6 +19,13 @@ var CheckMark = React.createClass({
 
   componentWillUnmount: function() {
     CheckMarkStore.removeChangeListener(this._onChange)
+  },
+
+  // embedding
+  getEmbedCode: function () {
+    var src = "/embed/?page=officer-card&pk=" + encodeURIComponent(this.props.officer.id);
+    return '<iframe width="170px" height="129px" frameborder="0" src="' + this.absoluteUri(src)
+       + '"></iframe>';
   },
 
   render: function() {

@@ -126,7 +126,7 @@ var Officer = React.createClass({
             </div>
           </div>
         </Link>
-        <CheckMark clickable={!this.props.noClick} officer={officer} page={this.props.page}/>
+        <CheckMark clickable={!this.props.noClick} officer={officer} page={this.props.page} embed={this.props.embed} />
       </div>
     );
   },

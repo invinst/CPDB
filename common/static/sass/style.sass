@@ -335,6 +335,9 @@ footer
   .row
     background-color: $color_mine_shaft_approx2
     padding: 8px 0
+  ul
+    li
+      display: inline-block
 
 #map
   border: 1px solid $color_celeste_approx
@@ -702,10 +705,7 @@ footer
   //If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
   box-shadow: 3px 3px 3px $color_celeste_approx
   max-height: 110px
-  overflow: hidden
 
-    background-color: #0079AE
-    color: white
   &.has-intersection
     &:hover, &.selected
       background-color: $text_color
@@ -1229,6 +1229,7 @@ footer
 
 .rackspace-logo
   height: 20px
+  width: 90px
 
 .btn-close
   &:not(.btn-link):not(.btn-flat)
@@ -1409,19 +1410,15 @@ form.navbar-form.navbar-right
     width: 1230px
 
 #EmbedBar
-  background-color: $color_cadet_blue_approx
   color: $white
   a
     color: $white
-
-  .active
-    background-color: $color_deep_cerulean_approx
-
 
 .embed-code
   background-color: $white
   padding: 10px
   border-bottom: 1px solid $color_cadet_blue_approx
+
   .fa
     color: $color_deep_cerulean_approx
     font-size: 25px
@@ -1438,8 +1435,18 @@ form.navbar-form.navbar-right
   margin-bottom: 5px
 
 .embed-button
-  padding: 17px 10px
-  display: inline-block
+  padding: 8px 10px
+  margin-top: 1px
+
+  &.active
+    background-color: $text_color
+
+  a
+    color: $white
+
+.hide-embed-button
+  .embed-button
+    display: none
 
 .embed
   .tooltip
@@ -1473,6 +1480,8 @@ form.navbar-form.navbar-right
   color: $white !important
   text-transform: none !important
   background-color: $black !important
+  margin-top: 0
+  margin-bottom: 0
 
 .stick-footer-bottom
   #data-tool
