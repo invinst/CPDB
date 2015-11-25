@@ -1,9 +1,9 @@
 import os
-
+from unittest import skipIf
 from selenium import webdriver
 
 from allegation.factories import AllegationFactory
-from common.tests.core import BaseLiveTestCase
+from common.tests.core import BaseLiveTestCase, IS_MOBILE
 
 
 class EmbedModeTestCase(BaseLiveTestCase):
@@ -19,6 +19,7 @@ class EmbedModeTestCase(BaseLiveTestCase):
         self.link('Exit mode').click()
         self.link('Exit mode').is_displayed().should.be.false
 
+    @skipIf(IS_MOBILE, "Skip in mobile mode")
     def test_embed_codes(self):
         map_column_code = self.find('.map-column .embed-code input')
         map_column_code.should.be.ok
