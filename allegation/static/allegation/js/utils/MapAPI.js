@@ -7,8 +7,9 @@ var ajax = null;
 var _queryString = null;
 
 var MapAPI = {
-  getMarkers: function () {
+  getMarkers: function (query) {
     var queryString = FilterStore.getQueryString(['areas__id']);
+    queryString = query || queryString;
 
     if (_queryString == queryString) {
       return;
