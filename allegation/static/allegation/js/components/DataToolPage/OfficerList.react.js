@@ -1,5 +1,5 @@
 var React = require('react');
-var classNames = require('classnames');
+var classnames = require('classnames');
 
 var Filters = require('components/DataToolPage/Filters.react');
 var OfficerActions = require('actions/OfficerActions');
@@ -215,7 +215,7 @@ var OfficerList = React.createClass({
       return (<div>No officers match the query.</div>);
     }
 
-    var sliderClassName = classNames('col-md-12', 'overview-container', {
+    var sliderClassName = classnames('col-md-12', 'overview-container', {
       'filtered': this.state.filtered
     });
 
@@ -244,6 +244,10 @@ var OfficerList = React.createClass({
             <div className="officer-control officer-control-right" onClick={this.slideToLeft} onDbClick={this.prevent}>
               <i className="fa fa-angle-right" />
             </div>
+          </div>
+          <div className="col-md-12 officer-horizontal-scroll-control">
+            <button className="btn btn-officer-horizontal-scroll pull-left" onClick={this.slideToRight} onDbClick={this.prevent}><i className="fa fa-angle-left" /></button>
+            <button className="btn btn-officer-horizontal-scroll pull-right" onClick={this.slideToLeft} onDbClick={this.prevent}><i className="fa fa-angle-right" /></button>
           </div>
         </div>
       </div>
@@ -386,8 +390,8 @@ var OfficerList = React.createClass({
     }
 
     var overview = $(".overview-container");
-    var controller = $(".officer-control");
-    if (max <= 1) {
+    var controller = $(".officer-control, .officer-horizontal-scroll-control");
+    if (max <= 0) {
       overview.hide();
       controller.addClass('off');
     } else {

@@ -24,6 +24,7 @@ $color_japanese_laurel_approx: green
 $color_jordy_blue_approx: #7bb4ff
 $color_kashmir_blue_approx: #4a6c96
 $color_lochmara_approx: #107ac0
+$color_mariner_approx: #1f6bec
 $color_mine_shaft_approx: #333333
 $color_mountain_mist_approx: #989898
 $color_mountain_mist_approx: #989898
@@ -540,6 +541,67 @@ footer
   width: 100%
   overflow: hidden
 
+.officer-control
+  background-color: $mercury !important
+  color: $color_mariner_approx
+  width: 30px
+  height: 50px
+  position: absolute
+  font-size: 37px
+  text-align: center
+  line-height: 0
+  top: 80px
+  cursor: pointer
+
+  .fa
+    margin-top: 5px
+
+  &.off
+    display: none !important
+
+  &:hover
+    opacity: .6
+
+.officer-control-left
+  left: -30px
+
+.officer-control-right
+  right: -30px
+
+.officer-horizontal-scroll-control
+  display: none
+
+  &.off
+    display: none !important
+
+  .btn-officer-horizontal-scroll
+    width: 40px
+    height: 32px
+    padding: 0
+    text-transform: none
+    background-color: $mercury !important
+    color: $color_mariner_approx !important
+    vertical-align: middle
+
+    .fa
+      font-size: 28px
+      color: $color_mariner_approx
+      line-height: 0
+      padding-top: 12px
+
+      &.fa-angle-left
+        padding-left: -1px
+
+      &.fa-angle-right
+        padding-left: 3px
+
+@media screen and (max-width: 1330px)
+  .officer-control
+    display: none
+
+  .officer-horizontal-scroll-control
+    display: block
+
 .overview-box
   padding: 3px 0
   opacity: .4
@@ -619,28 +681,6 @@ footer
   float: left
   margin-left: 25px
 
-.officer-control
-  background-color: $color_mountain_mist_approx
-  width: 46px
-  height: 66px
-  position: absolute
-  font-size: 64px
-  text-align: center
-  color: $white
-  line-height: 0
-  top: 72px
-  cursor: pointer
-  &.off
-    display: none
-
-  &:hover
-    opacity: .6
-
-.officer-control-left
-  left: -43px
-
-.officer-control-right
-  right: -43px
 
 .officer
   background-color: $seashell
@@ -752,10 +792,6 @@ footer
   white-space: nowrap
   padding: 10px 10px 0 15px
 
-@media only screen and (max-width: 1320px)
-  .officer-control
-    display: none
-
 @media only screen and (max-width: 320px)
   .officers-container
     width: 600%
@@ -763,9 +799,6 @@ footer
   .officer-block
     width: 16.666666%
     margin: 0
-
-  .officer-control
-    display: none
 
   .officer
     padding: 2px
