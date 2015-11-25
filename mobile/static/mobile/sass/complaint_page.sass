@@ -1,0 +1,44 @@
+.complaint-page
+  background-color: #ddd
+  .complaint-category
+    font-size: 16px
+  .complaint-sub-category
+    font-size: 19px
+    font-weight: 500
+    margin: 5px 0
+  .content
+    top: 50px
+    position: absolute
+    width: 100%
+    background-color: #DDD
+
+    .complaint-detail
+      background-color: #ddd
+      border-bottom: solid 1px #000
+      border-top: solid 1px #000
+      width: 100%
+      padding: 3px
+      div
+        padding: 2px
+        font-size: 13px
+        label
+          color: #aaa
+        span
+          color: #333
+          margin: 10px
+  .actions
+    margin-top: 10px
+    .btn
+      width: 40%
+      display: inline-block
+      margin-right: 10px
+      padding: 5px
+  .box
+    padding: 5px 0
+    background: #fff
+    z-index: 10
+@import 'complaint_page/complaint_detail'
+@import 'complaint_page/officer_involved'
+@import 'complaint_page/investigation_timeline'
+@import 'complaint_page/location'
+@import 'complaint_page/police_witness'
