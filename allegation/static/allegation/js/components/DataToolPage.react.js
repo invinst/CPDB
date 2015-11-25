@@ -80,7 +80,7 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
           <div className='col-md-6 map-column relative'>
             <Map />
           </div>
-          <div className='col-md-6'>
+          <div className='col-md-6 tabs-column'>
             <Search mobileExpanded={mobileExpanded} />
             <Tabs />
           </div>

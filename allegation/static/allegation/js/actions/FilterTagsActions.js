@@ -6,6 +6,7 @@ var SessionAPI = require('utils/SessionAPI');
 var RaceGenderAPI = require('utils/RaceGenderAPI');
 var SunburstAPI = require('utils/SunburstAPI');
 var FilterStore = require('stores/FilterStore');
+var EmbedStore = require('stores/EmbedStore');
 
 
 function updateSiteData(dontUpdateSession) {
@@ -20,6 +21,9 @@ function updateSiteData(dontUpdateSession) {
 
 var FilterTagsActions = {
   addTag: function (category, filter) {
+    if (EmbedStore.isEmbedMode()) {
+      return
+    }
     AppDispatcher.dispatch({
       actionType: AppConstants.ADD_TAG,
       category: category,
@@ -29,6 +33,9 @@ var FilterTagsActions = {
   },
 
   toggleTags: function (category, filters) {
+    if (EmbedStore.isEmbedMode()) {
+      return
+    }
     AppDispatcher.dispatch({
       actionType: AppConstants.TOGGLE_TAGS,
       category: category,
@@ -39,6 +46,9 @@ var FilterTagsActions = {
   },
 
   removeTag: function (category, filter, dontUpdateSession) {
+    if (EmbedStore.isEmbedMode()) {
+      return
+    }
     AppDispatcher.dispatch({
       actionType: AppConstants.REMOVE_TAG,
       category: category,
@@ -49,6 +59,9 @@ var FilterTagsActions = {
   },
 
   removedTag: function (category, filter) {
+    if (EmbedStore.isEmbedMode()) {
+      return
+    }
     AppDispatcher.dispatch({
       actionType: AppConstants.REMOVED_TAG,
       category: category,
@@ -59,6 +72,9 @@ var FilterTagsActions = {
   },
 
   pinTag: function (category, filter) {
+    if (EmbedStore.isEmbedMode()) {
+      return
+    }
     AppDispatcher.dispatch({
       actionType: AppConstants.PIN_TAG,
       category: category,

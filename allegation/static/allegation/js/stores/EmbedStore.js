@@ -36,6 +36,10 @@ var EmbedStore = _.assign(Base(_state), {
 
   emitLeave: function () {
     this.emit(LEAVE_EVENT);
+  },
+
+  isEmbedMode: function () {
+    return _state.embedMode;
   }
 });
 
