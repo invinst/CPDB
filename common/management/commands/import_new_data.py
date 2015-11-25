@@ -21,6 +21,7 @@ OFFICER_COLS = {
     'rank': 9,
     'unit': 10,
     'birth_year': 11,
+    'active': 12
 }
 ALLEGATION_COLS = {
     'crid': 1,
@@ -31,6 +32,7 @@ ALLEGATION_COLS = {
     'final_finding': 8,
     'final_outcome': 9,
     'beat': 14,
+    'location': 15,
     'add1': 16,
     'add2': 17,
     'city': 18,
@@ -108,6 +110,7 @@ class Command(BaseCommand):
 
                     if col == 'beat':
                         try:
+                            val = val.zfill(4)
                             val = Area.objects.get(name=val, type='police-beats')
                         except Area.DoesNotExist:
                             val = None
@@ -150,7 +153,7 @@ class Command(BaseCommand):
                 Allegation.objects.create(**kwargs)
             except Exception as inst:
                 print(inst, row)
-                
+
 
     def import_officers(self, *args, **options):
         print('Importing officers...')
@@ -204,17 +207,20 @@ class Command(BaseCommand):
                     else:
                         update_queue = self.handle_undecided(row, officers, update_queue)
 
+        print("Updating officers")
         for officers, info, row in update_queue:
             officers.update(**info)
             for officer in officers:
                 self.wudi_id_mapping[row[0]] = officer
 
+        print("Inserting new officers")
         for row in self.rows['new']:
             info = self.build_officer_info(row)
 
             officer = Officer.objects.create(**info)
             self.wudi_id_mapping[row[0]] = officer
 
+        print("Done importing officers")
         for group in self.rows:
             print(group + ' officers: ' + str(len(self.rows[group])))
 
@@ -232,7 +238,7 @@ class Command(BaseCommand):
         to_delete = max([o.id for o in officers])
         to_keep = officers.exclude(id=to_delete)
         if len(to_keep) == 1:
-            Allegation.objects.filter(officer_id=to_delete).update(officer_id=to_keep.first().id)
+            #Allegation.objects.filter(officer_id=to_delete).update(officer_id=to_keep.first().id)
             PoliceWitness.objects.filter(officer_id=to_delete).update(officer_id=to_keep.first().id)
             officers.filter(id=to_delete).delete()
             update_queue.append((to_keep, self.build_officer_info(row), row))
