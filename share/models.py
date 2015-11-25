@@ -28,14 +28,14 @@ OTHER_KEYS = {
 
 
 class Session(models.Model):
-    title = models.CharField(max_length=255)
-    query = JSONField()
-    active_tab = models.CharField(max_length=40, default='')
-    share_from = models.ForeignKey('share.Session', null=True, default=None)
-    share_count = models.IntegerField(default=0)
-    created_at = models.DateTimeField(default=timezone.now, null=True)
-    ip = models.CharField(default='', max_length=40, null=True) # we could handle IPv6 as well
-    user_agent = models.CharField(max_length=255, null=True)
+    title = models.CharField(max_length=255, blank=True)
+    query = JSONField(blank=True)
+    active_tab = models.CharField(max_length=40, default='', blank=True)
+    share_from = models.ForeignKey('share.Session', null=True, default=None, blank=True)
+    share_count = models.IntegerField(default=0, blank=True)
+    created_at = models.DateTimeField(default=timezone.now, null=True, blank=True)
+    ip = models.CharField(default='', max_length=40, null=True, blank=True) # we could handle IPv6 as well
+    user_agent = models.CharField(max_length=255, null=True, blank=True)
 
     @property
     def hash_id(self):
