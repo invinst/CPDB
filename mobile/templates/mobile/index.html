@@ -3,8 +3,8 @@
 <html>
   <head>
     {% block meta %}
-      <title>CPDP</title>
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <title>CPDP</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
     <meta http-equiv="cache-control" content="public" />
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -12,7 +12,6 @@
     <meta name="robots" content="follow, all" />
       <link rel="shortcut icon" type='image/png' href="{% static 'img/favicon.ico' %}" />
     {% endblock %}
-
     {% compress css %}
     <link rel="stylesheet" type="text/css" href="{% static 'ratchet/dist/css/ratchet-theme-ios.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'ratchet/dist/css/ratchet.min.css' %}" />
@@ -28,6 +27,7 @@
     {% compress js %}
         <script src="{% static 'ratchet/dist/js/ratchet.min.js' %}"></script>
     {% endcompress %}
+    <link href='https://api.mapbox.com/mapbox.js/v2.2.3/mapbox.css' rel='stylesheet' />
     <script src="{% static 'mobile/js/bundle.js' %}"></script>
   </body>
 </html>

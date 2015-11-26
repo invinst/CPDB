@@ -16,17 +16,17 @@ var SuggestionSection = React.createClass({
       <div id='suggestion-section' className={classNames}>
         <ul className="table-view">
           <li className="table-view-cell" >
-            <a onClick={this.itemOnClick.bind(this, 'Item 1')}>
+            <a href='#' onClick={this.itemOnClick.bind(this, 'Item 1')}>
               Item 1
             </a>
           </li>
           <li className="table-view-cell">
-            <a onClick={this.itemOnClick.bind(this, 'Item 2')}>
+            <a href='#' onClick={this.itemOnClick.bind(this, 'Item 2')}>
               Item 2
             </a>
           </li>
           <li className="table-view-cell">
-            <a onClick={this.itemOnClick.bind(this, 'Item 1')}>
+            <a href='#' onClick={this.itemOnClick.bind(this, 'Item 3')}>
               Item 3
             </a>
           </li>

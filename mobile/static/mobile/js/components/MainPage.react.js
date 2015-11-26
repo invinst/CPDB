@@ -19,9 +19,9 @@ var MainPage = React.createClass(_.assign(Base(MainPageStore), {
   },
 
   render: function () {
-    var classNames = cx('search-wrapper', 'pad', 'animation', { 'top-left': this.state.searchStatus != 'blank'});
+    var classNames = cx('search-wrapper', 'pad', 'animation', 'content', { 'top-left': this.state.searchStatus != 'blank'});
     return (
-      <div id='main-page'>
+      <div className='main-page'>
         <Logo topLeft={this.state.searchStatus != 'blank'} />
         <div className={classNames}>
           <Search />
