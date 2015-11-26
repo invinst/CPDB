@@ -64,12 +64,12 @@ var Download = React.createClass(_.assign(Base(DownloadStore), {
       )
     }
 
-    var downloadClassName = classnames({
+    var downloadClassName = classnames('download-wrapper', {
       'invisible': !this.state.query
     })
 
     return (
-      <div className="download-wrapper" className={downloadClassName}>
+      <div className={downloadClassName}>
         {content}
       </div>
     );
