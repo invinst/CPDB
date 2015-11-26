@@ -5,7 +5,6 @@ DEFAULT_MAX_HEIGHT = 300
 var Collapse = React.createClass({
   getInitialState: function () {
     var collapse = this.props.collapse ? false : true;
-    console.log(collapse)
     var maxHeight = this.props.maxHeight || DEFAULT_MAX_HEIGHT;
 
     return {

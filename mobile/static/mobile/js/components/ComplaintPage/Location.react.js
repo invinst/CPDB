@@ -1,9 +1,8 @@
-var cx = require('classnames');
 var React = require('react');
-var InvestigateCard = require('components/Shared/InvestigateCard.react');
-var OfficerList = require('components/Shared/OfficerList.react');
 
-var InvestigatorPanel =  React.createClass({
+var Map = require('components/Shared/Map.react');
+
+var Location =  React.createClass({
   render: function(){
     return  (
       <div className='location'>
@@ -28,11 +27,12 @@ var InvestigatorPanel =  React.createClass({
             <span>Chicago IL 60643</span>
           </div>
         </div>
-        <div className="map">
+        <div className='location-map'>
+          <Map />
         </div>
       </div>
     )
   }
 });
 
-module.exports = InvestigatorPanel;
+module.exports = Location;

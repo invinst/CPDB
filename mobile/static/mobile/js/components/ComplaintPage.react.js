@@ -3,7 +3,7 @@ var Logo = require('components/Shared/Logo.react');
 var ComplaintDetail = require('components/ComplaintPage/ComplaintDetail.react');
 var About = require('components/Shared/About.react');
 var OfficerInvolved = require('components/ComplaintPage/OfficerInvolved.react');
-var Investigator = require('components/ComplaintPage/Investigator.react');
+var InvestigatorSection = require('components/ComplaintPage/InvestigatorSection.react');
 var InvestigationTimeline = require('components/ComplaintPage/InvestigationTimeline.react');
 var Location = require('components/ComplaintPage/Location.react');
 var PoliceWitnesses = require('components/ComplaintPage/PoliceWitnesses.react');
@@ -23,7 +23,7 @@ var ComplaintPage = React.createClass({
             </div>
             <ComplaintDetail/>
             <OfficerInvolved />
-            <Investigator />
+            <InvestigatorSection />
             <InvestigationTimeline />
             <Location />
             <PoliceWitnesses />
