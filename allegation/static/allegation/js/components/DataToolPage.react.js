@@ -38,6 +38,10 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
       return false;
     }
 
+    if (SessionStore.isNoQuery()) {
+      return false;
+    }
+
     return top >= $("#complaint-list").offset().top;
   },
 
