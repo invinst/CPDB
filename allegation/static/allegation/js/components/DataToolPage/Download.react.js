@@ -1,5 +1,6 @@
-var React = require('react');
 var _ = require('lodash');
+var React = require('react');
+var classnames = require('classnames');
 
 var Base = require('components/Base.react');
 var AppConstants = require('constants/AppConstants');
@@ -49,9 +50,6 @@ var Download = React.createClass(_.assign(Base(DownloadStore), {
 
   render: function () {
     var content = '';
-    if (!this.state.query) {
-      return <div className="hidden"></div>
-    }
     if (this.state.processing) {
       content = (
         <div className="progress progress-striped active">
@@ -65,8 +63,13 @@ var Download = React.createClass(_.assign(Base(DownloadStore), {
         </a>
       )
     }
+
+    var downloadClassName = classnames({
+      'invisible': !this.state.query
+    })
+
     return (
-      <div className="download-wrapper">
+      <div className="download-wrapper" className={downloadClassName}>
         {content}
       </div>
     );
