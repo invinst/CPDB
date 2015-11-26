@@ -1,18 +1,3 @@
-"""cpdb URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/1.8/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  url(r'^$', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  url(r'^$', Home.as_view(), name='home')
-Including another URLconf
-    1. Add an import:  from blog import urls as blog_urls
-    2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
-"""
 from django.conf import settings
 from django.conf.urls import include, url, patterns
 from django.conf.urls.static import static
@@ -20,6 +5,10 @@ from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
+from wagtail.wagtailadmin import urls as wagtailadmin_urls
+from wagtail.wagtailcore import urls as wagtail_urls
+from wagtail.wagtaildocs import urls as wagtaildocs_urls
+from wagtail.wagtailsearch import urls as wagtailsearch_urls
 
 from allegation.views import AllegationListView
 from allegation.views.session_view import InitSession
@@ -27,7 +16,7 @@ from allegation.views.landing_view import LandingView
 from dashboard.views.admin_analysis_dashboard_view import AdminAnalysisDashboardView
 
 urlpatterns = [
-    url(r'^admin/$', login_required(AdminAnalysisDashboardView.as_view()), name='my-view'),
+    url(r'^admin/$', login_required(AdminAnalysisDashboardView.as_view()), name='dashboard-admin'),
     url(r'^admin/models/', include(admin.site.urls)),
     url(r'^', include('allegation.urls', namespace='allegation')),
     url(r'^search/', include('search.urls', namespace='search')),
@@ -42,6 +31,14 @@ urlpatterns = [
     url(r'^/session/(?P<hash_id>[\w-]+)/$', ensure_csrf_cookie(AllegationListView.as_view()), name='homepage-share'),
     url(r'^/session/(?P<hash_id>[\w-]+)/(?P<slugified_url>[\w-]+)$', ensure_csrf_cookie(AllegationListView.as_view()), name='homepage-share-with-title'),
     url(r'^(findings|story|method|data(/\w+/(.+)?)?|officer/[^/]+/\d+)?$', ensure_csrf_cookie(AllegationListView.as_view()), name='homepage'),
+    url(r'^wagtail-admin/', include(wagtailadmin_urls)),
+
+    url(r'^search/', include(wagtailsearch_urls)),
+    url(r'^documents/', include(wagtaildocs_urls)),
+
+    # For anything not caught by a more specific rule above, hand over to
+    # Wagtail's serving mechanism
+    url(r'', include(wagtail_urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DJANGO_ENV == 'test':

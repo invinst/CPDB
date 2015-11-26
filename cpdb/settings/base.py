@@ -38,7 +38,24 @@ INSTALLED_APPS = (
     'jsonify',
     'django_nose',
     'django_user_agents',
+    'taggit',
+    'modelcluster',
 
+    'wagtail_cms',
+
+    'wagtail.wagtailcore',
+    'wagtail.wagtailadmin',
+    'wagtail.wagtaildocs',
+    'wagtail.wagtailsnippets',
+    'wagtail.wagtailusers',
+    'wagtail.wagtailimages',
+    'wagtail.wagtailembeds',
+    'wagtail.wagtailsearch',
+    'wagtail.wagtailsites',
+    'wagtail.wagtailredirects',
+    'wagtail.wagtailforms',
+
+    'home',
     'common',
     'allegation',
     'officer',
@@ -64,6 +81,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 
+    'wagtail.wagtailcore.middleware.SiteMiddleware',
+    'wagtail.wagtailredirects.middleware.RedirectMiddleware',
 )
 
 ROOT_URLCONF = 'cpdb.urls'
@@ -71,7 +90,7 @@ ROOT_URLCONF = 'cpdb.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -97,7 +116,7 @@ WSGI_APPLICATION = 'cpdb.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'cpdb',
+        'NAME': 'cpdb_old',
         'USER': os.environ.get('DB_USER', 'eastagile'),
         'PASSWORD': '',
         'HOST': '127.0.0.1',
@@ -216,3 +235,6 @@ REST_FRAMEWORK = {
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 SITE_ID = 1
+
+# WAGTAIL
+WAGTAIL_SITE_NAME = 'CPDB'

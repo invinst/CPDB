@@ -30,6 +30,7 @@ var Navigation = React.createClass({
     return (
       <ul className='list-unstyled col-md-12 col-xs-12 navigation'>
         { this.renderNavigation() }
+        <li><a href="/wagtail-admin">Wagtail</a></li>
       </ul>
     )
   },
