@@ -16,9 +16,9 @@ var OutcomeFilterItem = React.createClass({
 
     var filterIconClass = ["fa fa-circle", type].join(' ');
     if (type != 'all') {
-      var filterIcon = <span><i className={filterIconClass}></i>{name} ({formattedQuantity})</span>;
+      var filterIcon = (<span><i className={filterIconClass}></i>{name} {formattedQuantity}</span>);
     } else {
-      var filterIcon = <span>{name} ({formattedQuantity})</span>
+      var filterIcon = (<span>{name} {formattedQuantity}</span>);
     }
 
     var activeClass = this.props.active ? 'active' : '';

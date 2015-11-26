@@ -3,10 +3,7 @@ from unittest import skipIf, skipUnless
 
 from selenium import webdriver
 
-from common.tests.core import BaseLiveTestCase, BaseMobileLiveTestCase
-
-
-IS_MOBILE = os.environ.get('MOBILE') == '1'
+from common.tests.core import BaseLiveTestCase, BaseMobileLiveTestCase, IS_MOBILE
 
 
 class ActiveTabAssertationMixin(object):

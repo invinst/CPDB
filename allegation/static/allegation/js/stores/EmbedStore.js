@@ -1,24 +1,18 @@
-/*
- * Copyright (c) 2014, Facebook, Inc.
- * All rights reserved.
- *
- * This source code is licensed under the BSD-style license found in the
- * LICENSE file in the root directory of this source tree. An additional grant
- * of patent rights can be found in the PATENTS file in the same directory.
- *
- * EmbedStore
- */
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var EventEmitter = require('events').EventEmitter;
-var AppConstants = require('../constants/AppConstants');
-var assign = require('object-assign');
+var _ = require('lodash');
+
+var AppDispatcher = require('dispatcher/AppDispatcher');
+var AppConstants = require('constants/AppConstants');
+var Base = require('stores/Base');
+
+var ENTER_EVENT = 'ENTER_EVENT';
+var LEAVE_EVENT = 'LEAVE_EVENT';
+
+var _state = {
+  embedMode: false,
+}
 
 
-var ENTER_EVENT = 'enter';
-var LEAVE_EVENT = 'leave';
-
-
-var EmbedStore = assign({}, EventEmitter.prototype, {
+var EmbedStore = _.assign(Base(_state), {
 
   addEnterListener: function (callback) {
     this.on(ENTER_EVENT, callback);
@@ -42,6 +36,10 @@ var EmbedStore = assign({}, EventEmitter.prototype, {
 
   emitLeave: function () {
     this.emit(LEAVE_EVENT);
+  },
+
+  isEmbedMode: function () {
+    return _state.embedMode;
   }
 });
 
@@ -49,11 +47,15 @@ var EmbedStore = assign({}, EventEmitter.prototype, {
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
   case AppConstants.ENTER_EMBED_MODE:
+    _state.embedMode = true;
     EmbedStore.emitEnter();
+    EmbedStore.emitChange();
     break;
 
   case AppConstants.LEAVE_EMBED_MODE:
+    _state.embedMode = false;
     EmbedStore.emitLeave();
+    EmbedStore.emitChange();
     break;
 
   default:

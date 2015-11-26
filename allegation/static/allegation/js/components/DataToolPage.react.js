@@ -5,7 +5,6 @@ var isMobile = require('ismobilejs');
 var AppConstants = require('constants/AppConstants');
 var Base = require('components/Base.react');
 var ComplaintSection = require('components/DataToolPage/ComplaintSection.react');
-var EmbedBar = require('components/DataToolPage/Embed/Bar.react');
 var Footer = require('components/DataToolPage/Footer.react');
 var Filters = require('components/DataToolPage/Filters.react');
 var Map = require('components/DataToolPage/Map.react');
@@ -81,7 +80,7 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
           <div className='col-md-6 map-column relative'>
             <Map />
           </div>
-          <div className='col-md-6'>
+          <div className='col-md-6 tabs-column'>
             <Search mobileExpanded={mobileExpanded} />
             <Tabs />
           </div>
@@ -113,14 +112,7 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
         </div>
         <div className='container-fluid'>
           <div className='sticky-footer'>
-            <div id='EmbedBar' className="row">
-              <div className="col-md-12">
-                <div className='container'>
-                  <EmbedBar />
-                </div>
-              </div>
-            </div>
-            <Footer />
+            <Footer withEmbedBar={true}/>
           </div>
         </div>
         <HappyFox />

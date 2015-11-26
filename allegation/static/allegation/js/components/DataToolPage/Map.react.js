@@ -73,7 +73,7 @@ var Map = React.createClass({
     // but on coming back via routing the data is cached and is parsed/loaded immediately blocking
     // the browser from painting.
     setTimeout(function() {
-      MapAPI.getMarkers();
+      MapAPI.getMarkers(self.props.query);
     }, 200);
   },
 
@@ -91,8 +91,8 @@ var Map = React.createClass({
   // embedding
   getEmbedCode: function () {
     var node = this.getDOMNode();
-    var width = $(node).width();
-    var height = $(node).height();
+    var width = $(node).width() + 2;
+    var height = $(node).height() + 2;
     var src = "/embed/?page=map&query=" + encodeURIComponent(FilterStore.getQueryString());
     var state = MapStore.getState();
     state = {

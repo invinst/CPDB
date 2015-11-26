@@ -11,5 +11,8 @@ class EmbedView(TemplateView):
         context['page'] = self.request.GET.get('page')
         context['pk'] = self.request.GET.get('pk')
         context['query'] = self.request.GET.get('query')
-        context['state'] = json.loads(self.request.GET.get('state'))
+        state = self.request.GET.get('state')
+        if state:
+            state = json.loads(state)
+            context['state'] = state
         return context
