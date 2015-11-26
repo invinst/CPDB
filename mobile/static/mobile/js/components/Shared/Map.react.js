@@ -8,7 +8,7 @@ var Map = React.createClass({
     var defaultZoom =  11;
     var center = [41.85677, -87.6024055];
     var map = L.mapbox.map(this.getDOMNode(), 'mapbox.streets').setView(center, defaultZoom);
-    map.touchZoom.disable();
+    //map.touchZoom.disable();
     map.doubleClickZoom.disable();
     map.scrollWheelZoom.disable();
   },
