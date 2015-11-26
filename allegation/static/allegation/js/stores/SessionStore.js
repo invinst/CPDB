@@ -7,6 +7,7 @@ var FilterStore = require('../stores/FilterStore');
 var MapStore = require('../stores/MapStore');
 var OfficerListStore = require('../stores/OfficerListStore');
 var OfficerPresenter = require('presenters/OfficerPresenter');
+var AppStore = require('stores/AppStore');
 
 var _state = {
   'data': {
@@ -76,6 +77,11 @@ var SessionStore = _.assign(Base(_state), {
       }
     }
   },
+
+  isNoQuery: function () {
+    return _.isEmpty(_state.data.query.active_officers) && _.isEmpty(_state.data.query.filters);
+  },
+
   removeSessionCreatedListener: function(callback) {
     this.removeListener(SESSION_CREATED_EVENT, callback);
   },
@@ -90,7 +96,7 @@ var SessionStore = _.assign(Base(_state), {
 });
 
 // Register callback to handle all updates
-AppDispatcher.register(function (action) {
+SessionStore.dispatcherToken = AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.SAVE_SESSION:
     // SessionStore.updateSession(action.data);
@@ -140,5 +146,7 @@ AppDispatcher.register(function (action) {
     default: break;
   }
 });
+
+AppStore.sessionDispatcherToken = SessionStore.dispatcherToken;
 
 module.exports = SessionStore;

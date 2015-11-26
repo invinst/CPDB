@@ -83,7 +83,7 @@ var AppStore = _.assign(Base(_state), {
 });
 
 // Register callback to handle all updates
-AppDispatcher.register(function (action) {
+AppStore.dispatcherToken = AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.INIT_DATA_TOOL:
       if (!_state.isDataToolInit) {
@@ -103,6 +103,7 @@ AppDispatcher.register(function (action) {
 
     case AppConstants.RECEIVED_SESSION_DATA:
     case AppConstants.RECEIVED_UPDATED_SESSION_DATA:
+      AppDispatcher.waitFor([AppStore.sessionDispatcherToken]);
       var data = action.data.data;
       _state.session_title = data.title;
       _state.session_hash = data.hash;
