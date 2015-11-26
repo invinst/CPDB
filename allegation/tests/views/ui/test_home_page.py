@@ -194,14 +194,16 @@ class HomePageTestCase(BaseLiveTestCase):
         officer = self.allegation.officer
         AllegationFactory.create_batch(40, officer=officer)
         self.browser.set_window_size(width=1200, height=800)
-        self.open_complaint_detail_with_class()
-        self.until_ajax_complete()
-
+        self.visit_home()
         self.is_displayed_in_viewport('.sticky-footer').should.be.false
+
+        self.find('.checkmark').click()
+        self.until_ajax_complete()
 
         self.browser.execute_script("jQuery(window).scrollTop(jQuery('#complaint-list').offset().top + 100);")
         self.until(lambda: self.is_displayed_in_viewport('.sticky-footer').should.be.true)
-        self.find('body').send_keys(Keys.PAGE_UP)
+        self.browser.execute_script("jQuery(window).scrollTop(jQuery('#complaint-list').offset().top - 100);")
+
         self.until(lambda: self.is_displayed_in_viewport('.sticky-footer').should.be.false)
 
     def test_replace_old_filter_in_same_category(self):
