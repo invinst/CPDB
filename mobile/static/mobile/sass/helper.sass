@@ -12,6 +12,14 @@
   -ms-transition: all 0.3s ease-out
   transition: all 0.3s ease-out
 
+
+.animation-long
+  -webkit-transition: all 1000ms cubic-bezier(1.000, 0.005, 0.005, 1.000)
+  -moz-transition: all 1000ms cubic-bezier(1.000, 0.005, 0.005, 1.000)
+  -o-transition: all 1000ms cubic-bezier(1.000, 0.005, 0.005, 1.000)
+  transition: all 1000ms cubic-bezier(1.000, 0.005, 0.005, 1.000)
+
+
 .hidden
   display: none
 
@@ -29,3 +37,8 @@
   width: 1px
   background: #000
   height: 100%
+
+.collapse-content
+  overflow: hidden
+  display: block
+
