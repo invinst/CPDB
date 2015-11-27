@@ -17,13 +17,42 @@ var StoryList = React.createClass(_.assign(Base(StoryListStore), {
 
   render: function () {
     return (
-      <div id="story_list">{ this.renderStoryInGroup() }</div>
+      <div id="story_list">
+        { this.renderStoryInGroup() }
+        { this.renderStoryNotInGroup() }
+      </div>
     );
+  },
+
+  renderStoryGroup: function (stories, story_type) {
+    stories = stories.map(function (story) {
+      return <Story key={story.id} story={story} />
+    });
+
+    return (
+      <div>
+        <div className='row'><h3 className='col-md-12'>{story_type}</h3></div>
+        <div className="row">{stories}</div>
+      </div>
+    );
+  },
+
+  renderStoryNotInGroup: function () {
+    var that = this;
+
+    var storyTypesOrders = this.storyTypesOrder();
+    return _.map(this.groupStories(), function (stories, story_type) {
+      if (storyTypesOrders.indexOf(story_type) != -1) {
+        return '';
+      }
+      return that.renderStoryGroup(stories, story_type);
+    });
   },
 
   renderStoryInGroup: function () {
     var groupStories = this.groupStories();
     var stories;
+    var that = this;
 
     return _.map(this.storyTypesOrder(), function (story_type) {
       stories = groupStories[story_type]
@@ -31,17 +60,7 @@ var StoryList = React.createClass(_.assign(Base(StoryListStore), {
       if (!stories || !stories.length) {
         return '';
       }
-
-      stories = stories.map(function (story) {
-        return <Story key={story.id} story={story} />
-      });
-
-      return (
-        <div>
-          <div className='row'><h3 className='col-md-12'>{story_type}</h3></div>
-          <div className="row">{stories}</div>
-        </div>
-      );
+      return that.renderStoryGroup(stories, story_type);
     });
   },
 
