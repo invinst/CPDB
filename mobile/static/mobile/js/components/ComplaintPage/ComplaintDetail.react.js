@@ -1,8 +1,9 @@
 var React = require('react');
 
-var ComplaintDetail =  React.createClass({
-  render: function(){
-    return  (
+
+var ComplaintDetail = React.createClass({
+  render: function () {
+    return (
       <div className='complaint-detail'>
         <div className='under-line'>
           <div className='inline'>

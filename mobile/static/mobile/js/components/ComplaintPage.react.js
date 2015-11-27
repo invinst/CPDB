@@ -1,10 +1,11 @@
 var React = require('react');
-var Logo = require('components/Shared/Logo.react');
-var ComplaintDetail = require('components/ComplaintPage/ComplaintDetail.react');
+
 var About = require('components/Shared/About.react');
+var ComplaintDetail = require('components/ComplaintPage/ComplaintDetail.react');
 var OfficerInvolved = require('components/ComplaintPage/OfficerInvolved.react');
 var InvestigatorSection = require('components/ComplaintPage/InvestigatorSection.react');
 var InvestigationTimeline = require('components/ComplaintPage/InvestigationTimeline.react');
+var Logo = require('components/Shared/Logo.react');
 var Location = require('components/ComplaintPage/Location.react');
 var PoliceWitnesses = require('components/ComplaintPage/PoliceWitnesses.react');
 

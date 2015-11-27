@@ -1,5 +1,6 @@
 var React = require('react');
 
+
 var ComplaintResult = React.createClass({
   render: function () {
     return (

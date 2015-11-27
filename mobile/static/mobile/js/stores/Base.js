@@ -1,11 +1,12 @@
+var objectAssign = require('object-assign');
+var EventEmitter = require('events').EventEmitter;
+
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
-var EventEmitter = require('events').EventEmitter;
-var _ = require('lodash');
 
 
 var Base = function(state) {
-  return _.assign({}, EventEmitter.prototype, {
+  return objectAssign({}, EventEmitter.prototype, {
     _state: state,
 
     getState: function() {

@@ -1,24 +1,25 @@
-var _ = require('lodash');
 var cx = require('classnames');
+var objectAssign = require('object-assign');
 var React = require('react');
 
 var Base = require('components/Base.react');
-var SearchResultSectionStore = require('stores/MainPage/SearchResultSectionStore');
 
 var OfficerResult = require('components/MainPage/SearchReultSection/OfficerResult.react');
 var ComplaintResult = require('components/MainPage/SearchReultSection/ComplaintResult.react');
+var SearchResultSectionStore = require('stores/MainPage/SearchResultSectionStore');
 var SearchResultSectionActions = require('actions/MainPage/SearchResultSectionActions')
 
-var SearchResultSection = React.createClass(_.assign(Base(SearchResultSectionStore), {
+
+var SearchResultSection = React.createClass(objectAssign(Base(SearchResultSectionStore), {
   onClick: function (tab, e) {
     SearchResultSectionActions.changeTab(tab)
   },
 
   render: function () {
-    var classNames = cx({'hidden': !this.props.visible });
+    var classNames = cx({'hidden': !this.props.visible});
 
     return (
-      <div id='results' className={classNames} >
+      <div id='results' className={classNames}>
         <nav className='tabs'>
           <a className="item" href="#" onClick={this.onClick.bind(this, 'officer')}>
             Officer
@@ -30,8 +31,8 @@ var SearchResultSection = React.createClass(_.assign(Base(SearchResultSectionSto
             Complaints
           </a>
         </nav>
-        <OfficerResult visible={this.state.currentTab == 'officer'} />
-        <ComplaintResult visible={this.state.currentTab == 'complaint'} />
+        <OfficerResult visible={this.state.currentTab == 'officer'}/>
+        <ComplaintResult visible={this.state.currentTab == 'complaint'}/>
       </div>
     )
   }

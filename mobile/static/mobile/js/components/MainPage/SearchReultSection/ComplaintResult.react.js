@@ -3,6 +3,7 @@ var React = require('react');
 var Link = require('react-router').Link;
 var ComplaintCard = require('components/Shared/ComplaintCard.react');
 
+
 var ComplaintResult = React.createClass({
   render: function () {
     var classNames = cx('complaint-result', {'hidden': !this.props.visible});
@@ -13,7 +14,7 @@ var ComplaintResult = React.createClass({
           <li className="complaint-result-item">
             <Link to={'/complaint'} data-transition='slide-in'>
               <ComplaintCard />
-              </Link>
+            </Link>
           </li>
           <li className="complaint-result-item">
             <ComplaintCard />
