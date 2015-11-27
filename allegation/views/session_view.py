@@ -130,6 +130,6 @@ class InitSession(SessionAPIView):
                     }
                 }
             )
-            return HttpResponseRedirect("/#!/data-tools/{session_hash}".format(session_hash=session.hash_id))
+            return HttpResponseRedirect("/data/{session_hash}".format(session_hash=session.hash_id))
 
-        return HttpResponseRedirect("/#!/data-tools/")
+        return HttpResponseRedirect("/data/")
