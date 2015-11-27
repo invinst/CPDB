@@ -10,7 +10,7 @@ class RequestViewTestCase(BaseLiveTestCase):
         AllegationFactory()
         AllegationFactory()
 
-        self.visit('/#!/data-tools')
+        self.visit_home()
         self.find(".officer .checkmark").click()
         self.until(lambda: self.find(".complaint-row .btn-request").click())
 

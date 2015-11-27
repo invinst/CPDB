@@ -137,7 +137,7 @@ var StoryPage = React.createClass({
                 <p>
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas dictum malesuada ornare. Quisque magna elit, accumsan imperdiet mauris ac, sollicitudin mollis felis.
                 </p>
-                <a href="/#!/data-tools" className="btn">See the database</a>
+                <a href="/data" className="btn">See the database</a>
               </div>
             </div>
           </div>

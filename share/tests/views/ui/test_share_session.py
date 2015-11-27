@@ -5,7 +5,7 @@ from share.models import Session
 
 class ShareSessionTestCase(BaseLiveTestCase):
     def test_share_id_appended_to_url_in_home(self):
-        self.visit("/#!/data-tools")
+        self.visit_home()
         self.find("body").click()  # bug - firefox focus url address bar
         self.until(lambda: self.browser.current_url.count("/") >= 4)  # http://host:port/hash/
 
@@ -18,7 +18,7 @@ class ShareSessionTestCase(BaseLiveTestCase):
         Session.objects.all().count().should.equal(session_count)  # no new session created
 
     def test_save_current_filter_in_session(self):
-        self.visit("/#!/data-tools")
+        self.visit_home()
         self.find("body").click()
 
         allegation = AllegationFactory()
