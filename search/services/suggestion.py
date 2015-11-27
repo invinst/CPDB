@@ -8,6 +8,7 @@ from common.models import AllegationCategory, Allegation, Area, Investigator, Of
 from search.models.alias import Alias
 from search.utils.date import *
 from search.utils.zip_code import *
+from share.models import Session
 
 
 AREA_SORT_ORDERS = { 'police-beats': 0, 'neighborhoods': 1, 'ward': 2, 'police-districts': 3, 'school-grounds': 5 }
@@ -189,6 +190,19 @@ class Suggestion(object):
         if q.startswith('rep'):
             return [['Repeater (10+ complaints)', 10]]
 
+    def suggest_searchable_session(self, query):
+        session_id = Session.id_from_hash(query)
+        if len(session_id) == 0:
+            return []
+
+        session_id = session_id[0]
+        sessions = Session.objects.filter(id=session_id, searchable=True)
+        results = []
+        for session in sessions:
+            results.append([session.title if session.title else session.hash_id, session.hash_id])
+
+        return results
+
     def query_suggestions(self, model_cls, cond, fields_to_get, limit=5, order_bys=None):
         flat = True if len(fields_to_get) == 1 else False
         queryset = model_cls.objects.filter(cond).values_list(*fields_to_get, flat=flat)
@@ -233,6 +247,8 @@ class Suggestion(object):
         ret['data_source'] = self.suggest_data_source(q)
 
         ret['officer__allegations_count__gt'] = self.suggest_repeat_offenders(q)
+
+        ret['session'] = self.suggest_searchable_session(q)
 
         ret = OrderedDict((k, v) for k, v in ret.items() if v)
         return ret

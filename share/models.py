@@ -72,6 +72,7 @@ class Session(models.Model):
         session.query = self.query
         session.active_tab = self.active_tab
         session.share_from = self
+        session.searchable = self.searchable
         session.save()
         return session
 

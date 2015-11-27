@@ -29,6 +29,7 @@ var SessionAPI = {
   },
 
   updateSessionInfo: function(data) {
+    debugger
     var currentData = SessionStore.getState()['data'];
     var data = _.extend(currentData, data);
     var requestData = {
