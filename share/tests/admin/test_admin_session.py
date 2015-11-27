@@ -7,12 +7,12 @@ from share.factories import SessionFactory
 class ShareSessionTestCase(BaseLiveTestCase):
     def test_browse_session_admin(self):
         self.login_user()
-        session = SessionFactory()
         self.visit("/admin/models/")
 
         link = self.link("Sessions")
         link.should.be.ok
 
+        session = SessionFactory()
         link.click()
         self.should_see_texts([
             session.hash_id,
