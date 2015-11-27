@@ -141,7 +141,7 @@ input
 //original selectors
 //.vis-line, .vis-dot
 .extend_9
-  border-color: $color_deep_cerulean_approx
+  border-color: $text_color
 
 //original selectors
 //.vis-line.end, .vis-dot.end
@@ -723,7 +723,7 @@ footer
         color: white
         font-size: 14px
         font-weight: 400
-        height: 75px
+        height: 74px
       .non-intersection
         visibility: hidden
         height: 44px
@@ -875,6 +875,9 @@ footer
   .btn:hover
     opacity: .6
 
+.timeline
+  background-color: $color_spring_wood_approx2
+
 .timeline-title
   color: $color_mountain_mist_approx
   font-size: 14px
@@ -891,11 +894,11 @@ footer
 
 .witness
   margin-bottom: 24px
+  font-size: 13px
 
 .results
-  background-color: $white
+  background-color: $color_spring_wood_approx2
   padding: 20px
-  border: 1px solid $color_celeste_approx
 
 .investigation
   font-family: $font_0, $font_4
@@ -924,13 +927,13 @@ footer
   height: 3px
   margin-right: 5px
   &.blue
-    background-color: $color_ship_cove_approx
+    background-color: $color_cadet_blue_approx
 
   &.red
-    background-color: $color_tall_poppy_approx
+    background-color: $color_coral_red_approx
 
 .complaint_detail
-  background-color: $color_spring_wood_approx
+  background-color: $white
   .summary
     border-bottom: 1px solid $color_mine_shaft_approx
     padding: 20px 0
@@ -1318,7 +1321,7 @@ footer
     min-height: 456px
 
   .nav-tabs
-    background-color: $seashell !important
+    background-color: $color_ebb_approx !important
     border: 0
     > li
       padding-top: 4px
@@ -1344,7 +1347,7 @@ footer
       > a
         //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
         border-radius: 0
-        background-color: $color_ebb_approx
+        background-color: $color_ebb_approx !important
         color: $color_blue_ribbon_approx !important
         font-weight: 400
 
@@ -1363,11 +1366,11 @@ button a:hover
 .navbar-default.navbar
   @extend .extend_2
 
-.progress-bar.discipline
-  background-color: $color_tall_poppy_approx
+.progress-bar.not-discipline
+  background-color: $color_coral_red_approx
 
 .progress.complaint
-  background-color: $color_ship_cove_approx
+  background-color: $color_cadet_blue_approx
 
 strong.red
   color: $color_tall_poppy_approx
@@ -1385,7 +1388,7 @@ strong.red
     border-bottom: 2px solid $black
 
 .vis-panel.vis-center
-  border-color: $color_deep_cerulean_approx
+  border-color: $text_color
 
 canvas.leaflet-heatmap-layer
   z-index: -1
