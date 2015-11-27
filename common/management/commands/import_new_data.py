@@ -23,6 +23,7 @@ OFFICER_COLS = {
     'birth_year': 11,
     'active': 12
 }
+
 ALLEGATION_COLS = {
     'crid': 1,
     'officer': 2,
