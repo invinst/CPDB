@@ -399,7 +399,7 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
                       In our data some investigations that we know to have concluded are still ‘open.’
                     </p>
                     <p>
-                      One example is a complaint filed against Officer Robert Drell, who was the subject of a misconduct allegation in May 2009. You can view the data we have under the <a href="http://cpdb.co/#!/data-tools/bZ5Y9L/allegations-of-police-misconduct-in-chicago">CRID 1062099</a>. The Category, Finding, and Final Outcome of this allegation are “Unknown.” However, Officer Drell was suspended in October, 2014 and had a hearing in front of the Chicago Police Board in January, 2015. The Board <a href="https://www.documentcloud.org/documents/2510144-14pb2877-decision.html">found him not guilty</a>, and Officer Drell was reinstated as an officer, with back-pay, on March 19, 2015.
+                      One example is a complaint filed against Officer Robert Drell, who was the subject of a misconduct allegation in May 2009. You can view the data we have under the <a href="http://cpdb.co/data/bZ5Y9L/allegations-of-police-misconduct-in-chicago">CRID 1062099</a>. The Category, Finding, and Final Outcome of this allegation are “Unknown.” However, Officer Drell was suspended in October, 2014 and had a hearing in front of the Chicago Police Board in January, 2015. The Board <a href="https://www.documentcloud.org/documents/2510144-14pb2877-decision.html">found him not guilty</a>, and Officer Drell was reinstated as an officer, with back-pay, on March 19, 2015.
                     </p>
                     <p>
                       We discovered this discrepancy by matching CRID numbers from Chicago Police Board documents to allegations we have. We are certain there are other departures as well.
@@ -423,7 +423,7 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
                       Because the Bond and Moore data only includes officers who have a certain number of allegations, it slightly skews the related findings. We include the Bond and Moore data because this represents all the available data on police misconduct that the city of Chicago has released.
                     </p>
                     <p>
-                      To see the most controlled version of allegation data — i.e. data from 2011 to present — a means of removing the Bond and Moore datasets has been provided. In the <a href="http://cpdb.co/#!/data-tools/DwGpJD/allegations-of-police-misconduct-in-chicago">search bar, type and click “FOIA.”</a>
+                      To see the most controlled version of allegation data — i.e. data from 2011 to present — a means of removing the Bond and Moore datasets has been provided. In the <a href="http://cpdb.co/data/DwGpJD/allegations-of-police-misconduct-in-chicago">search bar, type and click “FOIA.”</a>
                     </p>
                     <p>
                       “FOIA” results only include the data we received for our most recent request, which are allegations of misconduct filed from 2011 to present.

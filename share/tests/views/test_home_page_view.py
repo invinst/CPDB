@@ -11,7 +11,7 @@ class HomepageViewTestCase(BaseLiveTestCase):
         session_count = Session.objects.all().count()
         title_slug = slugify(session.title)
 
-        response = self.visit("/#!/data-tools/%s/%s" % (session.hash_id, title_slug))
+        response = self.visit("/data/%s/%s" % (session.hash_id, title_slug))
         Session.objects.all().count().should.equal(session_count + 1)  # 1 new session created
 
         location = self.browser.current_url
