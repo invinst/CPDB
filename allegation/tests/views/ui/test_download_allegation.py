@@ -27,9 +27,7 @@ class DownloadAllegationTestCase(BaseLiveTestCase):
         download_response.headers['content-type'].should.contain('application/')
 
         self.find('.officer .checkmark').click()  # deactivate officer
-        self.browser.implicitly_wait(0)
-        self.element_exist(".download-wrapper a").should.be.false
-        self.browser.implicitly_wait(10)
+        self.find(".download-wrapper a").is_displayed().should.be.false
 
         self.find('.officer .checkmark').click()  # active officer
         link().is_displayed().should.be.true

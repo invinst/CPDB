@@ -59,6 +59,7 @@ $dark_blue: #1464f1
 $text_color: #013270
 $font_weight: 400
 $cubic_bezier: cubic-bezier(0, 0, 0.16, 1.08)
+$embed_background_color: #A5B4BF
 
 @import 'shared/sf-compact-font'
 
@@ -184,13 +185,6 @@ body
   background-color: $white
   font-family: $font_0, $font_4
   transition: 0.5s background-color
-  &.embedding
-    background-color: $color_cadet_blue_approx
-
-    .search-row
-      display: none
-    #map
-      height: 502px
 
 #autocomplete
   line-height: normal
@@ -339,7 +333,7 @@ h3
 footer
   .row
     background-color: $color_mine_shaft_approx2
-    padding: 8px 0
+    padding: 0
   ul
     li
       display: inline-block
@@ -1426,59 +1420,6 @@ form.navbar-form.navbar-right
   .container
     width: 1230px
 
-#EmbedBar
-  color: $white
-  a
-    color: $white
-
-.embed-code
-  background-color: $white
-  padding: 10px
-  border-bottom: 1px solid $color_cadet_blue_approx
-
-  .fa
-    color: $color_deep_cerulean_approx
-    font-size: 25px
-
-  input
-    width: calc(100% - 35px)
-    border: none
-    padding: 0
-    margin-left: 5px
-
-#embed-lists
-  list-style: none
-  margin-right: -10px
-  margin-bottom: 5px
-
-.embed-button
-  padding: 8px 10px
-  margin-top: 1px
-
-  &.active
-    background-color: $text_color
-
-  a
-    color: $white
-
-.hide-embed-button
-  .embed-button
-    display: none
-
-.embed
-  .tooltip
-    left: -47px
-    width: 115px
-    position: absolute
-    top: 17px
-    display: none
-    &.bottom .tooltip-arrow
-      display: block
-
-
-  &.zeroclipboard-is-hover .tooltip
-    display: block
-
 
 .container-fluid.content
   background-color: $color_spring_wood_approx2
@@ -1486,12 +1427,6 @@ form.navbar-form.navbar-right
   margin-top: 28px
   max-width: 1230px
 
-
-.checkmark.embed
-  background-color: $color_ship_cove_approx
-  color: $white
-  &:hover
-    background-color: $color_pacific_blue_approx
 
 .disclaimer-btn
   color: $white !important
@@ -1502,7 +1437,7 @@ form.navbar-form.navbar-right
 
 .stick-footer-bottom
   #data-tool
-    padding-bottom: 133px
+    padding-bottom: 60px
   .sticky-footer
     width: calc(100% - 30px)
     position: fixed

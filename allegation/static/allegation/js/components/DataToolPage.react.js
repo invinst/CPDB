@@ -1,6 +1,7 @@
 var _ = require('lodash');
 var React = require('react');
 var isMobile = require('ismobilejs');
+var classnames = require('classnames');
 
 var AppConstants = require('constants/AppConstants');
 var Base = require('components/Base.react');
@@ -34,6 +35,10 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
     var top = $(window).scrollTop();
     var documentList = $("#complaint-list");
     if (!documentList.size()) {
+      return false;
+    }
+
+    if (SessionStore.isNoQuery()) {
       return false;
     }
 
@@ -90,6 +95,9 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
   },
 
   render: function () {
+    var complaintListContainerClassName = classnames('container-fluid content', {
+      'hidden': SessionStore.isNoQuery()
+    });
     return (
       <div id="data-tool">
         <div className='container-fluid'>
@@ -107,7 +115,7 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
             <div id='officer-cards'><OfficerList /></div>
           </div>
         </div>
-        <div className='container-fluid content'>
+        <div className={complaintListContainerClassName}>
           <div id='complaint-list'><ComplaintSection /></div>
         </div>
         <div className='container-fluid'>
