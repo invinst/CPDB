@@ -73,6 +73,21 @@ class SessionManagementTestCase(BaseLiveTestCase):
 
         self.number_of_sessions().should.equal(1)
 
+    def test_toggle_searchable(self):
+        session = SessionFactory()
+
+        self.go_to_sessions()
+
+        self.find('.toggle-searchable').click()
+        self.until(lambda: self.element_exist('.fa.fa-search-plus').should.be.false)
+        self.until(lambda: self.element_exist('.fa.fa-search-minus').should.be.true)
+        Session.objects.all().first().searchable.should.be.true
+
+        self.find('.toggle-searchable').click()
+        self.until(lambda: self.element_exist('.fa.fa-search-plus').should.be.true)
+        self.until(lambda: self.element_exist('.fa.fa-search-minus').should.be.false)
+        Session.objects.all().first().searchable.should.be.false
+
     def test_add_alias(self):
         alias = 'session alias'
         session = SessionFactory()

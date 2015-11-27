@@ -33,7 +33,8 @@ class SessionSerializer(serializers.HyperlinkedModelSerializer):
                   'ip',
                   'user_agent',
                   'suggestion_logs',
-                  'filter_logs'
+                  'filter_logs',
+                  'searchable'
                   )
 
     def get_extra_kwargs(self):
