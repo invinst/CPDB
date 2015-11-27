@@ -4,6 +4,7 @@ from django.views.decorators.cache import cache_page
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import routers
 
+from dashboard.views.admin_allegation_request_analysis_view import AdminAllegationRequestAnalysisView
 from dashboard.views.alias_view import AdminAliasApi
 from dashboard.views.allegation_request_view import AdminAllegationRequestViewSet
 from dashboard.views.officer_view import AdminOfficerViewSet
@@ -39,4 +40,7 @@ urlpatterns = [
     url(r'^api/dashboard/document-link/$', login_required(csrf_exempt(DocumentLinkView.as_view()))),
     url(r'^api/dashboard/story_types/$', login_required(csrf_exempt(StoryTypeView.as_view()))),
     url(r'^api/dashboard/settings_save/$', login_required(csrf_exempt(SettingsSaveView.as_view()))),
+    url(r'^api/dashboard/document-requests-analysis/$',
+        login_required(csrf_exempt(AdminAllegationRequestAnalysisView.as_view())),
+        name='dashboard-allegation-request-analysis')
 ]

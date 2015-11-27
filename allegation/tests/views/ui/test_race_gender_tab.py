@@ -1,13 +1,13 @@
-from allegation.tests.views.ui.test_home_page import IntegrationTestHelperMixin
 from allegation.factories import AllegationFactory, OfficerFactory, ComplainingWitnessFactory, AllegationCategoryFactory
 from common.tests.core import BaseLiveTestCase
 from common.models import Allegation, ComplainingWitness, Officer
 
 
-class RaceGenderTabTest(BaseLiveTestCase, IntegrationTestHelperMixin):
+class RaceGenderTabTest(BaseLiveTestCase):
     RACES = ['White', 'Black', 'Hispanic', 'White/Hispanic', 'Black/Hispanic',
              'Indigenous', 'Asian', 'Unknown']
-    DISPLAY_RACES = ['White officers', 'Black officers', 'Hispanic officers', 'Others']
+    DISPLAY_RACES_FOR_COMPLAINANTS = ['White', 'Black', 'Hispanic', 'Others']
+    DISPLAY_RACES_FOR_OFFICERS = ['White officers', 'Black officers', 'Hispanic officers', 'Others']
     NON_DISPLAY_RACES = ['Indigenous', 'Asian', 'Unknown', 'White/Hispanic',
                          'Black/Hispanic']
     GENDERS = ['M', 'F', 'X']
@@ -39,7 +39,13 @@ class RaceGenderTabTest(BaseLiveTestCase, IntegrationTestHelperMixin):
 
     def test_race_chart(self):
         # See RACES and how we create allegation for more information why
-        analysis = {
+        analysis_for_complainants = {
+            'White': 1,
+            'Black': 1,
+            'Hispanic': 3,
+            'Others': 3
+        }
+        analysis_for_officer = {
             'White officers': 1,
             'Black officers': 1,
             'Hispanic officers': 3,
@@ -51,7 +57,7 @@ class RaceGenderTabTest(BaseLiveTestCase, IntegrationTestHelperMixin):
         self.go_to_race_gender_tab()
         self.until(self.ajax_complete)
 
-        self.ensure_the_correct_race_data_is_shown(analysis, total)
+        self.ensure_the_correct_race_data_is_shown(analysis_for_complainants, analysis_for_officer, total)
 
     def test_gender_chart(self):
         self.create_allegation_with_genders()
@@ -88,7 +94,13 @@ class RaceGenderTabTest(BaseLiveTestCase, IntegrationTestHelperMixin):
         len(self.find_all('.filter-name')).should.equal(4)
 
     def test_race_chart_by_filter(self):
-        analysis = {
+        analysis_for_complainants = {
+            'White': 1,
+            'Black': 1,
+            'Hispanic': 3,
+            'Others': 3
+        }
+        analysis_for_officer = {
             'White officers': 1,
             'Black officers': 1,
             'Hispanic officers': 3,
@@ -108,7 +120,7 @@ class RaceGenderTabTest(BaseLiveTestCase, IntegrationTestHelperMixin):
         self.link('Race & Gender').click()
         self.until(self.ajax_complete)
 
-        self.ensure_the_correct_race_data_is_shown(analysis, total)
+        self.ensure_the_correct_race_data_is_shown(analysis_for_complainants, analysis_for_officer, total)
 
     def test_toggle_filter_tags(self):
         self.create_allegation_with_genders()
@@ -148,13 +160,16 @@ class RaceGenderTabTest(BaseLiveTestCase, IntegrationTestHelperMixin):
             complaint_gender_chart.should.contain(self.percent_text(gender, ratio))
             officer_gender_chart.should.contain(self.percent_text(gender, ratio))
 
-    def ensure_the_correct_race_data_is_shown(self, analysis, total):
+    def ensure_the_correct_race_data_is_shown(self, analysis_for_complainants, analysis_for_officer, total):
         complaint_race_chart = self.find('.complaint-race-chart').text
         officer_race_chart = self.find('.officer-race-chart').text
 
-        for race in self.DISPLAY_RACES:
-            ratio = analysis[race] / total
+        for race in self.DISPLAY_RACES_FOR_COMPLAINANTS:
+            ratio = analysis_for_complainants[race] / total
             complaint_race_chart.should.contain(self.percent_text(race, ratio))
+
+        for race in self.DISPLAY_RACES_FOR_OFFICERS:
+            ratio = analysis_for_officer[race] / total
             officer_race_chart.should.contain(self.percent_text(race, ratio))
 
     def percent_text(self, label, ratio):

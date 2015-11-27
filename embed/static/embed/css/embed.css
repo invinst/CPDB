@@ -7,7 +7,6 @@
 
 .col-md-12 {
     width: 100%;
-    padding-right: 5px;
     padding-left: 0;
 }
 
@@ -81,6 +80,7 @@ body > .row {
 #summary-container {
     margin-left: 0;
     margin-top: 0;
+    padding-top: 0;
 }
 
 #summary {

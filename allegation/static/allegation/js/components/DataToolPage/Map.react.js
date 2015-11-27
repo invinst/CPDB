@@ -2,14 +2,19 @@ var _ = require('lodash');
 var React = require('react');
 require('mapbox.js');
 require('leaflet.heat');
+
 var MapStore = require("stores/MapStore");
 var FilterStore = require('stores/FilterStore');
 var FilterActions = require("actions/FilterActions");
 var FilterTagsActions = require("actions/FilterTagsActions");
 var AppConstants = require('constants/AppConstants');
 var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
+var AppStore = require('stores/AppStore');
+var MapAPI = require('utils/MapAPI');
+
 
 L.mapbox.accessToken = AppConstants.MAP_TOKEN;
+
 
 var highlightStyle = {
   color: '#2262CC',
@@ -49,11 +54,45 @@ var Map = React.createClass({
     return state;
   },
 
+  componentDidMount: function () {
+    var self = this;
+    if (AppStore.isDataToolInit()) {
+      this.onDataToolInit();
+    } else {
+      AppStore.addDataToolInitListener(this.onDataToolInit);
+    }
+
+    MapStore.addChangeMarkerListener(this.changeMarker);
+    MapStore.addBeforeChangeMarkerListener(this.beforeChangeMarker);
+
+    FilterStore.addChangeListener(this._onChange);
+    this.embedListener();
+
+    // having this code async will not block the immediate rendering of the page
+    // on reload. On first load the API needs to be hit so the markers/areas don't block rendering
+    // but on coming back via routing the data is cached and is parsed/loaded immediately blocking
+    // the browser from painting.
+    setTimeout(function() {
+      MapAPI.getMarkers(self.props.query);
+    }, 200);
+  },
+
+  componentWillUnmount: function() {
+    AppStore.removeDataToolInitListener(this.onDataToolInit);
+    MapStore.removeChangeMarkerListener(this.changeMarker);
+    MapStore.removeBeforeChangeMarkerListener(this.beforeChangeMarker);
+
+    _map.remove();
+    _baseLayers = {};
+    this.first_layer_added = false;
+    this.removeEmbedListener();
+  },
+
   // embedding
   getEmbedCode: function () {
     var node = this.getDOMNode();
-    var width = $(node).width();
-    var height = $(node).height();
+    var width = $(node).width() + 2;
+    var height = $(node).height() + 2;
     var src = "/embed/?page=map&query=" + encodeURIComponent(FilterStore.getQueryString());
     var state = MapStore.getState();
     state = {
@@ -92,35 +131,10 @@ var Map = React.createClass({
   },
   // end embedding
 
-  componentDidMount: function () {
-    var self = this;
+  onDataToolInit: function () {
     this.create();
     this.createAreas();
-
-    MapStore.addChangeMarkerListener(self.changeMarker);
-    MapStore.addBeforeChangeMarkerListener(self.beforeChangeMarker);
-
-    FilterStore.addChangeListener(this._onChange);
-
-    // having this code async will not block the immediate rendering of the page
-    // on reload. On first load the API needs to be hit so the markers/areas don't block rendering
-    // but on coming back via routing the data is cached and is parsed/loaded immediately blocking
-    // the browser from painting.
-    setTimeout(function() {
-      MapStore.update(self.props.query);
-      if (MapStore.getMarkers()) {
-        MapStore.emitChangeMarker();
-      }
-
-      self.embedListener();
-    }, 200);
-  },
-
-  componentWillUnmount: function() {
-    _map.remove();
-    _baseLayers = {};
-    this.first_layer_added = false;
-    this.removeEmbedListener();
+    this.changeMarker();
   },
 
   mapIntensity: function(markersLength) {
@@ -283,6 +297,9 @@ var Map = React.createClass({
   },
 
   setMarkers: function (markers) {
+    if (!markers) {
+      return;
+    }
     var latLngs = [];
     var features = markers.features;
     var heatOpts = { radius: 10, max: this.mapIntensity(features.length) };

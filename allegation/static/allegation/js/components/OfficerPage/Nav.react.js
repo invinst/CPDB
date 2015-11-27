@@ -1,30 +1,28 @@
 var navigate = require('react-mini-router').navigate;
 var React = require('react');
+var ReactRouter = require('react-router');
+
+var Link = ReactRouter.Link;
 
 var Back = require('components/Shared/Back.react');
 var Logo = require('components/Shared/Logo.react');
 var Search = require('components/Shared/Search.react');
+var AppStore = require('stores/AppStore');
 var SessionStore = require('stores/SessionStore');
 var SiteTitle = require('components/Shared/SiteTitle.react');
 
 
 var Nav = React.createClass({
   render: function() {
+    var dataToolUrl = AppStore.getDataToolUrl();
+
     return (
-      <div className="navbar navbar-default">
-        <div className="container-fluid">
-          <div className="row">
-            <div className='col-xs-11 col-sm-7'>
-              <div className="navbar-header">
-                <Logo />
-              </div>
-              <div className="navbar-collapse" id="navbar-main">
-                <Back />
-              </div>
-            </div>
-          </div>
+      <nav className="landing-nav">
+        <div className="items clearfix">
+          <Link to={dataToolUrl}><img className="pull-left cpdp-logo" src="/static/img/cpdp-logo.svg" /></Link>
+          <Back />
         </div>
-      </div>
+      </nav>
     )
   }
 });

@@ -219,6 +219,7 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
         return colors[d.name];
       })
       .on("click", this.select)
+      .on("touchstart", this.select)
       .on("mouseover", this.mouseover);
 
     d3.select("#container").on("mouseleave", this.mouseleave);
@@ -298,22 +299,23 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
 
     this.initTabs();
 
-    SunburstAPI.getData(this.props.query);
     this.drawChart();
   },
 
   initTabs: function () {
-    if (this.props.tabs.tabs.length > 0) {
-      for(var i =0; i < this.props.tabs.tabs.length; i++){
-        var tab = this.props.tabs.tabs[i];
-        if(tab.drawChart) {
-          this.props.tabs.tabs[i] = this;
-          /* I am sorry for this code, blame: Bang!!!! */
+    if (this.props.tabs) {
+      if (this.props.tabs.tabs.length > 0) {
+        for(var i =0; i < this.props.tabs.tabs.length; i++){
+          var tab = this.props.tabs.tabs[i];
+          if(tab.drawChart) {
+            this.props.tabs.tabs[i] = this;
+            /* I am sorry for this code, blame: Bang!!!! */
+          }
         }
       }
-    }
-    else {
-      this.props.tabs.tabs.push(this);
+      else {
+        this.props.tabs.tabs.push(this);
+      }
     }
   },
 
@@ -408,10 +410,18 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
 
 
       if (max) {
+        var connectString = 'complaints were';
+
+        if (hovering.name == 'Allegations') {
+          connectString = 'of misconduct were'
+        } else if (hovering.name == 'Unsustained') {
+          connectString = 'complaints were found'
+        }
+
         percent = (max * 100 / total).toFixed(2);
         percentStatement = (
           <div>
-            <strong>{percent}%</strong> of "{hovering.name}" complaints were "{theMax.name}"
+            <strong>{percent}%</strong> of "{hovering.name}" {connectString} "{theMax.name}"
           </div>
         )
       }
@@ -420,7 +430,7 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
     var breadcrumb = this.renderBreadcrumb(hovering);
 
     return (
-      <div className="">
+      <div className="clearfix">
         <div className="col-md-12">
           <div className="row">
             {breadcrumb}

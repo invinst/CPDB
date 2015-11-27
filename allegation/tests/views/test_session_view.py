@@ -3,6 +3,7 @@ from unittest import mock
 from django.http.request import HttpRequest
 from common.tests.core import SimpleTestCase
 from share.factories import SessionFactory
+from share.models import Session
 
 
 class AllegationSessionApiView(SimpleTestCase):
@@ -74,3 +75,17 @@ class AllegationSessionApiView(SimpleTestCase):
         SessionFactory(id=624)
         response, data = self.call_post_session_api(self.update_params)
         response.status_code.should.equal(200)
+
+    def test_update_active_tab(self):
+        Session.objects.all().delete();
+        active_tab = 'map'
+        update_params = self.update_params.copy()
+        update_params['active_tab'] = active_tab
+
+        session = self.client.session
+        session['owned_sessions'] = [624]
+        session.save()
+        SessionFactory(id=624)
+
+        response, data = self.call_post_session_api(update_params)
+        Session.objects.get(pk=624).active_tab.should.equal(active_tab)

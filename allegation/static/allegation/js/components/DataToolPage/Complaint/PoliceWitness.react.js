@@ -22,7 +22,7 @@ var PoliceWitness = React.createClass({
         for (var j = 0; j < witnesses_obj.officers.length; j++) {
           var officer_data = witnesses_obj.officers[j];
           var style = {
-            'width': ((officer_data.num_complaints - officer_data.no_action_taken) / officer_data.num_complaints) * 100 + "%"
+            'width': (officer_data.no_action_taken / officer_data.num_complaints) * 100 + "%"
           };
           var progressStyle = {
             width: 100 + "%"
@@ -36,7 +36,7 @@ var PoliceWitness = React.createClass({
                 ({officer_data.num_complaints} {pluralize('case', officer_data.num_complaints)})
               </div>
               <div className="progress complaint" style={progressStyle}>
-                <div className="progress-bar discipline" role="progressbar" aria-valuenow="60" aria-valuemin="0"
+                <div className="progress-bar not-discipline" role="progressbar" aria-valuenow="60" aria-valuemin="0"
                      aria-valuemax="100" style={style}>
                   <span className="sr-only"></span>
                 </div>
@@ -71,10 +71,10 @@ var PoliceWitness = React.createClass({
       var legend = (
         <div className="legend">
           <div>
-            <span className='red line'></span>Discipline Applied
+            <span className='red line'></span>No Punishment
           </div>
           <div>
-            <span className='blue line'></span>No Punishment
+            <span className='blue line'></span>Discipline Applied
           </div>
         </div>
       );

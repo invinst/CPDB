@@ -27,10 +27,14 @@ module.exports = {
   SET_OFFICER_LIST_FILTER: c++,
   INIT: c++,
   SAVE_SESSION: c++,
+  SESSION_CREATED: c++,
+
   ENTER_EMBED_MODE: c++,
   LEAVE_EMBED_MODE: c++,
 
   RECEIVED_OFFICER_DATA: c++,
+
+  RECEIVED_TIMELINE_DATA: c++,
 
   RECEIVED_SESSION_DATA: c++,
   RECEIVED_UPDATED_SESSION_DATA: c++,
@@ -60,13 +64,19 @@ module.exports = {
   DOWNLOAD_PROCESS: c++,
   GENERATED_DOWNLOAD: c++,
 
+  INIT_DATA_TOOL: c++,
+  NAV_GO_TO_PAGE: c++,
+
+  MAP_CHANGE_MARKERS: c++,
+
   AVG_COMPLAINTS_NUMBER_GREEN: 20,
   AVG_COMPLAINTS_NUMBER_YELLOW: 60,
   MAX_OFFICER_NAME_LENGTH: 20,
 
   RACE_GENDER_TAB_RECEIVED_DATA: c++,
 
-  MAP_TOKEN: 'pk.eyJ1IjoiZGF0YW1hZGUiLCJhIjoiaXhhVGNrayJ9.0yaccougI3vSAnrKaB00vA',
+  SET_ACTIVE_TAB: c++,
+  MAP_TOKEN: '***REMOVED***',
   MAP_TYPE: 'datamade.7e795301',
 
   NUMERAL_FORMAT: '0,0',
@@ -262,7 +272,8 @@ module.exports = {
     'complainant_race': 'Complainant Race',
     'outcome_text': 'Outcome',
     'city': 'Zip Code',
-    'data_source': 'Data Source'
+    'data_source': 'Data Source',
+    'officer__allegations_count__gt': 'Repeater (10+ complaints)',
   },
 
   AUTOCOMPLETE_DISPLAY_CATEGORY_IN_TAG: [
@@ -278,7 +289,7 @@ module.exports = {
   MEDIA_URL: '/media/',
 
   MAP_MARKER_ICON_URL: 'http://cpdb.co/static/img/64x_map_marker.png', // it must be a full url
-  OFFICER_PAGE_API_ENDPOINT: '/officer',
+  OFFICER_PAGE_API_ENDPOINT: '/officer/',
   SESSION_API_ENDPOINT: '/api/allegations/session/',
   RACE_GENDER_API_ENDPOINT: '/api/allegations/race-gender/',
 
@@ -290,5 +301,12 @@ module.exports = {
     ACCESS_TOKEN: "0caab5f9fe694a1b8a094b6b0f48619e",
     HOST_URL: "https://happyfoxchat.com",
     ASSETS_URL: "https://d1l7z5ofrj6ab8.cloudfront.net/visitor"
+  },
+
+  TABS: {
+    'outcomes': 0,
+    'categories': 1,
+    'race_gender': 2,
+    'map': 3,
   }
 };

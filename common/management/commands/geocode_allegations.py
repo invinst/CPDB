@@ -29,25 +29,29 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         counter = 0
+        Allegation.objects.update(point=None)
 
         for allegation in Allegation.objects.filter(point=None):
-            city = ''
+            for area in allegation.areas.all():
+                allegation.areas.remove(area)
+            point = None
+            city = ""
             add1 = ""
             add2 = ""
-            if allegation.add1:
+            if allegation.add1 and allegation.add1 != '-----':
                 add1 = allegation.add1
-            if allegation.add2:
+            if allegation.add2 and allegation.add2 != '-----':
                 add2 = allegation.add2
             if allegation.city:
                 splitted = allegation.city.split(' ')
                 if len(splitted) > 2:
                     city = allegation.city
 
-            point = None
-            allegation.point = None
-
-            if add1 or add2 or city:
+            if add2 or city:
+                if not city:
+                    city = "Chicago"
                 address_lookup = "%s %s, %s" % (add1, add2, city)
+                print(address_lookup)
                 point = self.geocode_address(address_lookup, allegation.beat)
             elif allegation.beat:
                 point = allegation.beat.polygon.centroid
@@ -57,7 +61,7 @@ class Command(BaseCommand):
                 for area in areas:
                     allegation.areas.add(area)
 
-                    allegation.point = point
+                allegation.point = point
             allegation.save()
             counter += 1
             if counter % 100 == 0:

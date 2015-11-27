@@ -1,9 +1,8 @@
 from allegation.factories import AllegationFactory, AreaFactory
-from allegation.tests.views.ui.test_home_page import IntegrationTestHelperMixin
 from common.tests.core import BaseLiveTestCase
 
 
-class AllegationDetailTestCase(BaseLiveTestCase, IntegrationTestHelperMixin):
+class AllegationDetailTestCase(BaseLiveTestCase):
     # Since we lost this marker many times, so we write this test to ensure it's available
     # In case this test failed, please take a look on its url in allegation/constants/AppConstants.js
     def test_marker_should_be_available(self):

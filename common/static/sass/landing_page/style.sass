@@ -1,25 +1,52 @@
 #landing-page
-  $light_blue: #E8F0F9
-  $dark_blue: #1464f1
-  $font_weight: 300
+  position: absolute
+  top: 343px
+  transition: top 1s $cubic_bezier
+  -webkit-transition: top 1s $cubic_bezier
+  -moz-transition: top 1s $cubic_bezier
+  width: 100%
+
+  color: $text_color
+  font-family: 'San Francisco Text Web'
+  font-weight: $font_weight
+
+  &.scroll-to-top
+    top: 0
+    .welcome
+      height: 0
+
+    nav.landing-nav
+      .cpdp-logo
+        opacity: 1 !important
+        transition: opacity 1s $cubic_bezier
+        -webkit-transition: opacity 1s $cubic_bezier
+        -moz-transition: opacity 1s $cubic_bezier
+
+.main.margin-top-90
+  margin-top: 45px
+
+.landing-page
+
   h2.title
     font-size: 16px
 
-  color: #013270
-  font-family: 'San Francisco Compact Web'
-  font-weight: $font_weight
-
   a
     color: $dark_blue
+    transition: color 1s
+    -webkit-transition: color 1s
+    -moz-transition: color 1s
+
     &.btn
       font-weight: $font_weight
       background: #E8ECF5
       font-size: 19px
-      padding: 10px 40px
+      padding: 10px 30px
       border: 0
       margin-top: 20px
     &:hover, &:focus
       text-decoration: none
+      color: $text_color
+      opacity: 1
 
   .font-size-22
     font-size: 17px !important
@@ -36,44 +63,109 @@
   .welcome
     height: 343px
     background: #fff
+    position: fixed
+    width: 100%
+    z-index: -1
+    top: 0
+
+    .view-findings
+      font-weight: 300
+      position: relative
+
+      &:after
+        content: ''
+        width: 26px
+        height: 13px
+        background: url('/static/allegation/img/arrow_down.png') no-repeat
+        display: inline-block
+        position: absolute
+        top: 100%
+        left: calc(50% - 13px)
+        margin-top: 10px
+
+      &:hover
+        background: #D2E3FC
+        color: #1464EF
+        &:after
+          margin-top: 6px
+
+    .explore-data
+      text-align: right
+      padding-right: 43px
+      a
+        font-weight: 300
+        position: relative
+        margin-top: 0
+        &:after
+          content: ''
+          width: 13px
+          height: 26px
+          background: url('/static/allegation/img/arrow_right.png') no-repeat
+          display: inline-block
+          position: absolute
+          left: 100%
+          top: calc(50% - 13px)
+          margin-top: 0px
+          margin-left: 10px
+        &:hover
+          background: #D2E3FC
+          color: #1464EF
+          &:after
+            margin-left: 6px
 
   .page-banner
-    width: 380px
     margin: auto
     font-size: 17px
     line-height: 22px
     letter-spacing: -0.3px
     padding-top: 3em
+    p
+      padding: 0 calc(50% - 190px)
 
   nav.landing-nav
     background-color: #fff
-    z-index: 10
+    z-index: 1001
+
+    &.border-top
+      -webkit-box-shadow: 0px -13px 100px 0px $light_blue
+      -moz-box-shadow: 0px -13px 100px 0px $light_blue
+      box-shadow: 0px -13px 100px 0px $light_blue
+
     [role=tablist]
       margin: 0
+    ul
+      padding-left: 0
     li
       float: right
       list-style: none
       text-align: center
       margin-left: 65px
+
+      &:last-child
+        margin-left: 0
       a
         font-size: 16px
-        font-family: "San Francisco Compact Web Bold"
+        font-family: 'San Francisco Text Web'
         font-weight: 600
+
       &.active
         position: relative
         a
-          color: #013270
-        &:after
-          content: ''
-          display: inline-block
-          background: $light_blue
-          width: 14px
-          height: 14px
-          position: absolute
-          top: 40px
-          right: 30px
-          transform: rotate(90deg)
-          -webkit-transform: rotate(45deg)
+          color: $text_color
+
+    .moving-arrow
+      content: ''
+      display: inline-block
+      background: $text_color
+      height: 5px
+      position: absolute
+      top: 40px
+      right: 405px
+      transition: left 0.5s, width 0.5s
+
+    .cpdp-logo
+      opacity: 0
+      transition: opacity 1s $cubic_bezier
 
   .fixed-nav
     position: fixed
@@ -84,9 +176,6 @@
   .sub-nav
     background: $light_blue
     height: 11px
-
-  .margin-top-90
-    margin-top: 45px
 
   .container
     margin-left: auto
@@ -133,12 +222,38 @@
       h1
         margin: 0 auto
 
+  .map-section
+    padding-bottom: 0
+    padding-top: 0
+
+    .map-image
+      width: 592px
+      height: 384px
+      background-image: url("/static/img/map-fade.png")
+      background-repeat: no-repeat
+      background-size: 100% 100%
+      margin-left: -90px
+      transition: background-image 1s
+      -webkit-transition: background-image 1s
+      -moz-transition: background-image 1s
+      &:hover
+        background-image: url("/static/img/map-fade-hover.png")
+    .map-explain
+      padding: 70px 0 80px 50px
+      font-size: 15px
+      line-height: 17px
+
+    .static-map
+      padding: 0
+      overflow: hidden
+
   .page-logo
     height: 90px
-    margin-left: 25px
-    img
-      position: relative
-      top: 25px
+    width: 180px
+    background: url('/static/img/ii-logo.svg') no-repeat 25px
+
+    &:hover
+      background-image: url('/static/img/ii-logo-hover.svg')
 
   .items
     margin-right: 25px
@@ -152,6 +267,11 @@
       line-height: 45px
       margin: 0 27.5px
 
+      &:focus
+        color: $dark_blue
+      &.active
+        color: $text_color
+
   .full-width
     width: 100%
 
@@ -160,7 +280,7 @@
       font-size: 34px
       line-height: 48px
       color: $dark_blue
-      font-family: 'San Francisco Compact Web'
+      font-family: 'San Francisco Text Web'
       font-weight: $font_weight
 
   #methodology-page
@@ -205,3 +325,12 @@
         font-weight: $font_weight
         margin-top: 19px
         padding: 10px 25px
+
+
+@media screen and (min-width: 1200px)
+  #landing-page
+    top: 562px
+    .welcome
+      height: 562px
+    .page-banner
+      padding-top: 7em

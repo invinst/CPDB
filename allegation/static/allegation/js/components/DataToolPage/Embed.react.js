@@ -2,13 +2,14 @@
  * Created by eastagile on 8/18/15.
  */
 var React = require('react');
+
 var Officer = require('components/DataToolPage/Officer.react');
 var OfficerList = require('components/DataToolPage/OfficerList.react');
 var Sunburst = require('components/DataToolPage/Sunburst.react');
 var Map = require('components/DataToolPage/Map.react');
 var Complaint = require('components/DataToolPage/Complaint.react');
 var Summary = require('components/DataToolPage/Summary.react');
-
+var SunburstAPI = require('utils/SunburstAPI');
 
 var Embed = React.createClass({
   getInitialState: function () {
@@ -40,7 +41,8 @@ var Embed = React.createClass({
   },
 
   embedSunburst: function () {
-    this.setContent(<Sunburst query={this.props.query} selected={this.props.state.name} />);
+    this.setContent(<Sunburst selected={this.props.state.name} />);
+    SunburstAPI.getData(this.props.query);
   },
 
   embedMap: function () {

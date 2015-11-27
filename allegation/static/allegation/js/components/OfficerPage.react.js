@@ -1,11 +1,12 @@
 var _ = require('lodash');
-var navigate = require('react-mini-router').navigate;
+var classnames = require('classnames');
 var React = require('react');
 
 var Base = require('components/Base.react');
 var ComplaintSection = require('components/OfficerPage/ComplaintSection.react');
 var ComplaintListAPI = require('utils/ComplaintListAPI');
 var StoryListAPI = require('utils/StoryListAPI');
+var TimelineAPI = require('utils/TimelineAPI');
 var FilterActions = require("actions/FilterActions");
 var Nav = require('components/OfficerPage/Nav.react');
 var OfficerDetail = require('components/DataToolPage/OfficerDetail.react');
@@ -33,17 +34,19 @@ var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
   },
 
   componentDidMount: function() {
-    var officerId = this.props.officerId || '';
+    var officerId = this.props.params.id || '';
     OfficerPageServerActions.getOfficerData(officerId);
     OfficerPageStore.addChangeListener(this._onChange);
     StoryListAPI.get(officerId);
+    TimelineAPI.getTimelineData(officerId);
   },
 
   componentWillReceiveProps: function(nextProps) {
     // OfficerPage is not rendered again if we change from OfficerPage to other OfficerPage
-    var officerId = nextProps.officerId || '';
+    var officerId = nextProps.params.id || '';
     OfficerPageServerActions.getOfficerData(officerId);
     StoryListAPI.get(officerId);
+    TimelineAPI.getTimelineData(officerId);
   },
 
   componentDidUpdate: function () {
@@ -57,30 +60,41 @@ var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
     var relatedOfficers = this.state.data['related_officers'];
     var hasMap = this.state.data['has_map'];
 
+    var content = '';
     if (_.isEmpty(officer)) {
-      return <i clasName="fa fa-spin fa-spinner" />;
-    }
-    return (
-      <div>
-        <Nav />
-        <div id='officer-profile'>
-          <div className="map-row">
-            <div className="container">
-              <OfficerDetail officer={officer} hasMap={hasMap} />
+      content = (<i clasName='fa fa-spin fa-spinner' />);
+    } else {
+      content = (
+        <div>
+          <Nav />
+          <div id='officer-profile'>
+            <div className="map-row">
+              <div className="container">
+                <OfficerDetail officer={officer} hasMap={hasMap} />
+              </div>
             </div>
-          </div>
-          <div className="container">
-            <RelatedOfficers relatedOfficers={relatedOfficers} />
-            <StoryList officer={officer} />
-            <ComplaintSection officer={officer}/>
-          </div>
-
-          <div className='container-fluid'>
-            <div className='sticky-footer'>
-              <Footer />
+            <div className="white-background">
+              <div className="container">
+                <RelatedOfficers relatedOfficers={relatedOfficers} />
+                <StoryList officer={officer} />
+              </div>
+            </div>
+            <div className="container">
+              <ComplaintSection officer={officer}/>
+            </div>
+            <div className='container-fluid'>
+              <div className='sticky-footer'>
+                <Footer />
+              </div>
             </div>
           </div>
         </div>
+      );
+    }
+
+    return (
+      <div>
+        {content}
         <Disclaimer />
         <HappyFox />
       </div>

@@ -12,8 +12,21 @@ var _state = {
   query: null
 };
 
-var DownloadStore = _.assign(Base(_state), {
+var HREF_CHANGE_EVENT = 'HREF_CHANGE_EVENT';
 
+
+var DownloadStore = _.assign(Base(_state), {
+    addHrefChangeListener: function(callback) {
+      this.on(HREF_CHANGE_EVENT, callback);
+    },
+
+    removeHrefChangeListener: function(callback) {
+      this.removeListener(HREF_CHANGE_EVENT, callback);
+    },
+
+    emitHrefChange: function() {
+      this.emit(HREF_CHANGE_EVENT);
+    }
 });
 
 // Register callback to handle all updates
@@ -27,7 +40,8 @@ AppDispatcher.register(function (action) {
     case AppConstants.GENERATED_DOWNLOAD:
       _state.href = action.href;
       _state.processing = false;
-      DownloadStore.emitChange()
+      DownloadStore.emitChange();
+      DownloadStore.emitHrefChange();
       break;
 
     case AppConstants.ADD_TAG:

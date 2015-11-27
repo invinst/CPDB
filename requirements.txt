@@ -6,6 +6,7 @@ billiard==3.3.0.20
 celery==3.1.18
 chardet==2.3.0
 coverage==3.7.1
+coveralls==1.1
 dj-database-url==0.3.0
 Django==1.8.1
 django-appconf==1.0.1
@@ -63,3 +64,4 @@ whitenoise==1.0.6
 XlsxWriter==0.7.3
 django-user-agents==0.3.0
 ua-parser==0.4.1
+freezegun==0.3.5

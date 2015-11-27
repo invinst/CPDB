@@ -55,23 +55,24 @@ input:-ms-input-placeholder
   border: none
   //If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
   box-shadow: none
-  margin: 10px 0
+  margin: 10px 0 5px
   background-color: transparent
   height: 40px
   .tag
     font-weight: 400
     display: inline-block
-    background: transparent
-    border: 1px solid $color_cadet_blue_approx
-    color: $color_mountain_mist_approx
+    background: $color_link_water_approx
+    color: $color_mine_shaft_approx
     margin-right: 10px
     height: 36px
     &.pinned
-      border: 2px solid $color_deep_celurean_approx
-      background: $seashell
+      background: $text_color
+      .filter-name
+        color: $white
       .pin
-        color: $color_deep_celurean_approx
+        color: $white
     .action
+      color: $color_cadet_blue_approx
       padding: 0 5px
       line-height: 30px
       &.remove
@@ -86,8 +87,9 @@ input:-ms-input-placeholder
       font-size: 18px
     .filter-name
       display: block
-      color: $color_deep_celurean_approx
+      color: $color_mine_shaft_approx
     .filter-category-name
+      color: $color_mountain_mist_approx
       display: block
       text-transform: uppercase
       font-size: 11px

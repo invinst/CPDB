@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 from django.contrib.gis.db import models
 from django.core.urlresolvers import reverse
@@ -83,12 +84,21 @@ class ComplainingWitness(models.Model):
     age = models.IntegerField(null=True)
 
 
+CITIZEN_DEPTS = [
+    ('citizen', 'Citizen'),
+    ('dept', 'Dept'),
+    ('?', 'Unknown')
+]
+
+
 class AllegationCategory(models.Model):
     cat_id = models.CharField(primary_key=True, max_length=255)
     category = models.CharField(max_length=255, null=True, db_index=True)
     allegation_name = models.CharField(max_length=255, null=True, db_index=True)
     allegation_count = models.IntegerField(default=0)
     category_count = models.IntegerField(default=0)
+    on_duty = models.BooleanField(default=False)
+    citizen_dept = models.CharField(max_length=50, default='citizen', choices=CITIZEN_DEPTS)
 
     def __str__(self):
         return str(self.allegation_name)
@@ -347,7 +357,7 @@ OUTCOME_TEXT_DICT = {
     '30 more days': {
         'text': '30+ days',
         'condition': {
-            'final_outcome': ["045", "060", "090", "200"],
+            'final_outcome': ["045", "060", "090", "180", "200"],
         }
     },
 }
@@ -368,43 +378,39 @@ CUSTOM_FILTER_DICT = {
 
 
 class Allegation(models.Model):
-    record_id = models.IntegerField(null=True)
+    record_id = models.IntegerField(null=True, blank=True)
     crid = models.CharField(max_length=30, null=True, db_index=True)
     officer = models.ForeignKey(Officer, null=True)
-    cat = models.ForeignKey(AllegationCategory, null=True)
-    recc_finding = models.CharField(choices=FINDINGS, max_length=2, null=True, db_index=True)
-    recc_outcome = models.CharField(choices=OUTCOMES, max_length=3, null=True, db_index=True)
-    final_finding = models.CharField(choices=FINDINGS, max_length=2, null=True, db_index=True)
-    final_outcome = models.CharField(choices=OUTCOMES, max_length=3, null=True, db_index=True)
-    final_outcome_class = models.CharField(max_length=20, null=True)
+    cat = models.ForeignKey(AllegationCategory, null=True, blank=True)
+    recc_finding = models.CharField(choices=FINDINGS, max_length=2, null=True, db_index=True, blank=True)
+    recc_outcome = models.CharField(choices=OUTCOMES, max_length=3, null=True, db_index=True, blank=True)
+    final_finding = models.CharField(choices=FINDINGS, max_length=2, null=True, db_index=True, blank=True)
+    final_outcome = models.CharField(choices=OUTCOMES, max_length=3, null=True, db_index=True, blank=True)
+    final_outcome_class = models.CharField(max_length=20, null=True, blank=True)
 
     areas = models.ManyToManyField('Area', blank=True)
-    location = models.CharField(max_length=20, null=True)
-    add1 = models.IntegerField(null=True)
-    add2 = models.CharField(max_length=255, null=True)
-    city = models.CharField(max_length=255, null=True)
-    incident_date = models.DateTimeField(null=True)
-    incident_date_only = models.DateField(null=True, db_index=True)
-    start_date = models.DateField(null=True)
-    end_date = models.DateField(null=True)
-    investigator_name = models.CharField(max_length=255, null=True, db_index=True)
-    investigator = models.ForeignKey('common.Investigator', null=True)
+    location = models.CharField(max_length=20, null=True, blank=True)
+    add1 = models.IntegerField(null=True, blank=True)
+    add2 = models.CharField(max_length=255, null=True, blank=True)
+    city = models.CharField(max_length=255, null=True, blank=True)
+    incident_date = models.DateTimeField(null=True, blank=True)
+    incident_date_only = models.DateField(null=True, db_index=True, blank=True)
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
+    investigator_name = models.CharField(max_length=255, null=True, db_index=True, blank=True)
+    investigator = models.ForeignKey('common.Investigator', null=True, blank=True)
     point = models.PointField(srid=4326, null=True, blank=True)
     objects = AllegationManager()
 
-    document_id = models.IntegerField(null=True)
-    document_normalized_title = models.CharField(max_length=255, null=True)
-    document_title = models.CharField(max_length=255, null=True)
+    document_id = models.IntegerField(null=True, blank=True)
+    document_normalized_title = models.CharField(max_length=255, null=True, blank=True)
+    document_title = models.CharField(max_length=255, null=True, blank=True)
     document_requested = models.BooleanField(default=False)
     document_pending = models.BooleanField(default=False)
     number_of_request = models.IntegerField(default=0)
+    last_requested = models.DateTimeField(default=timezone.now)
 
-    @property
-    def beat(self):
-        beats = self.areas.filter(type='police-beats')
-        if beats:
-            return beats[0]
-        return False
+    beat = models.ForeignKey('Area', null=True, blank=True, related_name='beats')
 
     def __str__(self):
         return "%s" % self.crid

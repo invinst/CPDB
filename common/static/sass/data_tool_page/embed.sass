@@ -1,0 +1,74 @@
+body
+  &.embedding
+    background-color: $color_cadet_blue_approx
+
+    .search-row
+      display: none
+
+    #map
+      height: 502px
+
+    #data-tool
+      background-color: $embed_background_color
+
+    .white-background
+      background-color: $embed_background_color
+
+#EmbedBar
+  color: $white
+  a
+    color: $white
+
+.embed-code
+  background-color: $white
+  padding: 10px
+  border-bottom: 1px solid $color_cadet_blue_approx
+
+  .fa
+    color: $color_deep_cerulean_approx
+    font-size: 25px
+
+  input
+    width: calc(100% - 35px)
+    border: none
+    padding: 0
+    margin-left: 5px
+
+#embed-lists
+  list-style: none
+  margin-right: -10px
+  margin-bottom: 5px
+
+.embed-button
+  padding: 16px 10px
+  margin-top: 0px
+
+  &.active
+    background-color: $embed_background_color
+
+  a
+    color: $white
+
+.hide-embed-button
+  .embed-button
+    display: none
+
+.embed
+  .tooltip
+    left: -47px
+    width: 115px
+    position: absolute
+    top: 17px
+    display: none
+    &.bottom .tooltip-arrow
+      display: block
+
+
+  &.zeroclipboard-is-hover .tooltip
+    display: block
+
+.checkmark.embed
+  background-color: $color_ship_cove_approx
+  color: $white
+  &:hover
+    background-color: $color_pacific_blue_approx

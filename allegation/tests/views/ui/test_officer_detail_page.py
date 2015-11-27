@@ -67,6 +67,14 @@ class OfficerDetailPageTestCase(BaseLiveTestCase):
 
         self.number_of_complaints().should.equal(2)
 
+    def test_logo_link_back_to_current_data_tool_session(self):
+        self.visit_home()
+        session_url = self.browser.current_url
+
+        self.find('#officer_%s .officer-link' % self.officer.id).click()
+        logo_link = self.find('.cpdp-logo').find_element_by_xpath('..')
+        logo_link.get_attribute('href').should.equal(session_url)
+
     def test_display_stories(self):
         story1 = StoryFactory(officer=self.officer, url=TEST_DOCUMENT_URL)
         story2 = StoryFactory(officer=self.officer, url=TEST_DOCUMENT_URL)
@@ -93,7 +101,7 @@ class OfficerDetailPageTestCase(BaseLiveTestCase):
         self.find('.document-thumbnail').should.be.ok
 
     def go_to_officer_detail_page(self, officer):
-        self.visit('/#!/data-tools')
+        self.visit_home()
         self.find('#officer_%s .officer-link' % officer.id).click()
 
     def number_of_complaints(self):

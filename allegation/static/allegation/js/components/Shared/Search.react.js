@@ -42,10 +42,6 @@ var Search = React.createClass({
     });
   },
 
-  componentDidUpdate: function () {
-    $('#autocomplete').focus();
-  },
-
   select: function (event, ui) {
     event.preventDefault();
     FilterTagsActions.addTag(ui.item.category, ui.item);

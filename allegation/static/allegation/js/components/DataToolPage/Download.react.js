@@ -1,5 +1,6 @@
-var React = require('react');
 var _ = require('lodash');
+var React = require('react');
+var classnames = require('classnames');
 
 var Base = require('components/Base.react');
 var AppConstants = require('constants/AppConstants');
@@ -14,6 +15,15 @@ global.redirect = function (href) {
 
 
 var Download = React.createClass(_.assign(Base(DownloadStore), {
+  componentDidMount: function () {
+    DownloadStore.addChangeListener(this._onChange);
+    DownloadStore.addHrefChangeListener(this.onChangeHref);
+  },
+
+  componentWillUnmount: function () {
+    DownloadStore.removeChangeListener(this._onChange);
+    DownloadStore.removeHrefChangeListener(this.onChangeHref);
+  },
 
   onClick: function (e) {
     e.preventDefault();
@@ -32,7 +42,7 @@ var Download = React.createClass(_.assign(Base(DownloadStore), {
 
   },
 
-  componentDidUpdate: function () {
+  onChangeHref: function () {
     if (this.state.href) {
       redirect(this.state.href);
     }
@@ -40,9 +50,6 @@ var Download = React.createClass(_.assign(Base(DownloadStore), {
 
   render: function () {
     var content = '';
-    if (!this.state.query) {
-      return <div className="hidden"></div>
-    }
     if (this.state.processing) {
       content = (
         <div className="progress progress-striped active">
@@ -56,8 +63,13 @@ var Download = React.createClass(_.assign(Base(DownloadStore), {
         </a>
       )
     }
+
+    var downloadClassName = classnames('download-wrapper', {
+      'invisible': !this.state.query
+    })
+
     return (
-      <div className="download-wrapper">
+      <div className={downloadClassName}>
         {content}
       </div>
     );

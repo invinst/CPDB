@@ -13,7 +13,8 @@ var QueryList = React.createClass({
       return (
         <tr>
           <td>{index + 1}</td>
-          <td className="session-query">{that.buildQuery(x)}</td>
+          <td>{x.email}</td>
+          <td className="session-query">{that.buildQuery(x.query)}</td>
         </tr>
       );
     });
@@ -49,6 +50,7 @@ var QueryList = React.createClass({
           <thead>
             <tr>
               <th>ID</th>
+              <th>Email</th>
               <th>Search Queries</th>
             </tr>
           </thead>
