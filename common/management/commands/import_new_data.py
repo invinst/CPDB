@@ -1,10 +1,13 @@
 import csv
 
 import datetime
+
+from django.core import management
+from django.core.exceptions import ValidationError, MultipleObjectsReturned
 from django.core.management.base import BaseCommand
 from django.db.models import Q
 
-from common.models import Officer, Allegation, PoliceWitness
+from common.models import Officer, Allegation, PoliceWitness, Area, AllegationCategory
 from common.constants import FOIA_START_DATE
 
 
@@ -19,7 +22,24 @@ OFFICER_COLS = {
     'unit': 10,
     'birth_year': 11,
 }
-
+ALLEGATION_COLS = {
+    'crid': 1,
+    'officer': 2,
+    'cat': 3,
+    'recc_finding': 6,
+    'recc_outcome': 7,
+    'final_finding': 8,
+    'final_outcome': 9,
+    'beat': 14,
+    'add1': 16,
+    'add2': 17,
+    'city': 18,
+    'incident_date': 19,
+    'start_date': 20,
+    'end_date': 21,
+    'investigator_id': 22,
+    'final_outcome_class': 23
+}
 
 class Command(BaseCommand):
     help = 'Import new data in csv format'
@@ -38,32 +58,92 @@ class Command(BaseCommand):
         self.import_officers(*args, **options)
         self.check_officer_count(*args, **options)
         self.reassign_allegations(*args, **options)
+        management.call_command('calculate_allegations_count')
+        # management.call_command('geocode_allegations')
 
     def reassign_allegations(self, *args, **options):
-        file = csv.reader(open(options['files'][1]))
-        next(file)
-        not_found_allegations = []
-        updated = []
-        for row in file:
+        allegation_cache = {}
+        for allegation in Allegation.objects.all():
+            allegation_cache[allegation.crid] = {
+                'number_of_request': allegation.number_of_request,
+                'document_id': allegation.document_id,
+                'document_normalized_title': allegation.document_normalized_title,
+                'document_title': allegation.document_title,
+                'document_requested': allegation.document_requested,
+                'document_pending': allegation.document_pending,
+                'last_requested': allegation.last_requested
+            }
+
+        out = csv.writer(open('not_found_allegations.csv', 'w'))
+        out.writerow(['id', 'crid', 'officer_id', 'cat_id', 'category', 'allegation_name', 'recc_finding', 'recc_outcome', 'final_finding', 'final_outcome', 'finding_edit', 'result', 'outcome_edit', 'value', 'beat', 'location', 'add1', 'add2', 'city', 'incident_date', 'start_date', 'end_date', 'investigator_id', 'final_outcome_class', ''])
+
+        Allegation.objects.all().delete()
+        allegation_file = csv.reader(open(options['files'][1]))
+        batch = []
+        next(allegation_file)
+        for row in allegation_file:
             if row[2] in self.wudi_id_mapping:
                 officer = self.wudi_id_mapping[row[2]]
-
                 crid = row[1]
-                allegations = Allegation.objects.filter(crid=crid)
-                if allegations.count() == 1:
-                    allegations.update(officer=officer)
-                    updated.append([crid, row[2], officer.id])
+                if not crid:
+                    continue
 
-                elif allegations.count() > 1:
-                    allegations = allegations.filter(officer__officer_first__iexact=officer.officer_first,
-                                                     officer__officer_last__iexact=officer.officer_last)
-                    if allegations.count() == 1:
-                        allegations.update(officer=officer)
-                        updated.append([crid, row[2], officer.id])
-                else:
-                    not_found_allegations.append(row)
+                kwargs = {}
+                for col in ALLEGATION_COLS:
 
-        print(not_found_allegations)
+                    val = row[ALLEGATION_COLS[col]]
+                    if val:
+
+                        if col == 'add1':
+                            val = int(val) if val else None
+
+                        if col == 'beat':
+                            try:
+                                val = Area.objects.get(name=val, type='police-beats')
+                            except Area.DoesNotExist:
+                                val = None
+                            except MultipleObjectsReturned:
+                                val = Area.objects.filter(name=val, type='police-beats').first()
+
+                        if col == 'cat':
+                            try:
+                                val = AllegationCategory.objects.get(cat_id=val)
+                            except AllegationCategory.DoesNotExist:
+                                val = None
+
+                        if col == 'officer':
+                            val = officer
+
+                        if col == 'incident_date':
+                            if val:
+                                val = datetime.datetime.strptime(val, '%Y-%m-%d %H:%M')
+                            else:
+                                val = '1970-01-01 00:00'
+
+                        if col in ['start_date', 'end_date']:
+                            if val:
+                                val = datetime.datetime.strptime(val, '%Y-%m-%d')
+                            else:
+                                val = None
+
+                        kwargs[col] = val
+                    else:
+                        val = None
+
+                    if crid in allegation_cache:
+                        for key in allegation_cache[crid]:
+                            if key == 'last_requested':
+                                kwargs[key] = datetime.datetime.strftime(allegation_cache[crid][key], '%Y-%m-%d %H:%M:%S')
+                            else:
+                                kwargs[key] = allegation_cache[crid][key]
+
+                try:
+                    Allegation.objects.create(**kwargs)
+                except Exception as inst:
+                    print(inst, row)
+
+            else:
+                out.writerow(row)
 
     def import_officers(self, *args, **options):
         print('Importing officers...')
@@ -96,7 +176,7 @@ class Command(BaseCommand):
                 update_queue = self.handle_update(row, officers, update_queue)
             else:
                 if not row[10] or not row[0] in new_prefoia_ids:
-                    self.rows['undecided'].append(row)
+                    update_queue = self.handle_undecided(row, officers, update_queue)
                 else:
                     officers = officers.filter(id__in=prefoia_ids, unit__icontains=row[10])
                     if len(officers) == 0:
@@ -104,7 +184,7 @@ class Command(BaseCommand):
                     elif len(officers) == 1:
                         update_queue = self.handle_update(row, officers, update_queue)
                     else:
-                        self.rows['undecided'].append(row)
+                        update_queue = self.handle_undecided(row, officers, update_queue)
 
         for officers, info, row in update_queue:
             officers.update(**info)
@@ -128,6 +208,17 @@ class Command(BaseCommand):
                 ids.append(row[2])
 
         return ids
+
+    def handle_undecided(self, row, officers, update_queue):
+        print('Row %s' % row[0])
+        solution = input('Officer ID to update or "c" to create. Delete manually in db and "s" to skip:')
+        if solution == 'c':
+            self.rows['new'].append(row)
+        elif solution != 's':
+            update = officers.filter(id=solution)
+            update_queue.append((update, self.build_officer_info(row), row))
+
+        return update_queue
 
     def handle_update(self, row, officers, update_queue):
         if officers[0].id in [x[0].id for x,y,z in update_queue]:
@@ -166,16 +257,7 @@ class Command(BaseCommand):
             if len(officers) < count:
                 mismatched['less'].append(row)
             elif len(officers) > count:
-                diff = len(officers) - count
-                id_list = officers.values_list('id', flat=True)
-                for i in range(len(id_list)):
-                    Allegation.objects.filter(officer_id=id_list[i]).update(officer_id=id_list[i+1])
-                    PoliceWitness.objects.filter(officer_id=id_list[i]).update(officer_id=id_list[i+1])
-
-                    officers.filter(id=id_list[i]).delete()
-                    diff -= 1
-                    if diff == 0:
-                        break
+                mismatched['more'].append(row)
 
         for group in mismatched:
             print(group, str(len(mismatched[group])))
