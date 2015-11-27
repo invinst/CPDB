@@ -14,5 +14,5 @@ class TestOfficerProfileLink(SimpleTestCase):
         self.officer.delete()
 
     def test_officer_profile_link(self):
-        expected_result = 'http://cpdb.co/#!/officer/first-last/1000'
+        expected_result = 'http://cpdb.co/officer/first-last/1000'
         Command.officer_profile_link(self.officer).should.equal(expected_result)

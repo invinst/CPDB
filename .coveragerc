@@ -1,0 +1,2 @@
+[report]
+omit = */migrations/*,/home/ubuntu/virtualenvs/*,common/json_serializer.py
