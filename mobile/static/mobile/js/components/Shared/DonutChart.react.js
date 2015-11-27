@@ -17,18 +17,16 @@ var DonutChart = React.createClass({
     }
     return (
       <div className='donut-chart'>
-        <div className='svg-container'>
-          <svg version="1.1" viewBox="0 0 400 400">
-              <circle cx="200" cy="200" r="200" fill="#000"></circle>
-              <path d={path} fill="#ccc"></path>
-              <circle cx="200" cy="200" r="150" fill="#fff"></circle>
-              <g textAnchor="middle">
-                <text fontSize="40" style={bold} x="200" y="170">{middleText}</text>
-                <text fontSize="25" x="200" y="200" fill="#aaa">Disciplined</text>
-                <text fontSize="25" x="200" y="230">Complaints</text>
-              </g>
-          </svg>
-        </div>
+        <svg version="1.1" viewBox="0 0 400 400">
+            <circle cx="200" cy="200" r="200" fill="#000"></circle>
+            <path d={path} fill="#ccc"></path>
+            <circle cx="200" cy="200" r="150" fill="#fff"></circle>
+            <g textAnchor="middle">
+              <text fontSize="40" style={bold} x="200" y="170">{middleText}</text>
+              <text fontSize="25" x="200" y="200" fill="#aaa">Disciplined</text>
+              <text fontSize="25" x="200" y="230">Complaints</text>
+            </g>
+        </svg>
       </div>
     )
   }
