@@ -81,7 +81,11 @@ class Command(BaseCommand):
         allegation_file = csv.reader(open(options['files'][1]))
         batch = []
         next(allegation_file)
+        counter = 0
         for row in allegation_file:
+            if counter % 1000 == 0:
+                print(counter)
+            counter += 1
             if row[2] in self.wudi_id_mapping:
                 officer = self.wudi_id_mapping[row[2]]
                 crid = row[1]
@@ -157,12 +161,20 @@ class Command(BaseCommand):
         update_queue = []
 
         file = csv.reader(open(options['files'][0]))
+
+        Officer.objects.filter(pk__in=[9029, 9016, 8960, 8941]).delete()
+
+        exclude_ids = []
+        counter = 0
         next(file)
         for row in file:
+            if counter % 1000 == 0:
+                print(counter)
+            counter += 1
             by_name = Officer.objects.filter(
                 officer_first__iexact=row[2],
                 officer_last__iexact=row[3]
-            )
+            ).exclude(pk__in=exclude_ids)
             appt_date_or_star = Q()
             if row[7]:
                 appt_date_or_star |= Q(appt_date__icontains=row[7])
@@ -170,10 +182,13 @@ class Command(BaseCommand):
                 appt_date_or_star |= Q(star=float(row[8]))
             officers = by_name.filter(appt_date_or_star)
 
+            #if row[1] == 'AGUILERA, DANIEL':
+            #    import pdb; pdb.set_trace()
+
             if len(officers) == 0:
                 self.rows['new'].append(row)
             elif len(officers) == 1:
-                update_queue = self.handle_update(row, officers, update_queue)
+                update_queue, exclude_ids = self.handle_update(row, officers, update_queue, exclude_ids)
             else:
                 if not row[10] or not row[0] in new_prefoia_ids:
                     update_queue = self.handle_undecided(row, officers, update_queue)
@@ -182,7 +197,7 @@ class Command(BaseCommand):
                     if len(officers) == 0:
                         self.rows['new'].append(row)
                     elif len(officers) == 1:
-                        update_queue = self.handle_update(row, officers, update_queue)
+                        update_queue, exclude_ids = self.handle_update(row, officers, update_queue, exclude_ids)
                     else:
                         update_queue = self.handle_undecided(row, officers, update_queue)
 
@@ -210,30 +225,41 @@ class Command(BaseCommand):
         return ids
 
     def handle_undecided(self, row, officers, update_queue):
-        print('Row %s' % row[0])
-        solution = input('Officer ID to update or "c" to create. Delete manually in db and "s" to skip:')
-        if solution == 'c':
-            self.rows['new'].append(row)
-        elif solution != 's':
-            update = officers.filter(id=solution)
-            update_queue.append((update, self.build_officer_info(row), row))
+        to_delete = max([o.id for o in officers])
+        to_keep = officers.exclude(id=to_delete)
+        if len(to_keep) == 1:
+            Allegation.objects.filter(officer_id=to_delete).update(officer_id=to_keep.first().id)
+            PoliceWitness.objects.filter(officer_id=to_delete).update(officer_id=to_keep.first().id)
+            officers.filter(id=to_delete).delete()
+            update_queue.append((to_keep, self.build_officer_info(row), row))
+            # solution = input('Officer ID to update or "c" to create. Delete manually in db and "s" to skip:')
+            # if solution == 'c':
+            #     self.rows['new'].append(row)
+            # elif solution != 's':
+            #     update = officers.filter(id=solution)
+            #     update_queue.append((update, self.build_officer_info(row), row))
+        else:
+            print('Row %s' % row[0])
 
         return update_queue
 
-    def handle_update(self, row, officers, update_queue):
+    def handle_update(self, row, officers, update_queue, exclude_ids):
         if officers[0].id in [x[0].id for x,y,z in update_queue]:
             self.rows['new'].append(row)
         else:
             self.rows['update'].append(row)
             update_queue.append((officers, self.build_officer_info(row), row))
+            exclude_ids.append(officers.first().id)
 
-        return update_queue
+        return update_queue, exclude_ids
 
     def build_officer_info(self, row):
         info = {}
         for col in OFFICER_COLS:
             if row[OFFICER_COLS[col]]:
                 info[col] = row[OFFICER_COLS[col]]
+            else:
+                info[col] = None
 
         return info
 
