@@ -3,10 +3,15 @@ from django.test import SimpleTestCase
 from allegation.factories import AllegationFactory, OfficerFactory
 from mobile.services.mobile_suggestion_service import MobileSuggestionService
 
+from common.models import Allegation
+from common.models import Officer
+
 
 class MobileSuggestionServiceTest(SimpleTestCase):
     def setUp(self):
         self.mobile_suggestion = MobileSuggestionService()
+        Allegation.objects.all().delete()
+        Officer.objects.all().delete()
 
     def test_suggest_crid(self):
         allegation = AllegationFactory(crid='1051333')
