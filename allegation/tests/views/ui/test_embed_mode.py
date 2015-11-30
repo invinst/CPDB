@@ -51,6 +51,7 @@ class EmbedModeTestCase(BaseLiveTestCase):
         self.link('Embed Mode').click()
         self.until(lambda: self.find("body").has_class("embedding"))
 
+        self.sleep(1)
         self.get_screen_shot(name='test_can_not_change_filter_in_embed_mode_2.png')
         self.find("#filter-tags .tag .remove").click()
         self.get_screen_shot(name='test_can_not_change_filter_in_embed_mode_3.png')
