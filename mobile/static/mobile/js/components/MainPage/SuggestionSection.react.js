@@ -14,18 +14,18 @@ var SuggestionSection = React.createClass({
 
     return (
       <div id='suggestion-section' className={classNames}>
-        <ul className="table-view">
-          <li className="table-view-cell">
+        <ul className='table-view'>
+          <li className='table-view-cell'>
             <a href='#' onClick={this.itemOnClick.bind(this, 'Item 1')}>
               Item 1
             </a>
           </li>
-          <li className="table-view-cell">
+          <li className='table-view-cell'>
             <a href='#' onClick={this.itemOnClick.bind(this, 'Item 2')}>
               Item 2
             </a>
           </li>
-          <li className="table-view-cell">
+          <li className='table-view-cell'>
             <a href='#' onClick={this.itemOnClick.bind(this, 'Item 3')}>
               Item 3
             </a>

@@ -5,5 +5,7 @@ module.exports = {
   DEACTIVATE_SEARCH: c++,
   SEARCH_FOR: c++,
   GO_FOR_SEARCH_DETAIL: c++,
-  CHANGE_TAB: c++
+  CHANGE_TAB: c++,
+
+  MAPBOX_TOKEN: ''
 };

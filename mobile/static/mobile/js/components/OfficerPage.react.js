@@ -11,7 +11,7 @@ var OfficerDetail = require('components/OfficerPage/OfficerDetail.react');
 var OfficerPage = React.createClass({
   render: function () {
     return (
-      <div className='complaint-page'>
+      <div className='officer-page'>
         <Logo topLeft={true}/>
         <div className='content'>
           <div className='pad'>

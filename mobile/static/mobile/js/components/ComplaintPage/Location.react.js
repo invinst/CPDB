@@ -10,7 +10,7 @@ var Location = React.createClass({
         <div className='section-header'>
           <div className='section-title'>Where</div>
         </div>
-        <div className="location-detail">
+        <div className='location-detail'>
           <div>
             <label>Beat</label>
             <span>1214</span>

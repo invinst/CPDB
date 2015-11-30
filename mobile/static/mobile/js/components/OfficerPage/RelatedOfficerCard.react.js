@@ -1,7 +1,5 @@
 var React = require('react');
 
-var Collapse = require('components/Shared/Collapse.react');
-
 
 var RelatedOfficerCard = React.createClass({
   render: function () {

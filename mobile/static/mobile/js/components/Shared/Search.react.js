@@ -16,7 +16,7 @@ var Search = React.createClass({
 
   onChange: function (e) {
     var term = e.currentTarget.value;
-    SearchActions.searchFor(term)
+    SearchActions.searchFor(term);
   },
 
   render: function () {

@@ -24,7 +24,7 @@ var PoliceWiteness = React.createClass({
                 <span className='legend-title'>Descipline applied</span>
               </span>
             </div>
-            <div className="police-witness-list">
+            <div className='police-witness-list'>
               <label>Officer name</label>
               <div>Male, Native American</div>
 

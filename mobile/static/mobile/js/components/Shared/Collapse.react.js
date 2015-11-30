@@ -5,7 +5,7 @@ DEFAULT_MAX_HEIGHT = 300;
 
 var Collapse = React.createClass({
   getInitialState: function () {
-    var collapse = this.props.collapse ? false : true;
+    var collapse = !this.props.collapse;
     var maxHeight = this.props.maxHeight || DEFAULT_MAX_HEIGHT;
 
     return {
@@ -14,28 +14,40 @@ var Collapse = React.createClass({
     }
   },
 
+  _action: function () {
+    return this.getDOMNode().getElementsByClassName('collapse-action')[0]
+  },
+
+  _content: function () {
+     return this.getDOMNode().getElementsByClassName('collapse-content')[0];
+  },
+
   _toggleCollapse: function () {
-    var collapse = this.state.collapse;
+    var content = this._content();
 
-    // TODO: if we could not find any content
-    var content = this.getDOMNode().getElementsByClassName('collapse-content')[0];
-    var contentMaxHeight = collapse ? 0 : this.state.maxHeight;
-    content.style.maxHeight = contentMaxHeight + 'px';
+    if (content) {
+      var collapse = this.state.collapse;
+      var contentMaxHeight = collapse ? 0 : this.state.maxHeight;
 
-    this.setState({
-      'collapse': !collapse
-    })
+      content.style.maxHeight = contentMaxHeight + 'px';
+
+      this.setState({
+        'collapse': !collapse
+      })
+    }
   },
 
   componentDidMount: function () {
-    // TODO: if we could not find any tooggle
-    var toggle = this.getDOMNode().getElementsByClassName('collapse-action')[0];
-    toggle.onclick = this._toggleCollapse;
+    var toggle = this._action();
 
-    var content = this.getDOMNode().getElementsByClassName('collapse-content')[0];
-    var contentMaxHeight = this.state.collapse ? this.state.maxHeight : 0;
+    if (toggle) {
+      var content = this._content();
+      var contentMaxHeight = this.state.collapse ? this.state.maxHeight : 0;
 
-    content.style.maxHeight = contentMaxHeight + 'px';
+      toggle.addEventListener('click', this._toggleCollapse);
+      // set default max-height style for component
+      content.style.maxHeight = contentMaxHeight + 'px';
+    }
   },
 
   render: function () {
