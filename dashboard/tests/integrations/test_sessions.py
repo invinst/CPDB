@@ -1,5 +1,6 @@
 from common.tests.core import BaseLiveTestCase
 from search.factories import SuggestionLogFactory, FilterLogFactory
+from search.models.alias import Alias
 from share.factories import SessionFactory
 from share.models import Session
 
@@ -38,16 +39,15 @@ class SessionManagementTestCase(BaseLiveTestCase):
         self.go_to_sessions()
         self.number_of_sessions().should.equal(2)
 
-        self.search_for_session_with_title(query)
+        self.search_for_session(query)
         self.until_ajax_complete()
         self.number_of_sessions().should.equal(1)
         self.should_see_text(match_title)
 
-        self.search_for_session_with_title(uppercase_query)
+        self.search_for_session(uppercase_query)
         self.until_ajax_complete()
         self.number_of_sessions().should.equal(1)
         self.should_see_text(match_title)
-
 
     def test_see_history_of_session(self):
         category = 'category'
@@ -61,10 +61,51 @@ class SessionManagementTestCase(BaseLiveTestCase):
         self.should_see_text(suggestion.search_query)
         self.should_see_text(category)
 
+    def test_search_by_session_id(self):
+        session = SessionFactory()
+        SessionFactory()
+
+        self.go_to_sessions()
+        self.number_of_sessions().should.equal(2)
+
+        self.search_for_session(session.hash_id)
+        self.until_ajax_complete()
+
+        self.number_of_sessions().should.equal(1)
+
+    def test_toggle_searchable(self):
+        session = SessionFactory()
+
+        self.go_to_sessions()
+
+        self.find('.toggle-searchable').click()
+        self.until(lambda: self.element_exist('.fa.fa-search-plus').should.be.false)
+        self.until(lambda: self.element_exist('.fa.fa-search-minus').should.be.true)
+        Session.objects.all().first().searchable.should.be.true
+
+        self.find('.toggle-searchable').click()
+        self.until(lambda: self.element_exist('.fa.fa-search-plus').should.be.true)
+        self.until(lambda: self.element_exist('.fa.fa-search-minus').should.be.false)
+        Session.objects.all().first().searchable.should.be.false
+
+    def test_add_alias(self):
+        alias = 'session alias'
+        session = SessionFactory()
+
+        self.go_to_sessions()
+
+        self.find('.add-alias').click()
+        self.until(lambda: self.should_see_text('Add Alias'))
+
+        self.find('.alias-input').send_keys(alias)
+        self.button('SUBMIT').click()
+        self.until(lambda: self.should_see_text('Add new alias successfully'))
+        Session.objects.get(alias=alias).id.should.equal(session.id)
+
     def number_of_sessions(self):
         return len(self.find_all("#sessions .session-row"))
 
-    def search_for_session_with_title(self, query):
+    def search_for_session(self, query):
         search_input = self.find('#search input')
         search_input.clear()
         search_input.send_keys(query)

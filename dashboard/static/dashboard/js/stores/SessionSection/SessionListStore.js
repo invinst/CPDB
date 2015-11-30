@@ -34,6 +34,20 @@ AppDispatcher.register(function(action) {
         SessionListStore.emitChange();
       }
       break;
+
+    case AppConstants.TOGGLED_SEARCHABLE_SESSION:
+      var data = action.data;
+      var hashID = data['hash_id'];
+      var enable = data['enable'];
+      for (i in _state['data']) {
+        if (_state['data'][i].hash_id == hashID) {
+          _state['data'][i].searchable = enable;
+          break;
+        }
+      }
+      SessionListStore.emitChange();
+      break;
+
     default:
       break;
   }

@@ -27,6 +27,13 @@ var SessionsActions = {
       actionType: AppConstants.SEARCH_FOR_SESSION,
       data: query
     });
+  },
+
+  toggledSearchable: function (data) {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.TOGGLED_SEARCHABLE_SESSION,
+      data: data
+    });
   }
 };
 

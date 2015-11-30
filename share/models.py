@@ -37,6 +37,8 @@ class Session(models.Model):
     created_at = models.DateTimeField(default=timezone.now, null=True, blank=True)
     ip = models.CharField(default='', max_length=40, null=True, blank=True) # we could handle IPv6 as well
     user_agent = models.CharField(max_length=255, null=True, blank=True)
+    searchable = models.BooleanField(default=False)
+    alias = models.CharField(max_length=254, null=True, blank=True)
 
     @property
     def hash_id(self):
@@ -72,6 +74,7 @@ class Session(models.Model):
         session.query = self.query
         session.active_tab = self.active_tab
         session.share_from = self
+        session.searchable = self.searchable
         session.save()
         return session
 

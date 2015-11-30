@@ -6,10 +6,8 @@ from share.models import Session
 
 class SessionViewTestCase(SimpleTestCase):
     def setUp(self):
-        self.login_user()
-
-    def tearDown(self):
         Session.objects.all().delete()
+        self.login_user()
 
     def get_sessions(self, params={}):
         response = self.client.get('/api/dashboard/sessions/', params)
@@ -32,6 +30,16 @@ class SessionViewTestCase(SimpleTestCase):
         params = { 'q': query }
         response, data = self.get_sessions(params)
         response.status_code.should.equal(200)
+        len(data['results']).should.be(1)
+
+    def test_get_sessions_with_query_for_id_included(self):
+        SessionFactory()
+        session = SessionFactory()
+
+        params = {'q': session.hash_id }
+        response, data = self.get_sessions(params)
+        response.status_code.should.equal(200)
+
         len(data['results']).should.be(1)
 
     def test_get_details_with_session(self):

@@ -18,6 +18,8 @@ from dashboard.views.document_link_view import DocumentLinkView
 from dashboard.views.story_type_view import StoryTypeView
 from dashboard.views.settings_save_view import SettingsSaveView
 from dashboard.views.admin_session_analytics_view import AdminNewSessionsAnalyticsViewSet
+from dashboard.views.admin_session_searchable_view import AdminSessionSearchableView
+from dashboard.views.admin_session_alias_view import AdminSessionAliasApi
 
 cache_view = cache_page(86400 * 90)
 
@@ -42,5 +44,7 @@ urlpatterns = [
     url(r'^api/dashboard/settings_save/$', login_required(csrf_exempt(SettingsSaveView.as_view()))),
     url(r'^api/dashboard/document-requests-analysis/$',
         login_required(csrf_exempt(AdminAllegationRequestAnalysisView.as_view())),
-        name='dashboard-allegation-request-analysis')
+        name='dashboard-allegation-request-analysis'),
+    url(r'^api/dashboard/session-searchable/$', login_required(csrf_exempt(AdminSessionSearchableView.as_view()))),
+    url(r'^api/dashboard/session-alias/$', login_required(csrf_exempt(AdminSessionAliasApi.as_view())), name='session-alias'),
 ]

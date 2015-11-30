@@ -72,6 +72,13 @@ module.exports = {
 
   RECEIVED_NEW_SESSIONS_DATA: c++,
 
+  TOGGLED_SEARCHABLE_SESSION: c++,
+  SHOW_ADD_SESSION_ALIAS_MODAL: c++,
+  HIDE_ADD_SESSION_ALIAS_MODAL: c++,
+  SESSION_ALIAS_MODAL_FORM_DATA_CHANGED: c++,
+  RECEIVED_SESSION_ALIAS_CREATION_RESULT: c++,
+  FAILED_TO_CREATE_SESSION_ALIAS: c++,
+
   QUERY_LIST_FILTERS: {
     'all': 'All',
     'fail-attempts': 'Fail attempts',
@@ -164,6 +171,8 @@ module.exports = {
   DOCUMENT_REQUEST_ANALYSIS_END_POINT: '/api/dashboard/document-requests-analysis/',
   DOCUMENT_LINK_END_POINT: '/api/dashboard/document-link/',
   SESSIONS_API_ENDPOINT: '/api/dashboard/sessions/',
+  SESSION_SEARCHABLE_API_ENDPOINT: '/api/dashboard/session-searchable/',
+  SESSION_ALIAS_API_ENDPOINT: '/api/dashboard/session-alias/',
   SETTINGS_API_ENDPOINT: '/api/dashboard/settings/',
   NEW_SESSION_ANALYTICS_API_ENDPOINT: '/api/dashboard/new-sessions-analytics/',
 };
