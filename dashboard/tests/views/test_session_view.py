@@ -6,10 +6,8 @@ from share.models import Session
 
 class SessionViewTestCase(SimpleTestCase):
     def setUp(self):
-        self.login_user()
-
-    def tearDown(self):
         Session.objects.all().delete()
+        self.login_user()
 
     def get_sessions(self, params={}):
         response = self.client.get('/api/dashboard/sessions/', params)

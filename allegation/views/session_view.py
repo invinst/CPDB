@@ -129,7 +129,8 @@ class InitSession(SessionAPIView):
                             'value': [beat.id]
                         }
                     }
-                }
+                },
+                searchable=False,
             )
             return HttpResponseRedirect("/data/{session_hash}".format(session_hash=session.hash_id))
 
