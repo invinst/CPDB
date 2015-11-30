@@ -34,7 +34,8 @@ class SessionSerializer(serializers.HyperlinkedModelSerializer):
                   'user_agent',
                   'suggestion_logs',
                   'filter_logs',
-                  'searchable'
+                  'searchable',
+                  'id',
                   )
 
     def get_extra_kwargs(self):

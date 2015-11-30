@@ -4,17 +4,17 @@ var _ = require('lodash');
 global.jQuery = require('jquery');
 require('bootstrap');
 require('jquery-validation');
-var AddAliasModalStore = require('stores/SearchSection/AddAliasModalStore');
-var AddAliasModalActions = require('actions/SearchSection/AddAliasModalActions');
+var AddSessionAliasModalStore = require('stores/SessionSection/AddSessionAliasModalStore');
+var AddSessionAliasModalActions = require('actions/SessionSection/AddSessionAliasModalActions');
 var toastr = require('toastr');
 
-var AddSessionAliasModal = React.createClass(_.assign(Base(AddAliasModalStore), {
+var AddSessionAliasModal = React.createClass(_.assign(Base(AddSessionAliasModalStore), {
   updateValue: function (stateName, e) {
-    AddAliasModalActions.formDataChange(stateName, e.target.value);
+    AddSessionAliasModalActions.formDataChange(stateName, e.target.value);
   },
 
   createAlias: function () {
-    AddAliasModalActions.createAlias(this.state.alias, this.state.target);
+    AddSessionAliasModalActions.createAlias(this.state.alias, this.state.target);
   },
 
   render: function() {
@@ -50,7 +50,7 @@ var AddSessionAliasModal = React.createClass(_.assign(Base(AddAliasModalStore), 
   },
 
   hideModal: function () {
-    AddAliasModalActions.hide();
+    AddSessionAliasModalActions.hide();
   },
 
   toggleModal: function () {

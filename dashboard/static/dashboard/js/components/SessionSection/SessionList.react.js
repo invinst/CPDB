@@ -4,7 +4,7 @@ global.jQuery = require('jquery');
 var moment = require('moment');
 var React = require('react');
 
-var AddAliasModalActions = require('actions/SearchSection/AddAliasModalActions');
+var AddSessionAliasModalActions = require('actions/SessionSection/AddSessionAliasModalActions');
 var Base = require('../Base.react');
 var SessionsAPI = require('utils/SessionsAPI');
 var SessionSearchableAPI = require('utils/SessionSearchableAPI');
@@ -26,7 +26,7 @@ var SessionList = React.createClass(_.assign(Base(SessionListStore), {
 
   _onClick: function (target, e) {
     e.preventDefault();
-    AddAliasModalActions.show({
+    AddSessionAliasModalActions.show({
       alias: '',
       target: target
     });
@@ -42,11 +42,11 @@ var SessionList = React.createClass(_.assign(Base(SessionListStore), {
     jQuery(window).on('scroll', this._onScroll);
   },
 
-  renderSearchableToggle: function (hash_id, enable) {
+  renderSearchableToggle: function (hashID, enable) {
     if (enable) {
       return (
         <td>
-          <a className="toggle-searchable" onClick={this.onToggleSearchable.bind(this, hash_id, false)} href="#">
+          <a className="toggle-searchable" onClick={this.onToggleSearchable.bind(this, hashID, false)} href="#">
             <i className='fa fa-search-minus'/>
           </a>
         </td>
@@ -54,7 +54,7 @@ var SessionList = React.createClass(_.assign(Base(SessionListStore), {
     } else {
       return (
         <td>
-          <a className="toggle-searchable" onClick={this.onToggleSearchable.bind(this, hash_id, true)} href="#">
+          <a className="toggle-searchable" onClick={this.onToggleSearchable.bind(this, hashID, true)} href="#">
             <i className='fa fa-search-plus'/>
           </a>
         </td>
@@ -78,7 +78,7 @@ var SessionList = React.createClass(_.assign(Base(SessionListStore), {
           <td>{x.user_agent}</td>
           { that.renderSearchableToggle(x.hash_id, x.searchable) }
           <td>
-            <a className="add-alias" onClick={that._onClick.bind(that, x.hash_id)} href="#">
+            <a className="add-alias" onClick={that._onClick.bind(that, x.id)} href="#">
               <i className='fa fa-plus'/>
             </a>
           </td>

@@ -100,7 +100,7 @@ class SessionManagementTestCase(BaseLiveTestCase):
         self.find('.alias-input').send_keys(alias)
         self.button('SUBMIT').click()
         self.until(lambda: self.should_see_text('Add new alias successfully'))
-        Alias.objects.get(alias=alias).target.should.equal(session.hash_id)
+        Session.objects.get(alias=alias).id.should.equal(session.id)
 
     def number_of_sessions(self):
         return len(self.find_all("#sessions .session-row"))
