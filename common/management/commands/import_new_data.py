@@ -239,7 +239,7 @@ class Command(BaseCommand):
         to_delete = max([o.id for o in officers])
         to_keep = officers.exclude(id=to_delete)
         if len(to_keep) == 1:
-            #Allegation.objects.filter(officer_id=to_delete).update(officer_id=to_keep.first().id)
+            Allegation.objects.filter(officer_id=to_delete).update(officer_id=to_keep.first().id)
             PoliceWitness.objects.filter(officer_id=to_delete).update(officer_id=to_keep.first().id)
             officers.filter(id=to_delete).delete()
             update_queue.append((to_keep, self.build_officer_info(row), row))
