@@ -40,7 +40,8 @@ var OfficerDetail = React.createClass({
           </div>
         </div>
       </div>
-  )}
+    )
+  }
 });
 
 module.exports = OfficerDetail;

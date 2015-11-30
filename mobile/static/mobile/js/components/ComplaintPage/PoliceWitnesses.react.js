@@ -1,11 +1,12 @@
 var React = require('react');
 
+
 var Collapse = require('components/Shared/Collapse.react');
 var ProgressBar = require('components/Shared/ProgressBar.react');
 
-var PoliceWiteness =  React.createClass({
-  render: function(){
-    return  (
+var PoliceWiteness = React.createClass({
+  render: function () {
+    return (
       <div className='police-witness'>
         <Collapse>
           <div className='section-header'>

@@ -1,4 +1,4 @@
-var _ = require('lodash');
+var objectAssign = require('object-assign');
 
 var AppDispatcher = require('dispatcher/AppDispatcher');
 var AppConstants = require('constants/AppConstants');
@@ -9,7 +9,7 @@ var _state = {
   currentTab: 'officer'
 };
 
-var SearchResultSectionStore = _.assign(Base(_state), {});
+var SearchResultSectionStore = objectAssign(Base(_state), {});
 
 AppDispatcher.register(function (action) {
   switch (action.actionType) {

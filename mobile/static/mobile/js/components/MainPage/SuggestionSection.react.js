@@ -1,8 +1,8 @@
 var cx = require('classnames');
 var React = require('react');
 
-
 var SuggestionSectionActions = require('actions/MainPage/SuggestionSectionActions');
+
 
 var SuggestionSection = React.createClass({
   itemOnClick: function (e, suggestion) {
@@ -10,12 +10,12 @@ var SuggestionSection = React.createClass({
   },
 
   render: function () {
-    var classNames = cx('animation', { 'hidden': !this.props.visible });
+    var classNames = cx('animation', {'hidden': !this.props.visible});
 
     return (
       <div id='suggestion-section' className={classNames}>
         <ul className="table-view">
-          <li className="table-view-cell" >
+          <li className="table-view-cell">
             <a href='#' onClick={this.itemOnClick.bind(this, 'Item 1')}>
               Item 1
             </a>

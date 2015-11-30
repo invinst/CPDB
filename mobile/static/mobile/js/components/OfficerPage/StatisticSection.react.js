@@ -1,5 +1,7 @@
 var React = require('react');
+
 var DonutChart = require('components/Shared/DonutChart.react');
+
 
 var StatisticSection = React.createClass({
   render: function () {
@@ -11,10 +13,11 @@ var StatisticSection = React.createClass({
           </div>
         </div>
         <div className='chart'>
-          <DonutChart total={43} discipline={16} />
+          <DonutChart total={43} discipline={16}/>
         </div>
       </div>
-  )}
+    )
+  }
 });
 
 module.exports = StatisticSection;

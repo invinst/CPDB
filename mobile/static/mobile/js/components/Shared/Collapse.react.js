@@ -1,6 +1,7 @@
 var React = require('react');
 
-DEFAULT_MAX_HEIGHT = 300
+
+DEFAULT_MAX_HEIGHT = 300;
 
 var Collapse = React.createClass({
   getInitialState: function () {
@@ -13,12 +14,12 @@ var Collapse = React.createClass({
     }
   },
 
-   _toggleCollapse: function () {
+  _toggleCollapse: function () {
     var collapse = this.state.collapse;
 
     // TODO: if we could not find any content
     var content = this.getDOMNode().getElementsByClassName('collapse-content')[0];
-    var contentMaxHeight = collapse ?  0 : this.state.maxHeight;
+    var contentMaxHeight = collapse ? 0 : this.state.maxHeight;
     content.style.maxHeight = contentMaxHeight + 'px';
 
     this.setState({
@@ -34,16 +35,16 @@ var Collapse = React.createClass({
     var content = this.getDOMNode().getElementsByClassName('collapse-content')[0];
     var contentMaxHeight = this.state.collapse ? this.state.maxHeight : 0;
 
-    content.style.maxHeight =  contentMaxHeight + 'px';
+    content.style.maxHeight = contentMaxHeight + 'px';
   },
 
   render: function () {
     return (
       <div className='animation'>
-          {this.props.children}
+        {this.props.children}
       </div>
     )
-  },
+  }
 });
 
 module.exports = Collapse;

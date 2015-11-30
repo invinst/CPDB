@@ -1,10 +1,12 @@
 var React = require('react');
-var Logo = require('components/Shared/Logo.react');
+
 var About = require('components/Shared/About.react');
-var OfficerDetail = require('components/OfficerPage/OfficerDetail.react');
-var StatisticSection = require('components/OfficerPage/StatisticSection.react');
-var RelatedOfficersSestion = require('components/OfficerPage/RelatedOfficersSection.react');
 var ComplaintsSection = require('components/OfficerPage/ComplaintsSection.react');
+var Logo = require('components/Shared/Logo.react');
+var StatisticSection = require('components/OfficerPage/StatisticSection.react');
+var RelatedOfficersSection = require('components/OfficerPage/RelatedOfficersSection.react');
+var OfficerDetail = require('components/OfficerPage/OfficerDetail.react');
+
 
 var OfficerPage = React.createClass({
   render: function () {
@@ -15,7 +17,7 @@ var OfficerPage = React.createClass({
           <div className='pad'>
             <OfficerDetail />
             <StatisticSection />
-            <RelatedOfficersSestion />
+            <RelatedOfficersSection />
             <ComplaintsSection />
           </div>
           <div className='box'>

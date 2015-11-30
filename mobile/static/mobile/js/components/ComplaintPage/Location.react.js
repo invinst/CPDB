@@ -2,9 +2,10 @@ var React = require('react');
 
 var Map = require('components/Shared/Map.react');
 
-var Location =  React.createClass({
-  render: function(){
-    return  (
+
+var Location = React.createClass({
+  render: function () {
+    return (
       <div className='location'>
         <div className='section-header'>
           <div className='section-title'>Where</div>
