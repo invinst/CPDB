@@ -34,9 +34,9 @@ class Officer(models.Model):
     unit = models.CharField(max_length=5, null=True, blank=True)
     rank = models.CharField(max_length=5, null=True, blank=True)
     star = models.FloatField(null=True, blank=True)
-    allegations_count = models.IntegerField(default=0, blank=True)
-    discipline_count = models.IntegerField(default=0, blank=True)
-    birth_year = models.IntegerField(default=0, blank=True)
+    allegations_count = models.IntegerField(default=0, blank=True, null=True)
+    discipline_count = models.IntegerField(default=0, blank=True, null=True)
+    birth_year = models.IntegerField(default=0, blank=True, null=True)
 
     @property
     def absolute_url(self):
