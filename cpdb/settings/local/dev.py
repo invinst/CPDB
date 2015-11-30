@@ -60,3 +60,6 @@ SITE_INFO = {
     'domain': 'cpdb.dev:8000',
     'mobile_host': 'm.cpdb.dev:8000',
 }
+
+USE_TZ = False
+
