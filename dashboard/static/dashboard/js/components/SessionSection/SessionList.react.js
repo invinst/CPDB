@@ -46,7 +46,7 @@ var SessionList = React.createClass(_.assign(Base(SessionListStore), {
     if (enable) {
       return (
         <td>
-          <a className="toggle-searchable" onClick={this.onToggleSearchable.bind(this, hashID, false)} href="#">
+          <a className="toggle-searchable" onClick={this.onToggleSearchable.bind(this, hashID, 0)} href="#">
             <i className='fa fa-search-minus'/>
           </a>
         </td>
@@ -54,7 +54,7 @@ var SessionList = React.createClass(_.assign(Base(SessionListStore), {
     } else {
       return (
         <td>
-          <a className="toggle-searchable" onClick={this.onToggleSearchable.bind(this, hashID, true)} href="#">
+          <a className="toggle-searchable" onClick={this.onToggleSearchable.bind(this, hashID, 1)} href="#">
             <i className='fa fa-search-plus'/>
           </a>
         </td>

@@ -11,7 +11,7 @@ class AdminSessionSearchableView(View):
             return HttpResponseBadRequest()
 
         hash_id = request.POST.get('hash_id')
-        search_enable = True if request.POST.get('enable') else False
+        search_enable = True if int(request.POST.get('enable')) else False
 
         try:
             session_id = Session.id_from_hash(hash_id)[0]

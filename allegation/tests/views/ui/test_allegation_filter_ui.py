@@ -14,6 +14,7 @@ class AllegationFilterTestCase(BaseLiveTestCase):
     def setUp(self):
         Allegation.objects.all().delete()
         AllegationCategory.objects.all().delete()
+        Session.objects.all().delete()
         self.allegation_category = AllegationCategoryFactory()
         for filter in FILTERS:
             for final_finding in FILTERS[filter]:
