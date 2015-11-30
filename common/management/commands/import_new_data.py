@@ -58,11 +58,18 @@ class Command(BaseCommand):
             'undecided': [],
         }
 
+<<<<<<< HEAD
         self.import_officers(*args, **options)
         self.reassign_allegations(*args, **options)
         management.call_command('calculate_allegations_count')
         management.call_command('clean_officer_names')
         self.check_officer_count(*args, **options)
+=======
+        # self.import_officers(*args, **options)
+        self.check_officer_count(*args, **options)
+        # self.reassign_allegations(*args, **options)
+        # management.call_command('calculate_allegations_count')
+>>>>>>> TMP
         # management.call_command('geocode_allegations')
 
     def reassign_allegations(self, *args, **options):
