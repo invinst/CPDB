@@ -28,25 +28,33 @@ var DocumentMixin = {
   },
 
   rowClassName: function (allegation) {
-    return classnames('document', {
+    return classnames('document pointer', {
       requested: allegation.document_requested,
       fulfilled: allegation.document_id
     });
   },
 
-  showAddLinkModal: function (crid) {
+  showAddLinkModal: function (crid, e) {
+    e.preventDefault()
+    e.stopPropagation()
     AddDocumentLinkModalActions.show(crid);
   },
 
-  putToPending: function (allegation) {
+  putToPending: function (allegation, e) {
+    e.preventDefault()
+    e.stopPropagation()
     DocumentRequestStatusAPI.putTo(allegation, 'pending');
   },
 
-  cancelPending: function (allegation) {
+  cancelPending: function (allegation, e) {
+    e.preventDefault()
+    e.stopPropagation()
     DocumentRequestStatusAPI.putTo(allegation, 'requesting');
   },
 
-  onCancelClick: function (allegation) {
+  onCancelClick: function (allegation, e) {
+    e.preventDefault()
+    e.stopPropagation()
     bootbox.confirm("Do you want to cancel document request for #" + allegation.crid, function (yes) {
       if (yes) {
         DocumentRequestAPI.cancelRequest(allegation);
