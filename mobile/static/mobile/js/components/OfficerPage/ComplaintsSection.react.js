@@ -14,13 +14,13 @@ var ComplaintsSection = React.createClass({
           </div>
           <div className='collapse-content animation-long'>
             <ul>
-              <li className="complaint-result-item">
+              <li className='complaint-result-item'>
                 <ComplaintCard />
               </li>
-              <li className="complaint-result-item">
+              <li className='complaint-result-item'>
                 <ComplaintCard />
               </li>
-              <li className="complaint-result-item">
+              <li className='complaint-result-item'>
                 <ComplaintCard />
               </li>
             </ul>

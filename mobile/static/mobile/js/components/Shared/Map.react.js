@@ -3,7 +3,6 @@ require('mapbox.js');
 require('leaflet.heat');
 
 
-
 var Map = React.createClass({
   componentDidMount: function () {
     var defaultZoom = 11;

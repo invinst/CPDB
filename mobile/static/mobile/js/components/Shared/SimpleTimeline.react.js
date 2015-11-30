@@ -41,7 +41,7 @@ var SimpleTimeline = React.createClass({
             <text fontSize='16' fill='black' y='84' x='290' style={italic}>Exonerated</text>
             <g>
               <ellipse fill='#bfbfbf' cx='52.5' cy='141' rx='6' ry='6'/>
-              <ellipse fill='#bfbfbf' cx='188.5' cy='141' rx='6' ry='6'/>
+              <ellipse fill='#bfbfbf' cx='188' cy='141' rx='6' ry='6'/>
               <ellipse fill='#bfbfbf' cx='322.5' cy='141' rx='6' ry='6'/>
             </g>
           </g>

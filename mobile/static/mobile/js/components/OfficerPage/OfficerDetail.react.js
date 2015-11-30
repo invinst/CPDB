@@ -1,5 +1,5 @@
 var React = require('react');
-
+var Separator = require('components/Shared/Separator.react');
 
 var OfficerDetail = React.createClass({
   render: function () {
@@ -21,7 +21,7 @@ var OfficerDetail = React.createClass({
               <label>Rank</label>
               <span>Police Officer</span>
             </div>
-            <span className='seperator'>&nbsp;|&nbsp;</span>
+            <Separator />
             <div className='inline'>
               <label>Joined</label>
               <span>Jan 26, 2005</span>
@@ -32,7 +32,7 @@ var OfficerDetail = React.createClass({
               <label>Gender</label>
               <span>Female</span>
             </div>
-            <span className='seperator'>&nbsp;|&nbsp;</span>
+            <Separator />
             <div className='inline'>
               <label>Race</label>
               <span>Native American</span>

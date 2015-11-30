@@ -14,15 +14,9 @@ var ComplaintPage = React.createClass({
   render: function () {
     return (
       <div className='complaint-page'>
-        <Logo topLeft={true}/>
+        <Logo topLeft={true} />
         <div className='content'>
           <div className='pad'>
-            <div className='complaint-category'>
-              Arrest/Look-up Procedures
-            </div>
-            <div className='complaint-sub-category'>
-              03C Search Of Premise/Vehicle Without Warrant
-            </div>
             <ComplaintDetail/>
             <OfficerInvolved />
             <InvestigatorSection />

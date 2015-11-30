@@ -13,11 +13,11 @@ var App = React.createClass({
   render: function () {
     return (
       <Router>
-        <Route path="/complaint" component={ComplaintPage}/>
-        <Route path="/officer" component={OfficerPage}/>
-        <Route path="/test" component={TestPage}/>
-        <Route path="/" component={MainPage}/>
-        <Route path="*" component={NoMatch}/>
+        <Route path='/complaint' component={ComplaintPage}/>
+        <Route path='/officer' component={OfficerPage}/>
+        <Route path='/test' component={TestPage}/>
+        <Route path='/' component={MainPage}/>
+        <Route path='*' component={NoMatch}/>
       </Router>
     );
   }

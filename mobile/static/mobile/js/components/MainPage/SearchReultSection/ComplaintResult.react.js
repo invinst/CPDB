@@ -12,15 +12,15 @@ var ComplaintResult = React.createClass({
     return (
       <div className={classNames}>
         <ul>
-          <li className="complaint-result-item">
+          <li className='complaint-result-item'>
             <Link to={'/complaint'} data-transition='slide-in'>
               <ComplaintCard />
             </Link>
           </li>
-          <li className="complaint-result-item">
+          <li className='complaint-result-item'>
             <ComplaintCard />
           </li>
-          <li className="complaint-result-item">
+          <li className='complaint-result-item'>
             <ComplaintCard />
           </li>
         </ul>

@@ -21,13 +21,13 @@ var SearchResultSection = React.createClass(objectAssign(Base(SearchResultSectio
     return (
       <div id='results' className={classNames}>
         <nav className='tabs'>
-          <a className="item" href="#" onClick={this.onClick.bind(this, 'officer')}>
+          <a className='item' href='#' onClick={this.onClick.bind(this, 'officer')}>
             Officer
           </a>
-          <a className="item" href="#" onClick={this.onClick.bind(this, 'badge')}>
+          <a className='item' href='#' onClick={this.onClick.bind(this, 'badge')}>
             Badge
           </a>
-          <a className="item" href="#" onClick={this.onClick.bind(this, 'complaint')}>
+          <a className='item' href='#' onClick={this.onClick.bind(this, 'complaint')}>
             Complaints
           </a>
         </nav>

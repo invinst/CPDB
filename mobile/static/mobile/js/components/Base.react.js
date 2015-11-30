@@ -1,18 +1,18 @@
-var Base = function(Store) {
+var Base = function (Store) {
   return {
-    getInitialState: function() {
+    getInitialState: function () {
       return Store.getState();
     },
 
-    componentDidMount: function() {
+    componentDidMount: function () {
       Store.addChangeListener(this._onChange);
     },
 
-    componentWillUnmount: function() {
+    componentWillUnmount: function () {
       Store.removeChangeListener(this._onChange);
     },
 
-    _onChange: function() {
+    _onChange: function () {
       if (this.isMounted()) {
         this.setState(Store.getState());
       }
