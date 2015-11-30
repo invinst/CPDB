@@ -36,11 +36,11 @@ AppDispatcher.register(function(action) {
       break;
 
     case AppConstants.TOGGLED_SEARCHABLE_SESSION:
-      data = action.data;
-      hash_id = data['hash_id'];
-      enable = data['enable'];
+      var data = action.data;
+      var hashID = data['hash_id'];
+      var enable = data['enable'];
       for (i in _state['data']) {
-        if (_state['data'][i].hash_id == hash_id) {
+        if (_state['data'][i].hash_id == hashID) {
           _state['data'][i].searchable = enable;
           break;
         }

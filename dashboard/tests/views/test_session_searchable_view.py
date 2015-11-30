@@ -12,22 +12,16 @@ class SessionSearchableViewTestCase(SimpleTestCase):
         response = self.client.post('/api/dashboard/session-searchable/', {})
         response.status_code.should.equal(400)
 
-        response = self.client.post('/api/dashboard/session-searchable/', {
-            'hash_id': 'abc123',
-            'enable': 'not boolean'
-        })
-        response.status_code.should.equal(400)
-
     def test_not_found_session(self):
         response = self.client.post('/api/dashboard/session-searchable/', {
             'hash_id': 'abc123',
-            'enable': 'true'
+            'enable': 1
         })
         response.status_code.should.equal(404)
 
     def test_success(self):
         session = SessionFactory()
-        enable = True
+        enable = 1
 
         response = self.client.post('/api/dashboard/session-searchable/', {
             'hash_id': session.hash_id,

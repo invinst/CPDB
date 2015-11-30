@@ -7,7 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('share', '0007_session_active_tab'),
+        ('share', '0009_auto_20151123_0505'),
     ]
 
     operations = [
@@ -15,6 +15,5 @@ class Migration(migrations.Migration):
             model_name='session',
             name='searchable',
             field=models.BooleanField(default=False),
-            preserve_default=False,
         ),
     ]

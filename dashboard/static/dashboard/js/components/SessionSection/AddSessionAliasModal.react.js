@@ -4,8 +4,8 @@ var _ = require('lodash');
 global.jQuery = require('jquery');
 require('bootstrap');
 require('jquery-validation');
-var AddAliasModalStore = require('../../stores/SearchSection/AddAliasModalStore');
-var AddAliasModalActions = require('../../actions/SearchSection/AddAliasModalActions');
+var AddAliasModalStore = require('stores/SearchSection/AddAliasModalStore');
+var AddAliasModalActions = require('actions/SearchSection/AddAliasModalActions');
 var toastr = require('toastr');
 
 var AddSessionAliasModal = React.createClass(_.assign(Base(AddAliasModalStore), {
