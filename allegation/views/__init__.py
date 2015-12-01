@@ -99,12 +99,13 @@ class AllegationGISApiView(AllegationAPIView):
                     "type": "Feature",
                     "properties": {
                         "name": allegation.crid,
+                        'id': allegation.id
                     },
                     'geometry': point
                 }
                 if allegation.cat:
                     allegation_json['properties']['type'] = allegation.cat.allegation_name,
-            allegation_dict['features'].append(allegation_json)
+                allegation_dict['features'].append(allegation_json)
 
         content = json.dumps(allegation_dict)
         return HttpResponse(content)
@@ -148,7 +149,7 @@ class AllegationClusterApiView(AllegationAPIView):
                 allegation_json = {
                     "type": "Feature",
                     "properties": {
-                        "name": cluster[0],
+
                     },
                     'geometry': {
                         'coordinates': [point.x, point.y],
