@@ -60,11 +60,10 @@ class Session(models.Model):
         return hash_obj.decode(hash_id)
 
     def get_absolute_url(self):
-        kw = {'hash_id': self.hash_id}
-        if self.title:
-            kw['slugified_url'] = slugify(self.title)
-
-        return reverse('homepage-share', kwargs=kw)
+        return '/data/{hash}/{slug}'.format(
+            hash=self.hash_id,
+            slug=slugify(self.title)
+        )
 
     def clone(self):
         session = Session()
