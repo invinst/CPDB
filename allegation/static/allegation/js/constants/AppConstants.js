@@ -1,6 +1,9 @@
 if (!global.DEFAULT_SITE_TITLE) {
   global.DEFAULT_SITE_TITLE = '';
 }
+if (!global.STORY_TYPES_ORDER) {
+  global.STORY_TYPES_ORDER = '';
+}
 var c = 0;
 
 module.exports = {
@@ -281,6 +284,7 @@ module.exports = {
   ],
 
   DEFAULT_SITE_TITLE: DEFAULT_SITE_TITLE,  // from global variable
+  STORY_TYPES_ORDER: STORY_TYPES_ORDER,  // from global variable
 
   MEDIA_URL: '/media/',
 

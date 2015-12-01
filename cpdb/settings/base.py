@@ -50,6 +50,7 @@ INSTALLED_APPS = (
     'embed',
     'dashboard',
     'api',
+    'mobile'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -159,6 +160,7 @@ BOWER_INSTALLED_APPS = (
     'jqueryui-touch-punch#4bc0091452',
     'zeroclipboard',
     'jquery-countTo#1.1.0',
+    'ratchet'
 )
 
 MEDIA_URL = '/media/'

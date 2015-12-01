@@ -12,6 +12,7 @@ from django.views.generic import TemplateView
 from django.views.generic import View
 
 from allegation.views.allegation_api_view import AllegationAPIView
+from api.models import Setting
 from common.json_serializer import JSONSerializer
 from common.models import Allegation, Area, AllegationCategory, Investigator, Officer, GENDER_DICT, OUTCOME_TEXT_DICT, \
     FINAL_FINDING_TEXT_DICT
@@ -35,6 +36,8 @@ class AllegationListView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(AllegationListView, self).get_context_data(**kwargs)
+        admin_settings = Setting.objects.first()
+        context.update({'admin_settings': admin_settings})
         return context
 
     def get(self, request, hash_id=None, *args, **kwargs):

@@ -14,7 +14,9 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.select import Select
 from selenium import webdriver
 
+from api.models import Setting
 from common.factories import UserFactory
+from share.factories import SettingFactory
 
 
 WebElement.find = WebElement.find_element_by_css_selector
@@ -72,6 +74,9 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         if world.browser is not None:
             world.browser.quit()
             world.browser = None
+
+    def get_admin_settings(self):
+        return Setting.objects.all().first() or SettingFactory()
 
     @property
     def browser(self):
