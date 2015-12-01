@@ -54,8 +54,8 @@ class AllegationFilterTestCase(BaseLiveTestCase):
     def test_suggest_session_alias(self):
         alias = 'alias'
         query = alias[:3]
-        not_searchable = SessionFactory(searchable=False, title='not searchable')
-        session = SessionFactory(searchable=True, title='searchable')
+        not_searchable = SessionFactory(title='not searchable')
+        session = SessionFactory(title='searchable')
         AliasFactory(alias=alias, target=not_searchable.hash_id)
         AliasFactory(alias=alias, target=session.hash_id)
 
