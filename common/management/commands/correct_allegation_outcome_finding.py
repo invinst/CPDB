@@ -12,7 +12,8 @@ class Command(BaseCommand):
         Allegation.objects.filter(final_outcome='15').update(final_outcome='015')
         Allegation.objects.filter(final_outcome='999').update(final_outcome=None)
 
-        for outcome in OUTCOMES:
-            if outcome[0] and len(outcome[0]) < 3:
-                update = outcome[0].zfill(3)
-                Allegation.objects.filter(final_outcome=outcome[0]).update(final_outcome=update)
+        for outcome in Allegation.objects.all().distinct().values_list('final_outcome', flat=True):
+            if outcome and len(outcome) < 3:
+                update = outcome.zfill(3)
+                Allegation.objects.filter(final_outcome=outcome).update(final_outcome=update)
+
