@@ -174,6 +174,5 @@ module.exports = {
   SESSION_SEARCHABLE_API_ENDPOINT: '/api/dashboard/session-searchable/',
   SESSION_ALIAS_API_ENDPOINT: '/api/dashboard/session-alias/',
   SETTINGS_API_ENDPOINT: '/api/dashboard/settings/',
-  SETTINGS_API_SAVE_ENDPOINT: '/api/dashboard/settings_save/',
   NEW_SESSION_ANALYTICS_API_ENDPOINT: '/api/dashboard/new-sessions-analytics/',
 };

@@ -8,7 +8,8 @@ var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var Base = require('stores/Base')
 
 var _state = {
-  stories: []
+  stories: [],
+  story_groups: {}
 }
 
 var StoryListStore = _.assign(Base(_state), {

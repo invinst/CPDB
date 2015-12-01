@@ -10,21 +10,12 @@ from api.models import Setting
 
 
 register = template.Library()
-css_files = []
-js_files = []
+
 
 @register.tag
 def current_as_back_url(_, __):
     return CurrentBackUrlNode()
 
-@register.filter('default_site_title')
-def default_site_title(title):
-    if title:
-        return title
-    try:
-        return Setting.objects.get(key='DEFAULT_SITE_TITLE').value
-    except Setting.DoesNotExist:
-        return Setting.DEFAULT_SITE_TITLE
 
 class CurrentBackUrlNode(template.Node):
     def render(self, context):
