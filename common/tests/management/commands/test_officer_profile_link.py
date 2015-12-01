@@ -1,11 +1,13 @@
 from django.core import management
 
+from common.models import Officer
 from common.tests.core import SimpleTestCase
 from allegation.factories import OfficerFactory
 
 
 class TestOfficerProfileLink(SimpleTestCase):
     def setUp(self):
+        Officer.objects.all().delete()
         self.officer = OfficerFactory(officer_first="First", officer_last="Last", id=1000)
 
     def tearDown(self):
