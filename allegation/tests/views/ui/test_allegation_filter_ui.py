@@ -16,8 +16,8 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         AllegationCategory.objects.all().delete()
         Session.objects.all().delete()
         self.allegation_category = AllegationCategoryFactory()
-        for filter in FILTERS:
-            for final_finding in FILTERS[filter]:
+        for _filter in FILTERS:
+            for final_finding in FILTERS[_filter]:
                 # Make sure it doesn't break the disciplined test
                 AllegationFactory(final_finding=final_finding, cat=self.allegation_category,
                                   final_outcome_class='disciplined')
@@ -59,7 +59,7 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         AliasFactory(alias=alias, target=not_searchable.hash_id)
         AliasFactory(alias=alias, target=session.hash_id)
 
-        self.visit('/#!/data-tools')
+        self.visit_home()
         self.browser.execute_script('jQuery("#hfc-cleanslate").hide();')
 
         self.find('#autocomplete').send_keys(query)
@@ -72,14 +72,14 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         session = SessionFactory(searchable=True)
         AliasFactory(alias=alias, target=session.hash_id)
 
-        self.visit('/#!/data-tools')
-        self.browser.execute_script('jQuery("#hfc-cleanslate").hide();')
+        self.visit_home()
+        current_url = self.browser.current_url
 
         self.find('#autocomplete').send_keys(query)
         self.until(lambda: self.find('.autocomplete-session').click())
-        self.until_ajax_complete()
+        self.until(lambda: self.browser.current_url != current_url)
 
-        cloned_session = Session.objects.exclude(id=session.id)[0]
+        cloned_session = Session.objects.get(share_from=session)
         self.browser.current_url.should.contain(cloned_session.hash_id)
 
     def test_filter_by_repeater(self):
