@@ -11,7 +11,6 @@ from allegation.views import AllegationListView
 from allegation.views.session_view import InitSession
 from allegation.views.landing_view import LandingView
 from dashboard.views.admin_analysis_dashboard_view import AdminAnalysisDashboardView
-from mobile.views.mobile_site_view import MobileSiteView
 
 urlpatterns = [
     url(r'^admin/$', login_required(AdminAnalysisDashboardView.as_view()), name='my-view'),
