@@ -45,7 +45,7 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         self.browser.execute_script('jQuery("#hfc-cleanslate").hide();')
 
         self.find('#autocomplete').send_keys('rep')
-        self.until(lambda: self.element_by_classname_and_text('ui-autocomplete-category', 'Repeater (10+ complaints)').should.be.ok)
+        self.until(lambda: self.element_by_classname_and_text('ui-autocomplete-category', 'Repeater').should.be.ok)
 
     def test_filter_by_repeater(self):
         self.visit_home()
