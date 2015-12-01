@@ -5,7 +5,7 @@ from allegation.tests.utils.outcome_filter import number_of_all_created_complain
 from allegation.services.outcome_analytics import FILTERS
 from common.tests.core import BaseLiveTestCase
 from common.models import Allegation, AllegationCategory
-from search.factories import AliasFactory
+from search.factories import AliasFactory, SessionAliasFactory
 from share.factories import SessionFactory
 from share.models import Session
 
@@ -69,8 +69,8 @@ class AllegationFilterTestCase(BaseLiveTestCase):
     def test_go_to_suggested_session(self):
         alias = 'alias'
         query = alias[:3]
-        session = SessionFactory(searchable=True)
-        AliasFactory(alias=alias, target=session.hash_id)
+        session = SessionFactory()
+        SessionAliasFactory(alias=alias, session=session)
 
         self.visit_home()
         current_url = self.browser.current_url

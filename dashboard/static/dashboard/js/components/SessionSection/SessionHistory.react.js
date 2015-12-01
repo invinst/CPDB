@@ -22,9 +22,15 @@ var SessionHistory = React.createClass({
     var histories = filter_logs.concat(suggestions);
     histories = _.sortByOrder(histories, ['unixTime'], ['asc']);
 
+    if (!histories.length) {
+      return (
+        <div>Fresh session.</div>
+      );
+    }
+
     return (
       <ul className='histories'>{this.renderSessionHistory(histories)}</ul>
-    )
+    );
   }
 });
 
