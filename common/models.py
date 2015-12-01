@@ -155,6 +155,8 @@ OUTCOMES = [
     ['060', '60 Day Suspension'],
     ['090', '90 Day Suspension'],
     ['100', 'Reprimand'],
+    ['120', 'Suspended for 120 Days'],
+    ['180', 'Suspended for 180 Days'],
     ['200', 'Suspended over 30 Days'],
     ['300', 'Administrative Termination'],
     ['400', 'Separation'],
