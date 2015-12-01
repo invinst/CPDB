@@ -76,37 +76,6 @@ class AreaAPIView(View):
         return HttpResponse(content)
 
 
-class AllegationGISApiView(AllegationAPIView):
-    def get(self, request):
-        seen_crids = {}
-        allegations = self.get_allegations(ignore_filters=['areas__id'])
-        allegation_dict = {
-            "type": "FeatureCollection",
-            "features": [],
-        }
-        for allegation in allegations:
-            if allegation.crid in seen_crids:
-                continue
-            seen_crids[allegation.crid] = True
-
-            if allegation.point:
-                point = json.loads(allegation.point.geojson)
-
-                allegation_json = {
-                    "type": "Feature",
-                    "properties": {
-                        "name": allegation.crid,
-                    },
-                    'geometry': point
-                }
-                if allegation.cat:
-                    allegation_json['properties']['type'] = allegation.cat.allegation_name,
-            allegation_dict['features'].append(allegation_json)
-
-        content = json.dumps(allegation_dict)
-        return HttpResponse(content)
-
-
 class AllegationClusterApiView(AllegationAPIView):
 
     def get(self, request):
@@ -301,26 +270,3 @@ class AllegationChartApiView(AllegationAPIView):
             'data': data
         })
         return HttpResponse(content, content_type="application/json")
-
-
-class AllegationCSVView(AllegationAPIView):
-    def get(self, request):
-        allegations = self.get_allegations()
-        output = io.StringIO()
-        writer = csv.writer(output, dialect='excel')
-        writer.writerow(["Unique id", "Observation date", "Latitude", "Longitude"])
-        for allegation in allegations:
-
-            date = allegation.incident_date
-            if not date or date.year <= 1970:
-                date = allegation.start_date
-            else:
-                date = date.date()
-
-            location = False
-            if not allegation.point or not date:
-                continue
-
-            writer.writerow([allegation.pk, date, allegation.point.y, allegation.point.x])
-        output.seek(0)
-        return HttpResponse(output.read(), content_type='text/csv')

@@ -46,3 +46,7 @@ class ShareSessionTestCase(BaseLiveTestCase):
         self.find("#searchbar").send_keys("{query}\n".format(query=session.query['title']))
         self.should_see_text(session.query['title'])
         self.should_not_see_text(shared_session.query['title'])
+
+        self.fill_in("#searchbar", "{query}\n".format(query=session.hash_id))
+        self.should_see_text(session.query['title'])
+        self.should_not_see_text(shared_session.query['title'])
