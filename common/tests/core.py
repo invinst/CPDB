@@ -108,6 +108,8 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         self.until_ajax_complete()
 
     def should_see_text(self, text):
+        if not isinstance(text, str):
+            text = str(text)
         self.find('body').text.should.contain(text)
 
     def should_see_texts(self, texts):
@@ -117,8 +119,6 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
                 body.should.contain(x)
 
     def should_not_see_text(self, text):
-        if not isinstance(text, str):
-            text = str(text)
         self.assertNotIn(text, self.find('body').text)
 
     def login(self, user):
