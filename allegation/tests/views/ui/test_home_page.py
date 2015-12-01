@@ -290,9 +290,9 @@ class HomePageTestCase(BaseLiveTestCase):
         self.until_ajax_complete()
 
     def test_default_site_title_from_settings(self):
-        setting, _ = Setting.objects.get_or_create(key='DEFAULT_SITE_TITLE')
-        setting.value = 'New title'
+        setting = self.get_admin_settings()
+        setting.default_site_title = 'New title'
         setting.save()
 
         self.visit_home()
-        self.browser.title.should.equal(setting.value)
+        self.browser.title.should.equal(setting.default_site_title)

@@ -15,7 +15,7 @@
     <meta name="language" content="{{ LANGUAGE_CODE }}" />
     <meta name="description" content="{% block meta-description %}CPDB{% endblock %}" />
     <meta name="keywords" content="{% block meta-keywords %}{% endblock %}" />
-    <title>{{""|default_site_title}}</title>
+    <title>{{ admin_settings.default_site_title }}</title>
     {% endblock %}
       <link rel="shortcut icon" type='image/png' href="{% static 'img/favicon.ico' %}" />
       <link rel="home" href="/" />
@@ -84,7 +84,8 @@
     ZeroClipboard.config({swfPath: '/static/zeroclipboard/dist/ZeroClipboard.swf'});
     </script>
     <script type="text/javascript">
-    DEFAULT_SITE_TITLE = {{ ""|default_site_title|jsonify }};
+    DEFAULT_SITE_TITLE = "{{ admin_settings.default_site_title }}";
+    STORY_TYPES_ORDER = "{{ admin_settings.story_types_order }}";
     DJANGO_ENV = {{ DJANGO_ENV | jsonify }};
     </script>
     {% if DJANGO_ENV != 'test' %}
@@ -113,38 +114,5 @@
     setTimeout(ldinsp, 500); document.readyState != "complete" ? (window.attachEvent ? window.attachEvent('onload', ldinsp) : window.addEventListener('load', ldinsp, false)) : ldinsp();
     })();
     </script>
-   <div class="modal fade" id="disclaimer" tabindex="-1" role="dialog" aria-labelledby="disclaimer" style="width:600px; margin: 0 auto;">
-      <div class='modal-dialog' role='document'>
-          <div class='modal-content'>
-              <div class='modal-header'>
-                  <h2>Disclaimer</h2>
-              </div>
-              <div class='modal-body'>
-                  <p>The information contained on this website comes primarily from three datasets provided by the Chicago
-                      Police Department (CPD), spanning approximately 2002 to 2008 and 2011 to 2015. The CPD has released
-                      these lists in response to litigation and to FOIA Requests.</p>
-
-                  <p>The City of Chicago’s release of this information was accompanied by a disclaimer that not all of the
-                      information contained in the City’s database may be completely accurate. No independent verification
-                      of the City’s records has taken place and this public database does not purport to be an accurate
-                      reflection of either the City’s internal database or of its truthfulness.</p>
-
-                  <p>Slight changes to the spelling of officer names and to the wording of abuse categories have been made
-                      to accommodate a consistent appearance. A glossary of our understanding of common CPD terms has been
-                      provided. No other editing of the City’s original datasets has taken place.</p>
-
-                  <p>This public database also contains other readily available data that has been linked to the City’s
-                      original datasets, including: CPD beat geographies, Chicago ward boundaries, Chicago neighborhood
-                      boundaries, et cetera.</p>
-
-                  <p>By entering this website, you acknowledge that the Citizens’ Police Database (CPDB) is not
-                      responsible for any derivative work performed by or published by users of this public database.</p>
-              </div>
-              <div class='modal-footer' data-dismiss='modal'>
-                  <button class='btn btn-sm btn-view'>I UNDERSTAND</button>
-              </div>
-          </div>
-      </div>
-  </div>
   </body>
 </html>

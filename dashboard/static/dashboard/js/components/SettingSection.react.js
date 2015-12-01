@@ -1,37 +1,51 @@
 var React = require('react');
 var _ = require('lodash');
-var slugify = require('slugify');
+var Select = require('react-select');
 
 var Base = require('./Base.react');
 var SettingSectionStore = require('../stores/SettingSectionStore');
 var SettingAPI = require('utils/SettingAPI')
 var SettingActions = require('actions/SettingActions');
+var StoryAPI = require('utils/StoryAPI');
 
 
 var SettingSection = React.createClass(_.assign(Base(SettingSectionStore), {
   content: function () {
     var that = this;
-    return this.state.settings.map(function (setting) {
-      var inputId = 'setting-input-' + slugify(setting.key)
-      return (
+    var setting = this.state.setting;
+
+    return (
+      <div>
         <div className="form-group">
-          <label htmlFor={inputId} className="col-lg-2 col-md-2 col-xs-2">{setting.key}</label>
+          <label htmlFor='default_site_title' className="col-lg-2 col-md-2 col-xs-2">Default Site Title</label>
           <div className="col-lg-10 col-md-10 col-xs-10">
-            <input type='text' id={inputId} className="form-control" value={setting.value} onChange={that.change(setting)} required />
+            <input type='text' id='default_site_title' className="form-control" value={setting.default_site_title} onChange={this.change('default_site_title')} required />
           </div>
         </div>
-      );
-    });
+        <div className="form-group" id="story-types-order-input">
+          <label htmlFor='story_types_order' className="col-lg-2 col-md-2 col-xs-2">Story Types Order</label>
+          <div className="col-lg-10 col-md-10 col-xs-10">
+            <Select asyncOptions={StoryAPI.suggestType} name='story_types_order' value={setting.story_types_order}
+                    multi={true} delimiter=',' onChange={this.updateStoryTypesOrder} />
+          </div>
+        </div>
+      </div>
+    );
   },
 
-  change: function (setting) {
-    return this.update.bind(this, setting);
+
+  change: function (field) {
+    return this.update.bind(this, field);
   },
 
-  update: function (setting, e) {
+  update: function (field, e) {
     var newValue = e.target.value;
 
-    SettingActions.update(setting, newValue);
+    SettingActions.update(field, newValue);
+  },
+
+  updateStoryTypesOrder: function (value) {
+    SettingActions.update('story_types_order', value);
   },
 
   componentDidMount: function () {
@@ -41,7 +55,7 @@ var SettingSection = React.createClass(_.assign(Base(SettingSectionStore), {
   },
 
   save: function () {
-    SettingAPI.save(this.state.settings);
+    SettingAPI.save(this.state.setting);
   },
 
   render: function () {

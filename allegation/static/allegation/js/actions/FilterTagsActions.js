@@ -1,3 +1,5 @@
+var _ = require('lodash');
+
 var AppDispatcher = require('dispatcher/AppDispatcher');
 var AppConstants = require('constants/AppConstants');
 var ComplaintListAPI = require('utils/ComplaintListAPI');
@@ -15,7 +17,11 @@ function updateSiteData(dontUpdateSession) {
   RaceGenderAPI.getData();
   SunburstAPI.getData();
   if (!dontUpdateSession) {
-    SessionAPI.updateSessionInfo({'query': FilterStore.getSession()});
+    SessionAPI.updateSessionInfo({
+      'query': _.assign(FilterStore.getSession(), {
+        'active_officers': []
+      })
+    });
   }
 };
 

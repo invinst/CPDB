@@ -4,6 +4,7 @@ from django.views.generic.base import View
 
 from common.json_serializer import JSONSerializer
 from common.models import Officer
+from api.models import Setting
 
 
 class StoryView(View):
