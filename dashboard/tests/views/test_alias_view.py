@@ -1,6 +1,8 @@
 from common.tests.core import SimpleTestCase
 from search.models.alias import Alias
 from search.factories import AliasFactory, SuggestionLogFactory
+from search.models.session_alias import SessionAlias
+from share.factories import SessionFactory
 
 
 class AliasTestCase(SimpleTestCase):
@@ -83,3 +85,15 @@ class AliasTestCase(SimpleTestCase):
         response, data = self.get_aliases({ 'order_by': 'abcxyz'})
         response.status_code.should.equal(200)
         data.should.contain('error')
+
+    def test_add_session_alias(self):
+        alias = 'alias'
+        session = SessionFactory()
+
+        response = self.client.post('/api/dashboard/alias/', {
+            'alias': alias,
+            'target': 'http://cpdb.co{path}'.format(path=session.get_absolute_url()),
+        })
+
+        response.status_code.should.equal(201)
+        SessionAlias.objects.filter(alias=alias, session=session).count().should.equal(1)
