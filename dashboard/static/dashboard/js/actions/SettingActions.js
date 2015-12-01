@@ -11,10 +11,10 @@ var SettingActions = {
     });
   },
 
-  update: function (setting, value) {
+  update: function (field, value) {
     AppDispatcher.dispatch({
       actionType: AppConstants.UPDATE_SETTING_DATA,
-      setting: setting,
+      field: field,
       value: value
     });
   },

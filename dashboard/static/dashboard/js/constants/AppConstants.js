@@ -165,6 +165,5 @@ module.exports = {
   DOCUMENT_LINK_END_POINT: '/api/dashboard/document-link/',
   SESSIONS_API_ENDPOINT: '/api/dashboard/sessions/',
   SETTINGS_API_ENDPOINT: '/api/dashboard/settings/',
-  SETTINGS_API_SAVE_ENDPOINT: '/api/dashboard/settings_save/',
   NEW_SESSION_ANALYTICS_API_ENDPOINT: '/api/dashboard/new-sessions-analytics/',
 };

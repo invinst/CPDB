@@ -5,7 +5,7 @@ var Base = require('./Base');
 var navigate = require('react-mini-router').navigate;
 
 var _state = {
-  settings: []
+  setting: {}
 };
 
 var SettingSectionStore = _.assign(Base(_state), {
@@ -14,12 +14,12 @@ var SettingSectionStore = _.assign(Base(_state), {
 AppDispatcher.register(function(action) {
   switch (action.actionType) {
     case AppConstants.RECEIVED_SETTINGS_DATA:
-      _state.settings = action.data;
+      _state.setting = action.data[0];
       SettingSectionStore.emitChange();
       break;
 
     case AppConstants.UPDATE_SETTING_DATA:
-      action.setting.value = action.value;
+      _state.setting[action.field] = action.value;
       SettingSectionStore.emitChange();
       break;
 

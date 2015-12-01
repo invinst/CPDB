@@ -80,7 +80,8 @@ var StoryAPI = {
         }
       });
       callback(null, {
-        options: options
+        options: options,
+        complete: true
       });
     });
   },
