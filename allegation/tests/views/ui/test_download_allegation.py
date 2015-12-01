@@ -1,12 +1,14 @@
 import requests
 
-from allegation.factories import AllegationFactory
+from allegation.factories import AllegationFactory, PoliceWitnessFactory, ComplainingWitnessFactory
 from common.tests.core import BaseLiveTestCase
 
 
 class DownloadAllegationTestCase(BaseLiveTestCase):
     def test_download(self):
-        AllegationFactory()
+        allegation = AllegationFactory()
+        PoliceWitnessFactory(crid=allegation.crid)
+        ComplainingWitnessFactory(crid=allegation.crid)
 
         self.visit_home()
         self.find('.officer .checkmark').click()
