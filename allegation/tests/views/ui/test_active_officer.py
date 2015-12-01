@@ -8,10 +8,12 @@ class ActiveOfficerTestCase(BaseLiveTestCase):
         allegation = AllegationFactory()
         self.visit_home()
         self.find('.officer .checkmark').click()
+        self.until_ajax_complete()
 
         self.link("Categories").click()
         self.until(lambda: self.link(allegation.cat.category).click())
         self.until_ajax_complete()
 
-        session = Session.objects.all().first()
+        session_hash = self.browser.current_url.split("/")[4]
+        session = Session.objects.get(id=Session.id_from_hash(session_hash))
         session.query['active_officers'].should.be.empty

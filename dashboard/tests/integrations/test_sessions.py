@@ -1,6 +1,6 @@
 from common.tests.core import BaseLiveTestCase
 from search.factories import SuggestionLogFactory, FilterLogFactory
-from search.models.alias import Alias
+from search.models.session_alias import SessionAlias
 from share.factories import SessionFactory
 from share.models import Session
 
@@ -73,21 +73,6 @@ class SessionManagementTestCase(BaseLiveTestCase):
 
         self.number_of_sessions().should.equal(1)
 
-    def test_toggle_searchable(self):
-        session = SessionFactory()
-
-        self.go_to_sessions()
-
-        self.find('.toggle-searchable').click()
-        self.until(lambda: self.element_exist('.fa.fa-search-plus').should.be.false)
-        self.until(lambda: self.element_exist('.fa.fa-search-minus').should.be.true)
-        Session.objects.all().first().searchable.should.be.true
-
-        self.find('.toggle-searchable').click()
-        self.until(lambda: self.element_exist('.fa.fa-search-plus').should.be.true)
-        self.until(lambda: self.element_exist('.fa.fa-search-minus').should.be.false)
-        Session.objects.all().first().searchable.should.be.false
-
     def test_add_alias(self):
         alias = 'session alias'
         session = SessionFactory()
@@ -100,7 +85,7 @@ class SessionManagementTestCase(BaseLiveTestCase):
         self.find('.alias-input').send_keys(alias)
         self.button('SUBMIT').click()
         self.until(lambda: self.should_see_text('Add new alias successfully'))
-        Session.objects.get(alias=alias).id.should.equal(session.id)
+        SessionAlias.objects.get(alias=alias).session.id.should.equal(session.id)
 
     def number_of_sessions(self):
         return len(self.find_all("#sessions .session-row"))

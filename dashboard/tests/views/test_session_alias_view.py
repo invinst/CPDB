@@ -15,9 +15,9 @@ class SessionAliasViewTestCase(SimpleTestCase):
     def test_not_found_session(self):
         response = self.client.post('/api/dashboard/session-alias/', {
             'alias': 'alias',
-            'target': 1,
+            'target': -1,
         })
-        response.status_code.should.equal(404)
+        response.status_code.shouldnt.equal(201)
 
     def test_add_alias_success(self):
         session = SessionFactory()

@@ -34,7 +34,6 @@ class SessionSerializer(serializers.HyperlinkedModelSerializer):
                   'user_agent',
                   'suggestion_logs',
                   'filter_logs',
-                  'searchable',
                   'id',
                   )
 

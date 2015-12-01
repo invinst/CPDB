@@ -16,7 +16,6 @@ class SessionFactory(factory.django.DjangoModelFactory):
     query = factory.Sequence(lambda n: {'title': fake.name()})
     ip = factory.Sequence(lambda n: '0.0.0.0')
     user_agent = factory.Sequence(lambda n: fake.name())
-    searchable = False
 
 
 class SettingFactory(factory.django.DjangoModelFactory):

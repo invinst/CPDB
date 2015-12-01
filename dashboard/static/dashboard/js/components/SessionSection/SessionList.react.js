@@ -7,7 +7,6 @@ var React = require('react');
 var AddSessionAliasModalActions = require('actions/SessionSection/AddSessionAliasModalActions');
 var Base = require('../Base.react');
 var SessionsAPI = require('utils/SessionsAPI');
-var SessionSearchableAPI = require('utils/SessionSearchableAPI');
 var SessionsActions = require('actions/SessionSection/SessionsActions');
 var SessionListStore = require('stores/SessionSection/SessionListStore');
 var SessionHistory = require('components/SessionSection/SessionHistory.react');
@@ -32,34 +31,9 @@ var SessionList = React.createClass(_.assign(Base(SessionListStore), {
     });
   },
 
-  onToggleSearchable: function (target, enable, e) {
-    e.preventDefault();
-    SessionSearchableAPI.toggleSearchable(target, enable);
-  },
-
   componentDidMount: function () {
     SessionListStore.addChangeListener(this._onChange);
     jQuery(window).on('scroll', this._onScroll);
-  },
-
-  renderSearchableToggle: function (hashID, enable) {
-    if (enable) {
-      return (
-        <td>
-          <a className="toggle-searchable" onClick={this.onToggleSearchable.bind(this, hashID, 0)} href="#">
-            <i className='fa fa-search-minus'/>
-          </a>
-        </td>
-      );
-    } else {
-      return (
-        <td>
-          <a className="toggle-searchable" onClick={this.onToggleSearchable.bind(this, hashID, 1)} href="#">
-            <i className='fa fa-search-plus'/>
-          </a>
-        </td>
-      );
-    }
   },
 
   renderSessionRow: function() {
@@ -76,7 +50,6 @@ var SessionList = React.createClass(_.assign(Base(SessionListStore), {
           <td>{_(x.query.filters).values().pluck('value').flatten().size()}</td>
           <td>{x.ip}</td>
           <td>{x.user_agent}</td>
-          { that.renderSearchableToggle(x.hash_id, x.searchable) }
           <td>
             <a className="add-alias" onClick={that._onClick.bind(that, x.id)} href="#">
               <i className='fa fa-plus'/>
