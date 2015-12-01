@@ -2,11 +2,13 @@ from django.test import SimpleTestCase
 
 from allegation.factories import AllegationFactory, OfficerFactory
 from mobile.services.mobile_suggestion_service import MobileSuggestionService
-
+from common.models import Allegation, Officer
 
 class MobileSuggestionServiceTest(SimpleTestCase):
     def setUp(self):
         self.mobile_suggestion = MobileSuggestionService()
+        Allegation.objects.all().delete()
+        Officer.objects.all().delete()
 
     def test_suggest_crid(self):
         allegation = AllegationFactory(crid='1051333')
@@ -41,3 +43,15 @@ class MobileSuggestionServiceTest(SimpleTestCase):
         len(self.mobile_suggestion.suggest_officer_name(query_for_first_name)).should.equal(1)
         len(self.mobile_suggestion.suggest_officer_name(query_for_last_name)).should.equal(1)
         len(self.mobile_suggestion.suggest_officer_name(non_matched)).should.equal(0)
+
+    def test_order_officer_by_number_of_complaints(self):
+        officer_name = 'matched'
+        OfficerFactory(officer_first=officer_name, allegations_count=1)
+        OfficerFactory(officer_first=officer_name, allegations_count=3)
+        OfficerFactory(officer_first=officer_name, allegations_count=2)
+
+        officers = self.mobile_suggestion.suggest_officer_name(officer_name)
+
+        officers[0].allegations_count.should.be.equal(3)
+        officers[1].allegations_count.should.be.equal(2)
+        officers[2].allegations_count.should.be.equal(1)
