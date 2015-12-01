@@ -47,14 +47,11 @@ class EmbedModeTestCase(BaseLiveTestCase):
         self.find(".autocomplete-officer").click()
         len(self.find_all("#filter-tags .tag")).should.equal(1)
 
-        self.get_screen_shot(name='test_can_not_change_filter_in_embed_mode_1.png')
         self.link('Embed Mode').click()
         self.until(lambda: self.find("body").has_class("embedding"))
+        self.browser.execute_script("jQuery(window).scrollTop(0)")
 
-        self.sleep(1)
-        self.get_screen_shot(name='test_can_not_change_filter_in_embed_mode_2.png')
         self.find("#filter-tags .tag .remove").click()
-        self.get_screen_shot(name='test_can_not_change_filter_in_embed_mode_3.png')
         len(self.find_all("#filter-tags .tag")).should.equal(1)
 
     def test_embed_not_display_in_officer_page(self):
