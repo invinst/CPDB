@@ -1,0 +1,68 @@
+var _ = require('lodash');
+var classnames = require('classnames');
+var moment = require('moment');
+var React = require('react');
+
+require('utils/jQuery');
+var AddSessionAliasModalActions = require('actions/SessionSection/AddSessionAliasModalActions');
+var Base = require('../Base.react');
+var SessionAliasAPI = require('utils/SessionAliasAPI');
+var SessionsAliasActions = require('actions/SessionSection/SessionsAliasActions');
+var SessionAliasListStore = require('stores/SessionSection/SessionAliasListStore');
+
+
+var SessionList = React.createClass(_.assign(Base(SessionAliasListStore), {
+  // TODO: Consider moving this to Mixins
+  _onScroll: function(e) {
+    var windowHeight = window.innerHeight;
+    var toBottom = jQuery(document).height() - windowHeight - jQuery(window).scrollTop();
+
+    if (toBottom <= 100 && !this.state.locked) {
+      SessionAliasAPI.getMore();
+      SessionsAliasActions.lockScroll();
+    }
+  },
+
+  componentDidMount: function () {
+    SessionAliasListStore.addChangeListener(this._onChange);
+    jQuery(window).on('scroll', this._onScroll);
+  },
+
+  renderSessionRow: function() {
+    var rows = [];
+
+    this.state.data.forEach(function(x) {
+      var id = 'session-row-' + x.id;
+      rows.push(
+        <tr className='session-row pointer' key={'c'+id}>
+          <td>{x.alias}</td>
+          <td>{x.session.hash_id}</td>
+          <td>{x.session.title}</td>
+        </tr>
+      );
+    });
+
+    return rows;
+  },
+
+  render: function() {
+    return (
+      <div className='table-responsive'>
+        <table className='table table-striped'>
+          <thead>
+            <tr>
+              <th>Alias</th>
+              <th>Session</th>
+              <th>Title</th>
+            </tr>
+          </thead>
+          <tbody>
+            { this.renderSessionRow() }
+          </tbody>
+        </table>
+      </div>
+    );
+  }
+}));
+
+module.exports = SessionList;

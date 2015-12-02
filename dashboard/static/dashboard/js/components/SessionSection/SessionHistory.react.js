@@ -8,8 +8,8 @@ var SuggestionLogPresenter = require('utils/SuggestionLogPresenter');
 var SessionHistory = React.createClass({
   renderSessionHistory: function(histories) {
      return histories.map(function(x) {
-       return <li>{x.asHistoryEntry}</li>;
-     })
+       return <li key={x.unixTime}>{x.asHistoryEntry}</li>;
+     });
   },
 
   render: function() {

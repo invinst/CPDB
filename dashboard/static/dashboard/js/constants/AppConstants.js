@@ -64,6 +64,11 @@ module.exports = {
   RECEIVED_MORE_SESSIONS_DATA: c++,
   LOCK_SESSION_PAGE_SCROLL: c++,
   SEARCH_FOR_SESSION: c++,
+  RECEIVED_SESSIONS_ALIAS_DATA: c++,
+  RECEIVED_MORE_SESSIONS_ALIAS_DATA: c++,
+  LOCK_SESSION_ALIAS_PAGE_SCROLL: c++,
+  SEARCH_FOR_SESSION_ALIAS: c++,
+  SET_SESSION_ACTIVE_TAB: c++,
 
   RECEIVED_SETTINGS_DATA: c++,
   UPDATE_SETTING_DATA: c++,
@@ -134,6 +139,11 @@ module.exports = {
     }
   },
 
+  SESSION_TABS: {
+    'all': 'All',
+    'alias': 'Alias'
+  },
+
   LINE_CHART_COLOR_OPTIONS: {
     fillColor: "rgba(220,220,220,0.2)",
     strokeColor: "rgba(220,220,220,1)",
@@ -171,6 +181,7 @@ module.exports = {
   DOCUMENT_LINK_END_POINT: '/api/dashboard/document-link/',
   SESSIONS_API_ENDPOINT: '/api/dashboard/sessions/',
   SESSION_ALIAS_API_ENDPOINT: '/api/dashboard/session-alias/',
+  SESSION_ALIAS2_API_ENDPOINT: '/api/dashboard/session-alias2/',
   SETTINGS_API_ENDPOINT: '/api/dashboard/settings/',
   NEW_SESSION_ANALYTICS_API_ENDPOINT: '/api/dashboard/new-sessions-analytics/',
 };

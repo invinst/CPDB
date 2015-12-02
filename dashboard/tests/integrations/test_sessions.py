@@ -1,5 +1,5 @@
 from common.tests.core import BaseLiveTestCase
-from search.factories import SuggestionLogFactory, FilterLogFactory
+from search.factories import SuggestionLogFactory, FilterLogFactory, SessionAliasFactory
 from search.models.session_alias import SessionAlias
 from share.factories import SessionFactory
 from share.models import Session
@@ -94,3 +94,14 @@ class SessionManagementTestCase(BaseLiveTestCase):
         search_input = self.find('#search input')
         search_input.clear()
         search_input.send_keys(query)
+
+    def test_view_session_alias(self):
+        session = SessionFactory()
+        session_alias = SessionAliasFactory()
+
+        self.go_to_sessions()
+        self.element_by_tagname_and_text('li', 'Alias').click()
+        self.until_ajax_complete()
+
+        self.should_see_text(session_alias.session.hash_id)
+        self.should_not_see_text(session.hash_id)

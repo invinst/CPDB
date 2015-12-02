@@ -14,7 +14,7 @@ class SessionAliasFactory(factory.django.DjangoModelFactory):
         model = SessionAlias
 
     alias = factory.Sequence(lambda n: fake.name())
-    session = SessionFactory()
+    session = factory.SubFactory(SessionFactory)
 
 
 class AliasFactory(factory.django.DjangoModelFactory):

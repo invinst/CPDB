@@ -1,13 +1,27 @@
+var _ = require('lodash');
 var React = require('react');
 
 var AddSessionAliasModal = require('./SessionSection/AddSessionAliasModal.react');
 var Search = require('components/SessionSection/Search.react');
+var Tabs = require('components/SessionSection/Tabs.react');
 var SessionsAPI = require('utils/SessionsAPI');
 var SessionList = require('components/SessionSection/SessionList.react');
+var SessionAliasList = require('components/SessionSection/SessionAliasList.react');
+var SessionSectionStore = require('stores/SessionSectionStore');
+var Base = require('components/Base.react');
 
-var SessionSection = React.createClass({
-  componentDidMount: function() {
-    SessionsAPI.get()
+
+var SessionSection = React.createClass(_.assign(Base(SessionSectionStore), {
+  componentDidMount: function () {
+    SessionSectionStore.addChangeListener(this._onChange);
+    SessionsAPI.get();
+  },
+
+  renderContent: function () {
+    if (this.state.active == 'all') {
+      return <SessionList />
+    }
+    return <SessionAliasList />
   },
 
   render: function() {
@@ -22,11 +36,16 @@ var SessionSection = React.createClass({
         </div>
         <div>
           <div className='row'>
-            <Search />
+            <div className="col-md-8">
+              <Tabs />
+            </div>
+            <div className="col-md-4 text-right">
+              <Search />
+            </div>
           </div>
           <div className='row'>
             <div id='sessions' className='col-md-12'>
-              <SessionList />
+              { this.renderContent() }
             </div>
           </div>
         </div>
@@ -34,6 +53,6 @@ var SessionSection = React.createClass({
       </div>
     )
   }
-});
+}));
 
 module.exports = SessionSection;

@@ -14,9 +14,7 @@ var Search = React.createClass({
 
   render: function() {
     return (
-      <div id='search' className="col-xs-6 text-right">
-        <input className="form-control" type="text" placeholder="Search..." onChange={this.onChange} />
-      </div>
+      <input className="form-control" type="text" placeholder="Search..." onChange={this.onChange} />
     );
   }
 });
