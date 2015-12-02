@@ -17,6 +17,6 @@ class MobileAllegationOfficerInvolvedView(APIView):
 
         officer_ids = allegations.values_list('officer', flat=True)
         officers = Officer.objects.filter(id__in=officer_ids)
-
         content = OfficerSerializer(officers, many=True)
+
         return Response(content.data)

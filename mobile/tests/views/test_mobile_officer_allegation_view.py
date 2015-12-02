@@ -18,8 +18,8 @@ class MobileOfficerAllegationTest(SimpleTestCase):
     def test_successfully_call_the_api(self):
         response, data = self.call_related_officer_api({'pk': self.officer.pk})
         response.status_code.should.equal(HTTP_200_OK)
-        len(data['allegations']).should.be(1)
-        data['allegations'][0]['crid'].should.be.equal(str(self.allegation.crid))
+        len(data).should.be(1)
+        data[0]['crid'].should.be.equal(str(self.allegation.crid))
 
     def test_return_404_when_get_invalid_pk(self):
         invalid_pk = -1
