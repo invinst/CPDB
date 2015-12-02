@@ -25,7 +25,7 @@ class RelatedOfficerService(object):
         sql = '''
           SELECT *
           FROM (
-            SELECT officer_id, count(distinct crid) as num_allegations
+            SELECT officer_id, count(DISTINCT crid) AS num_allegations
             FROM common_policewitness
             WHERE crid IN (
               SELECT crid

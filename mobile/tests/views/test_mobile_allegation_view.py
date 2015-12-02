@@ -1,5 +1,5 @@
 from rest_framework.reverse import reverse
-from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
+from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND
 from allegation.factories import OfficerFactory, AllegationFactory
 from common.tests.core import SimpleTestCase
 

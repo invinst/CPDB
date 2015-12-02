@@ -5,7 +5,7 @@ from mobile.serializers.allegation_category_serializer import AllegationCategory
 from mobile.serializers.investigator_serializer import InvestigatorSerializer
 
 
-class AllegationDetailSerializer(serializers.ModelSerializer):
+class FullAllegationSerializer(serializers.ModelSerializer):
     cat = AllegationCategorySerializer(read_only=True)
     investigator = InvestigatorSerializer()
 
@@ -15,7 +15,9 @@ class AllegationDetailSerializer(serializers.ModelSerializer):
             'id',
             'crid',
             'cat',
+            'start_date',
             'incident_date',
+            'end_date',
             'final_finding',
             'final_outcome_class',
             'investigator',
