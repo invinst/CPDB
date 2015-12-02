@@ -36,7 +36,7 @@ DATA_SOURCE_FILTERS = ['data_source']
 
 # FIXME: Add more test for this one
 class AllegationQueryFilter(object):
-    def __init__(self, query_dict, ignore_filters):
+    def __init__(self, query_dict, ignore_filters=None):
         self.query_dict = query_dict
         self.ignore_filters = ignore_filters or []
         self.raw_filters = []

@@ -112,3 +112,13 @@ class Session(models.Model):
             return [{'text': 'Repeater (10+ complaints)', 'value': values['value'][0]}]
 
         return [{'value': x, 'text': x} for x in values['value']]
+
+    @property
+    def query_string(self):
+        filters = self.query.get('filters', {})
+        query = []
+        for key in filters:
+            value = filters[key]['value']
+            query.append("&".join("{key}={value}".format(key=key, value=v) for v in value))
+        return "&".join(query)
+
