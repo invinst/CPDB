@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from common.models import Allegation, Investigator
+from common.models import Allegation
 from mobile.serializers.allegation_category_serializer import AllegationCategorySerializer
 from mobile.serializers.investigator_serializer import InvestigatorSerializer
 
