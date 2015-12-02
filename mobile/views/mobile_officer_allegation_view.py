@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 
 from common.models import Allegation, Officer
 from mobile.exceptions.bad_request_api_exception import BadRequestApiException
-from mobile.serializers.mobile_officer_allegation_serializer import MobileOfficerAllegationViewSerializer
+from mobile.serializers.officer_allegation_serializer import AllegationSerializer
 
 
 class MobileOfficerAllegationView(APIView):
@@ -17,9 +17,6 @@ class MobileOfficerAllegationView(APIView):
             raise BadRequestApiException
 
         allegations = Allegation.objects.filter(officer=officer)
-
-        content = MobileOfficerAllegationViewSerializer({
-            'allegations': allegations
-        })
+        content = AllegationSerializer(allegations, many=True)
 
         return Response(content.data)

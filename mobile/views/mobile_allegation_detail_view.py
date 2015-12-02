@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from common.models import Allegation
-from mobile.serializers.mobile_allegation_serializer import MobileAllegationViewSerializer
+from mobile.serializers.allegation_detail_serializer import AllegationDetailSerializer
 
 
 class MobileAllegationView(APIView):
@@ -15,8 +15,6 @@ class MobileAllegationView(APIView):
         if not allegations.exists():
             raise Http404()
 
-        content = MobileAllegationViewSerializer({
-            'allegation': allegations.first()
-        })
+        content = AllegationDetailSerializer(allegations.first())
 
         return Response(content.data)

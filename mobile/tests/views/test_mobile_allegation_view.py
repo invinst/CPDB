@@ -19,7 +19,7 @@ class MobileAllegationTest(SimpleTestCase):
     def test_successfully_call_the_api(self):
         response, data = self.call_allegation_api({'crid': self.allegation.crid})
         response.status_code.should.equal(HTTP_200_OK)
-        data['allegation']['crid'].should.be.equal(str(self.allegation.crid))
+        data['crid'].should.be.equal(str(self.allegation.crid))
 
     def test_return_404_when_get_invalid_pk(self):
         invalid_pk = -1
