@@ -4,6 +4,7 @@ from django.http.request import HttpRequest
 from common.tests.core import SimpleTestCase
 from share.factories import SessionFactory
 from share.models import Session
+from search.models import FilterLog
 
 
 class AllegationSessionApiView(SimpleTestCase):
@@ -89,3 +90,26 @@ class AllegationSessionApiView(SimpleTestCase):
 
         response, data = self.call_post_session_api(update_params)
         Session.objects.get(pk=624).active_tab.should.equal(active_tab)
+
+    def test_tracking_filter(self):
+        self.num_of_filter_logs().should.equal(0)
+
+        session = self.client.session
+        session['owned_sessions'] = [624]
+        session.save()
+        SessionFactory(id=624)
+
+        update_params = self.update_params.copy()
+        update_params['query'] = {
+            'filters': {
+                'officer': {
+                    'value': [123]
+                }
+            }
+        }
+        response, data = self.call_post_session_api(update_params)
+
+        self.num_of_filter_logs().should.equal(1)
+
+    def num_of_filter_logs(self):
+        return FilterLog.objects.count()
