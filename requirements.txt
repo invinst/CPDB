@@ -14,6 +14,7 @@ django-bower==5.0.4
 django-compressor==1.5
 django-cors-headers==1.1.0
 django-csvimport==2.4
+django-debug-toolbar==1.4
 django-extensions==1.5.3
 django-factory==0.11
 django-filter==0.11.0

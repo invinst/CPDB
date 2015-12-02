@@ -3,7 +3,7 @@ import factory
 import datetime
 
 from django.contrib.gis.geos import MultiPolygon, Polygon
-
+from django.utils import timezone
 from faker import Faker
 
 from allegation.models import Download
@@ -25,6 +25,7 @@ class AreaFactory(factory.django.DjangoModelFactory):
                                                                (87.940101, 41.644286),
                                                                (87.940101, 42.023135)))))
 
+
 def capitalize_word():
     return "{word}xa".format(word=fake.word()).capitalize()
 
@@ -32,6 +33,7 @@ def capitalize_word():
 class PoliceWitnessFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = PoliceWitness
+    crid = factory.Sequence(lambda n: str(n))
 
 
 class OfficerFactory(factory.django.DjangoModelFactory):
@@ -85,6 +87,9 @@ class AllegationFactory(factory.django.DjangoModelFactory):
     officer = factory.SubFactory(OfficerFactory)
     point = None
     document_requested = False
+    start_date = factory.Sequence(lambda n: fake.date())
+    end_date = factory.Sequence(lambda n: fake.date())
+    beat = factory.SubFactory(AreaFactory)
 
     @factory.post_generation
     def areas(self, create, extracted, **kwargs):

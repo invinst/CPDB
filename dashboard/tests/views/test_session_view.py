@@ -27,7 +27,7 @@ class SessionViewTestCase(SimpleTestCase):
         SessionFactory(title=match_title)
         SessionFactory(title=non_match_title)
 
-        params = { 'q': query }
+        params = {'q': query}
         response, data = self.get_sessions(params)
         response.status_code.should.equal(200)
         len(data['results']).should.be(1)
@@ -44,8 +44,8 @@ class SessionViewTestCase(SimpleTestCase):
 
     def test_get_details_with_session(self):
         session = SessionFactory()
-        suggestion = SuggestionLogFactory(session_id=session.hash_id)
-        filter_log = FilterLogFactory(session_id=session.hash_id)
+        SuggestionLogFactory(session_id=session.hash_id)
+        FilterLogFactory(session_id=session.hash_id)
 
         response, data = self.get_sessions()
         response.status_code.should.equal(200)

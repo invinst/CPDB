@@ -63,12 +63,6 @@ class UserTestBaseMixin(object):
         self.user = user
         self.login(user)
 
-    def login_provider(self, user=None):
-        self.login_user(user)
-        if not self.user.is_provider:
-            self.user.is_provider = True
-            self.user.save()
-
 
 class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     _multiprocess_can_split_ = True
@@ -126,14 +120,10 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     def should_see_texts(self, texts):
         body = self.find('body').text
         for text in texts:
-            if not isinstance(text, str):
-                text = str(text)
             for x in text.split("\n"):
                 body.should.contain(x)
 
     def should_not_see_text(self, text):
-        if not isinstance(text, str):
-            text = str(text)
         self.assertNotIn(text, self.find('body').text)
 
     def login(self, user):
@@ -197,12 +187,9 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
             raise
 
     def fill_in(self, selector, value):
-        try:
-            selector_input = self.find(selector)
-            selector_input.clear()
-            selector_input.send_keys(value)
-        except:
-            raise
+        selector_input = self.find(selector)
+        selector_input.clear()
+        selector_input.send_keys(value)
 
     def sleep(self, seconds):
         time.sleep(seconds)
@@ -219,7 +206,7 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         return value is not False."""
         end_time = time.time() + timeout
         error = None
-        while True:
+        while time.time() <= end_time:
             try:
                 value = method()
                 if value or value is None:
@@ -227,8 +214,6 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
             except Exception as ex:
                 error = ex
             time.sleep(interval)
-            if time.time() > end_time:
-                break
 
         self.get_screen_shot()
 

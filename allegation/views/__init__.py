@@ -305,26 +305,3 @@ class AllegationChartApiView(AllegationAPIView):
             'data': data
         })
         return HttpResponse(content, content_type="application/json")
-
-
-class AllegationCSVView(AllegationAPIView):
-    def get(self, request):
-        allegations = self.get_allegations()
-        output = io.StringIO()
-        writer = csv.writer(output, dialect='excel')
-        writer.writerow(["Unique id", "Observation date", "Latitude", "Longitude"])
-        for allegation in allegations:
-
-            date = allegation.incident_date
-            if not date or date.year <= 1970:
-                date = allegation.start_date
-            else:
-                date = date.date()
-
-            location = False
-            if not allegation.point or not date:
-                continue
-
-            writer.writerow([allegation.pk, date, allegation.point.y, allegation.point.x])
-        output.seek(0)
-        return HttpResponse(output.read(), content_type='text/csv')
