@@ -56,8 +56,7 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         query = alias[:3]
         not_searchable = SessionFactory(title='not searchable')
         session = SessionFactory(title='searchable')
-        AliasFactory(alias=alias, target=not_searchable.hash_id)
-        AliasFactory(alias=alias, target=session.hash_id)
+        SessionAliasFactory(alias=alias, session=session)
 
         self.visit_home()
         self.browser.execute_script('jQuery("#hfc-cleanslate").hide();')
