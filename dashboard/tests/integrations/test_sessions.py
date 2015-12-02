@@ -1,5 +1,5 @@
 from common.tests.core import BaseLiveTestCase
-from search.factories import SuggestionLogFactory, FilterLogFactory
+from search.factories import SuggestionLogFactory, FilterLogFactory, SessionAliasFactory
 from search.models.session_alias import SessionAlias
 from share.factories import SessionFactory
 from share.models import Session
@@ -91,6 +91,30 @@ class SessionManagementTestCase(BaseLiveTestCase):
         return len(self.find_all("#sessions .session-row"))
 
     def search_for_session(self, query):
-        search_input = self.find('#search input')
+        search_input = self.find('#search_input')
         search_input.clear()
         search_input.send_keys(query)
+
+    def test_view_session_alias(self):
+        session = SessionFactory()
+        session_alias = SessionAliasFactory()
+        SessionAliasFactory()
+
+        self.go_to_sessions()
+        self.element_by_tagname_and_text('li', 'Alias').click()
+        self.until_ajax_complete()
+
+        self.should_see_text(session_alias.session.hash_id)
+        self.should_not_see_text(session.hash_id)
+
+        row = self.find("tr.alias-row")
+        row.find(".delete").click()
+        alias = row.find(".alias").text
+
+        self.until(lambda: self.should_see_text("Confirm delete alias"))
+        self.button("OK").click()
+        self.until_ajax_complete()
+
+        self.until(lambda: self.should_not_see_text(alias))
+        self.should_see_text('Delete alias successfully');
+        SessionAlias.objects.filter(alias=alias).exists().should.be.false

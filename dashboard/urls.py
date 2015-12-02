@@ -19,7 +19,7 @@ from dashboard.views.story_type_view import StoryTypeView
 from dashboard.views.settings_save_view import SettingsSaveView
 from dashboard.views.admin_session_analytics_view import AdminNewSessionsAnalyticsViewSet
 from dashboard.views.admin_investigation_documents_export_view import AdminInvestigationDocumentsExportView
-from dashboard.views.admin_session_alias_view import AdminSessionAliasApi
+from dashboard.views.admin_session_alias_view import AdminSessionAliasApi, AdminSessionsAliasViewSet
 
 cache_view = cache_page(86400 * 90)
 
@@ -29,6 +29,7 @@ router.register(r'officers', AdminOfficerViewSet)
 router.register(r'stories', AdminStoryViewSet)
 router.register(r'document-requests', AdminAllegationRequestViewSet)
 router.register(r'sessions', AdminSessionsView)
+router.register(r'session-alias2', AdminSessionsAliasViewSet)
 router.register(r'new-sessions-analytics', AdminNewSessionsAnalyticsViewSet)
 router.register(r'settings', AdminSettingsView)
 

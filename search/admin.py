@@ -1,8 +1,9 @@
 from django.contrib import admin
 
+from common.actions import make_export_action
 from search.models.alias import Alias
 from search.models import SuggestionLog
-from common.actions import make_export_action
+from search.models.session_alias import SessionAlias
 
 
 class AliasAdmin(admin.ModelAdmin):
@@ -26,5 +27,11 @@ class SuggestionAdmin(admin.ModelAdmin):
         return SuggestionLog.objects.exclude(session_id__isnull=True).exclude(session_id__exact='')
 
 
+class SessionAliasAdmin(admin.ModelAdmin):
+    list_display = ('id', 'alias', 'session')
+    search_fields = ('alias',)
+
+
 admin.site.register(Alias, AliasAdmin)
 admin.site.register(SuggestionLog, SuggestionAdmin)
+admin.site.register(SessionAlias, SessionAliasAdmin)
