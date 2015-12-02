@@ -16,12 +16,12 @@ class SettingsEditTestCase(BaseLiveTestCase):
         self.visit('/admin/')
         self.element_by_tagname_and_text('span', 'Settings').click()
         self.until_ajax_complete()
+        self.sleep(10)
 
     def tearDown(self):
         super(SettingsEditTestCase, self).tearDown()
 
     def test_update_setting(self):
-        self.get_screen_shot('test_update_setting_1.png')
         # Default Site Title
         input_field = self.until(lambda: self.element_for_label('Default Site Title'))
 
