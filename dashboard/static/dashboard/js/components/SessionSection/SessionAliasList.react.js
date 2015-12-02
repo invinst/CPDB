@@ -1,10 +1,11 @@
 var _ = require('lodash');
 var classnames = require('classnames');
 var moment = require('moment');
+var jQuery = require('jquery');
 var React = require('react');
 var bootbox = require('bootbox');
 
-require('utils/jQuery');
+
 var AddSessionAliasModalActions = require('actions/SessionSection/AddSessionAliasModalActions');
 var Base = require('../Base.react');
 var SessionAliasAPI = require('utils/SessionAliasAPI');
