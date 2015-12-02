@@ -11,4 +11,4 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for officer in Officer.objects.all():
-            print(self.officer_profile_link(officer))
+            self.stdout.write(self.officer_profile_link(officer))
