@@ -44,7 +44,7 @@ var SessionList = React.createClass(_.assign(Base(SessionListStore), {
       var id = 'session-row-' + x.hash_id;
       var dataTarget = '#' + id;
       rows.push(
-        <tr className='session-row pointer' data-toggle='collapse' data-target={dataTarget}>
+        <tr className='session-row pointer' data-toggle='collapse' data-target={dataTarget} key={'c'+id}>
           <td>{x.hash_id}</td>
           <td>{x.title}</td>
           <td>{_(x.query.filters).values().pluck('value').flatten().size()}</td>
@@ -59,7 +59,7 @@ var SessionList = React.createClass(_.assign(Base(SessionListStore), {
       );
 
       rows.push(
-        <tr className='collapse' id={id}>
+        <tr className='collapse' id={id} key={id}>
           <td colSpan='5'>
             <SessionHistory suggestions={x.suggestion_logs} filters={x.filter_logs}/>
           </td>

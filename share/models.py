@@ -84,6 +84,9 @@ class Session(models.Model):
                 results[key] = values
         return results
 
+    def __str__(self):
+        return self.title or self.hash_id
+
     @staticmethod
     def get_filter_values(key, values):
         if key == 'areas__id':

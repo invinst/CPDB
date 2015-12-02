@@ -9,7 +9,7 @@ var SessionHistory = React.createClass({
   renderSessionHistory: function(histories) {
      return histories.map(function(x) {
        return <li>{x.asHistoryEntry}</li>;
-     })
+     });
   },
 
   render: function() {

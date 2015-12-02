@@ -60,19 +60,17 @@ describe('AddAliasModalStore', function() {
     expect(currentState()['isOpen']).toEqual(false);
   });
 
-  it('close the modal and set successful message when alias is created', function() {
+  it('close the modal when alias is created', function() {
     AddAliasModalStore.updateState('isOpen', true);
     callback(actionReceivedAliasCreationResult);
     expect(currentState()['isOpen']).toEqual(false);
-    expect(currentState()['flashMessage']).toEqual(['Add new alias successfully.']);
   });
 
-  it('close the modal and set error message when alias is failed to create', function() {
+  it('close the modal when alias is failed to create', function() {
     var errorMessage = 'errorMessage';
     AddAliasModalStore.updateState('isOpen', true);
     callback(actionFailedToCreateAlias(errorMessage));
     expect(currentState()['isOpen']).toEqual(false);
-    expect(currentState()['errorMessages']).toEqual(errorMessage);
   });
 
   it('update form data and validate it', function() {

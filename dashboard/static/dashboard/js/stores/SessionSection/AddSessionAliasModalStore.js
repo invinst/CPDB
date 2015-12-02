@@ -2,6 +2,7 @@ var Base = require('../Base');
 var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var AppConstants = require('../../constants/AppConstants');
 var _ = require('lodash');
+var toastr = require('toastr');
 
 var _state = {
   isOpen: false,
@@ -44,13 +45,13 @@ AppDispatcher.register(function(action) {
 
   case AppConstants.RECEIVED_SESSION_ALIAS_CREATION_RESULT:
     AddSessionAliasModalStore.updateState('isOpen', false);
-    AddSessionAliasModalStore.updateState('flashMessage', ['Add new alias successfully.']);
+    toastr.success('Add new alias successfully.');
     AddSessionAliasModalStore.emitChange();
     break;
 
   case AppConstants.FAILED_TO_CREATE_SESSION_ALIAS:
     AddSessionAliasModalStore.updateState('isOpen', false);
-    AddSessionAliasModalStore.updateState('errorMessages', action.data);
+    toastr.error(action.data);
     AddSessionAliasModalStore.emitChange();
     break;
 
