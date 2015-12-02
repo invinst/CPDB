@@ -13,7 +13,8 @@ var Story = React.createClass(_.assign(Base(StoryStore), {
 
   componentDidMount: function() {
     if (this.props.story.url){
-      DocumentCloudAPI.getThumbnail(this.props.story);
+      var story = this.props.story;
+      DocumentCloudAPI.getThumbnail(story);
     } else {
       this.props.story.url = '#';
     }
@@ -42,8 +43,8 @@ var Story = React.createClass(_.assign(Base(StoryStore), {
     }
 
     var descCol = classnames({
-      'col-md-12': !this.props.story.thumbUrl,
-      'col-md-10': this.props.story.thumbUrl
+      'col-md-12': !story.thumbUrl,
+      'col-md-10': story.thumbUrl
     });
 
     return (
