@@ -1,0 +1,48 @@
+div
+  &.ReactTags__tags
+    position: relative
+
+  &.ReactTags__tagInput
+    display: none
+
+  &.ReactTags__selected
+    float: left
+    span.ReactTags__tag
+      border: 1px solid #ddd
+      background: #eee
+      font-size: 12px
+      display: inline-block
+      padding: 5px
+      margin: 0 5px
+      cursor: move
+      //If you use compass, instead of the line below you could use + border-radius($radius, $vertical-radius)
+      border-radius: 2px
+
+    a.ReactTags__remove
+      display: none
+      color: #aaa
+      margin-left: 5px
+      cursor: pointer
+
+
+  &.ReactTags__suggestions
+    position: absolute
+    ul
+      list-style-type: none
+      //If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
+      box-shadow: .05em .01em .5em rgba(0,0,0,.2)
+      background: $white
+      width: 200px
+      li.active
+        background: #b7cfe0
+        cursor: pointer
+
+
+    li
+      border-bottom: 1px solid #ddd
+      padding: 5px 10px
+      margin: 0
+      mark
+        text-decoration: underline
+        background: none
+        font-weight: 600

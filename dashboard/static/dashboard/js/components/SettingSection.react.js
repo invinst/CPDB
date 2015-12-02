@@ -1,12 +1,12 @@
 var React = require('react');
 var _ = require('lodash');
 var Select = require('react-select');
+var ReactTags = require('react-tag-input').WithContext;
 
 var Base = require('./Base.react');
 var SettingSectionStore = require('../stores/SettingSectionStore');
 var SettingAPI = require('utils/SettingAPI')
 var SettingActions = require('actions/SettingActions');
-var StoryAPI = require('utils/StoryAPI');
 
 
 var SettingSection = React.createClass(_.assign(Base(SettingSectionStore), {
@@ -25,14 +25,47 @@ var SettingSection = React.createClass(_.assign(Base(SettingSectionStore), {
         <div className="form-group" id="story-types-order-input">
           <label htmlFor='story_types_order' className="col-lg-2 col-md-2 col-xs-2">Story Types Order</label>
           <div className="col-lg-10 col-md-10 col-xs-10">
-            <Select asyncOptions={StoryAPI.suggestType} name='story_types_order' value={setting.story_types_order}
-                    multi={true} delimiter=',' onChange={this.updateStoryTypesOrder} />
+            <ReactTags tags={this.state.tags}
+                    suggestions={this.state.story_types}
+                    handleDelete={this.handleDelete}
+                    handleAddition={this.handleAddition}
+                    handleDrag={this.handleDrag} />
           </div>
         </div>
       </div>
     );
   },
 
+  setStoryTypes: function (err, data) {
+    SettingSectionStore.setStoryTypes(data.options);
+    SettingSectionStore.emitChange();
+  },
+
+  handleDelete: function(i) {
+    var tags = this.state.tags;
+    tags.splice(i, 1);
+    this.setState({tags: tags});
+  },
+
+  handleAddition: function(tag) {
+    var tags = this.state.tags;
+    tags.push({
+        id: tags.length + 1,
+        text: tag
+    });
+    this.setState({tags: tags});
+  },
+
+  handleDrag: function(tag, currPos, newPos) {
+      var tags = this.state.tags;
+
+      // mutate array
+      tags.splice(currPos, 1);
+      tags.splice(newPos, 0, tag);
+
+      // re-render
+      this.setState({ tags: tags });
+  },
 
   change: function (field) {
     return this.update.bind(this, field);
@@ -51,10 +84,12 @@ var SettingSection = React.createClass(_.assign(Base(SettingSectionStore), {
   componentDidMount: function () {
     SettingSectionStore.addChangeListener(this._onChange);
 
+    SettingActions.getStoryTypes();
     SettingAPI.get();
   },
 
   save: function () {
+    SettingSectionStore.updateSettingStoryTypes();
     SettingAPI.save(this.state.setting);
   },
 

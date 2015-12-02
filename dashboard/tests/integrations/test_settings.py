@@ -7,7 +7,9 @@ class SettingsEditTestCase(BaseLiveTestCase):
     def setUp(self):
         self.story = StoryFactory()
         self.setting = self.get_admin_settings()
-        self.setting.story_types_order = ''
+        self.type_1 = StoryFactory().story_type
+        self.type_2 = self.story.story_type
+        self.setting.story_types_order = ",".join([self.type_1, self.type_2])
         self.setting.save()
 
         self.login_user()
@@ -28,17 +30,12 @@ class SettingsEditTestCase(BaseLiveTestCase):
         input_field.clear()
         input_field.send_keys(new_setting_value)
 
-        # Story Types Order
-        select = self.find('.Select-input > input')
-        select.send_keys(self.story.story_type)
-        self.until(self.ajax_complete)
-        self.element_by_classname_and_text('Select-option', self.story.story_type).click()
-
         self.button("Save").click()
 
         self.until(self.ajax_complete)
         self.should_see_text("All settings are updated.")
 
+        # We can't test this drag and drop story types order
+        expected_story_types_order =  ",".join([self.type_2, self.type_1])
         setting_data = Setting.objects.all()[0]
         setting_data.default_site_title.should.equal(new_setting_value)
-        setting_data.story_types_order.should.equal(self.story.story_type)

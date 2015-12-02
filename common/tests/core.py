@@ -9,6 +9,7 @@ from django.core import management
 from django.core.urlresolvers import reverse
 from django.test.testcases import LiveServerTestCase, SimpleTestCase as DjangoSimpleTestCase
 from selenium.common.exceptions import NoSuchElementException, WebDriverException
+from selenium.webdriver import ActionChains
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.select import Select
@@ -111,6 +112,11 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         self.visit('/')
         self.until(lambda: self.link("Outcomes"))
         self.until_ajax_complete()
+
+    def drag_and_drop(self, source_element, target_element):
+        action_chains = ActionChains(self.browser)
+        action_chains.drag_and_drop(source_element, target_element)
+        self.sleep(1)
 
     def should_see_text(self, text):
         if not isinstance(text, str):
