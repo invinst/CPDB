@@ -16,6 +16,7 @@ class SettingsEditTestCase(BaseLiveTestCase):
         self.visit('/admin/')
         self.element_by_tagname_and_text('span', 'Settings').click()
         self.until_ajax_complete()
+        # temporary fix for this test
         self.sleep(10)
 
     def tearDown(self):
