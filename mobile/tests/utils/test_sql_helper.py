@@ -1,4 +1,4 @@
-from mock import patch, MagicMock, Mock
+from mock import MagicMock
 
 from common.tests.core import SimpleTestCase
 from mobile.utils.sql_helper import SqlHelper

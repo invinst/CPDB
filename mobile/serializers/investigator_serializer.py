@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from common.models import Officer, Investigator
+from common.models import Investigator
 
 
 class InvestigatorSerializer(serializers.ModelSerializer):
