@@ -28,7 +28,6 @@ var SiteTitle = React.createClass(_.assign(Base(SessionStore), {
 
   render: function() {
     var disabled = !this.props.changable;
-    console.log('rendering site title')
     return (
       <input className='site-title-input' type='text' value={this.state.siteTitle} disabled={disabled} onChange={this._onTitleChange} />
     )
