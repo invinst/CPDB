@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var toastr = require('toastr');
 
 var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var AppConstants = require('../../constants/AppConstants');
@@ -33,6 +34,13 @@ AppDispatcher.register(function(action) {
         _state['locked'] = false;
         SessionListStore.emitChange();
       }
+      break;
+
+    case AppConstants.DELETED_SESSION_ALIAS:
+      var alias = action.data;
+      toastr.error("Delete alias successfully.");
+      _state.data.splice(_state.data.indexOf(alias), 1);
+      SessionListStore.emitChange();
       break;
 
     default:

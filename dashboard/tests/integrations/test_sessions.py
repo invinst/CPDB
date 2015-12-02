@@ -98,6 +98,7 @@ class SessionManagementTestCase(BaseLiveTestCase):
     def test_view_session_alias(self):
         session = SessionFactory()
         session_alias = SessionAliasFactory()
+        SessionAliasFactory()
 
         self.go_to_sessions()
         self.element_by_tagname_and_text('li', 'Alias').click()
@@ -105,3 +106,15 @@ class SessionManagementTestCase(BaseLiveTestCase):
 
         self.should_see_text(session_alias.session.hash_id)
         self.should_not_see_text(session.hash_id)
+
+        row = self.find("tr.alias-row")
+        row.find(".delete").click()
+        alias = row.find(".alias").text
+
+        self.until(lambda: self.should_see_text("Confirm delete alias"))
+        self.button("OK").click()
+        self.until_ajax_complete()
+
+        self.should_not_see_text(alias)
+        self.should_see_text('Delete alias successfully');
+        SessionAlias.objects.filter(alias=alias).exists().should.be.false

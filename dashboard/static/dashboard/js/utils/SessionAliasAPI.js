@@ -37,10 +37,6 @@ var SessionAliasAPI = {
   },
 
   getMore: function() {
-    if (ajax) {
-      ajax.abort();
-    }
-
     limit += count;
 
     var params = {
@@ -51,6 +47,16 @@ var SessionAliasAPI = {
 
     ajax = jQuery.getJSON(AppConstants.SESSION_ALIAS2_API_ENDPOINT, params, function(data) {
       SessionsAliasActions.receivedMore(data.results);
+    });
+  },
+
+  deleteAlias: function (alias) {
+    jQuery.ajax({
+      type: 'DELETE',
+      url: alias.url,
+      success: function () {
+        SessionsAliasActions.deletedAlias(alias);
+      }
     });
   }
 };

@@ -2,6 +2,7 @@ var _ = require('lodash');
 var classnames = require('classnames');
 var moment = require('moment');
 var React = require('react');
+var bootbox = require('bootbox');
 
 require('utils/jQuery');
 var AddSessionAliasModalActions = require('actions/SessionSection/AddSessionAliasModalActions');
@@ -28,16 +29,28 @@ var SessionList = React.createClass(_.assign(Base(SessionAliasListStore), {
     jQuery(window).on('scroll', this._onScroll);
   },
 
+  deleteAlias: function (alias, e) {
+    e.preventDefault();
+
+    bootbox.confirm("Confirm delete alias \"" + alias.alias +"\"", function (yes) {
+      if (yes) {
+        SessionAliasAPI.deleteAlias(alias);
+      }
+    });
+  },
+
   renderSessionRow: function() {
+    var that = this;
     var rows = [];
 
     this.state.data.forEach(function(x) {
       var id = 'session-row-' + x.id;
       rows.push(
-        <tr className='session-row pointer' key={'c'+id}>
-          <td>{x.alias}</td>
+        <tr className='alias-row pointer' key={'c'+id}>
+          <td className="alias">{x.alias}</td>
           <td>{x.session.hash_id}</td>
           <td>{x.session.title}</td>
+          <td><a className="delete" href="javascript: void()" onClick={that.deleteAlias.bind(that, x)}>Delete</a></td>
         </tr>
       );
     });
@@ -54,6 +67,7 @@ var SessionList = React.createClass(_.assign(Base(SessionAliasListStore), {
               <th>Alias</th>
               <th>Session</th>
               <th>Title</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>

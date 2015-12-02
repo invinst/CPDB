@@ -27,6 +27,13 @@ var SessionsActions = {
       actionType: AppConstants.SEARCH_FOR_SESSION_ALIAS,
       data: query
     });
+  },
+
+  deletedAlias: function (alias) {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.DELETED_SESSION_ALIAS,
+      data: alias
+    });
   }
 };
 
