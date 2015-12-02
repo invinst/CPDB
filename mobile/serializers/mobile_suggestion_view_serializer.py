@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from mobile.serializers.allegation_serializer import AllegationSerializer
+from mobile.serializers.officer_allegation_serializer import AllegationSerializer
 from mobile.serializers.officer_serializer import OfficerSerializer
 
 
