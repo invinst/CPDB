@@ -27,7 +27,6 @@ class MobileOfficerViewTest(SimpleTestCase):
         data['officer_first'].should.be.equal(self.officer.officer_first)
         data['officer_last'].should.be.equal(self.officer.officer_last)
 
-
     def test_return_404_when_get_invalid_pk(self):
         invalid_pk = -1
         response, data = self.call_related_officer_api({'pk': invalid_pk})

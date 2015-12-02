@@ -13,4 +13,3 @@ class SqlHelperTest(SimpleTestCase):
         raw_queryset = MagicMock()
         raw_queryset.__iter__.return_value = [1, 2]
         SqlHelper.len_of_raw_queryset(raw_queryset).should.be(2)
-
