@@ -13,6 +13,7 @@ from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.select import Select
 from selenium import webdriver
+import sure
 
 from api.models import Setting
 from common.factories import UserFactory
