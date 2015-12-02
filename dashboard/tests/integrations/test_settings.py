@@ -21,6 +21,7 @@ class SettingsEditTestCase(BaseLiveTestCase):
         super(SettingsEditTestCase, self).tearDown()
 
     def test_update_setting(self):
+        self.get_screen_shot('test_update_setting_1.png')
         # Default Site Title
         input_field = self.until(lambda: self.element_for_label('Default Site Title'))
 
