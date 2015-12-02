@@ -91,7 +91,7 @@ class SessionManagementTestCase(BaseLiveTestCase):
         return len(self.find_all("#sessions .session-row"))
 
     def search_for_session(self, query):
-        search_input = self.find('#search input')
+        search_input = self.find('#search_input')
         search_input.clear()
         search_input.send_keys(query)
 
@@ -115,6 +115,6 @@ class SessionManagementTestCase(BaseLiveTestCase):
         self.button("OK").click()
         self.until_ajax_complete()
 
-        self.should_not_see_text(alias)
+        self.until(lambda: self.should_not_see_text(alias))
         self.should_see_text('Delete alias successfully');
         SessionAlias.objects.filter(alias=alias).exists().should.be.false
