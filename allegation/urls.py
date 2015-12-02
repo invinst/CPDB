@@ -2,9 +2,9 @@ from django.conf.urls import url
 
 from django.views.decorators.csrf import csrf_exempt
 
-from allegation.views import AllegationAPIView, AreaAPIView, AllegationClusterApiView
+from allegation.views import AllegationAPIView, AreaAPIView
+from allegation.views import AllegationGISApiView, AllegationClusterApiView
 from allegation.views import AllegationChartApiView, InvestigationAPIView
-from allegation.views import AllegationGISApiView
 from allegation.views import AllegationSummaryApiView, OfficerListAPIView
 from allegation.views.allegation_analysis_api_view import AllegationAnalysisAPIView
 from allegation.views.allegation_download_view import AllegationDownloadView
