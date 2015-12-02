@@ -14,7 +14,7 @@ var Search = React.createClass({
 
   render: function() {
     return (
-      <input className="form-control" type="text" placeholder="Search..." onChange={this.onChange} />
+      <input className="form-control" type="text" id="search_input" placeholder="Search..." onChange={this.onChange} />
     );
   }
 });
