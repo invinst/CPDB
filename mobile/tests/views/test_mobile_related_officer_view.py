@@ -10,7 +10,7 @@ class MobileOfficerViewTest(SimpleTestCase):
         self.allegation = AllegationFactory(officer=self.officer)
 
     def call_related_officer_api(self, params={}):
-        response = self.client.get(reverse('mobile:related_officer'), params)
+        response = self.client.get(reverse('mobile:officer-related_officer'), params)
         data = self.json(response)
 
         return response, data
@@ -37,7 +37,7 @@ class MobileOfficerViewTest(SimpleTestCase):
 
         response.status_code.should.equal(HTTP_404_NOT_FOUND)
 
-    def test_return_404_when_get_bad_pk(self):
+    def test_return_400_when_get_bad_pk(self):
         OfficerFactory()
         bad_pk = 'xyz'
 
