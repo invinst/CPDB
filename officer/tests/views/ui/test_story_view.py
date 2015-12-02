@@ -17,7 +17,7 @@ class StoryViewTestCase(BaseLiveTestCase):
         story = StoryFactory(officer=self.allegation.officer)
         self.visit_officer()
 
-        self.until(lambda: self.should_see_text(story.story_type))
+        self.until(lambda: self.should_see_text(story.story_type.capitalize()))
         self.should_see_text(story.title)
 
     def test_long_description_cut(self):
@@ -39,8 +39,8 @@ class StoryViewTestCase(BaseLiveTestCase):
         self.visit_officer()
 
         story_type_titles = self.find_all('#story_list h3')
-        story_type_titles[0].text.should.equal(story_type2)
-        story_type_titles[1].text.should.equal(story_type1)
+        story_type_titles[0].text.should.equal(story_type2.capitalize())
+        story_type_titles[1].text.should.equal(story_type1.capitalize())
 
     def test_story_category_with_empty_setting(self):
         story_type = 'story_type'
