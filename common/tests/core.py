@@ -72,8 +72,7 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
 
     def tearDown(self):
         if world.browser is not None:
-            world.browser.quit()
-            world.browser = None
+            world.browser.delete_all_cookies()
 
     def get_admin_settings(self):
         return Setting.objects.all().first() or SettingFactory()
