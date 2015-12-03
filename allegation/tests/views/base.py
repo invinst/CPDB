@@ -7,8 +7,3 @@ class AllegationApiTestBase(SimpleTestCase):
     _overridden_settings = {
         'ALLEGATION_LIST_ITEM_COUNT': 10,
     }
-
-    def setUp(self):
-        self.allegations = []
-        for i in range(26):
-            self.allegations.append(AllegationFactory())
