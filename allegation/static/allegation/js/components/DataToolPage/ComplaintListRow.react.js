@@ -64,10 +64,10 @@ var ComplaintListRow = React.createClass(_.assign(Base(ComplaintListStore), {
 
     var rowClassName = classnames('complaint-row', finding, allegation.final_outcome_class);
 
-
+    var dom_id = "allegation-" + allegation.id;
     return (
       <div className={rowClassName}>
-        <div className='row cursor' onClick={this.toggleComplaint}>
+        <div className='row cursor' id={dom_id} onClick={this.toggleComplaint}>
           <div className='col-md-1 col-xs-1 text-center'>
             <i className={caretClasses}></i>
           </div>
