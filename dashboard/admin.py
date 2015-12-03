@@ -10,6 +10,7 @@ class AllegationResource(resources.ModelResource):
     status = fields.Field(column_name='Status')
     number_of_request = fields.Field(attribute='number_of_request', column_name='No. of requests')
     last_requested = fields.Field(column_name='Last requested')
+    emails = fields.Field(attribute='emails', column_name='Emails')
 
     class Meta:
         model = Allegation

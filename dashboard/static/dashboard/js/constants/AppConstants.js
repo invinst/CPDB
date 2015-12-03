@@ -185,4 +185,5 @@ module.exports = {
   SESSION_ALIAS2_API_ENDPOINT: '/api/dashboard/session-alias2/',
   SETTINGS_API_ENDPOINT: '/api/dashboard/settings/',
   NEW_SESSION_ANALYTICS_API_ENDPOINT: '/api/dashboard/new-sessions-analytics/',
+  DOCUMENT_EXPORT_END_POINT: '/api/dashboard/documents_export/'
 };
