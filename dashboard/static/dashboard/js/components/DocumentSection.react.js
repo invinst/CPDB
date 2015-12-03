@@ -8,6 +8,7 @@ var DocumentRequestAPI = require('../utils/DocumentRequestAPI');
 var AddDocumentLinkModal = require('./DocumentSection/AddDocumentLinkModal.react');
 var AddDocumentLinkModalActions = require('../actions/DocumentSection/AddDocumentLinkModalActions');
 var DocumentListActions = require('../actions/DocumentSection/DocumentListActions');
+var AppConstants = require('../constants/AppConstants');
 var _ = require('lodash');
 
 
@@ -45,7 +46,7 @@ var DocumentSection = React.createClass(_.assign(Base(DocumentSectionStore), {
   },
 
   exportDocument: function () {
-    window.location.href = '/api/dashboard/documents_export/'
+    window.location.href = AppConstants.DOCUMENT_EXPORT_END_POINT
   },
 
   keyEntered: function(e) {
