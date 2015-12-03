@@ -21,6 +21,7 @@ class SessionManagementTestCase(BaseLiveTestCase):
 
     def go_to_sessions(self):
         self.element_by_tagname_and_text('span', 'Sessions').click()
+        self.until_ajax_complete()
 
     def test_see_sessions_management_section(self):
         session = SessionFactory()
