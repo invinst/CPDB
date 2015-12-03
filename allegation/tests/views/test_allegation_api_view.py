@@ -140,8 +140,7 @@ class AllegationApiViewTestCase(AllegationFilterMixin, AllegationApiTestBase):
 
     def test_filter_by_complaint_gender(self):
         allegation = self.allegations[0]
-        for i in range(10):
-            ComplainingWitnessFactory(crid=allegation.crid)
+        ComplainingWitnessFactory.create_batch(3, crid=allegation.crid)
         data = self.fetch_allegations(complainant_gender='M')
         for row in data:
             genders = [x['gender'] for x in row['complaining_witness']]
@@ -149,8 +148,7 @@ class AllegationApiViewTestCase(AllegationFilterMixin, AllegationApiTestBase):
 
     def test_filter_by_complaint_race(self):
         allegation = self.allegations[0]
-        for i in range(10):
-            ComplainingWitnessFactory(crid=allegation.crid)
+        ComplainingWitnessFactory.create_batch(3, crid=allegation.crid)
         race = RACES[0][0]
         data = self.fetch_allegations(complainant_race=race)
         for row in data:
