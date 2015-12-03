@@ -48,6 +48,8 @@ class EmbedModeTestCase(BaseLiveTestCase):
         len(self.find_all("#filter-tags .tag")).should.equal(1)
 
         self.link('Embed Mode').click()
+        self.until(lambda: self.find("body").has_class("embedding"))
+        self.browser.execute_script("jQuery(window).scrollTop(0)")
 
         self.find("#filter-tags .tag .remove").click()
         len(self.find_all("#filter-tags .tag")).should.equal(1)

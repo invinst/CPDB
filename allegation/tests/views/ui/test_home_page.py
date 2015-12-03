@@ -1,8 +1,9 @@
 from selenium.webdriver.common.keys import Keys
 
+from allegation.factories import AllegationFactory, AllegationCategoryFactory
 from api.models import Setting
 from common.tests.core import *
-from allegation.factories import AllegationFactory, AllegationCategoryFactory
+from share.models import Session
 
 
 class HomePageTestCase(BaseLiveTestCase):
@@ -17,6 +18,20 @@ class HomePageTestCase(BaseLiveTestCase):
             self.allegation.officer.delete()
         else:
             self.allegation.delete()
+
+    def test_start_new_session_on_click_logo(self):
+        Session.objects.all().count().should.equal(0)
+        self.visit_home()
+        self.link("Categories").click()
+        self.find(".category-name-wrapper a").click()
+        self.until_ajax_complete()
+        Session.objects.all().count().should.equal(1)
+
+        self.find("#logo_link img").click()
+        self.until_ajax_complete()
+        Session.objects.all().count().should.equal(2)
+        session = Session.objects.all()[1]
+        self.browser.current_url.should.contain(session.hash_id)
 
     def test_see_tabs(self):
         self.visit_home()
