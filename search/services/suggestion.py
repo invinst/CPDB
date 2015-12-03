@@ -5,6 +5,7 @@ from django.db.models.query_utils import Q
 from allegation.utils.query import OfficerQuery
 from common.models import AllegationCategory, Allegation, Area, Investigator, Officer, FINDINGS, OUTCOMES, UNITS, GENDER, \
     RACES, OUTCOME_TEXT_DICT, RANKS
+from common.utils.hashid import hash_obj
 from search.models.alias import Alias
 from search.models.session_alias import SessionAlias
 from search.utils.date import *
@@ -191,13 +192,11 @@ class Suggestion(object):
         if q.startswith('rep'):
             return [['Repeater (10+ complaints)', 10]]
 
-    def suggest_sessions(self, query):
-        session_ids = SessionAlias.objects.filter(alias__icontains=query).values_list('session', flat=True)
-        sessions = Session.objects.filter(id__in=session_ids)
+    def suggest_sessions(self, query, limit=5):
+        session_aliases = SessionAlias.objects.filter(alias__icontains=query)[:limit]
         suggestions = []
-        for session in sessions:
-            text = session.title if session.title else session.hash_id
-            suggestions.append([text, session.hash_id])
+        for alias in session_aliases:
+            suggestions.append([alias.title, hash_obj.encode(alias.session_id)])
 
         return suggestions
 

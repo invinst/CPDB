@@ -17,6 +17,7 @@ class SessionAliasFactory(factory.django.DjangoModelFactory):
     alias = factory.Sequence(lambda n: fake.name())
     session = factory.SubFactory(SessionFactory)
     user = factory.SubFactory(UserFactory)
+    title = factory.LazyAttribute(lambda obj: obj.session.title)
 
 
 class AliasFactory(factory.django.DjangoModelFactory):

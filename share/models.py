@@ -4,14 +4,12 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.template.defaultfilters import slugify
 from django_extensions.db.fields.json import JSONField
-from hashids import Hashids
 
 from common.models import Officer, AllegationCategory, Investigator, Area
 from common.models import GENDER_DICT, OUTCOME_TEXT_DICT, FINAL_FINDING_TEXT_DICT, FINDINGS_DICT, OUTCOMES_DICT, CUSTOM_FILTER_DICT
+from common.utils.hashid import hash_obj
 from search.models import SuggestionLog, FilterLog
 
-
-hash_obj = Hashids(settings.SECRET_KEY, min_length=6)
 
 KEYS = {
     'officer': Officer,

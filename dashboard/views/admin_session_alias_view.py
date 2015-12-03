@@ -17,8 +17,12 @@ class AdminSessionAliasApi(View):
 
         alias = request.POST.get('alias')
         target = request.POST.get('target')
+        title = request.POST.get('title')
         session = get_object_or_404(Session, id=target)
-        SessionAlias.objects.create(alias=alias, session=session, user=request.user)
+        SessionAlias.objects.create(alias=alias,
+                                    session=session,
+                                    user=request.user,
+                                    title=title or session.title)
 
         return HttpResponse(status=201)
 

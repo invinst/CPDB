@@ -1,11 +1,15 @@
 import json
+from faker import Faker
 
 from allegation.factories import OfficerFactory, AllegationCategoryFactory, AllegationFactory
 from common.models import AllegationCategory, Officer
 from common.tests.core import SimpleTestCase
-from search.factories import AliasFactory
+from search.factories import AliasFactory, SessionAliasFactory
 from search.models import SuggestionLog
 from search.models.alias import Alias
+
+
+fake = Faker()
 
 
 class SuggestViewTestCase(SimpleTestCase):
@@ -158,3 +162,9 @@ class SuggestViewTestCase(SimpleTestCase):
 
         alias = Alias.objects.get(id=alias.id)
         alias.num_usage.should.equal(1)
+
+    def test_search_session_alias(self):
+        session_alias = SessionAliasFactory(title=fake.name())
+        data = self.get_suggestion(session_alias.alias[0:2])
+        data.should.contain('session')
+        [x['label'] for x in data['session']].should.contain(session_alias.title)

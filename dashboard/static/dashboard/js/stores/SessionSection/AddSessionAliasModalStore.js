@@ -9,6 +9,7 @@ var _state = {
   formValid: false,
   alias: '',
   target: '',
+  title: '',
   flashMessage: '',
   errorMessages: []
 };

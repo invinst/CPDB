@@ -1,8 +1,13 @@
+from faker import Faker
+
 from common.tests.core import BaseLiveTestCase
 from search.factories import SuggestionLogFactory, FilterLogFactory, SessionAliasFactory
 from search.models.session_alias import SessionAlias
 from share.factories import SessionFactory
 from share.models import Session
+
+
+fake = Faker()
 
 
 class SessionManagementTestCase(BaseLiveTestCase):
@@ -73,19 +78,30 @@ class SessionManagementTestCase(BaseLiveTestCase):
 
         self.number_of_sessions().should.equal(1)
 
-    def test_add_alias(self):
-        alias = 'session alias'
-        session = SessionFactory()
-
-        self.go_to_sessions()
-
+    def create_alias(self, alias, title=None):
         self.find('.add-alias').click()
         self.until(lambda: self.should_see_text('Add Alias'))
 
         self.find('.alias-input').send_keys(alias)
+        if title:
+            self.find('.title-input').send_keys(title)
         self.button('SUBMIT').click()
         self.until(lambda: self.should_see_text('Add new alias successfully'))
+
+    def test_add_alias(self):
+        alias = fake.name()
+        session = SessionFactory()
+
+        self.go_to_sessions()
+        self.create_alias(alias)
+
         SessionAlias.objects.get(alias=alias).session.id.should.equal(session.id)
+
+        second_alias = fake.name()
+        custom_title = fake.name()
+        self.create_alias(second_alias, custom_title)
+        SessionAlias.objects.get(alias=second_alias, title=custom_title).session.id.should.equal(session.id)
+
 
     def number_of_sessions(self):
         return len(self.find_all("#sessions .session-row"))
@@ -97,7 +113,7 @@ class SessionManagementTestCase(BaseLiveTestCase):
 
     def test_view_session_alias(self):
         session = SessionFactory()
-        session_alias = SessionAliasFactory()
+        session_alias = SessionAliasFactory(title=fake.name())
         SessionAliasFactory()
 
         self.go_to_sessions()
@@ -106,6 +122,7 @@ class SessionManagementTestCase(BaseLiveTestCase):
 
         self.should_see_text(session_alias.session.hash_id)
         self.should_see_text(session_alias.user.username)
+        self.should_see_text(session_alias.title)
         self.should_not_see_text(session.hash_id)
 
         row = self.find("tr.alias-row")

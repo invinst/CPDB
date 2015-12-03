@@ -50,7 +50,7 @@ var SessionList = React.createClass(_.assign(Base(SessionAliasListStore), {
         <tr className='alias-row pointer' key={'c'+id}>
           <td className="alias">{x.alias}</td>
           <td>{x.session.hash_id}</td>
-          <td>{x.session.title}</td>
+          <td>{x.title || x.session.title}</td>
           <td>{x.user}</td>
           <td><a className="delete" href="javascript: void()" onClick={that.deleteAlias.bind(that, x)}>Delete</a></td>
         </tr>

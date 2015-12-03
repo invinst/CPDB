@@ -10,7 +10,7 @@ class SessionAliasSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SessionAlias
-        fields = ('id', 'alias', 'session', 'user', 'url')
+        fields = ('id', 'alias', 'session', 'user', 'title', 'url')
 
     def session_data(self, obj):
         data = model_to_dict(obj.session)

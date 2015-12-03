@@ -14,7 +14,7 @@ var AddSessionAliasModal = React.createClass(_.assign(Base(AddSessionAliasModalS
   },
 
   createAlias: function () {
-    AddSessionAliasModalActions.createAlias(this.state.alias, this.state.target);
+    AddSessionAliasModalActions.createAlias(this.state.alias, this.state.target, this.state.title);
   },
 
   render: function() {
@@ -27,11 +27,16 @@ var AddSessionAliasModal = React.createClass(_.assign(Base(AddSessionAliasModalS
               <h3>Add Alias</h3>
             </div>
             <div className="modal-body">
-              <form>
+              <form className="horizontal-form">
                 <div className='form-group'>
                   <input type='text' className='form-control alias-input' name='alias' placeholder='Enter alias'
                          required="required" onKeyUp={this.checkForm} value={this.state.alias}
                          onChange={this.updateValue.bind(this, 'alias')} />
+                </div>
+                <div className='form-group'>
+                  <input type='text' className='form-control title-input' name='title' placeholder='Enter title'
+                         required="required" onKeyUp={this.checkForm} value={this.state.title}
+                         onChange={this.updateValue.bind(this, 'title')} />
                 </div>
               </form>
             </div>

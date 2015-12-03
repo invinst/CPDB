@@ -9,12 +9,18 @@ var limit = 0;
 var count = 20;
 
 var SessionAliasAPI = {
-  create: function (alias, target) {
+  create: function (alias, target, title) {
     if (ajax) {
       ajax.abort();
     }
 
-    ajax = jQuery.post(AppConstants.SESSION_ALIAS_API_ENDPOINT, {alias: alias, target: target}).done(function (data) {
+    var alias_data = {
+      alias: alias,
+      target: target,
+      title: title
+    };
+
+    ajax = jQuery.post(AppConstants.SESSION_ALIAS_API_ENDPOINT, alias_data).done(function (data) {
         AddSessionAliasModalServerActions.receivedAliasCreationResult(data);
       }).fail(function (error) {
         AddSessionAliasModalServerActions.failedToCreateAlias(error.responseJSON);
