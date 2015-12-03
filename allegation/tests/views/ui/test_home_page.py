@@ -27,8 +27,10 @@ class HomePageTestCase(BaseLiveTestCase):
         self.until_ajax_complete()
         Session.objects.all().count().should.equal(1)
 
+        url = self.browser.current_url
         self.find("#logo_link img").click()
-        self.until_ajax_complete()
+        self.until(lambda: self.browser.current_url != url)
+
         Session.objects.all().count().should.equal(2)
         session = Session.objects.all()[1]
         self.browser.current_url.should.contain(session.hash_id)
@@ -296,3 +298,16 @@ class HomePageTestCase(BaseLiveTestCase):
 
         self.visit_home()
         self.browser.title.should.equal(setting.default_site_title)
+
+    def test_no_disclaimer_when_search_engine(self):
+        profile = webdriver.FirefoxProfile()
+        profile.set_preference(
+            "general.useragent.override",
+            "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+        )
+        browser = WebDriver(profile)
+        browser.implicitly_wait(10)
+        browser.set_window_size(width=1200, height=1200)
+        self.set_browser(browser)
+        self.visit_home()
+        self.until(lambda: self.should_not_see_text('I UNDERSTAND'))

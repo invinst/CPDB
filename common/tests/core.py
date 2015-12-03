@@ -93,6 +93,9 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
             world.browser.set_window_size(width=1200, height=1200)
         return world.browser
 
+    def set_browser(self, browser):
+        world.browser = browser
+
     @classmethod
     def setUpClass(cls):
         if not hasattr(LiveServerTestCase, 'static_collected') or not LiveServerTestCase.static_collected:
@@ -104,8 +107,11 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     def tearDownClass(cls):
         super(BaseLiveTestCase, cls).tearDownClass()
 
+    def create_url(self, page):
+        return '%s%s' % (self.live_server_url, page)
+
     def visit(self, page):
-        self.browser.get('%s%s' % (self.live_server_url, page))
+        self.browser.get(self.create_url(page))
 
     def visit_home(self):
         self.visit('/')
