@@ -105,6 +105,7 @@ class SessionManagementTestCase(BaseLiveTestCase):
         self.until_ajax_complete()
 
         self.should_see_text(session_alias.session.hash_id)
+        self.should_see_text(session_alias.user.username)
         self.should_not_see_text(session.hash_id)
 
         row = self.find("tr.alias-row")

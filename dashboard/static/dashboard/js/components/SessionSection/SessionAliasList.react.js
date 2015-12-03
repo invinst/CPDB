@@ -51,6 +51,7 @@ var SessionList = React.createClass(_.assign(Base(SessionAliasListStore), {
           <td className="alias">{x.alias}</td>
           <td>{x.session.hash_id}</td>
           <td>{x.session.title}</td>
+          <td>{x.user}</td>
           <td><a className="delete" href="javascript: void()" onClick={that.deleteAlias.bind(that, x)}>Delete</a></td>
         </tr>
       );
@@ -68,6 +69,7 @@ var SessionList = React.createClass(_.assign(Base(SessionAliasListStore), {
               <th>Alias</th>
               <th>Session</th>
               <th>Title</th>
+              <th>User</th>
               <th></th>
             </tr>
           </thead>

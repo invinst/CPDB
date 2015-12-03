@@ -96,4 +96,4 @@ class AliasTestCase(SimpleTestCase):
         })
 
         response.status_code.should.equal(201)
-        SessionAlias.objects.filter(alias=alias, session=session).count().should.equal(1)
+        SessionAlias.objects.filter(alias=alias, session=session, user=self.user).count().should.equal(1)
