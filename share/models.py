@@ -9,7 +9,7 @@ from hashids import Hashids
 from common.models import Officer, AllegationCategory, Investigator, Area
 from common.models import GENDER_DICT, OUTCOME_TEXT_DICT, FINAL_FINDING_TEXT_DICT, FINDINGS_DICT, OUTCOMES_DICT, CUSTOM_FILTER_DICT
 from search.models import SuggestionLog, FilterLog
-from search.services.suggestion import REPEATER_DESC
+from search.services import REPEATER_DESC
 
 
 hash_obj = Hashids(settings.SECRET_KEY, min_length=6)

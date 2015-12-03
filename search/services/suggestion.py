@@ -8,12 +8,7 @@ from common.models import AllegationCategory, Allegation, Area, Investigator, Of
 from search.models.alias import Alias
 from search.utils.date import *
 from search.utils.zip_code import *
-
-
-REPEATER_DESC = {
-    '10': 'Repeater (10+ complaints)',
-    '20': 'Repeater (20+ complaints)'
-}
+from search.services import REPEATER_DESC
 
 
 AREA_SORT_ORDERS = { 'police-beats': 0, 'neighborhoods': 1, 'ward': 2, 'police-districts': 3, 'school-grounds': 5 }
