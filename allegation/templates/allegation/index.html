@@ -54,21 +54,19 @@
     <div id="autocomplete-container"></div>
     <div id='router'></div>
 
+
     {% if DJANGO_ENV == 'test' %}
       <script src="{% static 'js/acorn.js' %}"></script>
       <script src="{% static 'js/blanket.js' %}"></script>
     {% endif %}
 
-    {% if DJANGO_ENV != 'test' or request.GET.with_disclaimer %}
-      <script>
-        var SHOW_DISCLAIMER = true;
-      </script>
-    {% else %}
-      <script>
+    <script>
+      {% if request.is_crawler %}
         var SHOW_DISCLAIMER = false;
-      </script>
-    {% endif %}
-
+      {% else %}
+        var SHOW_DISCLAIMER = {% if DJANGO_ENV != 'test' or request.GET.with_disclaimer %}true{% else %} false {% endif %};
+      {% endif %}
+    </script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/vis/4.2.0/vis.min.js"></script>
 
     {% compress js %}

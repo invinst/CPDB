@@ -120,6 +120,9 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
             world.browser = self.init_firefox()
         return world.browser
 
+    def set_browser(self, browser):
+        world.browser = browser
+
     @classmethod
     def setUpClass(cls):
         if not hasattr(LiveServerTestCase, 'static_collected') or not LiveServerTestCase.static_collected:
@@ -131,6 +134,7 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     def tearDownClass(cls):
         super(BaseLiveTestCase, cls).tearDownClass()
 
+
     def get_current_javascript_report(self):
         self.browser.execute_script('blanket.onTestsDone();');
         report = self.browser.execute_script('return window.coverage_results;')
@@ -139,8 +143,11 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     def hide_toastr(self):
         self.browser.execute_script("jQuery('#toast-container').html('');")
 
+    def create_url(self, page):
+        return '%s%s' % (self.live_server_url, page)
+
     def visit(self, page):
-        self.browser.get('%s%s' % (self.live_server_url, page))
+        self.browser.get(self.create_url(page))
 
     def visit_home(self, fresh=False):
         if fresh:
