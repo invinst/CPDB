@@ -1,6 +1,7 @@
 var React = require('react');
 var Route = require('react-router').Route;
 var Router = require('react-router').Router;
+var History = require('history');
 
 var ComplaintPage = require('components/ComplaintPage.react');
 var MainPage = require('components/MainPage.react');
@@ -11,13 +12,17 @@ var OfficerPage = require('components/OfficerPage.react');
 
 var App = React.createClass({
   render: function () {
+    var history = History.useBasename(History.createHistory)({
+      basename: '/'
+    });
+
     return (
-      <Router>
-        <Route path='/complaint' component={ComplaintPage}/>
-        <Route path='/officer' component={OfficerPage}/>
-        <Route path='/test' component={TestPage}/>
-        <Route path='/' component={MainPage}/>
-        <Route path='*' component={NoMatch}/>
+      <Router history={history}>
+        <Route path='/complaint/:crid' component={ComplaintPage} />
+        <Route path='/officer/:slug/:id' component={OfficerPage} />
+        <Route path='/test' component={TestPage} />
+        <Route path='/' component={MainPage} />
+        <Route path='*' component={NoMatch} />
       </Router>
     );
   }
