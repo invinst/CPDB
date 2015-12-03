@@ -26,7 +26,7 @@ var SettingSection = React.createClass(_.assign(Base(SettingSectionStore), {
           <label htmlFor='story_types_order' className="col-lg-2 col-md-2 col-xs-2">Story Types Order</label>
           <div className="col-lg-10 col-md-10 col-xs-10">
             <ReactTags tags={this.state.tags}
-                    suggestions={this.state.story_types}
+                    suggestions={this.state.storyTypes}
                     handleDelete={this.handleDelete}
                     handleAddition={this.handleAddition}
                     handleDrag={this.handleDrag} />
@@ -41,30 +41,8 @@ var SettingSection = React.createClass(_.assign(Base(SettingSectionStore), {
     SettingSectionStore.emitChange();
   },
 
-  handleDelete: function(i) {
-    var tags = this.state.tags;
-    tags.splice(i, 1);
-    this.setState({tags: tags});
-  },
-
-  handleAddition: function(tag) {
-    var tags = this.state.tags;
-    tags.push({
-        id: tags.length + 1,
-        text: tag
-    });
-    this.setState({tags: tags});
-  },
-
-  handleDrag: function(tag, currPos, newPos) {
-      var tags = this.state.tags;
-
-      // mutate array
-      tags.splice(currPos, 1);
-      tags.splice(newPos, 0, tag);
-
-      // re-render
-      this.setState({ tags: tags });
+  handleDrag: function(tag, currentPosition, newPosition) {
+    SettingActions.dragTag(tag, currentPosition, newPosition)
   },
 
   change: function (field) {

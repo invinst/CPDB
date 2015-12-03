@@ -46,6 +46,17 @@ var SettingActions = {
       data: data
     });
   },
+
+  dragTag: function (tag, currentPosition, newPosition) {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.DRAG_STORY_TYPE_TAG,
+      data: {
+        tag: tag,
+        currentPosition: currentPosition,
+        newPosition: newPosition
+      }
+    });
+  },
 };
 
 module.exports = SettingActions;

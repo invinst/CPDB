@@ -6,14 +6,14 @@ var navigate = require('react-mini-router').navigate;
 
 var _state = {
   setting: {},
-  story_types: [],
+  storyTypes: [],
   tags: [],
 };
 
 var SettingSectionStore = _.assign(Base(_state), {
   generateTags: function () {
     if (_state.setting.story_types_order != undefined) {
-      tags = _.compact(_.union(_state.setting.story_types_order.split(','), _state.story_types))
+      tags = _.compact(_.union(_state.setting.story_types_order.split(','), _state.storyTypes))
       _state.tags = tags.map(function (value, index) {
         return {
           id: index,
@@ -24,13 +24,18 @@ var SettingSectionStore = _.assign(Base(_state), {
   },
 
   setStoryTypes: function (storyTypes) {
-    _state.story_types = storyTypes.map(function(item) {
+    _state.storyTypes = storyTypes.map(function(item) {
       return item.label;
     });
   },
 
   updateSettingStoryTypes: function () {
     _state.setting.story_types_order = _.pluck(_state.tags, 'text').join(',');
+  },
+
+  updateDraggedTag: function (data) {
+    _state.tags.splice(data.currentPosition, 1);
+    _state.tags.splice(data.newPosition, 0, data.tag);
   }
 });
 
@@ -53,6 +58,9 @@ AppDispatcher.register(function(action) {
       SettingSectionStore.emitChange();
       break;
 
+    case AppConstants.DRAG_STORY_TYPE_TAG:
+      SettingSectionStore.updateDraggedTag(action.data);
+      SettingSectionStore.emitChange();
     default:
       break;
   }
