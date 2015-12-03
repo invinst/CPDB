@@ -25,10 +25,14 @@ class ActiveTabTestCase(BaseLiveTestCase, ActiveTabAssertationMixin):
         self.browser.refresh()
         self.assert_current_active_tab('Categories')
 
-        browser = webdriver.Firefox()
-        browser.get(self.browser.current_url)
-        browser.find_element_by_css_selector('.chart-row li.active a').text.should.equal('Categories')
-        browser.quit()
+        try:
+            browser = webdriver.Firefox()
+            browser.set_window_size(width=1230, height=1200)
+            browser.get(self.browser.current_url)
+            self.until(lambda: browser.find_element_by_css_selector('.chart-row li.active a'))
+            browser.find_element_by_css_selector('.chart-row li.active a').text.should.equal('Categories')
+        finally:
+            browser.close()
 
 
 class ActiveTabMobileTestCase(BaseMobileLiveTestCase, ActiveTabAssertationMixin):

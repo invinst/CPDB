@@ -9,7 +9,7 @@ class ActiveOfficerTestCase(BaseLiveTestCase):
         self.visit_home()
         self.find('.officer .checkmark').click()
 
-        self.link("Categories").click()
+        self.click_active_tab('Categories')
         self.until(lambda: self.link(allegation.cat.category).click())
         self.until_ajax_complete()
 

@@ -27,8 +27,10 @@ class HomePageTestCase(BaseLiveTestCase):
         self.until_ajax_complete()
         Session.objects.all().count().should.equal(1)
 
+        url = self.browser.current_url
         self.find("#logo_link img").click()
-        self.until_ajax_complete()
+        self.until(lambda: self.browser.current_url != url)
+
         Session.objects.all().count().should.equal(2)
         session = Session.objects.all()[1]
         self.browser.current_url.should.contain(session.hash_id)

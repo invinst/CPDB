@@ -61,11 +61,16 @@ class EmbedModeTestCase(BaseLiveTestCase):
 
         self.link('Embed Mode').is_displayed().should.be.false
 
+
 class EmbedPageTestCase(BaseLiveTestCase):
     FIREFOX_ADDRESS_BAR_HEIGHT = 80
 
     def setUp(self):
         self.allegation = AllegationFactory()
+
+    def tearDown(self):
+        self.browser.set_window_size(1200, 1200)
+        super(EmbedPageTestCase, self).tearDown()
 
     def check_no_scroll(self):
         scrollBarPresent = self.browser.execute_script("return document.documentElement.scrollHeight > document.documentElement.clientHeight;")

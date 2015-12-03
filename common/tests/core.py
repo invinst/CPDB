@@ -80,16 +80,18 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     @property
     def browser(self):
         if world.browser is None:
-            profile = None
+            profile = webdriver.FirefoxProfile()
+            profile.set_preference('browser.cache.disk.enable', False)
+            profile.set_preference('browser.cache.memory.enable', False)
+            profile.set_preference('browser.cache.offline.enable', False)
             if IS_MOBILE:
-                profile = webdriver.FirefoxProfile()
                 profile.set_preference(
                     "general.useragent.override",
                     "Mozilla/5.0 (iPad; CPU OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53"
                 )
             world.browser = WebDriver(profile)
             world.browser.implicitly_wait(10)
-            world.browser.set_window_size(width=1200, height=1200)
+            world.browser.set_window_size(width=1230, height=1200)
         return world.browser
 
     @classmethod
@@ -237,6 +239,13 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
 
     def until_ajax_complete(self):
         self.until(self.ajax_complete)
+
+    def scroll_top(self):
+        self.browser.execute_script("jQuery(window).scrollTop(0);")
+
+    def click_active_tab(self, tab):
+        self.scroll_top()
+        self.link("Categories").click()
 
 
 @skipUnless(IS_MOBILE, "Skip in desktop mode")
