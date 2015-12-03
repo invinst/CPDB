@@ -12,6 +12,12 @@ from search.utils.zip_code import *
 from share.models import Session
 
 
+REPEATER_DESC = {
+    '10': 'Repeater (10+ complaints)',
+    '20': 'Repeater (20+ complaints)'
+}
+
+
 AREA_SORT_ORDERS = { 'police-beats': 0, 'neighborhoods': 1, 'ward': 2, 'police-districts': 3, 'school-grounds': 5 }
 DATA_SOURCES = ['FOIA', 'pre-FOIA']
 SUGGEST_OFFICER_LIMIT = 20
@@ -189,7 +195,7 @@ class Suggestion(object):
 
     def suggest_repeat_offenders(self, q):
         if q.startswith('rep'):
-            return [['Repeater (10+ complaints)', 10]]
+            return [[value, int(key)] for key, value in REPEATER_DESC.items()]
 
     def suggest_sessions(self, query):
         session_ids = SessionAlias.objects.filter(alias__icontains=query).values_list('session', flat=True)
