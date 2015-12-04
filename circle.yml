@@ -26,6 +26,9 @@ test:
     - python manage.py collectstatic --noinput
   override:
     - coverage run --parallel-mode manage.py test  --noinput --nologcapture --with-timer -v 2
+    - MOBILE=1 coverage run --parallel-mode manage.py test  --noinput --nologcapture --with-timer -v 2
+    - npm test
   post:
     - coverage combine
+    - coveralls
     - coverage report --omit="/home/ubuntu/virtualenvs/*,common/json_serializer.py"
