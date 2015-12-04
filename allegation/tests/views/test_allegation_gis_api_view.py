@@ -6,6 +6,8 @@ from common.models import Area, Allegation
 
 
 class AllegationGisApiViewTestCase(AllegationApiTestBase):
+    def setUp(self):
+        self.allegations = AllegationFactory.create_batch(3)
 
     def fetch_gis_allegations(self, url='/api/allegations/cluster/', **params):
         response = self.client.get(url, params)

@@ -4,7 +4,7 @@ import json
 from django.conf import settings
 from django.utils import timezone
 
-from allegation.factories import AreaFactory, ComplainingWitnessFactory
+from allegation.factories import AreaFactory, ComplainingWitnessFactory, AllegationFactory
 from allegation.tests.views.base import AllegationApiTestBase
 from common.models import Allegation, Officer, Area, RACES, DISCIPLINE_CODES, NO_DISCIPLINE_CODES
 
@@ -17,6 +17,9 @@ class AllegationFilterMixin(object):
         return allegations
 
 class AllegationApiViewTestCase(AllegationFilterMixin, AllegationApiTestBase):
+    def setUp(self):
+        self.allegations = AllegationFactory.create_batch(3)
+
     def test_area_data_filter(self):
         area = AreaFactory()
         response = self.client.get('/api/areas/', {'type': area.type})
@@ -28,6 +31,7 @@ class AllegationApiViewTestCase(AllegationFilterMixin, AllegationApiTestBase):
             ret_area['properties']['type'].should.equal(area.type)
 
     def test_fetch_allegation(self):
+        AllegationFactory.create_batch(10)
         data = self.fetch_allegations()
         isinstance(data, list).should.be.true
         len(data).should.equal(10)
@@ -136,8 +140,7 @@ class AllegationApiViewTestCase(AllegationFilterMixin, AllegationApiTestBase):
 
     def test_filter_by_complaint_gender(self):
         allegation = self.allegations[0]
-        for i in range(10):
-            ComplainingWitnessFactory(crid=allegation.crid)
+        ComplainingWitnessFactory.create_batch(3, crid=allegation.crid)
         data = self.fetch_allegations(complainant_gender='M')
         for row in data:
             genders = [x['gender'] for x in row['complaining_witness']]
@@ -145,8 +148,7 @@ class AllegationApiViewTestCase(AllegationFilterMixin, AllegationApiTestBase):
 
     def test_filter_by_complaint_race(self):
         allegation = self.allegations[0]
-        for i in range(10):
-            ComplainingWitnessFactory(crid=allegation.crid)
+        ComplainingWitnessFactory.create_batch(3, crid=allegation.crid)
         race = RACES[0][0]
         data = self.fetch_allegations(complainant_race=race)
         for row in data:
