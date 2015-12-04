@@ -18,11 +18,11 @@ class DjangoNoseTextTestResult(TextTestResult):
         test.test.get_screen_shot(test.test._testMethodName)
 
     def addError(self, test, err):
-        self.try_take_screen_short(test)
+        self.try_take_screenshot(test)
         super(DjangoNoseTextTestResult, self).addError(test, err)
 
     def addFailure(self, test, err):
-        self.try_take_screen_short(test)
+        self.try_take_screenshot(test)
         super(DjangoNoseTextTestResult, self).addFailure(test, err)
 
     def addSuccess(self, test):
