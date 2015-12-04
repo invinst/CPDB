@@ -130,7 +130,7 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
             else:
                 self.visit('/')
             self.until(lambda: self.browser.current_url != url)
-        self.until(lambda: self.link("Outcomes"))
+        self.until(lambda: self.link("Outcomes"), timeout=60)
         self.until_ajax_complete()
         self.find("body").click()
 
