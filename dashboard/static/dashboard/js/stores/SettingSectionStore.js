@@ -12,8 +12,8 @@ var _state = {
 
 var SettingSectionStore = _.assign(Base(_state), {
   generateTags: function () {
-    if (_state.setting.story_types_order != undefined) {
-      tags = _.compact(_.union(_state.setting.story_types_order.split(','), _state.storyTypes))
+    if (_state.setting['story_types_order'] != undefined) {
+      tags = _.compact(_.union(_state.setting['story_types_order'].split(','), _state.storyTypes))
       _state.tags = tags.map(function (value, index) {
         return {
           id: index,
@@ -30,7 +30,7 @@ var SettingSectionStore = _.assign(Base(_state), {
   },
 
   updateSettingStoryTypes: function () {
-    _state.setting.story_types_order = _.pluck(_state.tags, 'text').join(',');
+    _state.setting['story_types_order'] = _.pluck(_state.tags, 'text').join(',');
   },
 
   updateDraggedTag: function (data) {

@@ -116,6 +116,7 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     def drag_and_drop(self, source_element, target_element):
         action_chains = ActionChains(self.browser)
         action_chains.drag_and_drop(source_element, target_element)
+        action_chains.perform()
         self.sleep(1)
 
     def should_see_text(self, text):

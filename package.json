@@ -76,6 +76,9 @@
     "testPathIgnorePatterns": [
       "/node_modules/",
       "<rootDir>/static/"
-    ]
+    ],
+    "globals": {
+      "__DEV__": true
+    }
   }
 }
