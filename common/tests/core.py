@@ -114,7 +114,7 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         world.js_coverages.append(report)
 
     def hide_toastr(self):
-        self.browser.execute_script("jQuery('#toast-container').hide()")
+        self.browser.execute_script("jQuery('#toast-container').html('');")
 
     def visit(self, page):
         # if 'localhost' in self.browser.current_url:
