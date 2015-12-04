@@ -84,6 +84,8 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
             profile.set_preference('browser.cache.disk.enable', False)
             profile.set_preference('browser.cache.memory.enable', False)
             profile.set_preference('browser.cache.offline.enable', False)
+            profile.set_preference('dom.max_script_run_time', 100)
+            profile.set_preference('browser.startup.homepage_override.mstone', 'ignore')
             if IS_MOBILE:
                 profile.set_preference(
                     "general.useragent.override",
@@ -108,10 +110,21 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     def visit(self, page):
         self.browser.get('%s%s' % (self.live_server_url, page))
 
-    def visit_home(self):
-        self.visit('/')
+    def visit_home(self, fresh=False):
+        if fresh:
+            self.visit('/')
+        else:
+            url = self.browser.current_url
+            if '/data' in url:
+                self.find("#logo_link img").click()
+            elif any(x in url for x in ('/findings', '/story', '/method')):
+                self.link("Data").click()
+            else:
+                self.visit('/')
+            self.until(lambda: self.browser.current_url != url)
         self.until(lambda: self.link("Outcomes"))
         self.until_ajax_complete()
+        self.find("body").click()
 
     def should_see_text(self, text):
         if not isinstance(text, str):
@@ -202,7 +215,7 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
                 name = '{s}.png'.format(s=BaseLiveTestCase.source)
             self.browser.save_screenshot(os.path.join(self.source_dir, name))
 
-    def until(self, method, timeout=60, message='', interval=0.5):
+    def until(self, method, timeout=10, message='', interval=0.5):
         """Calls the method provided with the driver as an argument until the \
         return value is not False."""
         end_time = time.time() + timeout
@@ -240,12 +253,16 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     def until_ajax_complete(self):
         self.until(self.ajax_complete)
 
-    def scroll_top(self):
-        self.browser.execute_script("jQuery(window).scrollTop(0);")
+    def scroll_to(self, top=0):
+        self.browser.execute_script("jQuery(window).scrollTop({top});".format(top=top))
+
+    def click_first_officer(self):
+        self.scroll_to(1000)
+        self.find('.officer .checkmark').click()
 
     def click_active_tab(self, tab):
-        self.scroll_top()
-        self.link("Categories").click()
+        self.scroll_to()
+        self.link(tab).click()
 
 
 @skipUnless(IS_MOBILE, "Skip in desktop mode")

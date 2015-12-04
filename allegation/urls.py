@@ -1,6 +1,6 @@
 from django.conf.urls import url
 
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 
 from allegation.views import AllegationAPIView, AreaAPIView
 from allegation.views import AllegationGISApiView, AllegationClusterApiView
@@ -29,5 +29,5 @@ urlpatterns = [
     url(r'^api/investigation/$', cache_view(InvestigationAPIView.as_view()), name='investigation'),
     url(r'^allegations/download/', (AllegationDownloadView.as_view()), name='allegation-download'),
     url(r'^api/allegations/sunburst/$', cache_view(AllegationSunburstView.as_view()), name='allegation-api-sunburst'),
-    url(r'^api/allegations/session/$', csrf_exempt(SessionAPIView.as_view()), name='allegation-api-session'),
+    url(r'^api/allegations/session/$', csrf_exempt(ensure_csrf_cookie(SessionAPIView.as_view())), name='allegation-api-session'),
 ]

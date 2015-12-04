@@ -9,7 +9,7 @@ from share.models import Session
 class HomePageTestCase(BaseLiveTestCase):
     def setUp(self):
         self.allegation_category = AllegationCategoryFactory()
-        self.allegation = AllegationFactory(cat=self.allegation_category)
+        self.allegation = AllegationFactory(cat=self.allegation_category, final_finding='NS')
 
     def tearDown(self):
         super(HomePageTestCase, self).tearDown()
@@ -111,8 +111,11 @@ class HomePageTestCase(BaseLiveTestCase):
         self.visit_home()
         officer = self.allegation.officer
 
-        self.until(lambda: self.find('.ui-autocomplete-input').send_keys(officer.officer_first))
+        self.until(lambda: self.fill_in('.ui-autocomplete-input', officer.officer_first))
+        self.until_ajax_complete()
+        self.until(lambda: self.find(".autocomplete-officer").is_displayed())
         self.find(".autocomplete-officer").click()
+
         self.should_see_text(officer.officer_first)
         self.should_see_text(officer.officer_last)
 
@@ -175,34 +178,37 @@ class HomePageTestCase(BaseLiveTestCase):
     def test_sunburst(self):
         us = 'Unsustained'
         ns = 'Not Sustained'
-        AllegationFactory(final_finding='NS')
 
         self.visit_home()
-        self.link("Outcomes").click()
+        self.click_active_tab("Outcomes")
         self.browser.implicitly_wait(0)
         self.element_by_classname_and_text('filter-name', us).shouldnt.be.ok
         self.element_by_classname_and_text('filter-name', ns).shouldnt.be.ok
         self.browser.implicitly_wait(10)
 
         self.element_by_tagname_and_text('td', us).click()
+        self.sleep(0.75)
         self.until(lambda: self.element_by_classname_and_text('filter-name', us).should.be.ok)
         self.browser.implicitly_wait(0)
         self.element_by_classname_and_text('filter-name', ns).shouldnt.be.ok
         self.browser.implicitly_wait(10)
 
         self.element_by_tagname_and_text('td', ns).click()
+        self.sleep(0.75)
         self.until(lambda: self.element_by_classname_and_text('filter-name', ns).should.be.ok)
         self.browser.implicitly_wait(0)
         self.element_by_classname_and_text('filter-name', us).shouldnt.be.ok
         self.browser.implicitly_wait(10)
 
         self.element_by_tagname_and_text('td', us).click()
+        self.sleep(0.75)
         self.until(lambda: self.element_by_classname_and_text('filter-name', us).should.be.ok)
         self.browser.implicitly_wait(0)
         self.element_by_classname_and_text('filter-name', ns).shouldnt.be.ok
         self.browser.implicitly_wait(10)
 
         self.find(".tag .remove").click()
+        self.sleep(0.75)
         self.browser.implicitly_wait(0)
         self.element_by_tagname_and_text('td', ns).shouldnt.be.ok
         self.browser.implicitly_wait(10)
@@ -287,6 +293,7 @@ class HomePageTestCase(BaseLiveTestCase):
     def search_officer(self, officer):
         self.fill_in("#autocomplete", officer.officer_first)
         self.until_ajax_complete()
+        self.until(lambda: self.find(".ui-autocomplete .ui-menu-item").is_displayed())
         self.until(lambda: self.autocomplete_available(officer.display_name))
         self.autocomplete_select(officer.display_name)
         self.until_ajax_complete()
@@ -296,5 +303,5 @@ class HomePageTestCase(BaseLiveTestCase):
         setting.default_site_title = 'New title'
         setting.save()
 
-        self.visit_home()
+        self.visit_home(fresh=True)
         self.browser.title.should.equal(setting.default_site_title)

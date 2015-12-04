@@ -11,12 +11,13 @@ class DownloadAllegationTestCase(BaseLiveTestCase):
         ComplainingWitnessFactory(crid=allegation.crid)
 
         self.visit_home()
-        self.find('.officer .checkmark').click()
+
+        self.click_first_officer()
 
         self.browser.execute_script("window.redirect = function () {};")  # disable redirect to download excel file on testing
 
         link = lambda: self.find(".download-wrapper a")
-        self.until(lambda: self.find('.download-wrapper a'))
+        self.until(lambda: self.find('.download-wrapper a').is_displayed())
         link().click()
         self.find('.download-wrapper').text.should.equal('Processing')
 
@@ -28,12 +29,14 @@ class DownloadAllegationTestCase(BaseLiveTestCase):
         download_response.status_code.should.equal(200)
         download_response.headers['content-type'].should.contain('application/')
 
-        self.find('.officer .checkmark').click()  # deactivate officer
-        self.find(".download-wrapper a").is_displayed().should.be.false
+        self.click_first_officer()  # deactivate officer
+        link().is_displayed().should.be.false
 
-        self.find('.officer .checkmark').click()  # active officer
+        self.click_first_officer()  # active officer
         link().is_displayed().should.be.true
         link().get_attribute('href').shouldnt.equal(href)
 
         link().click()
         self.find('.download-wrapper').text.should.equal('Processing')
+        self.until(lambda: self.browser.execute_script("clearInterval(window.downloadListener);") and self.ajax_complete())
+

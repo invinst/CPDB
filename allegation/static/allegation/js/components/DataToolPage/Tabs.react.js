@@ -39,6 +39,9 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
     this.embedding = false;
   },
 
+  componentDidUpdate: function () {
+    this.activeTabIndex = AppConstants.TABS[this.state.active_tab];
+  },
 
   // embedding
   activeTab: function (number, tab, e) {
@@ -90,7 +93,7 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
   // end embedding
 
   isActive: function (target) {
-    return this.state['active_tab'] == target || (!this.state['active_tab'] && target == 'outcomes');
+    return this.state.active_tab == target || (!this.state.active_tab && target == 'outcomes');
   },
 
   renderNavTab: function (label) {
@@ -133,13 +136,6 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
   },
 
   render: function () {
-    var isActive = {
-      'active': !isMobile.any
-    };
-
-    var outcomeClassName = classnames(isActive);
-    var outcomeContentClassName = classnames('tab-pane', isActive);
-
     return (
       <div className="chart-row">
         <ul className="nav nav-tabs" role="tablist">

@@ -32,6 +32,10 @@ function sameOrigin(url) {
       options.headers["X-CSRFToken"] = $.cookie('csrftoken');
     }
   });
+
+  $.ajaxSetup({
+    cache: false
+  });
 })(jQuery);
 
 

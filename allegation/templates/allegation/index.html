@@ -53,9 +53,21 @@
   {% csrf_token %}
     <div id="autocomplete-container"></div>
     <div id='router'></div>
-    <script>
-      var SHOW_DISCLAIMER = {% if DJANGO_ENV != 'test' or request.GET.with_disclaimer %}true{% else %} false {% endif %};
-    </script>
+
+
+    <script src="{% static 'js/acorn.js' %}"></script>
+    <script src="{% static 'js/blanket.js' %}"></script>
+
+
+    {% if DJANGO_ENV != 'test' or request.GET.with_disclaimer %}
+      <script>
+        var SHOW_DISCLAIMER = true;
+      </script>
+    {% else %}
+      <script>
+        var SHOW_DISCLAIMER = false;
+      </script>
+    {% endif %}
     <script src="//cdnjs.cloudflare.com/ajax/libs/vis/4.2.0/vis.min.js"></script>
     {% compress js %}
         <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
@@ -104,8 +116,8 @@
     </script>
     {% endif %}
 
-    <script src="{% static 'allegation/js/bundle.js' %}"></script>
-    <script src="{% static 'allegation/js/landing_page.js' %}"></script>
+    <script src="{% static 'allegation/js/bundle.js' %}" data-cover></script>
+    <script src="{% static 'js/selenium_coverage.js' %}"></script>
     <script type="text/javascript" id="inspectletjs">
     window.__insp = window.__insp || [];
     __insp.push(['wid', 452127049]);

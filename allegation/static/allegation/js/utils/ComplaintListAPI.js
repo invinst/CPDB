@@ -55,13 +55,9 @@ var ComplaintListAPI = {
     var pagedQuery = [queryString, 'page=' + pageNumber, 'length=50'].join('&');
 
     if (queryString) {
-
       jQuery.getJSON('/api/allegations/?' + pagedQuery, function (data) {
         ComplaintListServerActions.receivedMoreData(data);
       });
-    }
-    else {
-      ComplaintListStore.unlockScroll();
     }
   },
 };

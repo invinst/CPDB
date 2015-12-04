@@ -7,7 +7,7 @@ class ActiveOfficerTestCase(BaseLiveTestCase):
     def test_change_filter_clear_active_officers(self):
         allegation = AllegationFactory()
         self.visit_home()
-        self.find('.officer .checkmark').click()
+        self.click_first_officer()
 
         self.click_active_tab('Categories')
         self.until(lambda: self.link(allegation.cat.category).click())
