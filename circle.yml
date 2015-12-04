@@ -25,7 +25,7 @@ test:
     - python manage.py bower_install
     - python manage.py collectstatic --noinput
   override:
-    - coverage run --parallel-mode manage.py test  --noinput --nologcapture --with-timer
+    - coverage run --parallel-mode manage.py test  --noinput --nologcapture --with-timer -v 2
   post:
     - coverage combine
     - coverage report --omit="/home/ubuntu/virtualenvs/*,common/json_serializer.py"
