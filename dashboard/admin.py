@@ -28,7 +28,7 @@ class AllegationResource(resources.ModelResource):
         if allegation.document_requested:
             if allegation.document_pending:
                 return 'Pending'
-            return 'Requesting'
+            return 'Request'
 
         return 'Missing'
 
