@@ -58,13 +58,16 @@ var StoryList = React.createClass(_.assign(Base(StoryListStore), {
   },
 
   deleteBulk: function () {
-    bootbox.confirm("You are going to delete all stories of this officer?", this.doDeleteBulk);
+    if (StoryListStore.getSelectedStories().length > 0) {
+      bootbox.confirm("You are going to delete all stories of this officer?", this.doDeleteBulk);
+    } else {
+      bootbox.alert("You haven't checked any story yet");
+    }
   },
 
   doDeleteBulk: function (yes) {
     if (yes) {
-      var stories = _.filter(this.state.stories, function (x) {return x.selected;});
-      StoryAPI.deleteBulk(stories);
+      StoryAPI.deleteBulk(StoryListStore.getSelectedStories());
     }
   },
 
