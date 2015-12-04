@@ -3,14 +3,7 @@ from unittest import mock
 import requests
 
 from allegation.factories import AllegationFactory, PoliceWitnessFactory, ComplainingWitnessFactory
-from allegation.views.allegation_download_view import AllegationDownloadView
 from common.tests.core import BaseLiveTestCase
-
-
-origin_download_post = AllegationDownloadView.post
-def download_slow_response(self, request):
-    time.sleep(1)
-    return origin_download_post(self, request)
 
 
 class DownloadAllegationTestCase(BaseLiveTestCase):
@@ -30,10 +23,9 @@ class DownloadAllegationTestCase(BaseLiveTestCase):
     def download_link(self):
         return self.find(".download-wrapper a")
 
-    @mock.patch('allegation.views.allegation_download_view.AllegationDownloadView.post', download_slow_response)
     def test_show_processing(self):
         self.download_link.click()
-        self.find('.download-wrapper').text.should.equal('Processing')
+        self.until(lambda: self.find('.download-wrapper').text.should.equal('Processing'))
         self.until(lambda: self.find('.download-wrapper').text != 'Processing')
         self.download_link.get_attribute('href').should.contain('xlsx')
 
