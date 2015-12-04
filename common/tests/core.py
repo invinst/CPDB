@@ -7,7 +7,7 @@ from unittest import skipIf, skipUnless
 from bs4 import BeautifulSoup
 from django.core import management
 from django.core.urlresolvers import reverse
-from django.test.testcases import LiveServerTestCase, SimpleTestCase as DjangoSimpleTestCase
+from django.test.testcases import LiveServerTestCase, TestCase as DjangoSimpleTestCase
 from selenium.common.exceptions import NoSuchElementException, WebDriverException
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
@@ -213,7 +213,10 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
             BaseLiveTestCase.source += 1
             if name is None:
                 name = '{s}.png'.format(s=BaseLiveTestCase.source)
-            self.browser.save_screenshot(os.path.join(self.source_dir, name))
+            file_path = os.path.join(self.source_dir, name)
+            while os.path.exists(file_path):
+                file_path = os.path.join(self.source_dir, '{time}_{name}'.format(name=name, time=time.time()))
+            self.browser.save_screenshot(file_path)
 
     def until(self, method, timeout=10, message='', interval=0.5):
         """Calls the method provided with the driver as an argument until the \
@@ -227,11 +230,9 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
                     return value
             except Exception as ex:
                 error = ex
+                if time.time() > end_time:
+                    raise TimeoutException(message) from error
             time.sleep(interval)
-
-        self.get_screen_shot()
-
-        raise TimeoutException(message) from error
 
     def is_displayed_in_viewport(self, element):
         """

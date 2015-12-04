@@ -215,6 +215,6 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 20,
 }
 
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+TEST_RUNNER = 'common.tests.runner.DjangoNoseTestSuiteRunner'
 
 SITE_ID = 1
