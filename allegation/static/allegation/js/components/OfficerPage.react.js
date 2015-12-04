@@ -6,7 +6,6 @@ var Base = require('components/Base.react');
 var ComplaintSection = require('components/OfficerPage/ComplaintSection.react');
 var ComplaintListAPI = require('utils/ComplaintListAPI');
 var StoryListAPI = require('utils/StoryListAPI');
-var TimelineAPI = require('utils/TimelineAPI');
 var FilterActions = require("actions/FilterActions");
 var Nav = require('components/OfficerPage/Nav.react');
 var OfficerDetail = require('components/DataToolPage/OfficerDetail.react');
@@ -38,7 +37,6 @@ var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
     OfficerPageServerActions.getOfficerData(officerId);
     OfficerPageStore.addChangeListener(this._onChange);
     StoryListAPI.get(officerId);
-    TimelineAPI.getTimelineData(officerId);
   },
 
   componentWillReceiveProps: function(nextProps) {
@@ -46,7 +44,6 @@ var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
     var officerId = nextProps.params.id || '';
     OfficerPageServerActions.getOfficerData(officerId);
     StoryListAPI.get(officerId);
-    TimelineAPI.getTimelineData(officerId);
   },
 
   componentDidUpdate: function () {
