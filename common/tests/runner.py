@@ -1,5 +1,6 @@
 import codecs
 import os
+import time
 
 import django_nose
 from django_nose.plugin import ResultPlugin, DjangoSetUpPlugin, TestReorderer
