@@ -114,8 +114,8 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         world.js_coverages.append(report)
 
     def visit(self, page):
-        if 'localhost' in self.browser.current_url:
-            self.get_current_javascript_report()
+        # if 'localhost' in self.browser.current_url:
+        #     self.get_current_javascript_report()
         self.browser.get('%s%s' % (self.live_server_url, page))
 
     def visit_home(self, fresh=False):
