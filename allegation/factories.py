@@ -46,6 +46,7 @@ class OfficerFactory(factory.django.DjangoModelFactory):
     star = factory.Sequence(lambda n: n)
     gender = factory.Sequence(lambda n: random.choice(list(GENDER_DICT.keys())))
     race = factory.Sequence(lambda n: random.choice(list(RACES_DICT.keys())))
+    allegations_count = factory.Sequence(lambda n: n)
 
 
 class InvestigatorFactory(factory.django.DjangoModelFactory):
