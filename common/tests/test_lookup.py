@@ -29,19 +29,3 @@ class MobileSuggestionServiceTest(SimpleTestCase):
         expected_url = 'officer/{officer_name}/{officer_id}'.\
             format(officer_name=urllib.parse.quote(officer.display_name), officer_id=officer.pk)
         response.url.should.contain(expected_url)
-
-    def test_lookup_by_allegation_crid(self):
-        allegation = AllegationFactory()
-        response = self.client.get('/lookup/{query}'.format(query=allegation.crid))
-        response.status_code.should.equals(302)
-        expected_url = 'complaint/{crid}'.format(crid=allegation.crid)
-        response.url.should.contain(expected_url)
-
-    def test_lookup_not_found(self):
-        bad_query = 'bad_query'
-
-        response = self.client.get('/lookup/{query}'.format(query=bad_query))
-        response.status_code.should.equals(302)
-
-        expected_url = 'search/{query}'.format(query=bad_query)
-        response.url.should.contain(expected_url)
