@@ -3,16 +3,15 @@ import unittest
 from allegation.factories import OfficerFactory
 from allegation.tests.constants import TEST_DOCUMENT_URL
 from common.models import Officer
-from common.tests.core import BaseLiveTestCase
+from common.tests.core import BaseAdminTestCase
 from officer.factories import StoryFactory
 from officer.models import Story
 
 
-class OfficerProfileTestCase(BaseLiveTestCase):
+class OfficerProfileTestCase(BaseAdminTestCase):
     def setUp(self):
-        self.login_user()
-        self.visit('/admin/')
         self.officer = OfficerFactory()
+        super(OfficerProfileTestCase, self).setUp()
 
     def tearDown(self):
         Officer.objects.all().delete()
@@ -71,7 +70,7 @@ class OfficerProfileTestCase(BaseLiveTestCase):
         self.find(".officer").click()
         self.element_by_tagname_and_text('li', 'Edit information').click()
         random_string = "abc"
-        
+
         text_fields = [
             'First name',
             'Last name',
@@ -89,7 +88,7 @@ class OfficerProfileTestCase(BaseLiveTestCase):
         select_fields = [
             ('Gender', 'F' if officer.gender=='M' else 'M'),
             ('Race', 'Black' if officer.gender=='White' else 'White'),
-            ('Rank', 'Lieutenant' if officer.rank=='Detective' else 'Detective'),            
+            ('Rank', 'Lieutenant' if officer.rank=='Detective' else 'Detective'),
         ]
         for (field, value) in select_fields:
             element = self.element_for_label(field)
@@ -107,7 +106,7 @@ class OfficerProfileTestCase(BaseLiveTestCase):
             ('Gender', officer.gender),
             ('Race', officer.race),
             ('Rank', officer.rank),
-        ]        
+        ]
         for (field, value) in original_fields:
             text = self.element_for_label(field).get_attribute('value')
             if text != '' and value is not None:
@@ -244,7 +243,7 @@ class OfficerProfileTestCase(BaseLiveTestCase):
         )
 
         len(Story.objects.filter(url=url)).should.equal(1)
-        
+
     def go_to_single_officer(self, officer):
         self.find("#search-officer input").send_keys(officer.officer_first)
         self.find(".officer").click()

@@ -265,6 +265,16 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         self.link(tab).click()
 
 
+class BaseAdminTestCase(BaseLiveTestCase):
+    def setUp(self):
+        self.login_user()
+        self.visit('/admin/')
+
+    def go_to_section(self, section):
+        self.element_by_tagname_and_text('span', section).click()
+        self.until_ajax_complete()
+
+
 @skipUnless(IS_MOBILE, "Skip in desktop mode")
 class BaseMobileLiveTestCase(BaseLiveTestCase):
     pass

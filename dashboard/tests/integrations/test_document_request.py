@@ -1,14 +1,10 @@
 from allegation.factories import AllegationFactory
 from allegation.tests.constants import TEST_DOCUMENT_URL
 from common.models import Allegation
-from common.tests.core import BaseLiveTestCase
+from common.tests.core import BaseAdminTestCase
 
 
-class DocumentRequestTestCase(BaseLiveTestCase):
-    def setUp(self):
-        self.login_user()
-        self.visit('/admin/')
-
+class DocumentRequestTestCase(BaseAdminTestCase):
     def tearDown(self):
         super(DocumentRequestTestCase, self).tearDown()
         Allegation.objects.all().delete()
