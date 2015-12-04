@@ -3,6 +3,7 @@ var React = require('react');
 
 var Base = require('components/Base.react');
 var TimelineStore = require('stores/OfficerPage/TimelineStore');
+var TimelineAPI = require('utils/TimelineAPI');
 
 
 var Timeline = React.createClass(_.assign(Base(TimelineStore), {
@@ -90,12 +91,27 @@ var Timeline = React.createClass(_.assign(Base(TimelineStore), {
     this.drawTimeline(this.state.data);
   },
 
+  componentDidMount: function () {
+    TimelineStore.addChangeListener(this._onChange);
+    TimelineAPI.getTimelineData(this.props.officer.id);
+  },
+
+  componentWillUnmount: function() {
+    TimelineStore.removeChangeListener(this._onChange);
+  },
+
   render: function () {
     var wait = '';
     if (this.state.data) {
-      wait = (<i class='fa fa-spin fa-spinner'/>);
+      wait = (<i className='fa fa-spin fa-spinner fa-3x'/>);
     }
     return (<div>{wait}</div>);
+  },
+
+  _onChange: function () {
+    var state = TimelineStore.getState();
+    this.setState(state);
+    this.drawTimeline(state.data);
   }
 }));
 
