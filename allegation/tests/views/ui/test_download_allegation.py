@@ -1,42 +1,60 @@
+import time
+from unittest import mock
 import requests
 
 from allegation.factories import AllegationFactory, PoliceWitnessFactory, ComplainingWitnessFactory
+from allegation.views.allegation_download_view import AllegationDownloadView
 from common.tests.core import BaseLiveTestCase
 
 
+origin_download_post = AllegationDownloadView.post
+def download_slow_response(self, request):
+    time.sleep(1)
+    return origin_download_post(self, request)
+
+
 class DownloadAllegationTestCase(BaseLiveTestCase):
-    def test_download(self):
+    def setUp(self):
+        super(DownloadAllegationTestCase, self).setUp()
         allegation = AllegationFactory()
         PoliceWitnessFactory(crid=allegation.crid)
         ComplainingWitnessFactory(crid=allegation.crid)
 
         self.visit_home()
-
-        self.click_first_officer()
-
         self.browser.execute_script("window.redirect = function () {};")  # disable redirect to download excel file on testing
 
-        link = lambda: self.find(".download-wrapper a")
-        self.until(lambda: self.find('.download-wrapper a').is_displayed())
-        link().click()
+        self.click_first_officer()
+        self.until(lambda: self.download_link.is_displayed())
+
+    @property
+    def download_link(self):
+        return self.find(".download-wrapper a")
+
+    @mock.patch('allegation.views.allegation_download_view.AllegationDownloadView.post', download_slow_response)
+    def test_show_processing(self):
+        self.download_link.click()
         self.find('.download-wrapper').text.should.equal('Processing')
-
         self.until(lambda: self.find('.download-wrapper').text != 'Processing')
+        self.download_link.get_attribute('href').should.contain('xlsx')
 
-        href = link().get_attribute('href')
+    def test_download(self):
+        self.download_link.click()
+        self.until(lambda: 'xlsx' in self.download_link.get_attribute('href'))
+
+        href = self.download_link.get_attribute('href')
 
         download_response = requests.head(href)
         download_response.status_code.should.equal(200)
         download_response.headers['content-type'].should.contain('application/')
 
         self.click_first_officer()  # deactivate officer
-        link().is_displayed().should.be.false
+        self.download_link.is_displayed().should.be.false
 
         self.click_first_officer()  # active officer
-        link().is_displayed().should.be.true
-        link().get_attribute('href').shouldnt.equal(href)
+        self.download_link.is_displayed().should.be.true
+        self.download_link.get_attribute('href').shouldnt.equal(href)
 
-        link().click()
+        self.download_link.click()
         self.find('.download-wrapper').text.should.equal('Processing')
         self.until(lambda: self.browser.execute_script("clearInterval(window.downloadListener);") and self.ajax_complete())
 

@@ -11,15 +11,14 @@ class EmbedModeTestCase(BaseLiveTestCase):
         self.allegation = AllegationFactory()
 
         self.visit_home()
+        self.click_active_tab('Outcomes')
         self.link('Embed Mode').click()
-        self.link('Exit mode').is_displayed().should.be.true
+        self.until(lambda: self.link('Exit mode').is_displayed().should.be.true)
         self.element_exist(".embed-button.active").should.be.true
 
     def tearDown(self):
         if self.link('Exit mode').is_displayed():
             self.link("Exit mode").click()
-        if 'officer' in self.browser.current_url:
-            self.find('.cpdp-logo').click()
         super(EmbedModeTestCase, self).tearDown()
 
     def test_exit_embed_mode(self):

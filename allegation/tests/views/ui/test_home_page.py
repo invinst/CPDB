@@ -293,7 +293,7 @@ class HomePageTestCase(BaseLiveTestCase):
     def search_officer(self, officer):
         self.fill_in("#autocomplete", officer.officer_first)
         self.until_ajax_complete()
-        self.until(lambda: self.find(".ui-autocomplete .ui-menu-item").is_displayed())
+        self.until(lambda: self.find(".ui-autocomplete").is_displayed())
         self.until(lambda: self.autocomplete_available(officer.display_name))
         self.autocomplete_select(officer.display_name)
         self.until_ajax_complete()
