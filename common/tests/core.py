@@ -237,9 +237,8 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
                     return value
             except Exception as ex:
                 error = ex
-                if time.time() > end_time:
-                    raise TimeoutException(message) from error
             time.sleep(interval)
+        raise TimeoutException(message) from error
 
     def is_displayed_in_viewport(self, element):
         """

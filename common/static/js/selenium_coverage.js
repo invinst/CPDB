@@ -1,16 +1,17 @@
-blanket.options({
-  timeout: 30000,
-  reporter: 'string'
-});
+// blanket.options({
+//   timeout: 30000,
+//   reporter: 'string'
+// });
 
-blanket.customReporter=function(coverage_results){
-    window.coverage_results = coverage_results;
-};
+// blanket.customReporter=function(coverage_results){
+//     window.coverage_results = coverage_results;
+// };
 
-blanket.beforeStartTestRunner({
-    callback: function(){
-        blanket.setupCoverage();
-        blanket.onTestStart();
-        init_react();
-    }
-});
+// blanket.beforeStartTestRunner({
+//     callback: function(){
+//         blanket.setupCoverage();
+//         blanket.onTestStart();
+
+//     }
+// });
+init_react();

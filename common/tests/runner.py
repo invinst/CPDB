@@ -72,7 +72,6 @@ class DjangoNoseTestSuiteRunner(django_nose.NoseTestSuiteRunner):
             pass
 
         self.test_program(argv=nose_argv, exit=False, addplugins=plugins_to_add, testRunner=DjangoNoseTextTestRunner)
-        self.save_javascript_coverage()
         return result_plugin.result
 
     def save_javascript_coverage(self):
