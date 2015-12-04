@@ -80,7 +80,7 @@ class SessionManagementTestCase(BaseLiveTestCase):
         self.number_of_sessions().should.equal(1)
 
     def create_alias(self, alias, title=None):
-        self.find('.add-alias').click()
+        self.find('.add-alias i').click()
         self.until(lambda: self.should_see_text('Add Alias'))
 
         self.find('.alias-input').send_keys(alias)
