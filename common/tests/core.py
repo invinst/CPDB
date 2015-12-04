@@ -44,6 +44,7 @@ class TimeoutException(AssertionError):
 
 world = threading.local()
 world.browser = None
+world.js_coverages = []
 
 
 IS_MOBILE = os.environ.get('MOBILE') == '1'
@@ -107,7 +108,14 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     def tearDownClass(cls):
         super(BaseLiveTestCase, cls).tearDownClass()
 
+    def get_current_javascript_report(self):
+        self.browser.execute_script('blanket.onTestsDone();');
+        report = self.browser.execute_script('return window.coverage_results;')
+        world.js_coverages.append(report)
+
     def visit(self, page):
+        if 'localhost' in self.browser.current_url:
+            self.get_current_javascript_report()
         self.browser.get('%s%s' % (self.live_server_url, page))
 
     def visit_home(self, fresh=False):

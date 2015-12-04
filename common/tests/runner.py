@@ -1,14 +1,15 @@
+import codecs
+
 import django_nose
 from django_nose.plugin import ResultPlugin, DjangoSetUpPlugin, TestReorderer
 from django_nose.runner import _get_plugins_from_settings
 from nose.core import TestProgram, TextTestRunner
 from nose.result import TextTestResult
 
-from common.tests.core import BaseLiveTestCase
+from common.tests.core import BaseLiveTestCase, world
 
 
 class DjangoNoseTextTestResult(TextTestResult):
-
     def try_take_screen_short(self, test):
         if not isinstance(test.test, BaseLiveTestCase):
             return
@@ -66,4 +67,11 @@ class DjangoNoseTestSuiteRunner(django_nose.NoseTestSuiteRunner):
             pass
 
         self.test_program(argv=nose_argv, exit=False, addplugins=plugins_to_add, testRunner=DjangoNoseTextTestRunner)
+        self.save_javascript_coverage()
         return result_plugin.result
+
+    def save_javascript_coverage(self):
+        if BaseLiveTestCase.source_dir:
+            output_file = os.path.join(BaseLiveTestCase.source_dir, 'coverage_{time}.txt'.format(time=time.time()))
+            with codecs.open(output_file, 'w', 'utf-8') as f:
+                json.dump(f, world.js_coverages, indent =2)
