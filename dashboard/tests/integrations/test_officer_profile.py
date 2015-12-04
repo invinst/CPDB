@@ -128,6 +128,7 @@ class OfficerProfileTestCase(BaseAdminTestCase):
         self.until_ajax_complete()
 
         self.should_see_text('Story "{title}" has been deleted.'.format(title=stories[1].title))
+        self.hide_toastr()
         self.until_ajax_complete()  # reload story list
         self.until(lambda: self.should_not_see_text(stories[1].title))
         self.should_see_text(stories[0].title)

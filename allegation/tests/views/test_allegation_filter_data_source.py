@@ -1,13 +1,11 @@
 import datetime
 
-from django.test import SimpleTestCase
-
 from allegation.factories import AllegationFactory
 from allegation.tests.views.test_allegation_api_view import AllegationFilterMixin
 from allegation.utils.date import generate_random_date
 from common.constants import DATE_ONLY_FORMAT, FOIA_START_DATE, START_UNIX_TIME_DATE
 from common.models import Allegation
-
+from common.tests.core import SimpleTestCase
 
 class AllegationFilterDataSource(AllegationFilterMixin, SimpleTestCase):
     def setUp(self):
