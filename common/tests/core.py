@@ -219,8 +219,7 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     def get_screen_shot(self, name=None):
         if self.source_dir:
             BaseLiveTestCase.source += 1
-            if name is None:
-                name = '{s}.png'.format(s=BaseLiveTestCase.source)
+            name = '{s}.png'.format(s=name or BaseLiveTestCase.source)
             file_path = os.path.join(self.source_dir, name)
             while os.path.exists(file_path):
                 file_path = os.path.join(self.source_dir, '{time}_{name}'.format(name=name, time=time.time()))

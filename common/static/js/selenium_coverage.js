@@ -4,7 +4,7 @@ blanket.options({
 });
 
 blanket.customReporter=function(coverage_results){
-    window.coverage_results;
+    window.coverage_results = coverage_results;
 };
 
 blanket.beforeStartTestRunner({
