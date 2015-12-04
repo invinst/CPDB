@@ -10,7 +10,9 @@ from common.tests.core import BaseLiveTestCase, world
 
 
 class DjangoNoseTextTestResult(TextTestResult):
-    def try_take_screen_short(self, test):
+    def try_take_screenshot(self, test):
+        if not hasattr(test, 'test'):
+            return
         if not isinstance(test.test, BaseLiveTestCase):
             return
         test.test.get_screen_shot(test.test._testMethodName)
