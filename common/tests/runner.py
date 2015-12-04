@@ -79,4 +79,4 @@ class DjangoNoseTestSuiteRunner(django_nose.NoseTestSuiteRunner):
         if BaseLiveTestCase.source_dir:
             output_file = os.path.join(BaseLiveTestCase.source_dir, 'coverage_{time}.txt'.format(time=time.time()))
             with codecs.open(output_file, 'w', 'utf-8') as f:
-                json.dump(f, world.js_coverages, indent =2)
+                json.dump(world.js_coverages, f, indent =2)
