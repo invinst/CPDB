@@ -71,7 +71,7 @@ class OfficerProfileTestCase(BaseLiveTestCase):
         self.find(".officer").click()
         self.element_by_tagname_and_text('li', 'Edit information').click()
         random_string = "abc"
-        
+
         text_fields = [
             'First name',
             'Last name',
@@ -89,7 +89,7 @@ class OfficerProfileTestCase(BaseLiveTestCase):
         select_fields = [
             ('Gender', 'F' if officer.gender=='M' else 'M'),
             ('Race', 'Black' if officer.gender=='White' else 'White'),
-            ('Rank', 'Lieutenant' if officer.rank=='Detective' else 'Detective'),            
+            ('Rank', 'Lieutenant' if officer.rank=='Detective' else 'Detective'),
         ]
         for (field, value) in select_fields:
             element = self.element_for_label(field)
@@ -107,7 +107,7 @@ class OfficerProfileTestCase(BaseLiveTestCase):
             ('Gender', officer.gender),
             ('Race', officer.race),
             ('Rank', officer.rank),
-        ]        
+        ]
         for (field, value) in original_fields:
             text = self.element_for_label(field).get_attribute('value')
             if text != '' and value is not None:
@@ -154,10 +154,14 @@ class OfficerProfileTestCase(BaseLiveTestCase):
         )
 
         self.should_see_text('New story has been created.')
+        story = Story.objects.filter(officer=self.officer)[0]
+        story.created_date.should_not.be.ok
+
         new_row = self.find(".story").text
         new_row.should.contain("Title")
 
         self.element_for_label('Title').send_keys("2")
+        self.element_for_label('Date').send_keys('2015-04-15')
         self.button("Save").click()
         self.until(self.ajax_complete)
 
@@ -177,7 +181,7 @@ class OfficerProfileTestCase(BaseLiveTestCase):
         self.find(".story_short_description").text.should.equal("Short Description")
         self.find(".story_content").text.should.equal("Content")
 
-        story = Story.objects.filter(officer=self.officer)[0]
+        story.refresh_from_db()
         story.story_type.should.equal('news')
         story.created_date.should.be.ok
 
@@ -244,7 +248,7 @@ class OfficerProfileTestCase(BaseLiveTestCase):
         )
 
         len(Story.objects.filter(url=url)).should.equal(1)
-        
+
     def go_to_single_officer(self, officer):
         self.find("#search-officer input").send_keys(officer.officer_first)
         self.find(".officer").click()
