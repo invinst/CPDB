@@ -1,10 +1,9 @@
-from django.test import SimpleTestCase
-
 from allegation.factories import AllegationFactory, OfficerFactory
 from mobile.services.mobile_suggestion_service import MobileSuggestionService
 
 from common.models import Allegation
 from common.models import Officer
+from common.tests.core import SimpleTestCase
 
 
 class MobileSuggestionServiceTest(SimpleTestCase):

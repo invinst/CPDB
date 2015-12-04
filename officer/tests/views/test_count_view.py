@@ -2,9 +2,10 @@ import json
 
 from django.core import management
 from django.core.urlresolvers import reverse
-from django.test.testcases import SimpleTestCase
+
 from allegation.factories import OfficerFactory, AllegationFactory
 from common.models import Officer
+from common.tests.core import SimpleTestCase
 
 
 class CountViewTestCase(SimpleTestCase):

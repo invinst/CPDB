@@ -1,9 +1,9 @@
 import json
 
 from django.core.urlresolvers import reverse
-from django.test.testcases import SimpleTestCase
 
 from allegation.factories import OfficerFactory, AllegationFactory
+from common.tests.core import SimpleTestCase
 
 
 class TimelineViewTestCase(SimpleTestCase):

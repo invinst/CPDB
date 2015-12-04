@@ -7,6 +7,7 @@ from common.constants import DATE_ONLY_FORMAT, FOIA_START_DATE, START_UNIX_TIME_
 from common.models import Allegation
 from common.tests.core import SimpleTestCase
 
+
 class AllegationFilterDataSource(AllegationFilterMixin, SimpleTestCase):
     def setUp(self):
         Allegation.objects.all().delete()
