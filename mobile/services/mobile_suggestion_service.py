@@ -4,6 +4,7 @@ from common.models import Officer, Allegation
 
 LIMIT = 5
 
+
 class MobileSuggestionService(object):
     def suggest_officer_star(self, query):
         try:
