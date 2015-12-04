@@ -1,4 +1,5 @@
 import codecs
+import os
 
 import django_nose
 from django_nose.plugin import ResultPlugin, DjangoSetUpPlugin, TestReorderer
