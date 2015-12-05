@@ -3,7 +3,7 @@ var Router = require('./components/Router.react');
 var Embed = require('./components/DataToolPage/Embed.react');
 
 
-global.init_react = function () {
+global.initReact = function () {
     var element = document.getElementById('router');
 
     if(element) {

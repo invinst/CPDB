@@ -14,4 +14,4 @@
 
 //     }
 // });
-init_react();
+initReact();
