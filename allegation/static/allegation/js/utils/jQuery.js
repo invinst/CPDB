@@ -33,6 +33,7 @@ function sameOrigin(url) {
     }
   });
 
+  // disable cache for testing
   $.ajaxSetup({
     cache: false
   });
