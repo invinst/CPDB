@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 from django.core import management
 from django.core.urlresolvers import reverse
 from django.test.testcases import LiveServerTestCase, TestCase as DjangoSimpleTestCase
+from nose.plugins.attrib import attr
 from selenium.common.exceptions import NoSuchElementException, WebDriverException
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
@@ -285,6 +286,7 @@ class BaseAdminTestCase(BaseLiveTestCase):
         self.until_ajax_complete()
 
 
+@attr('mobile')
 @skipUnless(IS_MOBILE, "Skip in desktop mode")
 class BaseMobileLiveTestCase(BaseLiveTestCase):
     pass
