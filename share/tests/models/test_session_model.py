@@ -1,4 +1,4 @@
-from common.factories import InvestigatorFactory
+from allegation.factories import InvestigatorFactory
 from common.tests.core import SimpleTestCase
 from share.factories import SessionFactory
 
