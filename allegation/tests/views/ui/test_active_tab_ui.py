@@ -3,7 +3,7 @@ from unittest import skipIf, skipUnless
 
 from selenium import webdriver
 
-from common.tests.core import BaseLiveTestCase, BaseMobileLiveTestCase, IS_MOBILE
+from common.tests.core import BaseLiveTestCase, BaseMobileLiveTestCase
 
 
 class ActiveTabAssertationMixin(object):
@@ -12,7 +12,6 @@ class ActiveTabAssertationMixin(object):
         active_tab.text.should.equal(expected_tab)
 
 
-@skipIf(IS_MOBILE, "Skip in mobile mode")
 class ActiveTabTestCase(BaseLiveTestCase, ActiveTabAssertationMixin):
     def test_site_default_active_tab(self):
         self.visit_home()

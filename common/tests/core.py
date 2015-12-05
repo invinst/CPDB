@@ -303,7 +303,6 @@ class BaseMobileLiveTestCase(BaseLiveTestCase):
         return world.mobile_browser
 
 
-@skipIf(IS_MOBILE, "Skip in mobile mode")
 class SimpleTestCase(DjangoSimpleTestCase, UserTestBaseMixin):
     response = None
     _soup = None
