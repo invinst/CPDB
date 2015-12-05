@@ -40,7 +40,7 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
   },
 
   componentDidUpdate: function () {
-    this.activeTabIndex = AppConstants.TABS[this.state.active_tab];
+    this.activeTabIndex = AppConstants.TABS[this.state.activeTab];
   },
 
   // embedding
@@ -93,7 +93,7 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
   // end embedding
 
   isActive: function (target) {
-    return this.state.active_tab == target || (!this.state.active_tab && target == 'outcomes');
+    return this.state.activeTab == target || (!this.state.activeTab && target == 'outcomes');
   },
 
   renderNavTab: function (label) {
