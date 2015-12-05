@@ -26,7 +26,6 @@ test:
     - python manage.py collectstatic --noinput
   override:
     - coverage run --parallel-mode manage.py test  --noinput --nologcapture --with-timer
-    - MOBILE=1 coverage run --parallel-mode manage.py test  --noinput --nologcapture --with-timer -amobile
     - npm test
   post:
     - coverage combine

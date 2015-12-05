@@ -45,10 +45,8 @@ class TimeoutException(AssertionError):
 
 world = threading.local()
 world.browser = None
+world.mobile_browser = None
 world.js_coverages = []
-
-
-IS_MOBILE = os.environ.get('MOBILE') == '1'
 
 
 class UserTestBaseMixin(object):
@@ -79,23 +77,25 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     def get_admin_settings(self):
         return Setting.objects.all().first() or SettingFactory()
 
+    def init_firefox_profile(self):
+        profile = webdriver.FirefoxProfile()
+        profile.set_preference('browser.cache.disk.enable', False)
+        profile.set_preference('browser.cache.memory.enable', False)
+        profile.set_preference('browser.cache.offline.enable', False)
+        profile.set_preference('dom.max_script_run_time', 100)
+        profile.set_preference('browser.startup.homepage_override.mstone', 'ignore')
+        return profile
+
+    def init_firefox(self):
+        browser = WebDriver(self.init_firefox_profile())
+        browser.implicitly_wait(10)
+        browser.set_window_size(width=1230, height=1200)
+        return browser
+
     @property
     def browser(self):
         if world.browser is None:
-            profile = webdriver.FirefoxProfile()
-            profile.set_preference('browser.cache.disk.enable', False)
-            profile.set_preference('browser.cache.memory.enable', False)
-            profile.set_preference('browser.cache.offline.enable', False)
-            profile.set_preference('dom.max_script_run_time', 100)
-            profile.set_preference('browser.startup.homepage_override.mstone', 'ignore')
-            if IS_MOBILE:
-                profile.set_preference(
-                    "general.useragent.override",
-                    "Mozilla/5.0 (iPad; CPU OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) Version/7.0 Mobile/11A465 Safari/9537.53"
-                )
-            world.browser = WebDriver(profile)
-            world.browser.implicitly_wait(10)
-            world.browser.set_window_size(width=1230, height=1200)
+            world.browser = self.init_firefox()
         return world.browser
 
     @classmethod
@@ -286,10 +286,21 @@ class BaseAdminTestCase(BaseLiveTestCase):
         self.until_ajax_complete()
 
 
-@attr('mobile')
-@skipUnless(IS_MOBILE, "Skip in desktop mode")
 class BaseMobileLiveTestCase(BaseLiveTestCase):
-    pass
+    def init_firefox_profile(self):
+        profile = super(BaseMobileLiveTestCase, self).init_firefox_profile()
+        profile.set_preference(
+            "general.useragent.override",
+            "Mozilla/5.0 (iPad; CPU OS 7_0 like Mac OS X) AppleWebKit/537.51.1 (KHTML, like Gecko) "
+            "Version/7.0 Mobile/11A465 Safari/9537.53"
+        )
+        return profile
+
+    @property
+    def browser(self):
+        if world.mobile_browser is None:
+            world.mobile_browser = self.init_firefox()
+        return world.mobile_browser
 
 
 @skipIf(IS_MOBILE, "Skip in mobile mode")
