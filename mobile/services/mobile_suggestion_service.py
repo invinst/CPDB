@@ -1,5 +1,3 @@
-from django.db.models import Q
-
 from allegation.utils.query import OfficerQuery
 from common.models import Officer, Allegation
 

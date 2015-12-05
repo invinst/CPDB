@@ -3,7 +3,11 @@ from rest_framework import serializers
 from common.models import Officer
 
 
-class OfficerSerializer(serializers.ModelSerializer):
+class RelatedOfficerSerializer(serializers.ModelSerializer):
+    num_allegations = serializers.IntegerField(
+        read_only=True
+    )
+
     class Meta:
         model = Officer
         fields = (
@@ -11,5 +15,6 @@ class OfficerSerializer(serializers.ModelSerializer):
             'officer_first',
             'officer_last',
             'race',
-            'gender'
+            'gender',
+            'num_allegations'
         )
