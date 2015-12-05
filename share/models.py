@@ -41,10 +41,6 @@ class Session(models.Model):
     def hash_id(self):
         return hash_obj.encode(self.id)
 
-    @property
-    def created_date(self):
-        return date(self.created_at)
-
     def get_suggestion_logs(self):
         suggestion_logs = SuggestionLog.objects.filter(session_id=self.hash_id)
 

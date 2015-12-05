@@ -53,7 +53,5 @@ class MobileSuggestionServiceTest(SimpleTestCase):
         OfficerFactory(officer_first=officer_name, allegations_count=2)
 
         officers = self.mobile_suggestion.suggest_officer_name(officer_name)
-
-        officers[0].allegations_count.should.be.equal(3)
-        officers[1].allegations_count.should.be.equal(2)
-        officers[2].allegations_count.should.be.equal(1)
+        officer_alligation_counts = [x.allegations_count for x in officers]
+        officer_alligation_counts.should.equal([3, 2, 1])
