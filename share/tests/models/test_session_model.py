@@ -10,8 +10,10 @@ class SessionModelTestCase(SimpleTestCase):
     def test_readable_query(self):
         investigator = InvestigatorFactory()
         self.session.query = {
-            'investigator': {
-                'value': [investigator.id],
+            'filters': {
+                'investigator': {
+                    'value': [investigator.id],
+                },
             },
         }
 
