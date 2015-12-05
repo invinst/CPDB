@@ -24,6 +24,8 @@ dependencies:
     - pyenv local 3.4.2
   cache_directories:
     - "bower_components"
+    - "/home/ubuntu/nvm/versions/node/v4.0.0/lib/node_modules/bower/"
+    - "/home/ubuntu/nvm/versions/node/v4.0.0/bin/"
 test:
   pre:
     - python manage.py collectstatic --noinput
