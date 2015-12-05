@@ -118,8 +118,6 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         self.browser.execute_script("jQuery('#toast-container').html('');")
 
     def visit(self, page):
-        # if 'localhost' in self.browser.current_url:
-        #     self.get_current_javascript_report()
         self.browser.get('%s%s' % (self.live_server_url, page))
 
     def visit_home(self, fresh=False):
