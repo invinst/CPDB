@@ -71,7 +71,7 @@ class BrowserNoWait(object):
     def __enter__(self):
         self.obj.browser.implicitly_wait(0)
 
-    def __exit__(self):
+    def __exit__(self, exc_type, exc_value, traceback):
         self.obj.browser.implicitly_wait(10)
 
 
