@@ -80,9 +80,9 @@ class HomePageTestCase(BaseLiveTestCase):
 
         # First, we click a category, we should see the arrow beside the category
         self.filter_complaint_type()
-        self.browser.implicitly_wait(0)
-        self.element_exist('.row .arrow-container').should.equal(False)
-        self.browser.implicitly_wait(10)
+        with self.browser_no_wait():
+            self.element_exist('.row .arrow-container').should.equal(False)
+
         self.until(lambda: self.link(self.allegation_category.category).click())
         # TODO: We should have another test to check which main category this arrow belong to?
         self.element_exist('.row .arrow-container').should.equal(True)
@@ -175,43 +175,37 @@ class HomePageTestCase(BaseLiveTestCase):
         len(officers_divs).should.equal(1)
         officers_divs[0].has_class('col-md-10')
 
+    def click_sunburst_legend(self, text):
+        self.element_by_tagname_and_text('td', text).click()
+        self.sleep(0.75)
+        self.until(lambda: self.element_by_classname_and_text('filter-name', text).should.be.ok)
+
     def test_sunburst(self):
         us = 'Unsustained'
         ns = 'Not Sustained'
 
         self.visit_home()
         self.click_active_tab("Outcomes")
-        self.browser.implicitly_wait(0)
-        self.element_by_classname_and_text('filter-name', us).shouldnt.be.ok
-        self.element_by_classname_and_text('filter-name', ns).shouldnt.be.ok
-        self.browser.implicitly_wait(10)
+        with self.browser_no_wait():
+            self.element_by_classname_and_text('filter-name', us).shouldnt.be.ok
+            self.element_by_classname_and_text('filter-name', ns).shouldnt.be.ok
 
-        self.element_by_tagname_and_text('td', us).click()
-        self.sleep(0.75)
-        self.until(lambda: self.element_by_classname_and_text('filter-name', us).should.be.ok)
-        self.browser.implicitly_wait(0)
-        self.element_by_classname_and_text('filter-name', ns).shouldnt.be.ok
-        self.browser.implicitly_wait(10)
+        self.click_sunburst_legend(us)
 
-        self.element_by_tagname_and_text('td', ns).click()
-        self.sleep(0.75)
-        self.until(lambda: self.element_by_classname_and_text('filter-name', ns).should.be.ok)
-        self.browser.implicitly_wait(0)
-        self.element_by_classname_and_text('filter-name', us).shouldnt.be.ok
-        self.browser.implicitly_wait(10)
+        with self.browser_no_wait():
+            self.element_by_classname_and_text('filter-name', ns).shouldnt.be.ok
 
-        self.element_by_tagname_and_text('td', us).click()
-        self.sleep(0.75)
-        self.until(lambda: self.element_by_classname_and_text('filter-name', us).should.be.ok)
-        self.browser.implicitly_wait(0)
-        self.element_by_classname_and_text('filter-name', ns).shouldnt.be.ok
-        self.browser.implicitly_wait(10)
+        self.click_sunburst_legend(ns)
+        with self.browser_no_wait():
+            self.element_by_classname_and_text('filter-name', us).shouldnt.be.ok
+
+        self.click_sunburst_legend(us)
+        with self.browser_no_wait():
+            self.element_by_classname_and_text('filter-name', ns).shouldnt.be.ok
 
         self.find(".tag .remove").click()
-        self.sleep(0.75)
-        self.browser.implicitly_wait(0)
-        self.element_by_tagname_and_text('td', ns).shouldnt.be.ok
-        self.browser.implicitly_wait(10)
+        with self.browser_no_wait():
+            self.element_by_tagname_and_text('td', ns).shouldnt.be.ok
 
     def test_sticky_footer(self):
         officer = self.allegation.officer

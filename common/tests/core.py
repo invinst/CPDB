@@ -64,6 +64,17 @@ class UserTestBaseMixin(object):
         self.login(user)
 
 
+class BrowserNoWait(object):
+    def __init__(self, obj):
+        self.obj = obj
+
+    def __enter__(self):
+        self.obj.browser.implicitly_wait(0)
+
+    def __exit__(self):
+        self.obj.browser.implicitly_wait(10)
+
+
 class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     _multiprocess_can_split_ = True
 
@@ -91,6 +102,9 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         browser.implicitly_wait(10)
         browser.set_window_size(width=1230, height=1200)
         return browser
+
+    def browser_no_wait(self):
+        return BrowserNoWait(self)
 
     @property
     def browser(self):
