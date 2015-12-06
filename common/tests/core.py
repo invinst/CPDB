@@ -317,6 +317,7 @@ class BaseMobileLiveTestCase(BaseLiveTestCase):
         return world.mobile_browser
 
 
+@attr('simple')
 class SimpleTestCase(DjangoSimpleTestCase, UserTestBaseMixin):
     response = None
     _soup = None

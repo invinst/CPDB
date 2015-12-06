@@ -88,8 +88,8 @@ class AllegationFactory(factory.django.DjangoModelFactory):
     officer = factory.SubFactory(OfficerFactory)
     point = None
     document_requested = False
-    start_date = factory.Sequence(lambda n: fake.date())
-    end_date = factory.Sequence(lambda n: fake.date())
+    start_date = factory.Sequence(lambda n: timezone.now() + datetime.timedelta(hours=n))
+    end_date = factory.Sequence(lambda n: timezone.now() + datetime.timedelta(hours=n*2))
     beat = factory.SubFactory(AreaFactory)
 
     @factory.post_generation

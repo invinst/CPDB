@@ -29,4 +29,4 @@ class TimelineViewTestCase(SimpleTestCase):
         })
         data = self.json(self.response)
         data['items'].should.have.length_of(4)
-        data['items'].should.contain(allegation.start_date)
+        data['items'].should.contain(allegation.start_date.strftime("%Y-%m-%d"))
