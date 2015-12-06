@@ -1,3 +1,5 @@
+from unittest import mock
+
 from common.tests.core import SimpleTestCase
 from allegation.factories import AllegationFactory
 
