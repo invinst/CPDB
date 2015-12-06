@@ -57,8 +57,6 @@ class AllegationQueryFilter(object):
 
         for value in values:
             condition = CUSTOM_FILTER_DICT[field][value]['condition']
-            if not condition:
-                return
             for field in condition:
                 self.filters[field] += condition[field]
 
@@ -143,8 +141,8 @@ class AllegationQueryFilter(object):
 
     def prepare_categories_filter(self):
         # Merge cat and cat_category
-        if all(x in self.raw_filters for x in ['cat', 'cat__category']):
-            if all(x in self.query_dict for x in ['cat', 'cat__category']):
+        if 'cat' in self.raw_filters:
+            if 'cat__category' in self.query_dict:
                 category_names = self.query_dict.getlist('cat__category')
                 categories = AllegationCategory.objects.filter(category__in=category_names)
                 cats = list(categories.values_list('cat_id', flat=True))

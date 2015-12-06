@@ -1,2 +1,2 @@
 [report]
-omit = */migrations/*,/home/ubuntu/virtualenvs/*,common/json_serializer.py
+omit = */migrations/*,/home/ubuntu/virtualenvs/*,common/json_serializer.py,common/tests/runner.py,common/tests/core.py
