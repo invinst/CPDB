@@ -1,7 +1,11 @@
 import json
+
+from django.core import mail
+
 from allegation.factories import AllegationFactory
 from common.models import Allegation
 from common.tests.core import SimpleTestCase
+from document.factories import RequestEmailFactory
 
 
 class DocumentLinkViewTestCase(SimpleTestCase):
@@ -14,18 +18,24 @@ class DocumentLinkViewTestCase(SimpleTestCase):
         document_id = 1273509
         normalized_title = 'cr-{crid}'.format(crid=crid)
         title = 'CR {crid}'.format(crid=crid)
-        AllegationFactory(crid=crid, document_id=0, document_normalized_title='', document_title='')
+
+        allegation = AllegationFactory(crid=crid, document_id=0, document_normalized_title='', document_title='')
+        RequestEmailFactory(crid=crid)
+
         response = self.client.post('/api/dashboard/document-link/', {
             'link': 'https://www.documentcloud.org/documents/%s-%s.html' % (document_id, normalized_title)
         })
-
         response.status_code.should.equal(200)
         content = json.loads(response.content.decode())
         content['crid'].should.contain(str(crid))
+
         allegation = Allegation.objects.filter(crid=crid).first()
         allegation.document_id.should.equal(document_id)
         allegation.document_normalized_title.should.equal(normalized_title)
         allegation.document_title.should.equal(title)
+
+        # email notification
+        len(mail.outbox).should.equal(1)
 
     def test_add_no_link(self):
         response = self.client.post('/api/dashboard/document-link/', {
