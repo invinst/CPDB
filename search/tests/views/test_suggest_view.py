@@ -19,6 +19,12 @@ class SuggestViewTestCase(SimpleTestCase):
         })
         return json.loads(response.content.decode())
 
+    def test_suggestion_no_query(self):
+        response = self.client.get("/search/suggest/", {
+            'term': ''
+        })
+        response.status_code.should.equal(400)
+
     def test_detect_suggest_type_officer_name(self):
         OfficerFactory(officer_first='Jerry', officer_last="Dao")
 
