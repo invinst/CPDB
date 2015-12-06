@@ -74,7 +74,7 @@ class EmbedPageTestCase(BaseLiveTestCase):
         self.allegation = AllegationFactory()
 
     def tearDown(self):
-        self.browser.set_window_size(1200, 1200)
+        self.browser.set_window_size(**self.DESKTOP_BROWSER_SIZE)
         super(EmbedPageTestCase, self).tearDown()
 
     @classmethod

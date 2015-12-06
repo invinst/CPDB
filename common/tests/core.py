@@ -81,6 +81,8 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     source = 0
     source_dir = os.environ.get('CIRCLE_ARTIFACTS')
 
+    DESKTOP_BROWSER_SIZE = {'width': 1230, 'height': 1200}
+
     def tearDown(self):
         if world.browser is not None:
             world.browser.delete_all_cookies()
@@ -100,7 +102,7 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     def init_firefox(self):
         browser = WebDriver(self.init_firefox_profile())
         browser.implicitly_wait(10)
-        browser.set_window_size(width=1230, height=1200)
+        browser.set_window_size(**self.DESKTOP_BROWSER_SIZE)
         return browser
 
     def browser_no_wait(self):
