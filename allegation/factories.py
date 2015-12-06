@@ -104,7 +104,7 @@ class AllegationFactory(factory.django.DjangoModelFactory):
         if extracted:
             for area in extracted:
                 self.areas.add(area)
-                if not self.point and random.randint(0,10) > 5:
+                if not self.point:
                     self.point = area.polygon.centroid
                     self.save()
 
