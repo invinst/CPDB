@@ -168,12 +168,11 @@ class AllegationQueryFilter(object):
     def radius(self):
         return self.query_dict.get('radius', 500)
 
+    def get_query_value(self, name):
+        return [] if name in self.ignore_filters else self.query_dict.getlist(name)
+
     def complainant_gender(self):
-        if 'complainant_gender' not in self.ignore_filters:
-            return self.query_dict.getlist('complainant_gender', [])
-        return []
+        return self.get_query_value('complainant_gender')
 
     def complainant_race(self):
-        if 'complainant_race' not in self.ignore_filters:
-            return self.query_dict.getlist('complainant_race', [])
-        return []
+        return self.get_query_value('complainant_race')
