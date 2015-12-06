@@ -1,11 +1,5 @@
-from django.core.urlresolvers import reverse
-
-from allegation.factories import AllegationFactory, OfficerFactory, ComplainingWitnessFactory, PoliceWitnessFactory
+from allegation.factories import AllegationFactory, ComplainingWitnessFactory, PoliceWitnessFactory
 from common.tests.core import SimpleTestCase
-from common.models import Allegation
-
-
-RACE_GENDER_API_ENDPOINT = reverse('allegation:allegation-race-gender-api')
 
 
 class AllegationClusterAPIViewTestCase(SimpleTestCase):
