@@ -19,9 +19,6 @@ class SuggestionAdmin(admin.ModelAdmin):
     def session_hash(self, obj):
         return obj.session_id[:6]
 
-    def failed_suggestions(self):
-        return SuggestionLog.objects.all()
-
     def get_queryset(self, request):
         return SuggestionLog.objects.exclude(session_id__isnull=True).exclude(session_id__exact='')
 
