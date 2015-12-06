@@ -1,16 +1,11 @@
 from allegation.factories import AllegationFactory, OfficerFactory
-from mobile.services.mobile_suggestion_service import MobileSuggestionService
-
-from common.models import Allegation
-from common.models import Officer
 from common.tests.core import SimpleTestCase
+from mobile.services.mobile_suggestion_service import MobileSuggestionService
 
 
 class MobileSuggestionServiceTest(SimpleTestCase):
     def setUp(self):
         self.mobile_suggestion = MobileSuggestionService()
-        Allegation.objects.all().delete()
-        Officer.objects.all().delete()
 
     def test_suggest_crid(self):
         allegation = AllegationFactory(crid='1051333')
@@ -54,4 +49,4 @@ class MobileSuggestionServiceTest(SimpleTestCase):
 
         officers = self.mobile_suggestion.suggest_officer_name(officer_name)
         officer_alligation_counts = [x.allegations_count for x in officers]
-        officer_alligation_counts.should.equal([3, 2, 1])
+        officer_alligation_counts.should.equal(sorted(officer_alligation_counts, reverse=True))
