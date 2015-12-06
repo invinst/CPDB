@@ -95,6 +95,7 @@ class AllegationApiViewTestCase(AllegationFilterMixin, AllegationApiTestBase):
             row['allegation']['investigator']['pk'].should.equal(investigator.pk)
 
     def test_filter_by_final_outcome(self):
+        AllegationFactory(final_outcome=600)
         data = self.fetch_allegations(final_outcome=600)
         for row in data:
             Allegation.objects.filter(pk=row['allegation']['id'], final_outcome=600).exists().should.be.true
@@ -145,6 +146,14 @@ class AllegationApiViewTestCase(AllegationFilterMixin, AllegationApiTestBase):
         for row in data:
             genders = [x['gender'] for x in row['complaining_witness']]
             genders.should.contain('M')
+
+    def test_filter_by_both_complaint_gender(self):
+        allegation = self.allegations[0]
+        ComplainingWitnessFactory.create_batch(3, crid=allegation.crid)
+        data = self.fetch_allegations(complainant_gender=['M', 'F'])
+        for row in data:
+            genders = [x['gender'] for x in row['complaining_witness']]
+            {'M', 'F'}.should.contain(genders)
 
     def test_filter_by_complaint_race(self):
         allegation = self.allegations[0]
