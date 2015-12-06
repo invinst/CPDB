@@ -18,16 +18,23 @@ class SessionModelTestCase(SimpleTestCase):
                 'areas__id': {
                     'value': [area.id],
                 },
+                'officer__allegations_count__gt': {
+                    'value': [9],
+                },
             },
         }
 
         self.session.readable_query.should.equal({
             'investigator': [{
-                'value': investigator.id,
                 'text': investigator.name,
+                'value': investigator.id,
             }],
             'areas__id': [{
                 'text': "%s: %s" % (area.type, area.name),
                 'value': area.id
-            }]
+            }],
+            'officer__allegations_count__gt': [{
+                'text': 'Repeater (10+ complaints)',
+                'value': 9,
+            }],
         })
