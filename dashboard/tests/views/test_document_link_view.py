@@ -44,6 +44,13 @@ class DocumentLinkViewTestCase(SimpleTestCase):
 
         response.status_code.should.equal(400)
 
+    def test_add_link_not_avaiable_for_request(self):
+        response = self.client.post('/api/dashboard/document-link/', {
+            'link': 'http://www.documentcloud.txt/documents/000-aaa-000.html'
+        })
+
+        response.status_code.should.equal(400)
+
     def test_add_non_exist_link(self):
         response = self.client.post('/api/dashboard/document-link/', {
             'link': 'http://www.documentcloud.org/documents/000-aaa-000.html'
