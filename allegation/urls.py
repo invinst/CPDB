@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 
 from allegation.views import AllegationAPIView, AreaAPIView
 from allegation.views import AllegationGISApiView, AllegationClusterApiView
-from allegation.views import AllegationChartApiView, InvestigationAPIView
+from allegation.views import InvestigationAPIView
 from allegation.views import AllegationSummaryApiView, OfficerListAPIView
 from allegation.views.allegation_analysis_api_view import AllegationAnalysisAPIView
 from allegation.views.allegation_download_view import AllegationDownloadView
@@ -23,7 +23,6 @@ urlpatterns = [
     url(r'^api/allegations/gis/$', cache_view(AllegationGISApiView.as_view()), name='allegation-api-gis'),
     url(r'^api/allegations/cluster/$', cache_view(AllegationClusterApiView.as_view()), name='allegation-api-clusters'),
     url(r'^api/allegations/summary/$', cache_view(AllegationSummaryApiView.as_view()), name='allegation-api-summary'),
-    url(r'^api/allegations/chart/$', cache_view(AllegationChartApiView.as_view()), name='allegation-api-chart'),
     url(r'^api/allegations/officers/$', cache_view(OfficerListAPIView.as_view()), name='allegation-api-officers'),
     url(r'^api/areas/$', cache_view(AreaAPIView.as_view()), name='area-api'),
     url(r'^api/investigation/$', cache_view(InvestigationAPIView.as_view()), name='investigation'),
