@@ -9,7 +9,7 @@ from allegation.factories import AllegationFactory
 class SendDocumentNotificationTestCase(TestCase):
     def test_send_notification_on_new_document(self):
         allegation = AllegationFactory()
-        notification_path = 'common.management.commands.update_documents.send_document_notification'
+        notification_path = 'document.utils.send_document_notification_by_crid_and_link'
         document_cloud_path = 'common.management.commands.update_documents.DocumentCloud'
         with mock.patch(notification_path) as send_notification:
             with mock.patch(document_cloud_path) as document_cloud:
