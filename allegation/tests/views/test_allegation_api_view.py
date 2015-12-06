@@ -103,6 +103,8 @@ class AllegationApiViewTestCase(AllegationFilterMixin, AllegationApiTestBase):
     def test_filter_by_date_range(self):
         start_date = timezone.now().date()
         end_date = start_date + datetime.timedelta(days=3)
+        for hours in range(1, 4):
+            AllegationFactory(incident_date=start_date + datetime.timedelta(hours=hours))
         response_format = "%Y-%m-%d %H:%M:%S"
 
         def happen_between(row):
