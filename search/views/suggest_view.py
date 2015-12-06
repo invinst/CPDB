@@ -54,7 +54,7 @@ class SuggestView(View):
             other = None
             for label in data[category]:
                 if isinstance(label, (list, tuple)):
-                    if len(label) > 2:
+                    if len(label) > 2:  # area type
                         other = label[2]
                     value = label[1]
                     label = label[0]
