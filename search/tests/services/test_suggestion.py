@@ -44,7 +44,7 @@ class SuggestViewTestCase(SimpleTestCase):
 
     def test_make_suggestion_with_alias(self):
         AliasFactory(alias='any', target='no')
-        data = self.suggestion.make_suggestion('discipline')
+        data = self.suggestion.make_suggestion('any')
         data['outcome_text'].should.have.length_of(2)
         values = [x[1] for x in data['outcome_text']]
         values.should.equal(['no discipline', 'any discipline'])
