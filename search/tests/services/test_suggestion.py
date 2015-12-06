@@ -48,3 +48,10 @@ class SuggestViewTestCase(SimpleTestCase):
         data['outcome_text'].should.have.length_of(2)
         values = [x[1] for x in data['outcome_text']]
         values.should.equal(['no discipline', 'any discipline'])
+
+    def test_make_suggestion_data_source(self):
+        data = self.suggestion.make_suggestion('pre')
+        data['data_source'].should.have.length_of(2)
+
+        data = self.suggestion.make_suggestion('foi')
+        data['data_source'].should.have.length_of(2)
