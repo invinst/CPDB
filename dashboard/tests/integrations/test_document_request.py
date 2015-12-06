@@ -7,7 +7,6 @@ from common.tests.core import BaseAdminTestCase
 class DocumentRequestTestCase(BaseAdminTestCase):
     def tearDown(self):
         super(DocumentRequestTestCase, self).tearDown()
-        Allegation.objects.all().delete()
 
     def go_to_documents(self):
         self.element_by_tagname_and_text('span', 'Investigation Documents').click()
@@ -24,6 +23,7 @@ class DocumentRequestTestCase(BaseAdminTestCase):
         self.tab(text).has_class('active').should.be.true
 
     def test_see_document_request_tab(self):
+        allegation = AllegationFactory()
         self.should_see_text('Investigation Documents')
         self.go_to_documents()
         self.find("h1").text.should.equal('Investigation Documents')
@@ -38,6 +38,11 @@ class DocumentRequestTestCase(BaseAdminTestCase):
         for tab in tabs:
             self.go_to_tab(tab)
             self.tab_should_active(tab)
+
+        self.go_to_tab("All")
+        self.find('.document td').click()
+        self.until_ajax_complete()
+        self.should_see_text('{crid} information'.format(crid=allegation.crid))
 
     def test_filter_pending_documents(self):
         allegation = AllegationFactory(document_requested=True, document_pending=True)
