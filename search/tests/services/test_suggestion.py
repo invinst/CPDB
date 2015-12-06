@@ -1,6 +1,6 @@
 import json
 
-from allegation.factories import OfficerFactory, AllegationCategoryFactory, AllegationFactory
+from allegation.factories import OfficerFactory, AllegationCategoryFactory, AllegationFactory, AreaFactory
 from common.models import AllegationCategory, Officer
 from common.tests.core import SimpleTestCase
 from search.services.suggestion import Suggestion
@@ -55,3 +55,11 @@ class SuggestViewTestCase(SimpleTestCase):
 
         data = self.suggestion.make_suggestion('foi')
         data['data_source'].should.have.length_of(2)
+
+    def test_suggest_area_type(self):
+        area = AreaFactory()
+        data = self.suggestion.make_suggestion(area.name[0:3])
+
+        data.should.contain('areas__id')
+        data['areas__id'].should.have.length_of(1)
+        data['areas__id'][0][2].should.equal(area.type)

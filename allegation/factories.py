@@ -13,6 +13,10 @@ from common.models import AllegationCategory, Officer, Area, Allegation, Investi
 fake = Faker()
 
 
+def capitalize_word():
+    return "{word}xa".format(word=fake.word()).capitalize()
+
+
 class AreaFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Area
@@ -24,10 +28,6 @@ class AreaFactory(factory.django.DjangoModelFactory):
                                                                (87.523661, 41.644286),
                                                                (87.940101, 41.644286),
                                                                (87.940101, 42.023135)))))
-
-
-def capitalize_word():
-    return "{word}xa".format(word=fake.word()).capitalize()
 
 
 class PoliceWitnessFactory(factory.django.DjangoModelFactory):
