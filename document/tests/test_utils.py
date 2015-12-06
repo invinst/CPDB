@@ -1,5 +1,7 @@
 from unittest import mock
 
+from django.core import management
+
 from common.tests.core import SimpleTestCase
 from allegation.factories import AllegationFactory
 
