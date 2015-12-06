@@ -172,7 +172,7 @@ class AllegationApiViewTestCase(AllegationFilterMixin, AllegationApiTestBase):
             row['officer']['gender'].should.equal('M')
 
     def test_filter_by_officer_race(self):
-        race = RACES[0][0]
+        race = self.allegations[0].officer.race
         data = self.fetch_allegations(officer__race=race)
         for row in data:
             row['officer']['race'].should.equal(race)
