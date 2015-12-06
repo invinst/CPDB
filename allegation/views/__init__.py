@@ -44,8 +44,6 @@ class AllegationListView(TemplateView):
         return super(AllegationListView, self).get(request, *args, **kwargs)
 
 
-
-
 class AreaAPIView(View):
     def get(self, request):
         areas = Area.objects.all()
@@ -112,7 +110,6 @@ class AllegationGISApiView(AllegationAPIView):
 
 
 class AllegationClusterApiView(AllegationAPIView):
-
     def get(self, request):
         areas = request.GET.getlist('areas__id')
         ignore_filters = ['areas__id']
