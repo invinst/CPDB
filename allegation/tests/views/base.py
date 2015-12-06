@@ -1,4 +1,3 @@
-from allegation.factories import AllegationFactory
 from common.tests.core import SimpleTestCase
 
 
