@@ -1,12 +1,8 @@
-from unittest import mock
-
-from django.core import management
-from django.test.testcases import TestCase
-
+from common.tests.core import SimpleTestCase
 from allegation.factories import AllegationFactory
 
 
-class SendDocumentNotificationTestCase(TestCase):
+class SendDocumentNotificationTestCase(SimpleTestCase):
     def test_send_notification_on_new_document(self):
         allegation = AllegationFactory()
         notification_path = 'document.utils.send_document_notification_by_crid_and_link'
