@@ -183,6 +183,8 @@ class AllegationApiViewTestCase(AllegationFilterMixin, AllegationApiTestBase):
             row.should.contain('investigator')
 
     def test_filter_by_outcome_group(self):
+        AllegationFactory(final_finding='SU', final_outcome=DISCIPLINE_CODES[0])
+        AllegationFactory(final_finding='SU', final_outcome=NO_DISCIPLINE_CODES[0])
         data = self.fetch_allegations(outcome_text='any discipline')
         for row in data:
             allegation = Allegation.objects.get(pk=row['allegation']['id'])
@@ -200,9 +202,3 @@ class AllegationApiViewTestCase(AllegationFilterMixin, AllegationApiTestBase):
         for row in data:
             allegation = Allegation.objects.get(pk=row['allegation']['id'])
             allegation.final_finding.shouldnt.equal('SU')
-
-    def test_investigator_data(self):
-        data = self.fetch_allegations()
-        data.should.be.ok
-        for row in data:
-            row.should.contain('investigator')
