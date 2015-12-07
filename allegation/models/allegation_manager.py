@@ -7,9 +7,6 @@ class AllegationManager(GeoManager):
     def get_queryset(self):
         return AllegationQuerySet(self.model, using=self._db)
 
-    def by_filter(self, allegation_query_filters):
-        return self.get_queryset().by_filter(allegation_query_filters)
-
     def by_officer_names(self, officer_names=[]):
         return self.get_queryset().by_officer_names(officer_names)
 

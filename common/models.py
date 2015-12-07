@@ -155,6 +155,8 @@ OUTCOMES = [
     ['060', '60 Day Suspension'],
     ['090', '90 Day Suspension'],
     ['100', 'Reprimand'],
+    ['120', 'Suspended for 120 Days'],
+    ['180', 'Suspended for 180 Days'],
     ['200', 'Suspended over 30 Days'],
     ['300', 'Administrative Termination'],
     ['400', 'Separation'],
@@ -314,14 +316,14 @@ RACES_DICT = dict(RACES)
 NO_DISCIPLINE_CODES = ('600', '000', '500', '700', '800', '900', '', None)
 DISCIPLINE_CODES = [x[0] for x in OUTCOMES if x[0] not in NO_DISCIPLINE_CODES]
 FINDINGS = [
-    ['UN', 'Unfounded'],
-    ['EX', 'Exonerated'],
-    ['NS', 'Not Sustained'],
-    ['SU', 'Sustained'],
-    ['NC', 'No Cooperation'],
-    ['NA', 'No Affidavit'],
-    ['DS', 'Discharged'],
-    ['ZZ', 'Unknown']
+    ['UN', 'Unfounded'], # means final_outcome_class = not-sustained
+    ['EX', 'Exonerated'], # means final_outcome_class = not-sustained
+    ['NS', 'Not Sustained'], # means final_outcome_class = not-sustained
+    ['SU', 'Sustained'], # means final_outcome_class = sustained
+    ['NC', 'No Cooperation'], # means final_outcome_class = not-sustained
+    ['NA', 'No Affidavit'], # means final_outcome_class = not-sustained
+    ['DS', 'Discharged'], # means final_outcome_class = not-sustained
+    ['ZZ', 'Unknown'] # means final_outcome_class = open-investigation
 ]
 FINDINGS_DICT = dict(FINDINGS)
 

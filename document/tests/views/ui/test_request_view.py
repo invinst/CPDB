@@ -19,7 +19,7 @@ class RequestViewTestCase(BaseLiveTestCase):
         self.see_header_text()
 
         # enter email
-        self.find("#request_modal input[name='email']").send_keys(faker.Faker().email())
+        self.fill_in("#request_modal input[name='email']", faker.Faker().email())
         self.button("Submit").click()
         self.see_notify_text()
 

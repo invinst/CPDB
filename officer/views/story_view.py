@@ -10,8 +10,6 @@ from api.models import Setting
 class StoryView(View):
     def get(self, request):
         officer_id = request.GET.get('officer')
-        if not officer_id:
-            return HttpResponseBadRequest()
 
         officer = get_object_or_404(Officer, pk=officer_id)
 
