@@ -1,6 +1,8 @@
 import json
 from unittest import mock
+
 from django.http.request import HttpRequest
+
 from common.tests.core import SimpleTestCase
 from share.factories import SessionFactory
 from share.models import Session
@@ -9,12 +11,22 @@ from search.models import FilterLog
 
 class AllegationSessionApiView(SimpleTestCase):
     def setUp(self):
+        super(AllegationSessionApiView, self).setUp()
         self.update_params = {
             'new': False,
-            'hash': 'ML2dQA',
+            'hash': 'ML2dQA',  # id = 624
             'title': 'Chicago Police Database',
             'query': {'filters': {}},
         }
+
+    def init_session(self):
+        self.db_session = SessionFactory()
+
+        session = self.client.session
+        session['owned_sessions'] = [self.db_session.id]
+        session.save()
+
+        self.update_params['hash'] = self.db_session.hash_id
 
     def call_get_session_api(self, params={}):
         response = self.client.get('/api/allegations/session/', params)
@@ -59,6 +71,7 @@ class AllegationSessionApiView(SimpleTestCase):
         session = self.client.session
         session['owned_sessions'] = [624]
         session.save()
+
         response, data = self.call_post_session_api(self.update_params)
         response.status_code.should.equal(400)
         data['data']['msg'].should.equal('Session is not found')
@@ -70,34 +83,25 @@ class AllegationSessionApiView(SimpleTestCase):
         data['data']['msg'].should.equal('Hash not found')
 
     def test_success_update(self):
-        session = self.client.session
-        session['owned_sessions'] = [624]
-        session.save()
-        SessionFactory(id=624)
+        self.init_session()
+
         response, data = self.call_post_session_api(self.update_params)
         response.status_code.should.equal(200)
 
     def test_update_active_tab(self):
-        Session.objects.all().delete();
+        self.init_session()
+
         active_tab = 'map'
         update_params = self.update_params.copy()
         update_params['active_tab'] = active_tab
 
-        session = self.client.session
-        session['owned_sessions'] = [624]
-        session.save()
-        SessionFactory(id=624)
-
         response, data = self.call_post_session_api(update_params)
-        Session.objects.get(pk=624).active_tab.should.equal(active_tab)
+        Session.objects.get(pk=self.db_session.id).active_tab.should.equal(active_tab)
 
     def test_tracking_filter(self):
         self.num_of_filter_logs().should.equal(0)
 
-        session = self.client.session
-        session['owned_sessions'] = [624]
-        session.save()
-        SessionFactory(id=624)
+        self.init_session()
 
         update_params = self.update_params.copy()
         update_params['query'] = {
