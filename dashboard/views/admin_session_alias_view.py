@@ -19,7 +19,9 @@ class AdminSessionAliasApi(View):
         target = request.POST.get('target')
         title = request.POST.get('title')
 
-        if isinstance(target, str):
+        try:
+            target = int(target)
+        except ValueError:
             hash_id = Session.parse_hash_from_link(target)
             target = Session.id_from_hash(hash_id)[0]
 
