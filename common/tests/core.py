@@ -14,6 +14,7 @@ from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.select import Select
 from selenium import webdriver
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 
 from api.models import Setting
 from common.factories import UserFactory
@@ -100,7 +101,12 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         return profile
 
     def init_firefox(self):
-        browser = WebDriver(self.init_firefox_profile())
+        desired_capabilities = DesiredCapabilities.FIREFOX
+        desired_capabilities['loggingPrefs'] = {'browser': 'ALL'}
+
+        browser = WebDriver(
+            capabilities=desired_capabilities,
+            firefox_profile=self.init_firefox_profile())
         browser.implicitly_wait(10)
         browser.set_window_size(**self.DESKTOP_BROWSER_SIZE)
         return browser

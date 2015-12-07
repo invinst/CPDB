@@ -20,12 +20,23 @@ class DjangoNoseTextTestResult(TextTestResult):
             return
         test.test.get_screen_shot(test.test._testMethodName)
 
+    def try_print_out_javascript_error(self, test):
+        if not hasattr(test, 'test'):
+            return
+        if not isinstance(test.test, BaseLiveTestCase):
+            return
+        for entry in test.test.browser.get_log('browser'):
+            if entry['level'] not in ['WARNING', 'INFO']:
+                print(entry)
+
     def addError(self, test, err):
         self.try_take_screenshot(test)
+        self.try_print_out_javascript_error(test)
         super(DjangoNoseTextTestResult, self).addError(test, err)
 
     def addFailure(self, test, err):
         self.try_take_screenshot(test)
+        self.try_print_out_javascript_error(test)
         super(DjangoNoseTextTestResult, self).addFailure(test, err)
 
     def addSuccess(self, test):
