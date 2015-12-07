@@ -66,6 +66,17 @@ class DjangoNoseTestSuiteRunner(django_nose.NoseTestSuiteRunner):
     test_runner = DjangoNoseTextTestRunner
     test_program = NoseTestProgram
 
+    def close_browsers(self):
+        # TODO: We need to consider about this, should have 1 browser only
+        if world.phone_browser:
+            world.phone_browser.quit()
+
+        if world.browser:
+            world.browser.quit()
+
+        if world.mobile_browser:
+            world.mobile_browser.quit()
+
     def run_suite(self, nose_argv):
         """Run the test suite."""
         result_plugin = ResultPlugin()
@@ -83,6 +94,7 @@ class DjangoNoseTestSuiteRunner(django_nose.NoseTestSuiteRunner):
             pass
 
         self.test_program(argv=nose_argv, exit=False, addplugins=plugins_to_add, testRunner=DjangoNoseTextTestRunner)
+        self.close_browsers()
         return result_plugin.result
 
     def save_javascript_coverage(self):
