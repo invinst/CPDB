@@ -2,11 +2,15 @@ import json
 from unittest import mock
 
 from django.http.request import HttpRequest
+from faker import Faker
 
 from common.tests.core import SimpleTestCase
 from share.factories import SessionFactory
 from share.models import Session
 from search.models import FilterLog
+
+
+fake = Faker()
 
 
 class AllegationSessionApiView(SimpleTestCase):
@@ -43,11 +47,27 @@ class AllegationSessionApiView(SimpleTestCase):
 
         return response, data
 
+    def get_session_from_data(self, data):
+        session_id = Session.id_from_hash(data['hash'])[0]
+        return Session.objects.get(id=session_id)
+
     def test_get_new_session(self):
         response, data = self.call_get_session_api({'hash_id': ''})
         response.status_code.should.equal(200)
         data = data['data']
+
         data['new'].should.equal(True)
+
+        session = self.get_session_from_data(data)
+        session.ip.should.equal('127.0.0.1')
+
+    def test_get_new_session_with_proxy(self):
+        ip = fake.ipv4()
+        response = self.client.get('/api/allegations/session/', HTTP_X_FORWARDED_FOR=ip)
+        data = self.json(response)
+        data = data['data']
+        session = self.get_session_from_data(data)
+        session.ip.should.equal(ip)
 
     def test_get_invalid_session(self):
         response, data = self.call_get_session_api({'hash_id': 'invalid'})

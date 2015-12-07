@@ -6,7 +6,6 @@ from common.json_serializer import JSONSerializer
 
 from allegation.views.allegation_query_filter import AllegationQueryFilter
 from allegation.services.outcome_analytics import OutcomeAnalytics
-from common.utils.http_request import get_client_ip
 from search.models import FilterLog
 
 class AllegationAnalysisAPIView(View):

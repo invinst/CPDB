@@ -1,6 +1,7 @@
 var React = require('react');
 var _map = null;
 var AppConstants = require('constants/AppConstants');
+var ComplaintListActions = require("actions/ComplaintList/ComplaintListActions");
 
 var Map = React.createClass({
   getInitialState: function () {
@@ -44,7 +45,7 @@ var Map = React.createClass({
         });
       }
 
-      var _markers = L.markerClusterGroup({spiderfyOnMaxZoom: false, iconCreateFunction: iconCreateFunction, singleMarkerMode: true});
+      var _markers = L.markerClusterGroup({spiderfyOnMaxZoom: true, iconCreateFunction: iconCreateFunction, singleMarkerMode: true});
       var _controls = {};
       _controls['markers'] = _markers;
       _map.addLayer(_markers);
@@ -63,6 +64,14 @@ var Map = React.createClass({
           }
 
         });
+        featuresMarkers.on('click', function (e) {
+          var target = $("#allegation-" + e.layer.feature.properties.id);
+          target.click();
+          $("html, body").animate({
+            'scrollTop': target.offset().top
+          }, 2000);
+
+        })
         _markers.addLayer(featuresMarkers);
         _map.fitBounds(_markers.getBounds());
 
