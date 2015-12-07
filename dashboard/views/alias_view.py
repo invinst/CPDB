@@ -21,7 +21,7 @@ class AdminAliasApi(View):
                 return HttpResponseBadRequest(form=form)
             form.save()
         else:
-            session_alias_form.save()
+            session_alias_form.save(request.user)
 
         return HttpResponse(status=201)
 

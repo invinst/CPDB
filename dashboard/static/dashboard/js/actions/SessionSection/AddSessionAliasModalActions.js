@@ -16,8 +16,8 @@ var AddSessionAliasModalActions = {
     });
   },
 
-  createAlias: function(alias, target) {
-    SessionAliasAPI.create(alias, target);
+  createAlias: function(alias, target, title) {
+    SessionAliasAPI.create(alias, target, title);
   },
 
   formDataChange: function(stateName, stateValue) {

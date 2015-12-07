@@ -1,21 +1,23 @@
-from common.tests.core import BaseLiveTestCase
+from faker import Faker
+
+from common.tests.core import BaseAdminTestCase
 from search.factories import SuggestionLogFactory, FilterLogFactory, SessionAliasFactory
 from search.models.session_alias import SessionAlias
 from share.factories import SessionFactory
 from share.models import Session
 
 
-class SessionManagementTestCase(BaseLiveTestCase):
-    def setUp(self):
-        self.login_user()
-        self.visit('/admin/')
+fake = Faker()
 
+
+class SessionManagementTestCase(BaseAdminTestCase):
     def tearDown(self):
         Session.objects.all().delete()
         super(SessionManagementTestCase, self).tearDown()
 
     def go_to_sessions(self):
         self.element_by_tagname_and_text('span', 'Sessions').click()
+        self.until_ajax_complete()
 
     def test_see_sessions_management_section(self):
         session = SessionFactory()
@@ -73,19 +75,32 @@ class SessionManagementTestCase(BaseLiveTestCase):
 
         self.number_of_sessions().should.equal(1)
 
+    def create_alias(self, alias, title=None, target=None):
+        self.until(lambda: self.find('.add-alias').click() and self.should_see_text('Add Alias'))
+
+        self.find('.alias-input').send_keys(alias)
+        if title:
+            self.find('.title-input').send_keys(title)
+        if target:
+            self.find('.target-input').send_keys(target)
+
+        self.button('SUBMIT').click()
+        self.until(lambda: self.should_see_text('Add new alias successfully'))
+
     def test_add_alias(self):
-        alias = 'session alias'
+        alias = fake.name()
         session = SessionFactory()
 
         self.go_to_sessions()
+        self.create_alias(alias)
 
-        self.find('.add-alias').click()
-        self.until(lambda: self.should_see_text('Add Alias'))
-
-        self.find('.alias-input').send_keys(alias)
-        self.button('SUBMIT').click()
-        self.until(lambda: self.should_see_text('Add new alias successfully'))
         SessionAlias.objects.get(alias=alias).session.id.should.equal(session.id)
+
+        second_alias = fake.name()
+        custom_title = fake.name()
+        self.create_alias(second_alias, custom_title)
+        SessionAlias.objects.get(alias=second_alias, title=custom_title).session.id.should.equal(session.id)
+
 
     def number_of_sessions(self):
         return len(self.find_all("#sessions .session-row"))
@@ -97,7 +112,7 @@ class SessionManagementTestCase(BaseLiveTestCase):
 
     def test_view_session_alias(self):
         session = SessionFactory()
-        session_alias = SessionAliasFactory()
+        session_alias = SessionAliasFactory(title=fake.name())
         SessionAliasFactory()
 
         self.go_to_sessions()
@@ -105,6 +120,8 @@ class SessionManagementTestCase(BaseLiveTestCase):
         self.until_ajax_complete()
 
         self.should_see_text(session_alias.session.hash_id)
+        self.should_see_text(session_alias.user.username)
+        self.should_see_text(session_alias.title)
         self.should_not_see_text(session.hash_id)
 
         row = self.find("tr.alias-row")
@@ -118,3 +135,18 @@ class SessionManagementTestCase(BaseLiveTestCase):
         self.until(lambda: self.should_not_see_text(alias))
         self.should_see_text('Delete alias successfully');
         SessionAlias.objects.filter(alias=alias).exists().should.be.false
+
+    def test_add_session_alias_full_form(self):
+        session = SessionFactory()
+        title = 'Session title'
+        alias = 'alias'
+        target = 'http://localhost{path}'.format(path=session.get_absolute_url())
+
+        self.go_to_sessions()
+        self.button('Add Alias').click()
+        self.until(lambda: self.should_see_text('Add Session Alias'))
+        self.create_alias(alias, title, target)
+
+        session_alias = SessionAlias.objects.get(session_id=session.id)
+        session_alias.alias.should.equal(alias)
+        session_alias.title.should.equal(title)

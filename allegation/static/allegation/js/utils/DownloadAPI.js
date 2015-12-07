@@ -25,8 +25,11 @@ var DownloadAPI = {
             var href = AppConstants.MEDIA_URL + result.download.url;
             DownloadServerActions.completeGeneratedDownload(href);
           }
+        }).fail(function () {
+          clearInterval(listener);
         });
       }, 1000);
+      global.downloadListener = listener;
     });
   }
 };

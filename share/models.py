@@ -4,15 +4,13 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.template.defaultfilters import slugify
 from django_extensions.db.fields.json import JSONField
-from hashids import Hashids
 
 from common.models import Officer, AllegationCategory, Investigator, Area
 from common.models import GENDER_DICT, OUTCOME_TEXT_DICT, FINAL_FINDING_TEXT_DICT, FINDINGS_DICT, OUTCOMES_DICT, CUSTOM_FILTER_DICT
+from common.utils.hashid import hash_obj
 from search.models import SuggestionLog, FilterLog
 from search.services import REPEATER_DESC
 
-
-hash_obj = Hashids(settings.SECRET_KEY, min_length=6)
 
 KEYS = {
     'officer': Officer,
@@ -43,10 +41,6 @@ class Session(models.Model):
     def hash_id(self):
         return hash_obj.encode(self.id)
 
-    @property
-    def created_date(self):
-        return self.created_at.date()
-
     def get_suggestion_logs(self):
         suggestion_logs = SuggestionLog.objects.filter(session_id=self.hash_id)
 
@@ -59,6 +53,10 @@ class Session(models.Model):
     @staticmethod
     def id_from_hash(hash_id):
         return hash_obj.decode(hash_id)
+
+    @staticmethod
+    def parse_hash_from_link(link):
+        return link.split('/')[4]
 
     def get_absolute_url(self):
         return '/data/{hash}/{slug}'.format(

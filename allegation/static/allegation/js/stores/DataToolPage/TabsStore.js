@@ -16,7 +16,7 @@ function ifNotMobileChangeMapToOutcome(tab) {
 }
 
 var _state = {
-  'active_tab': defaultTab()
+  activeTab: defaultTab()
 };
 
 var TabsStore = _.assign(Base(_state), {
@@ -24,15 +24,22 @@ var TabsStore = _.assign(Base(_state), {
 
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
-  case AppConstants.RECEIVED_SESSION_DATA:
-    if (action.data.data.active_tab) {
-      _state['active_tab'] = ifNotMobileChangeMapToOutcome(action.data.data.active_tab);
-    }
-    TabsStore.emitChange();
-    break;
-
-  default:
-    break;
+    case AppConstants.RECEIVED_SESSION_DATA:
+      if (action.data.data.active_tab) {
+        _state.activeTab = ifNotMobileChangeMapToOutcome(action.data.data.active_tab);
+      }
+      TabsStore.emitChange();
+      break;
+    case AppConstants.SESSION_CREATED:
+      _state.activeTab = defaultTab()
+      TabsStore.emitChange();
+      break;
+    case AppConstants.SET_ACTIVE_TAB:
+      _state.activeTab = action.data;
+      TabsStore.emitChange();
+      break;
+    default:
+      break;
   }
 });
 

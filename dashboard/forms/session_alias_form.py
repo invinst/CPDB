@@ -11,11 +11,12 @@ class SessionAliasForm(forms.ModelForm):
         model = SessionAlias
         fields = ('alias',)
 
-    def save(self, commit=True):
+    def save(self, user, commit=True):
         instance = super(SessionAliasForm, self).save(commit=False)
         session_hash = self.cleaned_data['target'].split("/")[4]
         session_id = Session.id_from_hash(session_hash)[0]
         instance.session_id = session_id
+        instance.user = user
 
         if commit:
             instance.save()

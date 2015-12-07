@@ -57,8 +57,6 @@ class AllegationQueryFilter(object):
 
         for value in values:
             condition = CUSTOM_FILTER_DICT[field][value]['condition']
-            if not condition:
-                return
             for field in condition:
                 self.filters[field] += condition[field]
 
@@ -143,8 +141,8 @@ class AllegationQueryFilter(object):
 
     def prepare_categories_filter(self):
         # Merge cat and cat_category
-        if all(x in self.raw_filters for x in ['cat', 'cat__category']):
-            if all(x in self.query_dict for x in ['cat', 'cat__category']):
+        if 'cat' in self.raw_filters:
+            if 'cat__category' in self.query_dict:
                 category_names = self.query_dict.getlist('cat__category')
                 categories = AllegationCategory.objects.filter(category__in=category_names)
                 cats = list(categories.values_list('cat_id', flat=True))
@@ -170,12 +168,11 @@ class AllegationQueryFilter(object):
     def radius(self):
         return self.query_dict.get('radius', 500)
 
+    def get_query_value(self, name):
+        return [] if name in self.ignore_filters else self.query_dict.getlist(name)
+
     def complainant_gender(self):
-        if 'complainant_gender' not in self.ignore_filters:
-            return self.query_dict.getlist('complainant_gender', [])
-        return []
+        return self.get_query_value('complainant_gender')
 
     def complainant_race(self):
-        if 'complainant_race' not in self.ignore_filters:
-            return self.query_dict.getlist('complainant_race', [])
-        return []
+        return self.get_query_value('complainant_race')

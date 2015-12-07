@@ -1,6 +1,7 @@
 import factory
 from faker import Faker
 
+from common.factories import UserFactory
 from search.models.alias import Alias
 from search.models.session_alias import SessionAlias
 from search.models.suggestion import SuggestionLog, FilterLog
@@ -15,6 +16,8 @@ class SessionAliasFactory(factory.django.DjangoModelFactory):
 
     alias = factory.Sequence(lambda n: fake.name())
     session = factory.SubFactory(SessionFactory)
+    user = factory.SubFactory(UserFactory)
+    title = factory.LazyAttribute(lambda obj: obj.session.title)
 
 
 class AliasFactory(factory.django.DjangoModelFactory):

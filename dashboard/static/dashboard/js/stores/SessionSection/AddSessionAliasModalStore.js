@@ -9,8 +9,10 @@ var _state = {
   formValid: false,
   alias: '',
   target: '',
+  title: '',
   flashMessage: '',
-  errorMessages: []
+  errorMessages: [],
+  newTarget: false
 };
 
 var AddSessionAliasModalStore = _.assign(Base(_state), {
@@ -28,35 +30,40 @@ AppDispatcher.register(function(action) {
   case AppConstants.SHOW_ADD_SESSION_ALIAS_MODAL:
     var alias = (action.data && action.data.alias) ? action.data.alias : '';
     var target = (action.data && action.data.target) ? action.data.target : '';
-    AddSessionAliasModalStore.updateState('isOpen', true);
-    AddSessionAliasModalStore.updateState('formValid', false);
-    AddSessionAliasModalStore.updateState('flashMessage', '');
-    AddSessionAliasModalStore.updateState('errorMessages', []);
-    AddSessionAliasModalStore.updateState('alias', alias);
-    AddSessionAliasModalStore.updateState('target', target);
+    var newTarget = target ? false : true;
+
+    _state.isOpen = true;
+    _state.formValid = false;
+    _state.flashMessage = '';
+    _state.errorMessages = [];
+    _state.alias = alias;
+    _state.target = target;
+    _state.newTarget = newTarget;
+
     AddSessionAliasModalStore.emitChange();
     break;
 
   case AppConstants.HIDE_ADD_SESSION_ALIAS_MODAL:
-    AddSessionAliasModalStore.updateState('isOpen', false);
-    AddSessionAliasModalStore.updateState('flashMessage', []);
+    _state.isOpen = false;
+    _state.flashMessage = [];
+    _state.newTarget = false;
     AddSessionAliasModalStore.emitChange();
     break;
 
   case AppConstants.RECEIVED_SESSION_ALIAS_CREATION_RESULT:
-    AddSessionAliasModalStore.updateState('isOpen', false);
+    _state.isOpen = false;
     toastr.success('Add new alias successfully.');
     AddSessionAliasModalStore.emitChange();
     break;
 
   case AppConstants.FAILED_TO_CREATE_SESSION_ALIAS:
-    AddSessionAliasModalStore.updateState('isOpen', false);
+    _state.isOpen = false;
     toastr.error(action.data);
     AddSessionAliasModalStore.emitChange();
     break;
 
   case AppConstants.SESSION_ALIAS_MODAL_FORM_DATA_CHANGED:
-    AddSessionAliasModalStore.updateState(action.stateName, action.stateValue);
+    _state[action.stateName] = action.stateValue;
     AddSessionAliasModalStore.validFormData();
     AddSessionAliasModalStore.emitChange();
   }
