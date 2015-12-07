@@ -1,5 +1,6 @@
 import time
 from unittest import mock
+
 import requests
 
 from allegation.factories import AllegationFactory, PoliceWitnessFactory, ComplainingWitnessFactory
