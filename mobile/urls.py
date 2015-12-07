@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 from mobile.views.mobile_allegation_view import MobileAllegationView
 from mobile.views.mobile_allegation_officer_involved_view import MobileAllegationOfficerInvolvedView
@@ -16,4 +17,6 @@ urlpatterns = [
     url(r'^api/officer/$', MobileOfficerView.as_view(), name='officer'),
     url(r'^api/officer/allegation/$', MobileOfficerAllegationView.as_view(), name='officer-allegation'),
     url(r'^api/officer/related_officer/$', MobileRelatedOfficersView.as_view(), name='officer-related_officer'),
+    url(r'^(complaint/\d+/|officer/[^/]+/\d+)?$',
+        ensure_csrf_cookie(MobileSiteView.as_view()), name='homepage'),
 ]
