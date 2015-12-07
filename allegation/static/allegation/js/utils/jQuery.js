@@ -34,9 +34,11 @@ function sameOrigin(url) {
   });
 
   // disable cache for testing
-  $.ajaxSetup({
-    cache: false
-  });
+  if (global.DJANGO_ENV == 'test') {
+    $.ajaxSetup({
+      cache: false
+    });
+  }
 })(jQuery);
 
 
