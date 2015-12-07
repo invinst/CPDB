@@ -51,8 +51,8 @@ var SessionList = React.createClass(_.assign(Base(SessionListStore), {
           <td>{x.ip}</td>
           <td>{x.user_agent}</td>
           <td>
-            <a className="add-alias" onClick={that._onClick.bind(that, x.id)} href="#">&nbsp;
-              <i className='fa fa-plus'/>
+            <a className="add-alias" onClick={that._onClick.bind(that, x.id)} href="#">
+              Add Alias
             </a>
           </td>
         </tr>
