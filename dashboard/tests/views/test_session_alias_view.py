@@ -6,7 +6,7 @@ from share.models import Session
 
 class SessionAliasViewTestCase(SimpleTestCase):
     def setUp(self):
-        Session.objects.all().delete()
+        super(SessionAliasViewTestCase, self).setUp()
         self.login_user()
 
     def test_invalid_params(self):
