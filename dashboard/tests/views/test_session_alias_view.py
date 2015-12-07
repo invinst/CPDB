@@ -46,7 +46,7 @@ class SessionAliasViewTestCase(SimpleTestCase):
         data['results'].should.have.length_of(1)
 
         found = data['results'][0]
-        found['id'].should.equal(session.id)
+        found['session']['hash_id'].should.equal(session.hash_id)
 
     def test_search_by_title(self):
         session = SessionFactory()
