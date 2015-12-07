@@ -15,7 +15,3 @@ class Setting(models.Model):
     story_types_order = models.TextField(default=_default_story_types_order)
 
     DEFAULT_SITE_TITLE = DEFAULT_SITE_TITLE
-
-    @classmethod
-    def _default_story_types_order(cls):
-        return _default_story_types_order()
