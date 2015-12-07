@@ -42,8 +42,16 @@ class AllegationApiViewTestCase(AllegationFilterMixin, AllegationApiTestBase):
 
         allegations = self.fetch_allegations(page=1)
         ids2 = [d['allegation']['id'] for d in allegations]
+        (set(ids) & set(ids2)).should.be.empty
 
-        ids2.shouldnt.contain(ids[0])
+        allegations = self.fetch_allegations(page='a')
+        ids3 = [d['allegation']['id'] for d in allegations]
+        ids.should.equal(ids3)
+
+        allegations = self.fetch_allegations(length=1)
+        allegations.should.have.length_of(1)
+        allegations = self.fetch_allegations(length='a')
+        allegations.should.be.ok
 
     def test_filter_by_crid(self):
         crid = self.allegations[0].crid
