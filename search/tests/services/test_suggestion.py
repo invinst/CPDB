@@ -1,9 +1,10 @@
 import json
 
-from allegation.factories import OfficerFactory, AllegationCategoryFactory, AllegationFactory
+from allegation.factories import OfficerFactory, AllegationCategoryFactory, AllegationFactory, AreaFactory
 from common.models import AllegationCategory, Officer
 from common.tests.core import SimpleTestCase
 from search.services.suggestion import Suggestion
+from search.factories import AliasFactory
 
 
 class SuggestViewTestCase(SimpleTestCase):
@@ -36,3 +37,29 @@ class SuggestViewTestCase(SimpleTestCase):
             ['February 2010', '2010-2'], ['February 2011', '2011-2'], ['February 2012', '2012-2'],
             ['February 2013', '2013-2'], ['February 2014', '2014-2'], ['February 2015', '2015-2'],
         ])
+
+    def test_suggest_custom_defined_text(self):
+        data = self.suggestion.make_suggestion('discipline')
+        data.should.contain('outcome_text')
+
+    def test_make_suggestion_with_alias(self):
+        AliasFactory(alias='any', target='no')
+        data = self.suggestion.make_suggestion('any')
+        data['outcome_text'].should.have.length_of(2)
+        values = [x[1] for x in data['outcome_text']]
+        values.should.equal(['no discipline', 'any discipline'])
+
+    def test_make_suggestion_data_source(self):
+        data = self.suggestion.make_suggestion('pre')
+        data['data_source'].should.have.length_of(2)
+
+        data = self.suggestion.make_suggestion('foi')
+        data['data_source'].should.have.length_of(2)
+
+    def test_suggest_area_type(self):
+        area = AreaFactory()
+        data = self.suggestion.make_suggestion(area.name[0:3])
+
+        data.should.contain('areas__id')
+        data['areas__id'].should.have.length_of(1)
+        data['areas__id'][0][2].should.equal(area.type)

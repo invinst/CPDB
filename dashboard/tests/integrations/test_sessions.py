@@ -1,14 +1,10 @@
-from common.tests.core import BaseLiveTestCase
+from common.tests.core import BaseAdminTestCase
 from search.factories import SuggestionLogFactory, FilterLogFactory
 from share.factories import SessionFactory
 from share.models import Session
 
 
-class SessionManagementTestCase(BaseLiveTestCase):
-    def setUp(self):
-        self.login_user()
-        self.visit('/admin/')
-
+class SessionManagementTestCase(BaseAdminTestCase):
     def tearDown(self):
         Session.objects.all().delete()
         super(SessionManagementTestCase, self).tearDown()

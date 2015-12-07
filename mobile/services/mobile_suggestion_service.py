@@ -1,5 +1,3 @@
-from django.db.models import Q
-
 from allegation.utils.query import OfficerQuery
 from common.models import Officer, Allegation
 
@@ -18,4 +16,4 @@ class MobileSuggestionService(object):
         return Allegation.objects.filter(crid=query).first()
 
     def suggest_officer_name(self, query):
-        return Officer.objects.filter(OfficerQuery.condition_by_name(query)).order_by('-allegations_count').all()[:LIMIT]
+        return Officer.objects.filter(OfficerQuery.condition_by_name(query)).order_by('-allegations_count')[:LIMIT]
