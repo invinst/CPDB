@@ -60,7 +60,7 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         self.visit_home()
         self.browser.execute_script('jQuery("#hfc-cleanslate").hide();')
 
-        self.find('#autocomplete').send_keys(query)
+        self.fill_in('#autocomplete', query)
         self.until(lambda: self.element_by_classname_and_text('autocomplete-session', session.title).should.be.ok)
         self.element_by_classname_and_text('autocomplete-session', not_searchable.title).shouldnt.be.ok
 
