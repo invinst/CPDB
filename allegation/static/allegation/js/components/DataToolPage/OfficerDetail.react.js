@@ -24,11 +24,6 @@ var OfficerDetail = React.createClass({
     var hasMap = !!this.props.hasMap;
     var complaintRate = this.getAvgClass();
 
-    var complaintRateLabel = 'Below the average allegation rate';
-    if (officer.allegations_count > 10) {
-      complaintRateLabel = 'Above the average allegation rate';
-    }
-
     var mapStyle = {
       height: '240px'
     };
@@ -59,7 +54,6 @@ var OfficerDetail = React.createClass({
             <span className="star">{officer.star}</span>
             {officer.officer_first} {officer.officer_last}
           </div>
-          <div className='col-sm-3 tright complaint-rate-label'>{complaintRateLabel}</div>
         </div>
         <OfficerInformation officer={officer} />
         <div className="row visualization-information">

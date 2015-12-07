@@ -2,15 +2,14 @@ import json
 
 from django.core import management
 from django.core.urlresolvers import reverse
-from django.test.testcases import SimpleTestCase
+
 from allegation.factories import OfficerFactory, AllegationFactory
 from common.models import Officer
+from common.tests.core import SimpleTestCase
 
 
 class CountViewTestCase(SimpleTestCase):
     def test_count_by_num_complaints(self):
-        Officer.objects.all().delete()
-
         self.officers = []
         for _ in range(4):
             self.officers.append(OfficerFactory())
@@ -26,3 +25,8 @@ class CountViewTestCase(SimpleTestCase):
 
         # Does not count officers with 0 complaint
         self.assertListEqual(count, [0, 2])
+
+    def test_count_no_complaint(self):
+        self.visit(reverse('officer:count'))
+        data = self.json(self.response)
+        data.should.equal([0])

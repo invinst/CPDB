@@ -16,7 +16,6 @@ from dashboard.views.settings_view import AdminSettingsView
 from dashboard.views.document_request_status_view import DocumentRequestStatusView
 from dashboard.views.document_link_view import DocumentLinkView
 from dashboard.views.story_type_view import StoryTypeView
-from dashboard.views.settings_save_view import SettingsSaveView
 from dashboard.views.admin_session_analytics_view import AdminNewSessionsAnalyticsViewSet
 from dashboard.views.admin_session_alias_view import AdminSessionAliasApi, AdminSessionsAliasViewSet
 
@@ -41,7 +40,6 @@ urlpatterns = [
     url(r'^api/dashboard/document-request-status/$', login_required(csrf_exempt(DocumentRequestStatusView.as_view()))),
     url(r'^api/dashboard/document-link/$', login_required(csrf_exempt(DocumentLinkView.as_view()))),
     url(r'^api/dashboard/story_types/$', login_required(csrf_exempt(StoryTypeView.as_view()))),
-    url(r'^api/dashboard/settings_save/$', login_required(csrf_exempt(SettingsSaveView.as_view()))),
     url(r'^api/dashboard/document-requests-analysis/$',
         login_required(csrf_exempt(AdminAllegationRequestAnalysisView.as_view())),
         name='dashboard-allegation-request-analysis'),

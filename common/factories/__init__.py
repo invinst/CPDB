@@ -10,6 +10,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = get_user_model()
 
+    pk = None
     username = factory.Sequence(lambda n: u'User{0}'.format(n))
     password = 'password'
 

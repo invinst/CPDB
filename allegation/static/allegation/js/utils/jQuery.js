@@ -32,6 +32,13 @@ function sameOrigin(url) {
       options.headers["X-CSRFToken"] = $.cookie('csrftoken');
     }
   });
+
+  // disable cache for testing
+  if (global.DJANGO_ENV == 'test') {
+    $.ajaxSetup({
+      cache: false
+    });
+  }
 })(jQuery);
 
 
