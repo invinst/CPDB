@@ -79,12 +79,15 @@ class SessionManagementTestCase(BaseLiveTestCase):
 
         self.number_of_sessions().should.equal(1)
 
-    def create_alias(self, alias, title=None):
+    def create_alias(self, alias, title=None, target=None):
         self.until(lambda: self.find('.add-alias i').click() and self.should_see_text('Add Alias'))
 
         self.find('.alias-input').send_keys(alias)
         if title:
             self.find('.title-input').send_keys(title)
+        if target:
+            self.find('.target-input').send_keys(target)
+
         self.button('SUBMIT').click()
         self.until(lambda: self.should_see_text('Add new alias successfully'))
 
@@ -136,3 +139,18 @@ class SessionManagementTestCase(BaseLiveTestCase):
         self.until(lambda: self.should_not_see_text(alias))
         self.should_see_text('Delete alias successfully');
         SessionAlias.objects.filter(alias=alias).exists().should.be.false
+
+    def test_add_session_alias_full_form(self):
+        session = SessionFactory()
+        title = 'Session title'
+        alias = 'alias'
+        target = 'http://localhost{path}'.format(path=session.get_absolute_url())
+
+        self.go_to_sessions()
+        self.button('Add Alias').click()
+        self.until(lambda: self.should_see_text('Add Session Alias'))
+        self.create_alias(alias, title, target)
+
+        session_alias = SessionAlias.objects.get(session_id=session.id)
+        session_alias.alias.should.equal(alias)
+        session_alias.title.should.equal(title)

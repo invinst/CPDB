@@ -17,6 +17,20 @@ var AddSessionAliasModal = React.createClass(_.assign(Base(AddSessionAliasModalS
     AddSessionAliasModalActions.createAlias(this.state.alias, this.state.target, this.state.title);
   },
 
+  renderLinkInput: function () {
+    if (!this.state.newTarget) {
+      return (<div></div>);
+    }
+
+    return (
+      <div className='form-group'>
+        <input type='text' className='form-control target-input' name='target' placeholder='Session URL'
+               required="required" onKeyUp={this.checkForm} value={this.state.target}
+               onChange={this.updateValue.bind(this, 'target')} />
+      </div>
+    );
+  },
+
   render: function() {
     var disabled = this.state.formValid ? '' : 'disabled';
     return (
@@ -24,7 +38,7 @@ var AddSessionAliasModal = React.createClass(_.assign(Base(AddSessionAliasModalS
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
-              <h3>Add Alias</h3>
+              <h3>Add Session Alias</h3>
             </div>
             <div className="modal-body">
               <form className="horizontal-form">
@@ -38,6 +52,7 @@ var AddSessionAliasModal = React.createClass(_.assign(Base(AddSessionAliasModalS
                          required="required" onKeyUp={this.checkForm} value={this.state.title}
                          onChange={this.updateValue.bind(this, 'title')} />
                 </div>
+                {this.renderLinkInput()}
               </form>
             </div>
             <div className="modal-footer">

@@ -56,6 +56,10 @@ class Session(models.Model):
     def id_from_hash(hash_id):
         return hash_obj.decode(hash_id)
 
+    @staticmethod
+    def parse_hash_from_link(link):
+        return link.split('/')[4]
+
     def get_absolute_url(self):
         return '/data/{hash}/{slug}'.format(
             hash=self.hash_id,

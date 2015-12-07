@@ -18,6 +18,11 @@ class AdminSessionAliasApi(View):
         alias = request.POST.get('alias')
         target = request.POST.get('target')
         title = request.POST.get('title')
+
+        if isinstance(target, str):
+            hash_id = Session.parse_hash_from_link(target)
+            target = Session.id_from_hash(hash_id)[0]
+
         session = get_object_or_404(Session, id=target)
         SessionAlias.objects.create(alias=alias,
                                     session=session,

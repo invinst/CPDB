@@ -2,6 +2,7 @@ var _ = require('lodash');
 var React = require('react');
 
 var AddSessionAliasModal = require('./SessionSection/AddSessionAliasModal.react');
+var AddSessionAliasModalActions = require('actions/SessionSection/AddSessionAliasModalActions');
 var Search = require('components/SessionSection/Search.react');
 var Tabs = require('components/SessionSection/Tabs.react');
 var SessionsAPI = require('utils/SessionsAPI');
@@ -24,6 +25,13 @@ var SessionSection = React.createClass(_.assign(Base(SessionSectionStore), {
     return <SessionAliasList />
   },
 
+  showAliasModal: function () {
+    AddSessionAliasModalActions.show({
+      alias: '',
+      target: ''
+    });
+  },
+
   render: function() {
     return (
       <div>
@@ -32,6 +40,12 @@ var SessionSection = React.createClass(_.assign(Base(SessionSectionStore), {
             <h1>
               Sessions Management
             </h1>
+          </div>
+          <div id='add-alias' className='col-md-3 col-xs-3 text-right'>
+            <button className='btn btn-primary' onClick={this.showAliasModal}>
+              <i className='fa fa-plus' />
+              <span>Add Alias</span>
+            </button>
           </div>
         </div>
         <div>
