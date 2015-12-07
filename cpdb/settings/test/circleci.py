@@ -25,3 +25,10 @@ CACHES = {
 }
 
 COMPRESS_ENABLED = False
+
+# This should be override in corresponding settings
+SITE_INFO = {
+    'domain': 'cpdb.test:8000',
+    'mobile_host': 'thisisadomainformobilesite',  # We use it in test env to make sure that we will never have any
+                                                  # domain that match it
+}
