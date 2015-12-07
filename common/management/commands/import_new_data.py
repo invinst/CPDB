@@ -55,10 +55,10 @@ class Command(BaseCommand):
             'undecided': [],
         }
 
-        # self.import_officers(*args, **options)
+        self.import_officers(*args, **options)
+        self.reassign_allegations(*args, **options)
+        management.call_command('calculate_allegations_count')
         self.check_officer_count(*args, **options)
-        # self.reassign_allegations(*args, **options)
-        # management.call_command('calculate_allegations_count')
         # management.call_command('geocode_allegations')
 
     def reassign_allegations(self, *args, **options):
@@ -208,6 +208,7 @@ class Command(BaseCommand):
 
         for row in self.rows['new']:
             info = self.build_officer_info(row)
+
             officer = Officer.objects.create(**info)
             self.wudi_id_mapping[row[0]] = officer
 
@@ -260,6 +261,16 @@ class Command(BaseCommand):
                 info[col] = row[OFFICER_COLS[col]]
             else:
                 info[col] = None
+
+            if info[col]:
+
+                if col == 'officer_first':
+                    info[col] = info[col].capitalize()
+
+                elif col == 'officer_last':
+                    info[col] = info[col].capitalize()
+                    for r in [['Iv', 'IV'], ['iii', 'III'], ['ii', 'II']]:
+                        info[col] = info[col].replace(r[0], r[1])
 
         return info
 
