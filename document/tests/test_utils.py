@@ -13,13 +13,15 @@ fake = Faker()
 
 class SendDocumentNotificationTestCase(SimpleTestCase):
     document_cloud_path = 'common.management.commands.update_documents.DocumentCloud'
+    notification_path = 'document.utils.send_document_notification_by_crid_and_link'
 
     def setUp(self):
         self.allegation = AllegationFactory(document_title='UNSET')
 
     def test_send_notification_on_new_document(self):
-        notification_path = 'document.utils.send_document_notification_by_crid_and_link'
-        with mock.patch(notification_path) as send_notification:
+        allegation = AllegationFactory(document_title='UNSET')
+
+        with mock.patch(self.notification_path) as send_notification:
             with mock.patch(self.document_cloud_path) as document_cloud:
                 title = fake.name()
 
@@ -27,10 +29,13 @@ class SendDocumentNotificationTestCase(SimpleTestCase):
                 document = mock.Mock(title=title, id="1-2-3")
                 instance.documents.search.return_value = [document]  # search return result
 
-                management.call_command('update_documents')
+                management.call_command('update_documents', end=allegation.id-1)
 
-                allegation = Allegation.objects.get(id=self.allegation.id)
-                allegation.document_title.should.equal(title)
+                first_allegation = Allegation.objects.get(id=self.allegation.id)
+                first_allegation.document_title.should.equal(title)
+
+                second_allegation =  Allegation.objects.get(id=allegation.id)
+                second_allegation.document_title.should.equal('UNSET')
 
                 send_notification.called.should.be.true
 
