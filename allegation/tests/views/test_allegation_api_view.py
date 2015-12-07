@@ -167,6 +167,10 @@ class AllegationApiViewTestCase(AllegationFilterMixin, AllegationApiTestBase):
             races.should.contain(race)
 
     def test_filter_by_officer_gender(self):
+        officer = self.allegations[0].officer
+        officer.gender = 'M'
+        officer.save()
+
         data = self.fetch_allegations(officer__gender='M')
         for row in data:
             row['officer']['gender'].should.equal('M')
