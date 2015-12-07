@@ -5,9 +5,6 @@ from common.tests.core import SimpleTestCase
 from common.models import Allegation
 
 
-RACE_GENDER_API_ENDPOINT = reverse('allegation:allegation-race-gender-api')
-
-
 class InvestigationAPIViewTestCase(SimpleTestCase):
     def test_get_investigation(self):
         allegation = AllegationFactory()
