@@ -12,10 +12,7 @@ class SettingsEditTestCase(BaseAdminTestCase):
         self.setting.story_types_order = ''
         self.setting.save()
 
-        self.login_user()
-        self.visit('/admin/')
-        self.element_by_tagname_and_text('span', 'Settings').click()
-        self.until_ajax_complete()
+        self.go_to_section('Settings')
 
     def tearDown(self):
         super(SettingsEditTestCase, self).tearDown()
