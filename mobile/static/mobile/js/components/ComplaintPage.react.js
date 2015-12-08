@@ -29,6 +29,29 @@ var ComplaintPage = React.createClass({
             'age': 46
           }
         ],
+        'involved_officer': [
+          {
+            'name': 'Raymond Piwinicki',
+            'description': 'Male (White)'
+          },
+          {
+            'name': 'Anthony Martin',
+            'description': 'Male (White)'
+          },
+          {
+            'name': 'James Foley',
+            'description': 'Male (White)'
+          },
+          {
+            'name': 'Keith Rogan',
+            'description': 'Male (White)'
+          },
+          {
+            'name': 'Eric Olson',
+            'description': 'Male (White)'
+          },
+
+        ],
         'info': {
           'id': 11594,
           'crid': '1061421',
@@ -60,17 +83,19 @@ var ComplaintPage = React.createClass({
   render: function () {
     var complaint = this.state.complaint;
     var info = complaint.info;
-    var complaining_witness = complaint.complaining_witness;
-
+    var complainingWitness = complaint['complaining_witness'];
+    var involvedOfficers = complaint['involved_officer']
     return (
       <div className='complaint-page'>
-        <div className='content'>
+        <div className='container content'>
           <SearchBar />
           <div className='main-content'>
             <ComplaintDetail info={info} />
             <InvestigationTimeline start_date={info.start_date} end_date={info.end_date}
                                    incident_date={info.incident_date}/>
-            <ComplainingWitness complaining_witness={complaining_witness}/>
+            <ComplainingWitness complainingWitness={complainingWitness}/>
+            <OfficerInvolved involvedOfficers={involvedOfficers}/>
+            <InvestigatorSection />
           </div>
         </div>
       </div>
