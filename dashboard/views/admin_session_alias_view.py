@@ -45,7 +45,7 @@ class AdminSessionsAliasViewSet(viewsets.ModelViewSet):
         session_id = Session.id_from_hash(query)
 
         if session_id:
-            return queryset.filter(id=session_id[0])
+            return queryset.filter(session=session_id[0])
 
         if query:
             queryset = queryset.filter(session__title__icontains=query.lower())
