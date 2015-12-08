@@ -1,7 +1,5 @@
 var React = require('react');
 
-var SimpleTimeline = require('components/Shared/SimpleTimeline.react');
-
 
 var InvestigationTimeline = React.createClass({
   render: function () {

@@ -8,9 +8,8 @@ var InvestigatorSection = React.createClass({
     return (
       <div className='investigator'>
         <div className='section-header'>
-          <div className='section-title'>Investigators</div>
+          <div className='section-title'>Investigator</div>
         </div>
-        <InvestigatorCard />
       </div>
     )
   }
