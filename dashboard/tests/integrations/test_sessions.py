@@ -75,9 +75,12 @@ class SessionManagementTestCase(BaseAdminTestCase):
 
         self.number_of_sessions().should.equal(1)
 
-    def create_alias(self, alias, title=None, target=None):
-        self.until(lambda: self.find('.add-alias').click() and self.should_see_text('Add Alias'))
+    def create_alias(self, alias, title=None):
+        self.find('.add-alias').click()
+        self.until(lambda: self.find('.alias-input').is_displayed())
+        self.fill_alias_form(alias, title=title)
 
+    def fill_alias_form(self, alias, title=None, target=None):
         self.find('.alias-input').send_keys(alias)
         if title:
             self.find('.title-input').send_keys(title)
@@ -96,9 +99,14 @@ class SessionManagementTestCase(BaseAdminTestCase):
 
         SessionAlias.objects.get(alias=alias).session.id.should.equal(session.id)
 
+    def test_add_alias_custom_title(self):
         second_alias = fake.name()
         custom_title = fake.name()
+        session = SessionFactory()
+
+        self.go_to_sessions()
         self.create_alias(second_alias, custom_title)
+
         SessionAlias.objects.get(alias=second_alias, title=custom_title).session.id.should.equal(session.id)
 
 
@@ -145,7 +153,7 @@ class SessionManagementTestCase(BaseAdminTestCase):
         self.go_to_sessions()
         self.button('Add Alias').click()
         self.until(lambda: self.should_see_text('Add Session Alias'))
-        self.create_alias(alias, title, target)
+        self.fill_alias_form(alias, title=title, target=target)
 
         session_alias = SessionAlias.objects.get(session_id=session.id)
         session_alias.alias.should.equal(alias)
