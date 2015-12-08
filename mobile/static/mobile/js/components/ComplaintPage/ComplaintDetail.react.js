@@ -6,7 +6,7 @@ var ComplaintDetail = React.createClass({
     var info = this.props.info;
     
     return (
-      <div className='complaint-detail'>
+      <div className='complaint-detail pad'>
         <div className='headline'>
           <span className='crid-info inline-block half-width align-left'>
             <span className='crid-title'>CRID</span>

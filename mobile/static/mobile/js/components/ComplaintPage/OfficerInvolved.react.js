@@ -4,7 +4,7 @@ var React = require('react');
 var OfficerInvolved = React.createClass({
   renderOfficerRow: function (officer) {
     return (
-      <div className='officer-card'>
+      <div className='officer-card pad'>
         <div className='row'>
           <div className='one column circle-wrapper'>
             <div className='circle'></div>
@@ -35,8 +35,10 @@ var OfficerInvolved = React.createClass({
     return (
       <div className='officer-involved'>
         <div className='row section-header'>
-          <span className='section-title bold'>Officers involveds&nbsp;</span>
-          <span className='title-count normal-weight'>({numberOfInvolvedOfficers})</span>
+          <span className='pad'>
+            <span className='section-title bold'>Officers involveds&nbsp;</span>
+            <span className='title-count normal-weight'>({numberOfInvolvedOfficers})</span>
+          </span>
         </div>
         {this.renderOfficerList(involvedOfficers)}
       </div>

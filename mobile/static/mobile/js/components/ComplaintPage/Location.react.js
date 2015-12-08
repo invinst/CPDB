@@ -10,20 +10,20 @@ var Location = React.createClass({
     return (
       <div className='location'>
         <div className='section-header bold'>
-          <div className='section-title'>Location of incident</div>
+          <div className='section-title pad'>Location of incident</div>
         </div>
-        <div className='location-detail'>
+        <div className='location-detail pad'>
           <div className='bold'>9500 S Throop St.</div>
           <div>
-            <label>Location type: </label>
+            <label>Location type </label>
             <span>{info.location}</span>
           </div>
           <div>
-            <label>City: </label>
+            <label>City </label>
             <span>{info.city}</span>
           </div>
         </div>
-        <div className='location-map'>
+        <div className='location-map pad'>
           <Map />
         </div>
       </div>

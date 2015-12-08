@@ -4,9 +4,14 @@ var React = require('react');
 var ComplainingWitness = React.createClass({
   renderComplaintWitnessRow: function (complaningWitness) {
     return (
-        <li className='complaining-witness-row'>
+      <div className='complaining-witness-row row'>
+        <div className='one column circle-wrapper'>
+            <div className='small-circle background-black circle'></div>
+          </div>
+        <div className='eleven columns'>
           {complaningWitness.gender}, {complaningWitness.race}, Age {complaningWitness.age}
-        </li>
+        </div>
+      </div>
     )
   },
 
@@ -20,12 +25,14 @@ var ComplainingWitness = React.createClass({
     return (
       <div className='complaining-witness'>
         <div className='section-header'>
-          <span className='section-title bold'>Complaining Witness&nbsp;</span>
-          <span className='title-count normal-weight'>({numberOfComplainingWitness})</span>
+          <span className='pad'>
+            <span className='section-title bold'>Complaining Witness&nbsp;</span>
+            <span className='title-count normal-weight'>({numberOfComplainingWitness})</span>
+          </span>
         </div>
-        <ul className='complaining-witness-list'>
+        <div className='complaining-witness-list pad'>
           {this.renderComplainingWitnessList()}
-        </ul>
+        </div>
       </div>
     )
   }

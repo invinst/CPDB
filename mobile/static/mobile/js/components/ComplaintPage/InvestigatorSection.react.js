@@ -4,7 +4,7 @@ var React = require('react');
 var InvestigatorSection = React.createClass({
   renderInvestigator: function (investigator) {
     return (
-      <div className='investigator-card'>
+      <div className='investigator-card pad'>
         <div className='row'>
           <div className='one column circle-wrapper'>
             <div className='small-circle background-black circle'></div>
@@ -26,7 +26,7 @@ var InvestigatorSection = React.createClass({
     return (
       <div className='investigator-section'>
         <div className='row section-header'>
-          <span className='section-title bold'>Investigator</span>
+          <span className='section-title bold pad'>Investigator</span>
         </div>
         {this.renderInvestigator(investigator)}
       </div>
