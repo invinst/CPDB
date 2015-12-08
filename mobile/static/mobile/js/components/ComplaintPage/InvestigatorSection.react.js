@@ -7,7 +7,7 @@ var InvestigatorSection = React.createClass({
       <div className='investigator-card'>
         <div className='row'>
           <div className='one column circle-wrapper'>
-            <div className='circle'></div>
+            <div className='small-circle background-black circle'></div>
           </div>
           <div className='eleven columns'>
             <div className='investigator'>

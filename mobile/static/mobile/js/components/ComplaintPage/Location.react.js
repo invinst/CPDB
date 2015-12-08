@@ -5,27 +5,22 @@ var Map = require('components/Shared/Map.react');
 
 var Location = React.createClass({
   render: function () {
+    var info = this.props.info;
+
     return (
       <div className='location'>
-        <div className='section-header'>
-          <div className='section-title'>Where</div>
+        <div className='section-header bold'>
+          <div className='section-title'>Location of incident</div>
         </div>
         <div className='location-detail'>
+          <div className='bold'>9500 S Throop St.</div>
           <div>
-            <label>Beat</label>
-            <span>1214</span>
+            <label>Location type: </label>
+            <span>{info.location}</span>
           </div>
           <div>
-            <label>Location</label>
-            <span>17</span>
-          </div>
-          <div>
-            <label>Address</label>
-            <span>9500 S Throop St.</span>
-          </div>
-          <div>
-            <label>City</label>
-            <span>Chicago IL 60643</span>
+            <label>City: </label>
+            <span>{info.city}</span>
           </div>
         </div>
         <div className='location-map'>
