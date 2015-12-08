@@ -19,7 +19,7 @@ class SessionModelTestCase(SimpleTestCase):
                     'value': [area.id],
                 },
                 'officer__allegations_count__gt': {
-                    'value': [9],
+                    'value': [10],
                 },
             },
         }
@@ -35,6 +35,6 @@ class SessionModelTestCase(SimpleTestCase):
             }],
             'officer__allegations_count__gt': [{
                 'text': 'Repeater (10+ complaints)',
-                'value': 9,
+                'value': 10,
             }],
         })
