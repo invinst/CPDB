@@ -43,16 +43,17 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         self.visit_home()
         self.browser.execute_script('jQuery("#hfc-cleanslate").hide();')
 
-        self.fill_in('#autocomplete', 'rep')
-        self.until(lambda: self.element_by_classname_and_text('ui-autocomplete-category', 'Repeater (10+ complaints)').should.be.ok)
+        self.find('#autocomplete').send_keys('rep')
+        self.until(lambda: self.element_by_classname_and_text('ui-autocomplete-category', 'Repeater').should.be.ok)
 
     def test_filter_by_repeater(self):
         self.visit_home()
         self.browser.execute_script('jQuery("#hfc-cleanslate").hide();')
 
-        self.fill_in('#autocomplete', 'rep')
+        self.find('#autocomplete').send_keys('rep')
         self.until(lambda: self.find('.autocomplete-officer__allegations_count__gt').click())
-        self.until(lambda: self.element_by_classname_and_text('filter-name', 'Repeater (10+ complaints)').should.be.ok)
+        self.until(lambda: self.find('.filter-name').should.be.ok)
+        self.find('.filter-name').text.should.contain('Repeater')
 
     def number_of_complaints(self):
         return len(self.find_all('.complaint-row'))
