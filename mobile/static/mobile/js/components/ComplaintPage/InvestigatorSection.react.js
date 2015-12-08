@@ -1,16 +1,34 @@
 var React = require('react');
 
-var InvestigatorCard = require('components/Shared/InvestigatorCard.react');
-
 
 var InvestigatorSection = React.createClass({
-  render: function () {
+  renderInvestigator: function (investigator) {
     return (
-      <div className='investigator'>
-        <div className='section-header'>
-          <div className='section-title'>Investigators</div>
+      <div className='investigator-card pad'>
+        <div className='row'>
+          <div className='one column circle-wrapper'>
+            <div className='small-circle background-black circle'></div>
+          </div>
+          <div className='eleven columns'>
+            <div className='investigator'>
+              <div className='name bold'>{investigator.name}</div>
+              <div className='rank'>{investigator['current_rank']}</div>
+            </div>
+          </div>
         </div>
-        <InvestigatorCard />
+      </div>
+    )
+  },
+
+  render: function () {
+    var investigator = this.props.investigator;
+
+    return (
+      <div className='investigator-section'>
+        <div className='row section-header'>
+          <span className='section-title bold pad'>Investigator</span>
+        </div>
+        {this.renderInvestigator(investigator)}
       </div>
     )
   }

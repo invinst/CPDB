@@ -1,22 +1,46 @@
 var React = require('react');
 
-var OfficerList = require('components/Shared/OfficerList.react');
-var Collapse = require('components/Shared/Collapse.react');
-
 
 var OfficerInvolved = React.createClass({
+  renderOfficerRow: function (officer) {
+    return (
+      <div className='officer-card pad'>
+        <div className='row'>
+          <div className='one column circle-wrapper'>
+            <div className='circle'></div>
+          </div>
+          <div className='eleven columns'>
+            <div className='officer'>
+              <div className='name bold'>{officer.name}</div>
+              <div className='description'>{officer.description}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  },
+
+  renderOfficerList: function (involvedOfficers) {
+    return (
+      <div className='officer-list'>
+        {involvedOfficers.map(this.renderOfficerRow)}
+      </div>
+    )
+  },
+
   render: function () {
+    var involvedOfficers = this.props.involvedOfficers;
+    var numberOfInvolvedOfficers = this.props.involvedOfficers.length;
+
     return (
       <div className='officer-involved'>
-        <Collapse maxHeight={5000}>
-          <div className='section-header'>
-            <span className='section-title'>Officers involved</span>
-            <span className='pull-right collapse-action'>Collapse</span>
-          </div>
-          <div className='collapse-content animation-long'>
-            <OfficerList/>
-          </div>
-        </Collapse>
+        <div className='row section-header'>
+          <span className='pad'>
+            <span className='section-title bold'>Officers involveds&nbsp;</span>
+            <span className='title-count normal-weight'>({numberOfInvolvedOfficers})</span>
+          </span>
+        </div>
+        {this.renderOfficerList(involvedOfficers)}
       </div>
     )
   }
