@@ -97,9 +97,14 @@ class SessionManagementTestCase(BaseAdminTestCase):
 
         SessionAlias.objects.get(alias=alias).session.id.should.equal(session.id)
 
+    def test_add_alias_custom_title(self):
         second_alias = fake.name()
         custom_title = fake.name()
+        session = SessionFactory()
+
+        self.go_to_sessions()
         self.create_alias(second_alias, custom_title)
+
         SessionAlias.objects.get(alias=second_alias, title=custom_title).session.id.should.equal(session.id)
 
 
