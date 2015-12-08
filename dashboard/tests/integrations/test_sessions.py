@@ -76,7 +76,8 @@ class SessionManagementTestCase(BaseAdminTestCase):
         self.number_of_sessions().should.equal(1)
 
     def create_alias(self, alias, title=None, target=None):
-        self.until(lambda: self.find('.add-alias').click() and self.should_see_text('Add Alias'))
+        self.find('.add-alias').click()
+        self.until(lambda: self.find('.alias-input').is_displayed())
 
         self.find('.alias-input').send_keys(alias)
         if title:
