@@ -4,8 +4,8 @@ var React = require('react');
 
 var Base = require('components/Base.react');
 
-var OfficerResult = require('components/MainPage/SearchReultSection/OfficerResult.react');
-var ComplaintResult = require('components/MainPage/SearchReultSection/ComplaintResult.react');
+var OfficerResult = require('components/MainPage/SearchResultSection/OfficerResult.react');
+var ComplaintResult = require('components/MainPage/SearchResultSection/ComplaintResult.react');
 var SearchResultSectionStore = require('stores/MainPage/SearchResultSectionStore');
 var SearchResultSectionActions = require('actions/MainPage/SearchResultSectionActions')
 
