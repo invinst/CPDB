@@ -61,16 +61,16 @@ var Officer = React.createClass({
        + '"></iframe>';
   },
 
-  renderAllegationsCount: function (count) {
+  renderAllegationsCount: function (officer) {
     if (this.props.filtered) {
       return (
         <div>
-          <Counter to={count} />
+          <Counter to={officer.filtered_allegations_count} />
         </div>
       );
     } else {
       return (
-        <div>{count}</div>
+        <div>{officer.allegations_count}</div>
       )
     }
   },
@@ -91,7 +91,7 @@ var Officer = React.createClass({
             </div>
             <div className='col-xs-3 officer-complaints-disciplines'>
               <div>{officer.discipline_count}</div>
-              {this.renderAllegationsCount(officer.allegations_count)}
+              {this.renderAllegationsCount(officer)}
             </div>
           </div>
         </div>
