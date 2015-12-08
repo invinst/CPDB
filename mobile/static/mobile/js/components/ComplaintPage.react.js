@@ -1,12 +1,10 @@
 var React = require('react');
 
-var About = require('components/Shared/About.react');
 var ComplaintDetail = require('components/ComplaintPage/ComplaintDetail.react');
 var ComplainingWitness = require('components/ComplaintPage/ComplainingWitness.react');
 var OfficerInvolved = require('components/ComplaintPage/OfficerInvolved.react');
 var InvestigatorSection = require('components/ComplaintPage/InvestigatorSection.react');
 var InvestigationTimeline = require('components/ComplaintPage/InvestigationTimeline.react');
-var Logo = require('components/Shared/Logo.react');
 var Location = require('components/ComplaintPage/Location.react');
 var SearchBar = require('components/Shared/SearchBar.react');
 
@@ -92,10 +90,11 @@ var ComplaintPage = React.createClass({
           <div className='main-content'>
             <ComplaintDetail info={info} />
             <InvestigationTimeline start_date={info.start_date} end_date={info.end_date}
-                                   incident_date={info.incident_date}/>
-            <ComplainingWitness complainingWitness={complainingWitness}/>
-            <OfficerInvolved involvedOfficers={involvedOfficers}/>
-            <InvestigatorSection investigator={investigator}/>
+                                   incident_date={info.incident_date} />
+            <ComplainingWitness complainingWitness={complainingWitness} />
+            <OfficerInvolved involvedOfficers={involvedOfficers} />
+            <InvestigatorSection investigator={investigator} />
+            <Location info={info} />
           </div>
         </div>
       </div>
