@@ -73,7 +73,7 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         self.visit_home()
         current_url = self.browser.current_url
 
-        self.find('#autocomplete').send_keys(query)
+        self.fill_in('#autocomplete', query)
         self.until(lambda: self.find('.autocomplete-session').click())
         self.until(lambda: self.browser.current_url != current_url)
 
@@ -84,7 +84,7 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         self.visit_home()
         self.browser.execute_script('jQuery("#hfc-cleanslate").hide();')
 
-        self.fill_in('#autocomplete', 'rep')
+        self.find('#autocomplete').send_keys('rep')
         self.until(lambda: self.find('.autocomplete-officer__allegations_count__gt').click())
         self.until(lambda: self.find('.filter-name').should.be.ok)
         self.find('.filter-name').text.should.contain('Repeater')
