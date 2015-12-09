@@ -62,4 +62,3 @@ SITE_INFO = {
 }
 
 USE_TZ = False
-
