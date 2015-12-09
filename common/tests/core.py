@@ -15,6 +15,7 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.select import Select
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+import sure
 
 from api.models import Setting
 from common.factories import UserFactory
