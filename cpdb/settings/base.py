@@ -157,7 +157,7 @@ BOWER_INSTALLED_APPS = (
     'c3',
     'components-font-awesome#4.4.0',
     'moment',
-    'highcharts#4.1.6',
+    'highcharts#4.1.10',
     'pluralize',
     'jqueryui-touch-punch#4bc0091452',
     'zeroclipboard',
