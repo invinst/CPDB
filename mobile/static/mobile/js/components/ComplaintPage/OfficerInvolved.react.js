@@ -6,7 +6,7 @@ var OfficerInvolved = React.createClass({
     return (
       <div className='officer-card pad'>
         <div className='row'>
-          <div className='one column circle-wrapper'>
+          <div className='one column circle-wrapper center'>
             <div className='circle'></div>
           </div>
           <div className='eleven columns'>
