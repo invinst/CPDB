@@ -33,7 +33,6 @@ class AllegationFilterTestCase(BaseLiveTestCase):
             self.element_by_tagname_and_text('span', filter_text, parent=".filters").click()
             self.until(self.ajax_complete)
             number_of_final_findings = len(FILTERS[filter_text])
-            self.browser.get_screenshot_as_file('final_finding.png')
             self.number_of_complaints().should.equal(number_of_final_findings)
 
         self.element_by_tagname_and_text('span', 'Disciplined').click()
@@ -45,7 +44,7 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         self.browser.execute_script('jQuery("#hfc-cleanslate").hide();')
 
         self.find('#autocomplete').send_keys('rep')
-        self.until(lambda: self.element_by_classname_and_text('ui-autocomplete-category', 'Repeater (10+ complaints)').should.be.ok)
+        self.until(lambda: self.element_by_classname_and_text('ui-autocomplete-category', 'Repeater').should.be.ok)
 
     def test_filter_by_repeater(self):
         self.visit_home()
@@ -53,7 +52,8 @@ class AllegationFilterTestCase(BaseLiveTestCase):
 
         self.find('#autocomplete').send_keys('rep')
         self.until(lambda: self.find('.autocomplete-officer__allegations_count__gt').click())
-        self.until(lambda: self.element_by_classname_and_text('filter-name', 'Repeater (10+ complaints)').should.be.ok)
+        self.until(lambda: self.find('.filter-name').should.be.ok)
+        self.find('.filter-name').text.should.contain('Repeater')
 
     def number_of_complaints(self):
         return len(self.find_all('.complaint-row'))

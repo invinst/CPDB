@@ -3,7 +3,7 @@ import factory
 import datetime
 
 from django.contrib.gis.geos import MultiPolygon, Polygon
-
+from django.utils import timezone
 from faker import Faker
 
 from allegation.models import Download
@@ -11,6 +11,10 @@ from common.models import AllegationCategory, Officer, Area, Allegation, Investi
     OUTCOMES, PoliceWitness, GENDER_DICT, RACES_DICT, FINDINGS
 
 fake = Faker()
+
+
+def capitalize_word():
+    return "{word}xa".format(word=fake.word()).capitalize()
 
 
 class AreaFactory(factory.django.DjangoModelFactory):
@@ -25,14 +29,6 @@ class AreaFactory(factory.django.DjangoModelFactory):
                                                                (87.940101, 41.644286),
                                                                (87.940101, 42.023135)))))
 
-def capitalize_word():
-    return "{word}xa".format(word=fake.word()).capitalize()
-
-
-class PoliceWitnessFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = PoliceWitness
-
 
 class OfficerFactory(factory.django.DjangoModelFactory):
     class Meta:
@@ -44,6 +40,14 @@ class OfficerFactory(factory.django.DjangoModelFactory):
     star = factory.Sequence(lambda n: n)
     gender = factory.Sequence(lambda n: random.choice(list(GENDER_DICT.keys())))
     race = factory.Sequence(lambda n: random.choice(list(RACES_DICT.keys())))
+    allegations_count = factory.Sequence(lambda n: n)
+
+
+class PoliceWitnessFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = PoliceWitness
+    crid = factory.Sequence(lambda n: str(n))
+    officer = factory.SubFactory(OfficerFactory)
 
 
 class InvestigatorFactory(factory.django.DjangoModelFactory):
@@ -85,6 +89,10 @@ class AllegationFactory(factory.django.DjangoModelFactory):
     officer = factory.SubFactory(OfficerFactory)
     point = None
     document_requested = False
+    document_title = factory.Sequence(lambda n: capitalize_word())
+    start_date = factory.Sequence(lambda n: timezone.now() + datetime.timedelta(hours=n))
+    end_date = factory.Sequence(lambda n: timezone.now() + datetime.timedelta(hours=n*2))
+    beat = factory.SubFactory(AreaFactory)
 
     @factory.post_generation
     def areas(self, create, extracted, **kwargs):
@@ -97,7 +105,7 @@ class AllegationFactory(factory.django.DjangoModelFactory):
         if extracted:
             for area in extracted:
                 self.areas.add(area)
-                if not self.point and random.randint(0,10) > 5:
+                if not self.point:
                     self.point = area.polygon.centroid
                     self.save()
 

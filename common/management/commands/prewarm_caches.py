@@ -15,7 +15,6 @@ CACHE_APIS = [
     'allegation-api-summary',
     'allegation-race-gender-api',
     'allegation-api-analysis',
-    'allegation-api-chart',
     'allegation-api-officers',
     'allegation-api-sunburst'
 ]

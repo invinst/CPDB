@@ -95,7 +95,7 @@ var StoryForm = React.createClass(_.assign(Base(StoryFormStore), {
         </div>
         {this.generateFormElement('slug', 'Slug', 'story_', true)}
         {this.generateFormMediumEditorElement('short_description', 'Short Description', 'story_', true)}
-        {this.generateFormMediumEditorElement('content', 'Content', 'story_', true)}
+        {this.generateFormMediumEditorElement('content', 'Content', 'story_', false)}
         <div className="form-group">
           <label htmlFor='story_type' className="col-lg-2 col-md-2 col-xs-2">Type</label>
           <div className="col-lg-10 col-md-10 col-xs-10">

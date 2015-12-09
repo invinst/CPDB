@@ -1,20 +1,6 @@
-"""cpdb URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/1.8/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  url(r'^$', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  url(r'^$', Home.as_view(), name='home')
-Including another URLconf
-    1. Add an import:  from blog import urls as blog_urls
-    2. Add a URL to urlpatterns:  url(r'^blog/', include(blog_urls))
-"""
+import debug_toolbar
 from django.conf import settings
-from django.conf.urls import include, url, patterns
+from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
@@ -25,7 +11,6 @@ from allegation.views import AllegationListView
 from allegation.views.session_view import InitSession
 from allegation.views.landing_view import LandingView
 from dashboard.views.admin_analysis_dashboard_view import AdminAnalysisDashboardView
-from mobile.views import MobileSiteView
 
 urlpatterns = [
     url(r'^admin/$', login_required(AdminAnalysisDashboardView.as_view()), name='my-view'),
@@ -35,7 +20,7 @@ urlpatterns = [
     url(r'^share/', include('share.urls', namespace='share')),
     url(r'^officer/', include('officer.urls', namespace='officer')),
     url(r'^document/', include('document.urls', namespace='document')),
-    url(r'^mobile/', MobileSiteView.as_view(), name='mobile'),
+    url(r'^mobile/', include('mobile.urls', namespace='mobile')),
     url(r'^embed/', include('embed.urls', namespace='embed')),
     url(r'^api/', include('api.urls')),
     url(r'^init/', InitSession.as_view(), name='init'),
@@ -52,9 +37,9 @@ if settings.DJANGO_ENV == 'test':
 
 handler404 = 'common.views.handler404'
 
-
-if settings.DEBUG:
-    import debug_toolbar
-    urlpatterns += patterns('',
-        url(r'^__debug__/', include(debug_toolbar.urls)),
-    )
+DEBUG_TOOLBAR_URL = [
+    url(r'^__debug__/', include(debug_toolbar.urls)),
+]
+if not settings.DEBUG:
+    DEBUG_TOOLBAR_URL = []
+urlpatterns += DEBUG_TOOLBAR_URL

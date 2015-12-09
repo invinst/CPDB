@@ -83,6 +83,11 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
     }, 500);
   },
 
+  startNewSession: function (e) {
+    e.preventDefault();
+    SessionAPI.getSessionInfo('');
+  },
+
   render: function () {
     var mobileExpanded = isMobile.any && this.state.searchExpanded;
 
@@ -109,7 +114,9 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
     return (
       <nav className="landing-nav">
         <div className="items clearfix">
-          <Link to={dataToolUrl}><img className="pull-left cpdp-logo" src="/static/img/cpdp-logo.svg" /></Link>
+          <a href="/" onClick={this.startNewSession} id="logo_link">
+            <img className="pull-left cpdp-logo" src="/static/img/cpdp-logo.svg" />
+          </a>
           <div className={siteTitleClass}>
             <SiteTitle changable={true} />
           </div>

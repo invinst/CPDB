@@ -44,8 +44,6 @@ class AllegationListView(TemplateView):
         return super(AllegationListView, self).get(request, *args, **kwargs)
 
 
-
-
 class AreaAPIView(View):
     def get(self, request):
         areas = Area.objects.all()
@@ -99,19 +97,19 @@ class AllegationGISApiView(AllegationAPIView):
                     "type": "Feature",
                     "properties": {
                         "name": allegation.crid,
+                        'id': allegation.id
                     },
                     'geometry': point
                 }
                 if allegation.cat:
                     allegation_json['properties']['type'] = allegation.cat.allegation_name,
-            allegation_dict['features'].append(allegation_json)
+                allegation_dict['features'].append(allegation_json)
 
         content = json.dumps(allegation_dict)
         return HttpResponse(content)
 
 
 class AllegationClusterApiView(AllegationAPIView):
-
     def get(self, request):
         areas = request.GET.getlist('areas__id')
         ignore_filters = ['areas__id']
@@ -148,7 +146,7 @@ class AllegationClusterApiView(AllegationAPIView):
                 allegation_json = {
                     "type": "Feature",
                     "properties": {
-                        "name": cluster[0],
+
                     },
                     'geometry': {
                         'coordinates': [point.x, point.y],
@@ -272,58 +270,3 @@ class InvestigationAPIView(View):
 
         content = JSONSerializer().serialize(ret)
         return HttpResponse(content, content_type="application/json")
-
-
-class AllegationChartApiView(AllegationAPIView):
-    def get(self, request):
-        allegations = self.get_allegations()
-
-        count_query = allegations.values_list('cat__category').annotate(dcount=Count('id'))
-        count_by_category = dict(count_query)
-
-        discipline_allegations = allegations.exclude(final_outcome__in=NO_DISCIPLINE_CODES)
-        discipline_count_query = discipline_allegations.values_list('cat__category').annotate(dcount=Count('id'))
-        discipline_count_by_category = dict(discipline_count_query)
-
-        data = []
-
-        for category in count_by_category:
-            not_disciplines = discipline_count_by_category.get(category, 0)
-            row = {
-                'name': category,
-                'total': count_by_category[category],
-                'drilldown': {
-                    'name': 'Result',
-                    'categories': ['Disciplines', 'Not Disciplines'],
-                    'data': [count_by_category[category] - not_disciplines, not_disciplines],
-                }
-            }
-            data.append(row)
-
-        content = JSONSerializer().serialize({
-            'data': data
-        })
-        return HttpResponse(content, content_type="application/json")
-
-
-class AllegationCSVView(AllegationAPIView):
-    def get(self, request):
-        allegations = self.get_allegations()
-        output = io.StringIO()
-        writer = csv.writer(output, dialect='excel')
-        writer.writerow(["Unique id", "Observation date", "Latitude", "Longitude"])
-        for allegation in allegations:
-
-            date = allegation.incident_date
-            if not date or date.year <= 1970:
-                date = allegation.start_date
-            else:
-                date = date.date()
-
-            location = False
-            if not allegation.point or not date:
-                continue
-
-            writer.writerow([allegation.pk, date, allegation.point.y, allegation.point.x])
-        output.seek(0)
-        return HttpResponse(output.read(), content_type='text/csv')

@@ -205,27 +205,6 @@ Investigator"""
             sheet.write(row_count, 8, officer.star)
             row_count += 1
 
-    def write_sheet_data(self, name, data):
-        sheet = self.workbook.add_worksheet()
-        sheet.name = name
-        sheet.set_tab_color("#295c8b")
-
-        lines = data.splitlines()
-        headers = lines[0]
-
-        self.write_headers(sheet, headers.split("\t"))
-
-        line_count = len(lines)
-        row_count = 1
-        for i in range(1, line_count):
-            line = lines[i]
-            cols = line.split("\t")
-            count_count = 0
-            for col in cols:
-                sheet.write(row_count, count_count, col)
-                count_count += 1
-            row_count += 1
-
     def save_model(self):
         self.download.finished = True
         self.download.url = self.filename
