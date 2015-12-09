@@ -56,9 +56,6 @@ class ShareSessionAdmin(admin.ModelAdmin):
 
         return ', '.join(tags)
 
-    def query(self, obj):
-        return json.load(obj.query)
-
     def get_queryset(self, request):
         return Session.objects.all()
 

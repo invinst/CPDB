@@ -67,6 +67,7 @@ INSTALLED_APPS = (
     'embed',
     'dashboard',
     'api',
+    'mobile'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -116,9 +117,9 @@ WSGI_APPLICATION = 'cpdb.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'cpdb_old',
+        'NAME': os.environ.get('DB_NAME', 'cpdb'),
         'USER': os.environ.get('DB_USER', 'eastagile'),
-        'PASSWORD': '',
+        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
         'HOST': '127.0.0.1',
         ***REMOVED***
     }
@@ -171,13 +172,14 @@ BOWER_INSTALLED_APPS = (
     'bootstrap-tagsinput#0.4.2',
     'jquery.cookie#1.4.1',
     'c3',
-    'components-font-awesome',
+    'components-font-awesome#4.4.0',
     'moment',
     'highcharts#4.1.6',
     'pluralize',
     'jqueryui-touch-punch#4bc0091452',
     'zeroclipboard',
     'jquery-countTo#1.1.0',
+    'ratchet'
 )
 
 MEDIA_URL = '/media/'
@@ -232,7 +234,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 20,
 }
 
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+TEST_RUNNER = 'common.tests.runner.DjangoNoseTestSuiteRunner'
 
 SITE_ID = 1
 

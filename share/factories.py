@@ -16,11 +16,12 @@ class SessionFactory(factory.django.DjangoModelFactory):
     query = factory.Sequence(lambda n: {'title': fake.name()})
     ip = factory.Sequence(lambda n: '0.0.0.0')
     user_agent = factory.Sequence(lambda n: fake.name())
+    share_from = None
 
 
 class SettingFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Setting
 
-    key = factory.Sequence(lambda n: "key_{number}".format(number=n))
-    value = factory.Sequence(lambda n: fake.name())
+    default_site_title = factory.Sequence(lambda n: fake.name())
+    story_types_order = factory.Sequence(lambda n: fake.name())

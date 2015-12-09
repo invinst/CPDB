@@ -1,6 +1,6 @@
 import json
 
-from allegation.factories import OfficerFactory, AllegationCategoryFactory, AllegationFactory
+from allegation.factories import OfficerFactory, AllegationCategoryFactory, AllegationFactory, AreaFactory
 from common.models import AllegationCategory, Officer
 from common.tests.core import SimpleTestCase
 from search.factories import AliasFactory
@@ -18,6 +18,12 @@ class SuggestViewTestCase(SimpleTestCase):
             'term': term
         })
         return json.loads(response.content.decode())
+
+    def test_suggestion_no_query(self):
+        response = self.client.get("/search/suggest/", {
+            'term': ''
+        })
+        response.status_code.should.equal(400)
 
     def test_detect_suggest_type_officer_name(self):
         OfficerFactory(officer_first='Jerry', officer_last="Dao")
@@ -158,3 +164,10 @@ class SuggestViewTestCase(SimpleTestCase):
 
         alias = Alias.objects.get(id=alias.id)
         alias.num_usage.should.equal(1)
+
+    def test_suggest_area_type(self):
+        area = AreaFactory()
+        data = self.get_suggestion(area.name[0:3])
+        data.should.contain('areas__id')
+        data['areas__id'].should.have.length_of(1)
+        data['areas__id'][0].should.contain('type')

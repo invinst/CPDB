@@ -1,13 +1,9 @@
-from common.tests.core import BaseLiveTestCase
+from common.tests.core import BaseAdminTestCase
 from search.factories import SuggestionLogFactory, AliasFactory
 from search.models.alias import Alias
 
 
-class SearchResultTestCase(BaseLiveTestCase):
-    def setUp(self):
-        self.login_user()
-        self.visit('/admin/')
-
+class SearchResultTestCase(BaseAdminTestCase):
     def tearDown(self):
         Alias.objects.all().delete()
         super(SearchResultTestCase, self).tearDown()

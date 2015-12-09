@@ -6,6 +6,7 @@ billiard==3.3.0.20
 celery==3.1.18
 chardet==2.3.0
 coverage==3.7.1
+coveralls==1.1
 dj-database-url==0.3.0
 Django==1.8.1
 django-appconf==1.0.1
@@ -13,6 +14,7 @@ django-bower==5.0.4
 django-compressor==1.5
 django-cors-headers==1.1.0
 django-csvimport==2.4
+django-debug-toolbar==1.4
 django-extensions==1.5.3
 django-factory==0.11
 django-filter==0.11.0
@@ -34,6 +36,7 @@ kombu==3.0.26
 linecache2==1.0.0
 Markdown==2.6.2
 mock==1.0.1
+nose-timer==0.5.0
 pathtools==0.1.2
 pbr==0.11.0
 ply==3.6

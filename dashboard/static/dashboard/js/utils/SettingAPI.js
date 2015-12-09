@@ -18,20 +18,21 @@ var SettingAPI = {
     });
   },
 
-  save: function (data) {
+  save: function (setting) {
     if (ajax) {
       ajax.abort();
     }
 
-    params = {};
-    data.forEach(function(setting) {
-      params[setting.key] = setting.value;
-    });
-
-    ajax = jQuery.post(AppConstants.SETTINGS_API_SAVE_ENDPOINT, params, function(response) {
-      SettingActions.settingsUpdated(response);
-    }, 'json').fail(function (response) {
-      SettingActions.failedToUpdateSettingData(response);
+    ajax = jQuery.ajax({
+      type: 'PUT',
+      url: AppConstants.SETTINGS_API_ENDPOINT + setting.id + '/',
+      data: setting,
+      success: function(response) {
+        SettingActions.settingsUpdated(response);
+      },
+      error: function (response) {
+        SettingActions.failedToUpdateSettingData(response);
+      }
     });
   }
 };

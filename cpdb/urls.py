@@ -1,5 +1,6 @@
+import debug_toolbar
 from django.conf import settings
-from django.conf.urls import include, url, patterns
+from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.contrib.auth.decorators import login_required
@@ -23,6 +24,7 @@ urlpatterns = [
     url(r'^share/', include('share.urls', namespace='share')),
     url(r'^officer/', include('officer.urls', namespace='officer')),
     url(r'^document/', include('document.urls', namespace='document')),
+    url(r'^mobile/', include('mobile.urls', namespace='mobile')),
     url(r'^embed/', include('embed.urls', namespace='embed')),
     url(r'^api/', include('api.urls')),
     url(r'^init/', InitSession.as_view(), name='init'),
@@ -47,9 +49,9 @@ if settings.DJANGO_ENV == 'test':
 
 handler404 = 'common.views.handler404'
 
-
-if settings.DEBUG:
-    import debug_toolbar
-    urlpatterns += patterns('',
-        url(r'^__debug__/', include(debug_toolbar.urls)),
-    )
+DEBUG_TOOLBAR_URL = [
+    url(r'^__debug__/', include(debug_toolbar.urls)),
+]
+if not settings.DEBUG:
+    DEBUG_TOOLBAR_URL = []
+urlpatterns += DEBUG_TOOLBAR_URL
