@@ -26,10 +26,15 @@ class AdminSessionAliasApi(View):
             target = Session.id_from_hash(hash_id)[0]
 
         session = get_object_or_404(Session, id=target)
+
+        if title:
+            session.title = title
+            session.save()
+
         SessionAlias.objects.create(alias=alias,
                                     session=session,
                                     user=request.user,
-                                    title=title or session.title)
+                                    title=session.title)
 
         return HttpResponse(status=201)
 
