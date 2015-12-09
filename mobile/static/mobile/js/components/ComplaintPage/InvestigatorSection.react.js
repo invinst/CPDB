@@ -6,7 +6,7 @@ var InvestigatorSection = React.createClass({
     return (
       <div className='investigator-card pad'>
         <div className='row'>
-          <div className='one column circle-wrapper'>
+          <div className='one column circle-wrapper center'>
             <div className='small-circle background-black circle'></div>
           </div>
           <div className='eleven columns'>
