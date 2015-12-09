@@ -22,6 +22,7 @@ dependencies:
     - PYTHON=python2 npm install
     - PYTHON=python2 npm run circleci
     - PYTHON=python2 npm run circleci_admin
+    - PYTHON=python2 npm run circleci_mobile
     - pyenv local 3.4.2
   cache_directories:
     - "bower_components"
