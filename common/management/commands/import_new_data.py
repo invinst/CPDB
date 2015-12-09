@@ -56,9 +56,10 @@ class Command(BaseCommand):
         }
 
         self.import_officers(*args, **options)
-        self.check_officer_count(*args, **options)
         self.reassign_allegations(*args, **options)
         management.call_command('calculate_allegations_count')
+        management.call_command('clean_officer_names')
+        self.check_officer_count(*args, **options)
         # management.call_command('geocode_allegations')
 
     def reassign_allegations(self, *args, **options):
@@ -208,6 +209,7 @@ class Command(BaseCommand):
 
         for row in self.rows['new']:
             info = self.build_officer_info(row)
+
             officer = Officer.objects.create(**info)
             self.wudi_id_mapping[row[0]] = officer
 
@@ -284,6 +286,10 @@ class Command(BaseCommand):
                 mismatched['less'].append(row)
             elif len(officers) > count:
                 mismatched['more'].append(row)
+            else:
+                officer = officers[0]
+                if row[4] != officer.allegations_count:
+                    print('Different allegation count for %s' % officer.id)
 
         for group in mismatched:
             print(group, str(len(mismatched[group])))

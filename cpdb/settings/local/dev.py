@@ -57,3 +57,5 @@ if DEBUG_TOOLBAR_ENABLE:
     DEBUG_TOOLBAR_PATCH_SETTINGS = True
 
 DOMAIN = 'http://localhost:8000'
+
+USE_TZ = False
