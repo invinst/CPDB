@@ -143,9 +143,6 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
             world.browser = self.init_firefox()
         return world.browser
 
-    def set_browser(self, browser):
-        world.browser = browser
-
     @classmethod
     def setUpClass(cls):
         if not hasattr(LiveServerTestCase, 'static_collected') or not LiveServerTestCase.static_collected:
@@ -164,9 +161,6 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
 
     def hide_toastr(self):
         self.browser.execute_script("jQuery('#toast-container').html('');")
-
-    def create_url(self, page):
-        return '%s%s' % (self.live_server_url, page)
 
     def visit(self, page):
         if not page.startswith('http'):

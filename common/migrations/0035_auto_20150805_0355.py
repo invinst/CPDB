@@ -5,8 +5,7 @@ from django.db import models, migrations
 from django.core.management import call_command
 
 def set_school_grounds_radius(app, scheme):
-    #call_command('increase_school_radius', radius='1000')
-    pass
+    call_command('increase_school_radius', radius='1000')
 
 class Migration(migrations.Migration):
 
