@@ -27,12 +27,6 @@ class SettingsEditTestCase(BaseAdminTestCase):
         input_field.clear()
         input_field.send_keys(new_setting_value)
 
-        # Story Types Order
-        select = self.find('.Select-input > input')
-        select.send_keys(self.story.story_type)
-        self.until(self.ajax_complete)
-        self.element_by_classname_and_text('Select-option', self.story.story_type).click()
-
         self.button("Save").click()
 
         self.until(self.ajax_complete)
@@ -40,4 +34,3 @@ class SettingsEditTestCase(BaseAdminTestCase):
 
         setting_data = Setting.objects.all()[0]
         setting_data.default_site_title.should.equal(new_setting_value)
-        setting_data.story_types_order.should.equal(self.story.story_type)

@@ -522,6 +522,16 @@
       "from": "diffie-hellman@>=5.0.0 <6.0.0",
       "resolved": "https://registry.npmjs.org/diffie-hellman/-/diffie-hellman-5.0.0.tgz"
     },
+    "disposables": {
+      "version": "1.0.1",
+      "from": "disposables@>=1.0.1 <2.0.0",
+      "resolved": "https://registry.npmjs.org/disposables/-/disposables-1.0.1.tgz"
+    },
+    "dnd-core": {
+      "version": "1.2.2",
+      "from": "dnd-core@>=1.1.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/dnd-core/-/dnd-core-1.2.2.tgz"
+    },
     "dom-serializer": {
       "version": "0.1.0",
       "from": "dom-serializer@>=0.0.0 <1.0.0",
@@ -1015,6 +1025,11 @@
         }
       }
     },
+    "invariant": {
+      "version": "2.2.0",
+      "from": "invariant@>=2.0.0 <3.0.0",
+      "resolved": "https://registry.npmjs.org/invariant/-/invariant-2.2.0.tgz"
+    },
     "is-absolute": {
       "version": "0.1.7",
       "from": "is-absolute@>=0.1.7 <0.2.0",
@@ -1140,6 +1155,11 @@
       "version": "2.1.2",
       "from": "https://registry.npmjs.org/jquery.scrollto/-/jquery.scrollto-2.1.2.tgz",
       "resolved": "https://registry.npmjs.org/jquery.scrollto/-/jquery.scrollto-2.1.2.tgz"
+    },
+    "js-tokens": {
+      "version": "1.0.2",
+      "from": "js-tokens@>=1.0.1 <2.0.0",
+      "resolved": "https://registry.npmjs.org/js-tokens/-/js-tokens-1.0.2.tgz"
     },
     "js-yaml": {
       "version": "3.4.6",
@@ -1339,6 +1359,11 @@
       "version": "1.0.1",
       "from": "longest@>=1.0.1 <2.0.0",
       "resolved": "https://registry.npmjs.org/longest/-/longest-1.0.1.tgz"
+    },
+    "loose-envify": {
+      "version": "1.1.0",
+      "from": "loose-envify@>=1.0.0 <2.0.0",
+      "resolved": "https://registry.npmjs.org/loose-envify/-/loose-envify-1.1.0.tgz"
     },
     "lru-cache": {
       "version": "2.7.3",
@@ -1699,6 +1724,11 @@
         }
       }
     },
+    "react-dnd": {
+      "version": "1.1.0",
+      "from": "react-dnd@1.1.0",
+      "resolved": "https://registry.npmjs.org/react-dnd/-/react-dnd-1.1.0.tgz"
+    },
     "react-infinite": {
       "version": "0.6.0",
       "from": "react-infinite@0.6.0",
@@ -1821,6 +1851,11 @@
         }
       }
     },
+    "react-tag-input": {
+      "version": "1.0.3",
+      "from": "react-tag-input@>=1.0.3 <2.0.0",
+      "resolved": "https://registry.npmjs.org/react-tag-input/-/react-tag-input-1.0.3.tgz"
+    },
     "read-only-stream": {
       "version": "1.1.1",
       "from": "read-only-stream@>=1.1.1 <2.0.0",
@@ -1874,6 +1909,11 @@
           "resolved": "https://registry.npmjs.org/source-map/-/source-map-0.5.3.tgz"
         }
       }
+    },
+    "redux": {
+      "version": "3.0.4",
+      "from": "redux@>=3.0.0 <4.0.0",
+      "resolved": "https://registry.npmjs.org/redux/-/redux-3.0.4.tgz"
     },
     "repeat-string": {
       "version": "1.5.2",
