@@ -12,9 +12,7 @@ from share.models import Session
 
 class AllegationFilterTestCase(BaseLiveTestCase):
     def setUp(self):
-        Allegation.objects.all().delete()
-        AllegationCategory.objects.all().delete()
-        Session.objects.all().delete()
+        super(AllegationFilterTestCase, self).setUp()
         self.allegation_category = AllegationCategoryFactory()
         for _filter in FILTERS:
             for final_finding in FILTERS[_filter]:
@@ -47,7 +45,7 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         self.visit_home()
         self.browser.execute_script('jQuery("#hfc-cleanslate").hide();')
 
-        self.find('#autocomplete').send_keys('rep')
+        self.fill_in('#autocomplete', 'rep')
         self.until(lambda: self.element_by_classname_and_text('ui-autocomplete-category', 'Repeater').should.be.ok)
 
     def test_suggest_session_alias(self):
