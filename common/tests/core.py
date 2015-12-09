@@ -134,7 +134,6 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     def tearDownClass(cls):
         super(BaseLiveTestCase, cls).tearDownClass()
 
-
     def get_current_javascript_report(self):
         self.browser.execute_script('blanket.onTestsDone();');
         report = self.browser.execute_script('return window.coverage_results;')
