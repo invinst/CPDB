@@ -10,6 +10,7 @@ from search.models.alias import Alias
 from search.models.session_alias import SessionAlias
 from search.utils.date import *
 from search.utils.zip_code import *
+from search.services import REPEATER_DESC
 from share.models import Session
 
 
@@ -190,7 +191,7 @@ class Suggestion(object):
 
     def suggest_repeat_offenders(self, q):
         if q.startswith('rep'):
-            return [['Repeater (10+ complaints)', 10]]
+            return [[value, int(key)] for key, value in REPEATER_DESC.items()]
 
     def suggest_sessions(self, query, limit=5):
         session_aliases = SessionAlias.objects.filter(alias__icontains=query)[:limit]

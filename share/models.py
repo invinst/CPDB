@@ -9,6 +9,7 @@ from common.models import Officer, AllegationCategory, Investigator, Area
 from common.models import GENDER_DICT, OUTCOME_TEXT_DICT, FINAL_FINDING_TEXT_DICT, FINDINGS_DICT, OUTCOMES_DICT, CUSTOM_FILTER_DICT
 from common.utils.hashid import hash_obj
 from search.models import SuggestionLog, FilterLog
+from search.services import REPEATER_DESC
 
 
 KEYS = {
@@ -109,6 +110,7 @@ class Session(models.Model):
                 'value': o,
             } for o in values['value']]
         if key == 'officer__allegations_count__gt':
-            return [{'text': 'Repeater (10+ complaints)', 'value': values['value'][0]}]
+            value = values['value'][0]
+            return [{'text': REPEATER_DESC[str(value)], 'value': value}]
 
         return [{'value': x, 'text': x} for x in values['value']]

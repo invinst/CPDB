@@ -126,7 +126,7 @@
     {% if DJANGO_ENV == 'test' %}
       <script src="{% static 'js/selenium_coverage.js' %}"></script>
     {% else %}
-      <script type="text/javascript" src="">initReact()</script>
+      <script type="text/javascript">initReact()</script>
     {% endif %}
 
     <script type="text/javascript" id="inspectletjs">
