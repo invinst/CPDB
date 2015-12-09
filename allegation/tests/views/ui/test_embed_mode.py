@@ -35,6 +35,8 @@ class EmbedModeTestCase(BaseLiveTestCase):
         tabs_column_code.get_attribute('value').should.contain('/embed/?page=sunburst&query=&state=')
         self.link('Categories').click()
         tabs_column_code.get_attribute('value').should.contain('/embed/?page=summary&query=&state=')
+        self.link('Race & Gender').click()
+        tabs_column_code.get_attribute('value').should.contain('/embed/?page=race-gender&query=')
 
         officer_list_code = self.find('#officer-cards .embed-code input')
         officer_list_code.should.be.ok
@@ -103,6 +105,12 @@ class EmbedPageTestCase(BaseLiveTestCase):
     def test_categories_embed_code(self):
         self.browser.set_window_size(891, 331 + self.FIREFOX_ADDRESS_BAR_HEIGHT)
         self.visit("/embed/?page=summary&query=&state=%7B%22selectedCategories%22%3A%5B%5D%2C%22currentActive%22%3Afalse%7D")
+        self.until_ajax_complete()
+        self.check_no_scroll()
+
+    def test_race_gender_embed_code(self):
+        self.browser.set_window_size(892, 361 + self.FIREFOX_ADDRESS_BAR_HEIGHT)
+        self.visit("/embed/?page=race-gender&query=")
         self.until_ajax_complete()
         self.check_no_scroll()
 
