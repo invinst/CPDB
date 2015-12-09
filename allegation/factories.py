@@ -99,15 +99,15 @@ class AllegationFactory(factory.django.DjangoModelFactory):
 
         if Area.objects.all().count() < 5 :
             for i in range(2):
-                AreaFactory()
-        extracted = Area.objects.all()
-
-        if extracted:
-            for area in extracted:
-                self.areas.add(area)
+                area = AreaFactory()
                 if not self.point:
                     self.point = area.polygon.centroid
                     self.save()
+        extracted = Area.objects.all()
+
+        if extracted:
+            for area in extracted.filter(polygon__contains=self.point):
+                self.areas.add(area)
 
 
 class DownloadFactory(factory.django.DjangoModelFactory):
