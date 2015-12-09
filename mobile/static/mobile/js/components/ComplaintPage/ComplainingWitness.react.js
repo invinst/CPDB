@@ -5,7 +5,7 @@ var ComplainingWitness = React.createClass({
   renderComplaintWitnessRow: function (complaningWitness) {
     return (
       <div className='complaining-witness-row row'>
-        <div className='one column circle-wrapper'>
+        <div className='one column circle-wrapper center'>
             <div className='small-circle background-black circle'></div>
           </div>
         <div className='eleven columns'>
