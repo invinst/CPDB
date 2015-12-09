@@ -223,7 +223,8 @@ class OfficerListAPIView(AllegationAPIView):
         allegations = self.get_allegations()
         officers = allegations.values_list('officer', flat=True).distinct()
         officers = list(officers)  # to solve multiple subquery problem
-        officers = Officer.objects.filter(pk__in=officers).order_by('-allegations_count')
+        allegations_count = allegations.values('officer_id').distinct().annotate(filtered_allegations_count=Count('id')).order_by('-officer_id')
+        officers = Officer.objects.filter(pk__in=officers).order_by('-id')
 
         overview = []
         for r in OFFICER_COMPLAINT_COUNT_RANGE:
@@ -235,6 +236,7 @@ class OfficerListAPIView(AllegationAPIView):
         content = JSONSerializer().serialize({
             'officers': officers,
             'overview': overview,
+            'allegations_count': allegations_count
         })
         return HttpResponse(content, content_type="application/json")
 

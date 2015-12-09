@@ -13,6 +13,7 @@ var Filters = require('components/DataToolPage/Filters.react');
 var OfficerMixin = require('components/DataToolPage/Officer/OfficerMixin.react');
 var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
 var CheckMark = require('components/DataToolPage/Officer/CheckMark.react');
+var Counter = require("components/DataToolPage/Counter.react");
 var OfficerPresenter = require('presenters/OfficerPresenter');
 var jQuery = require('utils/jQuery');
 var StringUtil = require('utils/StringUtil');
@@ -58,6 +59,44 @@ var Officer = React.createClass({
     var src = "/embed/?page=officer-card&pk=" + encodeURIComponent(this.props.officer.id);
     return '<iframe width="170px" height="110px" frameborder="0" src="' + this.absoluteUri(src)
        + '"></iframe>';
+  },
+
+  renderAllegationsCount: function (officer) {
+    if (this.props.filtered) {
+      return (
+        <div>
+          <Counter to={officer.filtered_allegations_count} />
+        </div>
+      );
+    } else {
+      return (
+        <div>{officer.allegations_count}</div>
+      )
+    }
+  },
+
+  getOfficerComplaintDiscipline: function(officer){
+    var complaintDisciplineRowClass = classnames('complaint-discipline-row', {
+      'filter-on': this.props.filtered
+    });
+
+    return (
+      <div className={complaintDisciplineRowClass}>
+        <div className='row'>
+          <div className="col-xs-12 border-top-row" />
+          <div>
+            <div className='col-xs-7'>
+              <div>disciplines</div>
+              <div>complaints</div>
+            </div>
+            <div className='col-xs-3 officer-complaints-disciplines'>
+              <div>{officer.discipline_count}</div>
+              {this.renderAllegationsCount(officer)}
+            </div>
+          </div>
+        </div>
+      </div>
+    )
   },
 
   render: function () {
@@ -109,21 +148,7 @@ var Officer = React.createClass({
             <div className='race-gender'>
               { presenter.genderRace }
             </div>
-            <div className='complaint-discipline-row'>
-              <div className='row'>
-                <div className="col-xs-12 border-top-row" />
-                <div>
-                  <div className='col-xs-7'>
-                    <div>complaints</div>
-                    <div>disciplines</div>
-                  </div>
-                  <div className='col-xs-3 officer-complaints-disciplines'>
-                    <div>{officer.allegations_count}</div>
-                    <div>{officer.discipline_count}</div>
-                  </div>
-                </div>
-              </div>
-            </div>
+            { this.getOfficerComplaintDiscipline(officer) }
           </div>
         </Link>
         <CheckMark clickable={!this.props.noClick} officer={officer} page={this.props.page} embed={this.props.embed} />

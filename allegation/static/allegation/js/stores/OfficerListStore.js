@@ -8,7 +8,7 @@
  *
  * MapStore
  */
-
+var _ = require('lodash');
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var AppConstants = require('../constants/AppConstants');
@@ -54,7 +54,9 @@ var OfficerListStore = assign({}, EventEmitter.prototype, {
     _state.filtered = queryString;
 
     ajax = $.getJSON('/api/allegations/officers/?' + queryString, function (data) {
-      _state.officers = data.officers;
+      _state.officers = _.sortBy(_.merge(data.officers, data.allegations_count), function (officer) {
+        return -officer.allegations_count;
+      });
       _state.overview = data.overview || [];
       OfficerListStore.emitChange();
     });
