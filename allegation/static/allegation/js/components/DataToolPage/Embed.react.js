@@ -8,6 +8,8 @@ var OfficerList = require('components/DataToolPage/OfficerList.react');
 var Sunburst = require('components/DataToolPage/Sunburst.react');
 var Map = require('components/DataToolPage/Map.react');
 var Complaint = require('components/DataToolPage/Complaint.react');
+var RaceGenderAPI = require('utils/RaceGenderAPI');
+var RaceGenderTab = require('components/DataToolPage/RaceGenderTab.react');
 var Summary = require('components/DataToolPage/Summary.react');
 var SunburstAPI = require('utils/SunburstAPI');
 
@@ -59,6 +61,11 @@ var Embed = React.createClass({
                              currentActive={this.props.state.currentActive} />);
   },
 
+  embedRaceGender: function () {
+    this.setContent(<RaceGenderTab />);
+    RaceGenderAPI.getData(this.props.query);
+  },
+
   componentWillMount: function () {
     var listener = {
       'officer-card': this.embedOfficerCard,
@@ -66,7 +73,8 @@ var Embed = React.createClass({
       'sunburst': this.embedSunburst,
       'map': this.embedMap,
       'allegation': this.embedAllegation,
-      'summary': this.embedSummary
+      'summary': this.embedSummary,
+      'race-gender': this.embedRaceGender
     };
 
     listener[this.props.page]();
