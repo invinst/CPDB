@@ -1,18 +1,20 @@
 var React = require('react');
 
 var HelperUtil = require('utils/HelperUtil');
+var ComplainingWitnessPresenter = require('presenters/ComplainingWitnessPresenter');
 
 
 var ComplainingWitness = React.createClass({
   renderComplaintWitnessRow: function (complainingWitness) {
-    console.log(complainingWitness)
+    var complainingWitnessPresenter = ComplainingWitnessPresenter(complainingWitness);
+
     return (
-      <div className='complaining-witness-row row'>
+      <div className='complaining-witness-row row' key={complainingWitness.id}>
         <div className='one column circle-wrapper center'>
             <div className='small-circle background-black circle'></div>
           </div>
         <div className='eleven columns'>
-          {complainingWitness.gender}, {complainingWitness.race}, Age {complainingWitness.age}
+          {complainingWitnessPresenter.description}
         </div>
       </div>
     )
