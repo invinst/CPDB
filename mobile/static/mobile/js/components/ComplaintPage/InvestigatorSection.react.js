@@ -4,17 +4,6 @@ var HelperUtil = require('utils/HelperUtil');
 
 
 var InvestigatorSection = React.createClass({
-  getInitialState: function () {
-    var investigator = HelperUtil.fetch(this.props.info, 'investigator', {
-      'name': '',
-      'current_rank': ''
-    });
-
-    return {
-      'investigator': investigator
-    }
-  },
-
   renderInvestigator: function (investigator) {
     return (
       <div className='investigator-card pad'>
@@ -34,8 +23,13 @@ var InvestigatorSection = React.createClass({
   },
 
   render: function () {
-    var investigator = this.state.investigator;
+    var investigator = HelperUtil.fetch(this.props.info, 'investigator', false);
 
+    if (!investigator) {
+      return (
+        <div></div>
+      )
+    }
     return (
       <div className='investigator-section'>
         <div className='row section-header'>

@@ -5,7 +5,22 @@ var Map = require('components/Shared/Map.react');
 
 
 var Location = React.createClass({
-  getInitialState: function () {
+  renderLocationInfoItem: function (label, data) {
+    if (!data) {
+      return (
+        <div></div>
+      )
+    } else {
+      return (
+        <div>
+          <label>{label} </label>
+          <span>{data}</span>
+        </div>
+      )
+    }
+  },
+
+  render: function () {
     var firstAddress = HelperUtil.fetch(this.props.info, 'add1', '');
     var secondAddress = HelperUtil.fetch(this.props.info, 'add2', '');
     var locationType = HelperUtil.fetch(this.props.info, 'location', '');
@@ -13,34 +28,16 @@ var Location = React.createClass({
     var city = HelperUtil.fetch(this.props.info, 'city', '');
     var address = firstAddress || secondAddress;
 
-    return {
-      'address': address,
-      'beat': beat,
-      'city': city,
-      'locationType': locationType
-    }
-  },
-
-  render: function () {
     return (
       <div className='location'>
         <div className='section-header bold'>
           <div className='section-title pad'>Location</div>
         </div>
         <div className='location-detail pad'>
-          <div className='bold'>{this.state.address}</div>
-          <div>
-            <label>Beat </label>
-            <span>{this.state.beat}</span>
-          </div>
-          <div>
-            <label>Location type </label>
-            <span>{this.state.locationType}</span>
-          </div>
-          <div>
-            <label>City </label>
-            <span>{this.state.city}</span>
-          </div>
+          <div className='bold'>{address}</div>
+          {this.renderLocationInfoItem('Beat', beat)}
+          {this.renderLocationInfoItem('Location type', locationType)}
+          {this.renderLocationInfoItem('City', city)}
         </div>
         <div className='location-map pad'>
           <Map />

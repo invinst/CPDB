@@ -1,26 +1,30 @@
 var React = require('react');
 
+var HelperUtil = require('utils/HelperUtil');
+
 
 var ComplainingWitness = React.createClass({
-  renderComplaintWitnessRow: function (complaningWitness) {
+  renderComplaintWitnessRow: function (complainingWitness) {
+    console.log(complainingWitness)
     return (
       <div className='complaining-witness-row row'>
         <div className='one column circle-wrapper center'>
             <div className='small-circle background-black circle'></div>
           </div>
         <div className='eleven columns'>
-          {complaningWitness.gender}, {complaningWitness.race}, Age {complaningWitness.age}
+          {complainingWitness.gender}, {complainingWitness.race}, Age {complainingWitness.age}
         </div>
       </div>
     )
   },
 
-  renderComplainingWitnessList: function () {
-    return this.props.complainingWitness.map(this.renderComplaintWitnessRow);
+  renderComplainingWitnessList: function (complainingWitnesses) {
+    return complainingWitnesses.map(this.renderComplaintWitnessRow);
   },
 
   render: function () {
-    var numberOfComplainingWitness = this.props.complainingWitness.length;
+    var complainingWitnesses = this.props.complainingWitness || [];
+    var numberOfComplainingWitness = complainingWitnesses.length;
 
     return (
       <div className='complaining-witness'>
@@ -31,7 +35,7 @@ var ComplainingWitness = React.createClass({
           </span>
         </div>
         <div className='complaining-witness-list pad'>
-          {this.renderComplainingWitnessList()}
+          {this.renderComplainingWitnessList(complainingWitnesses)}
         </div>
       </div>
     )

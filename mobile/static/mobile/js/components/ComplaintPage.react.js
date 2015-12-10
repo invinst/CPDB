@@ -1,8 +1,12 @@
 var React = require('react');
+var objectAssign = require('object-assign');
+
+var Base = require('components/Base.react');
 
 var AllegationResourceUtil = require('utils/AllegationResourceUtil');
 var ComplaintDetail = require('components/ComplaintPage/ComplaintDetail.react');
 var ComplainingWitness = require('components/ComplaintPage/ComplainingWitness.react');
+var ComplaintPageStore = require('stores/ComplaintPage/ComplaintPageStore');
 var OfficerInvolved = require('components/ComplaintPage/OfficerInvolved.react');
 var InvestigatorSection = require('components/ComplaintPage/InvestigatorSection.react');
 var InvestigationTimeline = require('components/ComplaintPage/InvestigationTimeline.react');
@@ -10,7 +14,7 @@ var Location = require('components/ComplaintPage/Location.react');
 var SearchBar = require('components/Shared/SearchBar.react');
 
 
-var ComplaintPage = React.createClass({
+var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
   getInitialState: function () {
     return {
       'complaint': {
@@ -24,12 +28,13 @@ var ComplaintPage = React.createClass({
   componentDidMount: function () {
     var crid = this.props.params.crid || '';
     AllegationResourceUtil.get(crid);
+    ComplaintPageStore.addChangeListener(this._onChange);
   },
 
   render: function () {
     var complaint = this.state.complaint;
     var info = complaint['allegation'];
-    var complainingWitness = complaint['complaining_witness'];
+    var complainingWitness = complaint['complaining_witnesses'];
     var involvedOfficers = complaint['officers'];
 
     return (
@@ -48,6 +53,6 @@ var ComplaintPage = React.createClass({
       </div>
     )
   }
-});
+}));
 
 module.exports = ComplaintPage;

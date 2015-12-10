@@ -9,7 +9,13 @@ module.exports = {
   CHANGE_TAB: c++,
 
   // ComplaintPage events
+  COMPLAINT_PAGE_RECEIVED_DATA: c++,
+  COMPLAINT_PAGE_FAILED_TO_RECEIVED_DATA: c++,
+
+  // Tokens
   MAPBOX_TOKEN: '',
+
+  // Other constants
 
   // API endpoints
   ALLEGATION_API_ENDPOINT: '/api/allegation'

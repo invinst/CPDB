@@ -2,23 +2,8 @@ var React = require('react');
 
 
 var ComplaintDetail = React.createClass({
-  getInitialState: function () {
-    var info = this.props.info || {
-        'crid': '',
-        'final_finding': '',
-        'cat': {
-          'category': '',
-          'allegation_name': ''
-        }
-    };
-
-    return {
-      'info': info
-    };
-  },
-
   render: function () {
-    var info = this.state.info;
+    var info = this.props.info || { 'crid': '', 'final_finding': '', 'cat': { 'category': '', 'allegation_name': ''}};
 
     return (
       <div className='complaint-detail pad'>

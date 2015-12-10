@@ -3,9 +3,10 @@ var AppConstants = require('constants/AppConstants');
 
 
 var ComplaintPageServerActions = {
-  received: function () {
+  received: function (data) {
     AppDispatcher.dispatch({
-      actionType: AppConstants.COMPLAINT_PAGE_RECEIVED_DATA
+      actionType: AppConstants.COMPLAINT_PAGE_RECEIVED_DATA,
+      data: data
     });
   },
 
