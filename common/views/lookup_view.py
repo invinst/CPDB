@@ -1,12 +1,7 @@
-from django.http.response import HttpResponseRedirect
 from django.views.generic import RedirectView
 from rest_framework.reverse import reverse
 
 from mobile.services.mobile_suggestion_service import *
-
-
-def handler404(request):
-    return HttpResponseRedirect("/")
 
 
 class LookupView(RedirectView):

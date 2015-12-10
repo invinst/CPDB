@@ -2,6 +2,18 @@ from django.core.urlresolvers import reverse
 from django.test import TestCase
 
 from allegation.factories import OfficerFactory, AllegationFactory
+from common.models.suggestible import MobileSuggestible
+
+
+class MobileSuggestibleTest(TestCase):
+    def setUp(self):
+        self.suggestible = MobileSuggestible()
+
+    def test_get_url(self):
+        self.suggestible.get_mobile_url.when.called.should.throw(NotImplementedError)
+
+    def test_suggestion_entry(self):
+        self.suggestible.as_suggestion_entry.when.called.should.throw(NotImplementedError)
 
 
 class MobileSuggestibleOfficerTest(TestCase):

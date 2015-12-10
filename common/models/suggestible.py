@@ -1,13 +1,12 @@
 from django.core.urlresolvers import reverse
-from django.db import models
 
 
 class MobileSuggestible(object):
     def get_mobile_url(self):
-        raise NotImplemented
+        raise NotImplementedError
 
     def as_suggestion_entry(self):
-        raise NotImplemented
+        raise NotImplementedError
 
 
 class MobileSuggestibleOfficer(MobileSuggestible):
