@@ -30,6 +30,7 @@ INSTALLED_APPS = (
     'django.contrib.gis',
     'django.contrib.sites',
 
+    'wagtail.contrib.wagtailapi',
     'django_extensions',
     'djangobower',
     'django_tables2',

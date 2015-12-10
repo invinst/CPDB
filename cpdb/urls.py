@@ -6,6 +6,7 @@ from django.contrib import admin
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
+from wagtail.contrib.wagtailapi import urls as wagtailapi_urls
 from wagtail.wagtailadmin import urls as wagtailadmin_urls
 from wagtail.wagtailcore import urls as wagtail_urls
 from wagtail.wagtaildocs import urls as wagtaildocs_urls
@@ -27,6 +28,7 @@ urlpatterns = [
     url(r'^mobile/', include('mobile.urls', namespace='mobile')),
     url(r'^embed/', include('embed.urls', namespace='embed')),
     url(r'^api/', include('api.urls')),
+    url(r'^api/wagtail/', include(wagtailapi_urls)),
     url(r'^init/', InitSession.as_view(), name='init'),
     url(r'^landing/', LandingView.as_view(), name='landing'),
     url(r'^', include('dashboard.urls')),
