@@ -17,6 +17,7 @@ from dashboard.views.document_request_status_view import DocumentRequestStatusVi
 from dashboard.views.document_link_view import DocumentLinkView
 from dashboard.views.story_type_view import StoryTypeView
 from dashboard.views.admin_session_analytics_view import AdminNewSessionsAnalyticsViewSet
+from dashboard.views.admin_investigation_documents_export_view import AdminInvestigationDocumentsExportView
 
 cache_view = cache_page(86400 * 90)
 
@@ -40,5 +41,6 @@ urlpatterns = [
     url(r'^api/dashboard/story_types/$', login_required(csrf_exempt(StoryTypeView.as_view()))),
     url(r'^api/dashboard/document-requests-analysis/$',
         login_required(csrf_exempt(AdminAllegationRequestAnalysisView.as_view())),
-        name='dashboard-allegation-request-analysis')
+        name='dashboard-allegation-request-analysis'),
+    url(r'^api/dashboard/documents_export/$', login_required(csrf_exempt(AdminInvestigationDocumentsExportView.as_view())), name='documents-export'),
 ]

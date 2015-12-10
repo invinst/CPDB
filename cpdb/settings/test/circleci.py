@@ -1,5 +1,3 @@
-import sure
-
 from cpdb.settings.base import *
 
 
