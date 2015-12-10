@@ -54,9 +54,7 @@ var OfficerListStore = assign({}, EventEmitter.prototype, {
     _state.filtered = queryString;
 
     ajax = $.getJSON('/api/allegations/officers/?' + queryString, function (data) {
-      _state.officers = _.sortBy(_.merge(data.officers, data.allegations_count), function (officer) {
-        return -officer.allegations_count;
-      });
+      _state.officers = data.officers;
       _state.overview = data.overview || [];
       OfficerListStore.emitChange();
     });
