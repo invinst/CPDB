@@ -154,6 +154,64 @@ class Command(BaseCommand):
             except Exception as inst:
                 print(inst, row)
 
+            crid = row[1]
+            if not crid:
+                continue
+
+            kwargs = {}
+            for col in ALLEGATION_COLS:
+
+                val = row[ALLEGATION_COLS[col]]
+                if val:
+
+                    if col == 'add1':
+                        val = int(val) if val else None
+
+                    if col == 'beat':
+                        try:
+                            val = Area.objects.get(name=val, type='police-beats')
+                        except Area.DoesNotExist:
+                            val = None
+                        except MultipleObjectsReturned:
+                            val = Area.objects.filter(name=val, type='police-beats').first()
+
+                    if col == 'cat':
+                        try:
+                            val = AllegationCategory.objects.get(cat_id=val)
+                        except AllegationCategory.DoesNotExist:
+                            val = None
+
+                    if col == 'officer':
+                        val = officer
+
+                    if col == 'incident_date':
+                        if val:
+                            val = datetime.datetime.strptime(val, '%Y-%m-%d %H:%M')
+                        else:
+                            val = '1970-01-01 00:00'
+
+                    if col in ['start_date', 'end_date']:
+                        if val:
+                            val = datetime.datetime.strptime(val, '%Y-%m-%d')
+                        else:
+                            val = None
+
+                    kwargs[col] = val
+                else:
+                    val = None
+
+                if crid in allegation_cache:
+                    for key in allegation_cache[crid]:
+                        if key == 'last_requested':
+                            kwargs[key] = datetime.datetime.strftime(allegation_cache[crid][key], '%Y-%m-%d %H:%M:%S')
+                        else:
+                            kwargs[key] = allegation_cache[crid][key]
+
+            try:
+                Allegation.objects.create(**kwargs)
+            except Exception as inst:
+                print(inst, row)
+
 
     def import_officers(self, *args, **options):
         print('Importing officers...')
