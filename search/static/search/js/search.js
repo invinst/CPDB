@@ -51,6 +51,14 @@ function prettyLabels(label, term) {
     _renderItem: function (ul, item) {
       var label = item.type ? item.type + ": " + item.label : item.label;
       return $("<li>").addClass('autocomplete-' + item.category).html(prettyLabels(label, $(this.element).val())).appendTo(ul);
+    },
+    displayMessage: function (value) {
+      var ul = this.menu.element.empty();
+      ul.append(category_elem(value));
+      this.isNewMenu = true;
+      this.menu.refresh();
+
+      ul.show();
     }
   });
 })();
