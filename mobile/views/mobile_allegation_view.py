@@ -11,14 +11,15 @@ class MobileAllegationView(APIView):
     def get(self, request):
         crid = request.GET.get('crid', '')
         allegations = Allegation.objects.filter(crid=crid)
-        allegation = allegations[0]
-        officer_ids = allegations.values_list('officer', flat=True)
-        officers = Officer.objects.filter(id__in=officer_ids)
+        allegation = allegations.first()
 
         if not allegation:
             raise Http404()
-        
+
+        officer_ids = allegations.values_list('officer', flat=True)
+        officers = Officer.objects.filter(id__in=officer_ids)
         complaining_witnesses = ComplainingWitness.objects.filter(crid=allegation.crid)
+
         content = MobileAllegationViewSerializer({
             'officers': officers,
             'allegation': allegation,

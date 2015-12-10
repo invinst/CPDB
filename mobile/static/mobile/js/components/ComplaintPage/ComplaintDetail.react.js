@@ -1,10 +1,25 @@
 var React = require('react');
-var Separator = require('components/Shared/Separator.react');
+
 
 var ComplaintDetail = React.createClass({
+  getInitialState: function () {
+    var info = this.props.info || {
+        'crid': '',
+        'final_finding': '',
+        'cat': {
+          'category': '',
+          'allegation_name': ''
+        }
+    };
+
+    return {
+      'info': info
+    };
+  },
+
   render: function () {
-    var info = this.props.info;
-    
+    var info = this.state.info;
+
     return (
       <div className='complaint-detail pad'>
         <div className='headline'>
