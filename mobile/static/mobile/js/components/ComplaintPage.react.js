@@ -1,5 +1,6 @@
 var React = require('react');
 
+var AllegationAPIUtil = require('utils/AllegationAPIUtil');
 var ComplaintDetail = require('components/ComplaintPage/ComplaintDetail.react');
 var ComplainingWitness = require('components/ComplaintPage/ComplainingWitness.react');
 var OfficerInvolved = require('components/ComplaintPage/OfficerInvolved.react');
@@ -75,6 +76,10 @@ var ComplaintPage = React.createClass({
         }
       }
     }
+  },
+
+  componentDidMount: function () {
+    AllegationAPIUtil.get()
   },
 
   render: function () {
