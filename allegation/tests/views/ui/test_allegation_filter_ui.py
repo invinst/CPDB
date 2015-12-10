@@ -12,9 +12,7 @@ from share.models import Session
 
 class AllegationFilterTestCase(BaseLiveTestCase):
     def setUp(self):
-        Allegation.objects.all().delete()
-        AllegationCategory.objects.all().delete()
-        Session.objects.all().delete()
+        super(AllegationFilterTestCase, self).setUp()
         self.allegation_category = AllegationCategoryFactory()
         for _filter in FILTERS:
             for final_finding in FILTERS[_filter]:
