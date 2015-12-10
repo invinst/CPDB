@@ -1,6 +1,6 @@
-from django.http.response import JsonResponse, HttpResponseBadRequest
 from allegation.views import AllegationAPIView
 from common.models import Officer
+from document.response import JsonResponse
 
 
 class CountView(AllegationAPIView):

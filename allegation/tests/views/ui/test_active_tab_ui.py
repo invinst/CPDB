@@ -3,7 +3,7 @@ from unittest import skipIf, skipUnless
 
 from selenium import webdriver
 
-from common.tests.core import BaseLiveTestCase, BaseMobileLiveTestCase, IS_MOBILE
+from common.tests.core import BaseLiveTestCase, BaseMobileLiveTestCase
 
 
 class ActiveTabAssertationMixin(object):
@@ -12,7 +12,6 @@ class ActiveTabAssertationMixin(object):
         active_tab.text.should.equal(expected_tab)
 
 
-@skipIf(IS_MOBILE, "Skip in mobile mode")
 class ActiveTabTestCase(BaseLiveTestCase, ActiveTabAssertationMixin):
     def test_site_default_active_tab(self):
         self.visit_home()
@@ -25,10 +24,14 @@ class ActiveTabTestCase(BaseLiveTestCase, ActiveTabAssertationMixin):
         self.browser.refresh()
         self.assert_current_active_tab('Categories')
 
-        browser = webdriver.Firefox()
-        browser.get(self.browser.current_url)
-        browser.find_element_by_css_selector('.chart-row li.active a').text.should.equal('Categories')
-        browser.quit()
+        try:
+            browser = webdriver.Firefox()
+            browser.set_window_size(**self.DESKTOP_BROWSER_SIZE)
+            browser.get(self.browser.current_url)
+            self.until(lambda: browser.find_element_by_css_selector('.chart-row li.active a'))
+            browser.find_element_by_css_selector('.chart-row li.active a').text.should.equal('Categories')
+        finally:
+            browser.close()
 
 
 class ActiveTabMobileTestCase(BaseMobileLiveTestCase, ActiveTabAssertationMixin):

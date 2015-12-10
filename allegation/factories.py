@@ -13,6 +13,10 @@ from common.models import AllegationCategory, Officer, Area, Allegation, Investi
 fake = Faker()
 
 
+def capitalize_word():
+    return "{word}xa".format(word=fake.word()).capitalize()
+
+
 class AreaFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Area
@@ -26,16 +30,6 @@ class AreaFactory(factory.django.DjangoModelFactory):
                                                                (87.940101, 42.023135)))))
 
 
-def capitalize_word():
-    return "{word}xa".format(word=fake.word()).capitalize()
-
-
-class PoliceWitnessFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = PoliceWitness
-    crid = factory.Sequence(lambda n: str(n))
-
-
 class OfficerFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Officer
@@ -46,6 +40,14 @@ class OfficerFactory(factory.django.DjangoModelFactory):
     star = factory.Sequence(lambda n: n)
     gender = factory.Sequence(lambda n: random.choice(list(GENDER_DICT.keys())))
     race = factory.Sequence(lambda n: random.choice(list(RACES_DICT.keys())))
+    allegations_count = factory.Sequence(lambda n: n)
+
+
+class PoliceWitnessFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = PoliceWitness
+    crid = factory.Sequence(lambda n: str(n))
+    officer = factory.SubFactory(OfficerFactory)
 
 
 class InvestigatorFactory(factory.django.DjangoModelFactory):
@@ -87,8 +89,9 @@ class AllegationFactory(factory.django.DjangoModelFactory):
     officer = factory.SubFactory(OfficerFactory)
     point = None
     document_requested = False
-    start_date = factory.Sequence(lambda n: fake.date())
-    end_date = factory.Sequence(lambda n: fake.date())
+    document_title = factory.Sequence(lambda n: capitalize_word())
+    start_date = factory.Sequence(lambda n: timezone.now() + datetime.timedelta(hours=n))
+    end_date = factory.Sequence(lambda n: timezone.now() + datetime.timedelta(hours=n*2))
     beat = factory.SubFactory(AreaFactory)
 
     @factory.post_generation
@@ -102,7 +105,7 @@ class AllegationFactory(factory.django.DjangoModelFactory):
         if extracted:
             for area in extracted:
                 self.areas.add(area)
-                if not self.point and random.randint(0,10) > 5:
+                if not self.point:
                     self.point = area.polygon.centroid
                     self.save()
 

@@ -1,11 +1,15 @@
 import json
 
+from django.contrib.gis.geos import Point
+
 from allegation.factories import AreaFactory, AllegationFactory
 from allegation.tests.views.base import AllegationApiTestBase
 from common.models import Area, Allegation
 
 
 class AllegationGisApiViewTestCase(AllegationApiTestBase):
+    def setUp(self):
+        self.allegations = AllegationFactory.create_batch(3)
 
     def fetch_gis_allegations(self, url='/api/allegations/cluster/', **params):
         response = self.client.get(url, params)
@@ -41,6 +45,12 @@ class AllegationGisApiViewTestCase(AllegationApiTestBase):
         allegation = self.allegations[0]
         allegation.point = None
         allegation.save()
-        allegations = self.fetch_gis_allegations(url='/api/allegations/cluster/', officer=allegation.officer_id)
+        allegations = self.fetch_gis_allegations(url='/api/allegations/gis/', officer=allegation.officer_id)
         num_returned = len(allegations['features'])
         num_returned.should.equal(0)
+
+    def test_skip_duplicate_crid(self):
+        allegation = AllegationFactory(crid=self.allegations[0].crid)
+        data = self.fetch_gis_allegations(url='/api/allegations/gis/')
+        data['features'].should.be.a(list)
+        data['features'].should.have.length_of(3)  # duplicate crid is ignored
