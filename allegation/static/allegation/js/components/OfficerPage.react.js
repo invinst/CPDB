@@ -1,6 +1,7 @@
 var _ = require('lodash');
 var classnames = require('classnames');
-var React = require('react');
+var React = require('react/addons');
+var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
 var Base = require('components/Base.react');
 var ComplaintSection = require('components/OfficerPage/ComplaintSection.react');
@@ -65,7 +66,7 @@ var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
       content = (<i clasName='fa fa-spin fa-spinner' />);
     } else {
       content = (
-        <div>
+        <div key='content'>
           <Nav />
           <div id='officer-profile'>
             <div className="map-row">
@@ -93,10 +94,12 @@ var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
     }
 
     return (
-      <div>
-        {content}
-        <Disclaimer />
-        <HappyFox />
+      <div id='officer-page'>
+        <ReactCSSTransitionGroup transitionName="officer-page" transitionEnterTimeout={500}>
+          {content}
+          <Disclaimer key='disclaimer' />
+          <HappyFox key='happyfox' />
+        </ReactCSSTransitionGroup>
       </div>
     );
   },
