@@ -53,7 +53,7 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         self.find('#autocomplete').send_keys('rep')
         self.until(lambda: self.find('.autocomplete-officer__allegations_count__gt').click())
         self.until(lambda: self.find('.filter-name').should.be.ok)
-        self.find('.filter-name').text.should.contain('Repeater') 
+        self.find('.filter-name').text.should.contain('Repeater')
 
     def number_of_complaints(self):
         return len(self.find_all('.complaint-row'))

@@ -36,7 +36,7 @@ if settings.DJANGO_ENV == 'test':
     urlpatterns += [url(r'^favicon\.ico$', lambda request: HttpResponse())]
 
 
-handler404 = 'common.views.lookup_view.handler404'
+handler404 = 'common.views.handler404'
 
 DEBUG_TOOLBAR_URL = [
     url(r'^__debug__/', include(debug_toolbar.urls)),
