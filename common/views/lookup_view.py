@@ -1,14 +1,11 @@
 from django.views.generic import RedirectView
-from rest_framework.reverse import reverse
 
 from mobile.services.mobile_suggestion_service import *
 
 
 class LookupView(RedirectView):
     def get_default_search_url(self, query):
-        search_uri = 'search/{query}'.format(query=query)
-        return '{mobile_base_url}{search_uri}'.format(mobile_base_url=reverse('mobile:home'),
-                                                      search_uri=search_uri)
+        return 'search/{query}'.format(query=query)
 
     def get_redirect_url(self, *args, **kwargs):
         query = kwargs.get('query', '')
