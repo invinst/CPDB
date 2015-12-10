@@ -5,10 +5,13 @@ from django.db.models.query_utils import Q
 from allegation.utils.query import OfficerQuery
 from common.models import AllegationCategory, Allegation, Area, Investigator, Officer, FINDINGS, OUTCOMES, UNITS, GENDER, \
     RACES, OUTCOME_TEXT_DICT, RANKS
+from common.utils.hashid import hash_obj
 from search.models.alias import Alias
+from search.models.session_alias import SessionAlias
 from search.utils.date import *
 from search.utils.zip_code import *
 from search.services import REPEATER_DESC
+from share.models import Session
 
 
 AREA_SORT_ORDERS = { 'police-beats': 0, 'neighborhoods': 1, 'ward': 2, 'police-districts': 3, 'school-grounds': 5 }
@@ -190,6 +193,14 @@ class Suggestion(object):
         if q.startswith('rep'):
             return [[value, int(key)] for key, value in REPEATER_DESC.items()]
 
+    def suggest_sessions(self, query, limit=5):
+        session_aliases = SessionAlias.objects.filter(alias__icontains=query)[:limit]
+        suggestions = []
+        for alias in session_aliases:
+            suggestions.append([alias.title, hash_obj.encode(alias.session_id)])
+
+        return suggestions
+
     def query_suggestions(self, model_cls, cond, fields_to_get, limit=5, order_bys=None):
         flat = True if len(fields_to_get) == 1 else False
         queryset = model_cls.objects.filter(cond).values_list(*fields_to_get, flat=flat)
@@ -234,6 +245,8 @@ class Suggestion(object):
         ret['data_source'] = self.suggest_data_source(q)
 
         ret['officer__allegations_count__gt'] = self.suggest_repeat_offenders(q)
+
+        ret['session'] = self.suggest_sessions(q)
 
         ret = OrderedDict((k, v) for k, v in ret.items() if v)
         return ret

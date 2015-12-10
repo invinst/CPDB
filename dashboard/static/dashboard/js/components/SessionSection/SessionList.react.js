@@ -4,6 +4,7 @@ global.jQuery = require('jquery');
 var moment = require('moment');
 var React = require('react');
 
+var AddSessionAliasModalActions = require('actions/SessionSection/AddSessionAliasModalActions');
 var Base = require('../Base.react');
 var SessionsAPI = require('utils/SessionsAPI');
 var SessionsActions = require('actions/SessionSection/SessionsActions');
@@ -22,6 +23,14 @@ var SessionList = React.createClass(_.assign(Base(SessionListStore), {
     }
   },
 
+  _onClick: function (target, e) {
+    e.preventDefault();
+    AddSessionAliasModalActions.show({
+      alias: '',
+      target: target
+    });
+  },
+
   componentDidMount: function () {
     SessionListStore.addChangeListener(this._onChange);
     jQuery(window).on('scroll', this._onScroll);
@@ -35,17 +44,22 @@ var SessionList = React.createClass(_.assign(Base(SessionListStore), {
       var id = 'session-row-' + x.hash_id;
       var dataTarget = '#' + id;
       rows.push(
-        <tr className='session-row pointer' data-toggle='collapse' data-target={dataTarget}>
+        <tr className='session-row pointer' data-toggle='collapse' data-target={dataTarget} key={'c'+id}>
           <td>{x.hash_id}</td>
           <td>{x.title}</td>
           <td>{_(x.query.filters).values().pluck('value').flatten().size()}</td>
           <td>{x.ip}</td>
           <td>{x.user_agent}</td>
+          <td>
+            <a className="add-alias" onClick={that._onClick.bind(that, x.id)} href="#">
+              Add Alias
+            </a>
+          </td>
         </tr>
       );
 
       rows.push(
-        <tr className='collapse' id={id}>
+        <tr className='collapse' id={id} key={id}>
           <td colSpan='5'>
             <SessionHistory suggestions={x.suggestion_logs} filters={x.filter_logs}/>
           </td>
