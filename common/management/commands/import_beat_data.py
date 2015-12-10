@@ -26,18 +26,22 @@ class Command(BaseCommand):
                 duplicated_beat.first().delete()
             for row in c:
                 try:
+
                     allegations = Allegation.objects.filter(crid=row[CRID_COL])
                     for allegation in allegations:
 
                         if not allegation.beat:
                             beat_name = row[BEAT_COL]
-                            if beat_name:
+
+                            if len(beat_name) < 4:
                                 beat_name = beat_name.zfill(4)
                             beat = Area.objects.get(name=beat_name, type='police-beats')
                             allegation.beat = beat
                             allegation.areas.add(beat)
+
                             if not allegation.point:
                                 allegation.point = beat.centroid
+
                             allegation.save()
                             success += 1
                 except Area.DoesNotExist:
