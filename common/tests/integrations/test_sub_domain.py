@@ -1,5 +1,5 @@
 from django.test import RequestFactory, TestCase, override_settings
-from common.middleware.subdomain import SubdomainMiddleware, SubdomainURLRoutingMiddleware
+from common.middleware.subdomain import SubdomainMiddleware, SubdomainURLRoutingMiddleware, get_domain
 
 
 class SubdomainTestMixin(object):
@@ -37,36 +37,46 @@ class SubdomainMiddlewareTest(SubdomainTestMixin,TestCase):
     def setUp(self):
         self.middleware = SubdomainMiddleware()
 
-    def get_host_for_subdomain(self, subdomain=None):
-        if subdomain is not None:
-            host = '%s.%s' % (subdomain, self.DOMAIN)
-        else:
-            host = '%s' % self.DOMAIN
-        return host
+    def get_subdomain_after_middleware_process(self, subdomain):
+        request = RequestFactory().get('/', HTTP_HOST=subdomain)
+        self.middleware.process_request(request)
+        return request.subdomain
 
     def test_good_subdomain(self):
-        subdomain = 'api'
-        request = RequestFactory().get('/', HTTP_HOST=self.get_host_for_subdomain(subdomain))
-        self.middleware.process_request(request)
-        request.subdomain.should.be.equal(subdomain)
+        subdomain = self.get_host_for_subdomain('api')
+        self.get_subdomain_after_middleware_process(subdomain).should.equal('api')
 
     def test_non_matched_subdomain(self):
         subdomain = 'non-matched.xyz.abc'
-        request = RequestFactory().get('/', HTTP_HOST=subdomain)
-        self.middleware.process_request(request)
-        request.subdomain.should.be.equal(None)
+        self.get_subdomain_after_middleware_process(subdomain).should.equal(None)
+
+    def test_none_subdomain(self):
+        subdomain = self.get_host_for_subdomain(None)
+        self.get_subdomain_after_middleware_process(subdomain).should.equal(None)
 
 
 class SubdomainURLRoutingMiddlewareTest(SubdomainTestMixin,TestCase):
     def setUp(self):
         self.middleware = SubdomainURLRoutingMiddleware()
 
-    def get_path_to_urlconf(self, name):
-        return '.'.join((self.URL_MODULE_PATH, name))
-
     def test_url_routing(self):
-        subdomain = 'api'
-        host = self.get_host_for_subdomain(subdomain)
+        host = self.get_host_for_subdomain('api')
         request = RequestFactory().get('/', HTTP_HOST=host)
         self.middleware.process_request(request)
         request.urlconf.should.be.equal('api')
+
+
+class SubdomainUtilityTest(SubdomainTestMixin,TestCase):
+    @override_settings(
+        SITE_INFO={
+            'domain': 'domain'
+        },
+    )
+    def test_get_domain(self):
+        get_domain().should.equal('domain')
+
+    @override_settings(
+        SITE_INFO={}
+    )
+    def test_get_domain_without_site_domain_setting(self):
+        get_domain().should.equal('')
