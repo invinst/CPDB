@@ -55,6 +55,8 @@ INSTALLED_APPS = (
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'common.middleware.subdomain.SubdomainURLRoutingMiddleware',
+    'common.middleware.mobile_redirect.MobileRedirectMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -218,3 +220,14 @@ REST_FRAMEWORK = {
 TEST_RUNNER = 'common.tests.runner.DjangoNoseTestSuiteRunner'
 
 SITE_ID = 1
+
+SUBDOMAIN_URLCONFS = {
+    None: 'cpdb.urls',
+    'm': 'mobile.urls',
+}
+
+# This should be override in corresponding settings
+SITE_INFO = {
+    'domain': 'cpdb.co',
+    'mobile_host': 'm.cpdb.co',
+}
