@@ -36,7 +36,7 @@ var OfficerInvolved = React.createClass({
       <div className='officer-involved'>
         <div className='row section-header'>
           <span className='pad'>
-            <span className='section-title bold'>Officers involveds&nbsp;</span>
+            <span className='section-title bold'>Officers involved&nbsp;</span>
             <span className='title-count normal-weight'>({numberOfInvolvedOfficers})</span>
           </span>
         </div>

@@ -10,7 +10,7 @@ var Location = React.createClass({
     return (
       <div className='location'>
         <div className='section-header bold'>
-          <div className='section-title pad'>Location of incident</div>
+          <div className='section-title pad'>Location</div>
         </div>
         <div className='location-detail pad'>
           <div className='bold'>9500 S Throop St.</div>
