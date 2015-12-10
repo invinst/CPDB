@@ -16,6 +16,3 @@ class Story(models.Model):
 
     class Meta:
         verbose_name_plural = 'Stories'
-
-    def __str__(self):
-        return self.title

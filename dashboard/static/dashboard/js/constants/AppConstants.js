@@ -167,4 +167,5 @@ module.exports = {
   SESSIONS_API_ENDPOINT: '/api/dashboard/sessions/',
   SETTINGS_API_ENDPOINT: '/api/dashboard/settings/',
   NEW_SESSION_ANALYTICS_API_ENDPOINT: '/api/dashboard/new-sessions-analytics/',
+  DOCUMENT_EXPORT_END_POINT: '/api/dashboard/documents_export/'
 };

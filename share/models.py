@@ -9,6 +9,7 @@ from hashids import Hashids
 from common.models import Officer, AllegationCategory, Investigator, Area
 from common.models import GENDER_DICT, OUTCOME_TEXT_DICT, FINAL_FINDING_TEXT_DICT, FINDINGS_DICT, OUTCOMES_DICT, CUSTOM_FILTER_DICT
 from search.models import SuggestionLog, FilterLog
+from search.services import REPEATER_DESC
 
 
 hash_obj = Hashids(settings.SECRET_KEY, min_length=6)
@@ -41,10 +42,6 @@ class Session(models.Model):
     def hash_id(self):
         return hash_obj.encode(self.id)
 
-    @property
-    def created_date(self):
-        return date(self.created_at)
-
     def get_suggestion_logs(self):
         suggestion_logs = SuggestionLog.objects.filter(session_id=self.hash_id)
 
@@ -57,13 +54,6 @@ class Session(models.Model):
     @staticmethod
     def id_from_hash(hash_id):
         return hash_obj.decode(hash_id)
-
-    def get_absolute_url(self):
-        kw = {'hash_id': self.hash_id}
-        if self.title:
-            kw['slugified_url'] = slugify(self.title)
-
-        return reverse('homepage-share', kwargs=kw)
 
     def clone(self):
         session = Session()
@@ -109,6 +99,7 @@ class Session(models.Model):
                 'value': o,
             } for o in values['value']]
         if key == 'officer__allegations_count__gt':
-            return [{'text': 'Repeater (10+ complaints)', 'value': values['value'][0]}]
+            value = values['value'][0]
+            return [{'text': REPEATER_DESC[str(value)], 'value': value}]
 
         return [{'value': x, 'text': x} for x in values['value']]

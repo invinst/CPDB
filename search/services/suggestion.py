@@ -8,6 +8,7 @@ from common.models import AllegationCategory, Allegation, Area, Investigator, Of
 from search.models.alias import Alias
 from search.utils.date import *
 from search.utils.zip_code import *
+from search.services import REPEATER_DESC
 
 
 AREA_SORT_ORDERS = { 'police-beats': 0, 'neighborhoods': 1, 'ward': 2, 'police-districts': 3, 'school-grounds': 5 }
@@ -187,7 +188,7 @@ class Suggestion(object):
 
     def suggest_repeat_offenders(self, q):
         if q.startswith('rep'):
-            return [['Repeater (10+ complaints)', 10]]
+            return [[value, int(key)] for key, value in REPEATER_DESC.items()]
 
     def query_suggestions(self, model_cls, cond, fields_to_get, limit=5, order_bys=None):
         flat = True if len(fields_to_get) == 1 else False

@@ -1,32 +1,35 @@
 machine:
   node:
-    version: 4.0.0
+    version: 4.1.0
   python:
     version: 3.4.2
   environment:
     DJANGO_SETTINGS_MODULE: cpdb.settings.test.circleci
     NODE_ENV: development
+  post:
+    - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get install gcc-4.9 g++-4.9
 database:
   post:
     - psql -c "CREATE EXTENSION postgis;" -d circle_test
 dependencies:
-  post:
-    - npm install -g bower
-    - npm run circleci
-    - npm run circleci_admin
   override:
     - gem install sass
     - pip install -r requirements.txt
     - pyenv local 2.7.9
+    - PYTHON=python2 npm install -g npm@3.5.1
+    - PYTHON=python2 npm install -g bower
+    - python manage.py bower_install
     - PYTHON=python2 npm install
+    - PYTHON=python2 npm run circleci
+    - PYTHON=python2 npm run circleci_admin
     - pyenv local 3.4.2
+  cache_directories:
+    - "bower_components"
 test:
   pre:
-    - python manage.py bower_install
     - python manage.py collectstatic --noinput
   override:
-    - coverage run --parallel-mode manage.py test --processes 8 --process-timeout 2000 --noinput --nologcapture
-    - MOBILE=1 coverage run --parallel-mode manage.py test --processes 8 --process-timeout 2000 --noinput --nologcapture
+    - coverage run --parallel-mode manage.py test  --noinput --nologcapture --with-timer -s
     - npm test
   post:
     - coverage combine
