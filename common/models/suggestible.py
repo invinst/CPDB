@@ -1,6 +1,3 @@
-from django.core.urlresolvers import reverse
-
-
 class MobileSuggestible(object):
     def get_mobile_url(self):
         raise NotImplementedError
@@ -11,9 +8,8 @@ class MobileSuggestible(object):
 
 class MobileSuggestibleOfficer(MobileSuggestible):
     def get_mobile_url(self):
-        return '{base_url}officer/{display_name}/{id}'.format(base_url=reverse('mobile:home'),
-                                                              display_name=self.display_name,
-                                                              id=self.id)
+        return '/officer/{display_name}/{id}'.format(display_name=self.display_name,
+                                                     id=self.id)
 
     def as_suggestion_entry(self):
         return {
@@ -26,7 +22,7 @@ class MobileSuggestibleOfficer(MobileSuggestible):
 
 class MobileSuggestibleAllegation(MobileSuggestible):
     def get_mobile_url(self):
-        return '{base_url}complaint/{crid}'.format(base_url=reverse('mobile:home'), crid=self.crid)
+        return '/complaint/{crid}'.format(crid=self.crid)
 
     def as_suggestion_entry(self):
         return {
