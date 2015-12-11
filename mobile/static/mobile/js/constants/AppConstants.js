@@ -17,13 +17,13 @@ module.exports = {
 
   // Other constants
   FINAL_FINDINGS: {
-    'UN': 'Unfounded',
-    'EX': 'Exonerated',
-    'NS': 'Not Sustained',
-    'SU': 'Sustained',
-    'NC': 'No Cooperation',
-    'NA': 'No Affidavit',
-    'DS': 'Discharged',
+    'un': 'Unfounded',
+    'ex': 'Exonerated',
+    'ns': 'Not Sustained',
+    'su': 'Sustained',
+    'nc': 'No Cooperation',
+    'na': 'No Affidavit',
+    'ds': 'Discharged'
   },
 
   // API endpoints

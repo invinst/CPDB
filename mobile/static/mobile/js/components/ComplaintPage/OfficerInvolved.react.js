@@ -33,6 +33,13 @@ var OfficerInvolved = React.createClass({
   render: function () {
     var officers = this.props.involvedOfficers || [];
     var numberOfInvolvedOfficers = officers.length;
+
+    if (numberOfInvolvedOfficers == 0) {
+      return (
+        <div></div>
+      )
+    }
+
     return (
       <div className='officer-involved'>
         <div className='row section-header'>

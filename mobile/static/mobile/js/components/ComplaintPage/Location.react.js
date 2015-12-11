@@ -1,3 +1,4 @@
+var cx = require('classnames');
 var React = require('react');
 
 var HelperUtil = require('utils/HelperUtil');
@@ -21,19 +22,25 @@ var Location = React.createClass({
   },
 
   render: function () {
-    var firstAddress = HelperUtil.fetch(this.props.info, 'add1', '');
-    var secondAddress = HelperUtil.fetch(this.props.info, 'add2', '');
-    var locationType = HelperUtil.fetch(this.props.info, 'location', '');
-    var beat = HelperUtil.fetch(this.props.info, 'beat', '');
-    var city = HelperUtil.fetch(this.props.info, 'city', '');
-    var address = firstAddress || secondAddress;
+    var info = this.props.info || {};
+    var firstAddress = HelperUtil.fetch(info, 'add1', '');
+    var secondAddress = HelperUtil.fetch(info, 'add2', '');
+    var locationType = HelperUtil.fetch(info, 'location', '');
+    var beat = HelperUtil.fetch(info, 'beat', '');
+    var city = HelperUtil.fetch(info, 'city', '');
+    var address = [firstAddress, secondAddress].join(' ').trim(); // a bit magic here :>)
+    var noData = !locationType && !beat && !city && !address;
+
+    var locationDetailClassnames = cx('location-detail pad', {
+      'no-data': noData
+    });
 
     return (
       <div className='location'>
         <div className='section-header bold'>
           <div className='section-title pad'>Location</div>
         </div>
-        <div className='location-detail pad'>
+        <div className={locationDetailClassnames}>
           <div className='bold'>{address}</div>
           {this.renderLocationInfoItem('Beat', beat)}
           {this.renderLocationInfoItem('Location type', locationType)}

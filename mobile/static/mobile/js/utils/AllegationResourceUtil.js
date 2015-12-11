@@ -12,7 +12,7 @@ var AllegationResourceUtil = {
         if (res.ok) {
           ComplaintPageServerActions.received(res.body)
         } else {
-          ComplaintPageServerActions.failedToReceive(err)
+          ComplaintPageServerActions.failedToReceive(crid)
         }
       });
   }

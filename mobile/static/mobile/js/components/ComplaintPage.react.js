@@ -12,7 +12,7 @@ var InvestigatorSection = require('components/ComplaintPage/InvestigatorSection.
 var InvestigationTimeline = require('components/ComplaintPage/InvestigationTimeline.react');
 var Location = require('components/ComplaintPage/Location.react');
 var SearchBar = require('components/Shared/SearchBar.react');
-
+var NotMatchedPage = require('components/ComplaintPage/NotMatchedPage.react');
 
 var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
   getInitialState: function () {
@@ -32,11 +32,17 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
   },
 
   render: function () {
+    var found = this.state.found;
     var complaint = this.state.complaint;
     var info = complaint['allegation'];
     var complainingWitness = complaint['complaining_witnesses'];
     var involvedOfficers = complaint['officers'];
 
+    if (!found) {
+      return (
+        <NotMatchedPage crid={this.state.crid} />
+      )
+    }
     return (
       <div className='complaint-page'>
         <div className='container content'>

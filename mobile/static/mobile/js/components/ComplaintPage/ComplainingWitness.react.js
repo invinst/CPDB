@@ -29,6 +29,12 @@ var ComplainingWitness = React.createClass({
     var complainingWitnesses = this.props.complainingWitness || [];
     var numberOfComplainingWitness = complainingWitnesses.length;
 
+    if (numberOfComplainingWitness == 0) {
+      return (
+        <div></div>
+      )
+    }
+
     return (
       <div className='complaining-witness'>
         <div className='section-header'>

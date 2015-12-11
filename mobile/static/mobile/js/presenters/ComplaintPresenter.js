@@ -6,9 +6,10 @@ var GenderPresenter = require('presenters/GenderPresenter');
 
 var ComplaintPresenter = function (complaint) {
   var finalFinding = function () {
-    var abbrFinalFinding = HelperUtil.fetch(complaint, 'final_finding', '');
+    var abbrFinalFinding = HelperUtil.fetch(complaint, 'final_finding', '').toLowerCase();
+    var finalFinding = HelperUtil.fetch(AppConstants.FINAL_FINDINGS, abbrFinalFinding, 'Unknown');
 
-    return AppConstants.FINAL_FINDINGS[abbrFinalFinding];
+    return finalFinding;
   };
 
   return {

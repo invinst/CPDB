@@ -10,9 +10,10 @@ var ComplaintPageServerActions = {
     });
   },
 
-  failedToReceive: function () {
+  failedToReceive: function (crid) {
     AppDispatcher.dispatch({
-      actionType: AppConstants.COMPLAINT_PAGE_FAILED_TO_RECEIVED_DATA
+      actionType: AppConstants.COMPLAINT_PAGE_FAILED_TO_RECEIVED_DATA,
+      data: crid
     });
   },
 };
