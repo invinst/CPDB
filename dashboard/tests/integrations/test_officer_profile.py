@@ -58,6 +58,11 @@ class OfficerProfileTestCase(BaseAdminTestCase):
         self.until(lambda: self.should_not_see_text(stories[1].title))
         self.should_see_text(stories[0].title)
 
+        self.button("Delete").click()
+        self.until(lambda: self.should_see_text("You haven't checked any story yet"))
+        self.button("OK").click()
+        self.until(lambda: self.should_not_see_text("You haven't checked any story yet"))
+
         self.find(".check-all").click()
         self.button("Delete").click()
         self.until(lambda: self.should_see_text("You are going to delete all stories of this officer?"))
