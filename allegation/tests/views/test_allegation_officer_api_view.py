@@ -47,29 +47,14 @@ class AllegationOfficerApiTestCase(AllegationApiTestBase):
 
     def test_allegation_officer_filter_allegation_count(self):
         final_finding_filter = 'SU'
-        num_of_officers = 3
-        num_of_allegations_per_officer = 5
+        diff_final_finding_filter = 'NS'
 
-        officers = OfficerFactory.create_batch(num_of_officers)
-        expect_filtered_allegations_count = []
+        officer = OfficerFactory()
+        AllegationFactory(officer=officer, final_finding=final_finding_filter)
+        AllegationFactory(officer=officer, final_finding=diff_final_finding_filter)
 
-        for officer in officers:
-            officer_allegations = AllegationFactory.create_batch(num_of_allegations_per_officer, officer=officer)
-            officer_filtered_allegations_count = len([
-                allegation for allegation in officer_allegations
-                if allegation.final_finding == final_finding_filter
-            ])
-            if officer_filtered_allegations_count != 0:
-                expect_filtered_allegations_count.append({
-                    'officer_id': officer.id,
-                    'filtered_allegations_count': officer_filtered_allegations_count
-                })
-
-        expect_filtered_allegations_count.sort(key=lambda allegation_count:-allegation_count['officer_id'])
-
-        management.call_command('calculate_allegations_count')
-
-        response = self.client.get("/api/allegations/officers/?final_finding={final_finding_filter}".format(final_finding_filter=final_finding_filter))
+        response = self.client.get("/api/allegations/officers/?final_finding={final_finding_filter}".format(
+                final_finding_filter=final_finding_filter))
         data = json.loads(response.content.decode())
-        filtered_allegations_count = data['allegations_count']
-        filtered_allegations_count.should.equal(expect_filtered_allegations_count)
+        len(data['officers']).should.equal(1)
+        data['officers'][0]['filtered_allegations_count'].should.equal(1)

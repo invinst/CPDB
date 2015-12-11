@@ -12,9 +12,7 @@ from share.models import Session
 
 class AllegationFilterTestCase(BaseLiveTestCase):
     def setUp(self):
-        Allegation.objects.all().delete()
-        AllegationCategory.objects.all().delete()
-        Session.objects.all().delete()
+        super(AllegationFilterTestCase, self).setUp()
         self.allegation_category = AllegationCategoryFactory()
         for _filter in FILTERS:
             for final_finding in FILTERS[_filter]:
@@ -88,6 +86,13 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         self.until(lambda: self.find('.autocomplete-officer__allegations_count__gt').click())
         self.until(lambda: self.find('.filter-name').should.be.ok)
         self.find('.filter-name').text.should.contain('Repeater')
+
+    def test_no_matches_found_message(self):
+        self.visit_home()
+        self.browser.execute_script('jQuery("#hfc-cleanslate").hide();')
+
+        self.fill_in('#autocomplete', 'search query that return nothing')
+        self.until(lambda: self.should_see_text('No matches found'))
 
     def number_of_complaints(self):
         return len(self.find_all('.complaint-row'))

@@ -12,18 +12,17 @@ database:
   post:
     - psql -c "CREATE EXTENSION postgis;" -d circle_test
 dependencies:
-  pre:
-    - npm install -g bower
-  post:
-    - npm run circleci
-    - npm run circleci_admin
   override:
     - gem install sass
     - pip install -r requirements.txt
-    - python manage.py bower_install
     - pyenv local 2.7.9
-    - npm install -g npm@3.5.1
+    - PYTHON=python2 npm install -g npm@3.5.1
+    - PYTHON=python2 npm install -g bower
+    - python manage.py bower_install
     - PYTHON=python2 npm install
+    - PYTHON=python2 npm run circleci
+    - PYTHON=python2 npm run circleci_admin
+    - PYTHON=python2 npm run circleci_mobile
     - pyenv local 3.4.2
   cache_directories:
     - "bower_components"

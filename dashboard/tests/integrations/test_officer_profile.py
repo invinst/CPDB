@@ -58,6 +58,11 @@ class OfficerProfileTestCase(BaseAdminTestCase):
         self.until(lambda: self.should_not_see_text(stories[1].title))
         self.should_see_text(stories[0].title)
 
+        self.button("Delete").click()
+        self.until(lambda: self.should_see_text("You haven't checked any story yet"))
+        self.button("OK").click()
+        self.until(lambda: self.should_not_see_text("You haven't checked any story yet"))
+
         self.find(".check-all").click()
         self.button("Delete").click()
         self.until(lambda: self.should_see_text("You are going to delete all stories of this officer?"))
@@ -79,10 +84,14 @@ class OfficerProfileTestCase(BaseAdminTestCase):
         )
 
         self.should_see_text('New story has been created.')
+        story = Story.objects.filter(officer=self.officer)[0]
+        story.created_date.should_not.be.ok
+
         new_row = self.find(".story").text
         new_row.should.contain("Title")
 
         self.element_for_label('Title').send_keys("2")
+        self.element_for_label('Date').send_keys('2015-04-15')
         self.button("Save").click()
         self.until(self.ajax_complete)
 
@@ -102,7 +111,7 @@ class OfficerProfileTestCase(BaseAdminTestCase):
         self.find(".story_short_description").text.should.equal("Short Description")
         self.find(".story_content").text.should.equal("Content")
 
-        story = Story.objects.filter(officer=self.officer)[0]
+        story.refresh_from_db()
         story.story_type.should.equal('news')
         story.created_date.should.be.ok
 

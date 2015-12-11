@@ -46,6 +46,7 @@ class HomePageTestCase(BaseLiveTestCase):
     def filter_complaint_type(self):
         self.visit_home()
         self.link("Categories").click()
+        self.until_ajax_complete()
 
     def check_number_officer(self, num):
         self.until(lambda: self.number_of_officers().should.equal(num))

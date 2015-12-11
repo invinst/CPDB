@@ -3,10 +3,12 @@ var _ = require('lodash');
 var bootbox = require('bootbox');
 var moment = require('moment');
 var Base = require('../../Base.react');
+var AppConstants = require('../../../constants/AppConstants');
 var StoryListStore = require('../../../stores/OfficerSection/Officer/StoryListStore');
 var StoryListActions = require('../../../actions/OfficerSection/Officer/StoryListActions');
 var TabsActions = require('../../../actions/OfficerSection/Officer/TabsActions');
 var StoryAPI = require('../../../utils/StoryAPI');
+var DateTimeUtil = require('utils/DateTimeUtil');
 global.jQuery = require('jquery');
 require('jquery.scrollto');
 
@@ -58,13 +60,16 @@ var StoryList = React.createClass(_.assign(Base(StoryListStore), {
   },
 
   deleteBulk: function () {
-    bootbox.confirm("You are going to delete all stories of this officer?", this.doDeleteBulk);
+    if (StoryListStore.getSelectedStories().length > 0) {
+      bootbox.confirm("You are going to delete all stories of this officer?", this.doDeleteBulk);
+    } else {
+      bootbox.alert("You haven't checked any story yet");
+    }
   },
 
   doDeleteBulk: function (yes) {
     if (yes) {
-      var stories = _.filter(this.state.stories, function (x) {return x.selected;});
-      StoryAPI.deleteBulk(stories);
+      StoryAPI.deleteBulk(StoryListStore.getSelectedStories());
     }
   },
 
@@ -83,13 +88,15 @@ var StoryList = React.createClass(_.assign(Base(StoryListStore), {
   renderStoryList: function() {
     var that = this;
     return this.state.stories.map(function(x) {
+      var date = DateTimeUtil.displayDateTime(x['created_date'], AppConstants.DATE_FORMAT);
+
       return (
         <tr className='story' key={x.id}>
           <td>
             <input type="checkbox" onChange={that.selectCheckbox(x)} checked={x.selected} />
           </td>
           <td onClick={that.editStory(x)}>{x.title}</td>
-          <td>{moment(x.created_date).format("YYYY-MM-DD")}</td>
+          <td>{date}</td>
           <td className="text-right">
             <a href="#" onClick={that.editStory(x)}>
               <i className="fa fa-pencil"></i>

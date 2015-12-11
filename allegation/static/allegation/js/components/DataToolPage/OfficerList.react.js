@@ -427,8 +427,8 @@ var OfficerList = React.createClass({
       newState.current_view = 0;
       this.setState(newState);
       this.initSlider();
+      this.updateQuickView(0);
     }
-    this.updateQuickView(0);
     this.updateSliderSize();
   },
 
