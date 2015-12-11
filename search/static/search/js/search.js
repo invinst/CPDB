@@ -21,7 +21,7 @@ function prettyLabels(label, term) {
 (function () {
   var AUTOCOMPLETE_CAT_CLASS = 'ui-autocomplete-category';
 
-  function category_elem(categoryName) {
+  function renderCategoryElement(categoryName) {
     return "<li class='" + AUTOCOMPLETE_CAT_CLASS + "'>" + categoryName + "</li>"
   }
 
@@ -42,7 +42,7 @@ function prettyLabels(label, term) {
       var currentCategory = "";
       $.each(items, function (index, item) {
         if (item.category != currentCategory) {
-          ul.append(category_elem(widget.options.categoryNames[item.category]));
+          ul.append(renderCategoryElement(widget.options.categoryNames[item.category]));
           currentCategory = item.category;
         }
         widget._renderItemData(ul, item);
@@ -54,7 +54,7 @@ function prettyLabels(label, term) {
     },
     displayMessage: function (value) {
       var ul = this.menu.element.empty();
-      ul.append(category_elem(value));
+      ul.append(renderCategoryElement(value));
       this.isNewMenu = true;
       this.menu.refresh();
 
