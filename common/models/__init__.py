@@ -23,6 +23,11 @@ RANKS = [
     ['Chief', 'Chief']
 ]
 
+ACTIVE_CHOICES = [
+    ['Yes', 'Active'],
+    ['No', 'Inactive'],
+    ['Unknown', 'Unknown']
+]
 
 class Officer(MobileSuggestibleOfficer, models.Model):
     officer_first = models.CharField(max_length=255, null=True, db_index=True, blank=True)
@@ -36,6 +41,7 @@ class Officer(MobileSuggestibleOfficer, models.Model):
     allegations_count = models.IntegerField(default=0, blank=True, null=True)
     discipline_count = models.IntegerField(default=0, blank=True, null=True)
     birth_year = models.IntegerField(default=0, blank=True, null=True)
+    active = models.CharField(choices=ACTIVE_CHOICES, max_length='10', default='Unknown')
 
     @property
     def absolute_url(self):
@@ -377,6 +383,32 @@ CUSTOM_FILTER_DICT = {
     'outcome_text': OUTCOME_TEXT_DICT,
 }
 
+LOCATION_CHOICES = [
+    ['01', 'Food Sales/Restaurant'],
+    ['02', 'Tavern/Liquor Store'],
+    ['03', 'Other Business Establishment'],
+    ['04', 'Police Building'],
+    ['05', 'Lockup Facility'],
+    ['06', 'Police Maintenance Facility'],
+    ['07', 'CPD Automotive Pound Facility'],
+    ['08', 'Other Police Property'],
+    ['09', 'Police Communications System'],
+    ['10', 'Court Room'],
+    ['11', 'Public Transportation Veh./Facility'],
+    ['12', 'Park District Property'],
+    ['13', 'Airport'],
+    ['14', 'Public Property - Other'],
+    ['15', 'Other Private Premise'],
+    ['16', 'Expressway/Interstate System'],
+    ['17', 'Public Way - Other'],
+    ['18', 'Waterway. Incl Park District'],
+    ['19', 'Private Residence']
+]
+
+LCOATIONS_DICT = {}
+for location in LOCATION_CHOICES:
+    LCOATIONS_DICT[location[0]] = location[1]
+
 
 class Allegation(MobileSuggestibleAllegation, models.Model):
     record_id = models.IntegerField(null=True, blank=True)
@@ -390,7 +422,7 @@ class Allegation(MobileSuggestibleAllegation, models.Model):
     final_outcome_class = models.CharField(max_length=20, null=True, blank=True)
 
     areas = models.ManyToManyField('Area', blank=True)
-    location = models.CharField(max_length=20, null=True, blank=True)
+    location = models.CharField(max_length=20, null=True, blank=True, choices=LOCATION_CHOICES)
     add1 = models.IntegerField(null=True, blank=True)
     add2 = models.CharField(max_length=255, null=True, blank=True)
     city = models.CharField(max_length=255, null=True, blank=True)

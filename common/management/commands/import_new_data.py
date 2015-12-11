@@ -23,7 +23,6 @@ OFFICER_COLS = {
     'birth_year': 11,
     'active': 12
 }
-
 ALLEGATION_COLS = {
     'crid': 1,
     'officer': 2,
@@ -63,6 +62,7 @@ class Command(BaseCommand):
         management.call_command('calculate_allegations_count')
         management.call_command('clean_officer_names')
         self.check_officer_count(*args, **options)
+        # management.call_command('geocode_allegations')
 
     def reassign_allegations(self, *args, **options):
         allegation_cache = {}
@@ -111,64 +111,6 @@ class Command(BaseCommand):
                     if col == 'beat':
                         try:
                             val = val.zfill(4)
-                            val = Area.objects.get(name=val, type='police-beats')
-                        except Area.DoesNotExist:
-                            val = None
-                        except MultipleObjectsReturned:
-                            val = Area.objects.filter(name=val, type='police-beats').first()
-
-                    if col == 'cat':
-                        try:
-                            val = AllegationCategory.objects.get(cat_id=val)
-                        except AllegationCategory.DoesNotExist:
-                            val = None
-
-                    if col == 'officer':
-                        val = officer
-
-                    if col == 'incident_date':
-                        if val:
-                            val = datetime.datetime.strptime(val, '%Y-%m-%d %H:%M')
-                        else:
-                            val = '1970-01-01 00:00'
-
-                    if col in ['start_date', 'end_date']:
-                        if val:
-                            val = datetime.datetime.strptime(val, '%Y-%m-%d')
-                        else:
-                            val = None
-
-                    kwargs[col] = val
-                else:
-                    val = None
-
-                if crid in allegation_cache:
-                    for key in allegation_cache[crid]:
-                        if key == 'last_requested':
-                            kwargs[key] = datetime.datetime.strftime(allegation_cache[crid][key], '%Y-%m-%d %H:%M:%S')
-                        else:
-                            kwargs[key] = allegation_cache[crid][key]
-
-            try:
-                Allegation.objects.create(**kwargs)
-            except Exception as inst:
-                print(inst, row)
-
-            crid = row[1]
-            if not crid:
-                continue
-
-            kwargs = {}
-            for col in ALLEGATION_COLS:
-
-                val = row[ALLEGATION_COLS[col]]
-                if val:
-
-                    if col == 'add1':
-                        val = int(val) if val else None
-
-                    if col == 'beat':
-                        try:
                             val = Area.objects.get(name=val, type='police-beats')
                         except Area.DoesNotExist:
                             val = None
@@ -296,7 +238,7 @@ class Command(BaseCommand):
         to_delete = max([o.id for o in officers])
         to_keep = officers.exclude(id=to_delete)
         if len(to_keep) == 1:
-            Allegation.objects.filter(officer_id=to_delete).update(officer_id=to_keep.first().id)
+            #Allegation.objects.filter(officer_id=to_delete).update(officer_id=to_keep.first().id)
             PoliceWitness.objects.filter(officer_id=to_delete).update(officer_id=to_keep.first().id)
             officers.filter(id=to_delete).delete()
             update_queue.append((to_keep, self.build_officer_info(row), row))
