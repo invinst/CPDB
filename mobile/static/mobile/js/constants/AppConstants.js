@@ -27,6 +27,6 @@ module.exports = {
   },
 
   // API endpoints
-  ALLEGATION_API_ENDPOINT: '/api/allegation'
+  ALLEGATION_API_ENDPOINT: '/mobile/api/allegation'
 }
 ;

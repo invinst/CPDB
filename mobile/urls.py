@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^$', MobileSiteView.as_view(), name='home'),
     url(r'^api/suggestion/$', MobileSuggestionView.as_view(), name='suggestion'),
     url(r'^api/allegation/$', MobileAllegationView.as_view(), name='allegation'),
+    url(r'^mobile/api/allegation/$', MobileAllegationView.as_view(), name='allegation'),
     url(r'^api/officer/$', MobileOfficerView.as_view(), name='officer'),
     url(r'^api/officer/allegation/$', MobileOfficerAllegationView.as_view(), name='officer-allegation'),
     url(r'^api/officer/related_officer/$', MobileRelatedOfficersView.as_view(), name='officer-related_officer'),
