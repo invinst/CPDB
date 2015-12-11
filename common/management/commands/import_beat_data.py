@@ -37,7 +37,6 @@ class Command(BaseCommand):
                             beat = Area.objects.get(name=beat_name, type='police-beats')
                             allegation.beat = beat
                             allegation.areas.add(beat)
-
                             if not allegation.point:
                                 allegation.point = beat.centroid
 
