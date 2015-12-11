@@ -26,7 +26,6 @@ class Command(BaseCommand):
                 duplicated_beat.first().delete()
             for row in c:
                 try:
-
                     allegations = Allegation.objects.filter(crid=row[CRID_COL])
                     for allegation in allegations:
 
