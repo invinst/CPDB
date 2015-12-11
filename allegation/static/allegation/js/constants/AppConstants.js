@@ -79,6 +79,8 @@ module.exports = {
   MAP_TOKEN: '***REMOVED***',
   MAP_TYPE: 'datamade.7e795301',
 
+  WAGTAIL_PAGES_RECEIVED_DATA: c++,
+
   NUMERAL_FORMAT: '0,0',
 
   FILTERS: {
@@ -293,7 +295,7 @@ module.exports = {
   OFFICER_PAGE_API_ENDPOINT: '/officer/',
   SESSION_API_ENDPOINT: '/api/allegations/session/',
   RACE_GENDER_API_ENDPOINT: '/api/allegations/race-gender/',
-
+  WAGTAIL_PAGES_API_ENDPOINT: '/api/wagtail/v1/pages/?type=home.HomePage&fields=title,body,slug',
 
   DATE_FORMAT: 'D MMM, YYYY',
 

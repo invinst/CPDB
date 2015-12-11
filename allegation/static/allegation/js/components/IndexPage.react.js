@@ -19,13 +19,14 @@ var Nav = require('components/Shared/Nav2.react')
 var LandingFooter = require('components/Shared/LandingFooter.react');
 var SessionAPI = require('utils/SessionAPI');
 var NavActions = require('actions/NavActions');
-
+var WagtailPage = require('components/WagtailPage.react');
+var WagtailPagesStore = require('stores/WagtailPagesStore');
+var WagtailPagesAPI = require('utils/WagtailPagesAPI');
 
 var IndexPage = React.createClass(_.assign(Base(AppStore), {
   componentDidMount: function () {
     AppStore.addChangeListener(this._onChange);
     AppStore.addChangePageListener(this.onChangePage);
-
     $(window).on('scroll', this.scrollToggleShow);
     this.attachScroll();
   },
@@ -43,11 +44,11 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
       session = hash.split("/")[2];
     }
     SessionAPI.getSessionInfo(session || '');
+    WagtailPagesAPI.getData();
   },
 
   componentDidUpdate: function () {
     this.displayTabByPath();
-
   },
 
   onChangePage: function () {
@@ -149,6 +150,18 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
     }
   },
 
+  renderWagtailPages: function () {
+    var that = this;
+
+    return this.state.wagtailPages.map(function (wagtailPage) {
+      return (
+        <div role="tabpanel" className={that.getPanelClass(wagtailPage.slug)} id={wagtailPage.slug}>
+          <WagtailPage body={wagtailPage.body} />
+        </div>
+      );
+    })
+  },
+
   render: function() {
     var landingClassName = classnames({
       'scroll-to-top': !AppStore.isFindingPage()
@@ -170,6 +183,7 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
         </div>
         <div className="main">
           <div className="tab-content">
+            { this.renderWagtailPages() }
             <div role="tabpanel" className={this.getPanelClass('findings')} id="findings">
               <div className="row section map-section">
                 <div className="container">

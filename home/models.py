@@ -11,11 +11,13 @@ from wagtail.wagtailimages.blocks import ImageChooserBlock
 
 class HomePage(Page):
     body = StreamField([
-        ('half_paragraph', blocks.RichTextBlock(classname='col-md-6')),
-        ('full_paragraph', blocks.RichTextBlock(classname='col-md-12')),
-    ], blank=True)
+        ('row_section', blocks.StreamBlock([
+            ('half_paragraph', blocks.RichTextBlock()),
+            ('full_paragraph', blocks.RichTextBlock()),
+        ])
+    )], blank=True)
 
-    api_fields = ('body',)
+    api_fields = ('body', 'slug')
     content_panels = Page.content_panels + [
         StreamFieldPanel('body'),
     ]

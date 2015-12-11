@@ -36,6 +36,8 @@ var RootRouter = React.createClass({
         </Route>
         <Route path="/officer/:slug/:id" component={OfficerPage}>
         </Route>
+        <Route path="/:page" component={IndexPage}>
+        </Route>
       </Router>
     );
   },

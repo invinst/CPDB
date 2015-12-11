@@ -14,27 +14,11 @@ var AppStore = require('stores/AppStore');
 var NavActions = require('actions/NavActions');
 var SessionAPI = require('utils/SessionAPI');
 var SiteTitle = require('components/Shared/SiteTitle.react');
-
+var WagtailPagesStore = require('stores/WagtailPagesStore');
 
 var Nav = React.createClass(_.assign(Base(AppStore), {
   goToPage: function (page) {
     NavActions.goToPage(page);
-  },
-
-  goToDataTool: function () {
-    this.goToPage('data');
-  },
-
-  goToStoryPage: function () {
-    this.goToPage('story');
-  },
-
-  goToFindingPage: function () {
-    this.goToPage('findings');
-  },
-
-  goToMethodPage: function () {
-    this.goToPage('method');
   },
 
   getNavClass: function (tab) {
@@ -61,6 +45,20 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
     this.attachWindowScroll();
   },
 
+  renderWagtailTabs: function () {
+    var that = this;
+
+    return this.state.wagtailPages.map(function (wagtailPage, index) {
+      var wagtailPageTo = '/' + wagtailPage.slug;
+
+      return (
+        <li className={that.getNavClass(wagtailPage.slug)}>
+          <Link onClick={that.goToPage.bind(that, wagtailPage.slug)} to={wagtailPageTo}>{wagtailPage.title}</Link>
+        </li>
+      );
+    });
+  },
+
   attachWindowScroll: function () {
     var $body = $('body');
     var navBarHeight = 90;
@@ -77,10 +75,13 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
 
   moveArrow: function () {
     $target = jQuery('.nav-link.active');
-    jQuery(".moving-arrow").css({
-      left: $target.offset().left - 5,
-      width: $target.width() + 10,
-    }, 500);
+
+    if ($target && $target.offset()) {
+      jQuery(".moving-arrow").css({
+        left: $target.offset().left - 5,
+        width: $target.width() + 10,
+      }, 500);
+    }
   },
 
   startNewSession: function (e) {
@@ -122,10 +123,19 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
           </div>
           <ul className="pull-right" role="tablist">
             <span className="moving-arrow" />
-            <li className={this.getNavClass("data")}><Link onClick={this.goToDataTool} to={dataToolUrl} aria-controls="data">Data</Link></li>
-            <li className={this.getNavClass("method")}><Link onClick={this.goToMethodPage} to="/method" aria-controls="method">Methods</Link></li>
-            <li className={this.getNavClass("story")}><Link onClick={this.goToStoryPage} to="/story" aria-controls="story">Stories</Link></li>
-            <li className={this.getNavClass("findings")}><Link onClick={this.goToFindingPage} to="/findings" aria-controls="findings">Findings</Link></li>
+            <li className={this.getNavClass("data")}>
+              <Link onClick={this.goToPage.bind(this, 'findings')} to={dataToolUrl} aria-controls="data">Data</Link>
+            </li>
+            <li className={this.getNavClass("method")}>
+              <Link onClick={this.goToPage.bind(this, 'method')} to="/method" aria-controls="method">Methods</Link>
+            </li>
+            <li className={this.getNavClass("story")}>
+              <Link onClick={this.goToPage.bind(this, 'story')} to="/story" aria-controls="story">Stories</Link>
+            </li>
+            <li className={this.getNavClass("findings")}>
+              <Link onClick={this.goToPage.bind(this, 'findings')} to="/findings" aria-controls="findings">Findings</Link>
+            </li>
+            {this.renderWagtailTabs()}
           </ul>
         </div>
         <div className={subNavClass}>

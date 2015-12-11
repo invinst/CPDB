@@ -13,7 +13,8 @@ var _state = {
   isDataToolInit: true,
   page: 'data',
   session_title: null,
-  session_hash: null
+  session_hash: null,
+  wagtailPages: []
 };
 
 var AppStore = _.assign(Base(_state), {
@@ -112,6 +113,11 @@ AppStore.dispatcherToken = AppDispatcher.register(function (action) {
 
     case AppConstants.UPDATE_TITLE:
       _state.session_title = action.title;
+      AppStore.emitChange();
+      break;
+
+    case AppConstants.WAGTAIL_PAGES_RECEIVED_DATA:
+      _state.wagtailPages = action.data.pages;
       AppStore.emitChange();
       break;
 

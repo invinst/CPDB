@@ -42,6 +42,7 @@ urlpatterns = [
 
     # For anything not caught by a more specific rule above, hand over to
     # Wagtail's serving mechanism
+    url(r'^[^/]+/$', ensure_csrf_cookie(AllegationListView.as_view()), name='homepage'),
     url(r'', include(wagtail_urls)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
