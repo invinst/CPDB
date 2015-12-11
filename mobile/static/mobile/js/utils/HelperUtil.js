@@ -5,11 +5,19 @@ var HelperUtil = {
         (!(key in proto) || proto[key] !== obj[key]);
   },
 
-  fetch: function(obj, key, defaultValue) {
-    if (obj == null || typeof(obj) == 'undefined' || !this.hasOwnProperty(obj, key)) {
-      return defaultValue;
+  fetch: function(obj, path, defaultValue) {
+    var paths = path.split('.');
+
+    for (var i = 0; i < paths.length; i++) {
+      var key = paths[i];
+
+      if (obj == null || typeof(obj) == 'undefined' || !this.hasOwnProperty(obj, key)) {
+        return defaultValue;
+      }
+      obj = obj[key];
     }
-    return obj[key];
+
+    return obj;
   }
 };
 

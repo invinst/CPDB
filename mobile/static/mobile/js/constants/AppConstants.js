@@ -16,7 +16,17 @@ module.exports = {
   MAPBOX_TOKEN: '',
 
   // Other constants
+  FINAL_FINDINGS: {
+    'UN': 'Unfounded',
+    'EX': 'Exonerated',
+    'NS': 'Not Sustained',
+    'SU': 'Sustained',
+    'NC': 'No Cooperation',
+    'NA': 'No Affidavit',
+    'DS': 'Discharged',
+  },
 
   // API endpoints
   ALLEGATION_API_ENDPOINT: '/api/allegation'
-};
+}
+;

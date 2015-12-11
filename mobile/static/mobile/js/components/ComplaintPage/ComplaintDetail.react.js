@@ -1,26 +1,32 @@
 var React = require('react');
 
+var ComplaintPresenter = require('presenters/ComplaintPresenter');
+var HelperUtil = require('utils/HelperUtil');
+
 
 var ComplaintDetail = React.createClass({
   render: function () {
-    var info = this.props.info || { 'crid': '', 'final_finding': '', 'cat': { 'category': '', 'allegation_name': ''}};
+    var info = this.props.info || {};
+    var complaintPresenter = ComplaintPresenter(info);
+    var category = HelperUtil.fetch(info, 'cat.category', '');
+    var allegationName = HelperUtil.fetch(info, 'cat.allegation_name', '');
 
     return (
       <div className='complaint-detail pad'>
         <div className='headline'>
           <span className='crid-info inline-block half-width align-left'>
             <span className='crid-title'>CRID</span>
-            <span className='crid-number'>{info.crid}</span>
+            <span className='crid-number'>{info['crid']}</span>
           </span>
           <span className='final-finding inline-block half-width align-right'>
-            {info.final_finding}
+            {complaintPresenter.finalFinding}
           </span>
         </div>
         <div className='complaint-category bold'>
-          {info.cat.category}
+          {category}
         </div>
         <div className='complaint-sub-category'>
-          {info.cat.allegation_name}
+          {allegationName}
         </div>
         <a href='#' className='document-link'>View documents</a>
       </div>

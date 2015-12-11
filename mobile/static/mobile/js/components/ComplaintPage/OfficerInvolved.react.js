@@ -1,8 +1,10 @@
 var React = require('react');
-
+var OfficerPresenter = require('presenters/OfficerPresenter');
 
 var OfficerInvolved = React.createClass({
   renderOfficerRow: function (officer) {
+    var officerPresenter = OfficerPresenter(officer);
+
     return (
       <div className='officer-card pad'>
         <div className='row'>
@@ -11,8 +13,8 @@ var OfficerInvolved = React.createClass({
           </div>
           <div className='eleven columns'>
             <div className='officer'>
-              <div className='name bold'>{officer['name']}</div>
-              <div className='description'>{officer['description']}</div>
+              <div className='name bold'>{officerPresenter.displayName}</div>
+              <div className='description'>{officerPresenter.description}</div>
             </div>
           </div>
         </div>
@@ -31,7 +33,6 @@ var OfficerInvolved = React.createClass({
   render: function () {
     var officers = this.props.involvedOfficers || [];
     var numberOfInvolvedOfficers = officers.length;
-
     return (
       <div className='officer-involved'>
         <div className='row section-header'>

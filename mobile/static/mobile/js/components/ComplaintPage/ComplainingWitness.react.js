@@ -8,6 +8,7 @@ var ComplainingWitness = React.createClass({
   renderComplaintWitnessRow: function (complainingWitness) {
     var complainingWitnessPresenter = ComplainingWitnessPresenter(complainingWitness);
 
+    // TODO: Adding id to complainingWitness
     return (
       <div className='complaining-witness-row row' key={complainingWitness.id}>
         <div className='one column circle-wrapper center'>

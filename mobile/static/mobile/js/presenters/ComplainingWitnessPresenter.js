@@ -5,7 +5,7 @@ var ComplainingWitnessPresenter = function (complainingWitness) {
     var age = 'Age ' + complainingWitness['age'];
     var gender = GenderPresenter(complainingWitness['gender']).humanReadable;
 
-    return [gender, complainingWitness['race'], age].join(', ')
+    return [gender, complainingWitness['race'], age].join(', ');
   };
 
   return {
