@@ -27,7 +27,6 @@ class Command(BaseCommand):
             for row in c:
                 try:
                     allegations = Allegation.objects.filter(crid=row[CRID_COL])
-
                     for allegation in allegations:
 
                         if not allegation.beat:
@@ -43,6 +42,7 @@ class Command(BaseCommand):
                         if not allegation.point and allegation.beat:
                             allegation.point = allegation.beat.centroid
                             allegation.save()
+
                 except Area.DoesNotExist:
                     fail += 1
                     print(beat_name)
