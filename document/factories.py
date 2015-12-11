@@ -14,3 +14,4 @@ class RequestEmailFactory(factory.django.DjangoModelFactory):
     crid = factory.Sequence(lambda n: str(n))
     email = factory.Sequence(lambda n: fake.email())
     session = factory.SubFactory(SessionFactory)
+    email = factory.Sequence(lambda n: 'email{n}@example.com'.format(n=n))

@@ -4,9 +4,6 @@ from cpdb.settings.base import *
 
 
 if 'test' in sys.argv:
-    import sure
-
-    (lambda n: n)(sure)  # ignore warning
     CELERY_ALWAYS_EAGER = True
 
 MAP_BOX_API_KEY = 'sk.eyJ1Ijoic3RlZmFuZ2VvcmciLCJhIjoiMTNLSkhyTSJ9.b6k_KvDsuacf72UgbStcGQ'
@@ -57,3 +54,9 @@ if DEBUG_TOOLBAR_ENABLE:
     DEBUG_TOOLBAR_PATCH_SETTINGS = True
 
 DOMAIN = 'http://localhost:8000'
+
+# This should be override in corresponding settings
+SITE_INFO = {
+    'domain': 'cpdb.dev:8000',
+    'mobile_host': 'm.cpdb.dev:8000',
+}

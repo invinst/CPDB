@@ -15,6 +15,7 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.select import Select
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+import sure
 
 from api.models import Setting
 from common.factories import UserFactory
@@ -47,6 +48,7 @@ class TimeoutException(AssertionError):
 world = threading.local()
 world.browser = None
 world.mobile_browser = None
+world.phone_browser = None
 world.js_coverages = []
 
 
@@ -321,6 +323,37 @@ class BaseMobileLiveTestCase(BaseLiveTestCase):
         if world.mobile_browser is None:
             world.mobile_browser = self.init_firefox()
         return world.mobile_browser
+
+
+class BaseLivePhoneTestCase(BaseLiveTestCase):
+    IPHONE6_BROWSER_SIZE = {'width': 375, 'height': 627}
+    IPHONE6_USER_AGENT = 'Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.3 (KHTML, ' \
+                    'like Gecko) Version/8.0 Mobile/12A4345d Safari/600.1.4'
+
+    def init_firefox_profile(self):
+        profile = super(BaseLivePhoneTestCase, self).init_firefox_profile()
+        profile.set_preference(
+            "general.useragent.override",
+            self.IPHONE6_USER_AGENT
+        )
+        return profile
+
+    def init_firefox(self):
+        desired_capabilities = DesiredCapabilities.FIREFOX
+        desired_capabilities['loggingPrefs'] = {'browser': 'ALL'}
+
+        browser = WebDriver(
+            capabilities=desired_capabilities,
+            firefox_profile=self.init_firefox_profile())
+        browser.implicitly_wait(10)
+        browser.set_window_size(**self.IPHONE6_BROWSER_SIZE)
+        return browser
+
+    @property
+    def browser(self):
+        if world.phone_browser is None:
+            world.phone_browser = self.init_firefox()
+        return world.phone_browser
 
 
 @attr('simple')
