@@ -10,9 +10,11 @@ var ComplaintPageStore = require('stores/ComplaintPage/ComplaintPageStore');
 var OfficerInvolved = require('components/ComplaintPage/OfficerInvolved.react');
 var InvestigatorSection = require('components/ComplaintPage/InvestigatorSection.react');
 var InvestigationTimeline = require('components/ComplaintPage/InvestigationTimeline.react');
+var LoadingPage = require('components/Shared/LoadingPage.react');
 var Location = require('components/ComplaintPage/Location.react');
 var SearchBar = require('components/Shared/SearchBar.react');
 var NotMatchedPage = require('components/ComplaintPage/NotMatchedPage.react');
+
 
 var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
   getInitialState: function () {
@@ -21,7 +23,8 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
         'complaining_witness': [],
         'officers': [],
         'allegation': null
-      }
+      },
+      loading: true
     }
   },
 
@@ -33,16 +36,24 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
 
   render: function () {
     var found = this.state.found;
+    var loading = this.state.loading;
     var complaint = this.state.complaint;
     var info = complaint['allegation'];
     var complainingWitness = complaint['complaining_witnesses'];
     var involvedOfficers = complaint['officers'];
 
-    if (!found) {
+    if (loading) {
       return (
-        <NotMatchedPage crid={this.state.crid} />
+        <LoadingPage />
       )
     }
+
+    if (!found) {
+      return (
+        <NotMatchedPage crid={this.state.crid}/>
+      )
+    }
+
     return (
       <div className='complaint-page'>
         <div className='container content'>

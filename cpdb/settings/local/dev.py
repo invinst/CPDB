@@ -59,6 +59,12 @@ SITE_INFO = {
     'mobile_host': 'm.cpdb.dev:8000',
 }
 
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
+}
+
 if 'test' in sys.argv:
     MIDDLEWARE_CLASSES = (
         'django.contrib.sessions.middleware.SessionMiddleware',

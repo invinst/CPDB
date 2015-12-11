@@ -11,7 +11,7 @@ var HelperUtil = {
     for (var i = 0; i < paths.length; i++) {
       var key = paths[i];
 
-      if (obj == null || typeof(obj) == 'undefined' || !this.hasOwnProperty(obj, key)) {
+      if (obj == null || typeof(obj) == 'undefined' || !this.hasOwnProperty(obj, key) || obj[key] == null) {
         return defaultValue;
       }
       obj = obj[key];

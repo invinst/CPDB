@@ -7,6 +7,7 @@ var Base = require('stores/Base');
 
 var _state = {
   'crid': '',
+  'loading': false,
   'found': false,
   'complaint': {}
 };
@@ -19,12 +20,14 @@ AppDispatcher.register(function (action) {
       _state['complaint'] = action.data;
       _state['crid'] = action.data['allegation']['crid'];
       _state['found'] = true;
+      _state['loading'] = false;
       ComplaintPageStore.emitChange();
       break;
 
     case AppConstants.COMPLAINT_PAGE_FAILED_TO_RECEIVED_DATA:
       _state['crid'] = action.data;
       _state['found'] = false;
+      _state['loading'] = false;
       ComplaintPageStore.emitChange();
       break;
 
