@@ -36,6 +36,8 @@ class Command(BaseCommand):
                             beat = Area.objects.get(name=beat_name, type='police-beats')
                             allegation.beat = beat
                             allegation.areas.add(beat)
+                            if not allegation.point:
+                                allegation.point = beat.centroid
                             allegation.save()
                             success += 1
                 except Area.DoesNotExist:
@@ -45,6 +47,4 @@ class Command(BaseCommand):
                     print(beat_name)
                     fail += 1
             print("success: %s fails: %s" % (success, fail))
-
-
 
