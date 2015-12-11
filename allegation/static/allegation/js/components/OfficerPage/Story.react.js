@@ -7,6 +7,7 @@ var Base = require('components/Base.react')
 var StoryStore =require('stores/OfficerPage/StoryStore');
 var DocumentCloudAPI = require('utils/DocumentCloudAPI');
 var AppConstants = require('constants/AppConstants');
+var DateTimeUtil = require('utils/DateTimeUtil');
 
 
 var Story = React.createClass(_.assign(Base(StoryStore), {
@@ -55,7 +56,7 @@ var Story = React.createClass(_.assign(Base(StoryStore), {
   },
 
   renderCreatedDate: function () {
-    var date = moment(this.props.story.created_date).format(AppConstants.DATE_FORMAT);
+    var date = DateTimeUtil.displayDateTime(this.props.story['created_date'], AppConstants.DATE_FORMAT);
 
     return (
       <div className="date">{date}</div>
