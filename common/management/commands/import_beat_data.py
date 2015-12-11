@@ -47,7 +47,3 @@ class Command(BaseCommand):
                     print(beat_name)
                     fail += 1
             print("success: %s fails: %s" % (success, fail))
-
-
-
-pk.eyJ1Ijoic3RlZmFuZ2VvcmciLCJhIjoiVnBNOEp4byJ9.7i2N7gTV-t_QtAA-kAAlFA
