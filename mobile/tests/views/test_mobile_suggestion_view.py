@@ -24,6 +24,6 @@ class MobileSuggestionViewTest(SimpleTestCase):
 
         response, data = self.call_mobile_suggestion_api(params)
 
-        data['allegation']['crid'].should.equal(str(allegation.crid))
-        len(data['officers_by_name']).should.equal(0)
-        data['officer_by_star'].should.equal(None)
+        len(data).should.equal(1)
+        data[0]['resource'].should.equal('allegation')
+        data[0]['resource_key'].should.equal(str(allegation.crid))
