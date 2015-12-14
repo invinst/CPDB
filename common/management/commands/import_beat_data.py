@@ -45,7 +45,7 @@ class Command(BaseCommand):
                             success += 1
 
                         if not allegation.point and allegation.beat:
-                            allegation.point = allegation.beat.centroid
+                            allegation.point = allegation.beat.polygon.centroid
                             allegation.save()
                 except Area.DoesNotExist:
                     fail += 1
