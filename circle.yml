@@ -17,11 +17,12 @@ dependencies:
     - pip install -r requirements.txt
     - pyenv local 2.7.9
     - PYTHON=python2 npm install -g npm@3.5.1
-    - PYTHON=python2 npm install -g bower
+    - PYTHON=python2 npm install -g bower@1.7.0
     - python manage.py bower_install
     - PYTHON=python2 npm install
     - PYTHON=python2 npm run circleci
     - PYTHON=python2 npm run circleci_admin
+    - PYTHON=python2 npm run circleci_mobile
     - pyenv local 3.4.2
   cache_directories:
     - "bower_components"

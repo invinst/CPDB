@@ -3,6 +3,7 @@ from django.http.response import HttpResponse
 from django.views.generic.base import View
 
 from dashboard.forms.alias_form import AliasForm
+from dashboard.forms.session_alias_form import SessionAliasForm
 from document.response import JsonResponse, HttpResponseBadRequest
 from search.models.alias import Alias
 
@@ -13,11 +14,15 @@ class AdminAliasApi(View):
     SUPPORTED_SORT_ORDER = ['alias', 'num_usage', 'updated_at']
 
     def post(self, request):
-        form = AliasForm(request.POST)
-        if not form.is_valid():
-            return HttpResponseBadRequest(form=form)
+        session_alias_form = SessionAliasForm(request.POST)
+        if not session_alias_form.is_valid():
+            form = AliasForm(request.POST)
+            if not form.is_valid():
+                return HttpResponseBadRequest(form=form)
+            form.save()
+        else:
+            session_alias_form.save(request.user)
 
-        form.save()
         return HttpResponse(status=201)
 
     def get(self, request):

@@ -49,6 +49,7 @@ class EmbedModeTestCase(BaseLiveTestCase):
 
         self.until(lambda: self.fill_in('.ui-autocomplete-input', self.allegation.officer.officer_first))
 
+        self.until(lambda: self.find(".autocomplete-officer").is_displayed())
         self.find(".autocomplete-officer").click()
         len(self.find_all("#filter-tags .tag")).should.equal(1)
 

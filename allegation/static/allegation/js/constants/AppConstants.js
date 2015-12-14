@@ -274,6 +274,7 @@ module.exports = {
     'city': 'Zip Code',
     'data_source': 'Data Source',
     'officer__allegations_count__gt': 'Repeater',
+    'session': 'Session'
   },
 
   AUTOCOMPLETE_DISPLAY_CATEGORY_IN_TAG: [

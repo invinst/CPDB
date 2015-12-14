@@ -5,6 +5,7 @@ var React = require('react');
 var AppConstants = require('constants/AppConstants');
 var FilterTagsActions = require('actions/FilterTagsActions');
 var NavActions = require('actions/NavActions');
+var SessionAPI = require('utils/SessionAPI');
 
 
 var Search = React.createClass({
@@ -44,8 +45,13 @@ var Search = React.createClass({
 
   select: function (event, ui) {
     event.preventDefault();
-    FilterTagsActions.addTag(ui.item.category, ui.item);
-    $("#autocomplete").val('');
+
+    if (ui.item.category == 'session') {
+      SessionAPI.getSessionInfo(ui.item.value)
+    } else {
+      FilterTagsActions.addTag(ui.item.category, ui.item);
+      $("#autocomplete").val('');
+    }
   },
 
   onSearchClick: function () {
