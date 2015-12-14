@@ -34,7 +34,8 @@ router.register(r'settings', AdminSettingsView)
 
 
 urlpatterns = [
-    url(r'^api/dashboard/search-traffic/$', login_required(AdminSearchTrafficApi.as_view()), name='dashboard-search-traffic'),
+    url(r'^api/dashboard/search-traffic/$', login_required(AdminSearchTrafficApi.as_view()),
+        name='dashboard-search-traffic'),
     url(r'^api/dashboard/query-data/$', login_required(AdminQueryDataApi.as_view()), name='dashboard-query-data'),
     url(r'^api/dashboard/alias/$', login_required(csrf_exempt(AdminAliasApi.as_view())), name='dashboard-alias'),
     url(r'^api/dashboard/', include(router.urls)),
@@ -44,6 +45,8 @@ urlpatterns = [
     url(r'^api/dashboard/document-requests-analysis/$',
         login_required(csrf_exempt(AdminAllegationRequestAnalysisView.as_view())),
         name='dashboard-allegation-request-analysis'),
-    url(r'^api/dashboard/session-alias/$', login_required(csrf_exempt(AdminSessionAliasApi.as_view())), name='session-alias'),
-    url(r'^api/dashboard/documents_export/$', login_required(csrf_exempt(AdminInvestigationDocumentsExportView.as_view())), name='documents-export'),
+    url(r'^api/dashboard/session-alias/$', login_required(csrf_exempt(AdminSessionAliasApi.as_view())),
+        name='session-alias'),
+    url(r'^api/dashboard/documents_export/$',
+        login_required(csrf_exempt(AdminInvestigationDocumentsExportView.as_view())), name='documents-export'),
 ]
