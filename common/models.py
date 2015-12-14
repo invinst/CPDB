@@ -389,6 +389,7 @@ class Allegation(models.Model):
     final_finding = models.CharField(choices=FINDINGS, max_length=2, null=True, db_index=True, blank=True)
     final_outcome = models.CharField(choices=OUTCOMES, max_length=3, null=True, db_index=True, blank=True)
     final_outcome_class = models.CharField(max_length=20, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
 
     areas = models.ManyToManyField('Area', blank=True)
     location = models.CharField(max_length=20, null=True, blank=True)
