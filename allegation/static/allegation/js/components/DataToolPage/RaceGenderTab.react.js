@@ -36,6 +36,16 @@ var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
       height: 155
     };
 
+     if (complaintRacesData.length == 0 && officerRacesData.length == 0 && complaintGendersData.length == 0 && officerGendersData.length == 0) {
+       return (
+         <div id='gender-race-tab'>
+             <div className='row'>
+                <div className="alert alert-info col-md-6 col-md-offset-3">No Race &amp; Gender data available for the current search</div>
+             </div>
+         </div>
+        )
+     }
+
     return (
       <div id='gender-race-tab'>
         <div className='col-lg-12 col-md-12 content'>
