@@ -62,7 +62,7 @@ var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
 
     var content = '';
     if (_.isEmpty(officer)) {
-      content = (<i clasName='fa fa-spin fa-spinner' />);
+      content = (<i className='fa fa-spin fa-spinner' />);
     } else {
       content = (
         <div>
