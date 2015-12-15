@@ -107,6 +107,15 @@ var StoryList = React.createClass(_.assign(Base(StoryListStore), {
     });
   },
 
+  deleteBtnRender: function () {
+    if (StoryListStore.getSelectedStories().length > 0) {
+      return (
+        <button className="btn btn-primary" onClick={this.deleteBulk}>Delete</button>
+      )
+    }
+    return ''
+  },
+
   render: function() {
     if (!this.state.stories.length) {
       return (
@@ -115,10 +124,10 @@ var StoryList = React.createClass(_.assign(Base(StoryListStore), {
     }
     return (
       <div>
-        <div className="row">
+        <div className="row story-head-line">
           <h4 className="col-md-6 col-xs-6">Stories</h4>
           <div className="col-md-6 col-xs-6 text-right">
-            <button className="btn btn-primary" onClick={this.deleteBulk}>Delete</button>
+            {this.deleteBtnRender()}
           </div>
         </div>
         <div className='table-responsive'>
