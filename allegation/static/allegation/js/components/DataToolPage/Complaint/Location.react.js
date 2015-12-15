@@ -44,7 +44,7 @@ var Location = React.createClass({
           '.png?access_token=' + AppConstants.MAP_TOKEN
         );
         address = (
-          <div>Beat: {this.props.complaint.beat_name}</div>
+          <div>Beat # {this.props.complaint.beat_name}</div>
         );
         update_state = {
           image: map_image,
