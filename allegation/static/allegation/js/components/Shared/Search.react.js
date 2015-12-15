@@ -17,6 +17,9 @@ var Search = React.createClass({
     $("#autocomplete").catcomplete({
       autoFocus: true,
       source: function (request, response) {
+        var that = this
+        this.displayMessage('Searching...')
+
         $.ajax({
           url: "/search/suggest/",
           dataType: "json",
@@ -28,8 +31,11 @@ var Search = React.createClass({
             $.each(data, function (i, subdata) {
               newData = newData.concat(subdata);
             });
-
-            response(newData);
+            if (newData.length > 0) {
+              response(newData);
+            } else {
+              that.displayMessage('No matches found')
+            }
           }
         });
       },
