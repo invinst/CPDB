@@ -78,6 +78,22 @@ class BrowserNoWait(object):
         self.obj.browser.implicitly_wait(10)
 
 
+class OpenNewBrowser(object):
+    def __init__(self, browser):
+        self.browser = browser
+
+    def __enter__(self):
+        browser = self.browser
+
+        self.browser = world.browser
+        world.browser = browser
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        world.browser.quit()
+
+        world.browser = self.browser
+
+
 class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     _multiprocess_can_split_ = True
 
@@ -116,6 +132,10 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     def browser_no_wait(self):
         return BrowserNoWait(self)
 
+    def open_new_browser(self):
+        browser = self.init_firefox()
+        return OpenNewBrowser(browser)
+
     @property
     def browser(self):
         if world.browser is None:
@@ -142,7 +162,9 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         self.browser.execute_script("jQuery('#toast-container').html('');")
 
     def visit(self, page):
-        self.browser.get('%s%s' % (self.live_server_url, page))
+        if not page.startswith('http'):
+            page = '%s%s' % (self.live_server_url, page)
+        self.browser.get(page)
 
     def visit_home(self, fresh=False):
         if fresh:

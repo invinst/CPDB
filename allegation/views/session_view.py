@@ -86,7 +86,8 @@ class SessionAPIView(View):
                 'query': session.query,
                 'readable_query': session.readable_query,
                 'title': session.title,
-                'active_tab': session.active_tab
+                'active_tab': session.active_tab,
+                'sunburst_arc': session.sunburst_arc,
             }
         }
 
@@ -102,6 +103,8 @@ class SessionAPIView(View):
         session.query.update(**updates)
         if 'active_tab' in data:
             session.active_tab = data['active_tab']
+        if 'sunburst_arc' in data:
+            session.sunburst_arc = data['sunburst_arc']
         if 'title' in data:
             session.title = data['title']
         session.save()

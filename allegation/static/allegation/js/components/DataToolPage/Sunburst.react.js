@@ -12,6 +12,7 @@ var FilterTagsActions = require('actions/FilterTagsActions');
 var SunburstStore = require("stores/SunburstStore");
 var FilterStore = require("stores/FilterStore");
 var SunburstAPI = require('utils/SunburstAPI');
+var SessionAPI = require('utils/SessionAPI');
 
 var width = 390,
   height = 390,
@@ -165,9 +166,14 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
     }
 
     SunburstActions.selectArc(d);
+    SessionAPI.updateSessionInfo({'sunburst_arc': d.name});
   },
 
   zoomToSelected: function (d) {
+    if (typeof(d) == 'string') {
+      d = this.findPathByName(d);
+    }
+
     path.transition()
       .duration(750)
       .attrTween("d", arcTween(d));
