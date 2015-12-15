@@ -13,19 +13,30 @@ var Location = React.createClass({
       var lng = allegation.point.lng;
       var centerLng = lng + 0.02;
       var locationImage = '(' + lng + ',' + lat + ')/' + centerLng + ',' + lat + ',12/900x180.png';
-
+      var mapImage;
       var marker = 'url-' + encodeURIComponent(AppConstants.MAP_MARKER_ICON_URL);
 
       if (allegation.add1 && allegation.add2) {
-        marker = 'pin-l-cross+482';
-      }
 
-      imgSrc = 'http://api.tiles.mapbox.com/v4/mapbox.streets/' + marker + locationImage + '?access_token=' + AppConstants.MAP_TOKEN;
+        marker = 'pin-l-cross+482';
+
+        mapImage = (
+          'http://api.tiles.mapbox.com/v4/mapbox.streets/pin-l-cross+482(' +
+          lng + ',' + lat + ')/' + centerLng + ',' + lat + ',13/' + this.getSize() +
+          '.png?access_token=' + AppConstants.MAP_TOKEN
+        );
+
+      }
+      else if (this.props.complaint.beat_name) {
+        mapImage = 'http://api.tiles.mapbox.com/v4/mapbox.streets/url-' + encodeURIComponent(AppConstants.MAP_MARKER_ICON_URL);
+      }
+      mapImage += locationImage + '?access_token=' + AppConstants.MAP_TOKEN;
     }
+
 
     return (
       <div className='complaint-map'>
-        <img alt='Marker is currently not available' src={imgSrc} />
+        <img alt='Marker is currently not available' src={mapImage} />
       </div>
     );
   },
