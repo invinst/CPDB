@@ -15,7 +15,7 @@ var _state = {
       })
     ]
   },
-  options: AppConstants.LINE_CHART_OPTIONS,
+  options: _.extend({}, AppConstants.LINE_CHART_OPTIONS, { showTooltips: false }),
   rawData: {}
 };
 
