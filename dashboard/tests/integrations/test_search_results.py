@@ -10,6 +10,7 @@ class SearchResultTestCase(BaseAdminTestCase):
 
     def go_to_search_result(self):
         self.element_by_tagname_and_text('span', 'Search Results').click()
+        self.until(lambda: self.element_by_tagname_and_text('h1', 'Search Results').is_displayed())
 
     def test_see_search_result_tab(self):
         log = SuggestionLogFactory()

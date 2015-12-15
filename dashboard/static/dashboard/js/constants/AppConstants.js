@@ -64,13 +64,26 @@ module.exports = {
   RECEIVED_MORE_SESSIONS_DATA: c++,
   LOCK_SESSION_PAGE_SCROLL: c++,
   SEARCH_FOR_SESSION: c++,
+  RECEIVED_SESSIONS_ALIAS_DATA: c++,
+  RECEIVED_MORE_SESSIONS_ALIAS_DATA: c++,
+  LOCK_SESSION_ALIAS_PAGE_SCROLL: c++,
+  SEARCH_FOR_SESSION_ALIAS: c++,
+  SET_SESSION_ACTIVE_TAB: c++,
 
   RECEIVED_SETTINGS_DATA: c++,
+  RECEIVED_STORY_TYPES_DATA: c++,
   UPDATE_SETTING_DATA: c++,
   UPDATED_SETTING_DATA: c++,
   FAILED_TO_UPDATE_SETTING_DATA: c++,
 
   RECEIVED_NEW_SESSIONS_DATA: c++,
+
+  SHOW_ADD_SESSION_ALIAS_MODAL: c++,
+  HIDE_ADD_SESSION_ALIAS_MODAL: c++,
+  SESSION_ALIAS_MODAL_FORM_DATA_CHANGED: c++,
+  RECEIVED_SESSION_ALIAS_CREATION_RESULT: c++,
+  FAILED_TO_CREATE_SESSION_ALIAS: c++,
+  DELETED_SESSION_ALIAS: c++,
 
   QUERY_LIST_FILTERS: {
     'all': 'All',
@@ -128,6 +141,11 @@ module.exports = {
     }
   },
 
+  SESSION_TABS: {
+    'all': 'All',
+    'alias': 'Alias'
+  },
+
   LINE_CHART_COLOR_OPTIONS: {
     fillColor: "rgba(220,220,220,0.2)",
     strokeColor: "rgba(220,220,220,1)",
@@ -149,6 +167,7 @@ module.exports = {
   ],
 
   DATE_ONLY_FORMAT: 'YYYY-M-DD',
+  DATE_FORMAT: 'YYYY-MM-DD',
   HUMAN_READABLE_FORMAT: 'hh:mm a, DD MMM YYYY',
   NUMBER_OF_DAYS_SHOWN_IN_NEW_SESSION_CHART: 30,
 
@@ -164,6 +183,8 @@ module.exports = {
   DOCUMENT_REQUEST_ANALYSIS_END_POINT: '/api/dashboard/document-requests-analysis/',
   DOCUMENT_LINK_END_POINT: '/api/dashboard/document-link/',
   SESSIONS_API_ENDPOINT: '/api/dashboard/sessions/',
+  SESSION_ALIAS_API_ENDPOINT: '/api/dashboard/session-alias/',
+  SESSION_ALIAS2_API_ENDPOINT: '/api/dashboard/session-alias2/',
   SETTINGS_API_ENDPOINT: '/api/dashboard/settings/',
   NEW_SESSION_ANALYTICS_API_ENDPOINT: '/api/dashboard/new-sessions-analytics/',
   DOCUMENT_EXPORT_END_POINT: '/api/dashboard/documents_export/'

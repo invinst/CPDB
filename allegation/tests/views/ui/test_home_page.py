@@ -46,6 +46,7 @@ class HomePageTestCase(BaseLiveTestCase):
     def filter_complaint_type(self):
         self.visit_home()
         self.link("Categories").click()
+        self.until_ajax_complete()
 
     def check_number_officer(self, num):
         self.until(lambda: self.number_of_officers().should.equal(num))
@@ -194,6 +195,17 @@ class HomePageTestCase(BaseLiveTestCase):
 
         with self.browser_no_wait():
             self.element_by_classname_and_text('filter-name', ns).shouldnt.be.ok
+
+        sunburst_legend_root_text = self.find('#sunburst-legend .root').text
+        url = self.browser.current_url
+        with self.open_new_browser():
+            self.visit(url)
+
+            self.until_ajax_complete()
+            self.sleep(0.75)  # sunburst zoom time
+
+            with self.browser_no_wait():  # same state with above
+                self.find('#sunburst-legend .root').text.should.equal(sunburst_legend_root_text)
 
         self.click_sunburst_legend(ns)
         with self.browser_no_wait():

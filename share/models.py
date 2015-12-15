@@ -4,15 +4,13 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.template.defaultfilters import slugify
 from django_extensions.db.fields.json import JSONField
-from hashids import Hashids
 
 from common.models import Officer, AllegationCategory, Investigator, Area
 from common.models import GENDER_DICT, OUTCOME_TEXT_DICT, FINAL_FINDING_TEXT_DICT, FINDINGS_DICT, OUTCOMES_DICT, CUSTOM_FILTER_DICT
+from common.utils.hashid import hash_obj
 from search.models import SuggestionLog, FilterLog
 from search.services import REPEATER_DESC
 
-
-hash_obj = Hashids(settings.SECRET_KEY, min_length=6)
 
 KEYS = {
     'officer': Officer,
@@ -32,6 +30,7 @@ class Session(models.Model):
     title = models.CharField(max_length=255, blank=True)
     query = JSONField(blank=True)
     active_tab = models.CharField(max_length=40, default='', blank=True)
+    sunburst_arc = models.CharField(max_length=40, default='', blank=True)
     share_from = models.ForeignKey('share.Session', null=True, default=None, blank=True)
     share_count = models.IntegerField(default=0, blank=True)
     created_at = models.DateTimeField(default=timezone.now, null=True, blank=True)
@@ -55,10 +54,21 @@ class Session(models.Model):
     def id_from_hash(hash_id):
         return hash_obj.decode(hash_id)
 
+    @staticmethod
+    def parse_hash_from_link(link):
+        return link.split('/')[4]
+
+    def get_absolute_url(self):
+        return '/data/{hash}/{slug}'.format(
+            hash=self.hash_id,
+            slug=slugify(self.title)
+        )
+
     def clone(self):
         session = Session()
         session.title = self.title
         session.query = self.query
+        session.sunburst_arc = self.sunburst_arc
         session.active_tab = self.active_tab
         session.share_from = self
         session.save()
@@ -73,6 +83,9 @@ class Session(models.Model):
             if values:
                 results[key] = values
         return results
+
+    def __str__(self):
+        return self.title or self.hash_id
 
     @staticmethod
     def get_filter_values(key, values):
@@ -103,3 +116,13 @@ class Session(models.Model):
             return [{'text': REPEATER_DESC[str(value)], 'value': value}]
 
         return [{'value': x, 'text': x} for x in values['value']]
+
+    @property
+    def query_string(self):
+        filters = self.query.get('filters', {})
+        query = []
+        for key in filters:
+            value = filters[key]['value']
+            query.append("&".join("{key}={value}".format(key=key, value=v) for v in value))
+        return "&".join(query)
+

@@ -38,6 +38,7 @@
     "react-mini-router": "~1.1.7",
     "react-router": "^1.0.0",
     "react-select": "^0.6.12",
+    "react-tag-input": "^1.0.3",
     "slug": "^0.9.1",
     "slugify": "^0.1.1",
     "toastr": "^2.1.2"
@@ -75,6 +76,9 @@
     "testPathIgnorePatterns": [
       "/node_modules/",
       "<rootDir>/static/"
-    ]
+    ],
+    "globals": {
+      "__DEV__": true
+    }
   }
 }

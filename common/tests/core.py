@@ -10,6 +10,7 @@ from django.core.urlresolvers import reverse
 from django.test.testcases import LiveServerTestCase, TestCase as DjangoSimpleTestCase
 from nose.plugins.attrib import attr
 from selenium.common.exceptions import NoSuchElementException, WebDriverException
+from selenium.webdriver import ActionChains
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.select import Select
@@ -48,6 +49,7 @@ class TimeoutException(AssertionError):
 world = threading.local()
 world.browser = None
 world.mobile_browser = None
+world.phone_browser = None
 world.js_coverages = []
 
 
@@ -75,6 +77,22 @@ class BrowserNoWait(object):
 
     def __exit__(self, exc_type, exc_value, traceback):
         self.obj.browser.implicitly_wait(10)
+
+
+class OpenNewBrowser(object):
+    def __init__(self, browser):
+        self.browser = browser
+
+    def __enter__(self):
+        browser = self.browser
+
+        self.browser = world.browser
+        world.browser = browser
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        world.browser.quit()
+
+        world.browser = self.browser
 
 
 class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
@@ -115,6 +133,10 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     def browser_no_wait(self):
         return BrowserNoWait(self)
 
+    def open_new_browser(self):
+        browser = self.init_firefox()
+        return OpenNewBrowser(browser)
+
     @property
     def browser(self):
         if world.browser is None:
@@ -141,7 +163,9 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         self.browser.execute_script("jQuery('#toast-container').html('');")
 
     def visit(self, page):
-        self.browser.get('%s%s' % (self.live_server_url, page))
+        if not page.startswith('http'):
+            page = '%s%s' % (self.live_server_url, page)
+        self.browser.get(page)
 
     def visit_home(self, fresh=False):
         if fresh:
@@ -158,6 +182,12 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         self.until(lambda: self.link("Outcomes"), timeout=60)
         self.until_ajax_complete()
         self.find("body").click()
+
+    def drag_and_drop(self, source_element, target_element):
+        action_chains = ActionChains(self.browser)
+        action_chains.drag_and_drop(source_element, target_element)
+        action_chains.perform()
+        self.sleep(1)
 
     def should_see_text(self, text):
         if not isinstance(text, str):
@@ -322,6 +352,37 @@ class BaseMobileLiveTestCase(BaseLiveTestCase):
         if world.mobile_browser is None:
             world.mobile_browser = self.init_firefox()
         return world.mobile_browser
+
+
+class BaseLivePhoneTestCase(BaseLiveTestCase):
+    IPHONE6_BROWSER_SIZE = {'width': 375, 'height': 627}
+    IPHONE6_USER_AGENT = 'Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.3 (KHTML, ' \
+                    'like Gecko) Version/8.0 Mobile/12A4345d Safari/600.1.4'
+
+    def init_firefox_profile(self):
+        profile = super(BaseLivePhoneTestCase, self).init_firefox_profile()
+        profile.set_preference(
+            "general.useragent.override",
+            self.IPHONE6_USER_AGENT
+        )
+        return profile
+
+    def init_firefox(self):
+        desired_capabilities = DesiredCapabilities.FIREFOX
+        desired_capabilities['loggingPrefs'] = {'browser': 'ALL'}
+
+        browser = WebDriver(
+            capabilities=desired_capabilities,
+            firefox_profile=self.init_firefox_profile())
+        browser.implicitly_wait(10)
+        browser.set_window_size(**self.IPHONE6_BROWSER_SIZE)
+        return browser
+
+    @property
+    def browser(self):
+        if world.phone_browser is None:
+            world.phone_browser = self.init_firefox()
+        return world.phone_browser
 
 
 @attr('simple')
