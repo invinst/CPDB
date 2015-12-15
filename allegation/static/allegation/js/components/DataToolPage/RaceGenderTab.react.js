@@ -1,14 +1,35 @@
 var _ = require('lodash');
+var jQuery = require('jquery');
 var React = require('react');
 
 var Base = require('components/Base.react');
+var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
+var FilterStore = require("stores/FilterStore");
 var PercentageRectangleChart = require('components/DataToolPage/RaceGenderTab/PercentageRectangleChart.react');
 var RaceGenderAPITransformation = require('utils/RaceGenderAPITransformation');
 var RaceGenderTabStore = require('stores/DataToolPage/RaceGenderTab/RaceGenderTabStore');
 
 var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
+  mixins: [EmbedMixin],
+
   componentDidMount: function() {
     RaceGenderTabStore.addChangeListener(this._onChange);
+    this.initTabs();
+  },
+
+  initTabs: function () {
+    if (this.props.tabs) {
+      this.props.tabs.tabs.push(this);
+    }
+  },
+
+  getEmbedCode: function () {
+    var node = this.getDOMNode();
+    var width = jQuery(node).width();
+    var height = jQuery(node).height();
+    var src = "/embed/?page=race-gender&query=" + encodeURIComponent(FilterStore.getQueryString());
+    return '<iframe width="' + width + 'px" height="' + height + 'px" frameborder="0" src="' + this.absoluteUri(src)
+       + '"></iframe>';
   },
 
   render: function () {
@@ -37,7 +58,7 @@ var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
     };
 
     return (
-      <div id='gender-race-tab'>
+      <div id='gender-race-tab' className='clearfix'>
         <div className='col-lg-12 col-md-12 content'>
           <div className='row'>
             <div className='col-lg-10 col-md-11 col-sm-10 col-xs-0 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 col-xs-offset-1'>

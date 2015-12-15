@@ -110,3 +110,7 @@ body > .row {
 .col-md-2 {
     width: 16.66666667%;
 }
+
+#gender-race-tab {
+    padding: 0;
+}
