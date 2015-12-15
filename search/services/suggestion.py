@@ -184,6 +184,17 @@ class Suggestion(object):
 
         return results[:5]
 
+    def suggest_has_document(self, q):
+        if q.startswith('has:document'):
+            condition = Q(document_id__isnull=False)
+
+            results = self.query_suggestions(
+                model_cls=Allegation,
+                cond=condition,
+                fields_to_get=['id', 'crid'])
+            return results
+        return []
+
     def suggest_data_source(self, q):
         if q.startswith('pre') or q.startswith('foi'):
             return DATA_SOURCES
@@ -192,6 +203,7 @@ class Suggestion(object):
     def suggest_repeat_offenders(self, q):
         if q.startswith('rep'):
             return [[value, int(key)] for key, value in REPEATER_DESC.items()]
+        return []
 
     def suggest_sessions(self, query, limit=5):
         session_aliases = SessionAlias.objects.filter(alias__icontains=query)[:limit]
@@ -247,6 +259,8 @@ class Suggestion(object):
         ret['officer__allegations_count__gt'] = self.suggest_repeat_offenders(q)
 
         ret['session'] = self.suggest_sessions(q)
+
+        ret['has_document'] = self.suggest_has_document(q)
 
         ret = OrderedDict((k, v) for k, v in ret.items() if v)
         return ret
