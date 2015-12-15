@@ -27,6 +27,9 @@ module.exports = {
   },
 
   // API endpoints
-  ALLEGATION_API_ENDPOINT: '/mobile/api/allegation'
-}
-;
+  ALLEGATION_API_ENDPOINT: '/mobile/api/allegation',
+
+  //Time format
+  SIMPLE_DATE_FORMAT: 'MMM DD, YYYY',
+  FIRST_AVAILABLE_DATE: '01/01/1970'
+};
