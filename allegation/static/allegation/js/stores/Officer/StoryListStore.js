@@ -25,7 +25,9 @@ AppDispatcher.register(function (action) {
 
     case AppConstants.SET_STORY_DOCUMENT_THUMB:
       action.story.thumbUrl = action.thumbUrl;
-      StoryListStore.emitChange();
+      setTimeout(function () {
+        StoryListStore.emitChange();
+      }, 2000);
       break;
 
     default:
