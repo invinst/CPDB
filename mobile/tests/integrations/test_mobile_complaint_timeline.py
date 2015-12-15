@@ -66,11 +66,6 @@ class MobileComplaintTimelineTest(MobileComplaintPageTestMixin):
         self.go_to_allegation_detail_page(allegation.crid)
         self.assert_no_timeline()
 
-    def test_open_investigation(self):
-        allegation = AllegationFactory(final_outcome_class='open-investigation')
-        self.go_to_allegation_detail_page(allegation.crid)
-        self.assert_timeline_should_contains_text('Open Investigation')
-
     def test_no_incident_date(self):
         start_date = datetime(2001, 6, 1)
         end_date = datetime(2002, 7, 22)
@@ -84,8 +79,7 @@ class MobileComplaintTimelineTest(MobileComplaintPageTestMixin):
         start_date = datetime(2001, 6, 1)
         incident_date = datetime(2002, 7, 22)
         allegation = AllegationFactory(incident_date=incident_date, start_date=start_date, end_date=None,
-                                       final_outcome_class='open-investigation'
-                                       )
+                                       final_outcome_class='open-investigation')
 
         self.go_to_allegation_detail_page(allegation.crid)
 
