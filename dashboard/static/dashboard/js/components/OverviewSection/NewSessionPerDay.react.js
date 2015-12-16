@@ -9,7 +9,7 @@ var NewSessionPerDay = React.createClass({
     return (
       <div className='row'>
         <div className='col-sm-12'>
-          <div className='section-header'>New session per day</div>
+          <div className='section-header'>New sessions per day</div>
         </div>
         <div className='col-md-12'>
           <NewSessionPerDayChart />

@@ -10,7 +10,7 @@ var Location = React.createClass({
   },
   componentDidMount: function () {
     var allegation = this.props.complaint.allegation;
-    var map_image, address;
+    var map_image, address, update_state;
     if (allegation.point.lat) {
       var lat = allegation.point.lat;
       var lng = allegation.point.lng;
@@ -32,10 +32,24 @@ var Location = React.createClass({
             <div>City: {allegation.city}</div>
           </div>
         );
-        this.setState({
-          address: address,
-          image: map_image
-        });
+        update_state = {
+          image: map_image,
+          address: address
+        }
+      }
+      else if (this.props.complaint.beat_name) {
+        map_image = (
+          'http://api.tiles.mapbox.com/v4/mapbox.streets/url-' + encodeURIComponent(AppConstants.MAP_MARKER_ICON_URL) +'(' + lng + ',' + lat + ')/' + centerLng + ',' + lat + ',13/' +
+          this.getSize() +
+          '.png?access_token=' + AppConstants.MAP_TOKEN
+        );
+        address = (
+          <div>Beat: {this.props.complaint.beat_name}</div>
+        );
+        update_state = {
+          image: map_image,
+          address: address
+        }
       }
       else {
         map_image = (
@@ -43,10 +57,11 @@ var Location = React.createClass({
           this.getSize() +
           '.png?access_token=' + AppConstants.MAP_TOKEN
         );
-        this.setState({
+        update_state = {
           image: map_image
-        });
+        }
       }
+      this.setState(update_state);
     }
   },
   getSize: function() {
