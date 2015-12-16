@@ -39,13 +39,13 @@ class OfficerProfileTestCase(BaseAdminTestCase):
 
     def test_display_delete_button(self):
         officer = self.officer
-        stories = [StoryFactory(officer=officer) for x in range(2)]
+        stories = StoryFactory(officer=officer)
         self.go_to_officer_profile()
         self.go_to_single_officer(officer)
-        self.button("Delete").should.be(False)
+        self.button("Delete").is_displayed().should.be(False)
 
         self.find("input[type='checkbox']").click()
-        self.button("Delete").shouldnt.be(False)
+        self.button("Delete").is_displayed().shouldnt.be(False)
 
 
     def test_delete_story(self):
