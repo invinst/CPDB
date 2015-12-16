@@ -19,7 +19,7 @@ var OfficerInvolved = React.createClass({
           </div>
         </div>
       </div>
-    )
+    );
   },
 
   renderOfficerList: function (involvedOfficers) {
@@ -27,7 +27,7 @@ var OfficerInvolved = React.createClass({
       <div className='officer-list'>
         {involvedOfficers.map(this.renderOfficerRow)}
       </div>
-    )
+    );
   },
 
   render: function () {
@@ -37,7 +37,7 @@ var OfficerInvolved = React.createClass({
     if (numberOfInvolvedOfficers == 0) {
       return (
         <div></div>
-      )
+      );
     }
 
     return (
@@ -50,7 +50,7 @@ var OfficerInvolved = React.createClass({
         </div>
         {this.renderOfficerList(officers)}
       </div>
-    )
+    );
   }
 });
 

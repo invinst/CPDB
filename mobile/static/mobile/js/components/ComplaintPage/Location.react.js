@@ -11,14 +11,14 @@ var Location = React.createClass({
     if (!data) {
       return (
         <div></div>
-      )
+      );
     } else {
       return (
         <div>
           <label>{label} </label>
           <span>{data}</span>
         </div>
-      )
+      );
     }
   },
 
@@ -53,7 +53,7 @@ var Location = React.createClass({
           <Map info={info}/>
         </div>
       </div>
-    )
+    );
   }
 });
 

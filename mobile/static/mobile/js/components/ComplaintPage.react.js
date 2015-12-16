@@ -50,7 +50,7 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
 
     if (!found) {
       return (
-        <NotMatchedPage crid={this.state.crid}/>
+        <NotMatchedPage crid={this.state.crid} />
       )
     }
 
