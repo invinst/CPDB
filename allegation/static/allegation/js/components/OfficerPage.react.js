@@ -57,48 +57,41 @@ var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
   render: function () {
     var allegations = this.state.data['allegations'];
     var officer = this.state.data['officer'];
-    var relatedOfficers = this.state.data['related_officers'];
+    var relatedOfficers = this.state.data['relatedOfficers'];
     var hasMap = this.state.data['has_map'];
 
-    var content = '';
-    if (_.isEmpty(officer)) {
-      content = (<i className='fa fa-spin fa-spinner' />);
-    } else {
-      content = (
-        <div>
-          <Nav />
-          <div id='officer-profile'>
-            <div className="map-row">
-              <div className="container">
-                <OfficerDetail officer={officer} hasMap={hasMap} />
-              </div>
-            </div>
-            <div className="white-background">
-              <div className="container">
-                <RelatedOfficers relatedOfficers={relatedOfficers} />
-                <StoryList officer={officer} />
-              </div>
-            </div>
+    var content = (
+      <div>
+        <Nav />
+        <div id='officer-profile'>
+          <div className="map-row">
             <div className="container">
-              <ComplaintSection officer={officer}/>
+              {this.props.entered ? <OfficerDetail officer={officer} hasMap={hasMap} /> : null}
             </div>
-            <div className='container-fluid'>
-              <div className='sticky-footer'>
-                <Footer />
-              </div>
+          </div>
+          <div className="white-background">
+            <div className="container">
+              {this.props.entered ? <RelatedOfficers relatedOfficers={relatedOfficers} /> : null}
+              <StoryList officer={officer} />
+            </div>
+          </div>
+          <div className="container">
+            {this.props.entered ? <ComplaintSection officer={officer}/> : null}
+          </div>
+          <div className='container-fluid'>
+            <div className='sticky-footer'>
+              <Footer />
             </div>
           </div>
         </div>
-      );
-    }
+      </div>
+    );
 
-    return (
-      <div>
+    return <div>
         {content}
         <Disclaimer />
         <HappyFox />
-      </div>
-    );
+      </div>;
   },
 
   _onLogoClick: function(e) {
