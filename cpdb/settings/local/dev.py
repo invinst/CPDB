@@ -1,5 +1,3 @@
-import sys
-
 from cpdb.settings.base import *
 
 
@@ -62,3 +60,18 @@ SITE_INFO = {
     'domain': 'cpdb.dev:8000',
     'mobile_host': 'm.cpdb.dev:8000',
 }
+
+
+if 'test' in sys.argv:
+    MIDDLEWARE_CLASSES = (
+        'django.contrib.sessions.middleware.SessionMiddleware',
+        'django.middleware.common.CommonMiddleware',
+        'django.middleware.csrf.CsrfViewMiddleware',
+        'django.contrib.auth.middleware.AuthenticationMiddleware',
+        'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
+        'django_user_agents.middleware.UserAgentMiddleware',
+        'django.contrib.messages.middleware.MessageMiddleware',
+        'django.middleware.clickjacking.XFrameOptionsMiddleware',
+        'django.middleware.security.SecurityMiddleware',
+        'corsheaders.middleware.CorsMiddleware',
+    )

@@ -1,8 +1,11 @@
 var React = require('react');
+var OfficerPresenter = require('presenters/OfficerPresenter');
 
 
 var OfficerInvolved = React.createClass({
   renderOfficerRow: function (officer) {
+    var officerPresenter = OfficerPresenter(officer);
+
     return (
       <div className='officer-card pad'>
         <div className='row'>
@@ -11,8 +14,8 @@ var OfficerInvolved = React.createClass({
           </div>
           <div className='eleven columns'>
             <div className='officer'>
-              <div className='name bold'>{officer.name}</div>
-              <div className='description'>{officer.description}</div>
+              <div className='name bold'>{officerPresenter.displayName}</div>
+              <div className='description'>{officerPresenter.description}</div>
             </div>
           </div>
         </div>
@@ -29,18 +32,24 @@ var OfficerInvolved = React.createClass({
   },
 
   render: function () {
-    var involvedOfficers = this.props.involvedOfficers;
-    var numberOfInvolvedOfficers = this.props.involvedOfficers.length;
+    var officers = this.props.involvedOfficers || [];
+    var numberOfInvolvedOfficers = officers.length;
+
+    if (numberOfInvolvedOfficers == 0) {
+      return (
+        <div></div>
+      )
+    }
 
     return (
       <div className='officer-involved'>
         <div className='row section-header'>
           <span className='pad'>
-            <span className='section-title bold'>Officers involveds&nbsp;</span>
+            <span className='section-title bold'>Officers involved&nbsp;</span>
             <span className='title-count normal-weight'>({numberOfInvolvedOfficers})</span>
           </span>
         </div>
-        {this.renderOfficerList(involvedOfficers)}
+        {this.renderOfficerList(officers)}
       </div>
     )
   }

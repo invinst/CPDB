@@ -1,5 +1,7 @@
 var React = require('react');
 
+var HelperUtil = require('utils/HelperUtil');
+
 
 var InvestigatorSection = React.createClass({
   renderInvestigator: function (investigator) {
@@ -11,7 +13,7 @@ var InvestigatorSection = React.createClass({
           </div>
           <div className='eleven columns'>
             <div className='investigator'>
-              <div className='name bold'>{investigator.name}</div>
+              <div className='name bold'>{investigator['name']}</div>
               <div className='rank'>{investigator['current_rank']}</div>
             </div>
           </div>
@@ -21,7 +23,13 @@ var InvestigatorSection = React.createClass({
   },
 
   render: function () {
-    var investigator = this.props.investigator;
+    var investigator = HelperUtil.fetch(this.props.info, 'investigator', false);
+
+    if (!investigator) {
+      return (
+        <div></div>
+      )
+    }
 
     return (
       <div className='investigator-section'>

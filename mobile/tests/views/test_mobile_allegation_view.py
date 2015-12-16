@@ -1,5 +1,5 @@
 from rest_framework.reverse import reverse
-from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND
+from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST
 from allegation.factories import OfficerFactory, AllegationFactory, ComplainingWitnessFactory
 from common.tests.core import SimpleTestCase
 
@@ -21,6 +21,12 @@ class MobileAllegationTest(SimpleTestCase):
         response.status_code.should.equal(HTTP_200_OK)
 
         data['allegation']['crid'].should.be.equal(str(self.allegation.crid))
+        data['allegation']['point']['x'].should.be.equal(self.allegation.point.x)
+        data['allegation']['point']['y'].should.be.equal(self.allegation.point.y)
+
+        len(data['officers']).should.be.equal(1)
+        data['officers'][0]['id'].should.be.equal(self.officer.pk)
+
         len(data['complaining_witnesses']).should.be.equal(1)
         data['complaining_witnesses'][0]['race'].should.be.equal(self.complainant.race)
         data['complaining_witnesses'][0]['gender'].should.be.equal(self.complainant.gender)
@@ -29,4 +35,8 @@ class MobileAllegationTest(SimpleTestCase):
     def test_return_404_when_get_invalid_pk(self):
         invalid_pk = -1
         response, data = self.call_allegation_api({'crid': invalid_pk})
+        response.status_code.should.equal(HTTP_404_NOT_FOUND)
+
+    def test_no_parameters(self):
+        response, data = self.call_allegation_api()
         response.status_code.should.equal(HTTP_404_NOT_FOUND)
