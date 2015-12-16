@@ -97,7 +97,7 @@ class AllegationFactory(factory.django.DjangoModelFactory):
     @factory.post_generation
     def areas(self, create, extracted, **kwargs):
 
-        if Area.objects.all().count() < 5 :
+        if Area.objects.all().count() < 5:
             for i in range(2):
                 AreaFactory()
         extracted = Area.objects.all()
