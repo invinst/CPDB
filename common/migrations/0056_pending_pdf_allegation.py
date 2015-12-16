@@ -7,7 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', '0054_allegation_description'),
+        ('common', '0055_allegation_description'),
     ]
 
     operations = [
