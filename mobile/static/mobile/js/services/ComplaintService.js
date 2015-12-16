@@ -38,13 +38,18 @@ var ComplaintService = function (complaint) {
     return !startInvestigationDate() || startInvestigationDate().isSame(incidentDate(), 'day')
   };
 
+  var hasLocation = function(){
+    return complaint.beat || complaint.location || complaint.add1 || complaint.add2 || complaint.city || complaint.point;
+  };
+
   return {
     isOpenInvestigation: isOpenInvestigation(),
     startInvestigatingAtIncidentDate: startInvestigatingAtIncidentDate(),
     incidentDate: incidentDate(),
     startInvestigationDate: startInvestigationDate(),
     endInvestigationDate: endInvestigationDate(),
-    haveNoData: haveNoData()
+    haveNoData: haveNoData(),
+    hasLocation: hasLocation()
   }
 };
 

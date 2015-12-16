@@ -2,8 +2,8 @@ var cx = require('classnames');
 var React = require('react');
 
 var HelperUtil = require('utils/HelperUtil');
-var Map = require('components/Shared/Map.react');
-
+var Map = require('components/ComplaintPage/Map.react');
+var ComplaintService = require('services/ComplaintService');
 
 var Location = React.createClass({
   renderLocationInfoItem: function (label, data) {
@@ -23,6 +23,12 @@ var Location = React.createClass({
 
   render: function () {
     var info = this.props.info || {};
+    var complaintService = ComplaintService(info);
+
+    if (!complaintService.hasLocation) {
+      return (<div></div>);
+    }
+
     var firstAddress = HelperUtil.fetch(info, 'add1', '');
     var secondAddress = HelperUtil.fetch(info, 'add2', '');
     var locationType = HelperUtil.fetch(info, 'location', '');
@@ -47,7 +53,7 @@ var Location = React.createClass({
           {this.renderLocationInfoItem('City', city)}
         </div>
         <div className='location-map pad'>
-          <Map />
+          <Map point={info.point} add1={info.add1} add2={info.add2}/>
         </div>
       </div>
     )
