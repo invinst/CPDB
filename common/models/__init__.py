@@ -440,6 +440,7 @@ class Investigator(models.Model):
 def check_document_update(**kwargs):
     instance = kwargs['instance']
     if instance.pk:
+
         if instance.document_id and instance.document_normalized_title:
             old_instance = Allegation.objects.get(pk=instance.pk)
             if instance.document_id == old_instance.document_title:
@@ -453,6 +454,7 @@ def check_document_update(**kwargs):
                 instance.crid,
                 url
             )
+            send_document_notification_by_crid_and_link.called = True
 
 def update_allegations(sender, instance, created, **kwargs):
     if created:

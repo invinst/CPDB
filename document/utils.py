@@ -38,3 +38,4 @@ def send_document_notification_by_crid_and_link(crid, link):
         from_email=from_email,
         recipient_list=recipient_list
     )
+    send_document_notification_by_crid_and_link.called = True
