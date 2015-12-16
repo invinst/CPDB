@@ -6,7 +6,15 @@ var AppConstants = require('constants/AppConstants');
 var Counter = React.createClass({
   from: 0,
 
+  componentDidMount: function () {
+    this.runCounter();
+  },
+
   componentDidUpdate: function () {
+    this.runCounter();
+  },
+
+  runCounter: function () {
     $(this.getDOMNode()).countTo({
       from: this.from,
       to: this.props.to,

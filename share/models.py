@@ -30,6 +30,7 @@ class Session(models.Model):
     title = models.CharField(max_length=255, blank=True)
     query = JSONField(blank=True)
     active_tab = models.CharField(max_length=40, default='', blank=True)
+    sunburst_arc = models.CharField(max_length=40, default='', blank=True)
     share_from = models.ForeignKey('share.Session', null=True, default=None, blank=True)
     share_count = models.IntegerField(default=0, blank=True)
     created_at = models.DateTimeField(default=timezone.now, null=True, blank=True)
@@ -67,6 +68,7 @@ class Session(models.Model):
         session = Session()
         session.title = self.title
         session.query = self.query
+        session.sunburst_arc = self.sunburst_arc
         session.active_tab = self.active_tab
         session.share_from = self
         session.save()
@@ -114,3 +116,13 @@ class Session(models.Model):
             return [{'text': REPEATER_DESC[str(value)], 'value': value}]
 
         return [{'value': x, 'text': x} for x in values['value']]
+
+    @property
+    def query_string(self):
+        filters = self.query.get('filters', {})
+        query = []
+        for key in filters:
+            value = filters[key]['value']
+            query.append("&".join("{key}={value}".format(key=key, value=v) for v in value))
+        return "&".join(query)
+

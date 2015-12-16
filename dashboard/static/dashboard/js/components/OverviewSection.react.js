@@ -27,7 +27,7 @@ var OverviewSection = React.createClass({
         <div className='overview-row'>
           <div className='row'>
             <div className='col-sm-6'>
-              <div className='section-header'>Search traffic over time</div>
+              <div className='section-header'>Search terms over time</div>
             </div>
             <div className='col-sm-6'>
               <PeriodPicker />
