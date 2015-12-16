@@ -105,6 +105,13 @@ AppDispatcher.register(function (action) {
       SunburstStore.emitChange();
       break;
 
+    case AppConstants.RECEIVED_SESSION_DATA:
+      if (action.data && action.data.data.sunburst_arc) {
+        _state.selected = {name: action.data.data.sunburst_arc};
+        SunburstStore.emitChange();
+      }
+      break;
+
     default:
       break;
   }

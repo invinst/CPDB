@@ -21,6 +21,7 @@ var App = React.createClass({
         <Route path='/complaint/:crid' component={ComplaintPage} />
         <Route path='/officer/:slug/:id' component={OfficerPage} />
         <Route path='/test' component={TestPage} />
+        <Route path='/search/:query' component={MainPage} />
         <Route path='/' component={MainPage} />
         <Route path='*' component={NoMatch} />
       </Router>

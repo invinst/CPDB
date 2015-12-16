@@ -2,14 +2,13 @@ from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 from django.contrib.gis.db import models
 from django.core.urlresolvers import reverse
-from django.db.models.query_utils import Q
-from django.template.defaultfilters import slugify
-
 from allegation.models.allegation_manager import AllegationManager
+from common.models.suggestible import MobileSuggestibleOfficer, MobileSuggestibleAllegation
 
 
 class User(AbstractUser):
     pass
+
 
 RANKS = [
     ['FTO', 'Field Training Officer'],
@@ -30,7 +29,7 @@ ACTIVE_CHOICES = [
     ['Unknown', 'Unknown']
 ]
 
-class Officer(models.Model):
+class Officer(MobileSuggestibleOfficer, models.Model):
     officer_first = models.CharField(max_length=255, null=True, db_index=True, blank=True)
     officer_last = models.CharField(max_length=255, null=True, db_index=True, blank=True)
     gender = models.CharField(max_length=1, null=True, blank=True)
@@ -124,6 +123,7 @@ class Area(models.Model):
                                                     ['police-districts', 'Police District']], db_index=True)
     polygon = models.MultiPolygonField(srid=4326, null=True, blank=True)
     objects = models.GeoManager()
+
 
 OUTCOMES = [
     ['000', 'Violation Noted'],
@@ -322,23 +322,22 @@ RACES_DICT = dict(RACES)
 NO_DISCIPLINE_CODES = ('600', '000', '500', '700', '800', '900', '', None)
 DISCIPLINE_CODES = [x[0] for x in OUTCOMES if x[0] not in NO_DISCIPLINE_CODES]
 FINDINGS = [
-    ['UN', 'Unfounded'], # means final_outcome_class = not-sustained
-    ['EX', 'Exonerated'], # means final_outcome_class = not-sustained
-    ['NS', 'Not Sustained'], # means final_outcome_class = not-sustained
-    ['SU', 'Sustained'], # means final_outcome_class = sustained
-    ['NC', 'No Cooperation'], # means final_outcome_class = not-sustained
-    ['NA', 'No Affidavit'], # means final_outcome_class = not-sustained
-    ['DS', 'Discharged'], # means final_outcome_class = not-sustained
-    ['ZZ', 'Unknown'] # means final_outcome_class = open-investigation
+    ['UN', 'Unfounded'],  # means final_outcome_class = not-sustained
+    ['EX', 'Exonerated'],  # means final_outcome_class = not-sustained
+    ['NS', 'Not Sustained'],  # means final_outcome_class = not-sustained
+    ['SU', 'Sustained'],  # means final_outcome_class = sustained
+    ['NC', 'No Cooperation'],  # means final_outcome_class = not-sustained
+    ['NA', 'No Affidavit'],  # means final_outcome_class = not-sustained
+    ['DS', 'Discharged'],  # means final_outcome_class = not-sustained
+    ['ZZ', 'Unknown']  # means final_outcome_class = open-investigation
 ]
 FINDINGS_DICT = dict(FINDINGS)
-
 
 OUTCOME_TEXT_DICT = {
     'any discipline': {
         'text': 'Any discipline',
         'condition': {
-            'final_finding':['SU'],
+            'final_finding': ['SU'],
             'final_outcome': DISCIPLINE_CODES,
         }
     },
@@ -380,7 +379,7 @@ FINAL_FINDING_TEXT_DICT = {
 }
 
 CUSTOM_FILTER_DICT = {
-    'final_finding_text' :  FINAL_FINDING_TEXT_DICT,
+    'final_finding_text': FINAL_FINDING_TEXT_DICT,
     'outcome_text': OUTCOME_TEXT_DICT,
 }
 
@@ -411,7 +410,7 @@ for location in LOCATION_CHOICES:
     LCOATIONS_DICT[location[0]] = location[1]
 
 
-class Allegation(models.Model):
+class Allegation(MobileSuggestibleAllegation, models.Model):
     record_id = models.IntegerField(null=True, blank=True)
     crid = models.CharField(max_length=30, null=True, db_index=True)
     officer = models.ForeignKey(Officer, null=True)

@@ -307,7 +307,7 @@ module.exports = {
   TABS: {
     'outcomes': 0,
     'categories': 1,
-    'race_gender': 2,
+    'race-gender': 2,
     'map': 3,
   }
 };

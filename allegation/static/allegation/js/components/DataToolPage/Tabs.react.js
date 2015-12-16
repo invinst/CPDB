@@ -99,7 +99,7 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
   renderNavTab: function (label) {
     var target = slugify(label.toLowerCase().replace('&', ''));
     var data_target = '#' + target;
-    var tab = target.replace('-', '_')
+    var tab = target;
 
     if (tab == 'map' && !isMobile.any) {
       return;
