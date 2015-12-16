@@ -9,13 +9,15 @@ from common.models import Allegation, Area, AllegationCategory, PendingPdfAllega
 
 
 class Command(BaseCommand):
-    args = 'path'
     help = 'Please pass path to pdf files directory'
 
     CONTENT_SEPARATOR_PATTERN = re.compile('|'.join([re.escape(s) for s in ['Log No. / C.R. ', 'Log/C.R. ', 'Log/ C.R. ', 'LOG/C.R. ','LOG/C.R ', 'Log/CR ']]))
     CONTENT_PATTERN = r'((No|NO)\. ?)?(?P<crid>\d+) (?P<content>.*)'
     FIELDS_PATTERN = r'\s*Notification Date: (?P<notification_date>.+) Location: (?P<location>.+) Complaint: (?P<complaint>.+) Summary: (?P<summary>.+) Findings?: (?P<finding>.+)'
     FINDING_PATTERN = r'\"[^\"]+\"'
+
+    def add_arguments(self, parser):
+        parser.add_argument('path', help='Please pass path to pdf files directory')
 
     def clean_text(self, text):
         result_text = re.sub(r'\uFB01|\uFB02', '"', text)
@@ -25,13 +27,14 @@ class Command(BaseCommand):
 
         return result_text
 
-    def extract_text(self, file):
-        input_file = PdfFileReader(open(file, 'rb'))
+    def extract_text(self, file_name):
         pages = []
+        with open(file_name, 'rb') as f:
+            input_file = PdfFileReader(f)
 
-        for page in input_file.pages:
-            extracted_text = self.clean_text(page.extractText())
-            pages.append(extracted_text)
+            for page in input_file.pages:
+                extracted_text = self.clean_text(page.extractText())
+                pages.append(extracted_text)
 
         return ''.join(pages)
 
@@ -39,7 +42,7 @@ class Command(BaseCommand):
         fields = {}
         matched = re.match(self.FIELDS_PATTERN, content)
 
-        fields['errors'] = ''
+        errors = []
 
         if matched:
             fields['notification_date'] = matched.group('notification_date').strip()
@@ -52,7 +55,7 @@ class Command(BaseCommand):
             try:
                 fields['notification_date'] = datetime.strptime(fields['notification_date'], '%B %d, %Y')
             except ValueError:
-                fields['errors'] += 'Error:{crid}, Invalid date {value}.\n'.format(crid=crid, value=fields['notification_date'])
+                errors.append('Error:{crid}, Invalid date {value}.'.format(crid=crid, value=fields['notification_date']))
                 fields['notification_date'] = None
 
             # Handle location
@@ -64,7 +67,7 @@ class Command(BaseCommand):
                 else:
                     fields['location'] = [Area.objects.get(name=fields['location'].upper())]
             except Area.DoesNotExist:
-                fields['errors'] += 'Error:{crid}, Area {location} not found.\n'.format(crid=crid, location=fields['location'])
+                errors.append('Error:{crid}, Area {location} not found.'.format(crid=crid, location=fields['location']))
                 fields['location'] = []
 
             # Handle complaint
@@ -73,11 +76,12 @@ class Command(BaseCommand):
                 fields['complaint'] = AllegationCategory.objects.get(allegation_name__contains=fields['complaint'])
             else:
                 categories = AllegationCategory.objects.filter(allegation_name__contains=fields['complaint']).values_list('allegation_name', flat=True)
-                fields['errors'] += 'Error:{crid}, Cannot define category "{complaint}": {categories}.\n'.format(
+                errors.append('Error:{crid}, Cannot define category "{complaint}": {categories}.'.format(
                     crid=crid,
                     complaint=fields['complaint'],
                     categories=','.join(categories)
                     )
+                )
                 fields['complaint'] = None
 
             # Handle finding
@@ -86,10 +90,12 @@ class Command(BaseCommand):
                 fields['finding'] = findings[0]
             else:
                 fields['finding'] = None
-                fields['errors'] += 'Error: Multiple finding values {findings}'.format(findings='.'.join(findings))
+                errors.append('Error: Multiple finding values {findings}'.format(findings='.'.join(findings)))
         else:
             if 'Location:' in content:
-                fields['errors'] += 'Error: Not follow format\n'
+                errors.append('Error: Not follow format')
+
+        fields['errors'] = '\n'.join(errors)
 
         return fields
 
@@ -114,8 +120,8 @@ class Command(BaseCommand):
             pending_pdf_allegation.areas = fields.get('location', [])
             pending_pdf_allegation.save()
 
-    def handle_pdf_file(self, file):
-        file_text = self.extract_text(file=file)
+    def handle_pdf_file(self, file_name):
+        file_text = self.extract_text(file_name=file_name)
         file_text_splitted = re.split(self.CONTENT_SEPARATOR_PATTERN, file_text)
         for text in file_text_splitted:
             matched = re.match(self.CONTENT_PATTERN, text)
@@ -124,18 +130,15 @@ class Command(BaseCommand):
                 self.update_allegation(matched.group('crid'), matched.group('content'))
 
     def handle(self, *args, **options):
-        if len(args) == 1:
-            path = os.path.join(os.getcwd(), args[0])
-        else:
-            path = None
+        path = options['path']
 
         if not path or not os.path.exists(path):
-            print('Please pass path to pdf files directory')
+            print('Please pass valid path to pdf files directory')
             return
 
-        for file in os.listdir(path):
-            if file.endswith('.pdf'):
-                print('Processing file {file}...'.format(file=file))
+        for file_name in os.listdir(path):
+            if file_name.endswith('.pdf'):
+                print('Processing file {file_name}...'.format(file_name=file_name))
 
-                absolute_file_path = os.path.join(path, file)
-                self.handle_pdf_file(absolute_file_path)
+                file_path = os.path.join(path, file_name)
+                self.handle_pdf_file(file_path)
