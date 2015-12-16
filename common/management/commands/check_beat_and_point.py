@@ -13,11 +13,14 @@ class Command(BaseCommand):
         }
         for allegation in Allegation.objects.all().exclude(q):
             if not allegation.beat.polygon.contains(allegation.point):
-                print("{crid}'s point is not within its beat {beat}".format(
-                    crid=allegation.crid,
-                    beat=allegation.beat.name
-                ))
-                counter['fail'] += 1
+                distance = allegation.beat.polygon.distance(allegation.point) * 100
+                if distance > 100:
+                    print("{crid}'s point is not within its beat {beat} and {distance}m away".format(
+                        crid=allegation.crid,
+                        beat=allegation.beat.name,
+                        distance=distance
+                    ))
+                    counter['fail'] += 1
             else:
                 counter['success'] += 1
         print(counter)
