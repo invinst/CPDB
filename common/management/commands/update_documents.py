@@ -25,9 +25,6 @@ class Command(BaseCommand):
                 document = results[0]
                 self.document_by_crid[allegation.crid] = document
 
-                if document.title != allegation.document_title:  # new document found
-                    # send notification
-                    send_document_notification(allegation, document)
             else:
                 self.document_by_crid[allegation.crid] = None
         return self.document_by_crid[allegation.crid]

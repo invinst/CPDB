@@ -1,9 +1,13 @@
+from django.db.models.signals import pre_save, post_save
+from django.dispatch.dispatcher import receiver
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 from django.contrib.gis.db import models
 from django.core.urlresolvers import reverse
 from allegation.models.allegation_manager import AllegationManager
 from common.models.suggestible import MobileSuggestibleOfficer, MobileSuggestibleAllegation
+from document.models import RequestEmail
+from document.utils import send_document_notification_by_crid_and_link
 
 
 class User(AbstractUser):
@@ -431,3 +435,30 @@ class Investigator(models.Model):
             'text': self.name,
             'value': self.pk,
         }
+
+@receiver(pre_save, sender=Allegation)
+def check_document_update(**kwargs):
+    instance = kwargs['instance']
+    import pdb; pdb.set_trace()
+    if instance.pk:
+        if instance.document_id and instance.document_normalized_title:
+            old_instance = Allegation.objects.get(pk=instance.pk)
+            if instance.document_id == old_instance.document_title:
+                return
+
+            url = 'http://documentcloud.org/documents/{id}-{title}.html'.format(
+                id=instance.document_id,
+                title=instance.document_normalized_title
+            )
+            send_document_notification_by_crid_and_link.delay(
+                instance.crid,
+                url
+            )
+
+def update_allegations(sender, instance, created, **kwargs):
+    if created:
+        count = Allegation.objects.filter(crid=instance.crid).first().number_of_request
+        Allegation.objects.filter(crid=instance.crid).update(number_of_request=count+1,
+                                                             last_requested=timezone.now())
+
+post_save.connect(update_allegations, sender=RequestEmail)

@@ -20,7 +20,8 @@ def send_document_notification_by_crid_and_link(crid, link):
     subject = "[CPDB] Requested document for CR {crid} is now available".format(crid=crid)
     message = """Hi,
 
-    Your requested document for CR {crid} is now available on Document Cloud. You read it at this link {link}.
+    Your requested document for CR {crid} is now available on Document Cloud.
+    You can read it at this link: {link}
 
     Best regards,
     The Citizens' Police Database
