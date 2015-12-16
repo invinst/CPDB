@@ -119,6 +119,7 @@ class Command(BaseCommand):
         file_text_splitted = re.split(self.CONTENT_SEPARATOR_PATTERN, file_text)
         for text in file_text_splitted:
             matched = re.match(self.CONTENT_PATTERN, text)
+            # Check if content contains CRID
             if matched:
                 self.update_allegation(matched.group('crid'), matched.group('content'))
 
