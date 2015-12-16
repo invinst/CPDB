@@ -34,11 +34,15 @@ var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
   },
 
   componentDidMount: function() {
+    var officerPage = this;
     var officerId = this.props.params.id || '';
-    OfficerPageServerActions.getOfficerData(officerId);
-    OfficerPageStore.addChangeListener(this._onChange);
-    StoryListAPI.get(officerId);
-    TimelineAPI.getTimelineData(officerId);
+
+    setTimeout(function () {
+      OfficerPageServerActions.getOfficerData(officerId);
+      OfficerPageStore.addChangeListener(officerPage._onChange);
+      StoryListAPI.get(officerId);
+      TimelineAPI.getTimelineData(officerId);
+    }, 500);
   },
 
   componentWillReceiveProps: function(nextProps) {
@@ -60,37 +64,44 @@ var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
     var relatedOfficers = this.state.data['related_officers'];
     var hasMap = this.state.data['has_map'];
 
-    var content = '';
-    if (_.isEmpty(officer)) {
-      content = (<i className='fa fa-spin fa-spinner' />);
-    } else {
-      content = (
-        <div>
-          <Nav />
-          <div id='officer-profile'>
-            <div className="map-row">
-              <div className="container">
-                <OfficerDetail officer={officer} hasMap={hasMap} />
-              </div>
-            </div>
-            <div className="white-background">
-              <div className="container">
-                <RelatedOfficers relatedOfficers={relatedOfficers} />
-                <StoryList officer={officer} />
-              </div>
-            </div>
+    var waitComponent = (<div className='wait-placeholder'><i className='fa fa-spinner fa-spin'></i></div>);
+    var officerDetailComponent = waitComponent;
+    var relatedOfficersComponent = waitComponent;
+    var storyListComponent = waitComponent;
+    var complaintSectionComponent = waitComponent;
+    if (!_.isEmpty(officer)) {
+      officerDetailComponent = (<OfficerDetail officer={officer} hasMap={hasMap} />);
+      relatedOfficersComponent = (<RelatedOfficers relatedOfficers={relatedOfficers} />);
+      storyListComponent = (<StoryList officer={officer} />);
+      complaintSectionComponent = (<ComplaintSection officer={officer}/>);
+    }
+
+    var content = (
+      <div>
+        <Nav />
+        <div id='officer-profile'>
+          <div className="map-row">
             <div className="container">
-              <ComplaintSection officer={officer}/>
+              {officerDetailComponent}
             </div>
-            <div className='container-fluid'>
-              <div className='sticky-footer'>
-                <Footer />
-              </div>
+          </div>
+          <div className="white-background">
+            <div className="container">
+              {relatedOfficersComponent}
+              {storyListComponent}
+            </div>
+          </div>
+          <div className="container">
+            {complaintSectionComponent}
+          </div>
+          <div className='container-fluid'>
+            <div className='sticky-footer'>
+              <Footer />
             </div>
           </div>
         </div>
-      );
-    }
+      </div>
+    );
 
     return (
       <div>
