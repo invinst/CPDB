@@ -35,12 +35,29 @@ var ComplaintPresenter = function (complaint) {
     return !!endInvestigationDate ? endInvestigationDate.format(AppConstants.SIMPLE_DATE_FORMAT) : '';
   };
 
+  var beat = function () {
+    var beatTypeDisplay = HelperUtil.fetch(complaint, 'beat.type_display', '');
+    var beatName = HelperUtil.fetch(complaint, 'beat.name', '');
+
+    return [beatTypeDisplay, beatName].join(' ').trim();
+  };
+
+  var address = function(){
+    return [complaint.add1, complaint.add2].join(' ').trim(); // a bit magic here :>)
+  };
+
   return {
     finalFinding: finalFinding(),
     finalStatus: finalStatus(),
     incidentDate: incidentDate(),
     startInvestigationDate: startInvestigationDate(),
-    endInvestigationDate: endInvestigationDate()
+    endInvestigationDate: endInvestigationDate(),
+    category: HelperUtil.fetch(complaint, 'cat.category', 'Unknown'),
+    allegationName: HelperUtil.fetch(complaint, 'cat.allegation_name', 'Unknown'),
+    address: address(),
+    city: HelperUtil.fetch(complaint, 'city', ''),
+    locationType: HelperUtil.fetch(complaint, 'location', ''),
+    beat: beat()
   }
 };
 

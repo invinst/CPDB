@@ -42,6 +42,10 @@ var ComplaintService = function (complaint) {
     return complaint.beat || complaint.location || complaint.add1 || complaint.add2 || complaint.city || complaint.point;
   };
 
+  var hasFullAddress = function(){
+    return complaint.add1 && complaint.add2;
+  };
+
   return {
     isOpenInvestigation: isOpenInvestigation(),
     startInvestigatingAtIncidentDate: startInvestigatingAtIncidentDate(),
@@ -49,7 +53,8 @@ var ComplaintService = function (complaint) {
     startInvestigationDate: startInvestigationDate(),
     endInvestigationDate: endInvestigationDate(),
     haveNoData: haveNoData(),
-    hasLocation: hasLocation()
+    hasLocation: hasLocation(),
+    hasFullAddress: hasFullAddress(),
   }
 };
 

@@ -27,6 +27,7 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
         allegation = AllegationFactory(final_finding=final_finding_code, cat=category, officer=officer,
                                        investigator=investigator, add1=address1, add2=address2,
                                        city='Chicago, IL', location='15')
+
         ComplainingWitnessFactory(crid=allegation.crid, gender=complaint_witness_gender, race=complaint_witness_race,
                                   age=complaint_witness_age)
 
@@ -41,6 +42,10 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
         self.find('.complaining-witness-list').text.should.contain(complaint_witness_text)
         self.find('.investigator .name').text.should.contain(investigator.name)
         self.find('.investigator .rank').text.should.contain(investigator.current_rank)
+
+        self.find('.location-detail').text.should.contain(allegation.beat.get_type_display())
+        self.find('.location-detail').text.should.contain(allegation.beat.name)
+
         self.should_see_text(addresss)
         self.should_see_text(allegation.city)
         self.should_see_text(allegation.location)

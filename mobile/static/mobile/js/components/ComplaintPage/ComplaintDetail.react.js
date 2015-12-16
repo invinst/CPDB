@@ -8,8 +8,6 @@ var ComplaintDetail = React.createClass({
   render: function () {
     var info = this.props.info || {};
     var complaintPresenter = ComplaintPresenter(info);
-    var category = HelperUtil.fetch(info, 'cat.category', 'Unknown');
-    var allegationName = HelperUtil.fetch(info, 'cat.allegation_name', 'Unknown');
 
     return (
       <div className='complaint-detail pad'>
@@ -23,10 +21,10 @@ var ComplaintDetail = React.createClass({
           </span>
         </div>
         <div className='complaint-category bold'>
-          {category}
+          {complaintPresenter.category}
         </div>
         <div className='complaint-sub-category'>
-          {allegationName}
+          {complaintPresenter.allegationName}
         </div>
         <a href='#' className='document-link'>View documents</a>
       </div>

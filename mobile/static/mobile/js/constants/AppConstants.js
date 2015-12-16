@@ -13,7 +13,7 @@ module.exports = {
   COMPLAINT_PAGE_FAILED_TO_RECEIVED_DATA: c++,
 
   // Tokens
-  MAPBOX_TOKEN: '',
+  MAPBOX_TOKEN: '***REMOVED***',
 
   // Other constants
   FINAL_FINDINGS: {
