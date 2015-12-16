@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var jQuery = require('jquery');
 var React = require('react');
 
 var Base = require('components/Base.react');
@@ -24,8 +25,8 @@ var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
 
   getEmbedCode: function () {
     var node = this.getDOMNode();
-    var width = $(node).width();
-    var height = $(node).height();
+    var width = jQuery(node).width();
+    var height = jQuery(node).height();
     var src = "/embed/?page=race-gender&query=" + encodeURIComponent(FilterStore.getQueryString());
     return '<iframe width="' + width + 'px" height="' + height + 'px" frameborder="0" src="' + this.absoluteUri(src)
        + '"></iframe>';

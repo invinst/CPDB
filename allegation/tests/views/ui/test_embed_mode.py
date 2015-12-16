@@ -91,32 +91,38 @@ class EmbedPageTestCase(BaseLiveTestCase):
         scrollBarPresent = self.browser.execute_script("return document.documentElement.scrollWidth > document.documentElement.clientWidth;")
         scrollBarPresent.should.be.false
 
-    def test_map_embed_code(self):
-        self.browser.set_window_size(923, 576 + self.FIREFOX_ADDRESS_BAR_HEIGHT)
-        self.visit("/embed/?page=map&query=&state=%7B%7D")
+    def check_embed_code(self, iframe_size, iframe_src):
+        self.browser.set_window_size(iframe_size['width'], iframe_size['height'] + self.FIREFOX_ADDRESS_BAR_HEIGHT)
+        self.visit(iframe_src)
         self.until_ajax_complete()
         self.check_no_scroll()
+
+    def test_map_embed_code(self):
+        self.check_embed_code({
+            'width': 923,
+            'height': 576,
+        }, "/embed/?page=map&query=&state=%7B%7D")
 
     def test_outcomes_embed_code(self):
-        self.browser.set_window_size(923, 456 + self.FIREFOX_ADDRESS_BAR_HEIGHT)
-        self.visit("/embed/?page=sunburst&query=&state=%7B%22name%22%3A%22Allegations%22%7D")
-        self.until_ajax_complete()
-        self.check_no_scroll()
+        self.check_embed_code({
+            'width': 923,
+            'height': 456,
+        }, "/embed/?page=sunburst&query=&state=%7B%22name%22%3A%22Allegations%22%7D")
 
     def test_categories_embed_code(self):
-        self.browser.set_window_size(891, 331 + self.FIREFOX_ADDRESS_BAR_HEIGHT)
-        self.visit("/embed/?page=summary&query=&state=%7B%22selectedCategories%22%3A%5B%5D%2C%22currentActive%22%3Afalse%7D")
-        self.until_ajax_complete()
-        self.check_no_scroll()
+        self.check_embed_code({
+            'width': 891,
+            'height': 331,
+        }, "/embed/?page=summary&query=&state=%7B%22selectedCategories%22%3A%5B%5D%2C%22currentActive%22%3Afalse%7D")
 
     def test_race_gender_embed_code(self):
-        self.browser.set_window_size(892, 361 + self.FIREFOX_ADDRESS_BAR_HEIGHT)
-        self.visit("/embed/?page=race-gender&query=")
-        self.until_ajax_complete()
-        self.check_no_scroll()
+        self.check_embed_code({
+            'width': 892,
+            'height': 361,
+        }, "/embed/?page=race-gender&query=")
 
     def test_officer_list_embed_code(self):
-        self.browser.set_window_size(1200, 186 + self.FIREFOX_ADDRESS_BAR_HEIGHT)
-        self.visit("/embed/?page=officers&query=")
-        self.until_ajax_complete()
-        self.check_no_scroll()
+        self.check_embed_code({
+            'width': 1200,
+            'height': 186,
+        }, "/embed/?page=officers&query=")

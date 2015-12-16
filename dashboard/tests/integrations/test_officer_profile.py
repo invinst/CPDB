@@ -37,6 +37,17 @@ class OfficerProfileTestCase(BaseAdminTestCase):
         self.should_see_text(officer.gender)
         self.should_see_text(officer.race)
 
+    def test_display_delete_button(self):
+        officer = self.officer
+        stories = StoryFactory(officer=officer)
+        self.go_to_officer_profile()
+        self.go_to_single_officer(officer)
+        self.button("Delete").is_displayed().should.be(False)
+
+        self.find("input[type='checkbox']").click()
+        self.button("Delete").is_displayed().shouldnt.be(False)
+
+
     def test_delete_story(self):
         officer = self.officer
         stories = [StoryFactory(officer=officer) for x in range(2)]
@@ -57,11 +68,6 @@ class OfficerProfileTestCase(BaseAdminTestCase):
         self.until_ajax_complete()  # reload story list
         self.until(lambda: self.should_not_see_text(stories[1].title))
         self.should_see_text(stories[0].title)
-
-        self.button("Delete").click()
-        self.until(lambda: self.should_see_text("You haven't checked any story yet"))
-        self.button("OK").click()
-        self.until(lambda: self.should_not_see_text("You haven't checked any story yet"))
 
         self.find(".check-all").click()
         self.button("Delete").click()

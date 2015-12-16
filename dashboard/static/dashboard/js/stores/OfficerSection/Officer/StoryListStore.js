@@ -19,7 +19,11 @@ var StoryListStore = _.assign(Base(_state), {
   },
 
   getSelectedStories: function () {
-    return _.filter(_state.stories, function (x) {return x.selected;});
+    return _.filter(_state.stories, function (x) { return x.selected });
+  },
+
+  hasSelectedStories: function () {
+    return this.getSelectedStories().length > 0;
   }
 });
 
