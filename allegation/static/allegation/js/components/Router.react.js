@@ -3,7 +3,7 @@ var ReactRouter = require('react-router');
 var IndexRoute = ReactRouter.IndexRoute;
 var History = require('history');
 var ReactCSSTransitionGroup = require('react/lib/ReactCSSTransitionGroup');
-var StaticContainer = require('react-static-container');
+// var StaticContainer = require('react-static-container');
 
 var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
@@ -33,41 +33,17 @@ var RootPage = React.createClass({
 });
 
 var PageAnimator = React.createClass({
-  getInitialState: function () {
-    return {
-      previousPathname: null
-    };
-  },
-
-  contextTypes: {
-    location: React.PropTypes.object
-  },
-
   renderChildren: function () {
     var animator = this;
 
     return React.cloneElement(this.props.children, {
-      entered: this.props.entered,
+      transitioning: this.props.transitioning,
     });
-  },
-
-  componentWillReceiveProps(nextProps, nextContext) {
-    if (nextContext.location.pathname !== this.context.location.pathname) {
-      this.setState({ previousPathname: this.context.location.pathname })
-    }
-  },
-
-  componentDidUpdate() {
-    if (this.state.previousPathname) {
-      this.setState({ previousPathname: null })
-    }
   },
 
   render: function () {
     return <div className={this.props.className}>
-      <StaticContainer shouldUpdate={!this.state.previousPathname}>
-        {this.renderChildren()}
-      </StaticContainer>
+      {this.renderChildren()}
     </div>;
   },
 })

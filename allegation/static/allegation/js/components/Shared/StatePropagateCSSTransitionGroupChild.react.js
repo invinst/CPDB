@@ -100,6 +100,7 @@ var StatePropagateCSSTransitionGroupChild = React.createClass({
   },
 
   componentWillEnter: function(done) {
+    this.setState({transitioning: true});
     if (this.props.enter) {
       this.transition('enter', done);
     } else {
@@ -108,11 +109,10 @@ var StatePropagateCSSTransitionGroupChild = React.createClass({
   },
 
   componentDidEnter: function() {
-    this.setState({entered: true});
+    this.setState({transitioning: false});
   },
 
   componentWillLeave: function(done) {
-    this.setState({entered: false});
     if (this.props.leave) {
       this.transition('leave', done);
     } else {
@@ -121,12 +121,12 @@ var StatePropagateCSSTransitionGroupChild = React.createClass({
   },
 
   getInitialState: function () {
-    return {entered: false};
+    return {transitioning: false};
   },
 
   renderChildren: function () {
     return React.cloneElement(this.props.children, {
-      entered: this.state.entered,
+      transitioning: this.state.transitioning,
     });
   },
 

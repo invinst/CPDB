@@ -2,11 +2,11 @@ var _ = require('lodash');
 var classnames = require('classnames');
 var React = require('react');
 
-var Base = require('components/Base.react');
 var ComplaintSection = require('components/OfficerPage/ComplaintSection.react');
 var ComplaintListAPI = require('utils/ComplaintListAPI');
 var StoryListAPI = require('utils/StoryListAPI');
 var TimelineAPI = require('utils/TimelineAPI');
+var TimelineStore = require('stores/OfficerPage/TimelineStore');
 var FilterActions = require("actions/FilterActions");
 var Nav = require('components/OfficerPage/Nav.react');
 var OfficerDetail = require('components/DataToolPage/OfficerDetail.react');
@@ -21,7 +21,7 @@ var Footer = require('components/DataToolPage/Footer.react');
 var HappyFox = require('components/Shared/HappyFox.react');
 
 
-var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
+var OfficerPage = React.createClass({
   getInitialState: function() {
     return {
       data: {
@@ -29,16 +29,30 @@ var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
         officer: {},
         relatedOfficers: [],
         hasMap: false
-      }
+      },
+      timelineData: {}
     }
   },
 
   componentDidMount: function() {
     var officerId = this.props.params.id || '';
     OfficerPageServerActions.getOfficerData(officerId);
-    OfficerPageStore.addChangeListener(this._onChange);
+    OfficerPageStore.addChangeListener(this.updateOfficerData);
+    TimelineStore.addChangeListener(this.updateTimelineData);
     StoryListAPI.get(officerId);
     TimelineAPI.getTimelineData(officerId);
+  },
+
+  updateOfficerData: function () {
+    var newState = _.cloneDeep(this.state);
+    newState = _.assign(newState, {data: OfficerPageStore.getState().data});
+    this.setState(newState);
+  },
+
+  updateTimelineData: function () {
+    var newState = _.cloneDeep(this.state);
+    newState = _.assign(newState, {timelineData: TimelineStore.getState().data});
+    this.setState(newState);
   },
 
   componentWillReceiveProps: function(nextProps) {
@@ -54,29 +68,34 @@ var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
     document.title = OfficerPresenter(officer).displayName;
   },
 
+  shouldComponentUpdate: function (nextProps) {
+    return !nextProps.transitioning;
+  },
+
   render: function () {
     var allegations = this.state.data['allegations'];
     var officer = this.state.data['officer'];
     var relatedOfficers = this.state.data['relatedOfficers'];
     var hasMap = this.state.data['has_map'];
+    var content;
 
-    var content = (
+    content = (
       <div>
         <Nav />
         <div id='officer-profile'>
           <div className="map-row">
             <div className="container">
-              {this.props.entered ? <OfficerDetail officer={officer} hasMap={hasMap} /> : null}
+              <OfficerDetail timelineData={this.state.timelineData} officer={officer} hasMap={hasMap}/>
             </div>
           </div>
           <div className="white-background">
             <div className="container">
-              {this.props.entered ? <RelatedOfficers relatedOfficers={relatedOfficers} /> : null}
+              <RelatedOfficers relatedOfficers={relatedOfficers} />
               <StoryList officer={officer} />
             </div>
           </div>
           <div className="container">
-            {this.props.entered ? <ComplaintSection officer={officer}/> : null}
+            <ComplaintSection officer={officer}/>
           </div>
           <div className='container-fluid'>
             <div className='sticky-footer'>
@@ -99,5 +118,5 @@ var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
     navigate('/data-tools' + SessionStore.getUrl());
   }
 
-}));
+});
 module.exports = OfficerPage;
