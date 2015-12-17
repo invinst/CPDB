@@ -87,4 +87,4 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
         self.visit('/mobile/complaint/{crid}'.format(crid=allegation.crid))
         self.until(lambda: self.find('.crid-title'))
 
-        self.should_not_see_text('Investigate')
+        self.should_not_see_text('Investigator')
