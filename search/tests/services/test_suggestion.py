@@ -70,5 +70,5 @@ class SuggestServiceTestCase(SimpleTestCase):
         data.should.contain('has_filters')
         len(data['has_filters']).should.equal(1)
         data['has_filters'][0][0].should.equal('has:document')
-        data['has_filters'][0][1].should.equal('document_id__isnull=False')
+        data['has_filters'][0][1].should.equal('has:document')
 

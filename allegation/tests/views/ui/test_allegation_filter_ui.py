@@ -1,4 +1,5 @@
 import random
+import time
 
 from allegation.factories import AllegationCategoryFactory, AllegationFactory
 from allegation.tests.utils.outcome_filter import number_of_all_created_complaints
@@ -86,11 +87,14 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         self.until(lambda: self.should_see_text('No matches found'))
 
     def test_sugggest_has_document(self):
-        AllegationFactory(document_id='1234')
-
         self.fill_in('#autocomplete', 'has:doc')
-        self.until(lambda: self.element_by_classname_and_text('ui-autocomplete-category', 'has: filters').should.be.ok)
+        self.until(lambda: self.element_by_classname_and_text('ui-autocomplete-category', 'Has:').should.be.ok)
         self.until(lambda: self.element_by_classname_and_text('autocomplete-has_filters', 'has:document').should.be.ok)
+
+    def test_has_document_filter(self):
+        self.fill_in('#autocomplete', 'has:document')
+        self.until(lambda: self.find('.autocomplete-has_filters').click())
+        self.until(lambda: self.element_by_classname_and_text('filter-name', 'has:document').should.be.ok)
 
     def number_of_complaints(self):
         return len(self.find_all('.complaint-row'))
