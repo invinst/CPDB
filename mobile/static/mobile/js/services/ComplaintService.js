@@ -46,6 +46,10 @@ var ComplaintService = function (complaint) {
     return complaint.add1 && complaint.add2;
   };
 
+  var hasNoData = function() {
+    return !complaint.locationType && !hasLocation();
+  };
+
   return {
     isOpenInvestigation: isOpenInvestigation(),
     startInvestigatingAtIncidentDate: startInvestigatingAtIncidentDate(),
@@ -55,6 +59,7 @@ var ComplaintService = function (complaint) {
     haveNoData: haveNoData(),
     hasLocation: hasLocation(),
     hasFullAddress: hasFullAddress(),
+    hasNoData: hasNoData()
   }
 };
 

@@ -23,11 +23,8 @@ var Location = React.createClass({
     var complaintService = ComplaintService(info);
     var presenter = ComplaintPresenter(info);
 
-    var noData = !presenter.locationType && !presenter.beat && !presenter.city
-      && !presenter.address;
-
     var locationDetailClassNames = cx('location-detail pad', {
-      'no-data': noData
+      'no-data': complaintService.hasNoData
     });
 
     return (
@@ -41,9 +38,9 @@ var Location = React.createClass({
           {this.renderLocationInfoItem('Location type', presenter.locationType)}
           {this.renderLocationInfoItem('City', presenter.city)}
         </div>
-        <div className='location-map pad'>
+        <Wrapper wrapperClass='location-map pad' visible={info.point}>
           <Map info={info}/>
-        </div>
+        </Wrapper>
       </Wrapper>
     );
   }
