@@ -96,10 +96,5 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         self.until(lambda: self.find('.autocomplete-has_filters').click())
         self.until(lambda: self.element_by_classname_and_text('filter-name', 'has:document').should.be.ok)
 
-    def test_filter_does_not_auto_change_label(self):
-        self.fill_in('#autocomplete', 'has:document')
-        self.until(lambda: self.find('.autocomplete-has_filters').click())
-        self.until(lambda: self.element_by_classname_and_text('filter-name', 'document_id__isnull=False').shouldnt.be.ok)
-
     def number_of_complaints(self):
         return len(self.find_all('.complaint-row'))
