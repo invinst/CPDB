@@ -4,7 +4,7 @@ from django.db.models.query_utils import Q
 
 from allegation.utils.query import OfficerQuery
 from common.models import AllegationCategory, Allegation, Area, Investigator, Officer, FINDINGS, OUTCOMES, UNITS, GENDER, \
-    RACES, OUTCOME_TEXT_DICT, RANKS
+    RACES, OUTCOME_TEXT_DICT, RANKS, HAS_FILTERS_LIST
 from common.utils.hashid import hash_obj
 from search.models.alias import Alias
 from search.models.session_alias import SessionAlias
@@ -184,15 +184,14 @@ class Suggestion(object):
 
         return results[:5]
 
-    def suggest_has_document(self, q):
-        if q.startswith('has:document'):
-            condition = Q(document_id__isnull=False)
-
-            results = self.query_suggestions(
-                model_cls=Allegation,
-                cond=condition,
-                fields_to_get=['id', 'crid'])
+    def suggest_has_filters(self, q):
+        if q.startswith('has:'):
+            results = []
+            for val, filter_text in HAS_FILTERS_LIST:
+                if filter_text[:len(q)] == q:
+                    results.append([filter_text, val])
             return results
+
         return []
 
     def suggest_data_source(self, q):
@@ -260,7 +259,7 @@ class Suggestion(object):
 
         ret['session'] = self.suggest_sessions(q)
 
-        ret['has_document'] = self.suggest_has_document(q)
+        ret['has_filters'] = self.suggest_has_filters(q)
 
         ret = OrderedDict((k, v) for k, v in ret.items() if v)
         return ret
