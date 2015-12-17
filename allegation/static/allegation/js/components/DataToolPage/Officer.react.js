@@ -3,6 +3,7 @@ var ReactRouter = require('react-router');
 var History = require('history');
 var classnames = require('classnames');
 var pluralize = require('pluralize');
+var _ = require('lodash');
 
 var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
@@ -58,6 +59,10 @@ var Officer = React.createClass({
     var src = "/embed/?page=officer-card&pk=" + encodeURIComponent(this.props.officer.id);
     return '<iframe width="170px" height="110px" frameborder="0" src="' + this.absoluteUri(src)
        + '"></iframe>';
+  },
+
+  shouldComponentUpdate: function (nextProps, nextState) {
+    return !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
   },
 
   render: function () {

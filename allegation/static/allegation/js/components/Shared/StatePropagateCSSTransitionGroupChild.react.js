@@ -13,6 +13,7 @@
 'use strict';
 
 var React = require('react/addons');
+var _ = require('lodash');
 
 var CSSCore = require('react/lib/CSSCore');
 var ReactTransitionEvents = require('react/lib/ReactTransitionEvents');
@@ -128,6 +129,10 @@ var StatePropagateCSSTransitionGroupChild = React.createClass({
     return React.cloneElement(this.props.children, {
       transitioning: this.state.transitioning,
     });
+  },
+
+  shouldComponentUpdate: function (nextProps, nextState) {
+    return !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
   },
 
   render: function() {
