@@ -81,15 +81,20 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         self.until(lambda: self.find('.filter-name').should.be.ok)
         self.find('.filter-name').text.should.contain('Repeater')
 
-    def test_no_matches_found_message(self):
-        self.fill_in('#autocomplete', 'search query that return nothing')
-        self.until(lambda: self.should_see_text('No matches found'))
-
+<<<<<<< HEAD
     def test_sugggest_has_document(self):
         AllegationFactory(document_id='1234')
 
         self.fill_in('#autocomplete', 'has:document')
         self.until(lambda: self.element_by_classname_and_text('ui-autocomplete-category', 'Has Document').should.be.ok)
+=======
+    def test_no_matches_found_message(self):
+        self.visit_home()
+        self.browser.execute_script('jQuery("#hfc-cleanslate").hide();')
+
+        self.fill_in('#autocomplete', 'search query that return nothing')
+        self.until(lambda: self.should_see_text('No matches found'))
+>>>>>>> develop
 
     def number_of_complaints(self):
         return len(self.find_all('.complaint-row'))
