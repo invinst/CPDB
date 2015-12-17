@@ -221,9 +221,7 @@ class AllegationSummaryApiView(AllegationAPIView):
 class OfficerListAPIView(AllegationAPIView):
     def get(self, request):
         allegations = self.get_allegations()
-        officers = allegations.values_list('officer', flat=True).distinct()
-        officers = list(officers)  # to solve multiple subquery problem
-        officers = Officer.objects.filter(pk__in=officers).order_by('-allegations_count')
+        officers = Officer.objects.filter(allegation__in=allegations).annotate(filtered_allegations_count=Count('allegation__crid')).order_by('-allegations_count')
 
         overview = []
         for r in OFFICER_COMPLAINT_COUNT_RANGE:
