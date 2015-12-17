@@ -22,7 +22,7 @@ var ComplaintPresenter = function (complaint) {
 
   var incidentDate = function () {
     var incidentDate = complaintService.incidentDate;
-    return !!incidentDate ? incidentDate.format(AppConstants.SIMPLE_DATE_FORMAT) : '';
+    return !!incidentDate ? incidentDate.format(AppConstants.SIMPLE_DATE_FORMAT) : 'Unknown date';
   };
 
   var startInvestigationDate = function () {
