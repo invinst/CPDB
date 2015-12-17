@@ -10,10 +10,15 @@ var OfficerPresenter = function (officer) {
     return [officerFirst, officerLast].join(' ');
   };
 
+  var race = function () {
+    var race = HelperUtil.fetch(officer, 'race', 'Unknown');
+    // In DB, we mark unknown `Race` to be `Unknown` T_T
+    return race.toLowerCase() == 'unknown' ? 'Race unknown' : race;
+  };
+
   var description = function () {
     var gender = GenderPresenter(officer['gender']).humanReadable;
-    var race = HelperUtil.fetch(officer, 'race', '');
-    var raceDisplay = race ? '(' + race + ')' : '';
+    var raceDisplay = '(' + race() + ')';
 
     return [gender, raceDisplay].join(' ');
   };

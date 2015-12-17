@@ -3,9 +3,10 @@ var React = require('react');
 var Wrapper = require('components/Shared/Wrapper.react');
 var HelperUtil = require('utils/HelperUtil');
 
-
 var InvestigatorSection = React.createClass({
   renderInvestigator: function (investigator) {
+    var currentRank = HelperUtil.fetch(investigator, 'current_rank', 'Rank unknown');
+
     return (
       <div className='investigator-card pad'>
         <div className='row'>
@@ -15,7 +16,7 @@ var InvestigatorSection = React.createClass({
           <div className='eleven columns'>
             <div className='investigator'>
               <div className='name bold'>{investigator['name']}</div>
-              <div className='rank'>{investigator['current_rank']}</div>
+              <div className='rank'>{currentRank}</div>
             </div>
           </div>
         </div>
@@ -25,7 +26,6 @@ var InvestigatorSection = React.createClass({
 
   render: function () {
     var investigator = HelperUtil.fetch(this.props.info, 'investigator', false);
-
     return (
       <Wrapper wrapperClass='investigator-section' visible={!!investigator}>
         <div className='row section-header'>

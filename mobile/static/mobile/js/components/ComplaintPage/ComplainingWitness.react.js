@@ -19,7 +19,7 @@ var ComplainingWitness = React.createClass({
           {complainingWitnessPresenter.description}
         </div>
       </div>
-    )
+    );
   },
 
   renderComplainingWitnessList: function (complainingWitnesses) {
@@ -42,7 +42,7 @@ var ComplainingWitness = React.createClass({
           {this.renderComplainingWitnessList(complainingWitnesses)}
         </div>
       </Wrapper>
-    )
+    );
   }
 });
 

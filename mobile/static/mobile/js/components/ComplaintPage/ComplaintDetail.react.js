@@ -28,7 +28,7 @@ var ComplaintDetail = React.createClass({
         </div>
         <a href='#' className='document-link'>View documents</a>
       </div>
-    )
+    );
   }
 });
 
