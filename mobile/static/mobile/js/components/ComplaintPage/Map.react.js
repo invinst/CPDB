@@ -4,6 +4,7 @@ require('mapbox.js');
 var AppConstants = require('constants/AppConstants');
 
 var ComplaintService = require('services/ComplaintService');
+var Wrapper = require('components/Shared/Wrapper.react');
 
 
 var Map = React.createClass({
@@ -33,12 +34,10 @@ var Map = React.createClass({
   },
 
   render: function () {
-    var point = this.props.info.point;
-
-    if (!point){
-      return (<div></div>);
-    }
-    return <div className='map'></div>;
+    return(
+        <Wrapper wrapperClass='map' visible={!!this.props.info.point}>
+        </Wrapper>
+      )
   }
 });
 

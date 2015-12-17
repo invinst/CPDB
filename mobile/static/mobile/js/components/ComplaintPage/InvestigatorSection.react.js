@@ -1,5 +1,6 @@
 var React = require('react');
 
+var Wrapper = require('components/Shared/Wrapper.react');
 var HelperUtil = require('utils/HelperUtil');
 
 
@@ -25,18 +26,13 @@ var InvestigatorSection = React.createClass({
   render: function () {
     var investigator = HelperUtil.fetch(this.props.info, 'investigator', false);
 
-    if (!investigator) {
-      return (
-        <div></div>
-      )
-    }
     return (
-      <div className='investigator-section'>
+      <Wrapper wrapperClass='investigator-section' visible={!!investigator}>
         <div className='row section-header'>
           <span className='section-title bold pad'>Investigator</span>
         </div>
         {this.renderInvestigator(investigator)}
-      </div>
+      </Wrapper>
     )
   }
 });
