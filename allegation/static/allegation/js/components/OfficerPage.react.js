@@ -68,8 +68,9 @@ var OfficerPage = React.createClass({
     document.title = OfficerPresenter(officer).displayName;
   },
 
-  shouldComponentUpdate: function (nextProps) {
-    return !nextProps.transitioning;
+  shouldComponentUpdate: function (nextProps, nextState) {
+    return (nextProps.transitioning === false &&
+      (!_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state)));
   },
 
   render: function () {

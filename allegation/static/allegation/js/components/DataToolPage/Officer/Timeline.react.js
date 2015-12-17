@@ -8,6 +8,11 @@ var Timeline = React.createClass({
     $(container).html("");
     var timeLineItems = [];
     var items = data.items;
+
+    if (!items) {
+      return;
+    }
+
     for (var i = 0; i < items.length; i++) {
       if (!items[i]) {
         continue;
