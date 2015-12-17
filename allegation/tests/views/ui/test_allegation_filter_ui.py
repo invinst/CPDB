@@ -88,8 +88,9 @@ class AllegationFilterTestCase(BaseLiveTestCase):
     def test_sugggest_has_document(self):
         AllegationFactory(document_id='1234')
 
-        self.fill_in('#autocomplete', 'has:document')
-        self.until(lambda: self.element_by_classname_and_text('ui-autocomplete-category', 'Has Document').should.be.ok)
+        self.fill_in('#autocomplete', 'has:doc')
+        self.until(lambda: self.element_by_classname_and_text('ui-autocomplete-category', 'has: filters').should.be.ok)
+        self.until(lambda: self.element_by_classname_and_text('autocomplete-has_filters', 'has:document').should.be.ok)
 
     def number_of_complaints(self):
         return len(self.find_all('.complaint-row'))

@@ -184,15 +184,17 @@ class Suggestion(object):
 
         return results[:5]
 
-    def suggest_has_document(self, q):
-        if q.startswith('has:document'):
-            condition = Q(document_id__isnull=False)
-
-            results = self.query_suggestions(
-                model_cls=Allegation,
-                cond=condition,
-                fields_to_get=['id', 'crid'])
+    def suggest_has_filters(self, q):
+        possible_filters = [
+            ('has:document', 'document_id__isnull=False'),
+        ]
+        if q.startswith('has:'):
+            results = []
+            for filter_text, val in possible_filters:
+                if filter_text[:len(q)] == q:
+                    results.append([filter_text, val])
             return results
+
         return []
 
     def suggest_data_source(self, q):
@@ -260,7 +262,7 @@ class Suggestion(object):
 
         ret['session'] = self.suggest_sessions(q)
 
-        ret['has_document'] = self.suggest_has_document(q)
+        ret['has_filters'] = self.suggest_has_filters(q)
 
         ret = OrderedDict((k, v) for k, v in ret.items() if v)
         return ret

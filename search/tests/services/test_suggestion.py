@@ -65,15 +65,10 @@ class SuggestServiceTestCase(SimpleTestCase):
         data['areas__id'][0][2].should.equal(area.type)
 
     def test_suggest_has_document(self):
-        AllegationFactory()
-        data = self.suggestion.make_suggestion('has:document')
+        data = self.suggestion.make_suggestion('has:doc')
 
-        data.shouldnt.contain('has_document')
-
-        allegation = AllegationFactory(document_id='1234')
-        data = self.suggestion.make_suggestion('has:document')
-
-        len(data['has_document']).should.equal(1)
-        data['has_document'][0][0].should.equal(allegation.id)
-        data['has_document'][0][1].should.equal(str(allegation.crid))
+        data.should.contain('has_filters')
+        len(data['has_filters']).should.equal(1)
+        data['has_filters'][0][0].should.equal('has:document')
+        data['has_filters'][0][1].should.equal('document_id__isnull=False')
 
