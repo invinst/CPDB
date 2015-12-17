@@ -4,13 +4,13 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 
 var Base = require('stores/Base');
 
-_state = {
-  data: {
-    allegations: [],
+var _state = {
+  data:{
     investigator: {},
+    allegations: [],
     hasMap: false
   }
-};
+}
 
 var InvestigatorPageStore = _.assign(Base(_state), {
 });
@@ -18,7 +18,7 @@ var InvestigatorPageStore = _.assign(Base(_state), {
 AppDispatcher.register(function(action) {
   switch (action.actionType) {
     case AppConstants.RECEIVED_INVESTIGATOR_DATA:
-      _state['data'] = action.data;
+      InvestigatorPageStore.updateState('data', action.data);
       InvestigatorPageStore.emitChange();
       break;
 

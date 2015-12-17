@@ -9,7 +9,7 @@ var InvestigatorPageAPI = {
       ajax.abort();
     }
 
-    ajax = $.getJSON(AppConstants.INVESTIGATOR_PAGE_API_ENDPOINT, {'pk': investigator}, function (data) {
+    ajax = $.getJSON(AppConstants.INVESTIGATOR_API_ENDPOINT, {'pk': investigator}, function (data) {
       InvestigatorPageActions.receivedInvestigatorData(data);
     });
   }

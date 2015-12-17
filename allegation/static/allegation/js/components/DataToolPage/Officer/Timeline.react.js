@@ -6,6 +6,10 @@ var TimelineStore = require('stores/OfficerPage/TimelineStore');
 
 
 var Timeline = React.createClass(_.assign(Base(TimelineStore), {
+  componentDidMount: function () {
+    this.drawTimeline(this.state.data);
+  },
+
   drawTimeline: function (data) {
     var container = this.getDOMNode();
     $(container).html("");

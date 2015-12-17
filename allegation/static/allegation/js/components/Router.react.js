@@ -9,8 +9,8 @@ var IndexRoute = ReactRouter.IndexRoute;
 
 var IndexPage = require('components/IndexPage.react');
 var DataToolPage = require('components/DataToolPage.react');
-var InvestigatorPage = require('components/InvestigatorPage.react');
 var OfficerPage = require('components/OfficerPage.react');
+var InvestigatorPage = require('components/InvestigatorPage.react');
 
 
 var RootRouter = React.createClass({

@@ -50,6 +50,18 @@ var ComplaintListAPI = {
     });
   },
 
+  getAllForInvestigator: function(investigator) {
+    var endpoint = '/api/allegations/?investigator=' + investigator + '&length=-1';
+
+    if (ajax) {
+      ajax.abort();
+    }
+
+    ajax = jQuery.getJSON(endpoint, function (data) {
+      ComplaintListServerActions.receivedOfficerComplaints(data);
+    });
+  },
+
   getMoreData: function (pageNumber) {
     var queryString = AllegationFetcherQueryBuilder.buildQuery();
     var pagedQuery = [queryString, 'page=' + pageNumber, 'length=50'].join('&');

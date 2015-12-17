@@ -8,6 +8,12 @@ var TimelineAPI = {
     $.getJSON('/officer/timeline/', {'officer': officerId}, function (data) {
       TimelineActions.receivedData(data);
     });
+  },
+
+  getInvestigatorTimelineData: function (investigatorId) {
+    $.getJSON('/investigator/timeline/', {'investigator': investigatorId}, function (data) {
+      TimelineActions.receivedData(data);
+    });
   }
 };
 
