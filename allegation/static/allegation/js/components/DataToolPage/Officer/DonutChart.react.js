@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 
 
 var DISCIPLINED_COLOR = '#a5b4be';
@@ -76,7 +77,7 @@ var DonutChart = React.createClass({
   },
 
   componentDidMount: function () {
-    var container = this.getDOMNode();
+    var container = ReactDOM.findDOMNode(this);
     var that = this;
     var colors = [DISCIPLINED_COLOR, UNDISCIPLINED_COLOR],
       browserData = [],

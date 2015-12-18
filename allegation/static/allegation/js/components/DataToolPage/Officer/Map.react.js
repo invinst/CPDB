@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var _map = null;
 var AppConstants = require('constants/AppConstants');
 var ComplaintListActions = require("actions/ComplaintList/ComplaintListActions");
@@ -8,7 +9,7 @@ var Map = React.createClass({
     return {};
   },
   initMap: function (opts) {
-    var element = this.getDOMNode();
+    var element = ReactDOM.findDOMNode(this);
     opts = opts || {'maxZoom': 17, 'minZoom': 10, 'scrollWheelZoom': false};
     var defaultZoom = 'defaultZoom' in opts ? opts['defaultZoom'] : 12;
 

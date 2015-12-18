@@ -1,10 +1,11 @@
 var _ = require('lodash');
+var ReactDOM = require('react-dom');
 var React = require('react');
 
 
 var Timeline = React.createClass({
   drawTimeline: function (data) {
-    var container = this.getDOMNode();
+    var container = ReactDOM.findDOMNode(this);
     $(container).html("");
     var timeLineItems = [];
     var items = data.items;
@@ -95,7 +96,7 @@ var Timeline = React.createClass({
   render: function () {
     var wait = '';
     if (this.props.data) {
-      wait = (<i class='fa fa-spin fa-spinner'/>);
+      wait = (<i className='fa fa-spin fa-spinner'/>);
     }
     return (<div>{wait}</div>);
   }

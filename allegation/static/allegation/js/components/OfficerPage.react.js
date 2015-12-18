@@ -43,16 +43,21 @@ var OfficerPage = React.createClass({
     TimelineAPI.getTimelineData(officerId);
   },
 
+  componentWillUnmount: function () {
+    OfficerPageStore.removeChangeListener(this.updateOfficerData);
+    TimelineStore.removeChangeListener(this.updateTimelineData);
+  },
+
   updateOfficerData: function () {
-    var newState = _.cloneDeep(this.state);
-    newState = _.assign(newState, {data: OfficerPageStore.getState().data});
-    this.setState(newState);
+    if (this.isMounted()) {
+      this.setState({data: OfficerPageStore.getState().data});
+    }
   },
 
   updateTimelineData: function () {
-    var newState = _.cloneDeep(this.state);
-    newState = _.assign(newState, {timelineData: TimelineStore.getState().data});
-    this.setState(newState);
+    if (this.isMounted()) {
+      this.setState({timelineData: TimelineStore.getState().data});
+    }
   },
 
   componentWillReceiveProps: function(nextProps) {

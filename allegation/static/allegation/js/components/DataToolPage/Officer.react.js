@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var ReactRouter = require('react-router');
 var History = require('history');
 var classnames = require('classnames');
@@ -31,7 +32,7 @@ var Officer = React.createClass({
   },
 
   copyEmbed: function () {
-    jQuery(this.getDOMNode()).find(".embed").each(function () {
+    jQuery(ReactDOM.findDOMNode(this)).find(".embed").each(function () {
       var client = new ZeroClipboard(this);
       var that = this;
       client.on( "ready", function( readyEvent ) {
