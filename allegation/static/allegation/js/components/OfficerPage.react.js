@@ -73,9 +73,15 @@ var OfficerPage = React.createClass({
     document.title = OfficerPresenter(officer).displayName;
   },
 
+  stateHasNewUpdates: function (nextState) {
+    return (
+      (nextState.timelineData.items.length && !this.state.timelineData.items) ||
+      (nextState.data.allegations.length && !this.state.data.allegations.length));
+  },
+
   shouldComponentUpdate: function (nextProps, nextState) {
     return (nextProps.transitioning === false &&
-      (!_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state)));
+      (!_.isEqual(nextProps, this.props) || this.stateHasNewUpdates(nextState)));
   },
 
   render: function () {
