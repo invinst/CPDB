@@ -14,7 +14,6 @@ var OfficerListStore = require('stores/OfficerListStore');
 var FilterActions = require('actions/FilterActions');
 var SessionAPI = require('utils/SessionAPI');
 var TagUtil = require('utils/TagUtil');
-var cx = require('react/lib/cx');
 var _sessionData = {};
 var init_data = typeof(INIT_DATA) == 'undefined' ? false : INIT_DATA;
 var init_filters = typeof(INIT_FILTERS) == 'undefined' ? {} : INIT_FILTERS;
