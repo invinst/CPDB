@@ -6,10 +6,10 @@ var AppConstants = require('../constants/AppConstants');
 
 var ComplaintPresenter = function (complaint) {
   var allegation = complaint.allegation || {};
-  var complainingWitness = complaint.complaining_witness ? complaint.complaining_witness[0] : {};
+  var complainingWitness = !_.isEmpty(complaint.complaining_witness) ? complaint.complaining_witness[0] : {};
 
   var complaintSubCategory = function () {
-    return complaint.category ? complaint.category.allegation_name : '';
+    return !_.isEmpty(complaint.category) ? complaint.category.allegation_name : '';
   };
 
   var crid = function () {

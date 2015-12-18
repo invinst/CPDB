@@ -11,24 +11,18 @@ var Nav = require('components/OfficerPage/Nav.react');
 var InvestigationsSection = require('components/InvestigatorPage/InvestigationsSection.react');
 var InvestigatorDetail = require('components/InvestigatorPage/InvestigatorDetail.react');
 var InvestigatorPageStore = require('stores/InvestigatorPageStore');
-var InvestigatorPageAPI = require('utils/InvestigatorPageAPI')
-var TimelineAPI = require('utils/TimelineAPI');
+var InvestigatorPageAPI = require('utils/InvestigatorPageAPI');
 
 
 var InvestigatorPage = React.createClass(_.assign(Base(InvestigatorPageStore), {
   initAPIRequest: function (investigatorId) {
     InvestigatorPageAPI.getInvestigatorData(investigatorId);
-    TimelineAPI.getInvestigatorTimelineData(investigatorId);
   },
 
   componentDidMount: function () {
     InvestigatorPageStore.addChangeListener(this._onChange);
     var investigatorId = this.props.params.id || '';
     this.initAPIRequest(investigatorId);
-  },
-
-  componentWillUnmount: function () {
-    InvestigatorPageStore.removeChangeListener(this._onChange);
   },
 
   componentWillReceiveProps: function (newProps) {
@@ -45,32 +39,31 @@ var InvestigatorPage = React.createClass(_.assign(Base(InvestigatorPageStore), {
     var investigator = this.state.data['investigator'];
 
     if (_.isEmpty(investigator)) {
-      return (<i clasName='fa fa-spin fa-spinner' />);
-    } else {
-      return (
-        <div>
-          <Nav />
-          <div id='officer-profile'>
-            <div className="map-row">
-              <div className="container">
-                <InvestigatorDetail investigator={investigator} />
-              </div>
-            </div>
-            <div className="white-background">
-              <div className="container">
-                <InvestigationsSection investigator={investigator} />
-              </div>
-            </div>
+      return (<i className='fa fa-spin fa-spinner' />);
+    }
 
-            <div className='container-fluid'>
-              <div className='sticky-footer'>
-                <Footer />
-              </div>
+    return (
+      <div>
+        <Nav />
+        <div id='officer-profile'>
+          <div className="map-row">
+            <div className="container">
+              <InvestigatorDetail investigator={investigator} />
+            </div>
+          </div>
+          <div className="white-background">
+            <div className="container">
+              <InvestigationsSection investigator={investigator} />
+            </div>
+          </div>
+          <div className='container-fluid'>
+            <div className='sticky-footer'>
+              <Footer />
             </div>
           </div>
         </div>
-      );
-    }
+      </div>
+    );
   },
 
   render: function () {

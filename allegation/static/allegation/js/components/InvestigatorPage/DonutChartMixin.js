@@ -32,7 +32,7 @@ var DonutChartMixin = {
               {category}
             </span>
           </div>
-        )
+        );
       });
     };
 
@@ -48,7 +48,7 @@ var DonutChartMixin = {
           </span>
         </span>
       </span>
-    )
+    );
   }
 };
 
