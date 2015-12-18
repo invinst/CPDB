@@ -3,7 +3,7 @@ var GenderPresenter = function (gender) {
     if (gender == 'M') return 'Male';
     if (gender == 'F') return 'Female';
     if (gender == 'X') return 'Trans';
-    return '';
+    return 'Gender unknown';
   };
 
   return {

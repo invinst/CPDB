@@ -1,5 +1,8 @@
 var React = require('react');
+
 var OfficerPresenter = require('presenters/OfficerPresenter');
+var Wrapper = require('components/Shared/Wrapper.react');
+
 
 
 var OfficerInvolved = React.createClass({
@@ -20,7 +23,7 @@ var OfficerInvolved = React.createClass({
           </div>
         </div>
       </div>
-    )
+    );
   },
 
   renderOfficerList: function (involvedOfficers) {
@@ -28,30 +31,24 @@ var OfficerInvolved = React.createClass({
       <div className='officer-list'>
         {involvedOfficers.map(this.renderOfficerRow)}
       </div>
-    )
+    );
   },
 
   render: function () {
     var officers = this.props.involvedOfficers || [];
     var numberOfInvolvedOfficers = officers.length;
 
-    if (numberOfInvolvedOfficers == 0) {
-      return (
-        <div></div>
-      )
-    }
-
     return (
-      <div className='officer-involved'>
+      <Wrapper wrapperClass='officer-involved' visible={numberOfInvolvedOfficers > 0}>
         <div className='row section-header'>
           <span className='pad'>
-            <span className='section-title bold'>Officers involved&nbsp;</span>
+            <span className='section-title bold'>Officers Involved&nbsp;</span>
             <span className='title-count normal-weight'>({numberOfInvolvedOfficers})</span>
           </span>
         </div>
         {this.renderOfficerList(officers)}
-      </div>
-    )
+      </Wrapper>
+    );
   }
 });
 

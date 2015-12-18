@@ -5,21 +5,17 @@ var HelperUtil = require('utils/HelperUtil');
 var Map = require('components/ComplaintPage/Map.react');
 var ComplaintService = require('services/ComplaintService');
 var ComplaintPresenter= require('presenters/ComplaintPresenter');
+var Wrapper = require('components/Shared/Wrapper.react');
+
 
 var Location = React.createClass({
   renderLocationInfoItem: function (label, data) {
-    if (!data) {
-      return (
-        <div></div>
-      )
-    } else {
-      return (
-        <div>
+    return (
+        <Wrapper visible={!!data}>
           <label>{label} </label>
           <span>{data}</span>
-        </div>
-      )
-    }
+        </Wrapper>
+      );
   },
 
   render: function () {
@@ -27,19 +23,12 @@ var Location = React.createClass({
     var complaintService = ComplaintService(info);
     var presenter = ComplaintPresenter(info);
 
-    if (!complaintService.hasLocation) {
-      return (<div></div>);
-    }
-
-    var noData = !presenter.locationType && !presenter.beat && !presenter.city
-      && !presenter.address;
-
     var locationDetailClassNames = cx('location-detail pad', {
-      'no-data': noData
+      'no-data': complaintService.hasNoData
     });
 
     return (
-      <div className='location'>
+      <Wrapper wrapperClass='location' visible={complaintService.hasLocation}>
         <div className='section-header bold'>
           <div className='section-title pad'>Location</div>
         </div>
@@ -49,11 +38,11 @@ var Location = React.createClass({
           {this.renderLocationInfoItem('Location type', presenter.locationType)}
           {this.renderLocationInfoItem('City', presenter.city)}
         </div>
-        <div className='location-map pad'>
+        <Wrapper wrapperClass='location-map pad' visible={info.point}>
           <Map info={info}/>
-        </div>
-      </div>
-    )
+        </Wrapper>
+      </Wrapper>
+    );
   }
 });
 

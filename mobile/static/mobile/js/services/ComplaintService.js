@@ -38,12 +38,20 @@ var ComplaintService = function (complaint) {
     return !startInvestigationDate() || startInvestigationDate().isSame(incidentDate(), 'day')
   };
 
-  var hasLocation = function(){
+  var hasLocation = function() {
     return complaint.beat || complaint.location || complaint.add1 || complaint.add2 || complaint.city || complaint.point;
   };
 
-  var hasFullAddress = function(){
+  var hasFullAddress = function() {
     return complaint.add1 && complaint.add2;
+  };
+
+  var hasNoData = function() {
+    return !complaint.locationType && !hasLocation();
+  };
+
+  var hasNoIncidentDate = function () {
+    return !incidentDate();
   };
 
   return {
@@ -55,6 +63,8 @@ var ComplaintService = function (complaint) {
     haveNoData: haveNoData(),
     hasLocation: hasLocation(),
     hasFullAddress: hasFullAddress(),
+    hasNoData: hasNoData(),
+    hasNoIncidentDate: hasNoIncidentDate()
   }
 };
 

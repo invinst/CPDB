@@ -25,7 +25,7 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
         'allegation': null
       },
       loading: true
-    }
+    };
   },
 
   componentDidMount: function () {
@@ -46,12 +46,12 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
     if (loading) {
       return (
         <LoadingPage />
-      )
+      );
     }
 
     if (!found) {
       return (
-        <NotMatchedPage crid={this.state.crid}/>
+        <NotMatchedPage crid={this.state.crid} />
       )
     }
 
@@ -69,7 +69,7 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }));
 

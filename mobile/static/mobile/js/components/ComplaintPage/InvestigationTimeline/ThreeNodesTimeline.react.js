@@ -15,7 +15,7 @@ var ThreeNodesTimeline = React.createClass({
     var presenter = ComplaintPresenter(this.props.info);
     var service = ComplaintService(complaint);
 
-    var firstLineStyle = !presenter.incidentDate ? dashLine : noStyle;
+    var firstLineStyle = service.hasNoIncidentDate ? dashLine : noStyle;
     var secondLineStyle = service.isOpenInvestigation ? dashLine : noStyle;
 
     return (

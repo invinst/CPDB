@@ -42,8 +42,6 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
         self.find('.complaining-witness-list').text.should.contain(complaint_witness_text)
         self.find('.investigator .name').text.should.contain(investigator.name)
         self.find('.investigator .rank').text.should.contain(investigator.current_rank)
-
-        self.find('.location-detail').text.should.contain(allegation.beat.get_type_display())
         self.find('.location-detail').text.should.contain(allegation.beat.name)
 
         self.should_see_text(addresss)
@@ -87,4 +85,49 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
         self.visit('/mobile/complaint/{crid}'.format(crid=allegation.crid))
         self.until(lambda: self.find('.crid-title'))
 
-        self.should_not_see_text('Investigate')
+        self.should_not_see_text('Investigator')
+
+    def test_investigator_without_rank(self):
+        investigator = InvestigatorFactory(current_rank=None)
+        allegation = AllegationFactory(officer=None, investigator=investigator)
+
+        self.visit('/mobile/complaint/{crid}'.format(crid=allegation.crid))
+        self.until(lambda: self.find('.crid-title'))
+
+        self.should_see_text('Rank unknown')
+
+    def test_officer_with_unknown_race(self):
+        officer = OfficerFactory(race='Unknown')
+        allegation = AllegationFactory(officer=officer)
+        self.visit('/mobile/complaint/{crid}'.format(crid=allegation.crid))
+        self.until(lambda: self.find('.crid-title'))
+
+        self.should_see_text('Race unknown')
+
+    def test_officer_without_race(self):
+        officer = OfficerFactory(race=None)
+        allegation = AllegationFactory(officer=officer)
+        self.visit('/mobile/complaint/{crid}'.format(crid=allegation.crid))
+        self.until(lambda: self.find('.crid-title'))
+
+        self.should_see_text('Race unknown')
+
+    def test_officer_without_gender(self):
+        officer = OfficerFactory(gender=None)
+        allegation = AllegationFactory(officer=officer)
+        self.visit('/mobile/complaint/{crid}'.format(crid=allegation.crid))
+        self.until(lambda: self.find('.crid-title'))
+
+        self.should_see_text('Gender unknown')
+
+    def test_officer_without_gender(self):
+        allegation = AllegationFactory()
+        ComplainingWitnessFactory(gender=None, age=None, race=None, crid=allegation.crid)
+
+
+        self.visit('/mobile/complaint/{crid}'.format(crid=allegation.crid))
+        self.until(lambda: self.find('.crid-title'))
+
+        self.should_see_text('Gender unknown')
+        self.should_see_text('Race unknown')
+        self.should_see_text('Age unknown')

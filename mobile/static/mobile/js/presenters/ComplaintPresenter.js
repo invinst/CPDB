@@ -22,7 +22,7 @@ var ComplaintPresenter = function (complaint) {
 
   var incidentDate = function () {
     var incidentDate = complaintService.incidentDate;
-    return !!incidentDate ? incidentDate.format(AppConstants.SIMPLE_DATE_FORMAT) : '';
+    return !!incidentDate ? incidentDate.format(AppConstants.SIMPLE_DATE_FORMAT) : 'Unknown date';
   };
 
   var startInvestigationDate = function () {
@@ -33,13 +33,6 @@ var ComplaintPresenter = function (complaint) {
   var endInvestigationDate = function () {
     var endInvestigationDate = complaintService.endInvestigationDate;
     return !!endInvestigationDate ? endInvestigationDate.format(AppConstants.SIMPLE_DATE_FORMAT) : '';
-  };
-
-  var beat = function () {
-    var beatTypeDisplay = HelperUtil.fetch(complaint, 'beat.type_display', '');
-    var beatName = HelperUtil.fetch(complaint, 'beat.name', '');
-
-    return [beatTypeDisplay, beatName].join(' ').trim();
   };
 
   var address = function(){
@@ -57,7 +50,7 @@ var ComplaintPresenter = function (complaint) {
     address: address(),
     city: HelperUtil.fetch(complaint, 'city', ''),
     locationType: HelperUtil.fetch(complaint, 'location', ''),
-    beat: beat()
+    beat: HelperUtil.fetch(complaint, 'beat.name', '')
   }
 };
 

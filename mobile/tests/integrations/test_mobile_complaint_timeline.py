@@ -74,6 +74,7 @@ class MobileComplaintTimelineTest(MobileComplaintPageTestMixin):
         self.go_to_allegation_detail_page(allegation.crid)
         first_line = self.find('.investigation-timeline line')
         self.assert_line_is_dash_line(first_line)
+        self.find_all('.event-date')[0].text.should.contain('Unknown date')
 
     def test_open_investigation(self):
         start_date = datetime(2001, 6, 1)
