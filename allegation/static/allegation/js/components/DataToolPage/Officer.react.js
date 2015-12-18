@@ -14,6 +14,7 @@ var Filters = require('components/DataToolPage/Filters.react');
 var OfficerMixin = require('components/DataToolPage/Officer/OfficerMixin.react');
 var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
 var CheckMark = require('components/DataToolPage/Officer/CheckMark.react');
+var Counter = require("components/DataToolPage/Counter.react");
 var OfficerPresenter = require('presenters/OfficerPresenter');
 var jQuery = require('utils/jQuery');
 var StringUtil = require('utils/StringUtil');
