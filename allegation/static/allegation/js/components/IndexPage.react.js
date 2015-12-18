@@ -45,6 +45,11 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
     SessionAPI.getSessionInfo(session || '');
   },
 
+  shouldComponentUpdate: function (nextProps, nextState) {
+    return (nextProps.transitioning === false &&
+      (!_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state)));
+  },
+
   componentDidUpdate: function () {
     this.displayTabByPath();
 
