@@ -1,6 +1,6 @@
 var _ = require ('lodash');
 var AppConstants = require('../constants/AppConstants');
-var AppDispatcher = require('../dispatcher/AppDispatcher');
+var AppDispatcher = require('dispatcher/AppDispatcher');
 var Base = require('./Base');
 
 var _state = {
