@@ -21,7 +21,7 @@ class AdminSearchTrafficApi(View):
         top_queries = self.get_top_queries(start_day, start, end)
         ret = {}
         periods = {
-            'day': {'num_periods': 7, 'increment': 1, 'date_format':'%Y-%m-%d'},
+            'day': {'num_periods':7, 'increment': 1, 'date_format':'%Y-%m-%d'},
             'week': {'num_periods': 8, 'increment': 7, 'date_format': "'%y Week %W"},
             'month': {'num_periods': 6, 'increment': 30, 'date_format': '%Y-%m'}
         }
@@ -36,13 +36,13 @@ class AdminSearchTrafficApi(View):
         for top_query in top_queries:
             query = top_query['search_query']
             kursor = connection.cursor()
-            sql = "SELECT count(*) as total, date_trunc(%s, created_at) as created_at_date " \
+            sql = "SELECT count(*) as total, date_trunc('%s', created_at) as created_at_date " \
                 "FROM search_suggestionlog " \
-                "WHERE created_at >= %s AND search_query = %s " \
+                "WHERE created_at >= '%s' AND search_query = '%s' " \
                 "GROUP BY created_at_date " \
-                "ORDER BY total DESC "
+                "ORDER BY total DESC " % (period, start_day, top_query['search_query'])
 
-            kursor.execute(sql, [period, start_day, top_query['search_query']])
+            kursor.execute(sql)
 
             for row in kursor.fetchall():
                 label = row[1].strftime(date_format)
