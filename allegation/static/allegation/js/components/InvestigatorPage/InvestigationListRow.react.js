@@ -37,7 +37,7 @@ var InvestigationListRow = React.createClass(_.assign(Base(ComplaintListStore), 
     var detailIsShown = this.detailIsCurrentlyShown();
 
     return this.detailRendered() ? (
-      <Complaint complaint={complaint} hide={!detailIsShown}/>
+      <Complaint complaint={complaint} hide={!detailIsShown} />
     ) : '';
   },
 
@@ -92,7 +92,7 @@ var InvestigationListRow = React.createClass(_.assign(Base(ComplaintListStore), 
   toggleComplaint: function (e) {
     this.setState({hasShown: true});
     ComplaintListActions.toggleComplaint(this.props.complaint.allegation.id);
-    SessionAPI.updateSessionInfo({'query': { activeComplaints: this.state.activeComplaints}});
+    SessionAPI.updateSessionInfo({ query: { activeComplaints: this.state.activeComplaints }});
   }
 }));
 

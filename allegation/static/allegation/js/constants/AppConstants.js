@@ -295,6 +295,7 @@ module.exports = {
   OFFICER_PAGE_API_ENDPOINT: '/officer/',
   SESSION_API_ENDPOINT: '/api/allegations/session/',
   RACE_GENDER_API_ENDPOINT: '/api/allegations/race-gender/',
+  ALLEGATIONS_API_ENDPOINT: '/api/allegations/',
   INVESTIGATOR_API_ENDPOINT: '/investigator/',
 
   DATE_FORMAT: 'D MMM, YYYY',

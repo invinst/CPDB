@@ -39,25 +39,31 @@ var ComplaintListAPI = {
   },
 
   getAllForOfficer: function(officer) {
-    var endpoint = '/api/allegations/?officer=' + officer + '&length=-1';
+    var params = {
+      officer: officer,
+      length: -1
+    };
 
     if (ajax) {
       ajax.abort();
     }
 
-    ajax = jQuery.getJSON(endpoint, function (data) {
+    ajax = jQuery.getJSON(AppConstants.ALLEGATIONS_API_ENDPOINT, params, function (data) {
       ComplaintListServerActions.receivedOfficerComplaints(data);
     });
   },
 
   getAllForInvestigator: function(investigator) {
-    var endpoint = '/api/allegations/?investigator=' + investigator + '&length=-1';
+    var params = {
+      investigator: investigator,
+      length: -1
+    };
 
     if (ajax) {
       ajax.abort();
     }
 
-    ajax = jQuery.getJSON(endpoint, function (data) {
+    ajax = jQuery.getJSON(AppConstants.ALLEGATIONS_API_ENDPOINT, params, function (data) {
       ComplaintListServerActions.receivedOfficerComplaints(data);
     });
   },

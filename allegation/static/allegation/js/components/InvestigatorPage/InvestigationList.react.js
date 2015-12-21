@@ -24,7 +24,7 @@ var InvestigationList = React.createClass({
       <div>
         {this.renderInvestigations()}
       </div>
-    )
+    );
   }
 });
 

@@ -20,7 +20,7 @@ var InvestigatorDetail = React.createClass({
     }
   },
 
-  getChartColor: function () {
+  getChartColors: function () {
     return {
       'Disciplined':'#a5b4be',
       'Complaints':'#013270'
@@ -29,7 +29,7 @@ var InvestigatorDetail = React.createClass({
 
   render: function () {
     var investigator = this.props.investigator;
-    var chartColor = this.getChartColor();
+    var chartColors = this.getChartColors();
     var chartData = this.getChartData();
 
     return (
@@ -40,14 +40,14 @@ var InvestigatorDetail = React.createClass({
           </div>
         </div>
 
-        <InvestigatorInformation investigator={investigator}/>
+        <InvestigatorInformation investigator={investigator} />
 
         <div className="row visualization-information">
           <div className='col-xs-6'>
             <Timeline />
           </div>
           <div className='col-xs-6'>
-            <InvestigatorDonutChart chartColors={chartColor} chartData={chartData} />
+            <InvestigatorDonutChart chartColors={chartColors} chartData={chartData} />
           </div>
         </div>
       </div>
