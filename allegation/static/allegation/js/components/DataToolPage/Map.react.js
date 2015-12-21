@@ -82,8 +82,8 @@ var Map = React.createClass({
     AppStore.removeDataToolInitListener(this.onDataToolInit);
     MapStore.removeChangeMarkerListener(this.changeMarker);
     MapStore.removeBeforeChangeMarkerListener(this.beforeChangeMarker);
+    FilterStore.removeChangeListener(this._onChange);
 
-    _map.remove();
     _baseLayers = {};
     this.first_layer_added = false;
     this.removeEmbedListener();
