@@ -1,5 +1,6 @@
 var Base = require('../Base.react');
 var React = require('react');
+var ReactDOM = require('react-dom');
 var _ = require('lodash');
 global.jQuery = require('jquery');
 require('bootstrap');
@@ -78,7 +79,7 @@ var AddDocumentLinkModal = React.createClass(_.assign(Base(AddDocumentLinkModalS
   },
 
   isOpen: function () {
-    return jQuery(this.getDOMNode()).hasClass('in');
+    return jQuery(ReactDOM.findDOMNode(this)).hasClass('in');
   },
 
   componentDidUpdate: function() {
