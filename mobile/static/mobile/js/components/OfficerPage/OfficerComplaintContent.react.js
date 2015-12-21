@@ -12,9 +12,6 @@ var OfficerComplaintContent = React.createClass({
         <OfficerComplaintItem />
         <OfficerComplaintItem />
         <OfficerComplaintItem />
-        <Navigator leftAction='summary' leftText='Summary'
-                   rightAction='related_officers' rightText='Related Officers'
-        />
       </div>
     );
   }

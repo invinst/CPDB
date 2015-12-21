@@ -12,9 +12,6 @@ var RelatedOfficers = React.createClass({
         <RelatedOfficerItem />
         <RelatedOfficerItem />
         <RelatedOfficerItem />
-        <Navigator leftAction='complaints' leftText='Complaints'
-                   rightAction='summary' rightText='Summary'
-        />
       </div>
     );
   }

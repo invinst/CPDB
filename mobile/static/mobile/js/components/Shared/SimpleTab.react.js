@@ -1,6 +1,8 @@
 var cx = require('classnames');
 var React = require('react');
 
+var Wrapper = require('components/Shared/Wrapper.react');
+
 
 var SimpleTab = React.createClass({
   getInitialState: function () {
@@ -72,16 +74,37 @@ var SimpleTab = React.createClass({
     })
   },
 
+  renderNavigation: function () {
+    var navs = this.props.children[0];
+    var tabs = navs.props.children;
+
+    var totalNumberOfChildren = tabs.length;
+    var currentIndex = this.state.activeIndex;
+    var nextIndex = (currentIndex + 1) % totalNumberOfChildren;
+    var prevIndex = (currentIndex + totalNumberOfChildren - 1) % totalNumberOfChildren;
+    var prev = tabs[prevIndex].props.children;
+    var next = tabs[nextIndex].props.children;
+
+    return (
+      <Wrapper visible={!!this.props.navigation} wrapperClass='tab-navigations'>
+        <div className='row'>
+          <div className='six columns'><span className='icon icon-left'></span>{prev}</div>
+          <div className='six columns align-right'>{next}<span className='icon icon-right'></span></div>
+        </div>
+      </Wrapper>
+    )
+  },
+
   render: function () {
     return (
       <div>
         <div className='tab-navs' onClick={this.onClick}>
           {this.renderTabNav()}
         </div>
-          <div className='tab-contents'>
-            {this.renderTabContent()}
-          </div>
-
+        <div className='tab-contents'>
+          {this.renderTabContent()}
+        </div>
+        {this.renderNavigation()}
       </div>
     )
   }

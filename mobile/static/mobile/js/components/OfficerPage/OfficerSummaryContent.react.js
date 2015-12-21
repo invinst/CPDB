@@ -11,9 +11,6 @@ var OfficerSummaryContent = React.createClass({
       <div className='officer-summary-content'>
         <OfficerSummaryDetail/>
         <OfficerAnalytics />
-        <Navigator leftAction='related_officers' leftText='Related Officers'
-                   rightAction='complaints' rightText='Complaints'
-        />
       </div>
     )
   }

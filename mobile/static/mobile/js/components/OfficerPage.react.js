@@ -20,12 +20,13 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
       <div className='officer-page content'>
         <SearchBar />
         <OfficerHeader />
-        <SimpleTab className='officer-page-tabs'>
+        <SimpleTab className='officer-page-tabs' navigation={true}>
           <div className='officer-page-tab-navs'>
             <span>Summary</span>
             <span>Complaints</span>
             <span>Relative Officers</span>
           </div>
+
           <div className='officer-page-tab-contents'>
             <div>
               <OfficerSummaryContent  />
@@ -37,7 +38,7 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
               <RelatedOfficers />
             </div>
           </div>
-          </SimpleTab>
+        </SimpleTab>
       </div>
     )
   }
