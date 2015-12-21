@@ -1,4 +1,4 @@
-var AppConstants = require('constants/AppConstants');
+var AppConstants = require('../constants/AppConstants');
 var InvestigatorPageActions = require('actions/InvestigatorPage/InvestigatorPageActions');
 
 

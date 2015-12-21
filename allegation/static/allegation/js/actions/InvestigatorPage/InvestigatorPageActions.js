@@ -1,5 +1,5 @@
-var AppDispatcher = require('dispatcher/AppDispatcher');
-var AppConstants = require('constants/AppConstants');
+var AppDispatcher = require('../../dispatcher/AppDispatcher');
+var AppConstants = require('../../constants/AppConstants');
 
 
 var InvestigatorPageActions = {
