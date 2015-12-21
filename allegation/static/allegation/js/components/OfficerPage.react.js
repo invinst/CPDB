@@ -1,12 +1,12 @@
 var _ = require('lodash');
 var classnames = require('classnames');
-var React = require('react');
+var React = require('react/addons');
+var ReactCSSTransitionGroup = React.addons.CSSTransitionGroup;
 
 var Base = require('components/Base.react');
 var ComplaintSection = require('components/OfficerPage/ComplaintSection.react');
 var ComplaintListAPI = require('utils/ComplaintListAPI');
 var StoryListAPI = require('utils/StoryListAPI');
-var TimelineAPI = require('utils/TimelineAPI');
 var FilterActions = require("actions/FilterActions");
 var Nav = require('components/OfficerPage/Nav.react');
 var OfficerDetail = require('components/DataToolPage/OfficerDetail.react');
@@ -34,15 +34,10 @@ var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
   },
 
   componentDidMount: function() {
-    var officerPage = this;
     var officerId = this.props.params.id || '';
-
-    setTimeout(function () {
-      OfficerPageServerActions.getOfficerData(officerId);
-      OfficerPageStore.addChangeListener(officerPage._onChange);
-      StoryListAPI.get(officerId);
-      TimelineAPI.getTimelineData(officerId);
-    }, 500);
+    OfficerPageServerActions.getOfficerData(officerId);
+    OfficerPageStore.addChangeListener(this._onChange);
+    StoryListAPI.get(officerId);
   },
 
   componentWillReceiveProps: function(nextProps) {
@@ -50,7 +45,6 @@ var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
     var officerId = nextProps.params.id || '';
     OfficerPageServerActions.getOfficerData(officerId);
     StoryListAPI.get(officerId);
-    TimelineAPI.getTimelineData(officerId);
   },
 
   componentDidUpdate: function () {
@@ -64,50 +58,45 @@ var OfficerPage = React.createClass(_.assign(Base(OfficerPageStore), {
     var relatedOfficers = this.state.data['related_officers'];
     var hasMap = this.state.data['has_map'];
 
-    var waitComponent = (<div className='wait-placeholder'><i className='fa fa-spinner fa-spin'></i></div>);
-    var officerDetailComponent = waitComponent;
-    var relatedOfficersComponent = waitComponent;
-    var storyListComponent = waitComponent;
-    var complaintSectionComponent = waitComponent;
-    if (!_.isEmpty(officer)) {
-      officerDetailComponent = (<OfficerDetail officer={officer} hasMap={hasMap} />);
-      relatedOfficersComponent = (<RelatedOfficers relatedOfficers={relatedOfficers} />);
-      storyListComponent = (<StoryList officer={officer} />);
-      complaintSectionComponent = (<ComplaintSection officer={officer}/>);
-    }
-
-    var content = (
-      <div>
-        <Nav />
-        <div id='officer-profile'>
-          <div className="map-row">
-            <div className="container">
-              {officerDetailComponent}
+    var content = '';
+    if (_.isEmpty(officer)) {
+      content = (<i className='fa fa-spin fa-spinner' />);
+    } else {
+      content = (
+        <div key='content'>
+          <Nav />
+          <div id='officer-profile'>
+            <div className="map-row">
+              <div className="container">
+                <OfficerDetail officer={officer} hasMap={hasMap} />
+              </div>
             </div>
-          </div>
-          <div className="white-background">
-            <div className="container">
-              {relatedOfficersComponent}
-              {storyListComponent}
+            <div className="white-background">
+              <div className="container">
+                <RelatedOfficers relatedOfficers={relatedOfficers} />
+                <StoryList officer={officer} />
+              </div>
             </div>
-          </div>
-          <div className="container">
-            {complaintSectionComponent}
-          </div>
-          <div className='container-fluid'>
-            <div className='sticky-footer'>
-              <Footer />
+            <div className="container">
+              <ComplaintSection officer={officer}/>
+            </div>
+            <div className='container-fluid'>
+              <div className='sticky-footer'>
+                <Footer />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    }
 
     return (
-      <div>
-        {content}
-        <Disclaimer />
-        <HappyFox />
+      <div id='officer-page'>
+        <ReactCSSTransitionGroup transitionName="officer-page" transitionEnterTimeout={500}>
+          {content}
+          <Disclaimer key='disclaimer' />
+          <HappyFox key='happyfox' />
+        </ReactCSSTransitionGroup>
       </div>
     );
   },
