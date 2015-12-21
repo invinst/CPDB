@@ -26,7 +26,7 @@ def export_as_csv_action(description="Export selected objects as CSV file",
 
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename=%s.csv' % str(opts).replace('.', '_')
-        import pdb; pdb.set_trace()
+
         writer = csv.writer(response)
         if header:
             writer.writerow(list(field_names))
