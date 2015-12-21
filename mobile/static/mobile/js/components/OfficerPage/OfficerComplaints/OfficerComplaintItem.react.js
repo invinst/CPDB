@@ -18,7 +18,6 @@ var OfficerComplaintItem = React.createClass({
           <div className='two columns'>
             <div className='label'>Incident</div>
             <div className='label'>Officers</div>
-
           </div>
           <div className='eight columns'>
             <div className='value'>&nbsp;December 11th, 2013</div>

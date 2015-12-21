@@ -26,11 +26,7 @@ var SimpleTab = React.createClass({
     return -1;
   },
 
-  naviOnClick: function(e){
-    var node = e.target;
-  },
-
-  onClick: function (e) {
+  onTabItemClick: function (e) {
     var node = e.target;
     var parentChildren = node.parentNode.children;
     var index = this.getIndexOfNav(parentChildren, node);
@@ -41,8 +37,10 @@ var SimpleTab = React.createClass({
   },
 
   renderTabNav: function () {
-    var navs = this.props.children[0];
+    var navs = this.props.children[0];//TODO : fix hard code
     var self = this;
+
+    this.countOfItems = navs.props.children.length;
 
     return navs.props.children.map(function (nav, i) {
       var tabNavRef = 'tabNav-' + i;
@@ -60,7 +58,7 @@ var SimpleTab = React.createClass({
   },
 
   renderTabContent: function () {
-    var navs = this.props.children[1];
+    var navs = this.props.children[1];//TODO : fix hard code
     var self = this;
 
     return navs.props.children.map(function (nav, i) {
@@ -79,7 +77,7 @@ var SimpleTab = React.createClass({
   },
 
   renderNavigation: function () {
-    var navs = this.props.children[0];
+    var navs = this.props.children[0];//TODO : fix hard code
     var tabs = navs.props.children;
 
     var totalNumberOfChildren = tabs.length;
@@ -92,8 +90,8 @@ var SimpleTab = React.createClass({
     return (
       <Wrapper visible={!!this.props.navigation} wrapperClass='tab-navigations'>
         <div className='row'>
-          <div link='-1' className='six columns' onClick={this.naviOnClick}><span className='icon icon-left'></span>{prev}</div>
-          <div link='1' className='six columns align-right' onClick={this.naviOnClick}>{next}<span className='icon icon-right'></span></div>
+          <div className='six columns' onClick={this.setActiveTab.bind(this, prevIndex)}><span className='icon icon-left'></span>{prev}</div>
+          <div className='six columns align-right' onClick={this.setActiveTab.bind(this, nextIndex)}>{next}<span className='icon icon-right'></span></div>
         </div>
       </Wrapper>
     )
@@ -102,7 +100,7 @@ var SimpleTab = React.createClass({
   render: function () {
     return (
       <div>
-        <div className='tab-navs' onClick={this.onClick}>
+        <div className='tab-navs' onClick={this.onTabItemClick}>
           {this.renderTabNav()}
         </div>
         <div className='tab-contents'>

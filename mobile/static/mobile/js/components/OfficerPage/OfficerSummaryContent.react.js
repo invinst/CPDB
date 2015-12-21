@@ -2,7 +2,6 @@ var React = require('react');
 
 var OfficerSummaryDetail = require('components/OfficerPage/OfficerSummary/OfficerSummaryDetail.react');
 var OfficerAnalytics = require('components/OfficerPage/OfficerSummary/OfficerAnalytics.react');
-var Navigator = require('components/OfficerPage/Navigator.react');
 
 
 var OfficerSummaryContent = React.createClass({

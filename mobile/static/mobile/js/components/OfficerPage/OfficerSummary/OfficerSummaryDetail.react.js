@@ -18,7 +18,7 @@ var OfficerSummaryDetail = React.createClass({
       <div className='officer-summary'>
         {this.renderSummaryInfoItem('Rank', 'Detective')}
         {this.renderSummaryInfoItem('Unit', '610 / Bureau of detectives - Area Central')}
-        {this.renderSummaryInfoItem('Join', 'June 8th, 1998')}
+        {this.renderSummaryInfoItem('Joined', 'June 8th, 1998')}
         {this.renderSummaryInfoItem('Sex', 'Male')}
         {this.renderSummaryInfoItem('Race', 'White')}
       </div>

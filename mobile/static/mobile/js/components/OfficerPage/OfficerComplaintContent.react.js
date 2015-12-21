@@ -1,7 +1,6 @@
 var React = require('react');
 
 var OfficerComplaintItem = require('components/OfficerPage/OfficerComplaints/OfficerComplaintItem.react');
-var Navigator = require('components/OfficerPage/Navigator.react');
 
 
 var OfficerComplaintContent = React.createClass({
