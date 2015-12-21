@@ -91,6 +91,7 @@ CITIZEN_DEPTS = [
 
 
 class AllegationCategory(models.Model):
+    id = models.PositiveIntegerField(unique=True, null=True)
     cat_id = models.CharField(primary_key=True, max_length=255)
     category = models.CharField(max_length=255, null=True, db_index=True)
     allegation_name = models.CharField(max_length=255, null=True, db_index=True)
@@ -382,7 +383,8 @@ class Allegation(MobileSuggestibleAllegation, models.Model):
     record_id = models.IntegerField(null=True, blank=True)
     crid = models.CharField(max_length=30, null=True, db_index=True)
     officer = models.ForeignKey(Officer, null=True)
-    cat = models.ForeignKey(AllegationCategory, null=True, blank=True)
+
+    cat = models.ForeignKey(AllegationCategory, to_field='id', related_name='allegation_category', null=True)
     recc_finding = models.CharField(choices=FINDINGS, max_length=2, null=True, db_index=True, blank=True)
     recc_outcome = models.CharField(choices=OUTCOMES, max_length=3, null=True, db_index=True, blank=True)
     final_finding = models.CharField(choices=FINDINGS, max_length=2, null=True, db_index=True, blank=True)
