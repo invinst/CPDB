@@ -8,7 +8,7 @@ var TimelineStore = require('stores/OfficerPage/TimelineStore');
 var Timeline = React.createClass(_.assign(Base(TimelineStore), {
   componentDidMount: function () {
     TimelineStore.addChangeListener(this._onChange);
-    if(this.state.data){
+    if (this.state.data) {
       this.drawTimeline(this.state.data);
     }
   },
