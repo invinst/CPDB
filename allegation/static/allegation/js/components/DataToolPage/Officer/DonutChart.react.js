@@ -47,17 +47,19 @@ var DonutChart = React.createClass({
   updateTextInsideDonutChart: function(chart, officer) {
     officer = officer || this.props.officer;
 
-    $("#addText").html("");
-    var span = '<span id="pieChartInfoText">';
-    span += '<span style="font-size: 28px"><strong>' + officer.discipline_count +
-            " / " + officer.allegations_count + '</strong><br /></span>';
-    span += '<span style="font-size: 16px;">' +
-      '<span style="color: ' + chartColors['undisciplined'] + '">allegations disciplined</span>' +
-      '</span>';
-    span += '</span>';
+    if (officer.discipline_count !== undefined) {
+      $("#addText").html("");
+      var span = '<span id="pieChartInfoText">';
+      span += '<span style="font-size: 28px"><strong>' + officer.discipline_count +
+              " / " + officer.allegations_count + '</strong><br /></span>';
+      span += '<span style="font-size: 16px;">' +
+        '<span style="color: ' + chartColors['undisciplined'] + '">allegations disciplined</span>' +
+        '</span>';
+      span += '</span>';
 
-    $("#addText").append(span);
-    span = $('#pieChartInfoText');
+      $("#addText").append(span);
+      span = $('#pieChartInfoText');
+    }
   },
 
   componentWillReceiveProps: function(newProps) {
