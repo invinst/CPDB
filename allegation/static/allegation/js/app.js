@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var Router = require('./components/Router.react');
 var Embed = require('./components/DataToolPage/Embed.react');
 
@@ -7,7 +8,7 @@ global.initReact = function () {
   var element = document.getElementById('router');
 
   if(element) {
-    React.render(
+    ReactDOM.render(
       <Router />,
       element
     );
@@ -15,7 +16,7 @@ global.initReact = function () {
 
   var embed = document.getElementById('embed');
   if (embed) {
-    React.render(
+    ReactDOM.render(
       <Embed page={PAGE} pk={PK} query={QUERY} state={STATE} />,
       embed
     );
