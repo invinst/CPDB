@@ -6,7 +6,7 @@
 
 'use strict';
 
-var React = require('React');
+var React = require('react');
 
 var assign = require('react/lib/Object.assign');
 
