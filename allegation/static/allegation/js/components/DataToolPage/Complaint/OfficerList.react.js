@@ -9,9 +9,6 @@ var OfficerList = React.createClass({
     var complaint = this.props.complaint;
     var investigation = this.props.investigation;
 
-    if (complaint.allegation.investigator) {
-      return <OfficerListWithInvestigator complaint={complaint} investigation={investigation} />
-    }
     return <OfficerListWithoutInvestigator complaint={complaint} investigation={investigation} />
   }
 });

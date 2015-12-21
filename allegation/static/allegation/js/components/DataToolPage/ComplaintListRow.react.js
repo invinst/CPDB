@@ -9,7 +9,7 @@ var Filters = require('components/DataToolPage/Filters.react');
 var MapStore = require('stores/MapStore');
 var SessionAPI = require('utils/SessionAPI');
 var Officer = require("components/DataToolPage/Officer.react");
-var Complaint = require("components/DataToolPage/Complaint.react");
+var Allegation = require("components/DataToolPage/Allegation.react");
 var RequestButton = require('components/DataToolPage/Complaint/RequestButton.react');
 var _timeline = false;
 
@@ -31,7 +31,7 @@ var ComplaintListRow = React.createClass(_.assign(Base(ComplaintListStore), {
 
     var showMore = '';
     if (this.detailRendered()) {
-      showMore = <Complaint complaint={complaint} hide={!detailIsShown}/>;
+      showMore = <Allegation allegation={complaint} hide={!detailIsShown} toggleAllegation={this.toggleComplaint} />;
     }
 
     var allegation = complaint.allegation;
