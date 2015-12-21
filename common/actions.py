@@ -22,11 +22,11 @@ def export_as_csv_action(description="Export selected objects as CSV file",
         """
         opts = modeladmin.model._meta
         field_names = set([field.name for field in opts.fields])
-        field_names &= set(fields) - set(exclude)
+        field_names = set(field_names) - set(exclude)
 
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename=%s.csv' % str(opts).replace('.', '_')
-
+        import pdb; pdb.set_trace()
         writer = csv.writer(response)
         if header:
             writer.writerow(list(field_names))
