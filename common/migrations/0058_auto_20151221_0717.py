@@ -7,14 +7,10 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', '0056_remove_allegation_cat'),
+        ('common', '0057_auto_20151221_0708'),
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='allegation',
-            name='cat',
-        ),
         migrations.RenameField(
             model_name='allegation',
             old_name='allegation_category',

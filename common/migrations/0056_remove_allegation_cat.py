@@ -13,10 +13,14 @@ def auto_increment(apps, schema_editor):
 
 def set_new_cat_id(apps, schema_editor):
     Allegation = apps.get_model('common', 'Allegation')
-    for allegation in Allegation.objects.all():
+    counter = 0
+    for allegation in Allegation.objects.all().prefetch_related('cat'):
         if allegation.cat:
-            allegation.allegation_category_id = allegation.cat.id
+            allegation.allegation_category = allegation.cat.id
             allegation.save()
+        counter += 1
+        if counter % 1000 == 0:
+            print(counter)
 
 class Migration(migrations.Migration):
 

@@ -91,8 +91,8 @@ CITIZEN_DEPTS = [
 
 
 class AllegationCategory(models.Model):
-    id = models.PositiveIntegerField(unique=True, null=True)
-    cat_id = models.CharField(primary_key=True, max_length=255)
+    id = models.PositiveIntegerField(unique=True, primary_key=True)
+    cat_id = models.CharField(max_length=255)
     category = models.CharField(max_length=255, null=True, db_index=True)
     allegation_name = models.CharField(max_length=255, null=True, db_index=True)
     allegation_count = models.IntegerField(default=0)

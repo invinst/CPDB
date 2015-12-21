@@ -19,7 +19,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='allegation',
             name='allegation_category',
-            field=models.ForeignKey(related_name='allegation_category', to_field='id', to='common.AllegationCategory', null=True),
+            field=models.PositiveIntegerField(null=True),
             preserve_default=False,
         ),
 
