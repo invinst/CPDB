@@ -26,6 +26,10 @@ var SimpleTab = React.createClass({
     return -1;
   },
 
+  naviOnClick: function(e){
+    var node = e.target;
+  },
+
   onClick: function (e) {
     var node = e.target;
     var parentChildren = node.parentNode.children;
@@ -88,8 +92,8 @@ var SimpleTab = React.createClass({
     return (
       <Wrapper visible={!!this.props.navigation} wrapperClass='tab-navigations'>
         <div className='row'>
-          <div className='six columns'><span className='icon icon-left'></span>{prev}</div>
-          <div className='six columns align-right'>{next}<span className='icon icon-right'></span></div>
+          <div link='-1' className='six columns' onClick={this.naviOnClick}><span className='icon icon-left'></span>{prev}</div>
+          <div link='1' className='six columns align-right' onClick={this.naviOnClick}>{next}<span className='icon icon-right'></span></div>
         </div>
       </Wrapper>
     )
