@@ -1,0 +1,19 @@
+.tab-content *
+  display: none
+  -webkit-animation: scale 0.7s ease-in-out
+  -moz-animation: scale 0.7s ease-in-out
+  animation: scale 0.7s ease-in-out
+
+.tab-content
+  &.active *
+    display: block
+
+@keyframes scale
+  0%
+    transform: translateX(30%)
+    opacity: 0
+
+
+  100%
+    transform: translateX(0%)
+    opacity: 1

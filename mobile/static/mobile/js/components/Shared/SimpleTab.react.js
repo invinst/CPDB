@@ -1,6 +1,5 @@
 var cx = require('classnames');
 var React = require('react');
-var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
 
 var SimpleTab = React.createClass({
@@ -8,9 +7,6 @@ var SimpleTab = React.createClass({
     return {
       'activeIndex': 0
     }
-  },
-
-  componentDidMount: function () {
   },
 
   setActiveTab: function (index) {
@@ -50,6 +46,7 @@ var SimpleTab = React.createClass({
 
 
       return React.cloneElement(nav, {
+        'key': tabNavRef,
         'ref': tabNavRef,
         className: classNames
       })
@@ -61,15 +58,16 @@ var SimpleTab = React.createClass({
     var self = this;
 
     return navs.props.children.map(function (nav, i) {
-      var tabNavRef = 'tabContent-' + i;
-      var classNames = cx({
+      var tabContentRef = 'tabContent-' + i;
+      var classNames = cx('tab-content', {
         'active': (i == self.state.activeIndex)
       });
 
 
       return React.cloneElement(nav, {
-        'ref': tabNavRef,
-        className: classNames
+        'key': tabContentRef,
+        'ref': tabContentRef,
+        'className': classNames
       })
     })
   },
@@ -80,11 +78,9 @@ var SimpleTab = React.createClass({
         <div className='tab-navs' onClick={this.onClick}>
           {this.renderTabNav()}
         </div>
-        <ReactCSSTransitionGroup transitionName="example" transitionEnterTimeout={500} transitionLeaveTimeout={300}>
           <div className='tab-contents'>
             {this.renderTabContent()}
           </div>
-        </ReactCSSTransitionGroup>
 
       </div>
     )
