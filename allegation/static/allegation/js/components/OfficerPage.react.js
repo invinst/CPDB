@@ -3,7 +3,6 @@ var classnames = require('classnames');
 var React = require('react');
 
 var ComplaintSection = require('components/OfficerPage/ComplaintSection.react');
-var ComplaintListAPI = require('utils/ComplaintListAPI');
 var StoryListAPI = require('utils/StoryListAPI');
 var TimelineAPI = require('utils/TimelineAPI');
 var TimelineStore = require('stores/OfficerPage/TimelineStore');
