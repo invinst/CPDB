@@ -108,7 +108,6 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
         allegation = AllegationFactory()
         ComplainingWitnessFactory(gender=None, age=None, race=None, crid=allegation.crid)
 
-
         self.visit('/mobile/complaint/{crid}'.format(crid=allegation.crid))
         self.until(lambda: self.find('.crid-title'))
 
