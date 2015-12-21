@@ -1,11 +1,12 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var Content = require('./components/Content.react');
 var Navigation = require('./components/Navigation.react');
 var Period = require('./components/Period.react');
 
 var contentEl = document.getElementById('content');
 if(contentEl) {
-    React.render(
+    ReactDOM.render(
       <Content />,
       contentEl
     );
@@ -13,7 +14,7 @@ if(contentEl) {
 
 var navigationEl = document.getElementById('navigation-menu');
 if(navigationEl) {
-    React.render(
+    ReactDOM.render(
         <Navigation />,
         navigationEl
     );
@@ -21,7 +22,7 @@ if(navigationEl) {
 
 var periodEl = document.getElementById('period');
 if (periodEl) {
-    React.render(
+    ReactDOM.render(
       <Period />,
       periodEl
     );
