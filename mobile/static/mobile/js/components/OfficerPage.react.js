@@ -1,27 +1,43 @@
 var React = require('react');
+var objectAssign = require('object-assign');
 
-var About = require('components/Shared/About.react');
-var ComplaintsSection = require('components/OfficerPage/ComplaintsSection.react');
-var Logo = require('components/Shared/Logo.react');
-var StatisticSection = require('components/OfficerPage/StatisticSection.react');
-var RelatedOfficersSection = require('components/OfficerPage/RelatedOfficersSection.react');
-var OfficerDetail = require('components/OfficerPage/OfficerDetail.react');
+var Base = require('components/Base.react');
+var SimpleTab = require('components/Shared/SimpleTab.react');
+var Wrapper = require('components/Shared/Wrapper.react');
+
+var ComplaintsTab = require('components/OfficerPage/ComplaintsTab.react');
+var OfficerHeader = require('components/OfficerPage/OfficerHeader.react');
+var SearchBar = require('components/Shared/SearchBar.react');
+var SummaryTab = require('components/OfficerPage/SummaryTab.react');
+var RelatedOfficersTab = require('components/OfficerPage/RelatedOfficersTab.react');
 
 
 var OfficerPage = React.createClass({
   render: function () {
     return (
       <div className='officer-page'>
-        <Logo topLeft={true}/>
         <div className='content'>
-          <div className='pad'>
-            <OfficerDetail />
-            <StatisticSection />
-            <RelatedOfficersSection />
-            <ComplaintsSection />
-          </div>
-          <div className='box'>
-            <About />
+          <SearchBar />
+          <OfficerHeader />
+          <div className='tabs'>
+            <SimpleTab navigation={true}>
+              <div>
+                <div>Summary</div>
+                <div>Complaints</div>
+                <div>Relative Officers</div>
+              </div>
+              <div className='officer-page-content'>
+                <div>
+                  <SummaryTab />
+                </div>
+                <div>
+                  <ComplaintsTab  />
+                </div>
+                <div>
+                  <RelatedOfficersTab />
+                </div>
+              </div>
+            </SimpleTab>
           </div>
         </div>
       </div>

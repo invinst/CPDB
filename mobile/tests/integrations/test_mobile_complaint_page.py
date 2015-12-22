@@ -104,26 +104,9 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
 
         self.should_see_text('Race unknown')
 
-    def test_officer_without_race(self):
-        officer = OfficerFactory(race=None)
-        allegation = AllegationFactory(officer=officer)
-        self.visit('/mobile/complaint/{crid}'.format(crid=allegation.crid))
-        self.until(lambda: self.find('.crid-title'))
-
-        self.should_see_text('Race unknown')
-
-    def test_officer_without_gender(self):
-        officer = OfficerFactory(gender=None)
-        allegation = AllegationFactory(officer=officer)
-        self.visit('/mobile/complaint/{crid}'.format(crid=allegation.crid))
-        self.until(lambda: self.find('.crid-title'))
-
-        self.should_see_text('Gender unknown')
-
     def test_officer_without_gender(self):
         allegation = AllegationFactory()
         ComplainingWitnessFactory(gender=None, age=None, race=None, crid=allegation.crid)
-
 
         self.visit('/mobile/complaint/{crid}'.format(crid=allegation.crid))
         self.until(lambda: self.find('.crid-title'))
