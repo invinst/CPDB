@@ -10,7 +10,12 @@ var AppConstants = require('constants/AppConstants');
 var DateTimeUtil = require('utils/DateTimeUtil');
 
 
-var Story = React.createClass(_.assign(Base(StoryStore), {
+var Story = React.createClass({
+  getInitialState: function () {
+    return {
+      thumbUrl: ''
+    };
+  },
 
   componentDidMount: function() {
     if (this.props.story.url){
@@ -19,10 +24,23 @@ var Story = React.createClass(_.assign(Base(StoryStore), {
     } else {
       this.props.story.url = '#';
     }
+    StoryStore.addChangeThumbUrlListener(this._onThumbUrlChange);
+  },
+
+  componentWillUnmount: function () {
+    StoryStore.removeChangeThumbUrlListener(this._onThumbUrlChange);
+  },
+
+  _onThumbUrlChange: function () {
+    if (StoryStore.isSameStory(this.props.story)) {
+      this.setState({
+        thumbUrl: StoryStore.getThumbUrl()
+      });
+    }
   },
 
   renderDocumentLink: function () {
-    var thumbUrl = this.props.story.thumbUrl;
+    var thumbUrl = this.state.thumbUrl;
     if (thumbUrl) {
       return (
         <div className="col-md-2">
@@ -82,6 +100,6 @@ var Story = React.createClass(_.assign(Base(StoryStore), {
     );
   }
 
-}));
+});
 
 module.exports = Story;
