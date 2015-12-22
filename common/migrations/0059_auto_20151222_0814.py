@@ -19,6 +19,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='allegationcategory',
             name='id',
-            field=models.PositiveIntegerField(primary_key=True, unique=True, serialize=False),
+            field=models.AutoField(serialize=False, primary_key=True),
         ),
     ]
