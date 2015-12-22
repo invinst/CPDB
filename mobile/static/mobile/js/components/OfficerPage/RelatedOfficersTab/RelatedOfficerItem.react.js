@@ -5,7 +5,7 @@ var RelatedOfficerItem = React.createClass({
   render: function () {
     return (
       <div className='related-officer-item'>
-        <div className='row'>
+        <div className='row pad'>
           <div className='one column'>
             <span className='circle'></span>
           </div>

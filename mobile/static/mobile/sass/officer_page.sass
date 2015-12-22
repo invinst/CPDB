@@ -1,11 +1,13 @@
 .officer-page
-  background-color: $officer-background-color
   .content
+    background-color: $officer-background-color
     .officer-header
-      margin-top: 16px
+      padding-top: 16px
+      background: $white
     .tabs
       font-size: 15px
-      margin-top: 20px
+      padding-top: 20px
+      background: $white
       .tab-navs
         background: $white
         border-bottom: solid 1px $gray
@@ -13,14 +15,14 @@
         .tab-nav
           display: inline-block
           padding: 0 10px 5px 10px
-          margin-right: 10px
         .active
           color: $active-tab-color
           border-bottom: solid 5px $active-tab-color
       .tab-contents
         box-sizing: border-box
       .tab-navigations
-        margin-top: 15px
+        background-color: $officer-background-color
+        padding: 13px 0
         color: $active-tab-color
         .icon
           font-size: 10px
@@ -29,4 +31,4 @@
 
 @import 'officer_page/officer_header'
 @import 'officer_page/summary_tab'
-@import 'officer_page/officer_complaints'
+@import 'officer_page/complaints_tab'
