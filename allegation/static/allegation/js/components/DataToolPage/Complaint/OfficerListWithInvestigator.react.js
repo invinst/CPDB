@@ -1,11 +1,15 @@
 var React = require('react');
 var classnames = require('classnames');
 var pluralize = require('pluralize');
+var ReactRouter = require('react-router');
+
+var Link = ReactRouter.Link;
 
 var Investigator = require('components/DataToolPage/Complaint/Investigator.react');
 var OfficerListMixin = require('components/DataToolPage/Complaint/OfficerListMixin.react');
 var Officer = require('components/DataToolPage/Officer.react');
 
+var StringUtil = require('utils/StringUtil');
 
 var OfficerListWithInvestigator = React.createClass({
   mixins: [OfficerListMixin],
@@ -77,10 +81,16 @@ var OfficerListWithInvestigator = React.createClass({
           <div className="section-title">
             Investigator
           </div>
-          <Investigator complaint={complaint}/>
+          <Link to={this.investigatorLink(complaint.investigator)}>
+            <Investigator complaint={complaint}/>
+          </Link>
         </div>
       </div>
     );
+  },
+
+  investigatorLink: function (investigator) {
+    return '/investigator/' + StringUtil.slugify(investigator.name) + '/' + investigator.id;
   }
 });
 
