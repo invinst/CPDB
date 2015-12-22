@@ -27,6 +27,8 @@ var SettingSection = React.createClass(_.assign(Base(SettingSectionStore), {
           <div className="col-lg-10 col-md-10 col-xs-10">
             <ReactTags tags={this.state.tags}
                     suggestions={this.state.storyTypes}
+                    handleDelete={function () {}}
+                    handleAddition={function () {}}
                     handleDrag={this.handleDrag} />
           </div>
         </div>
