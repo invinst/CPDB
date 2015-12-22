@@ -7,10 +7,15 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', '0055_allegation_description'),
+        ('common', '0054_auto_20151215_0358'),
     ]
 
     operations = [
+        migrations.AddField(
+            model_name='allegation',
+            name='summary',
+            field=models.TextField(null=True, blank=True),
+        ),
         migrations.CreateModel(
             name='PendingPdfAllegation',
             fields=[
