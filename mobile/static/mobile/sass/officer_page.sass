@@ -1,18 +1,32 @@
 .officer-page
   background-color: $officer-background-color
   .content
-    top: 50px
-    position: absolute
-    width: 100%
-    background-color: #ddd
-  .box
-    padding: 5px 0
-    background: #fff
-    z-index: 10
+    .officer-header
+      margin-top: 16px
+    .tabs
+      font-size: 15px
+      margin-top: 20px
+      .tab-navs
+        background: $white
+        border-bottom: solid 1px $gray
+        box-sizing: border-box
+        .tab-nav
+          display: inline-block
+          padding: 0 10px 5px 10px
+          margin-right: 10px
+        .active
+          color: $active-tab-color
+          border-bottom: solid 5px $active-tab-color
+      .tab-contents
+        box-sizing: border-box
+      .tab-navigations
+        margin-top: 15px
+        color: $active-tab-color
+        .icon
+          font-size: 10px
+          padding: 0 12px
 
-@import 'officer_page/related_officers'
+
 @import 'officer_page/officer_header'
-@import 'officer_page/officer_tab_bar'
-@import 'officer_page/officer_summary'
-@import 'officer_page/officer_analytics'
+@import 'officer_page/summary_tab'
 @import 'officer_page/officer_complaints'

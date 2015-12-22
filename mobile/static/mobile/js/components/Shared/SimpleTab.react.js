@@ -44,7 +44,7 @@ var SimpleTab = React.createClass({
 
     return navs.props.children.map(function (nav, i) {
       var tabNavRef = 'tabNav-' + i;
-      var classNames = cx({
+      var classNames = cx('tab-nav', {
         'active': (i == self.state.activeIndex)
       });
 

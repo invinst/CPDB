@@ -1,6 +1,6 @@
 var React = require('react');
 
-var RelatedOfficerItem = require('components/OfficerPage/RelatedOfficer/RelatedOfficerItem.react');
+var RelatedOfficerItem = require('components/OfficerPage/RelatedOfficerItem.react');
 
 
 var RelatedOfficers = React.createClass({

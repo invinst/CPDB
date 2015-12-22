@@ -5,11 +5,13 @@ var OfficerHeader = React.createClass({
   render: function () {
     return (
       <div className='officer-header'>
-        <div className='badge-info'>
-          <label>Badge &nbsp;</label>
-          <span>12345</span>
+        <div className='pad'>
+          <div className='badge-info'>
+            <span className='badge-label'>Badge &nbsp;</span>
+            <span>12345</span>
+          </div>
+          <div className='name'>Raymond Piwinicki</div>
         </div>
-        <div className='name'>Raymon Piwinicki</div>
       </div>
     )
   }
