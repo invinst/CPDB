@@ -6,7 +6,6 @@ var SimpleTab = require('components/Shared/SimpleTab.react');
 var Wrapper = require('components/Shared/Wrapper.react');
 
 var ComplaintsTab = require('components/OfficerPage/ComplaintsTab.react');
-var OfficerPageStore = require('stores/OfficerPage/OfficerPageStore');
 var OfficerHeader = require('components/OfficerPage/OfficerHeader.react');
 var SearchBar = require('components/Shared/SearchBar.react');
 var SummaryTab = require('components/OfficerPage/SummaryTab.react');
