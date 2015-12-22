@@ -14,6 +14,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='allegation',
             name='cat',
-            field=models.ForeignKey(to='common.AllegationCategory', related_name='allegation_category', null=True),
+            field=models.ForeignKey(to='common.AllegationCategory', null=True),
         ),
     ]

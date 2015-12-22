@@ -384,7 +384,7 @@ class Allegation(MobileSuggestibleAllegation, models.Model):
     crid = models.CharField(max_length=30, null=True, db_index=True)
     officer = models.ForeignKey(Officer, null=True)
 
-    cat = models.ForeignKey(AllegationCategory, to_field='id', related_name='allegation_category', null=True)
+    cat = models.ForeignKey(AllegationCategory, to_field='id', null=True)
     recc_finding = models.CharField(choices=FINDINGS, max_length=2, null=True, db_index=True, blank=True)
     recc_outcome = models.CharField(choices=OUTCOMES, max_length=3, null=True, db_index=True, blank=True)
     final_finding = models.CharField(choices=FINDINGS, max_length=2, null=True, db_index=True, blank=True)
