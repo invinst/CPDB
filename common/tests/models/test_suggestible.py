@@ -1,3 +1,4 @@
+from django.template.defaultfilters import slugify
 from django.test import TestCase
 
 from allegation.factories import OfficerFactory, AllegationFactory
@@ -20,9 +21,10 @@ class MobileSuggestibleOfficerTest(TestCase):
         first_name = 'First'
         last_name = 'Last'
         self.display_name = '{first_name} {last_name}'.format(first_name=first_name, last_name=last_name)
+        slugified_display_name = slugify(self.display_name)
         self.officer = OfficerFactory(officer_first=first_name, officer_last=last_name)
         self.officer_id = self.officer.id
-        self.expected_url = '/officer/{name}/{id}'.format(name=self.display_name, id=self.officer_id)
+        self.expected_url = '/officer/{name}/{id}'.format(name=slugified_display_name, id=self.officer_id)
 
     def test_get_url(self):
         self.officer.get_mobile_url().should.equal(self.expected_url)
