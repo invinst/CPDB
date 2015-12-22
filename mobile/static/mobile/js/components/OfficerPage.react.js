@@ -10,9 +10,29 @@ var OfficerHeader = require('components/OfficerPage/OfficerHeader.react');
 var SearchBar = require('components/Shared/SearchBar.react');
 var SummaryTab = require('components/OfficerPage/SummaryTab.react');
 var RelatedOfficersTab = require('components/OfficerPage/RelatedOfficersTab.react');
+var OfficerResourceUtil = require('utils/OfficerResourceUtil');
+var OfficerPageStore = require('stores/OfficerPage/OfficerPageStore');
 
 
-var OfficerPage = React.createClass({
+var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
+  getInitialState: function () {
+    return {
+      'officer': {
+        'detail': null,
+        'complaints': [],
+        'co_accused': [],
+        'witness': []
+      },
+      loading: true
+    };
+  },
+
+  componentDidMount: function () {
+    var pk = this.props.params.pk || '';
+    OfficerResourceUtil.get(pk);
+    OfficerPageStore.addChangeListener(this._onChange);
+  },
+
   render: function () {
     return (
       <div className='officer-page'>
@@ -43,6 +63,6 @@ var OfficerPage = React.createClass({
       </div>
     )
   }
-});
+}));
 
 module.exports = OfficerPage;
