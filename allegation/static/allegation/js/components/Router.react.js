@@ -2,7 +2,6 @@ var React = require('react');
 var ReactRouter = require('react-router');
 var IndexRoute = ReactRouter.IndexRoute;
 var History = require('history');
-// var StaticContainer = require('react-static-container');
 
 var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
