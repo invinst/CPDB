@@ -1,3 +1,6 @@
+from django.template.defaultfilters import slugify
+
+
 class MobileSuggestible(object):
     def get_mobile_url(self):
         raise NotImplementedError
@@ -8,7 +11,8 @@ class MobileSuggestible(object):
 
 class MobileSuggestibleOfficer(MobileSuggestible):
     def get_mobile_url(self):
-        return '/officer/{display_name}/{id}'.format(display_name=self.display_name,
+        slugified_display_name = slugify(self.display_name)
+        return '/officer/{display_name}/{id}'.format(display_name=slugified_display_name,
                                                      id=self.id)
 
     def as_suggestion_entry(self):
