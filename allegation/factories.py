@@ -62,7 +62,6 @@ class InvestigatorFactory(factory.django.DjangoModelFactory):
 class AllegationCategoryFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = AllegationCategory
-    id = factory.Sequence(lambda n: n)
     cat_id = factory.Sequence(lambda n: "cat_%d" % n)
     allegation_name = factory.Sequence(lambda n: fake.text(max_nb_chars=50))
     category = factory.Sequence(lambda n: fake.text(max_nb_chars=50))
