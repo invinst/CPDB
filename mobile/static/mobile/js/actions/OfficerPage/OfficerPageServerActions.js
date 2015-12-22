@@ -10,10 +10,10 @@ var OfficerPageServerActions = {
     });
   },
 
-  failedToReceive: function (pk) {
+  failedToReceive: function (id) {
     AppDispatcher.dispatch({
       actionType: AppConstants.OFFICER_PAGE_FAILED_TO_RECEIVED_DATA,
-      data: pk
+      data: id
     });
   },
 };

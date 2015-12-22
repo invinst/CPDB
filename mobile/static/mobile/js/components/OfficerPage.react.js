@@ -28,8 +28,8 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
   },
 
   componentDidMount: function () {
-    var pk = this.props.params.pk || '';
-    OfficerResourceUtil.get(pk);
+    var id = this.props.params.id || '';
+    OfficerResourceUtil.get(id);
     OfficerPageStore.addChangeListener(this._onChange);
   },
 
