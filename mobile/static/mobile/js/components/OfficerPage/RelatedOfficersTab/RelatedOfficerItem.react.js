@@ -16,7 +16,7 @@ var RelatedOfficerItem = React.createClass({
           </div>
         </div>
       </div>
-    )
+    );
   }
 });
 

@@ -16,7 +16,7 @@ var OfficerAnalyticSection = React.createClass({
           </div>
         </div>
       </div>
-    )
+    );
   }
 });
 

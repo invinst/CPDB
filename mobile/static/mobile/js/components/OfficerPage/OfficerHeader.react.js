@@ -13,7 +13,7 @@ var OfficerHeader = React.createClass({
           <div className='name'>Raymond Piwinicki</div>
         </div>
       </div>
-    )
+    );
   }
 });
 

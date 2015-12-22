@@ -14,7 +14,7 @@ var SimpleTab = React.createClass({
   setActiveTab: function (index) {
     this.setState({
       'activeIndex': index
-    })
+    });
   },
 
   getIndexOfNav: function (parent, nav) {
@@ -53,7 +53,7 @@ var SimpleTab = React.createClass({
         'key': tabNavRef,
         'ref': tabNavRef,
         className: classNames
-      })
+      });
     })
   },
 
@@ -72,7 +72,7 @@ var SimpleTab = React.createClass({
         'key': tabContentRef,
         'ref': tabContentRef,
         'className': classNames
-      })
+      });
     })
   },
 
@@ -94,7 +94,7 @@ var SimpleTab = React.createClass({
           <div className='six columns align-right' onClick={this.setActiveTab.bind(this, nextIndex)}>{next}<span className='icon icon-right'></span></div>
         </div>
       </Wrapper>
-    )
+    );
   },
 
   render: function () {
@@ -108,7 +108,7 @@ var SimpleTab = React.createClass({
         </div>
         {this.renderNavigation()}
       </div>
-    )
+    );
   }
 });
 

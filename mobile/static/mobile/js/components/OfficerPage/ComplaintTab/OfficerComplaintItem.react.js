@@ -44,7 +44,7 @@ var OfficerComplaintItem = React.createClass({
           </div>
         </div>
       </div>
-    )
+    );
   }
 });
 

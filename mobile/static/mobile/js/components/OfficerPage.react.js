@@ -13,7 +13,7 @@ var SummaryTab = require('components/OfficerPage/SummaryTab.react');
 var RelatedOfficersTab = require('components/OfficerPage/RelatedOfficersTab.react');
 
 
-var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
+var OfficerPage = React.createClass({
   render: function () {
     return (
       <div className='officer-page'>
@@ -44,6 +44,6 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
       </div>
     )
   }
-}));
+});
 
 module.exports = OfficerPage;
