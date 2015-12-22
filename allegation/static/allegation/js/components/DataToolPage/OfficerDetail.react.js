@@ -59,7 +59,7 @@ var OfficerDetail = React.createClass({
         <div className="row visualization-information">
           {mapDiv}
           <div className={columnClass}>
-            <Timeline officer={officer}/>
+            <Timeline data={this.props.timelineData} officer={officer}/>
           </div>
           <div className={columnClass}>
             <DonutChart officer={officer}/>

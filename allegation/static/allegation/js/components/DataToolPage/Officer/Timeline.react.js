@@ -1,28 +1,19 @@
 var _ = require('lodash');
+var ReactDOM = require('react-dom');
 var React = require('react');
 
-var Base = require('components/Base.react');
-var TimelineStore = require('stores/OfficerPage/TimelineStore');
-var TimelineAPI = require('utils/TimelineAPI');
 
-
-var Timeline = React.createClass(_.assign(Base(TimelineStore), {
-  componentDidMount: function () {
-    TimelineStore.addChangeListener(this._onChange);
-    if (this.state.data) {
-      this.drawTimeline(this.state.data);
-    }
-  },
-
-  componentWillUnmount: function () {
-    TimelineStore.removeChangeListener(this._onChange);
-  },
-
+var Timeline = React.createClass({
   drawTimeline: function (data) {
-    var container = this.getDOMNode();
+    var container = ReactDOM.findDOMNode(this);
     $(container).html("");
     var timeLineItems = [];
     var items = data.items;
+
+    if (!items) {
+      return;
+    }
+
     for (var i = 0; i < items.length; i++) {
       if (!items[i]) {
         continue;
@@ -99,32 +90,17 @@ var Timeline = React.createClass(_.assign(Base(TimelineStore), {
   },
 
   componentDidUpdate: function () {
-    this.drawTimeline(this.state.data);
-  },
-
-  componentDidMount: function () {
-    TimelineStore.addChangeListener(this._onChange);
-    TimelineAPI.getTimelineData(this.props.officer.id);
-  },
-
-  componentWillUnmount: function() {
-    TimelineStore.removeChangeListener(this._onChange);
+    this.drawTimeline(this.props.data);
   },
 
   render: function () {
     var wait = '';
-    if (this.state.data) {
+    if (this.props.data) {
       wait = (<i className='fa fa-spin fa-spinner fa-3x'/>);
     }
     return (<div>{wait}</div>);
-  },
-
-  _onChange: function () {
-    var state = TimelineStore.getState();
-    this.setState(state);
-    this.drawTimeline(state.data);
   }
-}));
+});
 
 
 module.exports = Timeline;

@@ -39,6 +39,6 @@ class OfficerDetailView(View):
         return HttpResponse(JSONSerializer().serialize({
             'officer': officer,
             'allegations': allegations,
-            'related_officers': related_officers,
+            'relatedOfficers': related_officers,
             'has_map': has_map
         }))
