@@ -26,7 +26,7 @@ var AllegationSummary = React.createClass({
   renderInvestigator: function (allegation) {
     if (allegation.investigator) {
       return (
-        <div>
+        <div className='col-xs-12'>
           <div className='title'>Investigator</div>
           <Investigator complaint={allegation}/>
         </div>
@@ -42,7 +42,7 @@ var AllegationSummary = React.createClass({
 
     if (!this.props.noButton) {
       return (
-        <div className='col-md-12'>
+        <div className='allegation-function'>
           <RequestButton complaint={allegation} />
           <button type='button' className='btn btn-close' onClick={this.props.toggleComplaint}>
             <i className='fa fa-times' /> Close
@@ -58,31 +58,35 @@ var AllegationSummary = React.createClass({
     var presenter = AllegationPresenter(allegation);
 
     return (
-      <div className='col-md-3'>
-        <div>
-          <span className='title'>CRID</span> {presenter.crid}
-        </div>
-        <div>
-          <div>{presenter.mainCategory}</div>
-          <div className='title'>{presenter.subCategory}</div>
-        </div>
-        <div>
-          <div className='title'>Final Outcome</div>
-          <div>{presenter.finalOutcome}</div>
-        </div>
-        <div>
-          <div className='title'>Disciplinary action</div>
-          <div>{presenter.finalFinding}</div>
-        </div>
-        <div>
-          <div className='title'>Complaining Witness</div>
+      <div className='col-xs-12'>
+        <div className='allegation-info'>
           <div>
-            <ul>
-              {this.renderComplainingWitness(presenter)}
-            </ul>
+            <span className='title'>CRID</span> {presenter.crid}
+          </div>
+          <div>
+            <div className='main-category'>{presenter.mainCategory}</div>
+            <div className='title'>{presenter.subCategory}</div>
+          </div>
+          <div>
+            <div className='title'>Final Outcome</div>
+            <div>{presenter.finalOutcome}</div>
+          </div>
+          <div>
+            <div className='title'>Disciplinary action</div>
+            <div>{presenter.finalFinding}</div>
+          </div>
+          <div>
+            <div className='title'>Complaining Witness</div>
+            <div>
+              <ul>
+                {this.renderComplainingWitness(presenter)}
+              </ul>
+            </div>
+          </div>
+          <div className='row'>
+            {this.renderInvestigator(allegation)}
           </div>
         </div>
-        {this.renderInvestigator(allegation)}
         {this.renderDocumentRequestButton(allegation)}
       </div>
     );

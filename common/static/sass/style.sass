@@ -700,7 +700,7 @@ footer
   color: $color_mountain_mist_approx
   margin-bottom: 24px
   font-family: $font_0, $font_4
-  margin-bottom: 20px
+  margin-bottom: 24px
   //If you use compass, instead of the line below you could use + box-shadow($shadow-1, $shadow-2, $shadow-3, $shadow-4, $shadow-5, $shadow-6, $shadow-7, $shadow-8, $shadow-9, $shadow-10)
   box-shadow: 3px 3px 3px $color_celeste_approx
   max-height: 110px
@@ -870,9 +870,11 @@ footer
     background-color: $color_pattens_blue_approx
 
   .title
-    color: $gray
+    color: $color_mountain_mist_approx
     font-size: 14px
     font-family: $font_0
+    line-height: 16px
+    margin-bottom: 6px
 
   .show_more
     font-size: 34px
@@ -881,7 +883,84 @@ footer
     font-size: 16px
 
   .btn:hover
-    opacity: .6
+    opacity: 0.6
+
+  .progress.complaint
+    margin-top: 12px
+
+  .section-title
+    font-size: 14px
+    margin-bottom: 12px
+
+.allegation-info
+  > div
+    margin-bottom: 14px
+    &:first-child
+      margin-bottom: 20px
+    > div
+      margin-bottom: 2px
+  ul
+    padding: 0
+  .main-category
+    font-size: 21px
+    font-weight: bold
+    line-height: 24px
+
+.allegation-function
+  .btn
+    width: 100% !important
+    margin: 0 0 12px !important
+    max-width: 100% !important
+    padding: 5px 10px !important
+    font-size: 14px !important
+
+.has-ellipsis
+  overflow: hidden
+
+  &:after
+    display: inline-block
+    content: '...'
+
+.allegation-details
+  > .row
+    margin-bottom: 12px
+
+  .section-title
+    .fa-question-circle
+      color: $color_blue_ribbon_approx
+      font-size: 16px
+
+  .complaint-map
+    margin-bottom: 2px
+
+  .section-summary
+    margin-bottom: 24px
+    line-height: 24px
+    a
+      color: $color_blue_ribbon_approx
+
+  .address-info
+    padding-left: 5px
+    margin-bottom: 12px
+    .title
+      font-size: 16px
+
+  .row.police-witness
+    padding-left: 15px
+    >.col-xs-6
+      padding-left: 0
+
+  .row.legend
+    padding-left: 5px
+    margin-bottom: 20px
+
+  .text-bold:
+    font-weight: 700
+
+  .timeline
+    margin-bottom: 24px
+
+
 
 .timeline
   background-color: $color_spring_wood_approx2
@@ -901,8 +980,10 @@ footer
     font-size: 17px
 
 .witness
-  margin-bottom: 24px
+  margin-bottom: 12px
   font-size: 13px
+  .legend
+    margin-bottom: 12px
 
 .results
   background-color: $color_spring_wood_approx2
@@ -911,8 +992,10 @@ footer
 .investigation
   font-family: $font_0, $font_4
   .results
-    width: 80%
+    width: 100%
     float: left
+    padding: 0
+    background-color: transparent
 
   .legend
     float: left
@@ -920,10 +1003,11 @@ footer
     padding-left: 10px
 
 .investigator-name
-  color: $color_mine_shaft_approx
+  color: $color_blue_ribbon_approx
   font-family: $font_0, $font_4
   font-weight: 500
-  font-size: 14px
+  font-size: 16px
+  margin-bottom: 6px
 
 .legend
   font-size: 14px
@@ -942,6 +1026,10 @@ footer
 
 .complaint_detail
   background-color: $white
+  &.closed
+    padding-top: 0 !important
+    padding-bottom: 0 !important
+
   .summary
     border-bottom: 1px solid $color_mine_shaft_approx
     padding: 20px 0
@@ -1379,14 +1467,15 @@ button a:hover
 
 .progress.complaint
   background-color: $color_cadet_blue_approx
+  width: 100%
 
 strong.red
   color: $color_tall_poppy_approx
 
-.location .address
-  position: absolute
-  top: 50px
-  left: 50px
+.complaint-map
+  overflow-x: hidden
+  img
+    height: 180px
 
 .filter_links a
   margin-right: 1.5em
@@ -1487,6 +1576,35 @@ form.navbar-form.navbar-right
   .modal-backdrop
     &.in
       z-index: 0
+
+.complaint_detail
+  padding-top: 24px
+  padding-bottom: 24px
+
+  > div
+    overflow: hidden
+
+    > .col-xs-3
+      padding-top: 12px
+
+      &:after
+        content: " "
+        display: block
+        border-right: 1px solid $color_celeste_approx
+        right: 6px
+        position: absolute
+        height: 100%
+
+    > .col-xs-9
+      padding-top: 12px
+
+      &:before
+        content: " "
+        display: block
+        border-left: 1px solid $color_celeste_approx
+        left: -7px
+        position: absolute
+        height: 100%
 
 @media (min-width: $screen-xs-min) and (max-width: $screen-sm-max)
   [class*=col-xs-], [class*=col-sm-]

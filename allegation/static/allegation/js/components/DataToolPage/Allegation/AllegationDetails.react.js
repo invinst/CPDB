@@ -10,6 +10,7 @@ var PoliceWitness = require('components/DataToolPage/Complaint/PoliceWitness.rea
 var Timeline = require('components/DataToolPage/Complaint/Timeline.react');
 var AllegationDetailsStore = require('stores/Complaint/AllegationDetailsStore');
 var AllegationAPI = require('utils/AllegationAPI');
+var ReadMore = require('components/Shared/ReadMore.react');
 
 
 var AllegationDetails = React.createClass(_.assign(Base(AllegationDetailsStore), {
@@ -24,8 +25,8 @@ var AllegationDetails = React.createClass(_.assign(Base(AllegationDetailsStore),
 
   renderOfficersInvolved: function (allegation) {
     return (
-      <div className='row'>
-        <OfficerList complaint={allegation} />
+      <div className='row officers'>
+        <OfficerList allegation={allegation} />
       </div>
     );
   },
@@ -36,11 +37,13 @@ var AllegationDetails = React.createClass(_.assign(Base(AllegationDetailsStore),
     if (summary) {
       return (
         <div className='row'>
-          <div className='section-title'>
-            Case Summary<span className='fa fa-icon-help'></span>
-          </div>
-          <div>
-            {summary}
+          <div className='col-xs-12 col-md-10'>
+            <div className='section-title'>
+              Case Summary <span className='fa fa-question-circle'></span>
+            </div>
+            <div className='section-summary'>
+              <ReadMore limit={5} content={summary} />
+            </div>
           </div>
         </div>
       );
@@ -85,7 +88,7 @@ var AllegationDetails = React.createClass(_.assign(Base(AllegationDetailsStore),
     var allegation = this.props.allegation;
 
     return (
-      <div className='col-md-9'>
+      <div className='allegation-details'>
         { this.renderOfficersInvolved(allegation) }
         { this.renderSummary(allegation) }
         { this.renderTimeline(allegation) }

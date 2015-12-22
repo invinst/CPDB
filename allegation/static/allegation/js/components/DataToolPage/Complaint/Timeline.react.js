@@ -134,9 +134,8 @@ var Timeline = React.createClass({
   },
 
   render: function () {
-    var className = "col-md-6 " + (this.props.className || '');
     return (
-      <div className={className}>
+      <div className='col-md-10 col-xs-12'>
         <div className="section-title">Investigation timeline</div>
         <div className="timeline" />
       </div>

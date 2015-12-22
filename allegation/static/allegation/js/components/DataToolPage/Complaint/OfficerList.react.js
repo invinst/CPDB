@@ -1,15 +1,44 @@
 var React = require('react');
 
-var OfficerListWithInvestigator = require('components/DataToolPage/Complaint/OfficerListWithInvestigator.react');
-var OfficerListWithoutInvestigator = require('components/DataToolPage/Complaint/OfficerListWithoutInvestigator.react');
+var Officer = require('components/DataToolPage/Officer.react');
 
 
 var OfficerList = React.createClass({
-  render: function () {
-    var complaint = this.props.complaint;
-    var investigation = this.props.investigation;
 
-    return <OfficerListWithoutInvestigator complaint={complaint} investigation={investigation} />
+  getOfficerCount: function () {
+    var allegation = this.props.allegation;
+    return allegation.officers.length + (allegation.officer && 1);
+  },
+
+  renderOfficerList: function (allegation) {
+    var officers = _.clone(allegation.officers);
+    if (allegation.officer) {
+      officers.unshift(allegation.officer);
+    }
+
+    return officers.map(function (officer, index) {
+      return (
+        <div className='col-md-3 col-sm-4 col-xs-6' key={officer.id}>
+          <Officer active={true} officer={officer} noClick={true}/>
+        </div>
+      );
+    });
+  },
+
+  render: function () {
+    var allegation = this.props.allegation;
+    var officerCount = this.getOfficerCount();
+
+    return (
+      <div>
+        <div className='col-md-12'>
+          <div className="section-title">
+            { pluralize('Officer', officerCount) } Involved
+          </div>
+        </div>
+        { this.renderOfficerList(allegation) }
+      </div>
+    );
   }
 });
 
