@@ -1,15 +1,16 @@
 var React = require('react');
 var objectAssign = require('object-assign');
 
-var OfficerPageStore = require('stores/OfficerPage/OfficerPageStore');
 var Base = require('components/Base.react');
-var SearchBar = require('components/Shared/SearchBar.react');
-var OfficerHeader = require('components/OfficerPage/OfficerHeader.react');
-var SummaryTab = require('components/OfficerPage/SummaryTab.react');
-var Wrapper = require('components/Shared/Wrapper.react');
-var OfficerComplaintContent = require('components/OfficerPage/OfficerComplaintContent.react');
 var SimpleTab = require('components/Shared/SimpleTab.react');
-var RelatedOfficers = require('components/OfficerPage/RelatedOfficers.react');
+var Wrapper = require('components/Shared/Wrapper.react');
+
+var ComplaintsTab = require('components/OfficerPage/ComplaintsTab.react');
+var OfficerPageStore = require('stores/OfficerPage/OfficerPageStore');
+var OfficerHeader = require('components/OfficerPage/OfficerHeader.react');
+var SearchBar = require('components/Shared/SearchBar.react');
+var SummaryTab = require('components/OfficerPage/SummaryTab.react');
+var RelatedOfficersTab = require('components/OfficerPage/RelatedOfficersTab.react');
 
 
 var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
@@ -31,10 +32,10 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
                   <SummaryTab />
                 </div>
                 <div>
-                  <OfficerComplaintContent  />
+                  <ComplaintsTab  />
                 </div>
                 <div>
-                  <RelatedOfficers />
+                  <RelatedOfficersTab />
                 </div>
               </div>
             </SimpleTab>

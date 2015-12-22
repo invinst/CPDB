@@ -1,12 +1,12 @@
 var React = require('react');
 
-var OfficerComplaintItem = require('components/OfficerPage/OfficerComplaintItem.react');
+var OfficerComplaintItem = require('components/OfficerPage/ComplaintTab/OfficerComplaintItem.react');
 
 
 var OfficerComplaintContent = React.createClass({
   render: function () {
     return (
-      <div className='officer-complaint-details'>
+      <div className='complaints-tab'>
         <OfficerComplaintItem />
         <OfficerComplaintItem />
         <OfficerComplaintItem />
