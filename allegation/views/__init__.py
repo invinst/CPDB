@@ -166,7 +166,8 @@ class AllegationSummaryApiView(AllegationAPIView):
         count_query = allegations.values_list('cat').annotate(dcount=Count('id'))
         count_by_category = dict(count_query)
 
-        discipline_allegations = allegations.exclude(final_outcome__in=filter(None, NO_DISCIPLINE_CODES), )
+        discipline_allegations = allegations.exclude(final_outcome__in=NO_DISCIPLINE_CODES)
+        discipline_allegations = discipline_allegations.exclude(final_outcome__isnull=True)
         discipline_count_query = discipline_allegations.values_list('cat').annotate(dcount=Count('id'))
         discipline_count_by_category = dict(discipline_count_query)
         categories = AllegationCategory.objects.all().order_by('category')
@@ -252,7 +253,9 @@ class InvestigationAPIView(View):
                 for officer in allegation_officers:
                     complaints = Allegation.objects.filter(officer__in=(officer.id, witness.officer_id))
                     num_complaints = complaints.count()
-                    no_action_taken_count = complaints.filter(final_outcome__in=NO_DISCIPLINE_CODES).count()
+                    non_disciplined_complaints = complaints.filter(final_outcome__in=NO_DISCIPLINE_CODES)
+                    non_disciplined_complaints = complaints.filter(final_outcome__isnull=True)
+                    no_action_taken_count = non_disciplined_complaints.count()
                     officers.append({
                         'num_complaints': num_complaints,
                         'no_action_taken': no_action_taken_count,

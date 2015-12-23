@@ -5,7 +5,7 @@ from django.db.models.query_utils import Q
 
 from common.constants import FOIA_START_DATE
 from common.models import AllegationCategory, Area
-from common.models import DISCIPLINE_CODES, NO_DISCIPLINE_CODES, CUSTOM_FILTER_DICT
+from common.models import DISCIPLINE_CODES, CUSTOM_FILTER_DICT
 
 FILTERS = [
     'id',
