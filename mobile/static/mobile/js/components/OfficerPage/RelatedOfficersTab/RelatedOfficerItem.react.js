@@ -1,8 +1,16 @@
 var React = require('react');
+var pluralize = require('pluralize');
+
+var OfficerPresenter = require('presenters/OfficerPresenter');
 
 
 var RelatedOfficerItem = React.createClass({
   render: function () {
+    var type = this.props.type;
+    var officer = this.props.officer;
+    var presenter = OfficerPresenter(officer);
+    var numOfAllegations = officer['num_allegations'];
+
     return (
       <div className='related-officer-item pad'>
         <div className='row'>
@@ -10,9 +18,9 @@ var RelatedOfficerItem = React.createClass({
             <span className='circle'></span>
           </div>
           <div className='eleven columns'>
-            <div className='name bold'>Anthony Martin</div>
-            <div className='gender'>Male (White)</div>
-            <div className='description'>Co-accused in 3 cases</div>
+            <div className='name bold'>{presenter.displayName}</div>
+            <div className='gender'>{presenter.description}</div>
+            <div className='description'>{type} in {pluralize('case', numOfAllegations, true)}</div>
           </div>
         </div>
       </div>
