@@ -166,7 +166,7 @@ class AllegationSummaryApiView(AllegationAPIView):
         count_query = allegations.values_list('cat').annotate(dcount=Count('id'))
         count_by_category = dict(count_query)
 
-        discipline_allegations = allegations.exclude(final_outcome__in=NO_DISCIPLINE_CODES)
+        discipline_allegations = allegations.exclude(final_outcome__in=filter(None, NO_DISCIPLINE_CODES), )
         discipline_count_query = discipline_allegations.values_list('cat').annotate(dcount=Count('id'))
         discipline_count_by_category = dict(discipline_count_query)
         categories = AllegationCategory.objects.all().order_by('category')
@@ -187,11 +187,11 @@ class AllegationSummaryApiView(AllegationAPIView):
                 }
                 summary.append(summary_value)
 
-            count = count_by_category.get(category.cat_id, 0)
+            count = count_by_category.get(category.id, 0)
             if not count:
                 continue
             summary_value['total'] += count
-            summary_value['count'] += discipline_count_by_category.get(category.cat_id, 0)
+            summary_value['count'] += discipline_count_by_category.get(category.id, 0)
             summary_value['subcategories'].append({
                 'name': category.allegation_name,
                 'cat_id': category.cat_id,

@@ -26,9 +26,9 @@ var SummaryChildRow = React.createClass({
 
     var child = this.props.subcategory;
     if (this.state.selected) {
-      FilterTagsActions.removeTag('cat', {label: child.name, value: child.cat_id});
+      FilterTagsActions.removeTag('cat__cat_id', {label: child.name, value: child.cat_id});
     } else {
-      FilterTagsActions.addTag('cat', {label: child.name, value: child.cat_id});
+      FilterTagsActions.addTag('cat__cat_id', {label: child.name, value: child.cat_id});
     }
 
     this.state.selected = !this.state.selected;
@@ -39,7 +39,7 @@ var SummaryChildRow = React.createClass({
     var catId = this.props.subcategory.cat_id;
     var selectedCategories = this.props.summary.props.selectedCategories;
     return (
-      ('cat' in filters && filters['cat'].value.indexOf(catId) > -1)
+      ('cat__cat_id' in filters && filters['cat__cat_id'].value.indexOf(catId) > -1)
       || ('cat__category' in filters && filters['cat__category'].value.indexOf(this.props.category.name) > -1)
       || (selectedCategories && selectedCategories.indexOf(catId) > -1)
     );
