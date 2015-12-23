@@ -1,6 +1,7 @@
 import urllib
 
 from django.test import SimpleTestCase
+from django.template.defaultfilters import slugify
 from rest_framework.status import HTTP_301_MOVED_PERMANENTLY
 
 from allegation.factories import OfficerFactory, AllegationFactory
@@ -18,8 +19,10 @@ class LookupViewTest(SimpleTestCase):
 
         response = self.client.get('/lookup/{query}'.format(query=officer.officer_first))
         response.status_code.should.equals(HTTP_301_MOVED_PERMANENTLY)
+
+        slugified_display_name = slugify(officer.display_name)
         expected_url = 'officer/{officer_name}/{officer_id}'.\
-            format(officer_name=urllib.parse.quote(officer.display_name), officer_id=officer.pk)
+            format(officer_name=urllib.parse.quote(slugified_display_name), officer_id=officer.pk)
         response.url.should.contain(expected_url)
 
     def test_lookup_by_officer_star(self):
@@ -27,8 +30,10 @@ class LookupViewTest(SimpleTestCase):
 
         response = self.client.get('/lookup/{query}'.format(query=officer.star))
         response.status_code.should.equals(HTTP_301_MOVED_PERMANENTLY)
+        slugified_display_name = slugify(officer.display_name)
+
         expected_url = 'officer/{officer_name}/{officer_id}'.\
-            format(officer_name=urllib.parse.quote(officer.display_name), officer_id=officer.pk)
+            format(officer_name=urllib.parse.quote(slugified_display_name), officer_id=officer.pk)
         response.url.should.contain(expected_url)
 
     def test_lookup_by_allegation_crid(self):
@@ -45,4 +50,18 @@ class LookupViewTest(SimpleTestCase):
         response.status_code.should.equals(HTTP_301_MOVED_PERMANENTLY)
 
         expected_url = 'search/{query}'.format(query=bad_query)
+        response.url.should.contain(expected_url)
+
+    def test_translate_underscore_officer_lookup_url(self):
+        officer_first = 'First'
+        officer_last = 'Last'
+        officer = OfficerFactory(officer_first=officer_first, officer_last=officer_last)
+        slugified_display_name = slugify(officer.display_name)
+        expected_url = 'officer/{officer_name}/{officer_id}'.\
+            format(officer_name=urllib.parse.quote(slugified_display_name), officer_id=officer.pk)
+        underscored_query = 'first_last'
+
+        response = self.client.get('/lookup/{query}'.format(query=underscored_query))
+        response.status_code.should.equals(HTTP_301_MOVED_PERMANENTLY)
+
         response.url.should.contain(expected_url)

@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var ReactDOM = require('react-dom');
 var React = require('react');
 
 var Base = require('components/Base.react');
@@ -18,10 +19,15 @@ var Timeline = React.createClass(_.assign(Base(TimelineStore), {
   },
 
   drawTimeline: function (data) {
-    var container = this.getDOMNode();
+    var container = ReactDOM.findDOMNode(this);
     $(container).html("");
     var timeLineItems = [];
     var items = data.items;
+
+    if (!items) {
+      return;
+    }
+
     for (var i = 0; i < items.length; i++) {
       if (!items[i]) {
         continue;

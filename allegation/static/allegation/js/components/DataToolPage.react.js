@@ -28,6 +28,8 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
       $("html, body").animate({scrollTop: top}, 500);
     });
 
+    SessionStore.addChangeListener(this._onChange);
+
     this.initStickyFooter();
   },
 
