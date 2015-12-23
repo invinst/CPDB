@@ -40,6 +40,7 @@ var ComplaintPresenter = function (complaint) {
   };
 
   return {
+    crid: HelperUtil.fetch(complaint, 'crid', 'Unknown'),
     finalFinding: finalFinding(),
     finalStatus: finalStatus(),
     incidentDate: incidentDate(),

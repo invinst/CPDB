@@ -1,3 +1,5 @@
+var AppConstants = require('constants/AppConstants');
+
 var HelperUtil = require('utils/HelperUtil');
 var GenderPresenter = require('presenters/GenderPresenter');
 
@@ -16,16 +18,43 @@ var OfficerPresenter = function (officer) {
     return race.toLowerCase() == 'unknown' ? 'Race unknown' : race;
   };
 
+  var gender = function() {
+    return GenderPresenter(officer['gender']).humanReadable;
+  };
+
   var description = function () {
-    var gender = GenderPresenter(officer['gender']).humanReadable;
     var raceDisplay = '(' + race() + ')';
 
-    return [gender, raceDisplay].join(' ');
+    return [gender(), raceDisplay].join(' ');
+  };
+
+  var badge = function () {
+    return HelperUtil.fetch(officer, 'star', 'Unknown');
+  };
+
+  var unit = function () {
+    var unitCode = HelperUtil.fetch(officer, 'unit', '');
+    return HelperUtil.fetch(AppConstants.UNITS, unitCode, 'Unknown');
+  };
+
+  var rank = function () {
+    var rankCode = HelperUtil.fetch(officer, 'rank', '');
+    return HelperUtil.fetch(AppConstants.RANKS, rankCode, 'Unknown');
+  };
+
+  var joinDate = function() {
+    return HelperUtil.fetch(officer, 'appt_date', 'Unknown');
   };
 
   return {
+    badge: badge(),
     displayName: displayName(),
-    description: description()
+    description: description(),
+    gender: gender(),
+    race: race(),
+    unit: unit(),
+    rank: rank(),
+    joinDate: joinDate()
   };
 };
 

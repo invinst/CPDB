@@ -12,6 +12,8 @@ var SummaryTab = require('components/OfficerPage/SummaryTab.react');
 var RelatedOfficersTab = require('components/OfficerPage/RelatedOfficersTab.react');
 var OfficerResourceUtil = require('utils/OfficerResourceUtil');
 var OfficerPageStore = require('stores/OfficerPage/OfficerPageStore');
+var NotMatchedPage = require('components/OfficerPage/NotMatchedPage.react');
+var LoadingPage = require('components/Shared/LoadingPage.react');
 
 
 var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
@@ -34,11 +36,32 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
   },
 
   render: function () {
+    var loading = this.state.loading;
+    var found = this.state.found;
+
+    if (loading) {
+      return (
+        <LoadingPage />
+      );
+    }
+
+    if (!found) {
+      return (
+        <NotMatchedPage id={this.state.id} />
+      )
+    }
+
+    var officer = this.state.officer;
+    var officerDetail = officer['detail'];
+    var complaints = officer['complaints'];
+    var coAccused = officer['co_accused'];
+    var witness = officer['witness'];
+
     return (
       <div className='officer-page'>
         <div className='content'>
           <SearchBar />
-          <OfficerHeader />
+          <OfficerHeader officer={officerDetail} />
           <div className='tabs'>
             <SimpleTab navigation={true}>
               <div>
@@ -48,20 +71,20 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
               </div>
               <div className='officer-page-content'>
                 <div>
-                  <SummaryTab />
+                  <SummaryTab officer={officerDetail} />
                 </div>
                 <div>
-                  <ComplaintsTab  />
+                  <ComplaintsTab officer={officerDetail} complaints={complaints} />
                 </div>
                 <div>
-                  <RelatedOfficersTab />
+                  <RelatedOfficersTab coAccused={coAccused} witness={witness} />
                 </div>
               </div>
             </SimpleTab>
           </div>
         </div>
       </div>
-    )
+    );
   }
 }));
 
