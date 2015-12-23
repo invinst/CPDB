@@ -222,7 +222,7 @@ class Suggestion(object):
         ret['officer'] = self.suggest_office_name(q)
         ret['officer__unit'] = self.suggest_unit(q)
         ret['cat__category'] = self.suggest_cat_category(q)
-        ret['cat'] = self.suggest_cat(q)
+        ret['cat__cat_id'] = self.suggest_cat(q)
         ret['investigator'] = self.suggest_investigator(q)
 
         ret['final_outcome'] = self.suggest_in(q, OUTCOMES)
