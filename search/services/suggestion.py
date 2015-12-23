@@ -185,7 +185,7 @@ class Suggestion(object):
         return results[:5]
 
     def suggest_has_filters(self, q):
-        if q.startswith('has:'):
+        if q.startswith('has'):
             results = []
             for val, filter_text in HAS_FILTERS_LIST:
                 if filter_text[:len(q)] == q:

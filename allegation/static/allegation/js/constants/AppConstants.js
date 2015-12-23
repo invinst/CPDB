@@ -277,7 +277,7 @@ module.exports = {
     'data_source': 'Data Source',
     'officer__allegations_count__gt': 'Repeater',
     'session': 'Session',
-    'has_filters': 'Has:'
+    'has_filters': 'has:'
   },
 
   AUTOCOMPLETE_DISPLAY_CATEGORY_IN_TAG: [

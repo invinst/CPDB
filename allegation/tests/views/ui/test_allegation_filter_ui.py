@@ -88,7 +88,7 @@ class AllegationFilterTestCase(BaseLiveTestCase):
 
     def test_sugggest_has_document(self):
         self.fill_in('#autocomplete', 'has:doc')
-        self.until(lambda: self.element_by_classname_and_text('ui-autocomplete-category', 'Has:').should.be.ok)
+        self.until(lambda: self.element_by_classname_and_text('ui-autocomplete-category', 'has:').should.be.ok)
         self.until(lambda: self.element_by_classname_and_text('autocomplete-has_filters', 'has:document').should.be.ok)
 
     def test_has_document_filter(self):
