@@ -13,6 +13,7 @@ urlpatterns = [
     url(r'^api/allegation/$', MobileAllegationView.as_view(), name='allegation'),
     url(r'^mobile/api/allegation/$', MobileAllegationView.as_view(), name='allegation'),
     url(r'^api/officer/$', MobileOfficerView.as_view(), name='officer'),
+    url(r'^mobile/api/officer/$', MobileOfficerView.as_view(), name='officer'),
     url(r'^(officer/[^/]+/\d+|complaint/\d+|search/\w+)?$', ensure_csrf_cookie(MobileSiteView.as_view()), name='home'),
     url(r'^(test)?$', ensure_csrf_cookie(MobileSiteView.as_view()), name='home'),
 ]
