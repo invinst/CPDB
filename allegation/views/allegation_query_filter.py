@@ -142,7 +142,8 @@ class AllegationQueryFilter(object):
     def prepare_categories_filter(self):
         # Merge cat and cat_category
         if 'cat' in self.raw_filters:
-            self.raw_filters['cat__cat_id'] = self.raw_filters.pop('cat')
+            self.raw_filters.append('cat__cat_id')
+            self.raw_filters.remove('cat')
         if 'cat__cat_id' in self.raw_filters:
 
             if 'cat__category' in self.query_dict:
@@ -151,7 +152,7 @@ class AllegationQueryFilter(object):
                 cats = list(categories.values_list('cat_id', flat=True))
                 value = self.query_dict.getlist('cat') + cats
                 self.filters['cat__cat_id'] = value
-                self.raw_filters.remove('cat')
+                #self.raw_filters.remove('cat')
                 self.raw_filters.remove('cat__category')
 
         return self
