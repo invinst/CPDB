@@ -12,6 +12,7 @@ FILTERS = [
     'crid',
     'areas__id',
     'cat',
+    'cat__cat_id',
     'neighborhood_id',
     'recc_finding',
     'final_outcome',
@@ -141,14 +142,14 @@ class AllegationQueryFilter(object):
 
     def prepare_categories_filter(self):
         # Merge cat and cat_category
-        if 'cat' in self.raw_filters:
+        if 'cat__cat_id' in self.raw_filters:
             if 'cat__category' in self.query_dict:
                 category_names = self.query_dict.getlist('cat__category')
                 categories = AllegationCategory.objects.filter(category__in=category_names)
                 cats = list(categories.values_list('cat_id', flat=True))
-                value = self.query_dict.getlist('cat') + cats
-                self.filters['cat'] = value
-                self.raw_filters.remove('cat')
+                value = self.query_dict.getlist('cat__cat_id') + cats
+                self.filters['cat__cat_id'] = value
+                self.raw_filters.remove('cat__cat_id')
                 self.raw_filters.remove('cat__category')
 
         return self
