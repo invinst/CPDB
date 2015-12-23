@@ -4,7 +4,7 @@ var classnames = require('classnames');
 var PropTypes = React.PropTypes;
 
 var Base = require('components/Base.react');
-var Complaint = require("components/DataToolPage/Complaint.react");
+var Allegation = require("components/DataToolPage/Allegation.react");
 var ComplaintListActions = require("actions/ComplaintList/ComplaintListActions");
 var ComplaintListStore = require("stores/ComplaintListStore");
 var RequestButton = require('components/DataToolPage/Complaint/RequestButton.react');
@@ -37,7 +37,7 @@ var InvestigationListRow = React.createClass(_.assign(Base(ComplaintListStore), 
     var detailIsShown = this.detailIsCurrentlyShown();
 
     return this.detailRendered() ? (
-      <Complaint complaint={complaint} hide={!detailIsShown} />
+      <Allegation allegation={complaint} hide={!detailIsShown} />
     ) : '';
   },
 
