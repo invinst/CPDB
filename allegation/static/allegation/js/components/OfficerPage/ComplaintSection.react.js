@@ -13,12 +13,16 @@ var ComplaintSection = React.createClass(_.assign(Base(ComplaintSectionStore), {
   componentDidMount: function() {
     var officer = this.props.officer.id || '';
     ComplaintSectionStore.addChangeListener(this._onChange);
-    ComplaintListAPI.getAllForOfficer(officer);
+    if (officer) {
+      ComplaintListAPI.getAllForOfficer(officer);
+    }
   },
 
   componentWillReceiveProps: function(newProps) {
     var officer = newProps.officer.id || '';
-    ComplaintListAPI.getAllForOfficer(officer);
+    if (officer) {
+      ComplaintListAPI.getAllForOfficer(officer);
+    }
   },
 
   render: function() {

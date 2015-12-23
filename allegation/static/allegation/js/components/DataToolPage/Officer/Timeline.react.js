@@ -1,4 +1,5 @@
 var _ = require('lodash');
+var ReactDOM = require('react-dom');
 var React = require('react');
 
 var Base = require('components/Base.react');
@@ -6,11 +7,27 @@ var TimelineStore = require('stores/OfficerPage/TimelineStore');
 
 
 var Timeline = React.createClass(_.assign(Base(TimelineStore), {
+  componentDidMount: function () {
+    TimelineStore.addChangeListener(this._onChange);
+    if (this.state.data) {
+      this.drawTimeline(this.state.data);
+    }
+  },
+
+  componentWillUnmount: function () {
+    TimelineStore.removeChangeListener(this._onChange);
+  },
+
   drawTimeline: function (data) {
-    var container = this.getDOMNode();
+    var container = ReactDOM.findDOMNode(this);
     $(container).html("");
     var timeLineItems = [];
     var items = data.items;
+
+    if (!items) {
+      return;
+    }
+
     for (var i = 0; i < items.length; i++) {
       if (!items[i]) {
         continue;

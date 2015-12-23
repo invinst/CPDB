@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 
 
 var DISCIPLINED_COLOR = '#a5b4be';
@@ -46,17 +47,19 @@ var DonutChart = React.createClass({
   updateTextInsideDonutChart: function(chart, officer) {
     officer = officer || this.props.officer;
 
-    $("#addText").html("");
-    var span = '<span id="pieChartInfoText">';
-    span += '<span style="font-size: 28px"><strong>' + officer.discipline_count +
-            " / " + officer.allegations_count + '</strong><br /></span>';
-    span += '<span style="font-size: 16px;">' +
-      '<span style="color: ' + chartColors['undisciplined'] + '">allegations disciplined</span>' +
-      '</span>';
-    span += '</span>';
+    if (officer.discipline_count !== undefined) {
+      $("#addText").html("");
+      var span = '<span id="pieChartInfoText">';
+      span += '<span style="font-size: 28px"><strong>' + officer.discipline_count +
+              " / " + officer.allegations_count + '</strong><br /></span>';
+      span += '<span style="font-size: 16px;">' +
+        '<span style="color: ' + chartColors['undisciplined'] + '">allegations disciplined</span>' +
+        '</span>';
+      span += '</span>';
 
-    $("#addText").append(span);
-    span = $('#pieChartInfoText');
+      $("#addText").append(span);
+      span = $('#pieChartInfoText');
+    }
   },
 
   componentWillReceiveProps: function(newProps) {
@@ -76,7 +79,7 @@ var DonutChart = React.createClass({
   },
 
   componentDidMount: function () {
-    var container = this.getDOMNode();
+    var container = ReactDOM.findDOMNode(this);
     var that = this;
     var colors = [DISCIPLINED_COLOR, UNDISCIPLINED_COLOR],
       browserData = [],
