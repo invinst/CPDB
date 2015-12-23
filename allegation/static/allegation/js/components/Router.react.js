@@ -2,7 +2,6 @@ var React = require('react');
 var ReactRouter = require('react-router');
 var IndexRoute = ReactRouter.IndexRoute;
 var History = require('history');
-// var StaticContainer = require('react-static-container');
 
 var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
@@ -12,7 +11,7 @@ var IndexRoute = ReactRouter.IndexRoute;
 var IndexPage = require('components/IndexPage.react');
 var DataToolPage = require('components/DataToolPage.react');
 var OfficerPage = require('components/OfficerPage.react');
-var InvestigatorPage = require('components/InvestigatorPage.react')
+var InvestigatorPage = require('components/InvestigatorPage.react');
 var StatePropagateCSSTransitionGroup = require(
   'components/Shared/StatePropagateCSSTransitionGroup.react');
 

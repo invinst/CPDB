@@ -2,8 +2,22 @@ var _ = require('lodash');
 var ReactDOM = require('react-dom');
 var React = require('react');
 
+var Base = require('components/Base.react');
+var TimelineStore = require('stores/OfficerPage/TimelineStore');
 
-var Timeline = React.createClass({
+
+var Timeline = React.createClass(_.assign(Base(TimelineStore), {
+  componentDidMount: function () {
+    TimelineStore.addChangeListener(this._onChange);
+    if (this.state.data) {
+      this.drawTimeline(this.state.data);
+    }
+  },
+
+  componentWillUnmount: function () {
+    TimelineStore.removeChangeListener(this._onChange);
+  },
+
   drawTimeline: function (data) {
     var container = ReactDOM.findDOMNode(this);
     $(container).html("");
@@ -90,17 +104,17 @@ var Timeline = React.createClass({
   },
 
   componentDidUpdate: function () {
-    this.drawTimeline(this.props.data);
+    this.drawTimeline(this.state.data);
   },
 
   render: function () {
     var wait = '';
-    if (this.props.data) {
-      wait = (<i className='fa fa-spin fa-spinner fa-3x'/>);
+    if (this.state.data) {
+      wait = (<i class='fa fa-spin fa-spinner'/>);
     }
     return (<div>{wait}</div>);
   }
-});
+}));
 
 
 module.exports = Timeline;
