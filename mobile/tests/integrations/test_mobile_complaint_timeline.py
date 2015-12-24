@@ -1,5 +1,4 @@
 from datetime import datetime
-from datetime import timedelta
 
 from django.utils import timezone
 
@@ -27,7 +26,6 @@ class MobileComplaintTimelineTest(MobileComplaintPageTestMixin):
 
     def assert_line_is_not_dash_line(self, line):
         line.value_of_css_property('stroke-dasharray').should.be.equal('none')
-
 
     def test_all_good_data(self):
         incident_date = datetime(2000, 12, 6)

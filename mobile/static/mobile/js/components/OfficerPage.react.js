@@ -47,7 +47,7 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
 
     if (!found) {
       return (
-        <NotMatchedPage id={this.state.id} />
+        <NotMatchedPage id={this.state.pk} />
       )
     }
 

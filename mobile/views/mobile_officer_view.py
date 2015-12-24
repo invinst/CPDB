@@ -21,7 +21,6 @@ class MobileOfficerView(APIView):
         except ValueError:
             raise BadRequestApiException
 
-
         content = MobileOfficerViewSerializer({
             'detail': officer,
             'co_accused': RelatedOfficerService.co_accused_officers(officer.pk),

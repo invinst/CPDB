@@ -6,7 +6,7 @@ var OfficerPageServerActions = require('actions/OfficerPage/OfficerPageServerAct
 var OfficerResourceUtil = {
   get: function (id) {
     request.get(AppConstants.OFFICER_API_ENDPOINT)
-      .query({ pk: id })
+      .query({ pk: id, format:'json' })
       .end(function (err, res) {
         if (res.ok) {
           OfficerPageServerActions.received(res.body)
