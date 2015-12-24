@@ -48,13 +48,6 @@ var AutoComplete = React.createClass({
     FilterStore.removeEnableListener(this._onEnable)
   },
   componentDidMount: function () {
-    // TODO: Move this stuff cpdbAutocomplate to be a React one?
-    $(document).ready(function() {
-      if ($("#autocomplete").length) {
-        cpdbAutocomplete($("#autocomplete"));
-      }
-    })
-
     var element = this.getDOMNode();
     $(element).tagsinput({
       itemValue: 'value',
