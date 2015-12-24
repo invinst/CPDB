@@ -35,7 +35,8 @@ class MobileOfficerViewTest(SimpleTestCase):
         detail['officer_last'].should.be.equal(officer.officer_last)
 
         len(complaints).should.be(1)
-        complaints[0]['crid'].should.be.equal(str(allegation.crid))
+        complaints[0]['data']['crid'].should.be.equal(str(allegation.crid))
+        complaints[0]['num_crids'].should.be.equal(2)
         len(data['co_accused']).should.be.equal(1)
         len(data['witness']).should.be.equal(1)
 

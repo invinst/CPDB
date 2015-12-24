@@ -44,7 +44,7 @@ var ComplaintPresenter = function (complaint) {
   var officerListDisplay = function ( firstOfficer, numOfOfficers){
     var moreOfficerDisplay = '';
     if (numOfOfficers > 1){
-      moreOfficerDisplay = ' and ' + (numOfOfficers -1) + pluralize('other', numOfOfficers , true)
+      moreOfficerDisplay = ' and ' + pluralize('other', numOfOfficers - 1 , true)
     }
 
     return firstOfficer + moreOfficerDisplay;
