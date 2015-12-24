@@ -19,6 +19,7 @@ var Timeline = React.createClass(_.assign(Base(TimelineStore), {
   },
 
   drawTimeline: function (data) {
+    var isInvestigator = this.props.isInvestigator;
     var container = ReactDOM.findDOMNode(this);
     $(container).html("");
     var timeLineItems = [];
@@ -39,7 +40,7 @@ var Timeline = React.createClass(_.assign(Base(TimelineStore), {
       }
 
       var content = '';
-      if (i == 0) {
+      if (i == 0 && !isInvestigator) {
         style = '';
         content = 'Joined force<br /><span>' + start.format('MMM DD, YYYY'); + '</span>';
       }
@@ -50,7 +51,7 @@ var Timeline = React.createClass(_.assign(Base(TimelineStore), {
         start: start,
         style: style
       };
-      if (i == 0) {
+      if (i == 0 && !isInvestigator) {
         timeLineItem.style = '';
         timeLineItem.content = 'Joined force<br /><span>' + start.format('MMM DD, YYYY') + '</span>';
         timeLineItems.push(timeLineItem);
@@ -110,7 +111,7 @@ var Timeline = React.createClass(_.assign(Base(TimelineStore), {
   render: function () {
     var wait = '';
     if (this.state.data) {
-      wait = (<i class='fa fa-spin fa-spinner'/>);
+      wait = (<i className='fa fa-spin fa-spinner'/>);
     }
     return (<div>{wait}</div>);
   }

@@ -36,7 +36,7 @@ var InvestigatorDetail = React.createClass({
       <div>
         <div className='row'>
           <div className="col-sm-9 h3">
-            {investigator.name.toUpperCase()}
+            {investigator.name}
           </div>
         </div>
 
@@ -44,7 +44,7 @@ var InvestigatorDetail = React.createClass({
 
         <div className="row visualization-information">
           <div className='col-xs-6'>
-            <Timeline />
+            <Timeline isInvestigator={true}/>
           </div>
           <div className='col-xs-6'>
             <InvestigatorDonutChart chartColors={chartColors} chartData={chartData} />
