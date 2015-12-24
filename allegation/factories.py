@@ -30,13 +30,6 @@ class AreaFactory(factory.django.DjangoModelFactory):
                                                                (87.940101, 42.023135)))))
 
 
-class PoliceWitnessFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = PoliceWitness
-    crid = factory.Sequence(lambda n: str(n))
-    officer = factory.SubFactory(OfficerFactory)
-
-
 class OfficerFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Officer
@@ -48,6 +41,13 @@ class OfficerFactory(factory.django.DjangoModelFactory):
     gender = factory.Sequence(lambda n: random.choice(list(GENDER_DICT.keys())))
     race = factory.Sequence(lambda n: random.choice(list(RACES_DICT.keys())))
     allegations_count = factory.Sequence(lambda n: n)
+
+
+class PoliceWitnessFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = PoliceWitness
+    crid = factory.Sequence(lambda n: str(n))
+    officer = factory.SubFactory(OfficerFactory)
 
 
 class InvestigatorFactory(factory.django.DjangoModelFactory):
