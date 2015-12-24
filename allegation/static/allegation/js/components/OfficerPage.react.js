@@ -74,8 +74,8 @@ var OfficerPage = React.createClass({
 
   stateHasNewUpdates: function (nextState) {
     return (
-      (nextState.timelineData.items.length && !this.state.timelineData.items) ||
-      (nextState.data.allegations.length && !this.state.data.allegations.length));
+      (_.get(nextState, 'timelineData.items.length') && !_.get(this.state, 'timelineData.items')) ||
+      (_.get(nextState, 'data.allegations.length') && !_.get(this.state, 'data.allegations.length')));
   },
 
   shouldComponentUpdate: function (nextProps, nextState) {
