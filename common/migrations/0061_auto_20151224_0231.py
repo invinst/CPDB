@@ -16,7 +16,7 @@ def update_categories(apps, schema_editor):
         next(csv_reader)
         next(csv_reader)
         for row in csv_reader:
-            if row[1] != row[4]:
+            if row[1].lower() != row[4].lower():
                 try:
                     current_allegation = AllegationCategory.objects.get(cat_id=row[3])
                 except AllegationCategory.DoesNotExist:
