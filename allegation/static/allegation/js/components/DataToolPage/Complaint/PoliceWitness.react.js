@@ -1,107 +1,89 @@
-var React = require('react');
+var _ = require('lodash');
 var pluralize = require('pluralize');
+var React = require('react');
+var PropTypes = React.PropTypes;
+
+var genderPresenter = require('presenters/GenderPresenter');
 
 
 var PoliceWitness = React.createClass({
-  getInitialState: function () {
-    return {};
+  propTypes: {
+    witnesses: PropTypes.array.isRequired
   },
-  componentDidMount: function () {
 
-  },
-  render: function () {
-    var witnesses = this.props.witnesses;
-    if (witnesses && witnesses.length) {
-
-      var witnesses_rows = [];
-      var eachRow = Math.min(3, witnesses.length);
-      var witnessesRowClassName = "col-md-" + (12 / eachRow);
-      for (var i = 0; i < witnesses.length; i++) {
-        var witnesses_obj = witnesses[i];
-        var rows = [];
-        for (var j = 0; j < witnesses_obj.officers.length; j++) {
-          var officer_data = witnesses_obj.officers[j];
-          var style = {
-            'width': (officer_data.no_action_taken / officer_data.num_complaints) * 100 + "%"
-          };
-          var progressStyle = {
-            width: 100 + "%"
-          };
-
-          rows.push(
-            <div key={j}>
-              <div>
-                {officer_data.officer.officer_first} {officer_data.officer.officer_last}
-                &nbsp;
-                ({officer_data.num_complaints} {pluralize('case', officer_data.num_complaints)})
-              </div>
-              <div className="progress complaint" style={progressStyle}>
-                <div className="progress-bar not-discipline" role="progressbar" aria-valuenow="60" aria-valuemin="0"
-                     aria-valuemax="100" style={style}>
-                  <span className="sr-only"></span>
-                </div>
-              </div>
-            </div>
-          )
-        }
-
-        var gender = '';
-        if (witnesses_obj.witness_officer.gender == 'F') {
-          gender = 'Female,';
-        } else if (witnesses_obj.witness_officer.gender == 'M') {
-          gender = 'Male,';
-        }
-
-        witnesses_rows.push(
-          <div className={witnessesRowClassName} key={i}>
-            <div className='results witness'>
-              <div className='investigator-name'>
-                {witnesses_obj.witness_officer.officer_first} {witnesses_obj.witness_officer.officer_last}
-              </div>
-              <div className="legend">
-                {gender} {witnesses_obj.witness_officer.race}
-              </div>
-              <br />
-              {rows}
-            </div>
-          </div>
-        );
-      }
-
-      var legend = (
-        <div className="legend">
-          <div>
-            <span className='red line'></span>No Punishment
-          </div>
-          <div>
-            <span className='blue line'></span>Discipline Applied
-          </div>
+  renderLegend: function () {
+    return (
+      <div className='row legend'>
+        <div className='col-xs-4 col-md-12'>
+          <span className='blue line'></span>Discipline Applied
         </div>
-      );
+        <div className='col-xs-4 col-md-12'>
+          <span className='red line'></span>No Punishment
+        </div>
+      </div>
+    );
+  },
 
-      var col = Math.min(witnesses_rows.length * 3, 9);
-      var className = "col-md-" + col + " witness";
+  renderOfficers: function (witness) {
+    return witness.officers.map(function (officer, i) {
+      var style = {
+        'width': (officer.no_action_taken / officer.num_complaints) * 100 + '%'
+      };
 
       return (
-        <div className='row margin-top'>
-          <div className="col-md-10 col-md-offset-1">
-            <div className="row">
-              <div className={className}>
-                <div className="row">
-                  <div className='col-md-12 section-title'>Police witnesses</div>
-                  {witnesses_rows}
-                </div>
-              </div>
-              <div className='col-md-3'>
-                <div className='section-title'><br /></div>
-                {legend}
-              </div>
+        <div key={i}>
+          <div>
+            {officer.officer.officer_first} {officer.officer.officer_last}
+            &nbsp;
+            ({officer.num_complaints} { pluralize('case', officer.num_complaints) })
+          </div>
+          <div className='progress complaint'>
+            <div className='progress-bar not-discipline' role='progressbar' style={style}>
+              <span className='sr-only'></span>
             </div>
           </div>
         </div>
       );
-    }
-    return <div></div>;
+    });
+  },
+
+  renderWitnesses: function () {
+    var renderOfficers = this.renderOfficers;
+    var witnesses = this.props.witnesses;
+
+    return witnesses.map(function (witness, i) {
+      return (
+        <div className='col-xs-6' key={i}>
+          <div className='results witness'>
+            <div className='investigator-name'>
+              {witness.witness_officer.officer_first} {witness.witness_officer.officer_last}
+            </div>
+            <div className="legend">
+              { genderPresenter(witness['witness_officer']['gender']) } {witness.witness_officer.race}
+            </div>
+            { renderOfficers(witness) }
+          </div>
+        </div>
+      );
+    });
+  },
+
+  render: function () {
+    return (
+      <div className='row margin-top'>
+        <div>
+          <div className='col-xs-12 section-title'>Police witnesses</div>
+          <div className='col-xs-12 col-md-4 col-md-push-8'>
+            { this.renderLegend() }
+          </div>
+          <div className='col-xs-12 col-md-8 col-md-pull-4'>
+            <div className='row police-witness'>
+              { this.renderWitnesses() }
+            </div>
+          </div>
+        </div>
+      </div>
+    );
   }
 });
 
