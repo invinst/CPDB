@@ -7,7 +7,7 @@ from search.services.suggestion import Suggestion
 from search.factories import AliasFactory
 
 
-class SuggestViewTestCase(SimpleTestCase):
+class SuggestServiceTestCase(SimpleTestCase):
     def setUp(self):
         AllegationCategory.objects.all().delete()
         Officer.objects.all().delete()
@@ -63,3 +63,12 @@ class SuggestViewTestCase(SimpleTestCase):
         data.should.contain('areas__id')
         data['areas__id'].should.have.length_of(1)
         data['areas__id'][0][2].should.equal(area.type)
+
+    def test_suggest_has_document(self):
+        data = self.suggestion.make_suggestion('has:doc')
+
+        data.should.contain('has_filters')
+        len(data['has_filters']).should.equal(1)
+        data['has_filters'][0][0].should.equal('has:document')
+        data['has_filters'][0][1].should.equal('has:document')
+

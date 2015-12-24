@@ -2,12 +2,16 @@ var React = require('react');
 var _ = require('lodash');
 var bootbox = require('bootbox');
 var moment = require('moment');
-var Base = require('../../Base.react');
-var StoryListStore = require('../../../stores/OfficerSection/Officer/StoryListStore');
-var StoryListActions = require('../../../actions/OfficerSection/Officer/StoryListActions');
-var TabsActions = require('../../../actions/OfficerSection/Officer/TabsActions');
-var StoryAPI = require('../../../utils/StoryAPI');
+var classnames = require('classnames');
 global.jQuery = require('jquery');
+
+var Base = require('components/Base.react');
+var AppConstants = require('../../../constants/AppConstants');
+var StoryListStore = require('stores/OfficerSection/Officer/StoryListStore');
+var StoryListActions = require('actions/OfficerSection/Officer/StoryListActions');
+var TabsActions = require('actions/OfficerSection/Officer/TabsActions');
+var StoryAPI = require('utils/StoryAPI');
+var DateTimeUtil = require('utils/DateTimeUtil');
 require('jquery.scrollto');
 
 var StoryList = React.createClass(_.assign(Base(StoryListStore), {
@@ -58,13 +62,16 @@ var StoryList = React.createClass(_.assign(Base(StoryListStore), {
   },
 
   deleteBulk: function () {
-    bootbox.confirm("You are going to delete all stories of this officer?", this.doDeleteBulk);
+    if (StoryListStore.hasSelectedStories()) {
+      bootbox.confirm("You are going to delete all stories of this officer?", this.doDeleteBulk);
+    } else {
+      bootbox.alert("You haven't checked any story yet");
+    }
   },
 
   doDeleteBulk: function (yes) {
     if (yes) {
-      var stories = _.filter(this.state.stories, function (x) {return x.selected;});
-      StoryAPI.deleteBulk(stories);
+      StoryAPI.deleteBulk(StoryListStore.getSelectedStories());
     }
   },
 
@@ -83,13 +90,15 @@ var StoryList = React.createClass(_.assign(Base(StoryListStore), {
   renderStoryList: function() {
     var that = this;
     return this.state.stories.map(function(x) {
+      var date = DateTimeUtil.displayDateTime(x['created_date'], AppConstants.DATE_FORMAT);
+
       return (
         <tr className='story' key={x.id}>
           <td>
             <input type="checkbox" onChange={that.selectCheckbox(x)} checked={x.selected} />
           </td>
           <td onClick={that.editStory(x)}>{x.title}</td>
-          <td>{moment(x.created_date).format("YYYY-MM-DD")}</td>
+          <td>{date}</td>
           <td className="text-right">
             <a href="#" onClick={that.editStory(x)}>
               <i className="fa fa-pencil"></i>
@@ -110,12 +119,17 @@ var StoryList = React.createClass(_.assign(Base(StoryListStore), {
         <div>There is no story about this officer in system.</div>
       );
     }
+
+    var deleteBtnClassname = classnames('btn btn-primary', {
+      'hidden': !StoryListStore.hasSelectedStories()
+    });
+
     return (
       <div>
-        <div className="row">
+        <div className="row story-head-line">
           <h4 className="col-md-6 col-xs-6">Stories</h4>
           <div className="col-md-6 col-xs-6 text-right">
-            <button className="btn btn-primary" onClick={this.deleteBulk}>Delete</button>
+            <button className={deleteBtnClassname} onClick={this.deleteBulk}>Delete</button>
           </div>
         </div>
         <div className='table-responsive'>

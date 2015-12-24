@@ -34,7 +34,7 @@ var Officer = React.createClass(_.assign(Base(OfficerStore), {
   render: function() {
     return (
       <div>
-        <div className="row">
+        <div className="row profile-head-line">
           { this.getOfficerName() }
           <OfficerTabs />
         </div>

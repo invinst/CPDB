@@ -44,3 +44,17 @@ class AllegationOfficerApiTestCase(AllegationApiTestBase):
         officer_2.id.should.equal(returned_officer['id'])
 
         len(data['officers']).should.equal(1)
+
+    def test_allegation_officer_filter_allegation_count(self):
+        final_finding_filter = 'SU'
+        diff_final_finding_filter = 'NS'
+
+        officer = OfficerFactory()
+        AllegationFactory(officer=officer, final_finding=final_finding_filter)
+        AllegationFactory(officer=officer, final_finding=diff_final_finding_filter)
+
+        response = self.client.get("/api/allegations/officers/?final_finding={final_finding_filter}".format(
+                final_finding_filter=final_finding_filter))
+        data = json.loads(response.content.decode())
+        len(data['officers']).should.equal(1)
+        data['officers'][0]['filtered_allegations_count'].should.equal(1)

@@ -37,6 +37,17 @@ class OfficerProfileTestCase(BaseAdminTestCase):
         self.should_see_text(officer.gender)
         self.should_see_text(officer.race)
 
+    def test_display_delete_button(self):
+        officer = self.officer
+        stories = StoryFactory(officer=officer)
+        self.go_to_officer_profile()
+        self.go_to_single_officer(officer)
+        self.button("Delete").is_displayed().should.be(False)
+
+        self.find("input[type='checkbox']").click()
+        self.button("Delete").is_displayed().shouldnt.be(False)
+
+
     def test_delete_story(self):
         officer = self.officer
         stories = [StoryFactory(officer=officer) for x in range(2)]
@@ -79,10 +90,14 @@ class OfficerProfileTestCase(BaseAdminTestCase):
         )
 
         self.should_see_text('New story has been created.')
+        story = Story.objects.filter(officer=self.officer)[0]
+        story.created_date.should_not.be.ok
+
         new_row = self.find(".story").text
         new_row.should.contain("Title")
 
         self.element_for_label('Title').send_keys("2")
+        self.element_for_label('Date').send_keys('2015-04-15')
         self.button("Save").click()
         self.until(self.ajax_complete)
 
@@ -102,7 +117,7 @@ class OfficerProfileTestCase(BaseAdminTestCase):
         self.find(".story_short_description").text.should.equal("Short Description")
         self.find(".story_content").text.should.equal("Content")
 
-        story = Story.objects.filter(officer=self.officer)[0]
+        story.refresh_from_db()
         story.story_type.should.equal('news')
         story.created_date.should.be.ok
 

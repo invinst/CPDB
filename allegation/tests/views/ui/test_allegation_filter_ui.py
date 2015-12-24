@@ -1,4 +1,5 @@
 import random
+import time
 
 from allegation.factories import AllegationCategoryFactory, AllegationFactory
 from allegation.tests.utils.outcome_filter import number_of_all_created_complaints
@@ -20,10 +21,13 @@ class AllegationFilterTestCase(BaseLiveTestCase):
                 AllegationFactory(final_finding=final_finding, cat=self.allegation_category,
                                   final_outcome_class='disciplined')
 
-    def test_filter_by_final_finding(self):
         self.visit_home()
+        self.hide_chat_box()
+
+    def hide_chat_box(self):
         self.browser.execute_script('jQuery("#hfc-cleanslate").hide();')
 
+    def test_filter_by_final_finding(self):
         # Check all
         self.link("Categories").click()
         self.until(lambda: self.link(self.allegation_category.category).click())
@@ -42,9 +46,6 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         self.number_of_complaints().should.equal(Allegation.objects.filter(final_outcome_class='disciplined').count())
 
     def test_suggest_repeater(self):
-        self.visit_home()
-        self.browser.execute_script('jQuery("#hfc-cleanslate").hide();')
-
         self.fill_in('#autocomplete', 'rep')
         self.until(lambda: self.element_by_classname_and_text('ui-autocomplete-category', 'Repeater').should.be.ok)
 
@@ -54,9 +55,6 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         not_searchable = SessionFactory(title='not searchable')
         session = SessionFactory(title='searchable')
         SessionAliasFactory(alias=alias, session=session)
-
-        self.visit_home()
-        self.browser.execute_script('jQuery("#hfc-cleanslate").hide();')
 
         self.fill_in('#autocomplete', query)
         self.until(lambda: self.element_by_classname_and_text('autocomplete-session', session.title).should.be.ok)
@@ -68,7 +66,6 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         session = SessionFactory()
         SessionAliasFactory(alias=alias, session=session)
 
-        self.visit_home()
         current_url = self.browser.current_url
 
         self.find('#autocomplete').send_keys(query)
@@ -79,13 +76,25 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         self.browser.current_url.should.contain(cloned_session.hash_id)
 
     def test_filter_by_repeater(self):
-        self.visit_home()
-        self.browser.execute_script('jQuery("#hfc-cleanslate").hide();')
 
         self.find('#autocomplete').send_keys('rep')
         self.until(lambda: self.find('.autocomplete-officer__allegations_count__gt').click())
         self.until(lambda: self.find('.filter-name').should.be.ok)
         self.find('.filter-name').text.should.contain('Repeater')
+
+    def test_no_matches_found_message(self):
+        self.fill_in('#autocomplete', 'search query that return nothing')
+        self.until(lambda: self.should_see_text('No matches found'))
+
+    def test_sugggest_has_document(self):
+        self.fill_in('#autocomplete', 'has:doc')
+        self.until(lambda: self.element_by_classname_and_text('ui-autocomplete-category', 'has:').should.be.ok)
+        self.until(lambda: self.element_by_classname_and_text('autocomplete-has_filters', 'has:document').should.be.ok)
+
+    def test_has_document_filter(self):
+        self.fill_in('#autocomplete', 'has:document')
+        self.until(lambda: self.find('.autocomplete-has_filters').click())
+        self.until(lambda: self.element_by_classname_and_text('filter-name', 'has:document').should.be.ok)
 
     def number_of_complaints(self):
         return len(self.find_all('.complaint-row'))

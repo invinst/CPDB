@@ -1,13 +1,16 @@
 import json
 from django.contrib.gis.geos.factory import fromstr
 from django.contrib.gis.geos.point import Point
+from django.http import QueryDict
 from django.http.response import HttpResponse, HttpResponseBadRequest, Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.views.generic import View
 
+from allegation.views.allegation_query_filter import AllegationQueryFilter
 from common.json_serializer import JSONSerializer
-from common.models import Area
+from common.models import Area, Allegation
 from common.utils.http_request import get_client_ip
+from search.models import FilterLog
 from share.models import Session
 
 
@@ -86,7 +89,8 @@ class SessionAPIView(View):
                 'query': session.query,
                 'readable_query': session.readable_query,
                 'title': session.title,
-                'active_tab': session.active_tab
+                'active_tab': session.active_tab,
+                'sunburst_arc': session.sunburst_arc,
             }
         }
 
@@ -97,11 +101,31 @@ class SessionAPIView(View):
                 }
             }), status=400)
 
+
+    def track_filter(self, session):
+        if not session.query:
+            return
+        query_string = session.query_string
+        if not query_string or query_string == '&':
+            return
+
+        allegation_query_filters = AllegationQueryFilter(QueryDict(query_string))
+        allegations = Allegation.objects.by_allegation_filter(allegation_query_filters)
+        num_allegations = allegations.count()
+
+        FilterLog.objects.create(tag_name=query_string,
+                                 session_id=session.hash_id,
+                                 num_allegations=num_allegations)
+
     def update_session_data(self, session, data):
         updates = data['query'] or {}
-        session.query.update(**updates)
+        if session.query != updates:
+            session.query.update(**updates)
+            self.track_filter(session)
         if 'active_tab' in data:
             session.active_tab = data['active_tab']
+        if 'sunburst_arc' in data:
+            session.sunburst_arc = data['sunburst_arc']
         if 'title' in data:
             session.title = data['title']
         session.save()

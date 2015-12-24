@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^officer/', include('officer.urls', namespace='officer')),
     url(r'^document/', include('document.urls', namespace='document')),
     url(r'^mobile/', include('mobile.urls', namespace='mobile')),
+    url(r'^lookup/', include('common.urls', namespace='common')),
     url(r'^embed/', include('embed.urls', namespace='embed')),
     url(r'^api/', include('api.urls')),
     url(r'^api/wagtail/', include(wagtailapi_urls)),

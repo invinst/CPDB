@@ -14,7 +14,6 @@ var OfficerListStore = require('stores/OfficerListStore');
 var FilterActions = require('actions/FilterActions');
 var SessionAPI = require('utils/SessionAPI');
 var TagUtil = require('utils/TagUtil');
-var cx = require('react/lib/cx');
 var _sessionData = {};
 var init_data = typeof(INIT_DATA) == 'undefined' ? false : INIT_DATA;
 var init_filters = typeof(INIT_FILTERS) == 'undefined' ? {} : INIT_FILTERS;
@@ -49,13 +48,6 @@ var AutoComplete = React.createClass({
     FilterStore.removeEnableListener(this._onEnable)
   },
   componentDidMount: function () {
-    // TODO: Move this stuff cpdbAutocomplate to be a React one?
-    $(document).ready(function() {
-      if ($("#autocomplete").length) {
-        cpdbAutocomplete($("#autocomplete"));
-      }
-    })
-
     var element = this.getDOMNode();
     $(element).tagsinput({
       itemValue: 'value',

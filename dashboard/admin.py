@@ -17,7 +17,7 @@ class AllegationResource(resources.ModelResource):
         fields = ()
         export_order = ['crid', 'status', 'number_of_request', 'last_requested']
         widgets = {
-            'last_requested': {'format': '%I:%m %p, %d %b %Y'}
+            'last_requested': {'format': '%I:%M %p, %d %b %Y'}
         }
 
 
@@ -33,4 +33,4 @@ class AllegationResource(resources.ModelResource):
         return 'Missing'
 
     def dehydrate_last_requested(self, allegation):
-        return allegation.last_requested.strftime('%I:%m %p, %d %b %Y')
+        return allegation.last_requested.strftime('%I:%M %p, %d %b %Y')
