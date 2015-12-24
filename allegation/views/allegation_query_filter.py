@@ -5,13 +5,14 @@ from django.db.models.query_utils import Q
 
 from common.constants import FOIA_START_DATE
 from common.models import AllegationCategory, Area
-from common.models import DISCIPLINE_CODES, NO_DISCIPLINE_CODES, CUSTOM_FILTER_DICT
+from common.models import DISCIPLINE_CODES, CUSTOM_FILTER_DICT
 
 FILTERS = [
     'id',
     'crid',
     'areas__id',
     'cat',
+    'cat__cat_id',
     'neighborhood_id',
     'recc_finding',
     'final_outcome',
@@ -141,15 +142,14 @@ class AllegationQueryFilter(object):
 
     def prepare_categories_filter(self):
         # Merge cat and cat_category
-        if 'cat' in self.raw_filters:
-            if 'cat__category' in self.query_dict:
-                category_names = self.query_dict.getlist('cat__category')
-                categories = AllegationCategory.objects.filter(category__in=category_names)
-                cats = list(categories.values_list('cat_id', flat=True))
-                value = self.query_dict.getlist('cat') + cats
-                self.filters['cat'] = value
-                self.raw_filters.remove('cat')
-                self.raw_filters.remove('cat__category')
+        if 'cat__category' in self.raw_filters and 'cat__category' in self.query_dict:
+            category_names = self.query_dict.getlist('cat__category')
+            categories = AllegationCategory.objects.filter(category__in=category_names)
+            cats = list(categories.values_list('cat_id', flat=True))
+            value = self.query_dict.getlist('cat__cat_id') + cats
+            self.filters['cat__cat_id'] = value
+            self.raw_filters.remove('cat__cat_id')
+            self.raw_filters.remove('cat__category')
 
         return self
 
