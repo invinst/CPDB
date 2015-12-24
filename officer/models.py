@@ -11,11 +11,8 @@ class Story(models.Model):
     short_description = models.TextField()
     content = models.TextField(default='', blank=True)
     story_type = models.CharField(max_length=254)
-    created_date = models.DateField(default=date.today)
+    created_date = models.DateField(blank=True, null=True)
     custom_order = models.IntegerField(default=1)
 
     class Meta:
         verbose_name_plural = 'Stories'
-
-    def __str__(self):
-        return self.title

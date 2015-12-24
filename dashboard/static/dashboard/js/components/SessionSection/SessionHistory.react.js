@@ -9,7 +9,7 @@ var SessionHistory = React.createClass({
   renderSessionHistory: function(histories) {
      return histories.map(function(x) {
        return <li>{x.asHistoryEntry}</li>;
-     })
+     });
   },
 
   render: function() {
@@ -22,9 +22,15 @@ var SessionHistory = React.createClass({
     var histories = filter_logs.concat(suggestions);
     histories = _.sortByOrder(histories, ['unixTime'], ['asc']);
 
+    if (!histories.length) {
+      return (
+        <div>Fresh session.</div>
+      );
+    }
+
     return (
       <ul className='histories'>{this.renderSessionHistory(histories)}</ul>
-    )
+    );
   }
 });
 

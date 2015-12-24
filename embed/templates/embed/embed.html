@@ -19,3 +19,8 @@
     </div>
   </div>
 {% endblock %}
+
+{% block footerjs %}
+  {{ block.super }}
+  <script type="text/javascript">initReact();</script>
+{% endblock %}

@@ -4,7 +4,7 @@ import json
 from django.conf import settings
 from django.utils import timezone
 
-from allegation.factories import AreaFactory, ComplainingWitnessFactory
+from allegation.factories import AreaFactory, ComplainingWitnessFactory, AllegationFactory
 from allegation.tests.views.base import AllegationApiTestBase
 from common.models import Allegation, Officer, Area, RACES, DISCIPLINE_CODES, NO_DISCIPLINE_CODES
 
@@ -17,6 +17,9 @@ class AllegationFilterMixin(object):
         return allegations
 
 class AllegationApiViewTestCase(AllegationFilterMixin, AllegationApiTestBase):
+    def setUp(self):
+        self.allegations = AllegationFactory.create_batch(3)
+
     def test_area_data_filter(self):
         area = AreaFactory()
         response = self.client.get('/api/areas/', {'type': area.type})
@@ -28,6 +31,7 @@ class AllegationApiViewTestCase(AllegationFilterMixin, AllegationApiTestBase):
             ret_area['properties']['type'].should.equal(area.type)
 
     def test_fetch_allegation(self):
+        AllegationFactory.create_batch(10)
         data = self.fetch_allegations()
         isinstance(data, list).should.be.true
         len(data).should.equal(10)
@@ -38,8 +42,16 @@ class AllegationApiViewTestCase(AllegationFilterMixin, AllegationApiTestBase):
 
         allegations = self.fetch_allegations(page=1)
         ids2 = [d['allegation']['id'] for d in allegations]
+        (set(ids) & set(ids2)).should.be.empty
 
-        ids2.shouldnt.contain(ids[0])
+        allegations = self.fetch_allegations(page='a')
+        ids3 = [d['allegation']['id'] for d in allegations]
+        ids.should.equal(ids3)
+
+        allegations = self.fetch_allegations(length=1)
+        allegations.should.have.length_of(1)
+        allegations = self.fetch_allegations(length='a')
+        allegations.should.be.ok
 
     def test_filter_by_crid(self):
         crid = self.allegations[0].crid
@@ -91,6 +103,7 @@ class AllegationApiViewTestCase(AllegationFilterMixin, AllegationApiTestBase):
             row['allegation']['investigator']['pk'].should.equal(investigator.pk)
 
     def test_filter_by_final_outcome(self):
+        AllegationFactory(final_outcome=600)
         data = self.fetch_allegations(final_outcome=600)
         for row in data:
             Allegation.objects.filter(pk=row['allegation']['id'], final_outcome=600).exists().should.be.true
@@ -98,6 +111,8 @@ class AllegationApiViewTestCase(AllegationFilterMixin, AllegationApiTestBase):
     def test_filter_by_date_range(self):
         start_date = timezone.now().date()
         end_date = start_date + datetime.timedelta(days=3)
+        for hours in range(1, 4):
+            AllegationFactory(incident_date=start_date + datetime.timedelta(hours=hours))
         response_format = "%Y-%m-%d %H:%M:%S"
 
         def happen_between(row):
@@ -136,30 +151,40 @@ class AllegationApiViewTestCase(AllegationFilterMixin, AllegationApiTestBase):
 
     def test_filter_by_complaint_gender(self):
         allegation = self.allegations[0]
-        for i in range(10):
-            ComplainingWitnessFactory(crid=allegation.crid)
+        ComplainingWitnessFactory.create_batch(3, crid=allegation.crid)
         data = self.fetch_allegations(complainant_gender='M')
         for row in data:
             genders = [x['gender'] for x in row['complaining_witness']]
             genders.should.contain('M')
 
+    def test_filter_by_both_complaint_gender(self):
+        allegation = self.allegations[0]
+        ComplainingWitnessFactory.create_batch(3, crid=allegation.crid)
+        data = self.fetch_allegations(complainant_gender=['M', 'F'])
+        for row in data:
+            genders = [x['gender'] for x in row['complaining_witness']]
+            genders.should.be.ok
+
     def test_filter_by_complaint_race(self):
         allegation = self.allegations[0]
-        for i in range(10):
-            ComplainingWitnessFactory(crid=allegation.crid)
-        race = RACES[0][0]
+        witnesses = ComplainingWitnessFactory.create_batch(3, crid=allegation.crid)
+        race = witnesses[0].race
         data = self.fetch_allegations(complainant_race=race)
         for row in data:
             races = [x['race'] for x in row['complaining_witness']]
             races.should.contain(race)
 
     def test_filter_by_officer_gender(self):
+        officer = self.allegations[0].officer
+        officer.gender = 'M'
+        officer.save()
+
         data = self.fetch_allegations(officer__gender='M')
         for row in data:
             row['officer']['gender'].should.equal('M')
 
     def test_filter_by_officer_race(self):
-        race = RACES[0][0]
+        race = self.allegations[0].officer.race
         data = self.fetch_allegations(officer__race=race)
         for row in data:
             row['officer']['race'].should.equal(race)
@@ -171,6 +196,8 @@ class AllegationApiViewTestCase(AllegationFilterMixin, AllegationApiTestBase):
             row.should.contain('investigator')
 
     def test_filter_by_outcome_group(self):
+        AllegationFactory(final_finding='SU', final_outcome=DISCIPLINE_CODES[0])
+        AllegationFactory(final_finding='SU', final_outcome=NO_DISCIPLINE_CODES[0])
         data = self.fetch_allegations(outcome_text='any discipline')
         for row in data:
             allegation = Allegation.objects.get(pk=row['allegation']['id'])
@@ -189,8 +216,10 @@ class AllegationApiViewTestCase(AllegationFilterMixin, AllegationApiTestBase):
             allegation = Allegation.objects.get(pk=row['allegation']['id'])
             allegation.final_finding.shouldnt.equal('SU')
 
-    def test_investigator_data(self):
-        data = self.fetch_allegations()
-        data.should.be.ok
-        for row in data:
-            row.should.contain('investigator')
+    def test_filter_by_has_document(self):
+        allegation = AllegationFactory(document_id=1)
+
+        data = self.fetch_allegations(has_filters='has:document')
+
+        len(data).should.equal(1)
+        data[0]['allegation']['id'].should.equal(allegation.id)

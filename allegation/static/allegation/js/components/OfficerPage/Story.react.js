@@ -7,13 +7,15 @@ var Base = require('components/Base.react')
 var StoryStore =require('stores/OfficerPage/StoryStore');
 var DocumentCloudAPI = require('utils/DocumentCloudAPI');
 var AppConstants = require('constants/AppConstants');
+var DateTimeUtil = require('utils/DateTimeUtil');
 
 
 var Story = React.createClass(_.assign(Base(StoryStore), {
 
   componentDidMount: function() {
     if (this.props.story.url){
-      DocumentCloudAPI.getThumbnail(this.props.story);
+      var story = this.props.story;
+      DocumentCloudAPI.getThumbnail(story);
     } else {
       this.props.story.url = '#';
     }
@@ -42,8 +44,8 @@ var Story = React.createClass(_.assign(Base(StoryStore), {
     }
 
     var descCol = classnames({
-      'col-md-12': !this.props.story.thumbUrl,
-      'col-md-10': this.props.story.thumbUrl
+      'col-md-12': !story.thumbUrl,
+      'col-md-10': story.thumbUrl
     });
 
     return (
@@ -54,7 +56,7 @@ var Story = React.createClass(_.assign(Base(StoryStore), {
   },
 
   renderCreatedDate: function () {
-    var date = moment(this.props.story.created_date).format(AppConstants.DATE_FORMAT);
+    var date = DateTimeUtil.displayDateTime(this.props.story['created_date'], AppConstants.DATE_FORMAT);
 
     return (
       <div className="date">{date}</div>

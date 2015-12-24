@@ -2,6 +2,7 @@ var Base = require('../Base');
 var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var AppConstants = require('../../constants/AppConstants');
 var _ = require('lodash');
+var toastr = require('toastr');
 
 var _state = {
   isOpen: false,
@@ -26,12 +27,13 @@ AppDispatcher.register(function(action) {
   switch (action.actionType) {
   case AppConstants.SHOW_ADD_ALIAS_MODAL:
     var alias = (action.data && action.data.alias) ? action.data.alias : '';
+    var target = (action.data && action.data.target) ? action.data.target : '';
     AddAliasModalStore.updateState('isOpen', true);
     AddAliasModalStore.updateState('formValid', false);
     AddAliasModalStore.updateState('flashMessage', '');
     AddAliasModalStore.updateState('errorMessages', []);
     AddAliasModalStore.updateState('alias', alias);
-    AddAliasModalStore.updateState('target', '');
+    AddAliasModalStore.updateState('target', target);
     AddAliasModalStore.emitChange();
     break;
 
@@ -43,13 +45,13 @@ AppDispatcher.register(function(action) {
 
   case AppConstants.RECEIVED_ALIAS_CREATION_RESULT:
     AddAliasModalStore.updateState('isOpen', false);
-    AddAliasModalStore.updateState('flashMessage', ['Add new alias successfully.']);
+    toastr.success('Add new alias successfully.');
     AddAliasModalStore.emitChange();
     break;
 
   case AppConstants.FAILED_TO_CREATE_ALIAS:
     AddAliasModalStore.updateState('isOpen', false);
-    AddAliasModalStore.updateState('errorMessages', action.data);
+    toastr.error(action.data);
     AddAliasModalStore.emitChange();
     break;
 

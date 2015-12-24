@@ -44,8 +44,6 @@ class AllegationListView(TemplateView):
         return super(AllegationListView, self).get(request, *args, **kwargs)
 
 
-
-
 class AreaAPIView(View):
     def get(self, request):
         areas = Area.objects.all()
@@ -112,7 +110,6 @@ class AllegationGISApiView(AllegationAPIView):
 
 
 class AllegationClusterApiView(AllegationAPIView):
-
     def get(self, request):
         areas = request.GET.getlist('areas__id')
         ignore_filters = ['areas__id']
@@ -224,9 +221,7 @@ class AllegationSummaryApiView(AllegationAPIView):
 class OfficerListAPIView(AllegationAPIView):
     def get(self, request):
         allegations = self.get_allegations()
-        officers = allegations.values_list('officer', flat=True).distinct()
-        officers = list(officers)  # to solve multiple subquery problem
-        officers = Officer.objects.filter(pk__in=officers).order_by('-allegations_count')
+        officers = Officer.objects.filter(allegation__in=allegations).annotate(filtered_allegations_count=Count('allegation__crid')).order_by('-allegations_count')
 
         overview = []
         for r in OFFICER_COMPLAINT_COUNT_RANGE:
@@ -272,36 +267,4 @@ class InvestigationAPIView(View):
             ret['complaint_witness'] = ComplainingWitness.objects.filter(crid=crid)
 
         content = JSONSerializer().serialize(ret)
-        return HttpResponse(content, content_type="application/json")
-
-
-class AllegationChartApiView(AllegationAPIView):
-    def get(self, request):
-        allegations = self.get_allegations()
-
-        count_query = allegations.values_list('cat__category').annotate(dcount=Count('id'))
-        count_by_category = dict(count_query)
-
-        discipline_allegations = allegations.exclude(final_outcome__in=NO_DISCIPLINE_CODES)
-        discipline_count_query = discipline_allegations.values_list('cat__category').annotate(dcount=Count('id'))
-        discipline_count_by_category = dict(discipline_count_query)
-
-        data = []
-
-        for category in count_by_category:
-            not_disciplines = discipline_count_by_category.get(category, 0)
-            row = {
-                'name': category,
-                'total': count_by_category[category],
-                'drilldown': {
-                    'name': 'Result',
-                    'categories': ['Disciplines', 'Not Disciplines'],
-                    'data': [count_by_category[category] - not_disciplines, not_disciplines],
-                }
-            }
-            data.append(row)
-
-        content = JSONSerializer().serialize({
-            'data': data
-        })
         return HttpResponse(content, content_type="application/json")

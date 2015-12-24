@@ -1,19 +1,16 @@
-from common.tests.core import BaseLiveTestCase
+from common.tests.core import BaseAdminTestCase
 from search.factories import SuggestionLogFactory, AliasFactory
 from search.models.alias import Alias
 
 
-class SearchResultTestCase(BaseLiveTestCase):
-    def setUp(self):
-        self.login_user()
-        self.visit('/admin/')
-
+class SearchResultTestCase(BaseAdminTestCase):
     def tearDown(self):
         Alias.objects.all().delete()
         super(SearchResultTestCase, self).tearDown()
 
     def go_to_search_result(self):
         self.element_by_tagname_and_text('span', 'Search Results').click()
+        self.until(lambda: self.element_by_tagname_and_text('h1', 'Search Results').is_displayed())
 
     def test_see_search_result_tab(self):
         log = SuggestionLogFactory()

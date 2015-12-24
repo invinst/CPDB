@@ -4,12 +4,11 @@ from allegation.factories import AllegationFactory, OfficerFactory, ComplainingW
 from common.tests.core import SimpleTestCase
 from common.models import Allegation
 
+
 RACE_GENDER_API_ENDPOINT = reverse('allegation:allegation-race-gender-api')
 
-class RaceGenderAPI(SimpleTestCase):
-    def setUp(self):
-        Allegation.objects.all().delete()
 
+class RaceGenderAPI(SimpleTestCase):
     def get_race_gender_info(self, **kwargs):
         response = self.client.get(RACE_GENDER_API_ENDPOINT, kwargs)
         data = self.json(response)
