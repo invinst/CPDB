@@ -1,3 +1,5 @@
+var pluralize = require('pluralize');
+
 var AppConstants = require('constants/AppConstants');
 
 var ComplaintService = require('services/ComplaintService');
@@ -39,6 +41,15 @@ var ComplaintPresenter = function (complaint) {
     return [complaint.add1, complaint.add2].join(' ').trim(); // a bit magic here :>)
   };
 
+  var officerListDisplay = function ( firstOfficer, numOfOfficers){
+    var moreOfficerDisplay = '';
+    if (numOfOfficers > 1){
+      moreOfficerDisplay = ' and ' + pluralize('other', numOfOfficers - 1 , true)
+    }
+
+    return firstOfficer + moreOfficerDisplay;
+  };
+
   return {
     crid: HelperUtil.fetch(complaint, 'crid', 'Unknown'),
     finalFinding: finalFinding(),
@@ -51,7 +62,8 @@ var ComplaintPresenter = function (complaint) {
     address: address(),
     city: HelperUtil.fetch(complaint, 'city', ''),
     locationType: HelperUtil.fetch(complaint, 'location', ''),
-    beat: HelperUtil.fetch(complaint, 'beat.name', '')
+    beat: HelperUtil.fetch(complaint, 'beat.name', ''),
+    officerListDisplay: officerListDisplay
   }
 };
 

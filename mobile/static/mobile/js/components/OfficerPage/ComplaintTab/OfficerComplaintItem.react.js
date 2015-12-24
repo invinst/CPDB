@@ -4,8 +4,23 @@ var ComplaintPresenter = require('presenters/ComplaintPresenter');
 var OfficerPresenter = require('presenters/OfficerPresenter');
 
 var OfficerComplaintItem = React.createClass({
+  renderCircles: function (numberOfCircles) {
+    var circles = [];
+
+    for (var i = 0; i < numberOfCircles; i++) {
+      circles.push(
+        <div className='circle-wrapper'>
+          <span className='circle'></span>
+        </div>
+      );
+    }
+
+    return circles;
+  },
+
   render: function () {
-    var complaint = this.props.complaint;
+    var complaint = this.props.complaint.data;
+    var officerInvolvedCount = this.props.complaint['num_crids'];
     var officer = this.props.officer;
 
     var officerPresenter = OfficerPresenter(officer);
@@ -35,19 +50,12 @@ var OfficerComplaintItem = React.createClass({
           </div>
           <div className='row'>
             <span className='label'>Officers</span>
-            <span className='value'>{officerPresenter.displayName} and 3 others   make this text looooooooonger
+            <span className='value'>
+              {complaintPresenter.officerListDisplay(officerPresenter.displayName, officerInvolvedCount)}
             </span>
           </div>
           <div className='circles row'>
-            <div className='circle-wrapper'>
-              <span className='circle'></span>
-            </div>
-            <div className='circle-wrapper'>
-              <span className='circle'></span>
-            </div>
-            <div className='circle-wrapper'>
-              <span className='circle'></span>
-            </div>
+            {this.renderCircles(officerInvolvedCount)}
           </div>
         </div>
       </div>
