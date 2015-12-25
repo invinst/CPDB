@@ -14,6 +14,7 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
     def test_all_good_data(self):
         officer_rank = 'PO'
         officer_rank_display = 'Police Officer'
+        officer_star = 99
 
         officer_unit = '012'
         officer_unit_display = 'District 12 - Near West'
@@ -34,7 +35,7 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
         related_display = 'Co-accused in 1 case'
 
         officer = OfficerFactory(rank=officer_rank, unit=officer_unit, race=officer_race,
-                                 appt_date=officer_appt_date, gender=officer_gender)
+                                 appt_date=officer_appt_date, gender=officer_gender, star=officer_star)
 
         other_officer = OfficerFactory(gender=other_officer_gender, race=other_officer_race)
 
@@ -88,6 +89,38 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
         AllegationFactory(officer=officer)
         self.go_to_officer_page(slug=officer.officer_first, pk=officer.pk)
         self.show_officer_tab('Relative Officers')
+        self.until(lambda: self.find('.no-related-officer'))
         no_related_officer_text = 'No any officer related to this officer.'
         self.should_see_text(no_related_officer_text)
-        
+
+    def test_less_officer_information(self):
+        officer_gender = ''
+        officer_gender_display = 'Gender unknown'
+
+        officer_star = None
+        officer_star_display = 'Badge  Unknown'
+
+        officer_rank = None
+        officer_rank_display = 'Rank N/A'
+
+        officer_appt_date = None
+        officer_join_date_display = 'Joined Unknown'
+
+        officer_unit = ''
+        officer_unit_display = 'Unit Unknown'
+
+        officer_race = None
+        officer_race_display = 'Race unknown'
+        officer = OfficerFactory(gender=officer_gender, rank=officer_rank, appt_date=officer_appt_date,
+                                 unit=officer_unit, race=officer_race, star=officer_star)
+        AllegationFactory(officer=officer)
+        self.go_to_officer_page(slug=officer.officer_first, pk=officer.pk)
+        self.show_officer_tab('Summary')
+        self.until(lambda: self.find('.officer-summary-section'))
+
+        self.should_see_text(officer_rank_display)
+        self.should_see_text(officer_unit_display)
+        self.should_see_text(officer_join_date_display)
+        self.should_see_text(officer_gender_display)
+        self.should_see_text(officer_race_display)
+        self.should_see_text(officer_star_display)
