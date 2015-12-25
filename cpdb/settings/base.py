@@ -55,6 +55,7 @@ INSTALLED_APPS = (
     'wagtail.wagtailsites',
     'wagtail.wagtailredirects',
     'wagtail.wagtailforms',
+    'wagtail.contrib.wagtailsearchpromotions',
 
     'home',
     'common',
