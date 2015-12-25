@@ -335,7 +335,7 @@ class HomePageTestCase(BaseLiveTestCase):
         homepage = root.add_child(instance=HomePageFactory.build(title='child', body=body))
         default_site = Site.objects.create(is_default_site=True, root_page=root, hostname='localhost')
 
-        self.visit_home()
+        self.visit_home(fresh=True)
         self.should_see_text(homepage.title)
         self.link(homepage.title).click()
         self.should_see_text(body_content)
