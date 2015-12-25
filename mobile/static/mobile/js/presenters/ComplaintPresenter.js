@@ -37,17 +37,8 @@ var ComplaintPresenter = function (complaint) {
     return !!endInvestigationDate ? endInvestigationDate.format(AppConstants.SIMPLE_DATE_FORMAT) : '';
   };
 
-  var address = function(){
+  var address = function () {
     return [complaint.add1, complaint.add2].join(' ').trim(); // a bit magic here :>)
-  };
-
-  var officerListDisplay = function ( firstOfficer, numOfOfficers){
-    var moreOfficerDisplay = '';
-    if (numOfOfficers > 1){
-      moreOfficerDisplay = ' and ' + pluralize('other', numOfOfficers - 1 , true)
-    }
-
-    return firstOfficer + moreOfficerDisplay;
   };
 
   return {
@@ -63,7 +54,6 @@ var ComplaintPresenter = function (complaint) {
     city: HelperUtil.fetch(complaint, 'city', ''),
     locationType: HelperUtil.fetch(complaint, 'location', ''),
     beat: HelperUtil.fetch(complaint, 'beat.name', ''),
-    officerListDisplay: officerListDisplay
   }
 };
 

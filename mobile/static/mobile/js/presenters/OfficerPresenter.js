@@ -1,3 +1,5 @@
+var pluralize = require('pluralize');
+
 var AppConstants = require('constants/AppConstants');
 
 var HelperUtil = require('utils/HelperUtil');
@@ -42,8 +44,19 @@ var OfficerPresenter = function (officer) {
     return HelperUtil.fetch(AppConstants.RANKS, rankCode, 'Unknown');
   };
 
-  var joinDate = function() {
+  var joinedDate = function() {
     return HelperUtil.fetch(officer, 'appt_date', 'Unknown');
+  };
+
+  var coAccusedWith = function (numberOfCoAccusedOfficers) {
+    var theOthers = pluralize('other', numberOfCoAccusedOfficers, true);
+    var withSomeOfficers = HelperUtil.format(' and {theOthers}', {'theOthers': theOthers});
+    var withNoOfficer = '';
+
+    var coAccusedInformation = numberOfCoAccusedOfficers ? withSomeOfficers : withNoOfficer;
+
+    return HelperUtil.format('{officerName} {coAccusedInformation}', {'officerName': displayName(),
+                                                                      'coAccusedInformation': coAccusedInformation}).trim();
   };
 
   return {
@@ -54,7 +67,8 @@ var OfficerPresenter = function (officer) {
     race: race(),
     unit: unit(),
     rank: rank(),
-    joinDate: joinDate()
+    joinedDate: joinedDate(),
+    coAccusedWith: coAccusedWith
   };
 };
 

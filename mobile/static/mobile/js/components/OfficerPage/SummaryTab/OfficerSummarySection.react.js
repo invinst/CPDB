@@ -22,7 +22,7 @@ var OfficerSummarySection = React.createClass({
         <div className='pad'>
           {this.renderSummaryInfoItem('Rank', officerPresenter.rank)}
           {this.renderSummaryInfoItem('Unit', officerPresenter.unit)}
-          {this.renderSummaryInfoItem('Joined', officerPresenter.joinDate)}
+          {this.renderSummaryInfoItem('Joined', officerPresenter.joinedDate)}
           {this.renderSummaryInfoItem('Sex', officerPresenter.gender)}
           {this.renderSummaryInfoItem('Race', officerPresenter.race)}
         </div>

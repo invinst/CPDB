@@ -21,7 +21,7 @@ var OfficerComplaintItem = React.createClass({
 
   render: function () {
     var complaint = this.props.complaint.data;
-    var officerInvolvedCount = this.props.complaint['num_crids'];
+    var numberOfInvolvedOfficers = this.props.complaint['num_crids']  - 1; // exclude himself
     var officer = this.props.officer;
 
     var officerPresenter = OfficerPresenter(officer);
@@ -52,11 +52,11 @@ var OfficerComplaintItem = React.createClass({
           <div className='row'>
             <span className='label'>Officers</span>
             <span className='value'>
-              {complaintPresenter.officerListDisplay(officerPresenter.displayName, officerInvolvedCount)}
+              {officerPresenter.coAccusedWith(numberOfInvolvedOfficers)}
             </span>
           </div>
           <div className='circles row'>
-            {this.renderCircles(officerInvolvedCount)}
+            {this.renderCircles(numberOfInvolvedOfficers + 1)}
           </div>
         </div>
       </div>
