@@ -94,26 +94,16 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
         self.should_see_text(no_related_officer_text)
 
     def test_less_officer_information(self):
-        officer_gender = ''
-        officer_gender_display = 'Gender unknown'
-
-        officer_star = None
-        officer_star_display = 'Badge  Unknown'
-
-        officer_rank = None
-        officer_rank_display = 'Rank N/A'
-
-        officer_appt_date = None
-        officer_join_date_display = 'Joined Unknown'
-
-        officer_unit = ''
-        officer_unit_display = 'Unit Unknown'
-
-        officer_race = None
-        officer_race_display = 'Race unknown'
-        officer = OfficerFactory(gender=officer_gender, rank=officer_rank, appt_date=officer_appt_date,
-                                 unit=officer_unit, race=officer_race, star=officer_star)
+        officer = OfficerFactory(gender='', rank=None, appt_date=None,
+                                 unit='', race=None, star=None)
         AllegationFactory(officer=officer)
+        officer_gender_display = 'Gender unknown'
+        officer_star_display = 'Badge  Unknown'
+        officer_rank_display = 'Rank N/A'
+        officer_join_date_display = 'Joined Unknown'
+        officer_unit_display = 'Unit Unknown'
+        officer_race_display = 'Race unknown'
+
         self.go_to_officer_page(slug=officer.officer_first, pk=officer.pk)
         self.show_officer_tab('Summary')
         self.until(lambda: self.find('.officer-summary-section'))
