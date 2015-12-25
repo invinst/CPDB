@@ -31,4 +31,5 @@ class FullAllegationSerializer(serializers.ModelSerializer):
             'add2',
             'city',
             'point',
+            'document_id',
         )
