@@ -9,7 +9,7 @@ class Command(BaseCommand):
     help = 'Update complaint documents info'
 
     id_delim = '-'
-    search_syntax = 'account: 10146-invisible-institute title:CR %s'
+    search_syntax = 'account: 10146-invisible-institute title:"CR %s"'
 
     def add_arguments(self, parser):
         parser.add_argument('--start')

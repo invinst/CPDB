@@ -376,7 +376,7 @@ HAS_FILTERS_TEXT_DICT = {
     'has:document': {
         'text': 'has:document',
         'condition': {
-            'document_id__isnull': [False]
+            'document_id__gt': [0]
         }
     }
 }
