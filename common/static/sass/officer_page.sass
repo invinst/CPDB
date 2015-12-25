@@ -11,14 +11,13 @@
   @media (min-width: $screen-xs-min) and (max-width: $screen-xs-max)
     margin-top: 8px
 
-#officer-page
-  position: relative
+.related-officers-enter
+  opacity: 0.01
+  z-index: 3
 
-.officer-page-enter
-  position: absolute
-  right: 0
-  width: 0
+.related-officers-enter.related-officers-enter-active
+  opacity: 1
+  transition: opacity .5s linear
 
-.officer-page-enter.officer-page-enter-active
-  width: 100%
-  transition: width 500ms ease-in
+.complaint-list-placeholder
+  min-height: 601px

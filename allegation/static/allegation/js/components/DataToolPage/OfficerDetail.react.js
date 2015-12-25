@@ -1,7 +1,8 @@
 var classnames = require('classnames');
+var React = require('react');
+var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
 var AppConstants = require('constants/AppConstants');
-var React = require('react');
 var MapStore = require("stores/MapStore");
 var FilterActions = require("actions/FilterActions");
 var Timeline = require("components/DataToolPage/Officer/Timeline.react");
@@ -55,14 +56,35 @@ var OfficerDetail = React.createClass({
             {officer.officer_first} {officer.officer_last}
           </div>
         </div>
-        <OfficerInformation officer={officer} />
+        <ReactCSSTransitionGroup
+            transitionName="information"
+            transitionEnterTimeout={500}>
+          {officer.discipline_count !== undefined
+            ? <OfficerInformation officer={officer} />
+            : <div className='information-placeholder'/>
+          }
+        </ReactCSSTransitionGroup>
         <div className="row visualization-information">
           {mapDiv}
           <div className={columnClass}>
-            <Timeline data={this.props.timelineData} officer={officer}/>
+            <ReactCSSTransitionGroup
+                transitionName="timeline"
+                transitionEnterTimeout={500}>
+              {this.props.timelineData.items
+                ? <Timeline data={this.props.timelineData} officer={officer}/>
+                : null
+              }
+            </ReactCSSTransitionGroup>
           </div>
           <div className={columnClass}>
-            <DonutChart officer={officer}/>
+            <ReactCSSTransitionGroup
+                transitionName="donut-chart"
+                transitionEnterTimeout={500}>
+              {officer.discipline_count !== undefined
+                ? <DonutChart officer={officer}/>
+                : null
+              }
+            </ReactCSSTransitionGroup>
           </div>
         </div>
       </div>

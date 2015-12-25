@@ -47,7 +47,7 @@ var RelatedOfficers = React.createClass({
 
   render: function () {
     return (
-      <div>
+      <div className="related-officers">
         {this.renderTitle() }
         <div className='row'>
           {this.renderRelatedOfficerList()}

@@ -107,12 +107,16 @@ var Timeline = React.createClass(_.assign(Base(TimelineStore), {
     this.drawTimeline(this.state.data);
   },
 
+  componentDidMount: function () {
+    this.drawTimeline(this.props.data);
+  },
+
   render: function () {
     var wait = '';
     if (this.state.data) {
       wait = (<i class='fa fa-spin fa-spinner'/>);
     }
-    return (<div>{wait}</div>);
+    return (<div className="timeline">{wait}</div>);
   }
 }));
 
