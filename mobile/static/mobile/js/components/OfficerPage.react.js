@@ -3,13 +3,12 @@ var objectAssign = require('object-assign');
 
 var Base = require('components/Base.react');
 var SimpleTab = require('components/Shared/SimpleTab.react');
-var Wrapper = require('components/Shared/Wrapper.react');
 
 var ComplaintsTab = require('components/OfficerPage/ComplaintsTab.react');
-var OfficerHeader = require('components/OfficerPage/OfficerHeader.react');
 var SearchBar = require('components/Shared/SearchBar.react');
 var SummaryTab = require('components/OfficerPage/SummaryTab.react');
 var RelatedOfficersTab = require('components/OfficerPage/RelatedOfficersTab.react');
+var OfficerHeader = require('components/OfficerPage/OfficerHeader.react');
 var OfficerResourceUtil = require('utils/OfficerResourceUtil');
 var OfficerPageStore = require('stores/OfficerPage/OfficerPageStore');
 var NotMatchedPage = require('components/OfficerPage/NotMatchedPage.react');
