@@ -464,6 +464,8 @@ class Allegation(MobileSuggestibleAllegation, models.Model):
 
     beat = models.ForeignKey('Area', null=True, blank=True, related_name='beats')
 
+    source = models.CharField(null=True, max_length=20)
+
     def __str__(self):
         return "%s" % self.crid
 
