@@ -29,7 +29,7 @@ class AllegationDetailTestCase(BaseLiveTestCase):
 
     def test_complaint_detail_with_long_summary(self):
         fake = Faker()
-        very_long_sentence = fake.sentence(100)
+        very_long_sentence = fake.sentence(200)
 
         allegation = AllegationFactory(summary=very_long_sentence)
 
