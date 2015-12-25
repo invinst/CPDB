@@ -329,7 +329,8 @@ class HomePageTestCase(BaseLiveTestCase):
                 'type': 'row_section'
             }
         ])
-        root = HomePage.get_tree().get(id=3)
+        tree = HomePage.get_tree().all()
+        root = tree[tree.count()-1]
         homepage = root.add_child(instance=HomePageFactory.build(body=body))
 
         self.visit_home()

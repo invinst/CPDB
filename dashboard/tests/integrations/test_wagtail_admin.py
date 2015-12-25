@@ -4,7 +4,9 @@ from home.models import HomePage
 
 class WagtailAdminTestCase(BaseAdminTestCase):
     def test_can_create_content_page(self):
-        self.visit('/wagtail-admin/pages/3/')
+        tree = HomePage.get_tree().all()
+        root = tree[tree.count()-1]
+        self.visit('/wagtail-admin/pages/{page_id}/'.format(page_id=root.id))
         page_title = 'title'
         body_content = 'body content'
         self.find('.icon-plus').click()
