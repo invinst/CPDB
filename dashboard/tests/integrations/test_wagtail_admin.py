@@ -1,12 +1,18 @@
+from wagtail.wagtailcore.models import Site
+
 from common.tests.core import BaseAdminTestCase
 from home.models import HomePage
+from home.factories import HomePageFactory
 
 
 class WagtailAdminTestCase(BaseAdminTestCase):
     def test_can_create_content_page(self):
-        tree = HomePage.get_tree().all()
-        root = tree[tree.count()-1]
-        self.visit('/wagtail-admin/pages/{page_id}/'.format(page_id=root.id))
+        HomePage.get_tree().all().delete()
+        root = HomePage.add_root(instance=HomePageFactory.build(title='Root'))
+        homepage = root.add_child(instance=HomePageFactory.build(title='child'))
+        default_site = Site.objects.create(is_default_site=True, root_page=root, hostname='localhost')
+
+        self.visit('/wagtail-admin/pages/{page_id}/'.format(page_id=homepage.id))
         page_title = 'title'
         body_content = 'body content'
         self.find('.icon-plus').click()

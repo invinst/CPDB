@@ -1,6 +1,7 @@
 import json
 
 from selenium.webdriver.common.keys import Keys
+from wagtail.wagtailcore.models import Site
 
 from allegation.factories import AllegationFactory, AllegationCategoryFactory
 from api.models import Setting
@@ -329,9 +330,10 @@ class HomePageTestCase(BaseLiveTestCase):
                 'type': 'row_section'
             }
         ])
-        tree = HomePage.get_tree().all()
-        root = tree[tree.count()-1]
-        homepage = root.add_child(instance=HomePageFactory.build(body=body))
+        HomePage.get_tree().all().delete()
+        root = HomePage.add_root(instance=HomePageFactory.build(title='Root'))
+        homepage = root.add_child(instance=HomePageFactory.build(title='child', body=body))
+        default_site = Site.objects.create(is_default_site=True, root_page=root, hostname='localhost')
 
         self.visit_home()
         self.should_see_text(homepage.title)
