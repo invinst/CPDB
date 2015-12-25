@@ -1,6 +1,7 @@
 var _ = require('lodash');
 var classnames = require('classnames');
 var React = require('react');
+var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
 var ComplaintSection = require('components/OfficerPage/ComplaintSection.react');
 var StoryListAPI = require('utils/StoryListAPI');
@@ -101,12 +102,28 @@ var OfficerPage = React.createClass({
           </div>
           <div className="white-background">
             <div className="container">
-              <RelatedOfficers relatedOfficers={relatedOfficers} />
+              <ReactCSSTransitionGroup
+                  transitionName="related-officers"
+                  transitionEnterTimeout={500}
+                  transitionLeaveTimeout={500}>
+                {relatedOfficers.length
+                  ? <RelatedOfficers relatedOfficers={relatedOfficers} />
+                  : null
+                }
+              </ReactCSSTransitionGroup>
               <StoryList officer={officer} />
             </div>
           </div>
           <div className="container">
-            <ComplaintSection officer={officer}/>
+            <ReactCSSTransitionGroup
+                transitionName="complaint-list"
+                transitionEnterTimeout={500}
+                transitionLeaveTimeout={500}>
+              {officer.discipline_count !== undefined
+                ? <ComplaintSection officer={officer}/>
+                : <div className="complaint-list-placeholder"/>
+              }
+            </ReactCSSTransitionGroup>
           </div>
           <div className='container-fluid'>
             <div className='sticky-footer'>

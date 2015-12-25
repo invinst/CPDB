@@ -27,7 +27,7 @@ var ComplaintSection = React.createClass(_.assign(Base(ComplaintSectionStore), {
 
   render: function() {
     return (
-        <div className="complaint_list">
+        <div className="complaint-list">
         <div className='row'>
           <div className='col-md-2'>
             <h3 className="margin-top-0">Complaints (<Counter to={this.state.complaints.length} />)</h3>

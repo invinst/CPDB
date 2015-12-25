@@ -64,9 +64,20 @@
   border-top: 3px solid $color_silver_tree_approx
   margin-right: 1em
 
-.information
+.information > div
   padding: 15px 35px
   border-top: solid 1px $color_mine_shaft_approx
+
+.information-placeholder
+  min-height: 57px
+
+.information-enter
+  opacity: 0.01
+  z-index: 2
+
+.information-enter.information-enter-active
+  opacity: 1
+  transition: opacity .5s linear
 
 .information-entry
   display: inline-block
@@ -101,7 +112,18 @@
   display: none
 
 .donut-chart
-  height: 260px
+  position: relative
+
+  #donut-chart
+    height: 260px
+
+.donut-chart-enter
+  opacity: 0.01
+  z-index: 2
+
+.donut-chart-enter.donut-chart-enter-active
+  opacity: 1
+  transition: opacity .5s linear
 
 .donut-summary
   margin-bottom: 10px
@@ -148,3 +170,12 @@
     height: 5em
     font-family: $font_0, $font_4
     font-style: 16px
+
+.timeline-enter
+  opacity: 0.01
+  z-index: 2
+
+.timeline-enter.timeline-enter-active
+  opacity: 1
+  transition: opacity .5s linear
+

@@ -823,7 +823,7 @@ footer
     padding: 2px
     padding-bottom: 11px
 
-.complaint_list
+.complaint-list
   margin-top: 2em
   .filters
     margin-left: -5px
@@ -844,6 +844,14 @@ footer
         margin-right: 5px
         display: inline-block
         font-size: 0.7em
+
+.complaint-list-enter
+  opacity: 0.01
+  z-index: 2
+
+.complaint-list-enter.complaint-list-enter-active
+  opacity: 1
+  transition: opacity .5s linear
 
 .complaint-row-outcome
   font-size: 2em
@@ -1501,18 +1509,19 @@ form.navbar-form.navbar-right
   width: 100%
 
 .page-enter
-  left: 100%
+  opacity: 0.01
+  z-index: 2
 
 .page-enter.page-enter-active
-  left: 0
-  transition: left .5s linear
+  opacity: 1
+  transition: opacity .5s linear
 
 .page-leave
-  left: 0
+  opacity: 1
 
 .page-leave.page-leave-active
-  left: -100%
-  transition: left .5s linear
+  opacity: 0
+  transition: opacity .5s linear
 
 @import 'shared'
 @import 'sunburst'
