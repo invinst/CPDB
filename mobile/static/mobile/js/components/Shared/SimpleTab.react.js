@@ -1,6 +1,7 @@
 var cx = require('classnames');
 var React = require('react');
 
+var HelperUtil = require('utils/HelperUtil');
 var Wrapper = require('components/Shared/Wrapper.react');
 
 
@@ -36,48 +37,35 @@ var SimpleTab = React.createClass({
     }
   },
 
-  renderTabNav: function () {
-    var navs = this.props.children[0];//TODO : fix hard code
+  renderChildren: function (prefix, items) {
     var self = this;
 
-    this.countOfItems = navs.props.children.length;
-
-    return navs.props.children.map(function (nav, i) {
-      var tabNavRef = 'tabNav-' + i;
-      var classNames = cx('tab-nav', {
+    return items.props.children.map(function (item, i) {
+      var itemKey = HelperUtil.format('{prefix}-{i}', {'prefix': prefix, 'i': i});
+      var classNames = cx(prefix, {
         'active': (i == self.state.activeIndex)
       });
 
 
-      return React.cloneElement(nav, {
-        'key': tabNavRef,
-        'ref': tabNavRef,
+      return React.cloneElement(item, {
+        'key': itemKey,
         className: classNames
       });
     })
   },
 
+  renderTabNav: function () {
+    var navs = this.props.children[0];
+    return this.renderChildren('tab-nav', navs)
+  },
+
   renderTabContent: function () {
-    var navs = this.props.children[1];//TODO : fix hard code
-    var self = this;
-
-    return navs.props.children.map(function (nav, i) {
-      var tabContentRef = 'tabContent-' + i;
-      var classNames = cx('tab-content', {
-        'active': (i == self.state.activeIndex)
-      });
-
-
-      return React.cloneElement(nav, {
-        'key': tabContentRef,
-        'ref': tabContentRef,
-        'className': classNames
-      });
-    })
+    var tabs = this.props.children[1];
+    return this.renderChildren('tab-content', tabs)
   },
 
   renderNavigation: function () {
-    var navs = this.props.children[0];//TODO : fix hard code
+    var navs = this.props.children[0];
     var tabs = navs.props.children;
 
     var totalNumberOfChildren = tabs.length;

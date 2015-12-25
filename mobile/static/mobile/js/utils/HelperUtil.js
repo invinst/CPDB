@@ -18,6 +18,19 @@ var HelperUtil = {
     }
 
     return obj;
+  },
+
+  format: function (str, replacements) {
+    var re = /{([^{}]+)}/g;
+
+    return str.replace(re, function (match, val) {
+      var prop = replacements;
+      val.split('.').forEach(function (key) {
+        prop = prop[key];
+      });
+
+      return prop;
+    });
   }
 };
 
