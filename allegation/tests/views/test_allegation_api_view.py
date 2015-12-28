@@ -237,3 +237,18 @@ class AllegationApiViewTestCase(AllegationFilterMixin, AllegationApiTestBase):
         len(data).should.equal(3)
         for i in range(3):
             data[i]['allegation']['id'].shouldnt.equal(allegation.id)
+
+    def test_filter_by_has_address(self):
+        data = self.fetch_allegations(has_filters='has:address')
+        len(data).should.equal(0)
+
+        allegation1 = AllegationFactory(add1=123)
+        allegation2 = AllegationFactory(add2='456')
+        allegation3 = AllegationFactory(add1=789, add2='abc')
+        result_count = 3
+
+        data = self.fetch_allegations(has_filters='has:address')
+        len(data).should.equal(result_count)
+        any([data[i]['allegation']['id'] == allegation1.id for i in range(result_count)]).should.be.true
+        any([data[i]['allegation']['id'] == allegation2.id for i in range(result_count)]).should.be.true
+        any([data[i]['allegation']['id'] == allegation3.id for i in range(result_count)]).should.be.true

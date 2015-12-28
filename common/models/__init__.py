@@ -2,6 +2,8 @@ from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 from django.contrib.gis.db import models
 from django.core.urlresolvers import reverse
+from django.db.models.query_utils import Q
+
 from allegation.models.allegation_manager import AllegationManager
 from common.models.suggestible import MobileSuggestibleOfficer, MobileSuggestibleAllegation
 
@@ -388,7 +390,7 @@ HAS_FILTERS_TEXT_DICT = {
     'has:address': {
         'text': 'has:address',
         'condition': {
-            'document_id__isnull': [False]
+            'add1_or_add2__isnotnull': [Q(add1__isnull=False) | Q(add2__isnull=False)]
         }
     },
     'has:location': {

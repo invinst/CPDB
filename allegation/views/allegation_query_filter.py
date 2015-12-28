@@ -132,7 +132,9 @@ class AllegationQueryFilter(object):
             condition = Q()
 
             for value in self.filters[a_filter]:
-                if value is None:
+                if isinstance(value, Q):
+                    condition = condition | value
+                elif value is None:
                     condition = condition | Q(**{'{field}__isnull'.format(field=a_filter): True})
                 else:
                     condition = condition | Q(**{'{field}'.format(field=a_filter): value})
