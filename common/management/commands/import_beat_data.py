@@ -27,17 +27,23 @@ class Command(BaseCommand):
             for row in c:
                 try:
                     allegations = Allegation.objects.filter(crid=row[CRID_COL])
-                    for allegation in allegations:
 
-                        if not allegation.beat:
-                            beat_name = row[BEAT_COL]
-                            if beat_name:
-                                beat_name = beat_name.zfill(4)
-                            beat = Area.objects.get(name=beat_name, type='police-beats')
-                            allegation.beat = beat
-                            allegation.areas.add(beat)
-                            allegation.save()
-                            success += 1
+                    for allegation in allegations:
+                        beat_name = row[BEAT_COL]
+
+                        if len(beat_name) < 4:
+                            beat_name = beat_name.zfill(4)
+
+                        beat = Area.objects.get(name=beat_name, type='police-beats')
+                        print("found", beat.name)
+                        allegation.beat = beat
+                        allegation.areas.add(beat)
+
+                        if not allegation.point:
+                            allegation.point = beat.centroid
+
+                        allegation.save()
+                        success += 1
 
                         if not allegation.point and allegation.beat:
                             allegation.point = allegation.beat.polygon.centroid
@@ -45,8 +51,8 @@ class Command(BaseCommand):
 
                 except Area.DoesNotExist:
                     fail += 1
-                    print(beat_name)
+                    print("notexist", beat_name)
                 except Area.MultipleObjectsReturned:
-                    print(beat_name)
+                    print("multiple", beat_name)
                     fail += 1
             print("success: %s fails: %s" % (success, fail))

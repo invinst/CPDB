@@ -153,7 +153,6 @@ class Command(BaseCommand):
                 Allegation.objects.create(**kwargs)
             except Exception as inst:
                 print(inst, row)
-                
 
     def import_officers(self, *args, **options):
         print('Importing officers...')
