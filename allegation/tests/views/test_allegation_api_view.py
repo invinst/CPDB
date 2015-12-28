@@ -252,3 +252,13 @@ class AllegationApiViewTestCase(AllegationFilterMixin, AllegationApiTestBase):
         any([data[i]['allegation']['id'] == allegation1.id for i in range(result_count)]).should.be.true
         any([data[i]['allegation']['id'] == allegation2.id for i in range(result_count)]).should.be.true
         any([data[i]['allegation']['id'] == allegation3.id for i in range(result_count)]).should.be.true
+
+    def test_filter_by_has_location(self):
+        data = self.fetch_allegations(has_filters='has:location')
+        len(data).should.equal(0)
+
+        allegation = AllegationFactory(location='somewhere')
+
+        data = self.fetch_allegations(has_filters='has:location')
+        len(data).should.equal(1)
+        data[0]['allegation']['id'].should.equal(allegation.id)

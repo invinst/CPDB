@@ -396,7 +396,7 @@ HAS_FILTERS_TEXT_DICT = {
     'has:location': {
         'text': 'has:location',
         'condition': {
-            'document_id__isnull': [False]
+            'location__isnull': [False]
         }
     },
     'has:summary': {
