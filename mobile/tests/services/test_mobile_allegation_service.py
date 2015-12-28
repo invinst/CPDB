@@ -1,7 +1,6 @@
 from allegation.factories import AllegationFactory, OfficerFactory
 from common.tests.core import SimpleTestCase
 from mobile.services.allegation_service import AllegationService
-from mobile.services.mobile_suggestion_service import *
 
 
 class MobileAllegationServiceTest(SimpleTestCase):
@@ -20,7 +19,7 @@ class MobileAllegationServiceTest(SimpleTestCase):
         result = self.call_get_officer_allegations(officer_id=officer.id)
 
         len(result).should.equal(1)
-        result[0]['num_crids'].should.equal(2)
+        len(result[0]['allegation_counts']).should.equal(2)
         result[0]['data'].crid.should.equal(str(crid))
 
     def test_get_officer_allegations_with_bad_officer_id(self):

@@ -16,6 +16,7 @@ class RelatedOfficerService(object):
             GROUP BY officer_id
           ) AS t1
           INNER JOIN common_officer ON t1.officer_id = common_officer.id
+          ORDER BY allegations_count DESC, num_allegations DESC
         '''
 
         return Officer.objects.raw(sql, {'officer_id': officer_id})
@@ -35,6 +36,7 @@ class RelatedOfficerService(object):
           GROUP BY officer_id
           ) AS t1
           INNER JOIN common_officer ON t1.officer_id=common_officer.id
+          ORDER BY allegations_count DESC, num_allegations DESC
         '''
 
         return Officer.objects.raw(sql, {'officer_id': officer_id})

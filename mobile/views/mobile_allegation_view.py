@@ -19,7 +19,7 @@ class MobileAllegationView(APIView):
             raise Http404()
 
         officer_ids = allegations.values_list('officer', flat=True)
-        officers = Officer.objects.filter(id__in=officer_ids)
+        officers = Officer.objects.filter(id__in=officer_ids).order_by('-allegations_count')
         complaining_witnesses = ComplainingWitness.objects.filter(crid=allegation.crid)
 
         content = MobileAllegationViewSerializer({

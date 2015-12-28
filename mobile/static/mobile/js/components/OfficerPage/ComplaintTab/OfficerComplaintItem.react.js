@@ -1,17 +1,22 @@
 var React = require('react');
+var cx = require('classnames');
 
 var ComplaintPresenter = require('presenters/ComplaintPresenter');
 var OfficerPresenter = require('presenters/OfficerPresenter');
+var OfficerUtil = require('utils/OfficerUtil');
+var HelperUtil = require('utils/HelperUtil');
 
 
 var OfficerComplaintItem = React.createClass({
-  renderCircles: function (numberOfCircles) {
+  renderCircles: function (allegationCounts) {
     var circles = [];
+    var officerUtil = OfficerUtil();
 
-    for (var i = 0; i < numberOfCircles; i++) {
+    for (var i = 0; i < allegationCounts.length; i++) {
+
       circles.push(
-        <div className='circle-wrapper'>
-          <span className='circle'></span>
+        <div className={cx('circle-wrapper', HelperUtil.format('officer-{index}', {'index': i}))} >
+          <span className={cx('circle', officerUtil.getStarClass(allegationCounts[i]))} ></span>
         </div>
       );
     }
@@ -21,7 +26,8 @@ var OfficerComplaintItem = React.createClass({
 
   render: function () {
     var complaint = this.props.complaint.data;
-    var numberOfInvolvedOfficers = this.props.complaint['num_crids']  - 1; // exclude himself
+    var numberOfInvolvedOfficers = this.props.complaint['allegation_counts'].length  - 1; // exclude himself
+    var allegationCounts = this.props.complaint['allegation_counts'];
     var officer = this.props.officer;
 
     var officerPresenter = OfficerPresenter(officer);
@@ -56,7 +62,7 @@ var OfficerComplaintItem = React.createClass({
             </span>
           </div>
           <div className='circles row'>
-            {this.renderCircles(numberOfInvolvedOfficers + 1)}
+            {this.renderCircles(allegationCounts)}
           </div>
         </div>
       </div>

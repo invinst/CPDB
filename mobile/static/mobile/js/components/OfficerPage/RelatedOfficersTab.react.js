@@ -29,8 +29,12 @@ var RelatedOfficersTab = React.createClass({
 
     return (
       <div className='related-officers-tab'>
-        {coAccused.map(this.renderRelatedOfficers('Co-accused'))}
-        {witness.map(this.renderRelatedOfficers('Witness'))}
+        <div className='co-accused-list'>
+          {coAccused.map(this.renderRelatedOfficers('Co-accused'))}
+        </div>
+        <div className='witness-list'>
+          {witness.map(this.renderRelatedOfficers('Witness'))}
+        </div>
       </div>
     );
   }

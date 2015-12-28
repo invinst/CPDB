@@ -1,13 +1,16 @@
 var React = require('react');
 
+var Wrapper = require('components/Shared/Wrapper.react');
 var ComplaintPresenter = require('presenters/ComplaintPresenter');
 var HelperUtil = require('utils/HelperUtil');
+var ComplaintService = require('services/ComplaintService');
 
 
 var ComplaintDetail = React.createClass({
   render: function () {
     var info = this.props.info || {};
     var complaintPresenter = ComplaintPresenter(info);
+    var complaintService = ComplaintService(info);
 
     return (
       <div className='complaint-detail pad'>
@@ -26,7 +29,9 @@ var ComplaintDetail = React.createClass({
         <div className='complaint-sub-category'>
           {complaintPresenter.allegationName}
         </div>
-        <a href='#' className='document-link'>View documents</a>
+        <Wrapper visible={complaintService.hasDocument}>
+          <a href={complaintPresenter.documentLink} className='document-link'>View documents</a>
+        </Wrapper>
       </div>
     );
   }
