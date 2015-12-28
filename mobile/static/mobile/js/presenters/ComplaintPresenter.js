@@ -38,7 +38,7 @@ var ComplaintPresenter = function (complaint) {
   };
 
   var address = function () {
-    return HelperUtil.format('{add1} {add2}', {'add1': complaint.add1, 'add2': complaint.add2});
+    return [complaint.add1, complaint.add2].join(' ').trim(); // a bit magic here :>)
   };
 
   var documentLink = function () {
