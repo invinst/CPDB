@@ -83,6 +83,8 @@ module.exports = {
   MAP_TOKEN: '***REMOVED***',
   MAP_TYPE: 'datamade.7e795301',
 
+  WAGTAIL_PAGES_RECEIVED_DATA: c++,
+
   NUMERAL_FORMAT: '0,0',
 
   FILTERS: {
@@ -301,6 +303,7 @@ module.exports = {
   ALLEGATION_DETAILS_API_ENDPOINT: '/api/investigation/',
   ALLEGATIONS_API_ENDPOINT: '/api/allegations/',
   INVESTIGATOR_API_ENDPOINT: '/investigator/',
+  WAGTAIL_PAGES_API_ENDPOINT: '/api/wagtail/v1/pages/?type=home.HomePage&fields=title,body,slug',
 
   DATE_FORMAT: 'D MMM, YYYY',
 

@@ -74,6 +74,8 @@ var RootRouter = React.createClass({
           <Route path="/investigator/:slug/:id" component={InvestigatorPage}>
           </Route>
         </Route>
+        <Route path="/:page" component={IndexPage}>
+        </Route>
       </Router>
     );
   },

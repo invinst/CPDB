@@ -30,6 +30,7 @@ INSTALLED_APPS = (
     'django.contrib.gis',
     'django.contrib.sites',
 
+    'wagtail.contrib.wagtailapi',
     'django_extensions',
     'djangobower',
     'django_tables2',
@@ -38,7 +39,25 @@ INSTALLED_APPS = (
     'jsonify',
     'django_nose',
     'django_user_agents',
+    'taggit',
+    'modelcluster',
 
+    'wagtail_cms',
+
+    'wagtail.wagtailcore',
+    'wagtail.wagtailadmin',
+    'wagtail.wagtaildocs',
+    'wagtail.wagtailsnippets',
+    'wagtail.wagtailusers',
+    'wagtail.wagtailimages',
+    'wagtail.wagtailembeds',
+    'wagtail.wagtailsearch',
+    'wagtail.wagtailsites',
+    'wagtail.wagtailredirects',
+    'wagtail.wagtailforms',
+    'wagtail.contrib.wagtailsearchpromotions',
+
+    'home',
     'common',
     'allegation',
     'officer',
@@ -67,6 +86,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 
+    'wagtail.wagtailcore.middleware.SiteMiddleware',
+    'wagtail.wagtailredirects.middleware.RedirectMiddleware',
 )
 
 ROOT_URLCONF = 'cpdb.urls'
@@ -74,7 +95,7 @@ ROOT_URLCONF = 'cpdb.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -231,3 +252,6 @@ SITE_INFO = {
     'domain': 'cpdb.co',
     'mobile_host': 'm.cpdb.co',
 }
+
+# WAGTAIL
+WAGTAIL_SITE_NAME = 'CPDB'

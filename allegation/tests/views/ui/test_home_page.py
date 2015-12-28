@@ -1,9 +1,14 @@
+import json
+
 from selenium.webdriver.common.keys import Keys
+from wagtail.wagtailcore.models import Site
 
 from allegation.factories import AllegationFactory, AllegationCategoryFactory
 from api.models import Setting
 from common.tests.core import *
 from share.models import Session
+from home.factories import HomePageFactory
+from home.models import HomePage
 
 
 class HomePageTestCase(BaseLiveTestCase):
@@ -273,3 +278,26 @@ class HomePageTestCase(BaseLiveTestCase):
 
         self.visit_home(fresh=True)
         self.browser.title.should.equal(setting.default_site_title)
+
+    def test_wagtail_tab(self):
+        body_content = 'body content'
+        body = json.dumps([
+            {
+                'value': [
+                    {
+                        'value': '<p>{content}</p>'.format(content=body_content),
+                        'type': 'half_paragraph'
+                    }
+                ],
+                'type': 'row_section'
+            }
+        ])
+        HomePage.get_tree().all().delete()
+        root = HomePage.add_root(instance=HomePageFactory.build(title='Root'))
+        homepage = root.add_child(instance=HomePageFactory.build(title='child', body=body))
+        default_site = Site.objects.create(is_default_site=True, root_page=root, hostname='localhost')
+
+        self.visit_home(fresh=True)
+        self.should_see_text(homepage.title)
+        self.link(homepage.title).click()
+        self.should_see_text(body_content)
