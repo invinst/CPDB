@@ -378,6 +378,42 @@ HAS_FILTERS_TEXT_DICT = {
         'condition': {
             'document_id__isnull': [False]
         }
+    },
+    'has:map': {
+        'text': 'has:map',
+        'condition': {
+            'document_id__isnull': [False]
+        }
+    },
+    'has:address': {
+        'text': 'has:address',
+        'condition': {
+            'document_id__isnull': [False]
+        }
+    },
+    'has:location': {
+        'text': 'has:location',
+        'condition': {
+            'document_id__isnull': [False]
+        }
+    },
+    'has:summary': {
+        'text': 'has:summary',
+        'condition': {
+            'document_id__isnull': [False]
+        }
+    },
+    'has:accused': {
+        'text': 'has:accused',
+        'condition': {
+            'document_id__isnull': [False]
+        }
+    },
+    'has:investigator': {
+        'text': 'has:investigator',
+        'condition': {
+            'document_id__isnull': [False]
+        }
     }
 }
 
