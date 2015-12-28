@@ -1,5 +1,6 @@
 var _ = require('lodash');
 var React = require('react');
+var ReactDOM = require('react-dom');
 require('mapbox.js');
 require('leaflet.heat');
 
@@ -81,8 +82,8 @@ var Map = React.createClass({
     AppStore.removeDataToolInitListener(this.onDataToolInit);
     MapStore.removeChangeMarkerListener(this.changeMarker);
     MapStore.removeBeforeChangeMarkerListener(this.beforeChangeMarker);
+    FilterStore.removeChangeListener(this._onChange);
 
-    _map.remove();
     _baseLayers = {};
     this.first_layer_added = false;
     this.removeEmbedListener();
@@ -90,7 +91,7 @@ var Map = React.createClass({
 
   // embedding
   getEmbedCode: function () {
-    var node = this.getDOMNode();
+    var node = ReactDOM.findDOMNode(this);
     var width = $(node).width() + 2;
     var height = $(node).height() + 2;
     var src = "/embed/?page=map&query=" + encodeURIComponent(FilterStore.getQueryString());
@@ -121,7 +122,7 @@ var Map = React.createClass({
   },
 
   enterEmbedMode: function () {
-    var node = this.getDOMNode();
+    var node = ReactDOM.findDOMNode(this);
     var parent = $(node).parent();
     $(parent).prepend(this.getEmbedNode())
   },
@@ -148,7 +149,7 @@ var Map = React.createClass({
   create: function (dom_id, opts) {
     this.first_layer_added = false;
     _layers = {}
-    dom_id = dom_id ? dom_id : this.getDOMNode();
+    dom_id = dom_id ? dom_id : ReactDOM.findDOMNode(this);
     opts = opts ? opts : this.state;
     var defaultZoom = opts.defaultZoom ? opts['defaultZoom'] : 11;
     var center = opts.center ? opts['center'] : [41.85677, -87.6024055];

@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var Filters = require('components/DataToolPage/Filters.react');
 var SummaryActions = require('actions/SummaryActions');
 var SummaryRow = require("components/DataToolPage/SummaryRow.react");
@@ -18,7 +19,7 @@ var Summary = React.createClass({
 
   // embedding
   getEmbedCode: function () {
-    var node = this.getDOMNode();
+    var node = ReactDOM.findDOMNode(this);
     var width = $(node).width();
     var height = $(node).height();
     var src = "/embed/?page=summary&query=" + encodeURIComponent(FilterStore.getQueryString(['cat', 'cat__category']));
@@ -46,7 +47,7 @@ var Summary = React.createClass({
     SummaryStore.addChangeListener(this._onChange);
     SummaryStore.addSummaryListener(this._changeView);
 
-    var that = $(this.getDOMNode());
+    var that = $(ReactDOM.findDOMNode(this));
     var height = that.parent().height();
     setTimeout(function () {
       that.find(".child-rows").css('max-height', height);

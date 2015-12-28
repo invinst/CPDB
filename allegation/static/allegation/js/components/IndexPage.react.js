@@ -27,6 +27,8 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
   componentDidMount: function () {
     AppStore.addChangeListener(this._onChange);
     AppStore.addChangePageListener(this.onChangePage);
+    AppStore.addChangeSessionListener(this.onChangeSession);
+
     $(window).on('scroll', this.scrollToggleShow);
     this.attachScroll();
   },
@@ -34,6 +36,7 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
   componentWillUnmount: function () {
     AppStore.removeChangeListener(this._onChange);
     AppStore.removeChangePageListener(this.onChangePage);
+    AppStore.removeChangeSessionListener(this.onChangeSession)
   },
 
   componentWillMount: function () {
@@ -47,6 +50,17 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
     WagtailPagesAPI.getData();
   },
 
+  onChangeSession: function () {
+    if (AppStore.isDataToolPage()) {
+      history.replaceState(null, null, AppStore.getDataToolUrl());
+    }
+  },
+
+  shouldComponentUpdate: function (nextProps, nextState) {
+    return (nextProps.transitioning === false &&
+      (!_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state)));
+  },
+
   componentDidUpdate: function () {
     this.displayTabByPath();
   },
@@ -56,8 +70,8 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
   },
 
   displayTabByPath: function () {
-    var page = this.props.location.pathname.split("/")[0];
-    if (page == '') {
+    var page = _.remove(window.location.pathname.split('/'))[0];
+    if (!page) {
       page = 'data';
     }
     if (!AppStore.isPage(page)) {
@@ -483,7 +497,7 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
               </div>
             </div>
             <div role="tabpanel" className={this.getPanelClass('data')} id="data">
-              <DataToolPage />
+              {this.state.page == 'data' ? <DataToolPage /> : null}
             </div>
           </div>
         </div>

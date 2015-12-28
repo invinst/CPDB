@@ -8,6 +8,7 @@ var Base = require('../stores/Base');
 
 var INIT_DATA_TOOL_EVENT = 'INIT_DATA_TOOL_EVENT';
 var CHANGE_PAGE_EVENT = 'CHANGE_PAGE_EVENT';
+var CHANGE_SESSION_EVENT = 'CHANGE_SESSION_EVENT';
 
 var _state = {
   isDataToolInit: true,
@@ -71,6 +72,18 @@ var AppStore = _.assign(Base(_state), {
     this.emit(CHANGE_PAGE_EVENT);
   },
 
+  emitChangeSession: function () {
+    this.emit(CHANGE_SESSION_EVENT);
+  },
+
+  removeChangeSessionListener: function(callback) {
+    this.removeListener(CHANGE_SESSION_EVENT, callback);
+  },
+
+  addChangeSessionListener: function (callback) {
+    this.on(CHANGE_SESSION_EVENT, callback);
+  },
+
   getDataToolUrl: function () {
     if (_state.session_hash) {
       if (_state.session_title) {
@@ -108,6 +121,7 @@ AppStore.dispatcherToken = AppDispatcher.register(function (action) {
       var data = action.data.data;
       _state.session_title = data.title;
       _state.session_hash = data.hash;
+      AppStore.emitChangeSession();
       AppStore.emitChange();
       break;
 

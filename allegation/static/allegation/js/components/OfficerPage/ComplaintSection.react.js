@@ -13,17 +13,21 @@ var ComplaintSection = React.createClass(_.assign(Base(ComplaintSectionStore), {
   componentDidMount: function() {
     var officer = this.props.officer.id || '';
     ComplaintSectionStore.addChangeListener(this._onChange);
-    ComplaintListAPI.getAllForOfficer(officer);
+    if (officer) {
+      ComplaintListAPI.getAllForOfficer(officer);
+    }
   },
 
   componentWillReceiveProps: function(newProps) {
     var officer = newProps.officer.id || '';
-    ComplaintListAPI.getAllForOfficer(officer);
+    if (officer) {
+      ComplaintListAPI.getAllForOfficer(officer);
+    }
   },
 
   render: function() {
     return (
-        <div className="complaint_list">
+        <div className="complaint-list">
         <div className='row'>
           <div className='col-md-2'>
             <h3 className="margin-top-0">Complaints (<Counter to={this.state.complaints.length} />)</h3>
