@@ -5,7 +5,7 @@ from django.conf import settings
 from django.utils import timezone
 from django.contrib.gis.geos import Point
 
-from allegation.factories import AreaFactory, ComplainingWitnessFactory, AllegationFactory
+from allegation.factories import AreaFactory, ComplainingWitnessFactory, AllegationFactory, InvestigatorFactory
 from allegation.tests.views.base import AllegationApiTestBase
 from common.models import Allegation, Officer, Area, RACES, DISCIPLINE_CODES, NO_DISCIPLINE_CODES
 
@@ -262,3 +262,14 @@ class AllegationApiViewTestCase(AllegationFilterMixin, AllegationApiTestBase):
         data = self.fetch_allegations(has_filters='has:location')
         len(data).should.equal(1)
         data[0]['allegation']['id'].should.equal(allegation.id)
+
+    def test_filter_by_has_investigator(self):
+        data = self.fetch_allegations(has_filters='has:investigator')
+        allegations_num = len(data)
+
+        allegation = AllegationFactory()
+        AllegationFactory(investigator=None)
+
+        data =self.fetch_allegations(has_filters='has:investigator')
+        len(data).should.equal(allegations_num + 1)
+        [obj['allegation']['id'] for obj in data].should.contain(allegation.id)

@@ -414,7 +414,7 @@ HAS_FILTERS_TEXT_DICT = {
     'has:investigator': {
         'text': 'has:investigator',
         'condition': {
-            'document_id__isnull': [False]
+            'investigator__isnull': [False]
         }
     }
 }
