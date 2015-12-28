@@ -4,7 +4,7 @@ var PropTypes = React.PropTypes;
 
 var InvestigatorDonutChart = require('components/InvestigatorPage/InvestigatorDonutChart.react');
 var InvestigatorInformation = require('components/InvestigatorPage/InvestigatorInformation.react');
-var Timeline = require('components/DataToolPage/Officer/Timeline.react');
+var Timeline = require('components/InvestigatorPage/Timeline.react');
 
 
 var InvestigatorDetail = React.createClass({
