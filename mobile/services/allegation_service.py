@@ -12,10 +12,14 @@ class AllegationService(object):
 
         for key, allegation_list in allegations:
             new_allegations = list(allegation_list)
-            new_allegation = new_allegations[0]
+            officers = []
+
+            for allegation in new_allegations:
+                officers.append(allegation.officer.allegations_count)
+
             allegation_results.append({
-                'data': new_allegation,
-                'num_crids': len(new_allegations)
+                'data': new_allegations[0],
+                'allegation_counts': sorted(officers, reverse=True)
             })
 
         return allegation_results

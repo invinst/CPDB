@@ -54,6 +54,11 @@ var ComplaintService = function (complaint) {
     return !incidentDate();
   };
 
+  var hasDocument = function () {
+    var documentId = HelperUtil.fetch(complaint, 'document_id', 0);
+    return documentId > 0;
+  };
+
   return {
     isOpenInvestigation: isOpenInvestigation(),
     startInvestigatingAtIncidentDate: startInvestigatingAtIncidentDate(),
@@ -64,7 +69,8 @@ var ComplaintService = function (complaint) {
     hasLocation: hasLocation(),
     hasFullAddress: hasFullAddress(),
     hasNoData: hasNoData(),
-    hasNoIncidentDate: hasNoIncidentDate()
+    hasNoIncidentDate: hasNoIncidentDate(),
+    hasDocument: hasDocument(),
   }
 };
 

@@ -20,5 +20,5 @@ class AllegationSerializer(serializers.ModelSerializer):
 
 
 class AllegationDataSerializer(serializers.Serializer):
-    data = AllegationSerializer(read_only=True)
-    num_crids = serializers.IntegerField()
+    data = AllegationSerializer()
+    allegation_counts = serializers.ListField(child=serializers.IntegerField())

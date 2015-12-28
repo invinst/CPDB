@@ -3,6 +3,7 @@ var request = require('superagent');
 var AppConstants = require('constants/AppConstants');
 var OfficerPageServerActions = require('actions/OfficerPage/OfficerPageServerActions');
 
+
 var OfficerResourceUtil = {
   get: function (id) {
     request.get(AppConstants.OFFICER_API_ENDPOINT)

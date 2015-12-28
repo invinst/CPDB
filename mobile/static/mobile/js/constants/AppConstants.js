@@ -169,11 +169,13 @@ module.exports = {
     '712': 'Violence Reduction Initiative - South'
   },
 
+  OFFICER_COMPLAINT_COUNT_RANGE: [20, 9, 3, 2, 0],
+
   // API endpoints
   ALLEGATION_API_ENDPOINT: '/mobile/api/allegation',
   OFFICER_API_ENDPOINT: '/mobile/api/officer',
 
   //Time format
   SIMPLE_DATE_FORMAT: 'MMM DD, YYYY',
-  FIRST_AVAILABLE_DATE: '01/01/1970'
+  FIRST_AVAILABLE_DATE: '02/01/1970'
 };

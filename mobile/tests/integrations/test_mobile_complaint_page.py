@@ -10,6 +10,12 @@ class MobileComplaintPageTestMixin(BaseLivePhoneTestCase):
 
 class MobileComplaintPageTest(MobileComplaintPageTestMixin):
     def test_allegation_with_full_information(self):
+        document_id = 123
+        document_normalized_title = 'abcd'
+        view_document_text = 'View documents'
+        view_document_link_format = 'http://documentcloud.org/documents/{id}-{title}.html'
+        view_document_link = view_document_link_format.format(id=document_id, title=document_normalized_title)
+
         final_finding_code = 'UN'
         final_finding_text = 'Unfounded'
         complaint_witness_gender = 'F'
@@ -26,7 +32,8 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
 
         allegation = AllegationFactory(final_finding=final_finding_code, cat=category, officer=officer,
                                        investigator=investigator, add1=address1, add2=address2,
-                                       city='Chicago, IL', location='15')
+                                       city='Chicago, IL', location='15', document_id=document_id,
+                                       document_normalized_title=document_normalized_title)
 
         ComplainingWitnessFactory(crid=allegation.crid, gender=complaint_witness_gender, race=complaint_witness_race,
                                   age=complaint_witness_age)
@@ -43,10 +50,37 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
         self.find('.investigator .name').text.should.contain(investigator.name)
         self.find('.investigator .rank').text.should.contain(investigator.current_rank)
         self.find('.location-detail').text.should.contain(allegation.beat.name)
+        self.find('.document-link').get_attribute('href').should.equal(view_document_link)
 
+        self.should_see_text(view_document_text)
         self.should_see_text(addresss)
         self.should_see_text(allegation.city)
         self.should_see_text(allegation.location)
+
+    def test_circle_color_of_involved_officers(self):
+        crid = '1234'
+        allegations_count_color_map = {
+            'circle-0': 21,
+            'circle-1': 11,
+            'circle-2': 4,
+            'circle-3': 2,
+            'circle-4': 1
+        }
+        officers = {}
+
+        for circle_class, allegations_count in allegations_count_color_map.items():
+            officer = OfficerFactory(allegations_count=allegations_count)
+            officers[circle_class] = officer
+            AllegationFactory(officer=officer, crid=crid)
+
+        self.go_to_allegation_detail_page(crid=crid)
+
+        for circle_class, allegations_count in allegations_count_color_map.items():
+            selector = '.officer-card.officer-{id}  .{circle_class}'.format(
+                id=officers[circle_class].id,
+                circle_class=circle_class
+            )
+            len(self.find_all(selector)).should.be.equal(1)
 
     def test_allegation_with_bad_crid(self):
         bad_crid = 0
@@ -78,6 +112,14 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
         self.until(lambda: self.find('.crid-title'))
 
         self.should_not_see_text('Officers involved')
+
+    def test_allegation_without_document(self):
+        allegation = AllegationFactory(officer=None)
+
+        self.visit('/mobile/complaint/{crid}'.format(crid=allegation.crid))
+        self.until(lambda: self.find('.crid-title'))
+
+        self.should_not_see_text('View documents')
 
     def test_allegation_with_no_investigator(self):
         allegation = AllegationFactory(officer=None, investigator=None)
