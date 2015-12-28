@@ -34,6 +34,7 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
   componentDidMount: function () {
     this.moveArrow();
     this.attachWindowScroll();
+    AppStore.addChangeListener(this._onChange);
   },
 
   renderWagtailTabs: function () {
@@ -43,7 +44,7 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
       var wagtailPageTo = '/' + wagtailPage.slug;
 
       return (
-        <li className={that.getNavClass(wagtailPage.slug)}>
+        <li className={that.getNavClass(wagtailPage.slug)} key={index}>
           <Link onClick={that.goToPage.bind(that, wagtailPage.slug)} to={wagtailPageTo}>{wagtailPage.title}</Link>
         </li>
       );
