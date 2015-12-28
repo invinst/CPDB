@@ -64,7 +64,22 @@ class SuggestServiceTestCase(SimpleTestCase):
         data['areas__id'].should.have.length_of(1)
         data['areas__id'][0][2].should.equal(area.type)
 
-    def test_suggest_has_document(self):
+    def test_suggest_has_filters(self):
+        data = self.suggestion.make_suggestion('has')
+
+        data.should.contain('has_filters')
+        len(data['has_filters']).should.equal(7)
+        for filter_name, filter_value in [
+                ('has:map', 'has:map'),
+                ('has:location', 'has:location'),
+                ('has:address', 'has:address'),
+                ('has:document', 'has:document'),
+                ('has:summary', 'has:summary'),
+                ('has:accused', 'has:accused'),
+                ('has:investigator', 'has:investigator')]:
+            data['has_filters'].should.contain([filter_name, filter_value])
+
+    def test_suggest_specific_has_filter(self):
         data = self.suggestion.make_suggestion('has:doc')
 
         data.should.contain('has_filters')
