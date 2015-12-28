@@ -154,7 +154,6 @@ class Command(BaseCommand):
             except Exception as inst:
                 print(inst, row)
 
-
     def import_officers(self, *args, **options):
         print('Importing officers...')
 
