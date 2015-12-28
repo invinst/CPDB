@@ -169,7 +169,7 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
 
     return this.state.wagtailPages.map(function (wagtailPage) {
       return (
-        <div role="tabpanel" className={that.getPanelClass(wagtailPage.slug)} id={wagtailPage.slug}>
+        <div role="tabpanel" className={that.getPanelClass(wagtailPage.slug)} id={wagtailPage.slug} key={wagtailPage.id}>
           <WagtailPage body={wagtailPage.body} />
         </div>
       );
