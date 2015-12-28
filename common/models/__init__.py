@@ -382,7 +382,7 @@ HAS_FILTERS_TEXT_DICT = {
     'has:map': {
         'text': 'has:map',
         'condition': {
-            'document_id__isnull': [False]
+            'point__isnull': [False]
         }
     },
     'has:address': {

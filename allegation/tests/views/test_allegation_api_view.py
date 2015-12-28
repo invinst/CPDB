@@ -3,6 +3,7 @@ import json
 
 from django.conf import settings
 from django.utils import timezone
+from django.contrib.gis.geos import Point
 
 from allegation.factories import AreaFactory, ComplainingWitnessFactory, AllegationFactory
 from allegation.tests.views.base import AllegationApiTestBase
@@ -223,3 +224,16 @@ class AllegationApiViewTestCase(AllegationFilterMixin, AllegationApiTestBase):
 
         len(data).should.equal(1)
         data[0]['allegation']['id'].should.equal(allegation.id)
+
+    def test_filter_by_has_map(self):
+        data = self.fetch_allegations(has_filters='has:map')
+        len(data).should.equal(3)
+
+        allegation = AllegationFactory()
+        allegation.point = None
+        allegation.save()
+
+        data = self.fetch_allegations(has_filters='has:map')
+        len(data).should.equal(3)
+        for i in range(3):
+            data[i]['allegation']['id'].shouldnt.equal(allegation.id)
