@@ -36,10 +36,8 @@ def update_categories(apps, schema_editor):
                     source='moore',
                     cat=current_allegation
                 )
-                print(row[0], "created and reset #", to_update.count())
                 to_update.update(cat=new_allegation)
 
-        print("Updating category allegation counts")
         management.call_command('calculate_allegations_count')
 
 class Migration(migrations.Migration):
