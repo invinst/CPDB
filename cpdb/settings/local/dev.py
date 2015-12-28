@@ -74,4 +74,7 @@ if 'test' in sys.argv:
         'django.middleware.clickjacking.XFrameOptionsMiddleware',
         'django.middleware.security.SecurityMiddleware',
         'corsheaders.middleware.CorsMiddleware',
+
+        'wagtail.wagtailcore.middleware.SiteMiddleware',
+        'wagtail.wagtailredirects.middleware.RedirectMiddleware',
     )
