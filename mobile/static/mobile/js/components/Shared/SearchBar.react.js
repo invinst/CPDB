@@ -1,11 +1,12 @@
 var React = require('react');
 
 var SearchBar = React.createClass({
+  onInputChange: function () {
+  },
+
   render: function () {
     return (
-      <div className='search-bar center'>
-        (Search Bar)
-      </div>
+      <input className='search-bar' placeholder='Search officers or complaints' onChange={this.onInputChange} />
     );
   }
 });

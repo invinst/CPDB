@@ -7,9 +7,7 @@ var Base = require('components/Base.react');
 var About = require('components/Shared/About.react');
 var MainPageStore = require('stores/MainPageStore');
 var Logo = require('components/Shared/Logo.react');
-var Search = require('components/Shared/Search.react');
-var SuggestionSection = require('components/MainPage/SuggestionSection.react');
-var SearchResultSection = require('components/MainPage/SearchResultSection.react');
+var SearchBar = require('components/Shared/SearchBar.react');
 
 
 var MainPage = React.createClass(objectAssign(Base(MainPageStore), {
@@ -28,11 +26,8 @@ var MainPage = React.createClass(objectAssign(Base(MainPageStore), {
       <div className='main-page'>
         <Logo topLeft={this.state.searchStatus != 'blank'}/>
         <div className={classNames}>
-          <Search />
-          <SuggestionSection visible={this.state.searchStatus == 'suggesting'}/>
-          <SearchResultSection visible={this.state.searchStatus == 'results'}/>
+          <SearchBar />
         </div>
-
         <div className='bar bar-standard bar-footer'>
           <About />
         </div>
