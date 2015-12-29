@@ -62,7 +62,7 @@ class SuggestViewTestCase(SimpleTestCase):
         AllegationCategoryFactory(allegation_name='Bonding category')
 
         data = self.get_suggestion('Bonding')
-        data.should.contain('cat__cat_id')
+        data.should.contain('cat')
 
     def test_detect_suggest_type_main_complaint_category(self):
         AllegationCategoryFactory(category='Bonding category')

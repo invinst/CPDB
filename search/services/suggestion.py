@@ -155,7 +155,7 @@ class Suggestion(object):
             order_bys=['-category_count'])
 
     def suggest_cat(self, q):
-        condition = Q(allegation_name__icontains=q)
+        condition = Q(allegation_name__icontains=q) | Q(cat_id__icontains=q)
         return self.query_suggestions(
             model_cls=AllegationCategory,
             cond=condition,
@@ -163,7 +163,7 @@ class Suggestion(object):
             order_bys=['-allegation_count'])
 
     def suggest_cat_id(self, q):
-        condition = Q(cat_id__icontains=q)
+        condition = Q(allegation_name__icontains=q) | Q(cat_id__icontains=q)
         return self.query_suggestions(
             model_cls=AllegationCategory,
             cond=condition,
