@@ -13,7 +13,7 @@ var OfficerPage = require('components/OfficerPage.react');
 var App = React.createClass({
   render: function () {
     var history = History.useBasename(History.createHistory)({
-      basename: '/'
+      basename: '/mobile'
     });
 
     return (

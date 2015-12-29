@@ -1,38 +1,48 @@
+var cx = require('classnames');
 var React = require('react');
 
-var Map = require('components/Shared/Map.react');
+var HelperUtil = require('utils/HelperUtil');
+var Map = require('components/ComplaintPage/Map.react');
+var ComplaintService = require('services/ComplaintService');
+var ComplaintPresenter= require('presenters/ComplaintPresenter');
+var Wrapper = require('components/Shared/Wrapper.react');
 
 
 var Location = React.createClass({
-  render: function () {
+  renderLocationInfoItem: function (label, data) {
     return (
-      <div className='location'>
-        <div className='section-header'>
-          <div className='section-title'>Where</div>
+        <Wrapper visible={!!data}>
+          <label>{label} </label>
+          <span>{data}</span>
+        </Wrapper>
+      );
+  },
+
+  render: function () {
+    var info = this.props.info;
+    var complaintService = ComplaintService(info);
+    var presenter = ComplaintPresenter(info);
+
+    var locationDetailClassNames = cx('location-detail pad', {
+      'no-data': complaintService.hasNoData
+    });
+
+    return (
+      <Wrapper wrapperClass='location' visible={complaintService.hasLocation}>
+        <div className='section-header bold'>
+          <div className='section-title pad'>Location</div>
         </div>
-        <div className='location-detail'>
-          <div>
-            <label>Beat</label>
-            <span>1214</span>
-          </div>
-          <div>
-            <label>Location</label>
-            <span>17</span>
-          </div>
-          <div>
-            <label>Address</label>
-            <span>9500 S Throop St.</span>
-          </div>
-          <div>
-            <label>City</label>
-            <span>Chicago IL 60643</span>
-          </div>
+        <div className={locationDetailClassNames}>
+          <div className='bold'>{presenter.address}</div>
+          {this.renderLocationInfoItem('Beat', presenter.beat)}
+          {this.renderLocationInfoItem('Location type', presenter.locationType)}
+          {this.renderLocationInfoItem('City', presenter.city)}
         </div>
-        <div className='location-map'>
-          <Map />
-        </div>
-      </div>
-    )
+        <Wrapper wrapperClass='location-map pad' visible={info.point}>
+          <Map info={info}/>
+        </Wrapper>
+      </Wrapper>
+    );
   }
 });
 
