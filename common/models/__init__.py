@@ -413,10 +413,10 @@ HAS_FILTERS_TEXT_DICT = {
             'document_id__isnull': [False]
         }
     },
-    'has:accused': {
-        'text': 'has:accused',
+    'has:identified': {
+        'text': 'has:identified',
         'condition': {
-            'document_id__isnull': [False]
+            'officer__isnull': [False]
         }
     },
     'has:investigator': {

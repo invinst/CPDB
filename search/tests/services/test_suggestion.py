@@ -75,7 +75,7 @@ class SuggestServiceTestCase(SimpleTestCase):
                 ('has:address', 'has:address'),
                 ('has:document', 'has:document'),
                 ('has:summary', 'has:summary'),
-                ('has:accused', 'has:accused'),
+                ('has:identified', 'has:identified'),
                 ('has:investigator', 'has:investigator')]:
             data['has_filters'].should.contain([filter_name, filter_value])
 
