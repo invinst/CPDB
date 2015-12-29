@@ -251,6 +251,7 @@ module.exports = {
     'crid': 'Allegation ID',
     'cat__category': 'Category',
     'cat__cat_id': 'Allegation type',
+    'cat': 'Allegation type',
     'investigator': 'Investigator',
     'officer': 'Officer',
     'officer__star': 'Badge number',
