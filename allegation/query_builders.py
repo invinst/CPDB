@@ -1,7 +1,12 @@
+import inspect
+
 from django.db.models.query_utils import Q
+from django.contrib.gis.geos import Point
+from django.contrib.gis.measure import D
 
 from common.constants import FOIA_START_DATE
 from common.models import OUTCOMES
+from allegation.utils.query import OfficerQuery
 
 
 NO_DISCIPLINE_CODES = ('600', '000', '500', '700', '800', '900', '', None)
@@ -15,26 +20,31 @@ class AlegationQueryBuilder(object):
     Expose a single method: `build`
     """
 
-    query_methods = [
-        '_q_adhoc_queries',
-        '_q_incident_date_only',
-        '_q_add_data_source_filter',
-        '_q_has_map',
-        '_q_has_document',
-        '_q_has_address',
-        '_q_has_location',
-        '_q_has_investigator'
-    ]
+    def build(self, query_params, ignore_params=None):
+        """
+        Take `query_params` and return a single Q object.
 
-    def build(self, query_params):
-        """Take `query_params` and return a single Q object."""
+        Will run query_params through all methods begin with `_q_`
+        and return the combined Q query.
+        """
+        query_params = self._exclude_ignore_params(query_params, ignore_params)
+        queries = self._apply_all_query_methods(query_params)
+        return queries
+
+    def _apply_all_query_methods(self, query_params):
         queries = Q()
 
-        for func in self.query_methods:
-            func = getattr(self, func)
+        for name, func in inspect.getmembers(self, predicate=inspect.ismethod):
+            if name[:3] != '_q_':
+                continue
             queries &= func(query_params)
 
         return queries
+
+    def _exclude_ignore_params(self, query_params, ignore_params):
+        return {
+            key: val for key, val in query_params.items()
+            if key not in (ignore_params or [])}
 
     def _q_adhoc_queries(self, query_params):
         queries = Q()
@@ -67,6 +77,41 @@ class AlegationQueryBuilder(object):
                 queries &= Q(**{key: val})
 
         return queries
+
+    def _q_officer_names(self, query_params):
+        queries = Q()
+        for name in query_params.getlist('officer_name', []):
+            queries |= OfficerQuery.condition_by_name(name, prefix='officer__')
+        return queries
+
+    def _q_officer_allegation_count(self, query_params):
+        if 'officer__allegations_count__gt' in query_params:
+            officer_allegation_count = \
+                query_params['officer__allegations_count__gt']
+            return OfficerQuery.condition_by_count(
+                officer_allegation_count,
+                field='allegations_count',
+                prefix='officer__')
+        return Q()
+
+    def _q_officer_discipline_count(self, query_params):
+        if 'officer__discipline_count__gt' in query_params:
+            officer_discipline_count = \
+                query_params['officer__discipline_count__gt']
+            return OfficerQuery.condition_by_count(
+                officer_discipline_count,
+                field='discipline_count',
+                prefix='officer__')
+        return Q()
+
+    def _q_latlng(self, query_params):
+        if 'latlng' in query_params:
+            lat, lng = tuple(query_params['latlng'].split(','))
+            radius = query_params.get('radius', 500)
+            return Q(point__distance_lt=(
+                Point(float(lng), float(lat)),
+                D(radius)))
+        return Q()
 
     def _q_has_document(self, query_params):
         if 'has:document' in query_params.getlist('has_filters', []):
