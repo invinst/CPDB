@@ -160,7 +160,7 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
       this.scrollTop(this.onScrollTopFindPage, this.getScrollTime());
     } else {
       $landingPageContainer.addClass('scroll-to-top');
-      this.scrollTop(this.onScrollTop, 1000);
+      this.scrollTop(this.onScrollTop, 100);
     }
   },
 
@@ -170,7 +170,7 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
     return this.state.wagtailPages.map(function (wagtailPage) {
       return (
         <div role="tabpanel" className={that.getPanelClass(wagtailPage.slug)} id={wagtailPage.slug} key={wagtailPage.id}>
-          <WagtailPage body={wagtailPage.body} />
+          <WagtailPage body={wagtailPage.extended_body} />
         </div>
       );
     })
