@@ -3,10 +3,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
 
-
 from common.models import Allegation, ComplainingWitness, Officer
 from mobile.serializers.mobile_allegation_view_serializer import MobileAllegationViewSerializer
-from mobile.services.related_officer_service import RelatedOfficerService
 
 
 class MobileAllegationView(APIView):
@@ -21,7 +19,7 @@ class MobileAllegationView(APIView):
             raise Http404()
 
         officer_ids = allegations.values_list('officer', flat=True)
-        officers = Officer.objects.filter(id__in=officer_ids)
+        officers = Officer.objects.filter(id__in=officer_ids).order_by('-allegations_count')
         complaining_witnesses = ComplainingWitness.objects.filter(crid=allegation.crid)
 
         content = MobileAllegationViewSerializer({

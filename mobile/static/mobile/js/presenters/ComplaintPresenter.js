@@ -1,3 +1,5 @@
+var pluralize = require('pluralize');
+
 var AppConstants = require('constants/AppConstants');
 
 var ComplaintService = require('services/ComplaintService');
@@ -16,7 +18,7 @@ var ComplaintPresenter = function (complaint) {
   };
 
   var finalStatus = function () {
-    var closedStatus = 'Investigation Closed (' + finalFinding() + ')';
+    var closedStatus = HelperUtil.format('Investigation Closed ({finalFinding})', {'finalFinding': finalFinding()});
     return complaintService.isOpenInvestigation ? 'Open Investigation' : closedStatus;
   };
 
@@ -35,11 +37,20 @@ var ComplaintPresenter = function (complaint) {
     return !!endInvestigationDate ? endInvestigationDate.format(AppConstants.SIMPLE_DATE_FORMAT) : '';
   };
 
-  var address = function(){
+  var address = function () {
     return [complaint.add1, complaint.add2].join(' ').trim(); // a bit magic here :>)
   };
 
+  var documentLink = function () {
+    var linkFormat = 'http://documentcloud.org/documents/{documentId}-{documentNormalizedTitle}.html';
+    var documentId = HelperUtil.fetch(complaint, 'document_id', '');
+    var documentNormalizedTitle = HelperUtil.fetch(complaint, 'document_normalized_title', '');
+
+    return HelperUtil.format(linkFormat, {'documentId': documentId, 'documentNormalizedTitle': documentNormalizedTitle});
+  };
+
   return {
+    crid: HelperUtil.fetch(complaint, 'crid', 'Unknown'),
     finalFinding: finalFinding(),
     finalStatus: finalStatus(),
     incidentDate: incidentDate(),
@@ -50,7 +61,8 @@ var ComplaintPresenter = function (complaint) {
     address: address(),
     city: HelperUtil.fetch(complaint, 'city', ''),
     locationType: HelperUtil.fetch(complaint, 'location', ''),
-    beat: HelperUtil.fetch(complaint, 'beat.name', '')
+    beat: HelperUtil.fetch(complaint, 'beat.name', ''),
+    documentLink: documentLink()
   }
 };
 

@@ -8,7 +8,7 @@ var SearchResultSectionActions = {
       actionType: AppConstants.CHANGE_TAB,
       data: tab
     });
-  },
+  }
 };
 
 module.exports = SearchResultSectionActions;

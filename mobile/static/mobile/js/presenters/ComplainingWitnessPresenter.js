@@ -5,7 +5,7 @@ var GenderPresenter = require('presenters/GenderPresenter');
 var ComplainingWitnessPresenter = function (complainingWitness) {
   var description = function () {
     var age = HelperUtil.fetch(complainingWitness, 'age', 'unknown');
-    var ageDisplay = 'Age ' + age;
+    var ageDisplay = HelperUtil.format('Age {age}', {'age': age});
     var gender = GenderPresenter(complainingWitness['gender']).humanReadable;
     var race = HelperUtil.fetch(complainingWitness, 'race', 'Race unknown');
 

@@ -15,7 +15,7 @@ var ComplaintPageServerActions = {
       actionType: AppConstants.COMPLAINT_PAGE_FAILED_TO_RECEIVED_DATA,
       data: crid
     });
-  },
+  }
 };
 
 module.exports = ComplaintPageServerActions;
