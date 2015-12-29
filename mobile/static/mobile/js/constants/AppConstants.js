@@ -16,6 +16,10 @@ module.exports = {
   OFFICER_PAGE_RECEIVED_DATA: c++,
   OFFICER_PAGE_FAILED_TO_RECEIVED_DATA: c++,
 
+  // MainPage events
+  MAIN_PAGE_RECEIVED_DATA: c++,
+  MAIN_PAGE_FAILED_TO_RECEIVED_DATA: c++,
+
   // Tokens
   MAPBOX_TOKEN: '***REMOVED***',
 
@@ -174,6 +178,7 @@ module.exports = {
   // API endpoints
   ALLEGATION_API_ENDPOINT: '/mobile/api/allegation',
   OFFICER_API_ENDPOINT: '/mobile/api/officer',
+  SUGGESTION_API_ENDPOINT: '/mobile/api/suggestion',
 
   //Time format
   SIMPLE_DATE_FORMAT: 'MMM DD, YYYY',
