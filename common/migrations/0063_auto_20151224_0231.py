@@ -43,7 +43,7 @@ def update_categories(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', '0060_auto_20151222_0816'),
+        ('common', '0062_merge'),
     ]
 
     operations = [
