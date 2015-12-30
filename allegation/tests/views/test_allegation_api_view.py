@@ -215,3 +215,11 @@ class AllegationApiViewTestCase(AllegationFilterMixin, AllegationApiTestBase):
         for row in data:
             allegation = Allegation.objects.get(pk=row['allegation']['id'])
             allegation.final_finding.shouldnt.equal('SU')
+
+    def test_filter_by_has_document(self):
+        allegation = AllegationFactory(document_id=1)
+
+        data = self.fetch_allegations(has_filters='has:document')
+
+        len(data).should.equal(1)
+        data[0]['allegation']['id'].should.equal(allegation.id)

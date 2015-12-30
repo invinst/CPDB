@@ -4,7 +4,7 @@ from django.db.models.query_utils import Q
 
 from allegation.utils.query import OfficerQuery
 from common.models import AllegationCategory, Allegation, Area, Investigator, Officer, FINDINGS, OUTCOMES, UNITS, GENDER, \
-    RACES, OUTCOME_TEXT_DICT, RANKS
+    RACES, OUTCOME_TEXT_DICT, RANKS, HAS_FILTERS_LIST
 from common.utils.hashid import hash_obj
 from search.models.alias import Alias
 from search.models.session_alias import SessionAlias
@@ -192,6 +192,16 @@ class Suggestion(object):
 
         return results[:5]
 
+    def suggest_has_filters(self, q):
+        if q.startswith('has'):
+            results = []
+            for val, filter_text in HAS_FILTERS_LIST:
+                if filter_text[:len(q)] == q:
+                    results.append([filter_text, val])
+            return results
+
+        return []
+
     def suggest_data_source(self, q):
         if q.startswith('pre') or q.startswith('foi'):
             return DATA_SOURCES
@@ -200,6 +210,7 @@ class Suggestion(object):
     def suggest_repeat_offenders(self, q):
         if q.startswith('rep'):
             return [[value, int(key)] for key, value in REPEATER_DESC.items()]
+        return []
 
     def suggest_sessions(self, query, limit=5):
         session_aliases = SessionAlias.objects.filter(alias__icontains=query)[:limit]
@@ -256,6 +267,8 @@ class Suggestion(object):
         ret['officer__allegations_count__gt'] = self.suggest_repeat_offenders(q)
 
         ret['session'] = self.suggest_sessions(q)
+
+        ret['has_filters'] = self.suggest_has_filters(q)
 
         ret = OrderedDict((k, v) for k, v in ret.items() if v)
         return ret

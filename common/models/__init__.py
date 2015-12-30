@@ -23,6 +23,11 @@ RANKS = [
     ['Chief', 'Chief']
 ]
 
+ACTIVE_CHOICES = [
+    ['Yes', 'Active'],
+    ['No', 'Inactive'],
+    ['Unknown', 'Unknown']
+]
 
 class Officer(MobileSuggestibleOfficer, models.Model):
     officer_first = models.CharField(max_length=255, null=True, db_index=True, blank=True)
@@ -33,9 +38,10 @@ class Officer(MobileSuggestibleOfficer, models.Model):
     unit = models.CharField(max_length=5, null=True, blank=True)
     rank = models.CharField(max_length=5, null=True, blank=True)
     star = models.FloatField(null=True, blank=True)
-    allegations_count = models.IntegerField(default=0, blank=True)
-    discipline_count = models.IntegerField(default=0, blank=True)
-    birth_year = models.IntegerField(default=0, blank=True)
+    allegations_count = models.IntegerField(default=0, blank=True, null=True)
+    discipline_count = models.IntegerField(default=0, blank=True, null=True)
+    birth_year = models.IntegerField(default=0, blank=True, null=True)
+    active = models.CharField(choices=ACTIVE_CHOICES, max_length='10', default='Unknown')
 
     @property
     def absolute_url(self):
@@ -373,10 +379,52 @@ FINAL_FINDING_TEXT_DICT = {
     }
 }
 
+HAS_FILTERS_TEXT_DICT = {
+    'has:document': {
+        'text': 'has:document',
+        'condition': {
+            'document_id__gt': [0]
+        }
+    }
+}
+
+HAS_FILTERS_LIST = [
+    (key, val['text']) for key, val in HAS_FILTERS_TEXT_DICT.items()
+]
+
+HAS_FILTERS_DICT = dict(HAS_FILTERS_LIST)
+
 CUSTOM_FILTER_DICT = {
     'final_finding_text': FINAL_FINDING_TEXT_DICT,
     'outcome_text': OUTCOME_TEXT_DICT,
+    'has_filters': HAS_FILTERS_TEXT_DICT,
 }
+
+LOCATION_CHOICES = [
+    ['01', 'Food Sales/Restaurant'],
+    ['02', 'Tavern/Liquor Store'],
+    ['03', 'Other Business Establishment'],
+    ['04', 'Police Building'],
+    ['05', 'Lockup Facility'],
+    ['06', 'Police Maintenance Facility'],
+    ['07', 'CPD Automotive Pound Facility'],
+    ['08', 'Other Police Property'],
+    ['09', 'Police Communications System'],
+    ['10', 'Court Room'],
+    ['11', 'Public Transportation Veh./Facility'],
+    ['12', 'Park District Property'],
+    ['13', 'Airport'],
+    ['14', 'Public Property - Other'],
+    ['15', 'Other Private Premise'],
+    ['16', 'Expressway/Interstate System'],
+    ['17', 'Public Way - Other'],
+    ['18', 'Waterway. Incl Park District'],
+    ['19', 'Private Residence']
+]
+
+LCOATIONS_DICT = {}
+for location in LOCATION_CHOICES:
+    LCOATIONS_DICT[location[0]] = location[1]
 
 
 class Allegation(MobileSuggestibleAllegation, models.Model):
@@ -390,9 +438,10 @@ class Allegation(MobileSuggestibleAllegation, models.Model):
     final_finding = models.CharField(choices=FINDINGS, max_length=2, null=True, db_index=True, blank=True)
     final_outcome = models.CharField(choices=OUTCOMES, max_length=3, null=True, db_index=True, blank=True)
     final_outcome_class = models.CharField(max_length=20, null=True, blank=True)
+    summary = models.TextField(null=True, blank=True)
 
     areas = models.ManyToManyField('Area', blank=True)
-    location = models.CharField(max_length=20, null=True, blank=True)
+    location = models.CharField(max_length=20, null=True, blank=True, choices=LOCATION_CHOICES)
     add1 = models.IntegerField(null=True, blank=True)
     add2 = models.CharField(max_length=255, null=True, blank=True)
     city = models.CharField(max_length=255, null=True, blank=True)
@@ -435,3 +484,14 @@ class Investigator(models.Model):
             'text': self.name,
             'value': self.pk,
         }
+
+
+class PendingPdfAllegation(models.Model):
+    crid = models.CharField(max_length=30, null=True, db_index=True)
+    raw_content = models.TextField(blank=True, null=True)
+    notification_date = models.DateField(null=True, blank=True)
+    areas = models.ManyToManyField('Area', blank=True)
+    cat = models.ForeignKey(AllegationCategory, null=True, blank=True)
+    finding = models.CharField(max_length=255, blank=True, null=True)
+    summary = models.TextField(blank=True, null=True)
+    errors = models.TextField(blank=True, null=True)

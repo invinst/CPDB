@@ -7,7 +7,7 @@ from search.services.suggestion import Suggestion
 from search.factories import AliasFactory
 
 
-class SuggestViewTestCase(SimpleTestCase):
+class SuggestServiceTestCase(SimpleTestCase):
     def setUp(self):
         AllegationCategory.objects.all().delete()
         Officer.objects.all().delete()

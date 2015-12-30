@@ -19,7 +19,10 @@ class Command(BaseCommand):
               % {'address': urllib.parse.quote(address), 'mapbox_api_key': settings.MAP_BOX_API_KEY,
                  'proximity': proximity}
         # print(url)
-        response = urllib.request.urlopen(url)
+        try:
+            response = urllib.request.urlopen(url)
+        except:
+            return False
         data = response.read().decode('utf-8')
         ret = json.loads(data)
         for feature in ret['features']:

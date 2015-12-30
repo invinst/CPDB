@@ -1,5 +1,3 @@
-import sys
-
 from cpdb.settings.base import *
 
 
@@ -55,8 +53,11 @@ if DEBUG_TOOLBAR_ENABLE:
 
 DOMAIN = 'http://localhost:8000'
 
+
 # This should be override in corresponding settings
 SITE_INFO = {
     'domain': 'cpdb.dev:8000',
     'mobile_host': 'm.cpdb.dev:8000',
 }
+
+USE_TZ = False

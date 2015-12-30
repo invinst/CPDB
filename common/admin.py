@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 from common.actions import make_export_action
-from common.models import User, Officer, OfficerHistory, Allegation
+from common.models import User, Officer, OfficerHistory, Allegation, PendingPdfAllegation
 from common.models import ComplainingWitness, PoliceWitness, AllegationCategory
 from common.models import Investigator
 
@@ -50,6 +50,9 @@ class InvestigatorAdmin(admin.ModelAdmin):
     list_display = ['id', 'name', 'current_rank', 'complaint_count']
     actions = make_export_action("Export Investigators to CSV")
 
+class PendingPdfAllegationAdmin(admin.ModelAdmin):
+    list_display = ['id', 'crid', 'raw_content', 'errors']
+
 
 admin.site.register(Investigator, InvestigatorAdmin)
 admin.site.register(AllegationCategory, admin.ModelAdmin)
@@ -58,3 +61,4 @@ admin.site.register(ComplainingWitness, ComplainingWitnessAdmin)
 admin.site.register(Officer, OfficerAdmin)
 admin.site.register(User, UserAdmin)
 admin.site.register(Allegation, AllegationAdmin)
+admin.site.register(PendingPdfAllegation, PendingPdfAllegationAdmin)
