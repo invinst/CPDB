@@ -155,11 +155,19 @@ class Suggestion(object):
             order_bys=['-category_count'])
 
     def suggest_cat(self, q):
-        condition = Q(allegation_name__icontains=q)
+        condition = Q(allegation_name__icontains=q) | Q(cat_id__icontains=q)
         return self.query_suggestions(
             model_cls=AllegationCategory,
             cond=condition,
-            fields_to_get=['allegation_name', 'cat_id'],
+            fields_to_get=['allegation_name', 'id'],
+            order_bys=['-allegation_count'])
+
+    def suggest_cat_id(self, q):
+        condition = Q(allegation_name__icontains=q) | Q(cat_id__icontains=q)
+        return self.query_suggestions(
+            model_cls=AllegationCategory,
+            cond=condition,
+            fields_to_get=['cat_id'],
             order_bys=['-allegation_count'])
 
     def suggest_investigator(self, q):
@@ -233,7 +241,8 @@ class Suggestion(object):
         ret['officer'] = self.suggest_office_name(q)
         ret['officer__unit'] = self.suggest_unit(q)
         ret['cat__category'] = self.suggest_cat_category(q)
-        ret['cat__cat_id'] = self.suggest_cat(q)
+        ret['cat'] = self.suggest_cat(q)
+        ret['cat__cat_id'] = self.suggest_cat_id(q)
         ret['investigator'] = self.suggest_investigator(q)
 
         ret['final_outcome'] = self.suggest_in(q, OUTCOMES)

@@ -256,7 +256,8 @@ module.exports = {
   AUTOCOMPLETE_CATEGORY_NAMES: {
     'crid': 'Allegation ID',
     'cat__category': 'Category',
-    'cat__cat_id': 'Allegation type',
+    'cat__cat_id': 'Category ID',
+    'cat': 'Allegation type',
     'investigator': 'Investigator',
     'officer': 'Officer',
     'officer__star': 'Badge number',
