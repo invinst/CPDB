@@ -3,7 +3,6 @@ var Route = require('react-router').Route;
 var Router = require('react-router').Router;
 var history = require('utils/History');
 
-
 var ComplaintPage = require('components/ComplaintPage.react');
 var MainPage = require('components/MainPage.react');
 var NoMatch = require('components/NoMatch.react');
@@ -13,10 +12,6 @@ var OfficerPage = require('components/OfficerPage.react');
 
 var App = React.createClass({
   render: function () {
-    history.listen(function (location) {
-      console.log(location.pathname) // /hello/world
-      console.log(location.basename) // /base
-    })
     return (
       <Router history={history}>
         <Route path='/complaint/:crid' component={ComplaintPage} />

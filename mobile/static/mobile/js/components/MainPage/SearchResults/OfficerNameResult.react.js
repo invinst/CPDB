@@ -1,6 +1,6 @@
 var React = require('react');
 
-var history = require('utils/History');
+var AppHistory = require('utils/History');
 
 var SuggestionPresenter = require('presenters/SuggestionPresenter');
 
@@ -10,7 +10,7 @@ var OfficerNameResult = React.createClass({
     var officer = this.props.officer;
     var presenter = SuggestionPresenter(officer);
 
-    history.pushState(null, presenter.url);
+    AppHistory.pushState(null, presenter.url);
   },
 
   render: function () {

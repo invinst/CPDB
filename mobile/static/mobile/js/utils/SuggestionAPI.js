@@ -6,6 +6,8 @@ var MainPageServerActions = require('actions/MainPage/MainPageServerActions');
 
 
 var SuggestionAPI = {
+  // TODO: only trigger the api after threshold, could put it to be defaul 300ms
+  // TODO: cancel the previous api if it's not triggered yet
   get: function (query) {
     request.get(AppConstants.SUGGESTION_API_ENDPOINT)
       .query({query: query})

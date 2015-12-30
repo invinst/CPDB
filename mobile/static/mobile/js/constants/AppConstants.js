@@ -2,11 +2,12 @@ var c = 0;
 
 module.exports = {
   // MainPage events
-  ACTIVATE_SEARCH: c++,
-  DEACTIVATE_SEARCH: c++,
   SEARCH_FOR: c++,
   GO_FOR_SEARCH_DETAIL: c++,
-  CHANGE_TAB: c++,
+  SEARCH_INPUT_CHANGED: c++,
+  SEARCH_FOCUS: c++,
+  SEARCH_BLUR: c++,
+
 
   // ComplaintPage events
   COMPLAINT_PAGE_RECEIVED_DATA: c++,

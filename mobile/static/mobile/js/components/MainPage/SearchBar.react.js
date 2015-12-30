@@ -1,40 +1,55 @@
 var React = require('react');
 var cx = require('classnames');
+var objectAssign = require('object-assign');
+
+var Base = require('components/Base.react');
 
 var HelperUtil = require('utils/HelperUtil');
 var SuggestionAPI = require('utils/SuggestionAPI');
+var SearchBarActions = require('actions/MainPage/SearchBarActions');
+var SearchBarStore = require('stores/MainPage/SearchBarStore');
 
 
-var SearchBar = React.createClass({
+var SearchBar = React.createClass(objectAssign(Base(SearchBarStore), {
   getInitialState: function () {
     return {
-      'searchState': 'search'
+      'status': 'blank',
+      'term': ''
     }
   },
 
-  onInputChange: function (event) {
-    this.setState({
-      'searchState': 'close'
-    });
+  _onInputChange: function (event) {
+    SearchBarActions.changed();
     SuggestionAPI.get(event.currentTarget.value);
   },
 
-  onFocus: function () {
-    this.setState({
-      'searchState': 'close'
-    });
+  _onFocus: function () {
+    SearchBarActions.focus();
+  },
+
+  _onBlur: function () {
+    if (this.state.status == 'focus') {
+      SearchBarActions.blur();
+    }
   },
 
   render: function () {
-    var searchBarIconClassName = cx('icon', HelperUtil.format('icon-{searchState}', {'searchState': this.state.searchState}));
-
+    var status = this.state.status;
+    var iconClassName = cx('icon', {
+      'icon-search': status == 'blank',
+      'icon-close': status == 'focus'
+    });
     return (
       <div className='search-bar animation'>
-        <input className='input-text' placeholder='Search officers or complaints' onChange={this.onInputChange} onFocus={this.onFocus}/>
-        <span className={searchBarIconClassName}></span>
+        <input className='input-text' placeholder='Search officers or complaints'
+               onChange={this._onInputChange}
+               onFocus={this._onFocus}
+               defaultValue={this.state.term}
+               onBlur={this._onBlur}/>
+        <span className={iconClassName} onClick={this._onBlur}></span>
       </div>
     );
   }
-});
+}));
 
 module.exports = SearchBar;
