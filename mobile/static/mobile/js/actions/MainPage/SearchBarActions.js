@@ -3,9 +3,10 @@ var AppConstants = require('constants/AppConstants');
 
 
 var SearchBarActions = {
-  changed: function () {
+  changed: function (term) {
     AppDispatcher.dispatch({
-      actionType: AppConstants.SEARCH_INPUT_CHANGED
+      actionType: AppConstants.SEARCH_INPUT_CHANGED,
+      data: term
     });
   },
 
