@@ -303,7 +303,7 @@ module.exports = {
   ALLEGATION_DETAILS_API_ENDPOINT: '/api/investigation/',
   ALLEGATIONS_API_ENDPOINT: '/api/allegations/',
   INVESTIGATOR_API_ENDPOINT: '/investigator/',
-  WAGTAIL_PAGES_API_ENDPOINT: '/api/wagtail/v1/pages/?type=home.HomePage&fields=title,body,slug',
+  WAGTAIL_PAGES_API_ENDPOINT: '/api/wagtail/v1/pages/?type=home.HomePage&fields=title,extended_body,slug',
 
   DATE_FORMAT: 'D MMM, YYYY',
 

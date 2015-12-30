@@ -11,21 +11,21 @@ var WagtailPage = React.createClass(_.assign(Base(AppStore), {
   renderRows: function () {
     var body = this.props.body;
 
-    return body.map(function (row) {
+    return body.map(function (row, i) {
 
-      var rowContent = row.value.map(function (col) {
+      var rowContent = row.value.map(function (col, key) {
         var colClassName = classnames({
           'col-md-6': col.type == 'half_paragraph',
           'col-md-12': col.type == 'full_paragraph'
         });
 
         return (
-          <div className={colClassName} dangerouslySetInnerHTML={{ __html: col.value }} />
+          <div key={key} className={colClassName} dangerouslySetInnerHTML={{ __html: col.value }} />
         );
       });
 
       return (
-        <div className="row section">
+        <div key={i} className="row section">
           <div className="container">
             {rowContent}
           </div>
