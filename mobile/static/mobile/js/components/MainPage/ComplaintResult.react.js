@@ -3,7 +3,7 @@ var React = require('react');
 var SuggestionPresenter = require('presenters/SuggestionPresenter');
 
 
-var ComplaintSuggestionResult = React.createClass({
+var ComplaintResult = React.createClass({
   _onClick: function () {
     var officer = this.props.officer;
     var presenter = SuggestionPresenter(officer);
@@ -26,4 +26,4 @@ var ComplaintSuggestionResult = React.createClass({
   }
 });
 
-module.exports = ComplaintSuggestionResult;
+module.exports = ComplaintResult;

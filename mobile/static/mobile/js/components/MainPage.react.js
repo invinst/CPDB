@@ -7,7 +7,7 @@ var Base = require('components/Base.react');
 var About = require('components/Shared/About.react');
 var MainPageStore = require('stores/MainPageStore');
 var Logo = require('components/Shared/Logo.react');
-var SearchBar = require('components/Shared/SearchBar.react');
+var SearchBar = require('components/MainPage/SearchBar.react');
 var Wrapper = require('components/Shared/Wrapper.react');
 
 

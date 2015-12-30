@@ -5,7 +5,7 @@ var Base = require('components/Base.react');
 var SimpleTab = require('components/Shared/SimpleTab.react');
 
 var ComplaintsTab = require('components/OfficerPage/ComplaintsTab.react');
-var SearchBar = require('components/Shared/SearchBar.react');
+var SharedSearchBar = require('components/Shared/SharedSearchBar.react');
 var SummaryTab = require('components/OfficerPage/SummaryTab.react');
 var RelatedOfficersTab = require('components/OfficerPage/RelatedOfficersTab.react');
 var OfficerHeader = require('components/OfficerPage/OfficerHeader.react');
@@ -59,7 +59,7 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
     return (
       <div className='officer-page'>
         <div className='content'>
-          <SearchBar />
+          <SharedSearchBar />
           <OfficerHeader officer={officerDetail} />
           <div className='tabs'>
             <SimpleTab navigation={true}>

@@ -1,11 +1,11 @@
 var React = require('react');
 
 var DataTypeUtil = require('utils/DataTypeUtil');
+
 var SuggestionPresenter = require('presenters/SuggestionPresenter');
 
 
-var OfficerBadgeSuggestionResult = React.createClass({
-
+var OfficerBadgeResult = React.createClass({
   _onClick: function () {
     var officer = this.props.officer;
     var presenter = SuggestionPresenter(officer);
@@ -25,4 +25,4 @@ var OfficerBadgeSuggestionResult = React.createClass({
   }
 });
 
-module.exports = OfficerBadgeSuggestionResult;
+module.exports = OfficerBadgeResult;

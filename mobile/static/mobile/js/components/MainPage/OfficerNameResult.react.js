@@ -1,15 +1,15 @@
-var cx = require('classnames');
 var React = require('react');
+
 var history = require('utils/History');
-var DataTypeUtil = require('utils/DataTypeUtil');
+
 var SuggestionPresenter = require('presenters/SuggestionPresenter');
 
 
-var OfficerNameSuggestionResult = React.createClass({
-
+var OfficerNameResult = React.createClass({
   _onClick: function () {
     var officer = this.props.officer;
     var presenter = SuggestionPresenter(officer);
+
     history.pushState(null, presenter.url);
   },
 
@@ -29,4 +29,4 @@ var OfficerNameSuggestionResult = React.createClass({
   }
 });
 
-module.exports = OfficerNameSuggestionResult;
+module.exports = OfficerNameResult;
