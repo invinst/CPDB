@@ -11,7 +11,7 @@ class AllegationDetailTestCase(BaseLiveTestCase):
 
         self.visit_home()
         self.find('.checkmark').click()
-        self.until(lambda: self.element_exist('.complaint_list'))
+        self.until(lambda: self.element_exist('.complaint-list'))
         self.find('.complaint-row > .row').click()
         self.element_exist('.complaint_detail').should.equal(True)
 
