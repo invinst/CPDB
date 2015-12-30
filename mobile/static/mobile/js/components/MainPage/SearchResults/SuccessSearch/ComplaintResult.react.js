@@ -1,6 +1,6 @@
 var React = require('react');
 
-// FIXME: Bad history
+var AppHistory = require('utils/History');
 
 var SuggestionPresenter = require('presenters/SuggestionPresenter');
 
@@ -9,7 +9,7 @@ var ComplaintResult = React.createClass({
   _onClick: function () {
     var officer = this.props.officer;
     var presenter = SuggestionPresenter(officer);
-    history.pushState(null, presenter.url);
+    AppHistory.pushState(null, presenter.url);
   },
 
   render: function () {
@@ -18,7 +18,7 @@ var ComplaintResult = React.createClass({
 
     return (
       <div>
-        <li className='table-view-cell'>
+        <li className='suggestion-item'>
           <div className='link' onClick={this._onClick}>
             CRID <span className='highlight'>{presenter.resourceKey}</span>
           </div>
