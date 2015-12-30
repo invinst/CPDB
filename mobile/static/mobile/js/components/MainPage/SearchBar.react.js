@@ -20,7 +20,7 @@ var SearchBar = React.createClass(objectAssign(Base(SearchBarStore), {
 
   _onInputChange: function (event) {
     // FIXME: term in Store is not updated?
-    var term = event.currentTarget.value
+    var term = event.currentTarget.value;
     SearchBarActions.changed(term);
     SuggestionAPI.get(term);
   },
@@ -30,9 +30,13 @@ var SearchBar = React.createClass(objectAssign(Base(SearchBarStore), {
   },
 
   _onBlur: function () {
-    if (this.state.status == 'focus') {
+    if (!this.state.term) {
       SearchBarActions.blur();
     }
+  },
+
+  _onSearchIconClick: function () {
+      SearchBarActions.clear();
   },
 
   componentDidMount: function () {
@@ -42,6 +46,7 @@ var SearchBar = React.createClass(objectAssign(Base(SearchBarStore), {
       // TODO: Refactor this
       SuggestionAPI.get(term);
     }
+    SearchBarStore.addChangeListener(this._onChange)
   },
 
   render: function () {
@@ -50,15 +55,15 @@ var SearchBar = React.createClass(objectAssign(Base(SearchBarStore), {
       'icon-search': status == 'blank',
       'icon-close': status == 'focus'
     });
-
+    console.log(this.state.term);
     return (
       <div className='search-bar animation'>
         <input className='input-text' placeholder='Search officers or complaints'
                onChange={this._onInputChange}
                onFocus={this._onFocus}
-               defaultValue={this.state.term}
+               value={this.state.term}
                onBlur={this._onBlur}/>
-        <span className={iconClassName} onClick={this._onBlur}></span>
+        <span className={iconClassName} onClick={this._onSearchIconClick}></span>
       </div>
     );
   }

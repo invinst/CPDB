@@ -31,6 +31,11 @@ AppDispatcher.register(function (action) {
       SearchResultsStore.emitChange();
       break;
 
+    case AppConstants.SEARCH_CLEAR:
+      SearchResultsStore.updateState('term', '');
+      SearchResultsStore.emitChange();
+      break;
+
     default:
       break;
   }

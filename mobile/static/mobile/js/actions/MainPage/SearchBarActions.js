@@ -20,6 +20,12 @@ var SearchBarActions = {
     AppDispatcher.dispatch({
       actionType: AppConstants.SEARCH_BLUR
     });
+  },
+
+  clear: function () {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.SEARCH_CLEAR
+    });
   }
 };
 

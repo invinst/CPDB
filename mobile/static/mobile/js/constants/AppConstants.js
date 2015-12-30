@@ -7,6 +7,7 @@ module.exports = {
   SEARCH_INPUT_CHANGED: c++,
   SEARCH_FOCUS: c++,
   SEARCH_BLUR: c++,
+  SEARCH_CLEAR: c++,
 
 
   // ComplaintPage events

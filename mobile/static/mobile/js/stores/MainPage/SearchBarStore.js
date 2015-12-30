@@ -14,9 +14,8 @@ var SearchBarStore = objectAssign(Base(_state), {});
 
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
-    case AppConstants.SEARCH_FOR:
+    case AppConstants.SEARCH_INPUT_CHANGED:
       _state['term'] = action.data;
-      _state['searchStatus'] = 'suggesting';
       SearchBarStore.emitChange();
       break;
 
@@ -28,6 +27,12 @@ AppDispatcher.register(function (action) {
 
     case AppConstants.SEARCH_FOCUS:
       _state['status'] = 'focus';
+      SearchBarStore.emitChange();
+      break;
+
+    case AppConstants.SEARCH_CLEAR:
+      _state['status'] = 'blank';
+      _state['term'] = '';
       SearchBarStore.emitChange();
       break;
 

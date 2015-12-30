@@ -19,7 +19,7 @@ var OfficerNameResult = React.createClass({
 
     return (
       <div>
-        <li className='table-view-cell'>
+        <li className='suggestion-item'>
           <div className='link' onClick={this._onClick}>
             <span className='highlight'>{presenter.text}&nbsp;</span>
           </div>

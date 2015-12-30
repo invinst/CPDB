@@ -19,7 +19,7 @@ var SearchResults = React.createClass(objectAssign(Base(SearchResultsStore), {
     }
 
     return (
-      <Wrapper visible={this.state.term}>
+      <Wrapper wrapperClass='suggestion-section' visible={this.state.term}>
         <SuccessfulSearch term={this.state.term} suggestions={this.state.suggestions} />
       </Wrapper>
     )
