@@ -1,3 +1,4 @@
+var _ = require('lodash')
 var classnames = require('classnames');
 var React = require('react');
 var PropTypes = React.PropTypes;
@@ -11,6 +12,23 @@ var SessionAPI = require('utils/SessionAPI');
 var AllegationSummary = React.createClass({
   propTypes: {
     allegation: PropTypes.object.isRequired
+  },
+
+  renderComplainingWitnessSection: function (allegation) {
+    if (_.isEmpty(allegation.complainingWitness)) {
+      return '';
+    }
+
+    return (
+      <div>
+        <div className='title'>Complaining Witness</div>
+        <div>
+          <ul>
+            {this.renderComplainingWitness(allegation)}
+          </ul>
+        </div>
+      </div>
+    );
   },
 
   renderComplainingWitness: function (allegation) {
@@ -75,14 +93,7 @@ var AllegationSummary = React.createClass({
             <div className='title'>Disciplinary action</div>
             <div>{presenter.finalFinding}</div>
           </div>
-          <div>
-            <div className='title'>Complaining Witness</div>
-            <div>
-              <ul>
-                {this.renderComplainingWitness(presenter)}
-              </ul>
-            </div>
-          </div>
+          {this.renderComplainingWitnessSection(presenter)}
           <div className='row'>
             {this.renderInvestigator(allegation)}
           </div>
