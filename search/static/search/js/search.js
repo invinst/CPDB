@@ -1,5 +1,10 @@
 NO_CAP_CATEGORIES = [
-  'has_filters'
+  'has_filters',
+  'cat__cat_id'
+];
+
+UPPER_CATEGORIES = [
+  'cat__cat_id'
 ];
 
 function suggestionExists(term, suggestions) {
@@ -58,6 +63,9 @@ function prettyLabels(label, term) {
 
       if (NO_CAP_CATEGORIES.indexOf(item.category) == -1) {
         element.addClass('capitalize');
+      }
+      if (UPPER_CATEGORIES.indexOf(item.category) != -1) {
+        element.addClass('uppercase');
       }
 
       return element.addClass('autocomplete-' + item.category).html(prettyLabels(label, $(this.element).val())).appendTo(ul);
