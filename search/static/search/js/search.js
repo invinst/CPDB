@@ -1,3 +1,7 @@
+NO_CAP_CATEGORIES = [
+  'has_filters'
+];
+
 function suggestionExists(term, suggestions) {
   for (var i = 0; i < suggestions.length; i++) {
     if (suggestions[i].label == term) {
@@ -50,7 +54,13 @@ function prettyLabels(label, term) {
     },
     _renderItem: function (ul, item) {
       var label = item.type ? item.type + ": " + item.label : item.label;
-      return $("<li>").addClass('autocomplete-' + item.category).html(prettyLabels(label, $(this.element).val())).appendTo(ul);
+      var element = $("<li>");
+
+      if (NO_CAP_CATEGORIES.indexOf(item.category) == -1) {
+        element.addClass('capitalize');
+      }
+
+      return element.addClass('autocomplete-' + item.category).html(prettyLabels(label, $(this.element).val())).appendTo(ul);
     },
     displayMessage: function (value) {
       var ul = this.menu.element.empty();

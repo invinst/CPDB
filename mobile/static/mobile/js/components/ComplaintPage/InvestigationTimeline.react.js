@@ -1,18 +1,36 @@
 var React = require('react');
 
-var SimpleTimeline = require('components/Shared/SimpleTimeline.react');
+var AllegationResourceUtil = require('utils/AllegationResourceUtil');
+var ComplaintPresenter = require('presenters/ComplaintPresenter');
+var ComplaintService = require('services/ComplaintService');
+var HelperUtil = require('utils/HelperUtil');
+var ThreeNodesTimeline = require('components/ComplaintPage/InvestigationTimeline/ThreeNodesTimeline.react');
+var TwoNodesTimeline = require('components/ComplaintPage/InvestigationTimeline/TwoNodesTimeline.react');
+var Wrapper = require('components/Shared/Wrapper.react');
 
 
 var InvestigationTimeline = React.createClass({
-  render: function () {
+  renderTimeline: function (info, service) {
+     if (service.startInvestigatingAtIncidentDate) {
+      return (
+        <TwoNodesTimeline info={info} />
+      );
+    }
+
     return (
-      <div className='investigation-timeline'>
-        <div className='section-header'>
-          <span className='section-title'>Investigation timeline</span>
-        </div>
-        <SimpleTimeline />
-      </div>
-    )
+      <ThreeNodesTimeline  info={info} />
+    );
+  },
+
+  render: function() {
+    var info = this.props.info;
+    var complaintService = ComplaintService(info);
+
+    return (
+      <Wrapper visible={!complaintService.haveNoData} wrapperClass='investigation-timeline'>
+        {this.renderTimeline(info, complaintService)}
+      </Wrapper>
+    );
   }
 });
 
