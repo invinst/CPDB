@@ -15,11 +15,17 @@ var Wrapper = require('components/Shared/Wrapper.react');
 var MainPage = React.createClass(objectAssign(Base(MainPageStore), {
   getInitialState: function () {
     return {
-      'isSearchFocused': 0
+      'isSearchFocused': 0,
+      'term': ''
     }
   },
 
+  componentDidMount: function () {
+    MainPageStore.addChangeListener(this._onChange);
+  },
+
   render: function () {
+    var term = this.props.params.query || '';
     var isSearchFocused = this.state.isSearchFocused;
     var classNames = cx('search-wrapper animation content',  { 'top-left': isSearchFocused });
 
@@ -32,7 +38,7 @@ var MainPage = React.createClass(objectAssign(Base(MainPageStore), {
         <div className='bar bar-standard bar-footer'>
           <About />
         </div>
-        <SearchResults />
+        <SearchResults term={term} />
       </div>
     )
   }

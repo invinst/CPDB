@@ -19,8 +19,10 @@ var SearchBar = React.createClass(objectAssign(Base(SearchBarStore), {
   },
 
   _onInputChange: function (event) {
-    SearchBarActions.changed();
-    SuggestionAPI.get(event.currentTarget.value);
+    // FIXME: term in Store is not updated?
+    var term = event.currentTarget.value
+    SearchBarActions.changed(term);
+    SuggestionAPI.get(term);
   },
 
   _onFocus: function () {
@@ -33,12 +35,22 @@ var SearchBar = React.createClass(objectAssign(Base(SearchBarStore), {
     }
   },
 
+  componentDidMount: function () {
+    var term = this.props.term || '';
+    if (term) {
+      // call the api
+      // TODO: Refactor this
+      SuggestionAPI.get(term);
+    }
+  },
+
   render: function () {
     var status = this.state.status;
     var iconClassName = cx('icon', {
       'icon-search': status == 'blank',
       'icon-close': status == 'focus'
     });
+
     return (
       <div className='search-bar animation'>
         <input className='input-text' placeholder='Search officers or complaints'

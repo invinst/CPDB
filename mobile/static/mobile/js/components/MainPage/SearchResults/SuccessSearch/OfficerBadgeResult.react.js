@@ -1,5 +1,7 @@
 var React = require('react');
 
+// FIXME: Bad history
+
 var DataTypeUtil = require('utils/DataTypeUtil');
 
 var SuggestionPresenter = require('presenters/SuggestionPresenter');
