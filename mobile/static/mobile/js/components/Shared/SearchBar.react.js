@@ -2,6 +2,7 @@ var React = require('react');
 var cx = require('classnames');
 
 var HelperUtil = require('utils/HelperUtil');
+var SuggestionAPI = require('utils/SuggestionAPI');
 
 
 var SearchBar = React.createClass({
@@ -11,19 +12,20 @@ var SearchBar = React.createClass({
     }
   },
 
-  onInputChange: function () {
+  onInputChange: function (event) {
     this.setState({
       'searchState': 'close'
     });
+    SuggestionAPI.get(event.currentTarget.value);
   },
 
   render: function () {
-    var leftIconClassName = cx('icon', HelperUtil.format('icon-{searchState}', {'searchState': this.state.searchState}));
+    var searchBarIconClassName = cx('icon', HelperUtil.format('icon-{searchState}', {'searchState': this.state.searchState}));
 
     return (
-      <div className='search-bar'>
+      <div className='search-bar animation'>
         <input className='input-text' placeholder='Search officers or complaints' onChange={this.onInputChange}/>
-        <span className={leftIconClassName}></span>
+        <span className={searchBarIconClassName}></span>
       </div>
     );
   }

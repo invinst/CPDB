@@ -8,17 +8,21 @@ var About = require('components/Shared/About.react');
 var MainPageStore = require('stores/MainPageStore');
 var Logo = require('components/Shared/Logo.react');
 var SearchBar = require('components/Shared/SearchBar.react');
+var SuggestionSection = require('components/MainPage/SuggestionSection.react');
+var Wrapper = require('components/Shared/Wrapper.react');
 
 
 var MainPage = React.createClass(objectAssign(Base(MainPageStore), {
   getInitialState: function () {
     return {
-      'searchStatus': 'blank'
+      'searchStatus': 'blank',
+      'suggestions' : [],
+      'query': ''
     }
   },
 
   render: function () {
-    var classNames = cx('search-wrapper pad animation content',
+    var classNames = cx('search-wrapper animation content',
       {'top-left': this.state.searchStatus != 'blank'}
     );
 
@@ -31,6 +35,9 @@ var MainPage = React.createClass(objectAssign(Base(MainPageStore), {
         <div className='bar bar-standard bar-footer'>
           <About />
         </div>
+        <Wrapper visible={this.state.searchStatus != 'blank'}>
+          <SuggestionSection suggestions={this.state.suggestions} query={this.state.query} />
+        </Wrapper>
       </div>
     )
   }
