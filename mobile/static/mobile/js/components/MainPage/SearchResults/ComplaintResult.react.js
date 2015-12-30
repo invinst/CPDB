@@ -1,5 +1,7 @@
 var React = require('react');
 
+// FIXME: Bad history
+
 var SuggestionPresenter = require('presenters/SuggestionPresenter');
 
 
