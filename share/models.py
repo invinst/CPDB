@@ -6,7 +6,7 @@ from django.template.defaultfilters import slugify
 from django_extensions.db.fields.json import JSONField
 
 from common.models import Officer, AllegationCategory, Investigator, Area
-from common.models import GENDER_DICT, OUTCOME_TEXT_DICT, FINAL_FINDING_TEXT_DICT, FINDINGS_DICT, OUTCOMES_DICT, CUSTOM_FILTER_DICT
+from common.models import GENDER_DICT, OUTCOME_TEXT_DICT, FINAL_FINDING_TEXT_DICT, FINDINGS_DICT, OUTCOMES_DICT, CUSTOM_FILTER_DICT, HAS_FILTERS_DICT
 from common.utils.hashid import hash_obj
 from search.models import SuggestionLog, FilterLog
 from search.services import REPEATER_DESC
@@ -23,6 +23,7 @@ OTHER_KEYS = {
     'complainant_gender': GENDER_DICT,
     'final_outcome': OUTCOMES_DICT,
     'final_finding': FINDINGS_DICT,
+    'has_filters': HAS_FILTERS_DICT
 }
 
 
