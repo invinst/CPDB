@@ -7,6 +7,12 @@ var SuggestionPresenter = require('presenters/SuggestionPresenter');
 
 var OfficerNameSuggestionResult = React.createClass({
 
+  _onClick: function () {
+    var officer = this.props.officer;
+    var presenter = SuggestionPresenter(officer);
+    history.pushState(null, presenter.url);
+  },
+
   render: function () {
     var officer = this.props.officer;
     var presenter = SuggestionPresenter(officer);
@@ -20,12 +26,6 @@ var OfficerNameSuggestionResult = React.createClass({
         </li>
       </div>
     );
-  },
-
-  _onClick: function () {
-    var officer = this.props.officer;
-    var presenter = SuggestionPresenter(officer);
-    history.pushState(null, presenter.url);
   }
 });
 
