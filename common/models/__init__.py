@@ -372,9 +372,25 @@ FINAL_FINDING_TEXT_DICT = {
     }
 }
 
+HAS_FILTERS_TEXT_DICT = {
+    'has:document': {
+        'text': 'has:document',
+        'condition': {
+            'document_id__gt': [0]
+        }
+    }
+}
+
+HAS_FILTERS_LIST = [
+    (key, val['text']) for key, val in HAS_FILTERS_TEXT_DICT.items()
+]
+
+HAS_FILTERS_DICT = dict(HAS_FILTERS_LIST)
+
 CUSTOM_FILTER_DICT = {
     'final_finding_text': FINAL_FINDING_TEXT_DICT,
     'outcome_text': OUTCOME_TEXT_DICT,
+    'has_filters': HAS_FILTERS_TEXT_DICT,
 }
 
 

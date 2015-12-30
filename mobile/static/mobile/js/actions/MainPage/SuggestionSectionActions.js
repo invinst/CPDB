@@ -8,7 +8,7 @@ var SuggestionSectionActions = {
       actionType: AppConstants.GO_FOR_SEARCH_DETAIL,
       data: suggestion
     });
-  },
+  }
 };
 
 module.exports = SuggestionSectionActions;
