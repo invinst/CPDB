@@ -19,16 +19,11 @@ var SuggestionPresenter = function (suggestion) {
     return HelperUtil.fetch(suggestion, 'resource_key', '');
   };
 
-  var officerLink = function () {
-    return HelperUtil.format('/officer/{slug}/{id}', {'slug': text(), 'id': resourceKey()});
-  };
-
   return {
     text: text(),
     url: url(),
     resource: resource(),
-    resourceKey: resourceKey(),
-    officerLink: officerLink()
+    resourceKey: resourceKey()
   }
 };
 
