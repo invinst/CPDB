@@ -23,8 +23,8 @@ class ComplainingWitnessAdmin(admin.ModelAdmin):
 
 class AllegationAdmin(admin.ModelAdmin):
     search_fields = ['officer__officer_last', 'officer__officer_first', 'crid', 'investigator__name']
-    #list_filter = ['officer__race', 'officer__gender', 'cat__category']
-    #list_display = ['crid', 'cat', 'officer', 'final_finding', 'final_outcome']
+    list_filter = ['officer__race', 'officer__gender', 'cat__category']
+    list_display = ['crid', 'cat', 'officer', 'final_finding', 'final_outcome']
     actions = make_export_action("Export Allegations to CSV")
 
 
