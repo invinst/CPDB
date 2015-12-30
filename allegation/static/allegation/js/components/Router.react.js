@@ -11,6 +11,7 @@ var IndexRoute = ReactRouter.IndexRoute;
 var IndexPage = require('components/IndexPage.react');
 var DataToolPage = require('components/DataToolPage.react');
 var OfficerPage = require('components/OfficerPage.react');
+var InvestigatorPage = require('components/InvestigatorPage.react');
 var StatePropagateCSSTransitionGroup = require(
   'components/Shared/StatePropagateCSSTransitionGroup.react');
 
@@ -69,6 +70,8 @@ var RootRouter = React.createClass({
           <Route path="/data/:session/:title" component={IndexPage}>
           </Route>
           <Route path="/officer/:slug/:id" component={OfficerPage}>
+          </Route>
+          <Route path="/investigator/:slug/:id" component={InvestigatorPage}>
           </Route>
         </Route>
       </Router>
