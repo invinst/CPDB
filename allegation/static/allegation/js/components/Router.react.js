@@ -31,6 +31,18 @@ var RootPage = React.createClass({
 });
 
 var PageAnimator = React.createClass({
+  componentWillReceiveProps: function (nextProps) {
+    if (nextProps.transitioning && !this.props.transitioning) {
+      this.animatePageScrollToTop();
+    }
+  },
+
+  animatePageScrollToTop: function () {
+    $('html,body').animate({
+      scrollTop: 0
+    }, 300);
+  },
+
   renderChildren: function () {
     var animator = this;
 
