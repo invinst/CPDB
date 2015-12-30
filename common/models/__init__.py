@@ -97,7 +97,8 @@ CITIZEN_DEPTS = [
 
 
 class AllegationCategory(models.Model):
-    cat_id = models.CharField(primary_key=True, max_length=255)
+    id = models.AutoField(primary_key=True)
+    cat_id = models.CharField(max_length=255)
     category = models.CharField(max_length=255, null=True, db_index=True)
     allegation_name = models.CharField(max_length=255, null=True, db_index=True)
     allegation_count = models.IntegerField(default=0)
@@ -319,7 +320,7 @@ RACES = [
 RACES = [[x, x] for x in RACES]
 RACES_DICT = dict(RACES)
 
-NO_DISCIPLINE_CODES = ('600', '000', '500', '700', '800', '900', '', None)
+NO_DISCIPLINE_CODES = ('600', '000', '500', '700', '800', '900', '')
 DISCIPLINE_CODES = [x[0] for x in OUTCOMES if x[0] not in NO_DISCIPLINE_CODES]
 FINDINGS = [
     ['UN', 'Unfounded'],  # means final_outcome_class = not-sustained
@@ -430,7 +431,8 @@ class Allegation(MobileSuggestibleAllegation, models.Model):
     record_id = models.IntegerField(null=True, blank=True)
     crid = models.CharField(max_length=30, null=True, db_index=True)
     officer = models.ForeignKey(Officer, null=True)
-    cat = models.ForeignKey(AllegationCategory, null=True, blank=True)
+
+    cat = models.ForeignKey(AllegationCategory, to_field='id', null=True)
     recc_finding = models.CharField(choices=FINDINGS, max_length=2, null=True, db_index=True, blank=True)
     recc_outcome = models.CharField(choices=OUTCOMES, max_length=3, null=True, db_index=True, blank=True)
     final_finding = models.CharField(choices=FINDINGS, max_length=2, null=True, db_index=True, blank=True)
@@ -461,6 +463,8 @@ class Allegation(MobileSuggestibleAllegation, models.Model):
     last_requested = models.DateTimeField(default=timezone.now)
 
     beat = models.ForeignKey('Area', null=True, blank=True, related_name='beats')
+
+    source = models.CharField(null=True, max_length=20)
 
     def __str__(self):
         return "%s" % self.crid
