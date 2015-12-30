@@ -129,8 +129,8 @@ var DonutChart = React.createClass({
     });
   },
   render: function () {
-    return <div className="relative">
-        <div className='donut-chart' id='donut-chart'></div>
+    return <div className='donut-chart'>
+        <div id='donut-chart'></div>
         <div id="addText"></div>
       </div>
   }

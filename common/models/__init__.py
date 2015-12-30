@@ -436,6 +436,7 @@ class Allegation(MobileSuggestibleAllegation, models.Model):
     final_finding = models.CharField(choices=FINDINGS, max_length=2, null=True, db_index=True, blank=True)
     final_outcome = models.CharField(choices=OUTCOMES, max_length=3, null=True, db_index=True, blank=True)
     final_outcome_class = models.CharField(max_length=20, null=True, blank=True)
+    summary = models.TextField(null=True, blank=True)
 
     areas = models.ManyToManyField('Area', blank=True)
     location = models.CharField(max_length=20, null=True, blank=True, choices=LOCATION_CHOICES)
@@ -479,3 +480,14 @@ class Investigator(models.Model):
             'text': self.name,
             'value': self.pk,
         }
+
+
+class PendingPdfAllegation(models.Model):
+    crid = models.CharField(max_length=30, null=True, db_index=True)
+    raw_content = models.TextField(blank=True, null=True)
+    notification_date = models.DateField(null=True, blank=True)
+    areas = models.ManyToManyField('Area', blank=True)
+    cat = models.ForeignKey(AllegationCategory, null=True, blank=True)
+    finding = models.CharField(max_length=255, blank=True, null=True)
+    summary = models.TextField(blank=True, null=True)
+    errors = models.TextField(blank=True, null=True)

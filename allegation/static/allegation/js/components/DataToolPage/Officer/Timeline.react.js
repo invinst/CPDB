@@ -93,6 +93,10 @@ var Timeline = React.createClass({
     this.drawTimeline(this.props.data);
   },
 
+  componentDidMount: function () {
+    this.drawTimeline(this.props.data);
+  },
+
   render: function () {
     var wait = '';
     if (this.props.data) {
