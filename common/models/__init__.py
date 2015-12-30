@@ -548,7 +548,7 @@ def check_document_update(**kwargs):
 
         if instance.document_id and instance.document_normalized_title:
             old_instance = Allegation.objects.get(pk=instance.pk)
-            if instance.document_id == old_instance.document_title:
+            if instance.document_id == old_instance.document_id:
                 return
 
             url = 'http://documentcloud.org/documents/{id}-{title}.html'.format(
