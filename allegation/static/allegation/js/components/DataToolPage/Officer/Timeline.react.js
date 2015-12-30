@@ -1,16 +1,19 @@
 var _ = require('lodash');
+var ReactDOM = require('react-dom');
 var React = require('react');
 
-var Base = require('components/Base.react');
-var TimelineStore = require('stores/OfficerPage/TimelineStore');
 
-
-var Timeline = React.createClass(_.assign(Base(TimelineStore), {
+var Timeline = React.createClass({
   drawTimeline: function (data) {
-    var container = this.getDOMNode();
+    var container = ReactDOM.findDOMNode(this);
     $(container).html("");
     var timeLineItems = [];
     var items = data.items;
+
+    if (!items) {
+      return;
+    }
+
     for (var i = 0; i < items.length; i++) {
       if (!items[i]) {
         continue;
@@ -87,17 +90,21 @@ var Timeline = React.createClass(_.assign(Base(TimelineStore), {
   },
 
   componentDidUpdate: function () {
-    this.drawTimeline(this.state.data);
+    this.drawTimeline(this.props.data);
+  },
+
+  componentDidMount: function () {
+    this.drawTimeline(this.props.data);
   },
 
   render: function () {
     var wait = '';
-    if (this.state.data) {
-      wait = (<i class='fa fa-spin fa-spinner'/>);
+    if (this.props.data) {
+      wait = (<i className='fa fa-spin fa-spinner'/>);
     }
-    return (<div>{wait}</div>);
+    return (<div className="timeline">{wait}</div>);
   }
-}));
+});
 
 
 module.exports = Timeline;
