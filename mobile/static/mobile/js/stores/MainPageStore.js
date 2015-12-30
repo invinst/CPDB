@@ -36,6 +36,12 @@ AppDispatcher.register(function (action) {
       _state['searchStatus'] = 'results';
       MainPageStore.emitChange();
       break;
+    case AppConstants.MAIN_PAGE_RECEIVED_DATA:
+      _state['searchStatus'] = 'results';
+      _state['suggestions'] = action.data;
+      _state['query'] = action.query;
+      MainPageStore.emitChange();
+      break;
 
     default:
       break;
