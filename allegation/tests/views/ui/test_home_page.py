@@ -74,7 +74,7 @@ class HomePageTestCase(BaseLiveTestCase):
         self.check_number_officer(1)
 
         self.find('.checkmark').click()
-        self.until(lambda: self.element_exist('.complaint_list'))
+        self.until(lambda: self.element_exist('.complaint-list'))
         self.find('.complaint-row > .row').click()
 
         self.element_exist('.complaint_detail').should.equal(True)
