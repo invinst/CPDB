@@ -17,10 +17,10 @@ def send_document_notification_by_crid_and_link(crid, link):
     emails = request_emails.values_list('email', flat=True)
     recipient_list = list(emails)
 
-    subject = "[CPDB] Requested document for CR {crid} is now available".format(crid=crid)
+    subject = "Your requested document for CR # {crid} is now available".format(crid=crid)
     message = """Hi,
 
-    Your requested document for CR {crid} is now available on Document Cloud. You read it at this link {link}.
+    The document you requested for CR # {crid} is now available: {link}
 
     Best regards,
     The Citizens' Police Database
@@ -37,3 +37,4 @@ def send_document_notification_by_crid_and_link(crid, link):
         from_email=from_email,
         recipient_list=recipient_list
     )
+    send_document_notification_by_crid_and_link.called = True
