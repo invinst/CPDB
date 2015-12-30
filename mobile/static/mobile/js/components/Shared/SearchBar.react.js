@@ -19,12 +19,18 @@ var SearchBar = React.createClass({
     SuggestionAPI.get(event.currentTarget.value);
   },
 
+  onFocus: function () {
+    this.setState({
+      'searchState': 'close'
+    });
+  },
+
   render: function () {
     var searchBarIconClassName = cx('icon', HelperUtil.format('icon-{searchState}', {'searchState': this.state.searchState}));
 
     return (
       <div className='search-bar animation'>
-        <input className='input-text' placeholder='Search officers or complaints' onChange={this.onInputChange}/>
+        <input className='input-text' placeholder='Search officers or complaints' onChange={this.onInputChange} onFocus={this.onFocus}/>
         <span className={searchBarIconClassName}></span>
       </div>
     );
