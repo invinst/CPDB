@@ -3,10 +3,11 @@ var AppConstants = require('constants/AppConstants');
 
 
 var MainPageServerActions = {
-  received: function (data) {
+  received: function (data, query) {
     AppDispatcher.dispatch({
       actionType: AppConstants.MAIN_PAGE_RECEIVED_DATA,
-      data: data
+      data: data,
+      query: query
     });
   },
 
