@@ -57,8 +57,8 @@ class AllegationQueryFilter(object):
 
         for value in values:
             condition = CUSTOM_FILTER_DICT[field][value]['condition']
-            for field in condition:
-                self.filters[field] += condition[field]
+            for key in condition:
+                self.filters[key] += condition[key]
 
     def add_data_source_filter(self, field):
         data_source = self.query_dict.getlist(field, [])
