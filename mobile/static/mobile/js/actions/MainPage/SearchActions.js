@@ -20,7 +20,7 @@ var SearchActions = {
       actionType: AppConstants.SEARCH_FOR,
       data: term
     });
-  },
+  }
 };
 
 module.exports = SearchActions;

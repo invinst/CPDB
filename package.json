@@ -45,6 +45,7 @@
     "react-tag-input": "^2.0.2",
     "slug": "^0.9.1",
     "slugify": "^0.1.1",
+    "superagent": "^1.5.0",
     "toastr": "^2.1.2"
   },
   "devDependencies": {

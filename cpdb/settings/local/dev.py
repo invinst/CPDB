@@ -1,5 +1,3 @@
-import sys
-
 from cpdb.settings.base import *
 
 
