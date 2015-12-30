@@ -7,8 +7,8 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', '0061_pending_pdf_allegation_and_allegation_summary'),
         ('common', '0055_auto_20151216_0316'),
+        ('common', '0061_pending_pdf_allegation_and_allegation_summary'),
     ]
 
     operations = [
