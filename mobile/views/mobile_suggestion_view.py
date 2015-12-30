@@ -1,4 +1,4 @@
-from django.http import HttpResponseNotFound
+from django.http import HttpResponseNotFound, Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -10,7 +10,9 @@ class MobileSuggestionView(APIView):
     def get(self, request):
         query = request.GET.get('query', '')
         suggestions = suggest(query)
-        if suggestions:
-            content = SuggestibleSerializer(suggestions, many=True)
-            return Response(content.data)
-        return HttpResponseNotFound()
+
+        if not suggestions:
+            raise Http404()
+
+        content = SuggestibleSerializer(suggestions, many=True)
+        return Response(content.data)
