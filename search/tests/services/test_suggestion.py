@@ -64,9 +64,30 @@ class SuggestServiceTestCase(SimpleTestCase):
         data['areas__id'].should.have.length_of(1)
         data['areas__id'][0][2].should.equal(area.type)
 
+    def test_suggest_allegation_categories_by_allegation_name(self):
+        cat = AllegationCategoryFactory()
+        data = self.suggestion.make_suggestion(cat.allegation_name[:3])
+
+        self.check_category_suggestion(data, cat)
+
+    def test_suggest_allegation_categories_by_cat_id(self):
+        cat = AllegationCategoryFactory()
+        data = self.suggestion.make_suggestion(cat.cat_id)
+
+        self.check_category_suggestion(data, cat)
+
+    def check_category_suggestion(self, data, cat):
+        data.should.contain('cat')
+        data['cat'].should.have.length_of(1)
+        data['cat'][0][0].should.equal(cat.allegation_name)
+        data['cat'][0][1].should.equal(cat.id)
+        data.should.contain('cat__cat_id')
+        data['cat__cat_id'].should.have.length_of(1)
+        data['cat__cat_id'][0].should.equal(cat.cat_id)
+
     def test_suggest_has_filters(self):
         data = self.suggestion.make_suggestion('has')
-
+        
         data.should.contain('has_filters')
         len(data['has_filters']).should.equal(7)
         for filter_name, filter_value in [
@@ -86,4 +107,3 @@ class SuggestServiceTestCase(SimpleTestCase):
         len(data['has_filters']).should.equal(1)
         data['has_filters'][0][0].should.equal('has:document')
         data['has_filters'][0][1].should.equal('has:document')
-

@@ -1,17 +1,36 @@
 .officer-page
-  background-color: #ddd
   .content
-    top: 50px
-    position: absolute
-    width: 100%
-    background-color: #ddd
-  .box
-    padding: 5px 0
-    background: #fff
-    z-index: 10
+    background-color: $officer-background-color
+    .officer-header
+      padding-top: 16px
+      background: $white
+    .tabs
+      font-size: 15px
+      padding-top: 20px
+      background: $white
+      .tab-navs
+        background: $white
+        border-bottom: solid 1px $gray
+        box-sizing: border-box
+        .tab-nav
+          display: inline-block
+          padding: 0 10px 5px 10px
+        .active
+          color: $active-tab-color
+          border-bottom: solid 5px $active-tab-color
+      .tab-contents
+        box-sizing: border-box
+      .tab-navigations
+        background-color: $officer-background-color
+        padding: 13px 0
+        color: $active-tab-color
+        .icon
+          font-size: 10px
+          padding: 0 12px
 
 
-@import 'officer_page/officer_detail'
-@import 'officer_page/statistic_section'
-@import 'officer_page/related_officers'
-@import 'officer_page/complaint_section'
+@import 'officer_page/officer_header'
+@import 'officer_page/summary_tab'
+@import 'officer_page/complaints_tab'
+@import 'officer_page/related_officer_tab'
+@import 'officer_page/not_matched_page'

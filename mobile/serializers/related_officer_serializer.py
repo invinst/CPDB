@@ -16,5 +16,6 @@ class RelatedOfficerSerializer(serializers.ModelSerializer):
             'officer_last',
             'race',
             'gender',
-            'num_allegations'
+            'num_allegations',
+            'allegations_count'
         )

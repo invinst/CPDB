@@ -17,3 +17,8 @@ class AllegationSerializer(serializers.ModelSerializer):
             'final_finding',
             'final_outcome_class'
         )
+
+
+class AllegationDataSerializer(serializers.Serializer):
+    data = AllegationSerializer()
+    allegation_counts = serializers.ListField(child=serializers.IntegerField())

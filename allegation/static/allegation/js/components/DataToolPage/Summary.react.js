@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var Filters = require('components/DataToolPage/Filters.react');
 var SummaryActions = require('actions/SummaryActions');
 var SummaryRow = require("components/DataToolPage/SummaryRow.react");
@@ -18,13 +19,13 @@ var Summary = React.createClass({
 
   // embedding
   getEmbedCode: function () {
-    var node = this.getDOMNode();
+    var node = ReactDOM.findDOMNode(this);
     var width = $(node).width();
     var height = $(node).height();
     var src = "/embed/?page=summary&query=" + encodeURIComponent(FilterStore.getQueryString(['cat', 'cat__category']));
 
     var selectedCategories = [];
-    var cats = [FilterStore.getAll('cat'), FilterStore.getAll('cat__category')];
+    var cats = [FilterStore.getAll('cat__cat_id'), FilterStore.getAll('cat__category')];
     for (var i = 0; i < cats.length; i++) {
       var cat = cats[i];
       if (cat) {
@@ -46,7 +47,7 @@ var Summary = React.createClass({
     SummaryStore.addChangeListener(this._onChange);
     SummaryStore.addSummaryListener(this._changeView);
 
-    var that = $(this.getDOMNode());
+    var that = $(ReactDOM.findDOMNode(this));
     var height = that.parent().height();
     setTimeout(function () {
       that.find(".child-rows").css('max-height', height);
@@ -98,9 +99,9 @@ var Summary = React.createClass({
         var subcategory = category.subcategories[i];
         subcategory.tagValue = {
           text: subcategory.name,
-          value: ['cat', subcategory.cat_id]
+          value: ['cat__cat_id', subcategory.cat_id]
         };
-        childRows.push(<SummaryChildRow category={category} key={subcategory.cat_id}
+        childRows.push(<SummaryChildRow category={category} key={subcategory.id}
                                         subcategory={subcategory} summary={this}/>);
       }
       var id = "child-rows-" + category.id;

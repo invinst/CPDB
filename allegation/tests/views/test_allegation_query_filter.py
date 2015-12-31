@@ -23,5 +23,5 @@ class AllegationQueryFilterTestCase(SimpleTestCase):
         query = QueryDict('cat__category={category}'.format(category=allegation.cat.category))
         allegation_filter = AllegationQueryFilter(query, ignore_filters=None)
         allegation_filter.allegation_filters()
-        allegation_filter.filters.should.contain('cat')
-        allegation_filter.filters['cat'].should.equal([allegation.cat.cat_id])
+        allegation_filter.filters.should.contain('cat__cat_id')
+        allegation_filter.filters['cat__cat_id'].should.equal([allegation.cat.cat_id])
