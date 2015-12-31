@@ -1,4 +1,3 @@
-from datetime import date
 from django.template.defaultfilters import slugify
 
 
@@ -43,6 +42,6 @@ class MobileSuggestibleAllegation(MobileSuggestible):
             'resource_key': self.crid,
             'suggestion_type': suggestion_type,
             'meta': {
-                'incident_date': date(self.incident_date.year, self.incident_date.month, self.incident_date.day)
+                'incident_date': self.incident_date
             }
         }
