@@ -1,6 +1,10 @@
 var React = require('react');
-var OfficerMixin = require("components/DataToolPage/Officer/OfficerMixin.react");
 var pluralize = require('pluralize');
+var Link = require('react-router').Link;
+
+var OfficerMixin = require("components/DataToolPage/Officer/OfficerMixin.react");
+var StringUtil = require('utils/StringUtil');
+
 
 var Investigator = React.createClass({
   mixins: [OfficerMixin],
@@ -44,19 +48,25 @@ var Investigator = React.createClass({
     }
 
     return (
-      <div className='investigation'>
-        <div className='row-fluid'>
-          <div>
-            <div className='results'>
-              <div className='investigator-name'>
-                {investigator.name}
+      <Link to={this.investigatorLink(investigator)}>
+        <div className='investigation'>
+          <div className='row-fluid'>
+            <div>
+              <div className='results'>
+                <div className='investigator-name'>
+                  {investigator.name}
+                </div>
+                {more}
               </div>
-              {more}
             </div>
           </div>
         </div>
-      </div>
+      </Link>
     );
+  },
+
+  investigatorLink: function (investigator) {
+    return '/investigator/' + StringUtil.slugify(investigator.name) + '/' + investigator.id;
   }
 });
 

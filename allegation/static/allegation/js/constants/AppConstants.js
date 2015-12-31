@@ -15,6 +15,8 @@ module.exports = {
   COMPLAINT_LIST_GET_DATA: c++,
   COMPLAINT_LIST_GET_MORE_DATA: c++,
 
+  ALLEGATION_DETAILS_DATA_RECEIVED: c++,
+
   OFFICER_COMPLAINT_LIST_RECEIVED_DATA: c++,
   OFFICER_MOUSE_OUT: c++,
   MAP_CHANGE_FILTER: c++,
@@ -68,6 +70,8 @@ module.exports = {
   NAV_GO_TO_PAGE: c++,
 
   MAP_CHANGE_MARKERS: c++,
+
+  RECEIVED_INVESTIGATOR_DATA: c++,
 
   AVG_COMPLAINTS_NUMBER_GREEN: 20,
   AVG_COMPLAINTS_NUMBER_YELLOW: 60,
@@ -250,6 +254,7 @@ module.exports = {
   AUTOCOMPLETE_CATEGORY_NAMES: {
     'crid': 'Allegation ID',
     'cat__category': 'Category',
+    'cat__cat_id': 'Category ID',
     'cat': 'Allegation type',
     'investigator': 'Investigator',
     'officer': 'Officer',
@@ -294,7 +299,9 @@ module.exports = {
   OFFICER_PAGE_API_ENDPOINT: '/officer/',
   SESSION_API_ENDPOINT: '/api/allegations/session/',
   RACE_GENDER_API_ENDPOINT: '/api/allegations/race-gender/',
-
+  ALLEGATION_DETAILS_API_ENDPOINT: '/api/investigation/',
+  ALLEGATIONS_API_ENDPOINT: '/api/allegations/',
+  INVESTIGATOR_API_ENDPOINT: '/investigator/',
 
   DATE_FORMAT: 'D MMM, YYYY',
 

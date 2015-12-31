@@ -30,6 +30,7 @@ class OfficerDetailView(View):
                                      'officer': Officer.objects.get(pk=related_officer['officer'])})
 
         for witness in related_witness_ordered:
+
             related_officers.append({'num_allegations': witness['total'],
                                      'witness': True,
                                      'officer': Officer.objects.get(pk=witness['officer'])})
@@ -39,6 +40,6 @@ class OfficerDetailView(View):
         return HttpResponse(JSONSerializer().serialize({
             'officer': officer,
             'allegations': allegations,
-            'related_officers': related_officers,
+            'relatedOfficers': related_officers,
             'has_map': has_map
         }))

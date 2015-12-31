@@ -45,15 +45,6 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
 
   componentDidUpdate: function () {
     this.moveArrow();
-    this.updateBrowserAddress();
-  },
-
-  updateBrowserAddress: function () {
-    setTimeout(function () {
-      if (AppStore.isDataToolPage()) {
-        history.replaceState(null, null, AppStore.getDataToolUrl());
-      }
-    }, 1);
   },
 
   componentDidMount: function () {

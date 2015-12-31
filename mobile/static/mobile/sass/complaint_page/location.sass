@@ -1,12 +1,13 @@
 .location
+  padding-bottom: 3px
   .location-detail
-    width: 100%
-    background-color: #EEE
-    margin-top: 10px
-    padding: 10px
+    margin: 10px 0
+    font-size: 13px
+    &.no-data
+      height: 20px
     label
-      width: 25%
-      float: left
-    span
-      width: 75%
-      padding: 5px
+      color: $location-label-color
+  .location-map
+    padding-bottom: 37px
+
+@import 'location/map'
