@@ -22,7 +22,6 @@ var SuccessfulSearch = React.createClass({
   renderSuggestionItem: function (suggestion) {
     var presenter = SuggestionPresenter(suggestion);
     var term = this.props.term;
-
     var SubComponent = this.getSubComponentFor(presenter.suggestionType);
     return (
       <SubComponent term={term} suggestion={suggestion} />
