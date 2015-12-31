@@ -35,8 +35,8 @@ var DonutChart = React.createClass({
 
   render: function () {
     return (
-      <div className="relative">
-        <div className='donut-chart' id='donut-chart'></div>
+      <div className='donut-chart'>
+        <div id='donut-chart'></div>
         <div id="addText">
           {this.middleTextRender()}
         </div>
