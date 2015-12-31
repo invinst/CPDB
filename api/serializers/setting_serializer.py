@@ -11,4 +11,6 @@ class SettingSerializer(serializers.HyperlinkedModelSerializer):
                   'id',
                   'default_site_title',
                   'story_types_order',
+                  'requested_document_email_subject',
+                  'requested_document_email_text'
                   )

@@ -2,6 +2,7 @@ from django.core.mail import send_mail
 
 from cpdb.celery import app
 from document.models import RequestEmail
+from api.models import Setting
 
 
 def send_document_notification(allegation, document):
@@ -17,18 +18,9 @@ def send_document_notification_by_crid_and_link(crid, link):
     emails = request_emails.values_list('email', flat=True)
     recipient_list = list(emails)
 
-    subject = "Your requested document for CR # {crid} is now available".format(crid=crid)
-    message = """Hi,
-
-    The document you requested for CR # {crid} is now available: {link}
-
-    Best regards,
-    The Citizens' Police Database
-"""
-    message = message.format(
-        crid=crid,
-        link=link
-    )
+    setting = Setting.objects.all().first()
+    subject = setting.requested_document_email_subject.format(crid=crid)
+    message = setting.requested_document_email_text.format(crid=crid, link=link)
     from_email = None
 
     send_mail(

@@ -13,6 +13,8 @@ var SettingSection = React.createClass(_.assign(Base(SettingSectionStore), {
   content: function () {
     var that = this;
     var setting = this.state.setting;
+    var crid = "{crid}";
+    var link = "{link}";
 
     return (
       <div>
@@ -28,6 +30,19 @@ var SettingSection = React.createClass(_.assign(Base(SettingSectionStore), {
             <ReactTags tags={this.state.tags}
                     suggestions={this.state.storyTypes}
                     handleDrag={this.handleDrag} />
+          </div>
+        </div>
+        <div className="form-group">
+          <label htmlFor='default_site_title' className="col-lg-2 col-md-2 col-xs-2">Requested Document Email Subject</label>
+          <div className="col-lg-10 col-md-10 col-xs-10">
+            <input type='text' id='requested_document_email_subject' className="form-control" value={setting.requested_document_email_subject} onChange={this.change('requested_document_email_subject')} required />
+          </div>
+        </div>
+        <div className="form-group">
+          <label htmlFor='default_site_title' className="col-lg-2 col-md-2 col-xs-2">Requested Document Email Text</label>
+          <div className="col-lg-10 col-md-10 col-xs-10">
+            <textarea rows='6' id='requested_document_email_text' className="form-control" value={setting.requested_document_email_text} onChange={this.change('requested_document_email_text')} required >{setting.requested_document_email_text}</textarea>
+            <div><em>* {crid} and {link} are variables which will be replaced on sending of the email. HTML is not supported.</em></div>
           </div>
         </div>
       </div>
