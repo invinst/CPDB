@@ -36,7 +36,7 @@ var SearchBar = React.createClass(objectAssign(Base(SearchBarStore), {
   },
 
   _onSearchIconClick: function () {
-      SearchBarActions.clear();
+    SearchBarActions.clear();
   },
 
   componentDidMount: function () {
@@ -55,7 +55,6 @@ var SearchBar = React.createClass(objectAssign(Base(SearchBarStore), {
       'icon-search': status == 'blank',
       'icon-close': status == 'focus'
     });
-    console.log(this.state.term);
     return (
       <div className='search-bar animation'>
         <input className='input-text' placeholder='Search officers or complaints'
