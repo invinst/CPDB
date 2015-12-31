@@ -2,11 +2,13 @@ var c = 0;
 
 module.exports = {
   // MainPage events
-  ACTIVATE_SEARCH: c++,
-  DEACTIVATE_SEARCH: c++,
   SEARCH_FOR: c++,
   GO_FOR_SEARCH_DETAIL: c++,
-  CHANGE_TAB: c++,
+  SEARCH_INPUT_CHANGED: c++,
+  SEARCH_FOCUS: c++,
+  SEARCH_BLUR: c++,
+  SEARCH_CLEAR: c++,
+
 
   // ComplaintPage events
   COMPLAINT_PAGE_RECEIVED_DATA: c++,
@@ -15,6 +17,10 @@ module.exports = {
   //OfficerPage events
   OFFICER_PAGE_RECEIVED_DATA: c++,
   OFFICER_PAGE_FAILED_TO_RECEIVED_DATA: c++,
+
+  // MainPage events
+  MAIN_PAGE_RECEIVED_DATA: c++,
+  MAIN_PAGE_FAILED_TO_RECEIVED_DATA: c++,
 
   // Tokens
   MAPBOX_TOKEN: '***REMOVED***',
@@ -174,6 +180,7 @@ module.exports = {
   // API endpoints
   ALLEGATION_API_ENDPOINT: '/mobile/api/allegation',
   OFFICER_API_ENDPOINT: '/mobile/api/officer',
+  SUGGESTION_API_ENDPOINT: '/mobile/api/suggestion',
 
   //Time format
   SIMPLE_DATE_FORMAT: 'MMM DD, YYYY',

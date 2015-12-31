@@ -7,32 +7,38 @@ var Base = require('components/Base.react');
 var About = require('components/Shared/About.react');
 var MainPageStore = require('stores/MainPageStore');
 var Logo = require('components/Shared/Logo.react');
-var Search = require('components/Shared/Search.react');
-var SuggestionSection = require('components/MainPage/SuggestionSection.react');
-var SearchResultSection = require('components/MainPage/SearchResultSection.react');
+var SearchBar = require('components/MainPage/SearchBar.react');
+var SearchResults = require('components/MainPage/SearchResults.react');
+var Wrapper = require('components/Shared/Wrapper.react');
 
 
 var MainPage = React.createClass(objectAssign(Base(MainPageStore), {
   getInitialState: function () {
     return {
-      'searchStatus': 'blank'
+      'isSearchFocused': 0,
+      'term': ''
     }
   },
 
+  componentDidMount: function () {
+    MainPageStore.addChangeListener(this._onChange);
+  },
+
   render: function () {
-    var classNames = cx('search-wrapper', 'pad', 'animation', 'content', {'top-left': this.state.searchStatus != 'blank'});
+    var term = this.props.params.query || '';
+    var isSearchFocused = this.state.isSearchFocused;
+    var classNames = cx('search-wrapper animation content',  { 'top-left': isSearchFocused });
+
     return (
       <div className='main-page'>
-        <Logo topLeft={this.state.searchStatus != 'blank'}/>
+        <Logo topLeft={isSearchFocused}/>
         <div className={classNames}>
-          <Search />
-          <SuggestionSection visible={this.state.searchStatus == 'suggesting'}/>
-          <SearchResultSection visible={this.state.searchStatus == 'results'}/>
+          <SearchBar />
         </div>
-
         <div className='bar bar-standard bar-footer'>
           <About />
         </div>
+        <SearchResults term={term} />
       </div>
     )
   }

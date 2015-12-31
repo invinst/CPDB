@@ -12,7 +12,7 @@ var InvestigatorSection = require('components/ComplaintPage/InvestigatorSection.
 var InvestigationTimeline = require('components/ComplaintPage/InvestigationTimeline.react');
 var LoadingPage = require('components/Shared/LoadingPage.react');
 var Location = require('components/ComplaintPage/Location.react');
-var SearchBar = require('components/Shared/SearchBar.react');
+var SharedSearchBar = require('components/Shared/SharedSearchBar.react');
 var NotMatchedPage = require('components/ComplaintPage/NotMatchedPage.react');
 
 
@@ -58,7 +58,7 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
     return (
       <div className='complaint-page'>
         <div className='container content'>
-          <SearchBar />
+          <SharedSearchBar />
           <div className='main-content'>
             <ComplaintDetail info={info} />
             <InvestigationTimeline info={info} />

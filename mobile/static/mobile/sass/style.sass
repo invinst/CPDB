@@ -8,6 +8,24 @@ body
   line-height: initial
   height: 100%
 
+.content
+  -webkit-animation: scale 0.7s ease-in-out
+  -moz-animation: scale 0.7s ease-in-out
+  animation: scale 0.7s ease-in-out
+
+@keyframes scale
+  0%
+    transform: scale(0.9)
+    opacity: 0
+
+  50%
+    transform: scale(1.01)
+    opacity: 0.5
+
+  100%
+    transform: scale(1)
+    opacity: 1
+
 @import 'helper'
 @import 'grid'
 @import 'main_page'
