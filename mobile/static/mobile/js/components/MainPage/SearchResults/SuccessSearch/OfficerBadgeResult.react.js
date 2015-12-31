@@ -8,7 +8,7 @@ var SuggestionPresenter = require('presenters/SuggestionPresenter');
 
 var OfficerBadgeResult = React.createClass({
   _onClick: function () {
-    var officer = this.props.officer;
+    var officer = this.props.suggestion;
     var presenter = SuggestionPresenter(officer);
     AppHistory.pushState(null, presenter.url);
   },

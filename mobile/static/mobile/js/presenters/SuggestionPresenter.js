@@ -19,11 +19,16 @@ var SuggestionPresenter = function (suggestion) {
     return HelperUtil.fetch(suggestion, 'resource_key', '');
   };
 
+  var suggestionType = function () {
+    return HelperUtil.fetch(suggestion, 'suggestion_type', '');
+  };
+
   return {
     text: text(),
     url: url(),
     resource: resource(),
-    resourceKey: resourceKey()
+    resourceKey: resourceKey(),
+    suggestionType: suggestionType()
   }
 };
 
