@@ -30,13 +30,15 @@ class MobileSuggestibleOfficerTest(TestCase):
         self.officer.get_mobile_url().should.equal(self.expected_url)
 
     def test_suggestion_entry(self):
+        suggestion_type = 'suggestion_type'
         expected_entry = {
             'text': self.display_name,
             'resource': 'officer',
             'resource_key': self.officer_id,
-            'url': self.expected_url
+            'url': self.expected_url,
+            'suggestion_type': suggestion_type
         }
-        self.officer.as_suggestion_entry().should.be.equal(expected_entry)
+        self.officer.as_suggestion_entry(suggestion_type).should.be.equal(expected_entry)
 
 
 class MobileSuggestibleAllegationTest(TestCase):
@@ -49,10 +51,12 @@ class MobileSuggestibleAllegationTest(TestCase):
         self.allegation.get_mobile_url().should.equal(self.expected_url)
 
     def test_suggestion_entry(self):
+        suggestion_type = 'suggestion_type'
         expected_entry = {
             'text': self.crid,
             'resource': 'allegation',
             'resource_key': self.crid,
-            'url': self.expected_url
+            'url': self.expected_url,
+            'suggestion_type': suggestion_type,
         }
-        self.allegation.as_suggestion_entry().should.be.equal(expected_entry)
+        self.allegation.as_suggestion_entry(suggestion_type).should.be.equal(expected_entry)

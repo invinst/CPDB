@@ -9,24 +9,23 @@ var DataTypeUtil = require('utils/DataTypeUtil');
 
 
 var SuccessfulSearch = React.createClass({
+  getSubComponentFor: function (type) {
+    var subComponentMapper = {
+      'officer_name': OfficerNameResult,
+      'officer_badge': OfficerBadgeResult,
+      'allegation_crid': ComplaintResult
+    };
+
+    return subComponentMapper[type];
+  },
+
   renderSuggestionItem: function (suggestion) {
     var presenter = SuggestionPresenter(suggestion);
     var term = this.props.term;
 
-    if (presenter.resource == 'officer') {
-      if (DataTypeUtil.isNumeric(term)) {
-        return (
-          <OfficerBadgeResult term={term} officer={suggestion}/>
-        );
-      }
-
-      return (
-        <OfficerNameResult officer={suggestion}/>
-      );
-    }
-
+    var SubComponent = this.getSubComponentFor(presenter.suggestionType);
     return (
-      <ComplaintResult complaint={suggestion}/>
+      <SubComponent term={term} suggestion={suggestion} />
     );
   },
 

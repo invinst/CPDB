@@ -5,7 +5,7 @@ class MobileSuggestible(object):
     def get_mobile_url(self):
         raise NotImplementedError
 
-    def as_suggestion_entry(self):
+    def as_suggestion_entry(self, suggestion_type=''):
         raise NotImplementedError
 
 
@@ -15,12 +15,13 @@ class MobileSuggestibleOfficer(MobileSuggestible):
         return '/officer/{display_name}/{id}'.format(display_name=slugified_display_name,
                                                      id=self.id)
 
-    def as_suggestion_entry(self):
+    def as_suggestion_entry(self, suggestion_type=''):
         return {
             'text': self.display_name,
             'resource': 'officer',
             'url': self.get_mobile_url(),
-            'resource_key': self.pk
+            'resource_key': self.pk,
+            'suggestion_type': suggestion_type
         }
 
 
@@ -28,10 +29,11 @@ class MobileSuggestibleAllegation(MobileSuggestible):
     def get_mobile_url(self):
         return '/complaint/{crid}'.format(crid=self.crid)
 
-    def as_suggestion_entry(self):
+    def as_suggestion_entry(self, suggestion_type=''):
         return {
             'text': self.crid,
             'resource': 'allegation',
             'url': self.get_mobile_url(),
-            'resource_key': self.crid
+            'resource_key': self.crid,
+            'suggestion_type': suggestion_type
         }

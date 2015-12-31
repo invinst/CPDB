@@ -1,8 +1,8 @@
-from django.http import HttpResponseNotFound, Http404
+from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from mobile.serializers.meta_serializer import SuggestibleSerializer
+from mobile.serializers.suggestible_serializer import SuggestibleSerializer
 from mobile.services.mobile_suggestion_service import *
 
 
