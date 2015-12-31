@@ -1,3 +1,4 @@
+from datetime import date
 from django.template.defaultfilters import slugify
 
 
@@ -21,7 +22,12 @@ class MobileSuggestibleOfficer(MobileSuggestible):
             'resource': 'officer',
             'url': self.get_mobile_url(),
             'resource_key': self.pk,
-            'suggestion_type': suggestion_type
+            'suggestion_type': suggestion_type,
+            'meta': {
+                'allegations_count': self.allegations_count,
+                'gender': self.gender,
+                'race': self.race
+             }
         }
 
 
@@ -35,5 +41,8 @@ class MobileSuggestibleAllegation(MobileSuggestible):
             'resource': 'allegation',
             'url': self.get_mobile_url(),
             'resource_key': self.crid,
-            'suggestion_type': suggestion_type
+            'suggestion_type': suggestion_type,
+            'meta': {
+                'incident_date': date(self.incident_date.year, self.incident_date.month, self.incident_date.day)
+            }
         }

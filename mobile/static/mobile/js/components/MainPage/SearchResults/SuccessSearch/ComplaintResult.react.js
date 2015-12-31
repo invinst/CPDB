@@ -18,9 +18,9 @@ var ComplaintResult = React.createClass({
 
     return (
       <div>
-        <li className='suggestion-item'>
-          <div className='link' onClick={this._onClick}>
-            CRID <span className='highlight'>{presenter.resourceKey}</span>
+        <li className='complaint-results'>
+          <div className='link complaint-result-item' onClick={this._onClick}>
+            CRID <span className='highlight'>{presenter.resourceKey}</span> Incident {presenter.incidentDate}
           </div>
         </li>
       </div>
