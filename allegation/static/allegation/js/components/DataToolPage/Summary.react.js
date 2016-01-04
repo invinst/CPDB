@@ -101,12 +101,12 @@ var Summary = React.createClass({
           text: subcategory.name,
           value: ['cat__cat_id', subcategory.cat_id]
         };
-        childRows.push(<SummaryChildRow category={category} key={subcategory.id}
+        childRows.push(<SummaryChildRow category={category} key={i}
                                         subcategory={subcategory} summary={this}/>);
       }
       var id = "child-rows-" + category.id;
       childRowGroup.push(
-        <div className="child-rows" id={id} key={id}>
+        <div className="child-rows" id={id} key={j}>
           {childRows}
         </div>
       );
