@@ -1,6 +1,7 @@
 var cx = require('classnames');
 var d3 = require('d3');
 var React = require('react');
+var ReactDOM = require('react-dom');
 var FilterTagsActions = require("actions/FilterTagsActions");
 var D3PercentageRectangleChart = require("utils/d3utils/PercentageRectangleChart");
 
@@ -30,7 +31,7 @@ var PercentageRectangleChart = React.createClass({
       return { 'label': blockData['label'], 'value': value };
     });
 
-    FilterTagsActions.toggleTags(this.props.filter, tags);
+    FilterTagsActions.addTag(this.props.filter, tags[0]);
     return false;
   }
 

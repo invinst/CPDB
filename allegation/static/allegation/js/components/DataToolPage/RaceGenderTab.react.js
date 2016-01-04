@@ -1,7 +1,7 @@
 var _ = require('lodash');
 var jQuery = require('jquery');
 var React = require('react');
-
+var ReactDOM = require('react-dom');
 var Base = require('components/Base.react');
 var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
 var FilterStore = require("stores/FilterStore");
@@ -24,7 +24,7 @@ var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
   },
 
   getEmbedCode: function () {
-    var node = this.getDOMNode();
+    var node = ReactDOM.findDOMNode(this);
     var width = jQuery(node).width();
     var height = jQuery(node).height();
     var src = "/embed/?page=race-gender&query=" + encodeURIComponent(FilterStore.getQueryString());
