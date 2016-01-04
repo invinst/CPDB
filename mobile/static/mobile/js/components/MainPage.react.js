@@ -9,7 +9,6 @@ var MainPageStore = require('stores/MainPageStore');
 var Logo = require('components/Shared/Logo.react');
 var SearchBar = require('components/MainPage/SearchBar.react');
 var SearchResults = require('components/MainPage/SearchResults.react');
-var Wrapper = require('components/Shared/Wrapper.react');
 var LoadingPage = require('components/Shared/LoadingPage.react');
 
 
@@ -26,6 +25,18 @@ var MainPage = React.createClass(objectAssign(Base(MainPageStore), {
     MainPageStore.addChangeListener(this._onChange);
   },
 
+  renderSearchResults: function (term) {
+    if (this.state.isSearching) {
+      return (
+        <LoadingPage />
+      )
+    }
+
+    return (
+      <SearchResults term={term} />
+    );
+  },
+
   render: function () {
     var term = this.props.params.query || '';
     var isSearchFocused = this.state.isSearchFocused;
@@ -40,12 +51,7 @@ var MainPage = React.createClass(objectAssign(Base(MainPageStore), {
         <div className='bar bar-standard bar-footer'>
           <About />
         </div>
-        <Wrapper visible={!this.state.isSearching}>
-          <SearchResults term={term}/>
-        </Wrapper>
-        <Wrapper visible={this.state.isSearching}>
-          <LoadingPage />
-        </Wrapper>
+        {this.renderSearchResults(term)}
       </div>
     )
   }
