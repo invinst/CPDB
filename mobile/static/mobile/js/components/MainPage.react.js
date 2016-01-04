@@ -43,7 +43,7 @@ var MainPage = React.createClass(objectAssign(Base(MainPageStore), {
     var classNames = cx('search-wrapper animation content', {'top-left': isSearchFocused});
 
     return (
-      <div className='main-page'>
+      <div className='main-page content'>
         <Logo topLeft={isSearchFocused}/>
         <div className={classNames}>
           <SearchBar />
