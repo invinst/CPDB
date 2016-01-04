@@ -1,25 +1,26 @@
 from itertools import groupby
 
-from common.models import Allegation
+from common.models import OfficerAllegation
 
 
 class AllegationService(object):
     @staticmethod
     def get_officer_allegations(officer_id):
-        crids = Allegation.objects.filter(officer=officer_id).values_list('crid', flat=True)
-        allegations = groupby(Allegation.objects.filter(crid__in=crids).prefetch_related('cat'), lambda x: x.crid)
-        allegation_results = []
+        officer_allegations = OfficerAllegation.objects.filter(
+            officer=officer_id)
+        officer_allegations = groupby(
+            officer_allegations.prefetch_related('cat'),
+            lambda x: x.allegation.crid)
 
-        for key, allegation_list in allegations:
-            new_allegations = list(allegation_list)
-            officers = []
+        results = []
+        for _, sub_list in officer_allegations:
+            officer_allegations_counts = [
+                officer_allegation.officer.allegations_count
+                for officer_allegation in list(sub_list)]
+            results.append({
+                'data': sub_list[0].allegation,
+                'allegations_count':
+                    sorted(officer_allegations_counts, reverse=True)
+                })
 
-            for allegation in new_allegations:
-                officers.append(allegation.officer.allegations_count)
-
-            allegation_results.append({
-                'data': new_allegations[0],
-                'allegation_counts': sorted(officers, reverse=True)
-            })
-
-        return allegation_results
+        return results

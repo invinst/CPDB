@@ -1,7 +1,8 @@
 import json
 from faker import Faker
 
-from allegation.factories import OfficerFactory, AllegationCategoryFactory, AllegationFactory, AreaFactory
+from allegation.factories import (
+    OfficerFactory, AllegationCategoryFactory, AllegationFactory, AreaFactory)
 from common.models import AllegationCategory, Officer
 from common.tests.core import SimpleTestCase
 from search.factories import AliasFactory, SessionAliasFactory
@@ -151,7 +152,7 @@ class SuggestViewTestCase(SimpleTestCase):
 
     def test_suggest_city(self):
         AllegationFactory(city='Chicago IL 60616')
-        data = self.get_suggestion('616')
+        self.get_suggestion('616')
         self.get_suggestion('616').should.contain('city')
         self.get_suggestion('123').shouldnt.contain('city')
         self.get_suggestion('Chi').shouldnt.contain('city')
@@ -180,4 +181,5 @@ class SuggestViewTestCase(SimpleTestCase):
         session_alias = SessionAliasFactory(title=fake.name())
         data = self.get_suggestion(session_alias.alias[0:2])
         data.should.contain('session')
-        [x['label'] for x in data['session']].should.contain(session_alias.title)
+        [x['label'] for x in data['session']]\
+            .should.contain(session_alias.title)

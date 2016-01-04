@@ -3,9 +3,9 @@ import json
 from common.tests.core import SimpleTestCase
 
 
-class AllegationAnalysisApiViewTestCase(SimpleTestCase):
+class OfficerAllegationAnalysisApiViewTestCase(SimpleTestCase):
     def call_api(self, params={}):
-        response = self.client.get('/api/allegations/analysis', params)
+        response = self.client.get('/api/officer-allegations/analysis', params)
         data = json.loads(response.content.decode())
         return response, data
 

@@ -18,8 +18,8 @@ class DocumentLinkView(View):
         return self.update_allegation_document(crid, link)
 
     def cancle_requests(self, crid):
-        allegations = Allegation.objects.filter(crid=crid)
-        allegations.update(document_requested=False)
+        allegation = Allegation.objects.get(crid=crid)
+        allegation.update(document_requested=False)
         return JsonResponse()
 
     def update_allegation_document(self, crid, link):
@@ -27,7 +27,8 @@ class DocumentLinkView(View):
             return HttpResponseBadRequest()
 
         try:
-            document_id, crid_part, normalized_title = self.parse_document_link(link)
+            document_id, crid_part, normalized_title = \
+                self.parse_document_link(link)
         except IndexError:
             return HttpResponseBadRequest()
 
@@ -43,8 +44,10 @@ class DocumentLinkView(View):
             })
         title = self.get_title(get_title_resp.content.decode())
 
-        allegations = Allegation.objects.filter(crid=crid)
-        allegations.update(document_id=document_id, document_normalized_title=normalized_title, document_title=title)
+        allegation = Allegation.objects.get(crid=crid)
+        allegation.update(
+            document_id=document_id,
+            document_normalized_title=normalized_title, document_title=title)
 
         send_document_notification_by_crid_and_link.delay(crid, link)
 

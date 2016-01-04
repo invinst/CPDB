@@ -1,9 +1,10 @@
 from django.views.generic.base import View
 from django.shortcuts import get_object_or_404
 
-from common.models import Investigator, Allegation
+from common.models import Investigator
 from document.response import JsonResponse
-from investigator.services.investigator_details_service import InvestigatorDetailsService
+from investigator.services.investigator_details_service import \
+    InvestigatorDetailsService
 
 
 class InvestigatorDetailView(View):

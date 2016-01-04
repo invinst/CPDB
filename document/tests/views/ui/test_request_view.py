@@ -19,7 +19,8 @@ class RequestViewTestCase(BaseLiveTestCase):
         self.see_header_text()
 
         # enter email
-        self.fill_in("#request_modal input[name='email']", faker.Faker().email())
+        self.fill_in(
+            "#request_modal input[name='email']", faker.Faker().email())
         self.button("Submit").click()
         self.see_notify_text()
 
@@ -34,7 +35,8 @@ class RequestViewTestCase(BaseLiveTestCase):
         self.should_see_text('Someone from our')
 
     def see_header_text(self):
-        self.should_see_text("We'll notify you when the document is made available.")
+        self.should_see_text(
+            "We'll notify you when the document is made available.")
 
     def check_button_requested(self):
         self.find(".complaint-row .btn-request").text.should.equal('Requested')

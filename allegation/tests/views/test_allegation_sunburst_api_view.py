@@ -1,11 +1,11 @@
 import json
 
-from allegation.tests.views.base import AllegationApiTestBase
+from allegation.tests.views.base import OfficerAllegationApiTestBase
 
 
-class AllegationSunburstApiViewTestCase(AllegationApiTestBase):
+class OfficerAllegationSunburstApiViewTestCase(OfficerAllegationApiTestBase):
     def test_get_sunburst(self):
-        response = self.client.get('/api/allegations/sunburst/')
+        response = self.client.get('/api/officer-allegations/sunburst/')
 
         response.status_code.should.equal(200)
 

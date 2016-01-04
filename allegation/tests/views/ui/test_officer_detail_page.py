@@ -1,6 +1,7 @@
-from allegation.factories import AllegationFactory, OfficerFactory, PoliceWitnessFactory
+from allegation.factories import (
+    AllegationFactory, OfficerFactory, PoliceWitnessFactory,
+    OfficerAllegationFactory)
 from allegation.tests.constants import TEST_DOCUMENT_URL
-from api.models import Setting
 from common.models import UNITS
 from common.tests.core import BaseLiveTestCase
 from officer.factories import StoryFactory
@@ -20,11 +21,20 @@ class OfficerDetailPageTestCase(BaseLiveTestCase):
         self.involved_officer = OfficerFactory()
         self.witness_officer = OfficerFactory()
 
-        AllegationFactory(officer=self.officer, crid=self.crid_1)
-        AllegationFactory(officer=self.officer, crid=self.crid_2)
-        AllegationFactory(officer=self.officer, crid=self.crid_3)
-        AllegationFactory(officer=self.involved_officer, crid=self.crid_1)
-        PoliceWitnessFactory(officer=self.witness_officer, crid=self.crid_2)
+        OfficerAllegationFactory(
+            officer=self.officer,
+            allegation=AllegationFactory(crid=self.crid_1))
+        allegation = AllegationFactory(crid=self.crid_2)
+        OfficerAllegationFactory(officer=self.officer, allegation=allegation)
+        OfficerAllegationFactory(
+            officer=self.officer,
+            allegation=AllegationFactory(crid=self.crid_3))
+        OfficerAllegationFactory(
+            officer=self.involved_officer,
+            allegation=AllegationFactory(crid=self.crid_1))
+        PoliceWitnessFactory(
+            officer=self.witness_officer, crid=self.crid_2,
+            allegation=allegation)
 
         self.setting = self.get_admin_settings()
 
@@ -44,7 +54,9 @@ class OfficerDetailPageTestCase(BaseLiveTestCase):
 
         self.browser.title.should.be.within([
             self.officer.display_name,
-            '{first}. {last}'.format(last=self.officer.officer_last, first=self.officer.officer_first[0])
+            '{first}. {last}'.format(
+                last=self.officer.officer_last,
+                first=self.officer.officer_first[0])
         ])
 
     def test_filter_by_intersected_officer(self):
@@ -97,7 +109,8 @@ class OfficerDetailPageTestCase(BaseLiveTestCase):
             story2.title,
             story2.short_description,
         ])
-        self.find('.document-url').get_attribute('href').should.equal(TEST_DOCUMENT_URL)
+        self.find('.document-url').get_attribute('href')\
+            .should.equal(TEST_DOCUMENT_URL)
         self.find('.document-thumbnail').should.be.ok
 
     def go_to_officer_detail_page(self, officer):

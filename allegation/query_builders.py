@@ -2,10 +2,11 @@ import inspect
 
 from django.db.models.query_utils import Q
 from django.contrib.gis.geos import Point
+from django.http import QueryDict
 from django.contrib.gis.measure import D
 
 from common.constants import FOIA_START_DATE
-from common.models import OUTCOMES
+from common.models import OUTCOMES, ComplainingWitness
 from allegation.utils.query import OfficerQuery
 
 
@@ -13,7 +14,7 @@ NO_DISCIPLINE_CODES = ('600', '000', '500', '700', '800', '900', '', None)
 DISCIPLINE_CODES = [x[0] for x in OUTCOMES if x[0] not in NO_DISCIPLINE_CODES]
 
 
-class AlegationQueryBuilder(object):
+class OfficerAlegationQueryBuilder(object):
     """
     Build Q queries from query params.
 
@@ -42,18 +43,21 @@ class AlegationQueryBuilder(object):
         return queries
 
     def _exclude_ignore_params(self, query_params, ignore_params):
-        return {
-            key: val for key, val in query_params.items()
-            if key not in (ignore_params or [])}
+        new_query_dict = query_params.copy()
+        for key in (ignore_params or []):
+            try:
+                new_query_dict.pop(key)
+            except KeyError:
+                pass
+        return new_query_dict
 
     def _q_adhoc_queries(self, query_params):
         queries = Q()
         adhoc_queries = [
-            'id',
-            'crid',
-            'areas__id',
+            'allegation__id',
+            'allegation__crid',
+            'allegation__areas__id',
             'cat',
-            'neighborhood_id',
             'recc_finding',
             'final_outcome',
             'final_outcome_class',
@@ -67,9 +71,9 @@ class AlegationQueryBuilder(object):
             'officer__race',
             'officer__allegations_count__gt',
             'officer__discipline_count__gt',
-            'investigator',
+            'allegation__investigator',
             'cat__category',
-            'city',
+            'allegation__city',
         ]
 
         for key, val in query_params.items():
@@ -115,7 +119,7 @@ class AlegationQueryBuilder(object):
 
     def _q_has_document(self, query_params):
         if 'has:document' in query_params.getlist('has_filters', []):
-            return Q(document_id__isnull=False)
+            return Q(allegation__document_id__isnull=False)
         return Q()
 
     def _q_has_map(self, query_params):
@@ -125,17 +129,17 @@ class AlegationQueryBuilder(object):
 
     def _q_has_address(self, query_params):
         if 'has:address' in query_params.getlist('has_filters', []):
-            return Q(add1__isnull=False) | Q(add2__isnull=False)
+            return Q(allegation__add1__isnull=False) | Q(add2__isnull=False)
         return Q()
 
     def _q_has_location(self, query_params):
         if 'has:location' in query_params.getlist('has_filters', []):
-            return Q(location__isnull=False)
+            return Q(allegation__location__isnull=False)
         return Q()
 
     def _q_has_investigator(self, query_params):
         if 'has:investigator' in query_params.getlist('has_filters', []):
-            return Q(investigator__isnull=False)
+            return Q(allegation__investigator__isnull=False)
         return Q()
 
     def _q_unsustained_final_finding(self, query_params):
@@ -169,28 +173,47 @@ class AlegationQueryBuilder(object):
             return Q(final_outcome=["045", "060", "090", "180", "200"])
         return Q()
 
+    def _query_by_complainant(self, query_params, param_key, query_key):
+        if param_key in query_params:
+            vals = query_params.getlist(param_key)
+            allegation_pks = list(filter(
+                None, ComplainingWitness.objects.filter(**{query_key: vals})
+                .values_list('allegation__pk', flat=True)))
+            return Q(allegation__pk__in=allegation_pks)
+        return Q()
+
+    def _q_complainant_gender(self, query_params):
+        return self._query_by_complainant(
+            query_params, param_key='complainant_gender',
+            query_key='gender__in')
+
+    def _q_complainant_race(self, query_params):
+        return self._query_by_complainant(
+            query_params, param_key='complainant_race',
+            query_key='race__in')
+
     def _q_incident_date_only(self, query_params):
         queries = Q()
 
         for date_range in query_params.getlist('incident_date_only__range'):
             date_range = date_range.split(',')
-            queries |= Q(incident_date_only__range=date_range)
+            queries |= Q(allegation__incident_date_only__range=date_range)
 
         for year in query_params.getlist('incident_date_only__year'):
-            queries |= Q(incident_date_only__year=year)
+            queries |= Q(allegation__incident_date_only__year=year)
 
         for year_month in \
                 query_params.getlist('incident_date_only__year_month'):
             year, month = year_month.split('-')
             queries |= Q(
-                Q(incident_date_onlys__year=year) &
-                Q(incident_date_only__month=month))
+                Q(allegation__incident_date_onlys__year=year) &
+                Q(allegation__incident_date_only__month=month))
 
         dates = [
             date.replace('/', '-')
             for date in query_params.getlist('incident_date_only')]
         if dates:
-            queries |= Q(incident_date_only__in=dates)
+            queries |= Q(allegation__incident_date_only__in=dates)
 
         return queries
 
@@ -201,8 +224,8 @@ class AlegationQueryBuilder(object):
             return Q()
 
         if 'pre-FOIA' in data_source:
-            return Q(incident_date__lt=FOIA_START_DATE)
+            return Q(allegation__incident_date__lt=FOIA_START_DATE)
         elif 'FOIA' in data_source:
-            return Q(incident_date__gte=FOIA_START_DATE)
+            return Q(allegation__incident_date__gte=FOIA_START_DATE)
 
         return Q()

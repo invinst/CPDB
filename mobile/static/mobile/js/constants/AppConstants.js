@@ -172,7 +172,7 @@ module.exports = {
   OFFICER_COMPLAINT_COUNT_RANGE: [20, 9, 3, 2, 0],
 
   // API endpoints
-  ALLEGATION_API_ENDPOINT: '/mobile/api/allegation',
+  ALLEGATION_API_ENDPOINT: '/mobile/api/officer-allegation',
   OFFICER_API_ENDPOINT: '/mobile/api/officer',
 
   //Time format

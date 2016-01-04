@@ -22,7 +22,8 @@ class RequestEmailForm(forms.ModelForm):
         return crid
 
     def save(self, commit=True):
-        Allegation.objects.filter(crid=self.cleaned_data['crid']).update(document_requested=True)
+        Allegation.objects.get(crid=self.cleaned_data['crid'])\
+            .update(document_requested=True)
         super(RequestEmailForm, self).save(commit=commit)
 
     class Meta:

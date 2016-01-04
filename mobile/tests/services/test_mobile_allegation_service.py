@@ -1,4 +1,5 @@
-from allegation.factories import AllegationFactory, OfficerFactory
+from allegation.factories import (
+    AllegationFactory, OfficerFactory, OfficerAllegationFactory)
 from common.tests.core import SimpleTestCase
 from mobile.services.allegation_service import AllegationService
 
@@ -13,8 +14,14 @@ class MobileAllegationServiceTest(SimpleTestCase):
         other_crid = 'crid2'
         officer = OfficerFactory()
         other_officer = OfficerFactory()
-        AllegationFactory.create_batch(2, officer=officer, crid=crid)
-        AllegationFactory.create_batch(1, officer=other_officer, crid=other_crid)
+
+        allegation = AllegationFactory(crid=crid)
+        OfficerAllegationFactory.create_batch(
+            2, allegation=allegation, officer=officer)
+
+        allegation = AllegationFactory(crid=other_crid)
+        OfficerAllegationFactory.create_batch(
+            1, allegation=allegation, officer=other_officer)
 
         result = self.call_get_officer_allegations(officer_id=officer.id)
 

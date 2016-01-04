@@ -20,7 +20,7 @@ var MapAPI = {
       ajax.abort()
     }
 
-    ajax = $.getJSON("/api/allegations/cluster/?" + queryString, function (data) {
+    ajax = $.getJSON("/api/officer-allegations/cluster/?" + queryString, function (data) {
       MapActions.changeMarkers(data);
     });
   }

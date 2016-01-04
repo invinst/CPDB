@@ -1,11 +1,15 @@
 from rest_framework import serializers
 
 from common.models import Allegation
-from mobile.serializers.allegation_category_serializer import AllegationCategorySerializer
+from mobile.serializers.allegation_category_serializer import \
+    AllegationCategorySerializer
 
 
-class AllegationSerializer(serializers.ModelSerializer):
+class OfficerAllegationSerializer(serializers.ModelSerializer):
     cat = AllegationCategorySerializer(read_only=True)
+    crid = serializers.CharField(source='allegation__crid')
+    incident_date = serializers.DateTimeField(
+        source='allegation__incident_date')
 
     class Meta:
         model = Allegation
@@ -19,6 +23,6 @@ class AllegationSerializer(serializers.ModelSerializer):
         )
 
 
-class AllegationDataSerializer(serializers.Serializer):
-    data = AllegationSerializer()
+class OfficerAllegationDataSerializer(serializers.Serializer):
+    data = OfficerAllegationSerializer()
     allegation_counts = serializers.ListField(child=serializers.IntegerField())

@@ -18,13 +18,13 @@ def suggest_officer_star(query):
 
 
 def suggest_crid(query):
-    allegation = Allegation.objects.filter(crid=query).first()
+    allegation = Allegation.objects.get(crid=query)
     return wrap_as_suggestion(allegation)
 
 
 def suggest_officer_name(query):
-    officers = Officer.objects.filter(OfficerQuery.condition_by_name(query)). \
-                   order_by('-allegations_count')[:ALLEGATION_LIMIT]
+    officers = Officer.objects.filter(OfficerQuery.condition_by_name(query))\
+        .order_by('-allegations_count')[:ALLEGATION_LIMIT]
     suggestions = [officer.as_suggestion_entry() for officer in officers]
     return suggestions
 

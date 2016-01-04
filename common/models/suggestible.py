@@ -12,8 +12,8 @@ class MobileSuggestible(object):
 class MobileSuggestibleOfficer(MobileSuggestible):
     def get_mobile_url(self):
         slugified_display_name = slugify(self.display_name)
-        return '/officer/{display_name}/{id}'.format(display_name=slugified_display_name,
-                                                     id=self.id)
+        return '/officer/{display_name}/{id}'.format(
+            display_name=slugified_display_name, id=self.id)
 
     def as_suggestion_entry(self):
         return {

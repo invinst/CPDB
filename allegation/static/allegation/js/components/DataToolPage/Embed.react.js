@@ -53,7 +53,7 @@ var Embed = React.createClass({
   },
 
   embedAllegation: function () {
-    $.getJSON('/api/allegations/?id=' + this.props.pk, this.renderAllegation);
+    $.getJSON('/api/officer-allegations/?id=' + this.props.pk, this.renderAllegation);
   },
 
   embedSummary: function () {

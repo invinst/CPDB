@@ -1,23 +1,21 @@
-import csv
-import io
 import json
 
 from django.conf import settings
 from django.contrib.gis.geos.factory import fromstr
 from django.db import connection
 from django.db.models import Count
-from django.http.response import HttpResponse, Http404
-from django.shortcuts import get_object_or_404, redirect
+from django.http.response import HttpResponse
 from django.views.generic import TemplateView
 from django.views.generic import View
 
-from allegation.views.allegation_api_view import AllegationAPIView
+from allegation.views.officer_allegation_api_view import (
+    OfficerAllegationAPIView)
 from api.models import Setting
 from common.json_serializer import JSONSerializer
-from common.models import Allegation, Area, AllegationCategory, Investigator, Officer, GENDER_DICT, OUTCOME_TEXT_DICT, \
-    FINAL_FINDING_TEXT_DICT
-from common.models import ComplainingWitness, NO_DISCIPLINE_CODES, PoliceWitness
-from share.models import Session
+from common.models import (
+    Allegation, Area, AllegationCategory, Officer, OfficerAllegation)
+from common.models import (
+    ComplainingWitness, NO_DISCIPLINE_CODES, PoliceWitness)
 
 
 OFFICER_COMPLAINT_COUNT_RANGE = [
@@ -27,7 +25,8 @@ OFFICER_COMPLAINT_COUNT_RANGE = [
     [2, 3],  # 1 <= x < 2
     [0, 2],  # x == 0
 ]
-OFFICER_COMPLAINT_COUNT_RANGE = getattr(settings, 'OFFICER_COMPLAINT_COUNT_RANGE', OFFICER_COMPLAINT_COUNT_RANGE)
+OFFICER_COMPLAINT_COUNT_RANGE = getattr(
+    settings, 'OFFICER_COMPLAINT_COUNT_RANGE', OFFICER_COMPLAINT_COUNT_RANGE)
 
 
 class AllegationListView(TemplateView):
@@ -77,15 +76,17 @@ class AreaAPIView(View):
         return HttpResponse(content)
 
 
-class AllegationGISApiView(AllegationAPIView):
+class OfficerAllegationGISApiView(OfficerAllegationAPIView):
     def get(self, request):
         seen_crids = {}
-        allegations = self.get_allegations(ignore_filters=['areas__id'])
+        officer_allegations = self.get_officer_allegations(
+            ignore_filters=['areas__id'])
         allegation_dict = {
             "type": "FeatureCollection",
             "features": [],
         }
-        for allegation in allegations:
+        for officer_allegation in officer_allegations:
+            allegation = officer_allegation.allegation
             if allegation.crid in seen_crids:
                 continue
             seen_crids[allegation.crid] = True
@@ -101,27 +102,30 @@ class AllegationGISApiView(AllegationAPIView):
                     },
                     'geometry': point
                 }
-                if allegation.cat:
-                    allegation_json['properties']['type'] = allegation.cat.allegation_name,
+                if officer_allegation.cat:
+                    allegation_json['properties']['type'] = \
+                        officer_allegation.cat.allegation_name
                 allegation_dict['features'].append(allegation_json)
 
         content = json.dumps(allegation_dict)
         return HttpResponse(content)
 
 
-class AllegationClusterApiView(AllegationAPIView):
+class OfficerAllegationClusterApiView(OfficerAllegationAPIView):
     def get(self, request):
-        areas = request.GET.getlist('areas__id')
-        ignore_filters = ['areas__id']
+        areas = request.GET.getlist('allegation__areas__id')
+        ignore_filters = ['allegation__areas__id']
         if areas:
             self.orig_query_dict = request.GET.copy()
             schools = Area.objects.filter(pk__in=areas, type='school-grounds')
             areas = list(schools.values_list('pk', flat=True))
             if areas:
-                self.orig_query_dict.setlist('areas__id', areas)
+                self.orig_query_dict.setlist('allegation__areas__id', areas)
                 ignore_filters = []
-        allegations = self.get_allegations(ignore_filters=ignore_filters)
-        allegation_pks = list(allegations.values_list('id', flat=True))
+        officer_allegations = self.get_officer_allegations(
+            ignore_filters=ignore_filters)
+        allegation_pks = list(
+            officer_allegations.values_list('allegation__pk', flat=True))
         ret = {'features': [], 'type': 'FeatureCollection'}
 
         if len(allegation_pks) > 0:
@@ -138,7 +142,7 @@ class AllegationClusterApiView(AllegationAPIView):
                 GROUP BY
                     ST_SnapToGrid( ST_SetSRID(point, 4326), %s, %s)
                 ''' % (allegation_pks, grid_size, grid_size)
-                           )
+                )
             kclusters = kursor.fetchall()
 
             for cluster in kclusters:
@@ -159,16 +163,21 @@ class AllegationClusterApiView(AllegationAPIView):
         return HttpResponse(content)
 
 
-class AllegationSummaryApiView(AllegationAPIView):
+class OfficerAllegationSummaryApiView(OfficerAllegationAPIView):
     def get(self, request):
-        allegations = self.get_allegations(ignore_filters=['cat', 'cat__category'])
+        officer_allegations = self.get_officer_allegations(
+            ignore_filters=['cat', 'cat__category'])
 
-        count_query = allegations.values_list('cat').annotate(dcount=Count('id'))
+        count_query = officer_allegations.values_list('cat')\
+            .annotate(dcount=Count('id'))
         count_by_category = dict(count_query)
 
-        discipline_allegations = allegations.exclude(final_outcome__in=NO_DISCIPLINE_CODES)
-        discipline_allegations = discipline_allegations.exclude(final_outcome__isnull=True)
-        discipline_count_query = discipline_allegations.values_list('cat').annotate(dcount=Count('id'))
+        discipline_allegations = officer_allegations\
+            .exclude(final_outcome__in=NO_DISCIPLINE_CODES)
+        discipline_allegations = discipline_allegations\
+            .exclude(final_outcome__isnull=True)
+        discipline_count_query = discipline_allegations\
+            .values_list('cat').annotate(dcount=Count('id'))
         discipline_count_by_category = dict(discipline_count_query)
         categories = AllegationCategory.objects.all().order_by('category')
 
@@ -219,16 +228,19 @@ class AllegationSummaryApiView(AllegationAPIView):
         return HttpResponse(content, content_type="application/json")
 
 
-class OfficerListAPIView(AllegationAPIView):
+class OfficerListAPIView(OfficerAllegationAPIView):
     def get(self, request):
-        allegations = self.get_allegations()
-        officers = Officer.objects.filter(allegation__in=allegations).annotate(filtered_allegations_count=Count('allegation__crid')).order_by('-allegations_count')
+        officer_allegations = self.get_officer_allegations()
+        officers = Officer.objects.filter(officerallegation__in=officer_allegations)\
+            .annotate(filtered_allegations_count=Count('officerallegation__allegation__pk'))\
+            .order_by('-allegations_count')
 
         overview = []
         for r in OFFICER_COMPLAINT_COUNT_RANGE:
             range_officers = officers.filter(allegations_count__gte=r[0])
             if r[1]:
-                range_officers = range_officers.filter(allegations_count__lt=r[1])
+                range_officers = range_officers.filter(
+                    allegations_count__lt=r[1])
             overview.append(range_officers.count())
 
         content = JSONSerializer().serialize({
@@ -243,18 +255,25 @@ class InvestigationAPIView(View):
         crid = request.GET.get('crid')
         ret = {}
         if crid:
-            allegations = Allegation.objects.filter(crid=crid)
-            allegation_officers = Officer.objects.filter(pk__in=allegations.values('officer'))
+            officer_allegations = OfficerAllegation.objects.filter(
+                allegation__crid=crid)
+            allegation_officers = Officer.objects.filter(
+                pk__in=officer_allegations.values('officer'))
 
             ret['police_witness'] = []
             for witness in PoliceWitness.objects.filter(crid=crid):
                 officers = []
-                witness.officer_name = "%s %s" % (witness.officer.officer_first, witness.officer.officer_last)
+                witness.officer_name = "%s %s" % (
+                    witness.officer.officer_first,
+                    witness.officer.officer_last)
                 for officer in allegation_officers:
-                    complaints = Allegation.objects.filter(officer__in=(officer.id, witness.officer_id))
+                    complaints = OfficerAllegation.objects.filter(
+                        officer__in=(officer.id, witness.officer_id))
                     num_complaints = complaints.count()
-                    non_disciplined_complaints = complaints.filter(final_outcome__in=NO_DISCIPLINE_CODES)
-                    non_disciplined_complaints = complaints.filter(final_outcome__isnull=True)
+                    non_disciplined_complaints = complaints.filter(
+                        final_outcome__in=NO_DISCIPLINE_CODES)
+                    non_disciplined_complaints = non_disciplined_complaints\
+                        .filter(final_outcome__isnull=True)
                     no_action_taken_count = non_disciplined_complaints.count()
                     officers.append({
                         'num_complaints': num_complaints,
@@ -267,7 +286,8 @@ class InvestigationAPIView(View):
                     'officers': officers,
                 })
 
-            ret['complaint_witness'] = ComplainingWitness.objects.filter(crid=crid)
+            ret['complaint_witness'] = ComplainingWitness.objects\
+                .filter(crid=crid)
 
         content = JSONSerializer().serialize(ret)
         return HttpResponse(content, content_type="application/json")

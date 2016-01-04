@@ -6,7 +6,7 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.db.models.query_utils import Q
 
-from common.models import Allegation, DISCIPLINE_CODES
+from common.models import OfficerAllegation, DISCIPLINE_CODES
 
 
 class Command(BaseCommand):
@@ -98,6 +98,7 @@ class Command(BaseCommand):
             if 'children' in level:
                 del obj['size']
                 obj['children'] = self.fetch_output(level['children'], results)
+                # TODO: recursive call could lead to slow code and memory issue
             output.append(obj)
 
         return output
@@ -108,7 +109,8 @@ class Command(BaseCommand):
         return row['size'] - sum(r['size'] for r in row['children'])
 
     def save(self, output):
-        output_file = os.path.join(settings.BASE_DIR, 'common/static/sunburst.json')
+        output_file = os.path.join(
+            settings.BASE_DIR, 'common/static/sunburst.json')
 
         with open(output_file, 'w') as f:
             json.dump({
@@ -120,7 +122,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        objects = Allegation.objects.all()
+        objects = OfficerAllegation.objects.all()
 
         output = self.fetch_output(self.levels, objects)
 

@@ -27,14 +27,17 @@ class SendDocumentNotificationTestCase(SimpleTestCase):
 
                 instance = document_cloud.return_value
                 document = mock.Mock(title=title, id="1-2-3")
-                instance.documents.search.return_value = [document]  # search return result
+                # search return result
+                instance.documents.search.return_value = [document]
 
-                management.call_command('update_documents', end=allegation.id-1)
+                management.call_command(
+                    'update_documents', end=allegation.id-1)
 
-                first_allegation = Allegation.objects.get(id=self.allegation.id)
+                first_allegation = Allegation.objects.get(
+                    id=self.allegation.id)
                 first_allegation.document_title.should.equal(title)
 
-                second_allegation =  Allegation.objects.get(id=allegation.id)
+                second_allegation = Allegation.objects.get(id=allegation.id)
                 second_allegation.document_title.should.equal('UNSET')
 
                 send_notification.called.should.be.true

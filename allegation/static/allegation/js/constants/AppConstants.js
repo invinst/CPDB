@@ -298,9 +298,9 @@ module.exports = {
   MAP_MARKER_ICON_URL: 'http://cpdb.co/static/img/64x_map_marker.png', // it must be a full url
   OFFICER_PAGE_API_ENDPOINT: '/officer/',
   SESSION_API_ENDPOINT: '/api/allegations/session/',
-  RACE_GENDER_API_ENDPOINT: '/api/allegations/race-gender/',
+  RACE_GENDER_API_ENDPOINT: '/api/officer-allegations/race-gender/',
   ALLEGATION_DETAILS_API_ENDPOINT: '/api/investigation/',
-  ALLEGATIONS_API_ENDPOINT: '/api/allegations/',
+  ALLEGATIONS_API_ENDPOINT: '/api/officer-allegations/',
   INVESTIGATOR_API_ENDPOINT: '/investigator/',
 
   DATE_FORMAT: 'D MMM, YYYY',
