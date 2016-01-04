@@ -1,4 +1,4 @@
-import json
+from freezegun import freeze_time
 
 from allegation.factories import OfficerFactory, AllegationCategoryFactory, AllegationFactory, AreaFactory
 from common.models import AllegationCategory, Officer
@@ -32,6 +32,7 @@ class SuggestServiceTestCase(SimpleTestCase):
         AllegationFactory(city=city2)
         len(self.suggestion.suggest_zip_code(available_zip_code)).should.equal(1)
 
+    @freeze_time('2015-05-05 01:01:01')
     def test_month_year_suggestion_by_month_name(self):
         self.suggestion.suggest_incident_year_month('feb').should.equal([
             ['February 2010', '2010-2'], ['February 2011', '2011-2'], ['February 2012', '2012-2'],
@@ -71,4 +72,3 @@ class SuggestServiceTestCase(SimpleTestCase):
         len(data['has_filters']).should.equal(1)
         data['has_filters'][0][0].should.equal('has:document')
         data['has_filters'][0][1].should.equal('has:document')
-
