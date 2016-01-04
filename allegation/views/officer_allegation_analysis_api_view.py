@@ -4,7 +4,7 @@ from django.views.generic import View
 from common.models import OfficerAllegation
 from common.json_serializer import JSONSerializer
 from allegation.services.outcome_analytics import OutcomeAnalytics
-from allegation.query_builders import OfficerAlegationQueryBuilder
+from allegation.query_builders import OfficerAllegationQueryBuilder
 
 
 class OfficerAllegationAnalysisAPIView(View):
@@ -12,7 +12,7 @@ class OfficerAllegationAnalysisAPIView(View):
         super(OfficerAllegationAnalysisAPIView, self).__init__(**kwargs)
 
     def get_officer_allegations(self, request, ignore_filters=None):
-        queries = OfficerAlegationQueryBuilder()\
+        queries = OfficerAllegationQueryBuilder()\
             .build(request.GET, ignore_filters)
         return OfficerAllegation.objects.filter(queries)
 

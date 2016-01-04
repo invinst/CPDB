@@ -14,7 +14,7 @@ NO_DISCIPLINE_CODES = ('600', '000', '500', '700', '800', '900', '', None)
 DISCIPLINE_CODES = [x[0] for x in OUTCOMES if x[0] not in NO_DISCIPLINE_CODES]
 
 
-class OfficerAlegationQueryBuilder(object):
+class OfficerAllegationQueryBuilder(object):
     """
     Build Q queries from query params.
 

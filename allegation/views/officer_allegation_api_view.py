@@ -4,7 +4,7 @@ from django.views.generic import View
 from django.conf import settings
 from django.http.response import HttpResponse
 
-from allegation.query_builders import OfficerAlegationQueryBuilder
+from allegation.query_builders import OfficerAllegationQueryBuilder
 from allegation.services.outcome_analytics import OutcomeAnalytics
 from common.models import (
     OfficerAllegation, ComplainingWitness, PoliceWitness, Allegation, Officer)
@@ -21,7 +21,7 @@ class OfficerAllegationAPIView(View):
         return self.orig_query_dict or self.request.GET
 
     def get_officer_allegations(self, ignore_filters=None):
-        queries = OfficerAlegationQueryBuilder()\
+        queries = OfficerAllegationQueryBuilder()\
             .build(self.query_dict, ignore_filters)
         return OfficerAllegation.objects.filter(queries)
 

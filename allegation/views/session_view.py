@@ -6,7 +6,7 @@ from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.views.generic import View
 
-from allegation.query_builders import OfficerAlegationQueryBuilder
+from allegation.query_builders import OfficerAllegationQueryBuilder
 from common.json_serializer import JSONSerializer
 from common.models import Area, OfficerAllegation
 from common.utils.http_request import get_client_ip
@@ -108,7 +108,7 @@ class SessionAPIView(View):
         if not query_string or query_string == '&':
             return
 
-        queries = OfficerAlegationQueryBuilder()\
+        queries = OfficerAllegationQueryBuilder()\
             .build(QueryDict(query_string))
         officer_allegations = OfficerAllegation.objects.filter(queries)
         num_allegations = officer_allegations.count()

@@ -1,13 +1,13 @@
 from django.http.request import QueryDict
 from allegation.factories import OfficerAllegationFactory, AllegationFactory, OfficerFactory
-from allegation.query_builders import OfficerAlegationQueryBuilder
+from allegation.query_builders import OfficerAllegationQueryBuilder
 from common.models import OfficerAllegation
 from common.tests.core import SimpleTestCase
 
 
 class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
     def setUp(self):
-        self.builder = OfficerAlegationQueryBuilder()
+        self.builder = OfficerAllegationQueryBuilder()
 
     def test_adhoc_queries(self):
         expected_allegations = [
