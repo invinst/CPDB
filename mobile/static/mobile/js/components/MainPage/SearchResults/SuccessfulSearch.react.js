@@ -1,3 +1,4 @@
+var cx = require('classnames');
 var React = require('react');
 
 var OfficerBadgeResult = require('components/MainPage/SearchResults/SuccessSearch/OfficerBadgeResult.react');
@@ -19,24 +20,21 @@ var SuccessfulSearch = React.createClass({
     return subComponentMapper[type];
   },
 
-  renderSuggestionItem: function (suggestion) {
-    var presenter = SuggestionPresenter(suggestion);
+  renderSuggestionItem: function () {
+    var suggestions = this.props.suggestions;
+    var suggestionType = SuggestionPresenter(suggestions[0]).suggestionType;
     var term = this.props.term;
+    var SubComponent = this.getSubComponentFor(suggestionType);
 
-    var SubComponent = this.getSubComponentFor(presenter.suggestionType);
     return (
-      <SubComponent term={term} suggestion={suggestion} />
+      <SubComponent term={term} suggestions={suggestions} />
     );
   },
 
   render: function () {
-    var suggestions = this.props.suggestions;
-
     return (
-      <div>
-        <ul className='suggestion-list'>
-          {suggestions.map(this.renderSuggestionItem)}
-        </ul>
+      <div className='success-search'>
+        {this.renderSuggestionItem()}
       </div>
     )
   }

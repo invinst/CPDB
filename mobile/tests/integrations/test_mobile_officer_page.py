@@ -57,7 +57,6 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
         self.should_see_text(officer_race)
 
         self.show_officer_tab('Complaints')
-
         self.find('.crid-number').text.should.equal(str(allegation.crid))
         self.find('.final-finding').text.should.equal(allegation_final_finding_display)
         self.find('.complaint-category .category').text.should.equal(allegation.cat.category)

@@ -1,9 +1,10 @@
 var pluralize = require('pluralize');
 var React = require('react');
-var cx = require('classnames');
+
+var Wrapper = require('components/Shared/Wrapper.react');
+var OfficerCard = require('components/Shared/OfficerCard.react');
 
 var OfficerPresenter = require('presenters/OfficerPresenter');
-var Wrapper = require('components/Shared/Wrapper.react');
 var HelperUtil = require('utils/HelperUtil');
 var OfficerUtil = require('utils/OfficerUtil');
 
@@ -12,25 +13,11 @@ var OfficerUtil = require('utils/OfficerUtil');
 var OfficerInvolved = React.createClass({
   renderOfficerRow: function (officer) {
     var officerPresenter = OfficerPresenter(officer);
-    var officerUtil = OfficerUtil();
-    var officerClassname = HelperUtil.format('officer-{id}', {'id': officer.id});
-    var classNames = cx('officer-card pad', officerClassname);
-    var circleClassNames = cx('circle', officerUtil.getStarClass(officerPresenter.allegationsCount));
-
     return (
-      <div className={classNames}>
-        <div className='row'>
-          <div className='one column circle-wrapper center'>
-            <div className={circleClassNames}></div>
-          </div>
-          <div className='eleven columns'>
-            <div className='officer'>
-              <div className='name bold'>{officerPresenter.displayName}</div>
-              <div className='description'>{officerPresenter.description}</div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <OfficerCard  officerId={officer.id} allegationsCount={officerPresenter.allegationsCount}
+                    displayName={officerPresenter.displayName}
+                    description={officerPresenter.description}
+      />
     );
   },
 
