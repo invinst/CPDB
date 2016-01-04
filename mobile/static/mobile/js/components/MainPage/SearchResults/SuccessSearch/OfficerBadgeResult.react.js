@@ -22,7 +22,7 @@ var OfficerBadgeResult = React.createClass({
       <div>
         <li className='officer-badge-results'>
           <div className='link officer-badge-result-item' onClick={this._onClick}>
-            Badge no.<span className='highlight'>{this.props.term}&nbsp;</span> {pluralize('complaint', presenter.allegationsCount, true)}
+            Badge no. <span className='highlight'>{this.props.term}&nbsp;</span> {pluralize('complaint', presenter.allegationsCount, true)}
           </div>
         </li>
       </div>

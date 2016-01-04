@@ -28,6 +28,7 @@ AppDispatcher.register(function (action) {
       MainPageStore.updateState('isSearching', 1);
       MainPageStore.emitChange();
       break;
+
     case AppConstants.MAIN_PAGE_RECEIVED_DATA:
     case AppConstants.MAIN_PAGE_FAILED_TO_RECEIVED_DATA:
       MainPageStore.updateState('isSearching', 0);
