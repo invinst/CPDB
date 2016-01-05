@@ -250,7 +250,7 @@ class Suggestion(object):
             self.suggest_incident_year_month(q)
         ret['officer__star'] = self.suggest_officer_star(q)
         ret['city'] = self.suggest_zip_code(q)
-        ret['crid'] = self.suggest_crid(q)
+        ret['allegation__crid'] = self.suggest_crid(q)
         ret['incident_date_only'] = self.suggest_incident_date_only(q)
         if q.count('/') == 1:
             ret['incident_date_only__year_month'] = \
@@ -262,7 +262,7 @@ class Suggestion(object):
         ret['cat__category'] = self.suggest_cat_category(q)
         ret['cat'] = self.suggest_cat(q)
         ret['cat__cat_id'] = self.suggest_cat_id(q)
-        ret['investigator'] = self.suggest_investigator(q)
+        ret['allegation__investigator'] = self.suggest_investigator(q)
 
         ret['final_outcome'] = self.suggest_in(q, OUTCOMES)
         ret['recc_outcome'] = ret['final_outcome']
@@ -270,7 +270,7 @@ class Suggestion(object):
         ret['final_finding'] = self.suggest_in(q, FINDINGS)
         ret['recc_finding'] = ret['final_finding']
 
-        ret['areas__id'] = self.suggest_areas(q)
+        ret['allegation__areas__id'] = self.suggest_areas(q)
         ret['complainant_gender'] = self.suggest_in(q, GENDER)
         ret['complainant_race'] = self.suggest_in(q, RACES)
 

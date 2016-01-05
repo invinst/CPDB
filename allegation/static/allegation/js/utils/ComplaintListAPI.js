@@ -34,7 +34,7 @@ var ComplaintListAPI = {
         }
       });
     } else {
-      ComplaintListServerActions.receivedData({'allegations': [], 'analytics': {}, noQuery: true}, fromFilter);
+      ComplaintListServerActions.receivedData({'officer_allegations': [], 'analytics': {}, noQuery: true}, fromFilter);
     }
   },
 

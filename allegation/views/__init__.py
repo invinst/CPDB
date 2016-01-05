@@ -201,11 +201,13 @@ class OfficerAllegationSummaryApiView(OfficerAllegationAPIView):
             if not count:
                 continue
             summary_value['total'] += count
-            summary_value['count'] += discipline_count_by_category.get(category.id, 0)
+            summary_value['count'] += discipline_count_by_category.get(
+                category.id, 0)
             summary_value['subcategories'].append({
                 'name': category.allegation_name,
                 'cat_id': category.cat_id,
                 'count': count,
+                'id': category.id
             })
 
         summary = sorted(summary, key=lambda x: -x['total'])

@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var classnames = require('classnames');
 
 var Filters = require('components/DataToolPage/Filters.react');
@@ -38,7 +39,7 @@ var OfficerList = React.createClass({
 
   // embedding
   getEmbedCode: function () {
-    var node = this.getDOMNode();
+    var node = ReactDOM.findDOMNode(this);
     var width = $(node).width();
     var height = $(node).height();
     var src = "/embed/?page=officers&query=" + encodeURIComponent(FilterStore.getQueryString());
@@ -63,7 +64,7 @@ var OfficerList = React.createClass({
   },
 
   enterEmbedMode: function () {
-    var node = this.getDOMNode();
+    var node = ReactDOM.findDOMNode(this);
     var parent = $(node).parent();
     $(parent).prepend(this.getEmbedNode());
     this.setState({

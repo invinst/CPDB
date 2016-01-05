@@ -54,7 +54,7 @@ class OfficerAllegationQueryBuilder(object):
     def _q_adhoc_queries(self, query_params):
         queries = Q()
         adhoc_queries = [
-            'allegation__id',
+            'id',
             'allegation__crid',
             'allegation__areas__id',
             'cat',
