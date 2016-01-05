@@ -531,7 +531,6 @@ class Investigator(models.Model):
         }
 
 
-
 class PendingPdfAllegation(models.Model):
     crid = models.CharField(max_length=30, null=True, db_index=True)
     raw_content = models.TextField(blank=True, null=True)
@@ -563,6 +562,7 @@ def check_document_update(**kwargs):
             )
             send_document_notification_by_crid_and_link.called = True
 
+
 def update_allegations(sender, instance, created, **kwargs):
     if created:
         count = Allegation.objects.filter(crid=instance.crid).first().number_of_request
@@ -570,4 +570,3 @@ def update_allegations(sender, instance, created, **kwargs):
                                                              last_requested=timezone.now())
 
 post_save.connect(update_allegations, sender=RequestEmail)
-

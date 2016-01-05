@@ -138,5 +138,8 @@
       setTimeout(ldinsp, 500); document.readyState != "complete" ? (window.attachEvent ? window.attachEvent('onload', ldinsp) : window.addEventListener('load', ldinsp, false)) : ldinsp();
       })();
     </script>
+    <script>
+        var INTERFACE_TEXTS = {{interface_texts|safe}};
+    </script>
   </body>
 </html>

@@ -7,6 +7,7 @@ from rest_framework import routers
 from dashboard.views.admin_allegation_request_analysis_view import AdminAllegationRequestAnalysisView
 from dashboard.views.alias_view import AdminAliasApi
 from dashboard.views.allegation_request_view import AdminAllegationRequestViewSet
+from dashboard.views.interfacetext_view import InterfaceTextView
 from dashboard.views.officer_view import AdminOfficerViewSet
 from dashboard.views.query_data_view import AdminQueryDataApi
 from dashboard.views.search_traffic import AdminSearchTrafficApi
@@ -31,6 +32,7 @@ router.register(r'sessions', AdminSessionsView)
 router.register(r'session-alias2', AdminSessionsAliasViewSet)
 router.register(r'new-sessions-analytics', AdminNewSessionsAnalyticsViewSet)
 router.register(r'settings', AdminSettingsView)
+router.register(r'interface-texts', InterfaceTextView)
 
 
 urlpatterns = [
