@@ -48,9 +48,7 @@ var MainPage = React.createClass(objectAssign(Base(MainPageStore), {
         <div className={classNames}>
           <SearchBar />
         </div>
-        <div className='bar bar-standard bar-footer'>
-          <About />
-        </div>
+        <About topLeft={isSearchFocused}/>
         {this.renderSearchResults(term)}
       </div>
     )

@@ -22,7 +22,7 @@ var ComplaintResult = React.createClass({
         <li className='complaint-results'>
           <div className='link pad complaint-result-item' onClick={this._onClick}>
             <div className='complaint-header pad'>
-              <span className='complaint-label'> Complaint &#8226;</span>
+              <span className='complaint-label'> Complaint<span className='dot-bullet'>&#8226;</span></span>
               <span className='crid-title'>&nbsp; CRID&nbsp;</span>
               <span className='crid-value highlight'>{presenter.resourceKey}</span>
               <span className='incident-date'>{presenter.meta.getIncidentDate(AppConstants.SEARCH_INCIDENT_DATE_FORMAT)}</span>

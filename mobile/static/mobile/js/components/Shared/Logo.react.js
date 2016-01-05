@@ -8,8 +8,17 @@ var Logo = React.createClass({
 
     return (
       <div id='logo' className={classNames}>
-        <div className='box animation'>
+        <div className='cpdb-logo'>
           CPDP
+        </div>
+        <div className='cpdb-description'>
+          <div>Allegations of police misconduct are public information.
+          </div>
+          <br/>
+          <div>
+            Search here for complaint records released under FOIA by the Chicago Police Department. Type the name of
+            a police officer, badge number, or CRID number.
+          </div>
         </div>
       </div>
     )
