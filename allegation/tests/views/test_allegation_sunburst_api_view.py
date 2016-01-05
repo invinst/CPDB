@@ -31,5 +31,5 @@ class AllegationSunburstApiViewTestCase(AllegationApiTestBase):
             child for child in sustained_data['children']
             if child['name'] == 'Disciplined'][0]
         sum(
-            child['size'] for child in
+            x['size'] for x in
             disciplined_data['children']).should.equal(1)
