@@ -23,4 +23,7 @@ urlpatterns = [
     # overriding for client-side routing
     url(r'^(officer/[^/]+/\d+|complaint/\d+|search/\w+)?$', ensure_csrf_cookie(MobileSiteView.as_view()), name='home'),
     url(r'^(test)?$', ensure_csrf_cookie(MobileSiteView.as_view()), name='home'),
+
+    # other cases, render MobileSiteView instead of the 404 page, handle the error from javascript
+    url(r'', MobileSiteView.as_view(), name='not_found')
 ]

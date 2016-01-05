@@ -1,12 +1,14 @@
 var React = require('react');
 
+var MainPage = require('components/MainPage.react');
+
 
 var NoMatch = React.createClass({
   render: function () {
     return (
-      <div>
-        No route matched
-      </div>
+      <MainPage showError={true}>
+
+      </MainPage>
     )
   }
 });
