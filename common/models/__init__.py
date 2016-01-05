@@ -530,6 +530,7 @@ class OfficerAllegation(models.Model):
         max_length=20, null=True, blank=True)
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
+    objects = models.GeoManager()
 
 
 class Investigator(models.Model):

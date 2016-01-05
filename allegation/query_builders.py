@@ -112,9 +112,9 @@ class OfficerAllegationQueryBuilder(object):
         if 'latlng' in query_params:
             lat, lng = tuple(query_params['latlng'].split(','))
             radius = query_params.get('radius', 500)
-            return Q(point__distance_lt=(
+            return Q(allegation__point__distance_lt=(
                 Point(float(lng), float(lat)),
-                D(radius)))
+                D(m=radius)))
         return Q()
 
     def _q_has_document(self, query_params):
@@ -124,12 +124,12 @@ class OfficerAllegationQueryBuilder(object):
 
     def _q_has_map(self, query_params):
         if 'has:map' in query_params.getlist('has_filters', []):
-            return Q(point__isnull=False)
+            return Q(allegation__point__isnull=False)
         return Q()
 
     def _q_has_address(self, query_params):
         if 'has:address' in query_params.getlist('has_filters', []):
-            return Q(allegation__add1__isnull=False) | Q(add2__isnull=False)
+            return Q(allegation__add1__isnull=False) | Q(allegation__add2__isnull=False)
         return Q()
 
     def _q_has_location(self, query_params):
