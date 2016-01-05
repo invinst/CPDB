@@ -6,6 +6,7 @@ from allegation.factories import AllegationFactory
 from common.models import Allegation
 from common.tests.core import SimpleTestCase
 from document.factories import RequestEmailFactory
+from api.models import Setting
 
 
 class DocumentLinkViewTestCase(SimpleTestCase):
@@ -18,6 +19,12 @@ class DocumentLinkViewTestCase(SimpleTestCase):
         document_id = 1273509
         normalized_title = 'cr-{crid}'.format(crid=crid)
         title = 'CR {crid}'.format(crid=crid)
+        Setting.objects.create(
+            default_site_title='CPDB', 
+            story_types_order='', 
+            requested_document_email_subject='{crid}', 
+            requested_document_email_text='{crid} {link}'
+        )
 
         allegation = AllegationFactory(crid=crid, document_id=0, document_normalized_title='', document_title='')
         RequestEmailFactory(crid=crid)
