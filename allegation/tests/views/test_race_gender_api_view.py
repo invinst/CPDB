@@ -5,7 +5,7 @@ from allegation.factories import (
 from common.tests.core import SimpleTestCase
 
 
-RACE_GENDER_API_ENDPOINT = reverse('allegation:allegation-race-gender-api')
+RACE_GENDER_API_ENDPOINT = reverse('allegation:officer-allegation-race-gender-api')
 
 
 class RaceGenderAPI(SimpleTestCase):
@@ -65,7 +65,7 @@ class RaceGenderAPI(SimpleTestCase):
             gender='F', allegation=officer_allegation_2.allegation)
 
         response, data = self.get_race_gender_info(
-            crid=officer_allegation_2.allegation.crid)
+            allegation__crid=officer_allegation_2.allegation.crid)
 
         response.status_code.should.equal(200)
         for x in ['officers', 'complaining_witness']:

@@ -7,7 +7,7 @@ from mobile.serializers.full_officer_allegation_serializer import \
 from mobile.serializers.officer_serializer import OfficerSerializer
 
 
-class MobileOfficerAllegationViewSerializer(serializers.Serializer):
+class MobileAllegationViewSerializer(serializers.Serializer):
     complaining_witnesses = ComplainingWitnessSerializer(many=True)
     officer_allegation = FullOfficerAllegationSerializer()
     officers = OfficerSerializer(many=True)

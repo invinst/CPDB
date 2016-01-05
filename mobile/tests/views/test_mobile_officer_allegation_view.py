@@ -6,10 +6,10 @@ from allegation.factories import (
 from common.tests.core import SimpleTestCase
 
 
-class MobileOfficerAllegationTest(SimpleTestCase):
+class MobileAllegationTest(SimpleTestCase):
     def call_allegation_api(self, params={}):
         response = self.client.get(
-            reverse('mobile:officer-allegation'), params)
+            reverse('mobile:allegation'), params)
         data = self.json(response)
 
         return response, data

@@ -1,14 +1,13 @@
 import faker
 
-from allegation.factories import AllegationFactory
+from allegation.factories import OfficerAllegationFactory
 from common.tests.core import BaseLiveTestCase
 
 
 class RequestViewTestCase(BaseLiveTestCase):
     def test_request_document(self):
         # create 2 allegations
-        AllegationFactory()
-        AllegationFactory()
+        OfficerAllegationFactory.create_batch(2)
 
         self.visit_home()
         self.find(".officer .checkmark").click()

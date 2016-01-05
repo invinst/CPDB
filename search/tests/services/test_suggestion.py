@@ -64,9 +64,9 @@ class SuggestServiceTestCase(SimpleTestCase):
         area = AreaFactory()
         data = self.suggestion.make_suggestion(area.name[0:3])
 
-        data.should.contain('areas__id')
-        data['areas__id'].should.have.length_of(1)
-        data['areas__id'][0][2].should.equal(area.type)
+        data.should.contain('allegation__areas__id')
+        data['allegation__areas__id'].should.have.length_of(1)
+        data['allegation__areas__id'][0][2].should.equal(area.type)
 
     def test_suggest_allegation_categories_by_allegation_name(self):
         cat = AllegationCategoryFactory()

@@ -21,20 +21,21 @@ class OfficerDetailPageTestCase(BaseLiveTestCase):
         self.involved_officer = OfficerFactory()
         self.witness_officer = OfficerFactory()
 
+        allegation_1 = AllegationFactory(crid=self.crid_1)
         OfficerAllegationFactory(
             officer=self.officer,
-            allegation=AllegationFactory(crid=self.crid_1))
-        allegation = AllegationFactory(crid=self.crid_2)
-        OfficerAllegationFactory(officer=self.officer, allegation=allegation)
+            allegation=allegation_1)
+        allegation_2 = AllegationFactory(crid=self.crid_2)
+        OfficerAllegationFactory(officer=self.officer, allegation=allegation_2)
         OfficerAllegationFactory(
             officer=self.officer,
             allegation=AllegationFactory(crid=self.crid_3))
         OfficerAllegationFactory(
             officer=self.involved_officer,
-            allegation=AllegationFactory(crid=self.crid_1))
+            allegation=allegation_1)
         PoliceWitnessFactory(
             officer=self.witness_officer, crid=self.crid_2,
-            allegation=allegation)
+            allegation=allegation_2)
 
         self.setting = self.get_admin_settings()
 

@@ -4,11 +4,11 @@ from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
 
 from common.models import Allegation, ComplainingWitness, Officer
-from mobile.serializers.mobile_officer_allegation_view_serializer import \
-    MobileOfficerAllegationViewSerializer
+from mobile.serializers.mobile_allegation_view_serializer import \
+    MobileAllegationViewSerializer
 
 
-class MobileOfficerAllegationView(APIView):
+class MobileAllegationView(APIView):
     renderer_classes = (JSONRenderer, )
 
     def get(self, request):
@@ -25,7 +25,7 @@ class MobileOfficerAllegationView(APIView):
         complaining_witnesses = ComplainingWitness.objects.filter(
             allegation__pk=allegation.pk)
 
-        content = MobileOfficerAllegationViewSerializer({
+        content = MobileAllegationViewSerializer({
             'officers': officers,
             'officer_allegation': allegation.officerallegation_set.all()[0],
             'complaining_witnesses': complaining_witnesses

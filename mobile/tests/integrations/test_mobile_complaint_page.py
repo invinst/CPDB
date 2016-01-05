@@ -42,6 +42,7 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
 
         ComplainingWitnessFactory(
             crid=allegation.crid, gender=complaint_witness_gender,
+            allegation=allegation,
             race=complaint_witness_race, age=complaint_witness_age)
 
         self.go_to_allegation_detail_page(crid=allegation.crid)
@@ -71,6 +72,7 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
 
     def test_circle_color_of_involved_officers(self):
         crid = '1234'
+        allegation = AllegationFactory(crid=crid)
         allegations_count_color_map = {
             'circle-0': 21,
             'circle-1': 11,
@@ -84,7 +86,6 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
                 allegations_count_color_map.items():
             officer = OfficerFactory(allegations_count=allegations_count)
             officers[circle_class] = officer
-            allegation = AllegationFactory(crid=crid)
             OfficerAllegationFactory(allegation=allegation, officer=officer)
 
         self.go_to_allegation_detail_page(crid=crid)
@@ -115,6 +116,7 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
 
     def test_allegation_with_no_complaint_witness(self):
         allegation = AllegationFactory()
+        OfficerAllegationFactory(allegation=allegation)
 
         self.visit('/mobile/complaint/{crid}'.format(crid=allegation.crid))
         self.until(lambda: self.find('.crid-title'))
@@ -171,6 +173,7 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
 
     def test_officer_without_gender(self):
         allegation = AllegationFactory()
+        OfficerAllegationFactory(allegation=allegation)
         ComplainingWitnessFactory(
             gender=None, age=None, race=None, crid=allegation.crid,
             allegation=allegation)

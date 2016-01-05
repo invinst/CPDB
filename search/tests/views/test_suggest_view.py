@@ -75,19 +75,19 @@ class SuggestViewTestCase(SimpleTestCase):
         AllegationFactory(investigator__name='Someone Name')
 
         data = self.get_suggestion('Some')
-        data.should.contain('investigator')
+        data.should.contain('allegation__investigator')
 
     def test_detect_suggest_type_complaint_id_number(self):
         AllegationFactory(crid=123456)
 
         data = self.get_suggestion('1234')
-        data.should.contain('crid')
+        data.should.contain('allegation__crid')
 
         data = self.get_suggestion('123')
-        data.shouldnt.contain('crid')
+        data.shouldnt.contain('allegation__crid')
 
         data = self.get_suggestion('8908')
-        data.shouldnt.contain('crid')
+        data.shouldnt.contain('allegation__crid')
 
     def test_suggest_incident_date_year(self):
         data = self.get_suggestion('20')
@@ -173,9 +173,9 @@ class SuggestViewTestCase(SimpleTestCase):
     def test_suggest_area_type(self):
         area = AreaFactory()
         data = self.get_suggestion(area.name[0:3])
-        data.should.contain('areas__id')
-        data['areas__id'].should.have.length_of(1)
-        data['areas__id'][0].should.contain('type')
+        data.should.contain('allegation__areas__id')
+        data['allegation__areas__id'].should.have.length_of(1)
+        data['allegation__areas__id'][0].should.contain('type')
 
     def test_search_session_alias(self):
         session_alias = SessionAliasFactory(title=fake.name())

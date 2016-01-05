@@ -7,7 +7,7 @@ from django.utils import timezone
 from allegation.factories import (
     AreaFactory, ComplainingWitnessFactory, AllegationFactory,
     OfficerAllegationFactory)
-from allegation.tests.views.base import AllegationApiTestBase
+from allegation.tests.views.base import OfficerAllegationApiTestBase
 from common.models import (
     Allegation, Officer, Area, DISCIPLINE_CODES, NO_DISCIPLINE_CODES,
     OfficerAllegation)
@@ -22,7 +22,7 @@ class OfficerAllegationFilterMixin(object):
 
 
 class OfficerAllegationApiViewTestCase(
-        OfficerAllegationFilterMixin, AllegationApiTestBase):
+        OfficerAllegationFilterMixin, OfficerAllegationApiTestBase):
     def setUp(self):
         self.officer_allegations = OfficerAllegationFactory.create_batch(3)
 
@@ -61,7 +61,7 @@ class OfficerAllegationApiViewTestCase(
 
     def test_filter_by_crid(self):
         crid = self.officer_allegations[0].allegation.crid
-        data = self.fetch_officer_allegations(crid=crid)
+        data = self.fetch_officer_allegations(allegation__crid=crid)
         for row in data:
             int(row['allegation']['crid']).should.equal(crid)
 
@@ -107,7 +107,7 @@ class OfficerAllegationApiViewTestCase(
 
     def test_filter_by_investigator(self):
         investigator = self.officer_allegations[0].allegation.investigator
-        data = self.fetch_officer_allegations(investigator=investigator.id)
+        data = self.fetch_officer_allegations(allegation__investigator=investigator.id)
 
         for row in data:
             row['allegation']['investigator']['pk']\
@@ -168,9 +168,9 @@ class OfficerAllegationApiViewTestCase(
             date.should.equal(start_date)
 
     def test_multiple_areas(self):
-        areas = Area.objects.filter()
+        areas = Area.objects.all()
         allegations = self.fetch_officer_allegations(
-            areas__id=list(areas.values_list('pk', flat=True)))
+            allegation__areas__id=list(areas.values_list('pk', flat=True)))
         num_returned = len(allegations)
         num_returned.should.equal(
             getattr(settings, 'ALLEGATION_LIST_ITEM_COUNT', 200))
@@ -245,11 +245,13 @@ class OfficerAllegationApiViewTestCase(
     def test_filter_by_finding_text(self):
         data = self.fetch_officer_allegations(final_finding_text='unsustained')
         for row in data:
-            allegation = Allegation.objects.get(pk=row['allegation']['id'])
-            allegation.final_finding.shouldnt.equal('SU')
+            officer_allegation = OfficerAllegation.objects.get(
+                pk=row['officer_allegation']['id'])
+            officer_allegation.final_finding.shouldnt.equal('SU')
 
     def test_filter_by_has_document(self):
         allegation = AllegationFactory(document_id=1)
+        OfficerAllegationFactory(allegation=allegation)
 
         data = self.fetch_officer_allegations(has_filters='has:document')
 
@@ -263,6 +265,7 @@ class OfficerAllegationApiViewTestCase(
         allegation = AllegationFactory()
         allegation.point = None
         allegation.save()
+        OfficerAllegationFactory(allegation=allegation)
 
         data = self.fetch_officer_allegations(has_filters='has:map')
         len(data).should.equal(3)
@@ -274,8 +277,11 @@ class OfficerAllegationApiViewTestCase(
         len(data).should.equal(0)
 
         allegation1 = AllegationFactory(add1=123)
+        OfficerAllegationFactory(allegation=allegation1)
         allegation2 = AllegationFactory(add2='456')
+        OfficerAllegationFactory(allegation=allegation2)
         allegation3 = AllegationFactory(add1=789, add2='abc')
+        OfficerAllegationFactory(allegation=allegation3)
         result_count = 3
 
         data = self.fetch_officer_allegations(has_filters='has:address')
@@ -295,6 +301,7 @@ class OfficerAllegationApiViewTestCase(
         len(data).should.equal(0)
 
         allegation = AllegationFactory(location='somewhere')
+        OfficerAllegationFactory(allegation=allegation)
 
         data = self.fetch_officer_allegations(has_filters='has:location')
         len(data).should.equal(1)
@@ -305,7 +312,9 @@ class OfficerAllegationApiViewTestCase(
         allegations_num = len(data)
 
         allegation = AllegationFactory()
-        AllegationFactory(investigator=None)
+        OfficerAllegationFactory(allegation=allegation)
+        OfficerAllegationFactory(
+            allegation=AllegationFactory(investigator=None))
 
         data = self.fetch_officer_allegations(has_filters='has:investigator')
         len(data).should.equal(allegations_num + 1)
@@ -315,7 +324,8 @@ class OfficerAllegationApiViewTestCase(
         data = self.fetch_officer_allegations(has_filters='has:identified')
         len(data).should.equal(3)
 
-        allegation = AllegationFactory(officer=None)
+        allegation = AllegationFactory()
+        OfficerAllegationFactory(allegation=allegation, officer=None)
 
         data = self.fetch_officer_allegations(has_filters='has:identified')
         len(data).should.equal(3)

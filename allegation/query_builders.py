@@ -2,11 +2,10 @@ import inspect
 
 from django.db.models.query_utils import Q
 from django.contrib.gis.geos import Point
-from django.http import QueryDict
 from django.contrib.gis.measure import D
 
 from common.constants import FOIA_START_DATE
-from common.models import OUTCOMES, ComplainingWitness
+from common.models import OUTCOMES, ComplainingWitness, Allegation
 from allegation.utils.query import OfficerQuery
 
 
@@ -56,8 +55,8 @@ class OfficerAllegationQueryBuilder(object):
         adhoc_queries = [
             'id',
             'allegation__crid',
-            'allegation__areas__id',
             'cat',
+            'cat__cat_id',
             'recc_finding',
             'final_outcome',
             'final_outcome_class',
@@ -76,11 +75,21 @@ class OfficerAllegationQueryBuilder(object):
             'allegation__city',
         ]
 
-        for key, val in query_params.items():
+        for key in query_params.keys():
             if key in adhoc_queries:
-                queries &= Q(**{key: val})
+                val_list = query_params.getlist(key)
+                sub_queries = Q()
+                for val in val_list:
+                    sub_queries |= Q(**{key: val})
+                queries &= sub_queries
 
         return queries
+
+    def _q_areas_id(self, query_params):
+        if 'allegation__areas__id' in query_params:
+            val = query_params.getlist('allegation__areas__id')
+            return Q(allegation__areas__id__in=val)
+        return Q()
 
     def _q_officer_names(self, query_params):
         queries = Q()
@@ -129,7 +138,8 @@ class OfficerAllegationQueryBuilder(object):
 
     def _q_has_address(self, query_params):
         if 'has:address' in query_params.getlist('has_filters', []):
-            return Q(allegation__add1__isnull=False) | Q(allegation__add2__isnull=False)
+            return Q(allegation__add1__isnull=False) | \
+                Q(allegation__add2__isnull=False)
         return Q()
 
     def _q_has_location(self, query_params):
@@ -140,6 +150,11 @@ class OfficerAllegationQueryBuilder(object):
     def _q_has_investigator(self, query_params):
         if 'has:investigator' in query_params.getlist('has_filters', []):
             return Q(allegation__investigator__isnull=False)
+        return Q()
+
+    def _q_has_identified(self, query_params):
+        if 'has:identified' in query_params.getlist('has_filters', []):
+            return Q(officer__isnull=False)
         return Q()
 
     def _q_unsustained_final_finding(self, query_params):
@@ -193,29 +208,32 @@ class OfficerAllegationQueryBuilder(object):
             query_key='race__in')
 
     def _q_incident_date_only(self, query_params):
-        queries = Q()
+        allegation_queries = Q()
 
         for date_range in query_params.getlist('incident_date_only__range'):
             date_range = date_range.split(',')
-            queries |= Q(allegation__incident_date_only__range=date_range)
+            allegation_queries |= Q(incident_date_only__range=date_range)
 
         for year in query_params.getlist('incident_date_only__year'):
-            queries |= Q(allegation__incident_date_only__year=year)
+            allegation_queries |= Q(incident_date_only__year=year)
 
         for year_month in \
                 query_params.getlist('incident_date_only__year_month'):
             year, month = year_month.split('-')
-            queries |= Q(
-                Q(allegation__incident_date_onlys__year=year) &
-                Q(allegation__incident_date_only__month=month))
+            allegation_queries |= Q(
+                Q(incident_date_only__year=year) &
+                Q(incident_date_only__month=month))
 
         dates = [
             date.replace('/', '-')
             for date in query_params.getlist('incident_date_only')]
         if dates:
-            queries |= Q(allegation__incident_date_only__in=dates)
+            allegation_queries |= Q(incident_date_only__in=dates)
 
-        return queries
+        allegation_ids = Allegation.objects.filter(allegation_queries)\
+            .values_list('pk', flat=True)
+
+        return Q(allegation__pk__in=allegation_ids)
 
     def _q_add_data_source_filter(self, query_params):
         data_source = query_params.getlist('data_source', [])

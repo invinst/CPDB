@@ -8,15 +8,12 @@ from common.tests.core import SimpleTestCase
 
 
 class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
-    def setUp(self):
-        self.builder = OfficerAllegationQueryBuilder()
-
     def test_adhoc_queries(self):
         expected_allegations = [
             OfficerAllegationFactory(allegation=AllegationFactory(crid='1'))]
         OfficerAllegationFactory(allegation=AllegationFactory(crid='1'))
 
-        query_string = 'allegation__id=1&allegation__crid=1'
+        query_string = 'id=1&allegation__crid=1'
         expected_ids = [allegation.id for allegation in expected_allegations]
 
         self.check_built_query(query_string, expected_ids)
@@ -134,7 +131,7 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
         expected_allegations = [
             OfficerAllegationFactory(final_finding=code)
             for code in ['DS', 'EX', 'NA', 'NC', 'NS', 'UN']]
-        OfficerAllegationFactory()
+        OfficerAllegationFactory(final_finding='ZZ')
 
         query_string = 'final_finding_text=unsustained'
         expected_ids = [allegation.id for allegation in expected_allegations]
@@ -144,7 +141,8 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
     def check_built_query(self, query_string, expected_ids):
         params = QueryDict(query_string)
 
-        query = self.builder.build(params)
+        builder = OfficerAllegationQueryBuilder()
+        query = builder.build(params)
         results = OfficerAllegation.objects\
             .filter(query).values_list('id', flat=True)
 

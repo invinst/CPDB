@@ -13,10 +13,10 @@ class HomePageTestCase(BaseLiveTestCase):
     def tearDown(self):
         super(HomePageTestCase, self).tearDown()
         self.allegation_category.delete()
-        if self.allegation.officer:
-            self.allegation.officer.delete()
+        if self.officer_allegation.officer:
+            self.officer_allegation.officer.delete()
         else:
-            self.allegation.delete()
+            self.officer_allegation.delete()
 
     def test_start_new_session_on_click_logo(self):
         Session.objects.all().count().should.equal(0)
@@ -117,7 +117,7 @@ class HomePageTestCase(BaseLiveTestCase):
 
     def test_see_session_query_on_reload(self):
         self.visit_home()
-        officer = self.allegation.officer
+        officer = self.officer_allegation.officer
 
         self.until(
             lambda:
@@ -135,8 +135,8 @@ class HomePageTestCase(BaseLiveTestCase):
         self.should_see_text(officer.officer_last)
 
     def test_complaint_detail_without_investigator(self):
-        self.allegation.investigator = None
-        self.allegation.save()
+        self.officer_allegation.investigator = None
+        self.officer_allegation.save()
 
         self.visit_home()
         self.link('Categories').click()
@@ -200,7 +200,7 @@ class HomePageTestCase(BaseLiveTestCase):
             self.element_by_tagname_and_text('td', ns).shouldnt.be.ok
 
     def test_sticky_footer(self):
-        officer = self.allegation.officer
+        officer = self.officer_allegation.officer
         OfficerAllegationFactory.create_batch(40, officer=officer)
         self.browser.set_window_size(width=1200, height=800)
         self.visit_home()
