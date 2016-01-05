@@ -18,9 +18,15 @@ var OfficerNameResult = React.createClass({
     return (
       <li className='officer-name-results'>
         <div className='link officer officer-name-result-item' onClick={this._onClick.bind(this, presenter)}>
-          <OfficerCard officerId={presenter.resourceKey} allegationsCount={presenter.allegationsCount}
+          <div className='officer-header pad'>
+            <span className='officer-label'> Officer &#8226;</span>
+            <span className='badge-title'>&nbsp; Badge&nbsp;</span>
+            <span className='badge-value'>{presenter.meta.badge}</span>
+            <span className='complaint-count'>{presenter.meta.allegationsCount} complaints</span>
+          </div>
+          <OfficerCard officerId={presenter.resourceKey} allegationsCount={presenter.meta.allegationsCount}
                        displayName={presenter.text}
-                       description={presenter.officerDescription}
+                       description={presenter.meta.description}
           />
         </div>
       </li>

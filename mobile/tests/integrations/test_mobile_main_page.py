@@ -49,13 +49,13 @@ class MobileMainPageTest(BaseLivePhoneTestCase):
         self.search_for(badge)
         self.wait_for_success_result()
 
-        self.should_see_text_in_result('Badge no.')
+        self.should_see_text_in_result('Badge')
         self.should_see_text_in_result(badge)
 
     def test_search_for_crid(self):
         crid = '1234567'
         a_part_of_crid = '123'
-        AllegationFactory(crid=crid)
+        allegation = AllegationFactory(crid=crid)
 
         self.go_to_main_page()
         self.search_for(a_part_of_crid)
@@ -66,3 +66,6 @@ class MobileMainPageTest(BaseLivePhoneTestCase):
         self.wait_for_success_result()
         self.should_see_text_in_result('CRID')
         self.should_see_text_in_result(crid)
+
+        self.should_see_text_in_result(allegation.cat.allegation_name)
+        self.should_see_text_in_result(allegation.cat.category)

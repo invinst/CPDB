@@ -20,7 +20,20 @@ var ComplaintResult = React.createClass({
       <ul className='suggestion-list'>
         <li className='complaint-results'>
           <div className='link pad complaint-result-item' onClick={this._onClick}>
-            CRID <span className='highlight'>{presenter.resourceKey}</span> Incident {presenter.incidentDate}
+            <div className='complaint-header pad'>
+              <span className='complaint-label'> Complaint &#8226;</span>
+              <span className='crid-title'>&nbsp; CRID&nbsp;</span>
+              <span className='crid-value'>{presenter.resourceKey}</span>
+              <span className='incident-date'>{presenter.meta.incidentDate}</span>
+            </div>
+            <div className='complaint-category pad'>
+              <div className='sub-category bold'>
+                {presenter.meta.category}
+              </div>
+              <div className='category'>
+                {presenter.meta.allegationName}
+              </div>
+            </div>
           </div>
         </li>
       </ul>

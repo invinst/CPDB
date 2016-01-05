@@ -1,8 +1,20 @@
 .complaint-results
   .complaint-result-item
-    background-image: none
-    margin-left: 0
-    height: 60px
-    vertical-align: middle
-    line-height: 60px
-    font-size: 16px
+    margin: 10px 0
+    background-color: $search-page-item-background-color
+    border-bottom: solid 1px $border-color
+    border-top: solid 1px $border-color
+    padding: 5px 0
+    font-size: 14px
+    .complaint-category
+      margin-top: 10px
+      .sub-category
+        font-size: 16px
+        line-height: 25px
+    .complaint-header
+      .incident-date
+        float: right
+      .crid-value
+        color: $search-page-crid-value-color
+      .crid-title
+        color: $search-page-crid-title-color
