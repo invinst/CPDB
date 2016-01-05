@@ -49,8 +49,16 @@ var ComplaintPresenter = function (complaint) {
     return HelperUtil.format(linkFormat, {'documentId': documentId, 'documentNormalizedTitle': documentNormalizedTitle});
   };
 
+  var crid = function () {
+      return HelperUtil.fetch(complaint, 'crid', 'Unknown');
+  };
+
+  var url = function () {
+    return HelperUtil.format('/complaint/{crid}', {'crid': crid()})
+  };
+
   return {
-    crid: HelperUtil.fetch(complaint, 'crid', 'Unknown'),
+    crid: crid(),
     finalFinding: finalFinding(),
     finalStatus: finalStatus(),
     incidentDate: incidentDate(AppConstants.SIMPLE_DATE_FORMAT),
@@ -63,7 +71,8 @@ var ComplaintPresenter = function (complaint) {
     locationType: HelperUtil.fetch(complaint, 'location', ''),
     beat: HelperUtil.fetch(complaint, 'beat.name', ''),
     documentLink: documentLink(),
-    getIncidentDate: incidentDate
+    getIncidentDate: incidentDate,
+    url: url()
   }
 };
 
