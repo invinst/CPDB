@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'jsonify',
     'django_nose',
     'django_user_agents',
+    'haystack',
 
     'common',
     'allegation',
