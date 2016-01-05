@@ -19,10 +19,10 @@ var InterfaceTextSection = React.createClass(_.assign(Base(InterfaceTextSectionS
           children.push(
             <div className='row' key={i}>
               <div className='col-md-3'>
-                <input className='form-control' type='text' value={this.state.activeText.key} onChange={this.changeText.bind(this, 'key')} />
+                <input className='form-control' id="id_key" type='text' value={this.state.activeText.key} onChange={this.changeText.bind(this, 'key')} />
               </div>
               <div className='col-md-7'>
-                <textarea  className='form-control' onChange={this.changeText.bind(this, 'text')} value={this.state.activeText.text}></textarea>
+                <textarea id="id_text" className='form-control' onChange={this.changeText.bind(this, 'text')} value={this.state.activeText.text}></textarea>
               </div>
               <div className='col-md-2'>
                 <button onClick={this.save.bind(this, this.state.activeText)} className='btn btn-info'>
