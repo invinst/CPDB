@@ -2,14 +2,14 @@ from rest_framework.reverse import reverse
 from rest_framework.status import (
     HTTP_200_OK, HTTP_404_NOT_FOUND)
 from allegation.factories import (
-    OfficerFactory, AllegationFactory, ComplainingWitnessFactory,
-    OfficerAllegationFactory)
+    OfficerFactory, ComplainingWitnessFactory, OfficerAllegationFactory)
 from common.tests.core import SimpleTestCase
 
 
-class MobileAllegationTest(SimpleTestCase):
+class MobileOfficerAllegationTest(SimpleTestCase):
     def call_allegation_api(self, params={}):
-        response = self.client.get(reverse('mobile:allegation'), params)
+        response = self.client.get(
+            reverse('mobile:officer-allegation'), params)
         data = self.json(response)
 
         return response, data
@@ -18,17 +18,18 @@ class MobileAllegationTest(SimpleTestCase):
         officer = OfficerFactory()
         officer_allegation = OfficerAllegationFactory(officer=officer)
         complaining_witness = ComplainingWitnessFactory(
-            crid=officer_allegation.allegation.crid)
+            crid=officer_allegation.allegation.crid,
+            allegation=officer_allegation.allegation)
 
         response, data = self.call_allegation_api(
             {'crid': officer_allegation.allegation.crid})
         response.status_code.should.equal(HTTP_200_OK)
 
-        data['allegation']['crid'].should.be.equal(
+        data['officer_allegation']['crid'].should.be.equal(
             str(officer_allegation.allegation.crid))
-        data['allegation']['point']['x'].should.be.equal(
+        data['officer_allegation']['point']['x'].should.be.equal(
             officer_allegation.allegation.point.x)
-        data['allegation']['point']['y'].should.be.equal(
+        data['officer_allegation']['point']['y'].should.be.equal(
             officer_allegation.allegation.point.y)
 
         len(data['officers']).should.be.equal(1)
@@ -46,13 +47,17 @@ class MobileAllegationTest(SimpleTestCase):
         officer_1_complaint = OfficerFactory()
         officer_2_complaints = OfficerFactory()
         officer_3_complaints = OfficerFactory()
-        allegation = AllegationFactory(officer=officer_1_complaint)
+        officer_allegation = OfficerAllegationFactory(
+            officer=officer_1_complaint)
         OfficerAllegationFactory.create_batch(
-            2, allegation=allegation, officer=officer_2_complaints)
+            2, allegation=officer_allegation.allegation,
+            officer=officer_2_complaints)
         OfficerAllegationFactory.create_batch(
-            3, allegation=allegation, officer=officer_3_complaints)
+            3, allegation=officer_allegation.allegation,
+            officer=officer_3_complaints)
 
-        response, data = self.call_allegation_api({'crid': allegation.crid})
+        response, data = self.call_allegation_api(
+            {'crid': officer_allegation.allegation.crid})
 
         officers_list = [officer['id'] for officer in data['officers']]
         ordered_officers_list = [

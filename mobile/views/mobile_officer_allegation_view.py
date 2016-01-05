@@ -4,8 +4,8 @@ from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
 
 from common.models import Allegation, ComplainingWitness, Officer
-from mobile.serializers.mobile_allegation_view_serializer import \
-    MobileAllegationViewSerializer
+from mobile.serializers.mobile_officer_allegation_view_serializer import \
+    MobileOfficerAllegationViewSerializer
 
 
 class MobileOfficerAllegationView(APIView):
@@ -13,9 +13,9 @@ class MobileOfficerAllegationView(APIView):
 
     def get(self, request):
         crid = request.GET.get('crid', '')
-        allegation = Allegation.objects.get(crid=crid)
-
-        if not allegation:
+        try:
+            allegation = Allegation.objects.get(crid=crid)
+        except Allegation.DoesNotExist:
             raise Http404()
 
         officer_ids = allegation.officerallegation_set\
@@ -25,7 +25,7 @@ class MobileOfficerAllegationView(APIView):
         complaining_witnesses = ComplainingWitness.objects.filter(
             allegation__pk=allegation.pk)
 
-        content = MobileAllegationViewSerializer({
+        content = MobileOfficerAllegationViewSerializer({
             'officers': officers,
             'officer_allegation': allegation.officerallegation_set.all()[0],
             'complaining_witnesses': complaining_witnesses

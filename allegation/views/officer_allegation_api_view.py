@@ -46,7 +46,7 @@ class OfficerAllegationAPIView(View):
         return start, end
 
     def related_officers(self, allegation, officer_allegation):
-        officers = [o.officer for o in allegation.officer_allegation_set]
+        officers = [o.officer for o in allegation.officerallegation_set]
         if officer_allegation.officer:
             officers = [
                 officer for officer in officers

@@ -18,8 +18,7 @@ class DocumentLinkView(View):
         return self.update_allegation_document(crid, link)
 
     def cancle_requests(self, crid):
-        allegation = Allegation.objects.get(crid=crid)
-        allegation.update(document_requested=False)
+        Allegation.objects.filter(crid=crid).update(document_requested=False)
         return JsonResponse()
 
     def update_allegation_document(self, crid, link):
@@ -44,8 +43,7 @@ class DocumentLinkView(View):
             })
         title = self.get_title(get_title_resp.content.decode())
 
-        allegation = Allegation.objects.get(crid=crid)
-        allegation.update(
+        Allegation.objects.filter(crid=crid).update(
             document_id=document_id,
             document_normalized_title=normalized_title, document_title=title)
 

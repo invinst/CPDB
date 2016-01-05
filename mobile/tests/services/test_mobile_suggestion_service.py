@@ -1,4 +1,5 @@
-from allegation.factories import AllegationFactory, OfficerFactory
+from allegation.factories import (
+    AllegationFactory, OfficerFactory, OfficerAllegationFactory)
 from common.tests.core import SimpleTestCase
 from mobile.services.mobile_suggestion_service import (
     suggest_crid, suggest_officer_star, suggest_officer_name)
@@ -7,7 +8,8 @@ from mobile.services.mobile_suggestion_service import (
 class MobileSuggestionServiceTest(SimpleTestCase):
     def test_suggest_crid(self):
         allegation = AllegationFactory(crid='1051333')
-        AllegationFactory(crid='306697')
+        OfficerAllegationFactory(allegation=allegation)
+        OfficerAllegationFactory(allegation=AllegationFactory(crid='306697'))
 
         crid = str(allegation.crid)
         partial_query = crid[0:3]

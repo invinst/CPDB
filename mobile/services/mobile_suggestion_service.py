@@ -18,7 +18,7 @@ def suggest_officer_star(query):
 
 
 def suggest_crid(query):
-    allegation = Allegation.objects.get(crid=query)
+    allegation = Allegation.objects.filter(crid=query).first()
     return wrap_as_suggestion(allegation)
 
 
