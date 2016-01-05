@@ -6,9 +6,9 @@ from document.response import JsonResponse
 
 class CountView(OfficerAllegationAPIView):
     def get(self, request):
-        allegations = self.get_allegations()
+        officer_allegations = self.get_officer_allegations()
         officer_list = Officer.objects.filter(
-            id__in=allegations.values('officer').distinct())
+            id__in=officer_allegations.values('officer').distinct())
         count_by_officer = officer_list.values_list(
             'allegations_count', flat=True)
 

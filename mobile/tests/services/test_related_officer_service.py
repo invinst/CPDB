@@ -11,9 +11,9 @@ class RelatedOfficerTest(SimpleTestCase):
         officer = OfficerFactory()
         co_accused_officer = OfficerFactory()
         officer_allegation = OfficerAllegationFactory(officer=officer)
-        allegation = AllegationFactory(crid=officer_allegation.allegation.crid)
         OfficerAllegationFactory(
-            officer=co_accused_officer, allegation=allegation)
+            officer=co_accused_officer,
+            allegation=officer_allegation.allegation)
 
         co_accused_officers = RelatedOfficerService.co_accused_officers(
             officer.id)

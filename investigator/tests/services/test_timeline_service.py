@@ -11,7 +11,8 @@ class InvestigatorTimelineServiceTestCase(SimpleTestCase):
     def setUp(self):
         base = datetime.now()
         self.dates = [(base + timedelta(days=x)).date() for x in range(0, 2)]
-        AllegationFactory(incident_date_only=self.dates[1])
+        OfficerAllegationFactory(
+            allegation=AllegationFactory(incident_date_only=self.dates[1]))
         allegation = AllegationFactory(incident_date_only=None)
         OfficerAllegationFactory(
             allegation=allegation, start_date=self.dates[0])
