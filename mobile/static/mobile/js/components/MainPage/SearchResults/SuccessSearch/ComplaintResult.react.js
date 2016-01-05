@@ -2,6 +2,7 @@ var React = require('react');
 
 var AppHistory = require('utils/History');
 
+var AppConstants = require('constants/AppConstants');
 var SuggestionPresenter = require('presenters/SuggestionPresenter');
 
 
@@ -23,8 +24,8 @@ var ComplaintResult = React.createClass({
             <div className='complaint-header pad'>
               <span className='complaint-label'> Complaint &#8226;</span>
               <span className='crid-title'>&nbsp; CRID&nbsp;</span>
-              <span className='crid-value'>{presenter.resourceKey}</span>
-              <span className='incident-date'>{presenter.meta.incidentDate}</span>
+              <span className='crid-value highlight'>{presenter.resourceKey}</span>
+              <span className='incident-date'>{presenter.meta.getIncidentDate(AppConstants.SEARCH_INCIDENT_DATE_FORMAT)}</span>
             </div>
             <div className='complaint-category pad'>
               <div className='sub-category bold'>

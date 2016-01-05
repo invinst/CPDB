@@ -22,9 +22,9 @@ var ComplaintPresenter = function (complaint) {
     return complaintService.isOpenInvestigation ? 'Open Investigation' : closedStatus;
   };
 
-  var incidentDate = function () {
+  var incidentDate = function (format) {
     var incidentDate = complaintService.incidentDate;
-    return !!incidentDate ? incidentDate.format(AppConstants.SIMPLE_DATE_FORMAT) : 'Unknown date';
+    return !!incidentDate ? incidentDate.format(format) : 'Unknown date';
   };
 
   var startInvestigationDate = function () {
@@ -53,7 +53,7 @@ var ComplaintPresenter = function (complaint) {
     crid: HelperUtil.fetch(complaint, 'crid', 'Unknown'),
     finalFinding: finalFinding(),
     finalStatus: finalStatus(),
-    incidentDate: incidentDate(),
+    incidentDate: incidentDate(AppConstants.SIMPLE_DATE_FORMAT),
     startInvestigationDate: startInvestigationDate(),
     endInvestigationDate: endInvestigationDate(),
     category: HelperUtil.fetch(complaint, 'cat.category', 'Unknown'),
@@ -62,7 +62,8 @@ var ComplaintPresenter = function (complaint) {
     city: HelperUtil.fetch(complaint, 'city', ''),
     locationType: HelperUtil.fetch(complaint, 'location', ''),
     beat: HelperUtil.fetch(complaint, 'beat.name', ''),
-    documentLink: documentLink()
+    documentLink: documentLink(),
+    getIncidentDate: incidentDate
   }
 };
 
