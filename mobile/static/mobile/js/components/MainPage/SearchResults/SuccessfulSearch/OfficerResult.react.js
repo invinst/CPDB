@@ -20,7 +20,7 @@ var OfficerNameResult = React.createClass({
     var badgeClassName = cx('badge-value', {'highlight': this.props.term == presenter.meta.badge});
 
     return (
-      <li className='officer-name-results'>
+      <li className='officer-name-results outer-glow'>
         <div className='link officer officer-name-result-item' onClick={this._onClick.bind(this, presenter)}>
           <div className='officer-header pad'>
             <span className='officer-label'> Officer<span className='dot-bullet'>&#8226;</span></span>

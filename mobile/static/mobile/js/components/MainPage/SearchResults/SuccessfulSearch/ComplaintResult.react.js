@@ -19,7 +19,7 @@ var ComplaintResult = React.createClass({
 
     return (
       <ul className='suggestion-list'>
-        <li className='complaint-results'>
+        <li className='complaint-results outer-glow'>
           <div className='link pad complaint-result-item' onClick={this._onClick}>
             <div className='complaint-header pad'>
               <span className='complaint-label'> Complaint<span className='dot-bullet'>&#8226;</span></span>
