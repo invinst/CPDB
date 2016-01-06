@@ -13,6 +13,7 @@ class InterfaceTextEditTestCase(BaseAdminTestCase):
 
     def test_update_interface_text(self):
         # Default Site Title
+        self.until(lambda: self.find(".fa-pencil"))
         self.find(".fa-pencil").click()
 
         self.until(lambda: self.find('#id_text'))
