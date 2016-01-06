@@ -10,3 +10,14 @@
 
   @media (min-width: $screen-xs-min) and (max-width: $screen-xs-max)
     margin-top: 8px
+
+.related-officers-enter
+  opacity: 0.01
+  z-index: 3
+
+.related-officers-enter.related-officers-enter-active
+  opacity: 1
+  transition: opacity .5s linear
+
+.complaint-list-placeholder
+  min-height: 601px

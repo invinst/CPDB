@@ -65,7 +65,7 @@ class AllegationApiViewTestCase(AllegationFilterMixin, AllegationApiTestBase):
 
     def test_filter_by_category(self):
         cat = self.allegations[0].cat
-        data = self.fetch_allegations(cat=cat.cat_id)
+        data = self.fetch_allegations(cat__cat_id=cat.cat_id)
         for row in data:
             row['category']['allegation_name']\
                 .should.equal(cat.allegation_name)
@@ -96,7 +96,7 @@ class AllegationApiViewTestCase(AllegationFilterMixin, AllegationApiTestBase):
 
     def test_officer_profile_url(self):
         cat = self.allegations[0].cat
-        data = self.fetch_allegations(cat=cat.cat_id)
+        data = self.fetch_allegations(cat__cat_id=cat.cat_id)
         for allegation in data:
             officer_json = allegation['officer']
             officer = Officer.objects.get(pk=officer_json['id'])

@@ -63,7 +63,7 @@ var ComplaintSection = React.createClass({
     var analytics = this.state.analytics;
     var loading = this.state.loading;
     var items = this.renderComplaints(this.state.complaints, this.props.officer);
-    var className = classnames('complaint_list', {
+    var className = classnames('complaint-list', {
       'hidden': this.state.noQuery
     });
 
