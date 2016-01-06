@@ -5,11 +5,8 @@ var Base = require('components/Base.react');
 
 var About = require('components/Shared/About.react');
 var MainPageStore = require('stores/MainPageStore');
-var ProjectSummary = require('components/MainPage/ProjectSummary.react');
 var SearchResults = require('components/MainPage/SearchResults.react');
 var LoadingPage = require('components/Shared/LoadingPage.react');
-var Wrapper = require('components/Shared/Wrapper.react');
-var PageNotFound = require('components/MainPage/PageNotFound.react');
 var HelperUtil = require('utils/HelperUtil');
 var SearchComponent = require('components/MainPage/SearchComponent.react');
 
