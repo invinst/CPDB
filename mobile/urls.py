@@ -16,14 +16,11 @@ urlpatterns = [
     url(r'^api/officer/$', MobileOfficerView.as_view(), name='officer'),
 
     # fall-back urls
-    url(r'^mobile/api/suggestion/$', MobileSuggestionView.as_view(), name='suggestion'),
-    url(r'^mobile/api/allegation/$', MobileAllegationView.as_view(), name='allegation'),
-    url(r'^mobile/api/officer/$', MobileOfficerView.as_view(), name='officer'),
+    url(r'^mobile/api/suggestion/$', MobileSuggestionView.as_view(), name='mobile-suggestion'),
+    url(r'^mobile/api/allegation/$', MobileAllegationView.as_view(), name='mobile-allegation'),
+    url(r'^mobile/api/officer/$', MobileOfficerView.as_view(), name='mobile-officer'),
 
     # overriding for client-side routing
     url(r'^(officer/[^/]+/\d+|complaint/\d+|search/\w+)?$', ensure_csrf_cookie(MobileSiteView.as_view()), name='home'),
     url(r'^(test)?$', ensure_csrf_cookie(MobileSiteView.as_view()), name='home'),
-
-    # other cases, render MobileSiteView instead of the 404 page, handle the error from javascript
-    url(r'', MobileSiteView.as_view(), name='not_found')
 ]

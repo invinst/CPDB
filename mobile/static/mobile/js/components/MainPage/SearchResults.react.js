@@ -26,7 +26,6 @@ var SearchResults = React.createClass(objectAssign(Base(SearchResultsStore), {
         </Wrapper>
       )
     }
-
     return (
       <Wrapper wrapperClass='search-result' visible={this.state.term}>
         <SuccessfulSearch term={this.state.term} suggestions={this.state.suggestions} />

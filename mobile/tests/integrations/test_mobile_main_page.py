@@ -30,7 +30,6 @@ class MobileMainPageTest(BaseLivePhoneTestCase):
 
         self.go_to_main_page()
         self.search_for(officer.officer_first)
-        import ipdb;ipdb.set_trace()
         
         self.wait_for_success_result()
 
@@ -71,8 +70,3 @@ class MobileMainPageTest(BaseLivePhoneTestCase):
 
         self.should_see_text_in_result(allegation.cat.allegation_name)
         self.should_see_text_in_result(allegation.cat.category)
-
-    def test_show_page_not_found(self):
-        unexpected_url = '/mobile/some_think_unexpected'
-        self.visit(unexpected_url)
-        self.should_see_text('Sorry, page not found!')

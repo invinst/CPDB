@@ -21,13 +21,8 @@ var MainPage = React.createClass(objectAssign(Base(MainPageStore), {
       'isSearchFocused': 0,
       'isSearching': 0,
       'term': '',
-      'firstAccess': true
+      'firstAccess': 1
     }
-  },
-
-  componentDidMount: function () {
-    this.state.firstAccess = false;
-    MainPageStore.addChangeListener(this._onChange);
   },
 
   renderSearchResults: function (term) {
@@ -38,23 +33,31 @@ var MainPage = React.createClass(objectAssign(Base(MainPageStore), {
     }
 
     return (
-      <SearchResults term={term} />
+      <SearchResults term={term}/>
+    );
+  },
+
+  renderTopPage: function (showPageNotFound, isSearchFocused) {
+    if (showPageNotFound) {
+      return (
+        <PageNotFound topLeft={isSearchFocused}/>
+      );
+    }
+    return (
+      <Logo topLeft={isSearchFocused}/>
     );
   },
 
   render: function () {
-    var term = HelperUtil.fetch(this,'props.params.query', '');
+    var term = HelperUtil.fetch(this, 'props.params.query', '');
     var isSearchFocused = this.state.isSearchFocused;
+    var showPageNotFound = !!this.props.showError && this.state.firstAccess;
     var classNames = cx('search-wrapper animation content', {'top-left': isSearchFocused});
+    this.state.firstAccess = false;
 
     return (
       <div className='main-page content'>
-        <Wrapper visible={!this.props.showError || !this.state.firstAccess}>
-          <Logo topLeft={isSearchFocused}/>
-        </Wrapper>
-        <Wrapper visible={!!this.props.showError && this.state.firstAccess}>
-          <PageNotFound />
-        </Wrapper>
+        {this.renderTopPage(showPageNotFound, isSearchFocused)}
         <div className={classNames}>
           <SearchBar />
         </div>

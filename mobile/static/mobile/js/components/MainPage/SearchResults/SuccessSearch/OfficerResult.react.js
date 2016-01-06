@@ -17,6 +17,7 @@ var OfficerNameResult = React.createClass({
   renderOfficerCard: function (suggestion) {
     var presenter = SuggestionPresenter(suggestion);
     var displayName = (<HighlightText fullText={presenter.text} textToFind={this.props.term}></HighlightText>);
+    var badgeClassName = cx('badge-value', {'highlight': this.props.term == presenter.meta.badge});
 
     return (
       <li className='officer-name-results'>
@@ -24,9 +25,7 @@ var OfficerNameResult = React.createClass({
           <div className='officer-header pad'>
             <span className='officer-label'> Officer<span className='dot-bullet'>&#8226;</span></span>
             <span className='badge-title'>&nbsp; Badge&nbsp;</span>
-            <span className='badge-value'>
-              <HighlightText fullText={presenter.meta.badge} textToFind={this.props.term}></HighlightText>
-            </span>
+            <span className={badgeClassName}>{presenter.meta.badge}</span>
             <span className='complaint-count'>{presenter.meta.allegationsCount} complaints</span>
           </div>
           <OfficerCard officerId={presenter.resourceKey} allegationsCount={presenter.meta.allegationsCount}
