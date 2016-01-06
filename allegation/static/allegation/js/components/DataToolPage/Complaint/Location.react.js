@@ -6,7 +6,7 @@ var Location = React.createClass({
 
   renderMap: function () {
     var allegation = this.props.complaint.allegation;
-    var imgSrc = '';
+    var mapImage = '';
 
     if (allegation.point.lat) {
       var lat = allegation.point.lat;
@@ -25,7 +25,6 @@ var Location = React.createClass({
 
       mapImage += locationImage + '?access_token=' + AppConstants.MAP_TOKEN;
     }
-
 
     return (
       <div className='complaint-map'>
