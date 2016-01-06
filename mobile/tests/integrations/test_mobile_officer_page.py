@@ -1,6 +1,7 @@
 import datetime
 
-from allegation.factories import OfficerFactory, AllegationFactory
+from allegation.factories import (
+    OfficerFactory, AllegationFactory, OfficerAllegationFactory)
 from common.tests.core import BaseLivePhoneTestCase
 
 
@@ -9,7 +10,8 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
         self.visit('/mobile/officer/{slug}/{pk}'.format(slug=slug, pk=pk))
 
     def show_officer_tab(self, tab_name):
-        self.browser.find_elements_by_xpath("//*[contains(text(), '%s')]" % tab_name)[0].click()
+        self.browser.find_elements_by_xpath(
+            "//*[contains(text(), '%s')]" % tab_name)[0].click()
 
     def test_all_good_data(self):
         officer_rank = 'PO'
@@ -34,16 +36,22 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
         other_officer_description = 'Female (Native American)'
         related_display = 'Co-accused in 1 case'
 
-        officer = OfficerFactory(rank=officer_rank, unit=officer_unit, race=officer_race,
-                                 appt_date=officer_appt_date, gender=officer_gender, star=officer_star)
+        officer = OfficerFactory(
+            rank=officer_rank, unit=officer_unit, race=officer_race,
+            appt_date=officer_appt_date, gender=officer_gender,
+            star=officer_star)
 
-        other_officer = OfficerFactory(gender=other_officer_gender, race=other_officer_race)
+        other_officer = OfficerFactory(
+            gender=other_officer_gender, race=other_officer_race)
 
-        allegation = AllegationFactory(officer=officer, final_finding=allegation_final_finding,
-                                       incident_date=allegation_incident_date)
+        allegation = AllegationFactory(incident_date=allegation_incident_date)
+        officer_allegation = OfficerAllegationFactory(
+            allegation=allegation, officer=officer,
+            final_finding=allegation_final_finding)
 
-        AllegationFactory(officer=other_officer, final_finding=allegation_final_finding,
-                          incident_date=allegation_incident_date, crid=allegation.crid, cat=allegation.cat)
+        OfficerAllegationFactory(
+            officer=other_officer, final_finding=allegation_final_finding,
+            cat=officer_allegation.cat, allegation=allegation)
 
         self.go_to_officer_page(slug=officer.officer_first, pk=officer.pk)
 
@@ -59,9 +67,12 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
         self.show_officer_tab('Complaints')
 
         self.find('.crid-number').text.should.equal(str(allegation.crid))
-        self.find('.final-finding').text.should.equal(allegation_final_finding_display)
-        self.find('.complaint-category .category').text.should.equal(allegation.cat.category)
-        self.find('.complaint-category .sub-category').text.should.equal(allegation.cat.allegation_name)
+        self.find('.final-finding').text.should.equal(
+            allegation_final_finding_display)
+        self.find('.complaint-category .category').text.should.equal(
+            officer_allegation.cat.category)
+        self.find('.complaint-category .sub-category').text.should.equal(
+            officer_allegation.cat.allegation_name)
 
         self.should_see_text(allegation_incident_date_display)
         allegation_officers_display = officer.display_name + ' and 1 other'
@@ -79,14 +90,15 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
     def test_bad_officer_pk(self):
         bad_officer_pk = 1234
         officer_slug = 'xxxx'
-        not_match_text = 'The id %s is not recorded in out database.' % bad_officer_pk
+        not_match_text = \
+            'The id %s is not recorded in out database.' % bad_officer_pk
         self.go_to_officer_page(slug=officer_slug, pk=bad_officer_pk)
 
-        self.should_see_text(not_match_text)
+        self.until(lambda: self.should_see_text(not_match_text))
 
     def test_no_related_officer(self):
         officer = OfficerFactory()
-        AllegationFactory(officer=officer)
+        OfficerAllegationFactory(officer=officer)
         self.go_to_officer_page(slug=officer.officer_first, pk=officer.pk)
         self.show_officer_tab('Relative Officers')
         self.until(lambda: self.find('.no-related-officer'))
@@ -96,7 +108,7 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
     def test_less_officer_information(self):
         officer = OfficerFactory(gender='', rank=None, appt_date=None,
                                  unit='', race=None, star=None)
-        AllegationFactory(officer=officer)
+        OfficerAllegationFactory(officer=officer)
         officer_gender_display = 'Gender unknown'
         officer_star_display = 'Badge  Unknown'
         officer_rank_display = 'Rank N/A'

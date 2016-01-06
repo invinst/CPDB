@@ -1,12 +1,12 @@
 from django.utils import timezone
-from django.conf import settings
-from django.core.urlresolvers import reverse
 from django.db import models
 from django.template.defaultfilters import slugify
 from django_extensions.db.fields.json import JSONField
 
 from common.models import Officer, AllegationCategory, Investigator, Area
-from common.models import GENDER_DICT, OUTCOME_TEXT_DICT, FINAL_FINDING_TEXT_DICT, FINDINGS_DICT, OUTCOMES_DICT, CUSTOM_FILTER_DICT, HAS_FILTERS_DICT
+from common.models import (
+    GENDER_DICT, FINDINGS_DICT, OUTCOMES_DICT, CUSTOM_FILTER_DICT,
+    HAS_FILTERS_DICT)
 from common.utils.hashid import hash_obj
 from search.models import SuggestionLog, FilterLog
 from search.services import REPEATER_DESC
@@ -15,7 +15,7 @@ from search.services import REPEATER_DESC
 KEYS = {
     'officer': Officer,
     'cat': AllegationCategory,
-    'investigator': Investigator
+    'allegation__investigator': Investigator
 }
 
 OTHER_KEYS = {
@@ -90,7 +90,7 @@ class Session(models.Model):
 
     @staticmethod
     def get_filter_values(key, values):
-        if key == 'areas__id':
+        if key == 'allegation__areas__id':
             ret = []
             for pk in values['value']:
                 area = Area.objects.get(pk=pk)

@@ -7,10 +7,10 @@ class RelatedOfficerService(object):
         sql = '''
           SELECT *
           FROM (
-            SELECT officer_id, count(DISTINCT crid) AS num_allegations
-            FROM common_allegation WHERE crid IN (
-              SELECT DISTINCT crid
-              FROM common_allegation
+            SELECT officer_id, count(DISTINCT allegation_id) AS num_allegations
+            FROM common_officerallegation WHERE allegation_id IN (
+              SELECT DISTINCT allegation_id
+              FROM common_officerallegation
               WHERE officer_id=%(officer_id)s
             ) AND officer_id!=%(officer_id)s
             GROUP BY officer_id
@@ -28,9 +28,9 @@ class RelatedOfficerService(object):
           FROM (
             SELECT officer_id, count(DISTINCT crid) AS num_allegations
             FROM common_policewitness
-            WHERE crid IN (
-              SELECT crid
-              FROM common_allegation
+            WHERE allegation_id IN (
+              SELECT allegation_id
+              FROM common_officerallegation
               WHERE officer_id=%(officer_id)s
             )
           GROUP BY officer_id

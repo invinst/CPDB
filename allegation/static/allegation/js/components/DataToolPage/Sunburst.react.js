@@ -2,6 +2,7 @@ var _ = require('lodash');
 var jQuery = require('jquery');
 var numeral = require('numeral');
 var React = require('react');
+var ReactDOM = require('react-dom');
 
 var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
 var Base = require('components/Base.react');
@@ -115,7 +116,7 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
 
   // embedding
   getEmbedCode: function () {
-    var node = this.getDOMNode();
+    var node = ReactDOM.findDOMNode(this);
     var width = jQuery(node).width();
     var height = jQuery(node).height();
     var src = "/embed/?page=sunburst&query=" + encodeURIComponent(FilterStore.getQueryString());

@@ -1,13 +1,14 @@
 import json
 from django.core import management
 
-from allegation.tests.views.base import AllegationApiTestBase
-from allegation.factories import AllegationFactory, OfficerFactory
-from common.models import *
+from allegation.tests.views.base import OfficerAllegationApiTestBase
+from allegation.factories import (
+    AllegationFactory, OfficerFactory, OfficerAllegationFactory)
 
-class AllegationOfficerApiTestCase(AllegationApiTestBase):
+
+class OfficerAllegationOfficerApiTestCase(OfficerAllegationApiTestBase):
     def test_response_format(self):
-        response = self.client.get("/api/allegations/officers/")
+        response = self.client.get("/api/officer-allegations/officers/")
 
         response.status_code.should.equal(200)
         data = json.loads(response.content.decode())
@@ -21,24 +22,28 @@ class AllegationOfficerApiTestCase(AllegationApiTestBase):
     def test_query_for_repeaters(self):
         normal = OfficerFactory()
         repeater = OfficerFactory()
-        AllegationFactory(officer=normal)
-        AllegationFactory.create_batch(10, officer=repeater)
+        OfficerAllegationFactory(officer=normal)
+        OfficerAllegationFactory.create_batch(10, officer=repeater)
 
         management.call_command('calculate_allegations_count')
 
-        response = self.client.get("/api/allegations/officers/?officer__allegations_count__gt=9")
+        response = self.client.get(
+            '/api/officer-allegations/officers/?officer__allegations_count__gt=9')
         data = json.loads(response.content.decode())
-        any([officer['id'] == repeater.id for officer in data['officers']]).should.be.true
+        any([officer['id'] == repeater.id for officer in data['officers']])\
+            .should.be.true
 
     def test_query_for_discipline_count(self):
         officer_1 = OfficerFactory()
         officer_2 = OfficerFactory()
-        AllegationFactory(officer=officer_1)
-        AllegationFactory.create_batch(10, officer=officer_2, final_outcome_class='disciplined')
+        OfficerAllegationFactory(officer=officer_1)
+        OfficerAllegationFactory.create_batch(
+            10, officer=officer_2, final_outcome_class='disciplined')
 
         management.call_command('calculate_allegations_count')
 
-        response = self.client.get("/api/allegations/officers/?officer__discipline_count__gt=9")
+        response = self.client.get(
+            '/api/officer-allegations/officers/?officer__discipline_count__gt=9')
         data = json.loads(response.content.decode())
         returned_officer = data['officers'][0]
         officer_2.id.should.equal(returned_officer['id'])
@@ -50,11 +55,14 @@ class AllegationOfficerApiTestCase(AllegationApiTestBase):
         diff_final_finding_filter = 'NS'
 
         officer = OfficerFactory()
-        AllegationFactory(officer=officer, final_finding=final_finding_filter)
-        AllegationFactory(officer=officer, final_finding=diff_final_finding_filter)
+        OfficerAllegationFactory(
+            officer=officer, final_finding=final_finding_filter)
+        OfficerAllegationFactory(
+            officer=officer, final_finding=diff_final_finding_filter)
 
-        response = self.client.get("/api/allegations/officers/?final_finding={final_finding_filter}".format(
-                final_finding_filter=final_finding_filter))
+        response = self.client.get(
+            '/api/officer-allegations/officers/?final_finding={final_finding_filter}'
+            .format(final_finding_filter=final_finding_filter))
         data = json.loads(response.content.decode())
         len(data['officers']).should.equal(1)
         data['officers'][0]['filtered_allegations_count'].should.equal(1)

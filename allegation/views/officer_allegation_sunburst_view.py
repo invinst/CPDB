@@ -1,14 +1,16 @@
 from django.db.models.query_utils import Q
 
-from allegation.views.allegation_api_view import AllegationAPIView
+from allegation.views.officer_allegation_api_view import (
+    OfficerAllegationAPIView)
 from common.models import DISCIPLINE_CODES
 from document.response import JsonResponse
 
 
-class AllegationSunburstView(AllegationAPIView):
+class OfficerAllegationSunburstView(OfficerAllegationAPIView):
     def get(self, request):
-        allegations = self.get_allegations(ignore_filters=['final_outcome', 'final_finding'])
-        output = self.fetch_output(self.levels, allegations)
+        officer_allegations = self.get_officer_allegations(
+            ignore_filters=['final_outcome', 'final_finding'])
+        output = self.fetch_output(self.levels, officer_allegations)
 
         return JsonResponse({
             'sunburst': {
@@ -28,6 +30,7 @@ class AllegationSunburstView(AllegationAPIView):
             }
             if obj['size'] and 'children' in level:
                 del obj['size']
+                # TODO: recursive call is slow, replace with something more efficient
                 obj['children'] = self.fetch_output(level['children'], results)
             output.append(obj)
 
@@ -115,7 +118,9 @@ class AllegationSunburstView(AllegationAPIView):
         },
         'children': [{
             'name': 'Disciplined',
-            'condition': Q(final_outcome__in=DISCIPLINE_CODES) or Q(final_outcome__isnull=True),
+            'condition':
+                Q(final_outcome__in=DISCIPLINE_CODES) or
+                Q(final_outcome__isnull=True),
             'tagValue': {
                 'label': 'Any Disciplined',
                 'category': 'outcome_text',
@@ -131,7 +136,9 @@ class AllegationSunburstView(AllegationAPIView):
                     'removeParent': True
                 },
             }, {
-                'condition': Q(final_outcome__in=[str(x).zfill(3) for x in range(1, 10)]),  # 001 to 009
+                # 001 to 009
+                'condition': Q(
+                    final_outcome__in=[str(x).zfill(3) for x in range(1, 10)]),
                 'name': '1-9 days',
                 'tagValue': {
                     'label': '1-9 days',
@@ -140,7 +147,9 @@ class AllegationSunburstView(AllegationAPIView):
                     'removeParent': True
                 }
             }, {
-                'condition': Q(final_outcome__in=[str(x).zfill(3) for x in range(10, 31)]),  # 010 to 030
+                # 010 to 030
+                'condition': Q(final_outcome__in=[
+                    str(x).zfill(3) for x in range(10, 31)]),
                 'name': '10-30 days',
                 'tagValue': {
                     'label': '10-30 days',
@@ -149,7 +158,8 @@ class AllegationSunburstView(AllegationAPIView):
                     'removeParent': True
                 }
             }, {
-                'condition': Q(final_outcome__in=['045', '060', '090', '120', '180', '200']),
+                'condition': Q(final_outcome__in=[
+                    '045', '060', '090', '120', '180', '200']),
                 'name': '30+ days',
                 'tagValue': {
                     'label': '30+ days',

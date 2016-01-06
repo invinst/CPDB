@@ -76,7 +76,7 @@ var ComplaintSectionStore = _.assign(Base(_state), {
 AppDispatcher.register(function(action) {
   switch (action.actionType) {
     case AppConstants.OFFICER_COMPLAINT_LIST_RECEIVED_DATA:
-      _state['complaints'] = _state['rawComplaints'] = action.data.allegations;
+      _state['complaints'] = _state['rawComplaints'] = action.data.officer_allegations;
       _state['analytics'] = action.data.analytics;
       _state['activeFilter'] = 'all';
       ComplaintSectionStore.emitChange();
