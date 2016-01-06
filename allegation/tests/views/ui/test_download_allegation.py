@@ -3,7 +3,8 @@ from unittest import mock
 
 import requests
 
-from allegation.factories import AllegationFactory, PoliceWitnessFactory, ComplainingWitnessFactory
+from allegation.factories import AllegationFactory, PoliceWitnessFactory,\
+    ComplainingWitnessFactory, OfficerAllegationFactory
 from common.tests.core import BaseLiveTestCase
 
 
@@ -11,6 +12,7 @@ class DownloadAllegationTestCase(BaseLiveTestCase):
     def setUp(self):
         super(DownloadAllegationTestCase, self).setUp()
         allegation = AllegationFactory()
+        OfficerAllegationFactory(allegation=allegation)
         PoliceWitnessFactory(crid=allegation.crid)
         ComplainingWitnessFactory(crid=allegation.crid)
 

@@ -25,9 +25,11 @@ def suggest_crid(query):
 
 
 def suggest_officer_name(query):
-    officers = Officer.objects.filter(OfficerQuery.condition_by_name(query)). \
-                   order_by('-allegations_count')[:ALLEGATION_LIMIT]
-    suggestions = [officer.as_suggestion_entry(suggestion_type='officer_name') for officer in officers]
+    officers = Officer.objects.filter(OfficerQuery.condition_by_name(query))\
+        .order_by('-allegations_count')[:ALLEGATION_LIMIT]
+    suggestions = [
+        officer.as_suggestion_entry(suggestion_type='officer_name')
+        for officer in officers]
     return suggestions
 
 

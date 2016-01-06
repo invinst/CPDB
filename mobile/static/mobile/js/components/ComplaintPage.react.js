@@ -22,7 +22,7 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
       'complaint': {
         'complaining_witness': [],
         'officers': [],
-        'allegation': null
+        'officer_allegation': null
       },
       loading: true
     };
@@ -39,7 +39,7 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
     var found = this.state.found;
     var loading = this.state.loading;
     var complaint = this.state.complaint;
-    var info = complaint['allegation'];
+    var info = complaint['officer_allegation'];
     var complainingWitness = complaint['complaining_witnesses'];
     var involvedOfficers = complaint['officers'];
 

@@ -6,7 +6,8 @@ from api.models import Setting
 
 
 def send_document_notification(allegation, document):
-    send_document_notification_by_crid_and_link(allegation.crid, document.published_url)
+    send_document_notification_by_crid_and_link(
+        allegation.crid, document.published_url)
 
 
 @app.task
@@ -20,7 +21,8 @@ def send_document_notification_by_crid_and_link(crid, link):
 
     setting = Setting.objects.all().first()
     subject = setting.requested_document_email_subject.format(crid=crid)
-    message = setting.requested_document_email_text.format(crid=crid, link=link)
+    message = setting.requested_document_email_text\
+        .format(crid=crid, link=link)
     from_email = None
 
     send_mail(
