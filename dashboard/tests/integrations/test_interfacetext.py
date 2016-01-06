@@ -7,12 +7,9 @@ class InterfaceTextEditTestCase(BaseAdminTestCase):
     def setUp(self):
         super(InterfaceTextEditTestCase, self).setUp()
 
-
-        self.go_to_section('Interface Texts')
-
-
     def test_update_interface_text(self):
-        # Default Site Title
+        self.go_to_section('Interface Texts')
+        self.until(self.ajax_complete)
         self.until(lambda: self.find(".fa-pencil"))
         self.find(".fa-pencil").click()
 
