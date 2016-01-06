@@ -4,10 +4,10 @@ var React = require('react');
 
 var ProjectSummary = React.createClass({
   render: function () {
-    var classNames = cx('animation', 'pad', {'top-left': this.props.topLeft});
+    var classNames = cx('project-summary', 'animation', 'pad', {'top-left': this.props.topLeft});
 
     return (
-      <div id='logo' className={classNames}>
+      <div className={classNames}>
         <div className='cpdb-logo'>
           CPDP
         </div>
@@ -25,4 +25,4 @@ var ProjectSummary = React.createClass({
   }
 });
 
-module.exports = Logo;
+module.exports = ProjectSummary;
