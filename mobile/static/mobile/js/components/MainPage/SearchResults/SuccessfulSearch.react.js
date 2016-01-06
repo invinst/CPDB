@@ -1,7 +1,7 @@
 var React = require('react');
 
-var OfficerResult = require('components/MainPage/SearchResults/SuccessSearch/OfficerResult.react');
-var ComplaintResult = require('components/MainPage/SearchResults/SuccessSearch/ComplaintResult.react');
+var OfficerResult = require('components/MainPage/SearchResults/SuccessfulSearch/OfficerResult.react');
+var ComplaintResult = require('components/MainPage/SearchResults/SuccessfulSearch/ComplaintResult.react');
 
 var SuggestionPresenter = require('presenters/SuggestionPresenter');
 var DataTypeUtil = require('utils/DataTypeUtil');
