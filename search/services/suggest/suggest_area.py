@@ -12,4 +12,4 @@ class SuggestArea(SuggestBase):
         results = sqs.filter(area_name=term).values_list('area_name','area_id','area_type')[:20]
         results = sorted(results, key=lambda x: AREA_SORT_ORDERS.get(x[2], 4))
 
-        return { 'areas__id': results }
+        return { 'allegation__areas__id': results }

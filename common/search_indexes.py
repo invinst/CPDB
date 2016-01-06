@@ -32,7 +32,6 @@ class OfficerIndex(SuggestionBaseIndex, indexes.Indexable):
 class AllegationIndex(SuggestionBaseIndex, indexes.Indexable):
     DEFAULT_MODEL = Allegation
 
-    allegation_city = CustomNgramField(model_attr='city', null=True)
     allegation_crid = CustomNgramField(model_attr='crid')
 
     allegation_crid_sort = indexes.CharField(model_attr='crid')
