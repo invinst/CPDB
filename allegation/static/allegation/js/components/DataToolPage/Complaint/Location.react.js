@@ -17,19 +17,12 @@ var Location = React.createClass({
       var marker = 'url-' + encodeURIComponent(AppConstants.MAP_MARKER_ICON_URL);
 
       if (allegation.add1 && allegation.add2) {
-
-        marker = 'pin-l-cross+482';
-
-        mapImage = (
-          'http://api.tiles.mapbox.com/v4/mapbox.streets/pin-l-cross+482(' +
-          lng + ',' + lat + ')/' + centerLng + ',' + lat + ',13/' + this.getSize() +
-          '.png?access_token=' + AppConstants.MAP_TOKEN
-        );
-
+        mapImage = 'http://api.tiles.mapbox.com/v4/mapbox.streets/pin-l-cross+482';
       }
       else if (this.props.complaint.beat_name) {
         mapImage = 'http://api.tiles.mapbox.com/v4/mapbox.streets/url-' + encodeURIComponent(AppConstants.MAP_MARKER_ICON_URL);
       }
+
       mapImage += locationImage + '?access_token=' + AppConstants.MAP_TOKEN;
     }
 
