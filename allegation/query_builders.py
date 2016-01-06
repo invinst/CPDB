@@ -9,8 +9,10 @@ from common.models import OUTCOMES, ComplainingWitness, Allegation
 from allegation.utils.query import OfficerQuery
 
 
-NO_DISCIPLINE_CODES = ('600', '000', '500', '700', '800', '900', '', None)
-DISCIPLINE_CODES = [x[0] for x in OUTCOMES if x[0] not in NO_DISCIPLINE_CODES]
+NO_DISCIPLINE_CODES = ('600', '000', '500', '700', '800', '900', '')
+DISCIPLINE_CODES = [
+    x[0] for x in OUTCOMES
+    if x[0] not in NO_DISCIPLINE_CODES and x[0] is not None]
 
 
 class OfficerAllegationQueryBuilder(object):
@@ -164,12 +166,13 @@ class OfficerAllegationQueryBuilder(object):
 
     def _q_outcome_any_discipline(self, query_params):
         if 'any discipline' in query_params.getlist('outcome_text', []):
-            return Q(final_finding='SU', final_outcome=DISCIPLINE_CODES)
+            return Q(final_finding='SU', final_outcome__in=DISCIPLINE_CODES)
         return Q()
 
     def _q_outcome_no_discipline(self, query_params):
         if 'no discipline' in query_params.getlist('outcome_text', []):
-            return Q(final_finding='SU', final_outcome=NO_DISCIPLINE_CODES)
+            return Q(final_finding='SU', final_outcome__in=NO_DISCIPLINE_CODES) | \
+                Q(final_finding='SU', final_outcome__isnull=True)
         return Q()
 
     def _q_outcome_1_9_days(self, query_params):
@@ -185,7 +188,7 @@ class OfficerAllegationQueryBuilder(object):
 
     def _q_outcome_30_more_days(self, query_params):
         if '30 more days' in query_params.getlist('outcome_text', []):
-            return Q(final_outcome=["045", "060", "090", "180", "200"])
+            return Q(final_outcome__in=["045", "060", "090", "180", "200"])
         return Q()
 
     def _query_by_complainant(self, query_params, param_key, query_key):
@@ -221,8 +224,7 @@ class OfficerAllegationQueryBuilder(object):
                 query_params.getlist('incident_date_only__year_month'):
             year, month = year_month.split('-')
             allegation_queries |= Q(
-                Q(incident_date_only__year=year) &
-                Q(incident_date_only__month=month))
+                incident_date_only__year=year, incident_date_only__month=month)
 
         dates = [
             date.replace('/', '-')
