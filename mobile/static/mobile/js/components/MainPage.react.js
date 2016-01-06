@@ -1,4 +1,3 @@
-var cx = require('classnames');
 var objectAssign = require('object-assign');
 var React = require('react');
 
@@ -7,12 +6,12 @@ var Base = require('components/Base.react');
 var About = require('components/Shared/About.react');
 var MainPageStore = require('stores/MainPageStore');
 var ProjectSummary = require('components/MainPage/ProjectSummary.react');
-var SearchBar = require('components/MainPage/SearchBar.react');
 var SearchResults = require('components/MainPage/SearchResults.react');
 var LoadingPage = require('components/Shared/LoadingPage.react');
 var Wrapper = require('components/Shared/Wrapper.react');
 var PageNotFound = require('components/MainPage/PageNotFound.react');
 var HelperUtil = require('utils/HelperUtil');
+var SearchComponent = require('components/MainPage/SearchComponent.react');
 
 
 var MainPage = React.createClass(objectAssign(Base(MainPageStore), {
@@ -20,8 +19,7 @@ var MainPage = React.createClass(objectAssign(Base(MainPageStore), {
     return {
       'isSearchFocused': 0,
       'isSearching': 0,
-      'term': '',
-      'firstAccess': 1
+      'term': ''
     }
   },
 
@@ -37,32 +35,15 @@ var MainPage = React.createClass(objectAssign(Base(MainPageStore), {
     );
   },
 
-  renderTopPage: function (showPageNotFound, isSearchFocused) {
-    if (showPageNotFound) {
-      return (
-        <PageNotFound topLeft={isSearchFocused}/>
-      );
-    }
-    return (
-      <ProjectSummary topLeft={isSearchFocused}/>
-    );
-  },
-
   render: function () {
     var term = HelperUtil.fetch(this, 'props.params.query', '');
     var isSearchFocused = this.state.isSearchFocused;
-    var showPageNotFound = !!this.props.showError && this.state.firstAccess;
-    var classNames = cx('search-wrapper animation content', {'top-left': isSearchFocused});
-    this.state.firstAccess = false;
 
     return (
       <div className='main-page content'>
-        {this.renderTopPage(showPageNotFound, isSearchFocused)}
-        <div className={classNames}>
-          <SearchBar />
-        </div>
-        <About topLeft={isSearchFocused}/>
+        <SearchComponent topLeft={this.props.topLeft | isSearchFocused} />
         {this.renderSearchResults(term)}
+        <About topLeft={isSearchFocused}/>
       </div>
     )
   }
