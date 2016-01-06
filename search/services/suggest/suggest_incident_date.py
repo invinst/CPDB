@@ -35,7 +35,7 @@ class SuggestIncidentDateOnly(SuggestBase):
             days = ["%02d" % x for x in range(1, 32)]
             results = ["%s/%s/%s" % (year, month, x) for x in days if x.startswith(day)]
 
-        return { 'incident_date_only': results }
+            return { 'incident_date_only': results }
 
 
 class SuggestIncidentDateOnlyYear(SuggestBase):

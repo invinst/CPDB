@@ -13,6 +13,9 @@ class SuggestionBaseIndex(indexes.SearchIndex):
     def get_model(self):
         return self.DEFAULT_MODEL
 
+    def get_updated_field(self):
+        return 'modified_at'
+
     class Meta:
         abstract = True
 
@@ -74,4 +77,7 @@ class SessionAliasIndex(SuggestionBaseIndex, indexes.Indexable):
     sessionalias_alias = CustomNgramField(model_attr='alias')
 
     sessionalias_title = indexes.CharField(model_attr='title')
-    sessionalias_session_id = indexes.IntegerField(model_attr='session')
+    sessionalias_session_id = indexes.IntegerField()
+
+    def prepare_sessionalias_session_id(self, obj):
+        return obj.session.id

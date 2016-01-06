@@ -4,7 +4,7 @@ from haystack.query import SearchQuerySet
 
 from search.services.suggest.suggest_incident_date import SuggestIncidentDateOnlyYearMonth, SuggestIncidentDateOnly, SuggestIncidentDateOnlyYear
 from search.services.suggest.suggest_allegation import SuggestAllegationCity, SuggestAllegationCrid
-from search.services.suggest.suggest_allegation_category import SuggestAllegationCategoryCategory, SuggestAllegationCategoryCatId, SuggestAllegationCategoryNameId
+from search.services.suggest.suggest_allegation_category import SuggestAllegationCategoryCategory, SuggestAllegationCategoryCat
 from search.services.suggest.suggest_area import SuggestArea
 from search.services.suggest.suggest_has import SuggestHas
 from search.services.suggest.suggest_investigator import SuggestInvestigator
@@ -22,9 +22,8 @@ class SuggestionService(object):
             SuggestIncidentDateOnlyYear,
             SuggestAllegationCity,
             SuggestAllegationCrid,
-            SuggestAllegationCategoryCatId,
+            SuggestAllegationCategoryCat,
             SuggestAllegationCategoryCategory,
-            SuggestAllegationCategoryNameId,
             SuggestArea,
             SuggestHas,
             SuggestInvestigator,

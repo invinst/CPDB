@@ -10,4 +10,4 @@ class SuggestInvestigator(SuggestBase):
         raw_results = sqs.filter(investigator_name=term).order_by('-investigator_complaint_count')[:5]
         results = [("%s (%s)" % (x.investigator_name, x.investigator_complaint_count), x.investigator_id) for x in raw_results]
 
-        return { 'investigator': results }
+        return { 'allegation__investigator': results }

@@ -1,5 +1,7 @@
+from django.db.models import Q
 from haystack.query import SearchQuerySet
 
+from common.models import Allegation
 from search.services.suggest import SuggestBase
 from search.utils.zip_code import get_zipcode_from_city
 
@@ -11,10 +13,12 @@ class SuggestAllegationCity(SuggestBase):
 
     @classmethod
     def _query(cls, term):
-        sqs = SearchQuerySet()
-        raw_results = sqs.filter(allegation_city=term).values_list('allegation_city', flat=True)
-        distinct_results = list(set(raw_results))
-        results = [(get_zipcode_from_city(x), x) for x in distinct_results][:5]
+        raw_results = cls._query_database(
+            model_cls = Allegation,
+            condition = Q(city__icontains=term),
+            fields_to_get = ('city',)
+        )
+        results = [[get_zipcode_from_city(x), x] for x in raw_results]
 
         return { 'city': results }
 
@@ -29,4 +33,4 @@ class SuggestAllegationCrid(SuggestBase):
         sqs = SearchQuerySet()
         results = sqs.filter(allegation_crid=term).order_by('allegation_crid_sort').values_list('allegation_crid', flat=True)[:5]
 
-        return { 'crid': results }
+        return { 'allegation__crid': results }

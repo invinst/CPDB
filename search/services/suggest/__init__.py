@@ -31,3 +31,11 @@ class SuggestBase(object):
 
         return results
 
+    @classmethod
+    def _query_database(cls, model_cls, condition, fields_to_get, limit=5, order_bys=None):
+        flat = True if len(fields_to_get) == 1 else False
+        queryset = model_cls.objects.filter(condition).values_list(*fields_to_get, flat=flat)
+        if order_bys:
+            queryset = queryset.order_by(*order_bys)
+        queryset = queryset.distinct()[:limit]
+        return list(queryset)

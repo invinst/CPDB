@@ -1,4 +1,6 @@
 machine:
+  services:
+    - elasticsearch
   node:
     version: 4.1.0
   python:
@@ -6,8 +8,8 @@ machine:
   environment:
     DJANGO_SETTINGS_MODULE: cpdb.settings.test.circleci
     NODE_ENV: development
-  post:
-    - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get install gcc-4.9 g++-4.9
+  # post:
+  #   - sudo add-apt-repository -y ppa:ubuntu-toolchain-r/test && sudo apt-get update && sudo apt-get install gcc-4.9 g++-4.9
 database:
   post:
     - psql -c "CREATE EXTENSION postgis;" -d circle_test
@@ -27,12 +29,12 @@ dependencies:
   cache_directories:
     - "bower_components"
 test:
-  pre:
-    - python manage.py collectstatic --noinput
+  # pre:
+  #   - python manage.py collectstatic --noinput
   override:
-    - coverage run --parallel-mode manage.py test  --noinput --nologcapture --with-timer -s
-    - npm test
-  post:
-    - coverage combine
-    - coveralls
-    - coverage report --omit="/home/ubuntu/virtualenvs/*,common/json_serializer.py"
+    - coverage run --parallel-mode manage.py test  --noinput --nologcapture --with-timer -s search.tests.services.suggest
+  #   - npm test
+  # post:
+  #   - coverage combine
+  #   - coveralls
+  #   - coverage report --omit="/home/ubuntu/virtualenvs/*,common/json_serializer.py"
