@@ -24,7 +24,7 @@ var OfficerNameResult = React.createClass({
         <div className='link officer officer-name-result-item' onClick={this._onClick.bind(this, presenter)}>
           <div className='officer-header pad'>
             <span className='officer-label'> Officer<span className='dot-bullet'>&#8226;</span></span>
-            <span className='badge-title'>&nbsp; Badge&nbsp;</span>
+            <span className='badge-title'>Badge</span>
             <span className={badgeClassName}>{presenter.meta.badge}</span>
             <span className='complaint-count'>{presenter.meta.allegationsCount} complaints</span>
           </div>

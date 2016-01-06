@@ -19,7 +19,6 @@ var SearchBar = React.createClass(objectAssign(Base(SearchBarStore), {
   },
 
   _onInputChange: function (event) {
-    // FIXME: term in Store is not updated?
     var term = event.currentTarget.value;
     SearchBarActions.changed(term);
     SuggestionAPI.get(term);
@@ -42,8 +41,6 @@ var SearchBar = React.createClass(objectAssign(Base(SearchBarStore), {
   componentDidMount: function () {
     var term = this.props.term || '';
     if (term) {
-      // call the api
-      // TODO: Refactor this
       SuggestionAPI.get(term);
     }
     SearchBarStore.addChangeListener(this._onChange)

@@ -2,7 +2,7 @@ var cx = require('classnames');
 var React = require('react');
 
 
-var Logo = React.createClass({
+var ProjectSummary = React.createClass({
   render: function () {
     var classNames = cx('animation', 'pad', {'top-left': this.props.topLeft});
 
