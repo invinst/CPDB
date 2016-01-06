@@ -18,11 +18,13 @@ AppDispatcher.register(function (action) {
     case AppConstants.MAIN_PAGE_RECEIVED_DATA:
       SearchResultsStore.updateState('suggestions', action.data);
       SearchResultsStore.updateState('success', true);
+      SearchResultsStore.updateState('term', action.query);
       SearchResultsStore.emitChange();
       break;
 
     case AppConstants.MAIN_PAGE_FAILED_TO_RECEIVED_DATA:
       SearchResultsStore.updateState('success', false);
+      SearchResultsStore.updateState('term', action.query);
       SearchResultsStore.emitChange();
       break;
 

@@ -11,9 +11,11 @@ var MainPageServerActions = {
     });
   },
 
-  failedToReceive: function () {
+  failedToReceive: function (query) {
     AppDispatcher.dispatch({
-      actionType: AppConstants.MAIN_PAGE_FAILED_TO_RECEIVED_DATA
+      actionType: AppConstants.MAIN_PAGE_FAILED_TO_RECEIVED_DATA,
+      data: [],
+      query: query
     });
   }
 };

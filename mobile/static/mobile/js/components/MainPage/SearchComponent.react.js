@@ -12,12 +12,11 @@ var Wrapper = require('components/Shared/Wrapper.react');
 
 
 var SearchComponent = React.createClass(objectAssign(Base(SearchResultsStore), {
-
-
   render: function () {
     var topLeft = this.props.topLeft;
     var classNames = cx('search-wrapper animation content', {'top-left': topLeft});
     var projectSummaryClassNames = cx('search-component', {'top-left': topLeft});
+
     return (
       <div className={projectSummaryClassNames}>
         <ProjectSummary topLeft={topLeft} />

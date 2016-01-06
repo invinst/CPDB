@@ -15,7 +15,7 @@ var SuggestionAPI = {
         if (res.ok) {
           MainPageServerActions.received(res.body, query)
         } else {
-          MainPageServerActions.failedToReceive()
+          MainPageServerActions.failedToReceive(query)
         }
       });
   }
