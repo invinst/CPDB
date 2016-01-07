@@ -6,8 +6,6 @@ from common.tests.core import BaseLivePhoneTestCase
 class MobileComplaintPageTestMixin(BaseLivePhoneTestCase):
     def go_to_allegation_detail_page(self, crid=''):
         self.visit('/mobile/complaint/{crid}'.format(crid=crid))
-        self.until_ajax_complete()
-
 
 class MobileComplaintPageTest(MobileComplaintPageTestMixin):
     def test_allegation_with_full_information(self):
