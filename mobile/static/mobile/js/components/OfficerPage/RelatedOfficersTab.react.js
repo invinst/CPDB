@@ -15,9 +15,12 @@ var RelatedOfficersTab = React.createClass({
 
   render: function () {
     var coAccused = this.props.coAccused;
-    var witness = this.props.witness;
 
-    var numberOfRelatedOfficers = coAccused.length + witness.length;
+    if (!coAccused) {
+      return (<div></div>);
+    }
+
+    var numberOfRelatedOfficers = coAccused.length;
 
     if (numberOfRelatedOfficers == 0) {
       return (
@@ -25,15 +28,12 @@ var RelatedOfficersTab = React.createClass({
           <NoRelatedOfficer />
         </div>
       )
-    };
+    }
 
     return (
       <div className='related-officers-tab'>
         <div className='co-accused-list'>
           {coAccused.map(this.renderRelatedOfficers('Co-accused'))}
-        </div>
-        <div className='witness-list'>
-          {witness.map(this.renderRelatedOfficers('Witness'))}
         </div>
       </div>
     );

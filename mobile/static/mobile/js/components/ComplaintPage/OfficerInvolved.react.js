@@ -7,16 +7,30 @@ var OfficerCard = require('components/Shared/OfficerCard.react');
 var OfficerPresenter = require('presenters/OfficerPresenter');
 var HelperUtil = require('utils/HelperUtil');
 var OfficerUtil = require('utils/OfficerUtil');
+var AppHistory = require('utils/History');
 
 
 var OfficerInvolved = React.createClass({
+
+  _onClick: function (officerPresenter) {
+    var officer_url = HelperUtil.format('/officer/{name}/{id}', {
+      'name': officerPresenter.displayName,
+      'id': officerPresenter.id
+    });
+    AppHistory.pushState(null, officer_url);
+  },
+
   renderOfficerRow: function (officer) {
     var officerPresenter = OfficerPresenter(officer);
     return (
-      <OfficerCard  officerId={officer.id} allegationsCount={officerPresenter.allegationsCount}
-                    displayName={officerPresenter.displayName}
-                    description={officerPresenter.description}
-      />
+      <div onClick={this._onClick.bind(this, officerPresenter)}>
+        <OfficerCard
+          officerId={officer.id}
+          allegationsCount={officerPresenter.allegationsCount}
+          displayName={officerPresenter.displayName}
+          description={officerPresenter.description}
+        />
+      </div>
     );
   },
 
@@ -36,7 +50,8 @@ var OfficerInvolved = React.createClass({
       <Wrapper wrapperClass='officer-involved' visible={numberOfInvolvedOfficers > 0}>
         <div className='row section-header'>
           <span className='pad'>
-            <span className='section-title bold'>{pluralize('Officer', numberOfInvolvedOfficers, false)} Involved&nbsp;</span>
+            <span className='section-title bold'>{pluralize('Officer', numberOfInvolvedOfficers, false)}
+              Involved&nbsp;</span>
             <span className='title-count normal-weight'>({numberOfInvolvedOfficers})</span>
           </span>
         </div>

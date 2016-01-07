@@ -17,6 +17,7 @@ module.exports = {
   //OfficerPage events
   OFFICER_PAGE_RECEIVED_DATA: c++,
   OFFICER_PAGE_FAILED_TO_RECEIVED_DATA: c++,
+  OFFICER_PAGE_RELOAD: c++,
 
   // MainPage events
   MAIN_PAGE_RECEIVED_DATA: c++,
