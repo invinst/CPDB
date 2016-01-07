@@ -37,9 +37,8 @@ class OfficerAllegationQueryBuilder(object):
         queries = Q()
 
         for name, func in inspect.getmembers(self, predicate=inspect.ismethod):
-            if name[:3] != '_q_':
-                continue
-            queries &= func(query_params)
+            if name[:3] == '_q_':
+                queries &= func(query_params)
 
         return queries
 
@@ -70,8 +69,6 @@ class OfficerAllegationQueryBuilder(object):
             'officer__rank',
             'officer__gender',
             'officer__race',
-            'officer__allegations_count__gt',
-            'officer__discipline_count__gt',
             'allegation__investigator',
             'cat__category',
             'allegation__city',
