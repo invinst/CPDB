@@ -1,5 +1,6 @@
 from allegation.factories import AllegationFactory, OfficerAllegationFactory
 from common.tests.core import BaseLiveTestCase
+from common.utils.haystack import rebuild_index
 
 
 class EmbedModeTestCase(BaseLiveTestCase):
@@ -52,6 +53,8 @@ class EmbedModeTestCase(BaseLiveTestCase):
             .format(officer_id=self.officer_allegation.officer_id))
 
     def test_can_not_change_filter_in_embed_mode(self):
+        rebuild_index()
+
         self.link('Exit mode').click()
 
         self.until(lambda: self.fill_in(

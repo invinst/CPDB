@@ -9,8 +9,8 @@ class SuggestRaceGender(SuggestBase):
         race_results = cls.suggest_in(term, RACES)
 
         return {
-            'complainant__gender': gender_results,
-            'complainant__race': race_results,
+            'complainant_gender': gender_results,
+            'complainant_race': race_results,
             'officer__gender': gender_results,
             'officer__race': race_results
         }

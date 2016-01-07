@@ -19,7 +19,7 @@ class SuggestIncidentDateOnlyYearMonth(SuggestBase):
                 if month[1].lower().startswith(term):
                     results = results + generate_month_year_entry_from_2010(month)
 
-        return { 'suggest_incident_year_month': results }
+        return { 'incident_date_only__year_month': results }
 
 
 class SuggestIncidentDateOnly(SuggestBase):

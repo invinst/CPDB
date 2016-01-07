@@ -35,12 +35,13 @@ class SuggestView(View):
         # key = 'search%s' % q
         # ret = cache.get(key)
         # if not ret:
-        #     if not q:
-        #         return HttpResponseBadRequest()
+        if not q:
+            return HttpResponseBadRequest()
 
         ret = SuggestionService().make_suggestion(q)
-            # if len(q) > 2:
-            #     self.track_suggestions_query(ret)
+
+        if len(q) > 2:
+            self.track_suggestions_query(ret)
 
         ret = self.to_jquery_ui_autocomplete_format(ret)
         ret = json.dumps(ret)

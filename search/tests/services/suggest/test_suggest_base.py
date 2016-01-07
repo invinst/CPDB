@@ -1,4 +1,4 @@
-from haystack.management.commands.rebuild_index import Command as RebuildIndexCommand
+from common.utils.haystack import rebuild_index
 
 from common.models import Allegation, AllegationCategory, Officer
 from common.tests.core import SimpleTestCase
@@ -10,10 +10,8 @@ class SuggestBaseTestCase(SimpleTestCase):
         Officer.objects.all().delete()
         Allegation.objects.all().delete()
 
-        self.cmd = RebuildIndexCommand()
-
     def rebuild_index(self):
-        self.cmd.handle(interactive=False)
+        rebuild_index()
 
     class Meta:
         abstract = True

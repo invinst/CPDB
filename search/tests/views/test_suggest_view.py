@@ -8,6 +8,7 @@ from common.tests.core import SimpleTestCase
 from search.factories import AliasFactory, SessionAliasFactory
 from search.models import SuggestionLog
 from search.models.alias import Alias
+from common.utils.haystack import rebuild_index
 
 
 fake = Faker()
@@ -33,6 +34,8 @@ class SuggestViewTestCase(SimpleTestCase):
     def test_detect_suggest_type_officer_name(self):
         OfficerFactory(officer_first='Jerry', officer_last="Dao")
 
+        rebuild_index()
+
         data = self.get_suggestion('je')
         data.should.contain('officer')
 
@@ -48,6 +51,8 @@ class SuggestViewTestCase(SimpleTestCase):
     def test_detect_suggest_type_officer_badge_number(self):
         OfficerFactory(star=123456)
 
+        rebuild_index()
+
         data = self.get_suggestion('12')
         data.should.contain('officer__star')
 
@@ -62,11 +67,15 @@ class SuggestViewTestCase(SimpleTestCase):
     def test_detect_suggest_type_complaint_category(self):
         AllegationCategoryFactory(allegation_name='Bonding category')
 
+        rebuild_index()
+
         data = self.get_suggestion('Bonding')
         data.should.contain('cat')
 
     def test_detect_suggest_type_main_complaint_category(self):
         AllegationCategoryFactory(category='Bonding category')
+
+        rebuild_index()
 
         data = self.get_suggestion('Bonding')
         data.should.contain('cat__category')
@@ -74,11 +83,15 @@ class SuggestViewTestCase(SimpleTestCase):
     def test_detect_suggest_type_investigator(self):
         AllegationFactory(investigator__name='Someone Name')
 
+        rebuild_index()
+
         data = self.get_suggestion('Some')
         data.should.contain('allegation__investigator')
 
     def test_detect_suggest_type_complaint_id_number(self):
         AllegationFactory(crid=123456)
+
+        rebuild_index()
 
         data = self.get_suggestion('1234')
         data.should.contain('allegation__crid')
@@ -161,6 +174,8 @@ class SuggestViewTestCase(SimpleTestCase):
         officer = OfficerFactory()
         alias = AliasFactory(target=str(officer))
 
+        rebuild_index()
+
         data = self.get_suggestion(alias.alias[0:2])
         data.should.contain('officer')
 
@@ -172,6 +187,9 @@ class SuggestViewTestCase(SimpleTestCase):
 
     def test_suggest_area_type(self):
         area = AreaFactory()
+
+        rebuild_index()
+
         data = self.get_suggestion(area.name[0:3])
         data.should.contain('allegation__areas__id')
         data['allegation__areas__id'].should.have.length_of(1)
@@ -179,6 +197,9 @@ class SuggestViewTestCase(SimpleTestCase):
 
     def test_search_session_alias(self):
         session_alias = SessionAliasFactory(title=fake.name())
+
+        rebuild_index()
+
         data = self.get_suggestion(session_alias.alias[0:2])
         data.should.contain('session')
         [x['label'] for x in data['session']]\

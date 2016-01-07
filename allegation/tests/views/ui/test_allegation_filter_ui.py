@@ -3,8 +3,9 @@ from allegation.factories import (
 from allegation.tests.utils.outcome_filter import \
     number_of_all_created_complaints
 from allegation.services.outcome_analytics import FILTERS
-from common.tests.core import BaseLiveTestCase
 from common.models import OfficerAllegation
+from common.tests.core import BaseLiveTestCase
+from common.utils.haystack import rebuild_index
 from search.factories import SessionAliasFactory
 from share.factories import SessionFactory
 from share.models import Session
@@ -20,6 +21,8 @@ class AllegationFilterTestCase(BaseLiveTestCase):
                 OfficerAllegationFactory(
                     final_finding=final_finding, cat=self.allegation_category,
                     final_outcome_class='disciplined')
+
+        rebuild_index()
 
         self.visit_home()
         self.hide_chat_box()
@@ -63,6 +66,8 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         session = SessionFactory(title='searchable')
         SessionAliasFactory(alias=alias, session=session)
 
+        rebuild_index()
+
         self.fill_in('#autocomplete', query)
         self.until(
             lambda: self.element_by_classname_and_text(
@@ -75,6 +80,8 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         query = alias[:3]
         session = SessionFactory()
         SessionAliasFactory(alias=alias, session=session)
+
+        rebuild_index()
 
         current_url = self.browser.current_url
 
