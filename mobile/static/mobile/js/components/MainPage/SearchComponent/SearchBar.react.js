@@ -15,7 +15,7 @@ var SearchBar = React.createClass(objectAssign(Base(SearchBarStore), {
     return {
       'status': 'blank',
       'term': ''
-    }
+    };
   },
 
   _onInputChange: function (event) {
