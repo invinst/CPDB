@@ -1,4 +1,4 @@
-from allegation.factories import OfficerFactory, AllegationFactory
+from allegation.factories import OfficerFactory
 from common.tests.core import BaseLivePhoneTestCase
 
 
@@ -27,5 +27,4 @@ class MobileSearchPageTest(BaseLivePhoneTestCase):
         bad_query = 'bad_query'
         self.go_to_search_page(query=bad_query)
         self.wait_for_error_message()
-
         self.should_see_text("Sorry, there's no results for your search in the database.")
