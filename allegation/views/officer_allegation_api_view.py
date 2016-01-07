@@ -70,6 +70,15 @@ class OfficerAllegationAPIView(View):
         for officer_allegation in officer_allegations:
             allegation = officer_allegation.allegation
 
+            officer_allegation.final_finding = \
+                officer_allegation.get_final_finding_display()
+            officer_allegation.final_outcome = \
+                officer_allegation.get_final_outcome_display()
+            officer_allegation.recc_finding = \
+                officer_allegation.get_recc_finding_display()
+            officer_allegation.recc_outcome = \
+                officer_allegation.get_recc_outcome_display()
+
             ret = {
                 'officer_allegation': officer_allegation,
                 'allegation': allegation,

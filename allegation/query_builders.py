@@ -130,7 +130,7 @@ class OfficerAllegationQueryBuilder(object):
 
     def _q_has_document(self, query_params):
         if 'has:document' in query_params.getlist('has_filters', []):
-            return Q(allegation__document_id__isnull=False)
+            return Q(allegation__document_id__gt=0)
         return Q()
 
     def _q_has_map(self, query_params):
