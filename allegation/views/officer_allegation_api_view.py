@@ -45,7 +45,9 @@ class OfficerAllegationAPIView(View):
 
         return start, end
 
-    def related_officers(self, allegation, officer_allegation, officers):
+    def related_officers(self, allegation, officer_allegation):
+        officers = filter(
+            None, [o.officer for o in allegation.officerallegation_set.all()])
         if officer_allegation.officer:
             officers = [
                 officer for officer in officers
@@ -64,8 +66,6 @@ class OfficerAllegationAPIView(View):
             allegation__pk__in=allegation_pks)
         police_witnesses = PoliceWitness.objects.filter(
             allegation__pk__in=allegation_pks)
-        related_officers = Officer.objects.filter(
-            officerallegation__allegation__pk__in=allegation_pks)
 
         for officer_allegation in officer_allegations:
             allegation = officer_allegation.allegation
@@ -83,8 +83,7 @@ class OfficerAllegationAPIView(View):
                 'officer_allegation': officer_allegation,
                 'allegation': allegation,
                 'officers':
-                    self.related_officers(
-                        allegation, officer_allegation, related_officers),
+                    self.related_officers(allegation, officer_allegation),
                 'category': officer_allegation.cat or None,
                 'officer': officer_allegation.officer,
                 'complaining_witness': [
