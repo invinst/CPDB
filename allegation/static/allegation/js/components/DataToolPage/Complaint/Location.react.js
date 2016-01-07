@@ -6,26 +6,58 @@ var Location = React.createClass({
 
   renderMap: function () {
     var allegation = this.props.complaint.allegation;
-    var imgSrc = '';
+    var mapImage = '';
 
     if (allegation.point.lat) {
       var lat = allegation.point.lat;
       var lng = allegation.point.lng;
       var centerLng = lng + 0.02;
       var locationImage = '(' + lng + ',' + lat + ')/' + centerLng + ',' + lat + ',12/900x180.png';
-
+      var mapImage;
       var marker = 'url-' + encodeURIComponent(AppConstants.MAP_MARKER_ICON_URL);
 
       if (allegation.add1 && allegation.add2) {
         marker = 'pin-l-cross+482';
+        map_image = (
+          'http://api.tiles.mapbox.com/v4/mapbox.streets/pin-l-cross+482(' +
+          lng + ',' + lat + ')/' + centerLng + ',' + lat + ',13/' + this.getSize() +
+          '.png?access_token=' + AppConstants.MAP_TOKEN
+        );
+
+        address = (
+          <div>
+            <div>Beat: {this.props.complaint.beat_name}</div>
+            <div>Location Type: {allegation.location}</div>
+            <div>Address: {allegation.add1} {allegation.add2}</div>
+            <div>City: {allegation.city}</div>
+          </div>
+        );
+        update_state = {
+          image: map_image,
+          address: address
+        }
+      }
+      else if (this.props.complaint.beat_name) {
+        map_image = (
+          'http://api.tiles.mapbox.com/v4/mapbox.streets/url-' + encodeURIComponent(AppConstants.MAP_MARKER_ICON_URL) +'(' + lng + ',' + lat + ')/' + centerLng + ',' + lat + ',13/' +
+          this.getSize() +
+          '.png?access_token=' + AppConstants.MAP_TOKEN
+        );
+        address = (
+          <div>Beat # {this.props.complaint.beat_name}</div>
+        );
+        update_state = {
+          image: map_image,
+          address: address
+        }
       }
 
-      imgSrc = 'http://api.tiles.mapbox.com/v4/mapbox.streets/' + marker + locationImage + '?access_token=' + AppConstants.MAP_TOKEN;
+      mapImage += locationImage + '?access_token=' + AppConstants.MAP_TOKEN;
     }
 
     return (
       <div className='complaint-map'>
-        <img alt='Marker is currently not available' src={imgSrc} />
+        <img alt='Marker is currently not available' src={mapImage} />
       </div>
     );
   },

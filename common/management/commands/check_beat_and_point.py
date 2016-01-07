@@ -35,4 +35,3 @@ class Command(BaseCommand):
                 else:
                     counter['success'] += 1
             print(counter)
-
