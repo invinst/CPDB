@@ -51,7 +51,7 @@ var MainPage = React.createClass(objectAssign(Base(MainPageStore), {
         {this.renderSearchResults(term)}
         <About topLeft={isSearchFocused}/>
       </div>
-    )
+    );
   }
 }));
 

@@ -22,9 +22,3 @@ class RelatedOfficerTest(SimpleTestCase):
         witness_officer = OfficerFactory()
         allegation = AllegationFactory(officer=officer)
         PoliceWitnessFactory(crid=allegation.crid, officer=witness_officer)
-
-        witness_officers = RelatedOfficerService.witness_officers(officer.id)
-
-        SqlHelper.len_of_raw_queryset(witness_officers).should.be.equal(1)
-        witness_officers[0].id.should.be.equal(witness_officer.id)
-        witness_officers[0].num_allegations.should.be.equal(1)
