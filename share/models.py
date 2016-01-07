@@ -112,7 +112,7 @@ class Session(models.Model):
                 'text': CUSTOM_FILTER_DICT[key][o]['text'],
                 'value': o,
             } for o in values['value']]
-        if key == 'officer__allegations_count__gt':
+        if key == 'officer__officerallegations_count__gt':
             value = values['value'][0]
             return [{'text': REPEATER_DESC[str(value)], 'value': value}]
 

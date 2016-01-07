@@ -21,7 +21,7 @@ var ComplaintListRow = React.createClass(_.assign(Base(ComplaintListStore), {
   },
 
   detailIsCurrentlyShown: function() {
-     return this.state.activeComplaints.indexOf(this.props.complaint.allegation.id) > -1
+     return this.state.activeComplaints.indexOf(this.props.complaint.officer_allegation.id) > -1
   },
 
   render: function () {
@@ -35,6 +35,7 @@ var ComplaintListRow = React.createClass(_.assign(Base(ComplaintListStore), {
     }
 
     var allegation = complaint.allegation;
+    var officer_allegation = complaint.officer_allegation;
     var category = {};
     if (this.props.complaint.category) {
       category = this.props.complaint.category;
@@ -51,8 +52,8 @@ var ComplaintListRow = React.createClass(_.assign(Base(ComplaintListStore), {
     }
     var date_label = "Incident Date";
     var date = allegation.incident_date_only;
-    if(!allegation.incident_date && allegation.start_date) {
-      date = allegation.start_date;
+    if(!allegation.incident_date && officer_allegation.start_date) {
+      date = officer_allegation.start_date;
       date_label = "Investigation Start";
     }
     var finding = this.props.finding ? this.props.finding.replace(/ /,"-").toLowerCase() : 'other';
@@ -62,9 +63,9 @@ var ComplaintListRow = React.createClass(_.assign(Base(ComplaintListStore), {
       'fa fa-chevron-down': detailIsShown
     }, 'complaint-row-outcome', finding);
 
-    var rowClassName = classnames('complaint-row', finding, allegation.final_outcome_class);
+    var rowClassName = classnames('complaint-row', finding, officer_allegation.final_outcome_class);
 
-    var dom_id = "allegation-" + allegation.id;
+    var dom_id = "allegation-" + officer_allegation.id;
     return (
       <div className={rowClassName}>
         <div className='row cursor' id={dom_id} onClick={this.toggleComplaint}>
