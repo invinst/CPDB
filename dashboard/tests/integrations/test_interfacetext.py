@@ -6,6 +6,7 @@ from officer.factories import StoryFactory
 class InterfaceTextEditTestCase(BaseAdminTestCase):
     def setUp(self):
         super(InterfaceTextEditTestCase, self).setUp()
+        InterfaceText.objects.create(key='summary-help-text', text='This is summary text as provided by the Chicago Police Department')
 
     def test_update_interface_text(self):
         self.go_to_section('Interface Texts')
