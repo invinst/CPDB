@@ -13,11 +13,11 @@ var AppHistory = require('utils/History');
 var OfficerInvolved = React.createClass({
 
   _onClick: function (officerPresenter) {
-    var officer_url = HelperUtil.format('/officer/{name}/{id}', {
+    var officerUrl = HelperUtil.format('/officer/{name}/{id}', {
       'name': officerPresenter.displayName,
       'id': officerPresenter.id
     });
-    AppHistory.pushState(null, officer_url);
+    AppHistory.pushState(null, officerUrl);
   },
 
   renderOfficerRow: function (officer) {

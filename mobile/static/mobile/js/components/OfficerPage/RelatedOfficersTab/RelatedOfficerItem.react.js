@@ -13,8 +13,8 @@ var RelatedOfficerItem = React.createClass({
   _onClick: function () {
     var officer = this.props.officer;
     var presenter = OfficerPresenter(officer);
-    var officer_url = HelperUtil.format('/officer/{name}/{id}', {'name': presenter.displayName, 'id': presenter.id});
-    AppHistory.pushState(null, officer_url);
+    var officerUrl = HelperUtil.format('/officer/{name}/{id}', {'name': presenter.displayName, 'id': presenter.id});
+    AppHistory.pushState(null, officerUrl);
   },
 
   render: function () {

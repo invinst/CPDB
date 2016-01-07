@@ -16,7 +16,7 @@ var PageNotFound = React.createClass({
           </div>
         </div>
       </div>
-    )
+    );
   }
 });
 

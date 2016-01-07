@@ -24,7 +24,7 @@ var SearchComponent = React.createClass(objectAssign(Base(SearchResultsStore), {
           <SearchBar />
         </div>
       </div>
-    )
+    );
   }
 }));
 

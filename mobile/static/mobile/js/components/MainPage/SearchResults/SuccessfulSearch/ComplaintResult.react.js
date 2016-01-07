@@ -1,7 +1,6 @@
 var React = require('react');
 
 var AppHistory = require('utils/History');
-
 var AppConstants = require('constants/AppConstants');
 var SuggestionPresenter = require('presenters/SuggestionPresenter');
 
