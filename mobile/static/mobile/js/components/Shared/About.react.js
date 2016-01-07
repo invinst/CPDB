@@ -8,7 +8,7 @@ var About = React.createClass({
       <div id='about' className={classNames}>
         About the data
       </div>
-    )
+    );
   }
 });
 

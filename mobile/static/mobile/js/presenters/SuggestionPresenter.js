@@ -41,7 +41,7 @@ var SuggestionPresenter = function (suggestion) {
     resource: resource(),
     resourceKey: resourceKey(),
     meta: getMetaPresenter()
-  }
+  };
 };
 
 module.exports = SuggestionPresenter;
