@@ -72,7 +72,7 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
               <div>
                 <div>Summary</div>
                 <div>Complaints</div>
-                <div>Co-accused</div>
+                <div>Co-accused officer</div>
               </div>
               <div className='officer-page-content'>
                 <div>

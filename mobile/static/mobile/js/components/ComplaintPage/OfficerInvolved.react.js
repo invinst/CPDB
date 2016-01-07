@@ -50,8 +50,9 @@ var OfficerInvolved = React.createClass({
       <Wrapper wrapperClass='officer-involved' visible={numberOfInvolvedOfficers > 0}>
         <div className='row section-header'>
           <span className='pad'>
-            <span className='section-title bold'>{pluralize('Officer', numberOfInvolvedOfficers, false)}
-              Involved&nbsp;</span>
+            <span className='section-title bold'>
+              {pluralize('Officer', numberOfInvolvedOfficers, false)} Involved&nbsp;
+            </span>
             <span className='title-count normal-weight'>({numberOfInvolvedOfficers})</span>
           </span>
         </div>

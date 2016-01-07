@@ -69,7 +69,7 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
 
         len(self.find_all('.circles .circle')).should.equal(2)
 
-        self.show_officer_tab('Co-accused')
+        self.show_officer_tab('Co-accused officer')
 
         self.should_see_text(other_officer.display_name)
         self.should_see_text(related_display)
@@ -86,7 +86,7 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
         officer = OfficerFactory()
         AllegationFactory(officer=officer)
         self.go_to_officer_page(slug=officer.officer_first, pk=officer.pk)
-        self.show_officer_tab('Co-accused')
+        self.show_officer_tab('Co-accused officer')
         self.until(lambda: self.find('.no-related-officer'))
         no_related_officer_text = 'No any officer related to this officer.'
         self.should_see_text(no_related_officer_text)
