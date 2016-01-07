@@ -22,28 +22,11 @@
   box-shadow: 0px 0px 2px #ccc
   font-size: 13px
 
-.animation
-  -moz-transition: all 300ms ease-out
-  -o-transition: all 300ms ease-out
-  -webkit-transition: all 300ms ease-out
-  -ms-transition: all 300ms ease-out
-  transition: all 300ms ease-out
-
-.animation-long
-  -webkit-transition: all 1000ms cubic-bezier(1.000, 0.005, 0.005, 1.000)
-  -moz-transition: all 1000ms cubic-bezier(1.000, 0.005, 0.005, 1.000)
-  -o-transition: all 1000ms cubic-bezier(1.000, 0.005, 0.005, 1.000)
-  transition: all 1000ms cubic-bezier(1.000, 0.005, 0.005, 1.000)
-
 .hidden
   display: none
 
 .bold
   font-weight: 700
-
-.slide-in
-  transition: 1s
-  left: 0
 
 .inline
   display: inline
@@ -70,27 +53,11 @@
   @extend .top-gray-border
   @extend .bottom-gray-border
 
-.circle
-  width: 10px
-  height: 10px
-  background: $circle-color
-  border-radius: 50%
-  display: inline-block
-
-.small-circle
-  width: 6px
-  height: 6px
+.outer-glow
+  box-shadow: 0px 0px 2px #ccc
 
 .background-black
   background: $black
 
-.circle-0
-  background-color: $circle-0-color
-.circle-1
-  background-color: $circle-1-color
-.circle-2
-  background-color: $circle-2-color
-.circle-3
-  background-color: $circle-3-color
-.circle-4
-  background-color: $circle-4-color
+@import 'helper/animation'
+@import 'helper/circle'

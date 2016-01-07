@@ -15,6 +15,12 @@ var OfficerPageServerActions = {
       actionType: AppConstants.OFFICER_PAGE_FAILED_TO_RECEIVED_DATA,
       data: id
     });
+  },
+
+  reload: function () {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.OFFICER_PAGE_RELOAD
+    });
   }
 };
 

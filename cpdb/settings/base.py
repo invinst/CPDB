@@ -74,8 +74,8 @@ INSTALLED_APPS = (
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'common.middleware.subdomain.SubdomainURLRoutingMiddleware',
-    'common.middleware.mobile_redirect.MobileRedirectMiddleware',
+    # 'common.middleware.subdomain.SubdomainURLRoutingMiddleware',
+    # 'common.middleware.mobile_redirect.MobileRedirectMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',

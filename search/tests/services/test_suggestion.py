@@ -108,3 +108,11 @@ class SuggestServiceTestCase(SimpleTestCase):
         data.should.contain('cat__cat_id')
         data['cat__cat_id'].should.have.length_of(1)
         data['cat__cat_id'][0].should.equal(cat.cat_id)
+
+    def test_suggest_has_document(self):
+        data = self.suggestion.make_suggestion('has:doc')
+
+        data.should.contain('has_filters')
+        len(data['has_filters']).should.equal(1)
+        data['has_filters'][0][0].should.equal('has:document')
+        data['has_filters'][0][1].should.equal('has:document')
