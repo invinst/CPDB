@@ -17,39 +17,10 @@ var Location = React.createClass({
       var marker = 'url-' + encodeURIComponent(AppConstants.MAP_MARKER_ICON_URL);
 
       if (allegation.add1 && allegation.add2) {
-        marker = 'pin-l-cross+482';
-        map_image = (
-          'http://api.tiles.mapbox.com/v4/mapbox.streets/pin-l-cross+482(' +
-          lng + ',' + lat + ')/' + centerLng + ',' + lat + ',13/' + this.getSize() +
-          '.png?access_token=' + AppConstants.MAP_TOKEN
-        );
-
-        address = (
-          <div>
-            <div>Beat: {this.props.complaint.beat_name}</div>
-            <div>Location Type: {allegation.location}</div>
-            <div>Address: {allegation.add1} {allegation.add2}</div>
-            <div>City: {allegation.city}</div>
-          </div>
-        );
-        update_state = {
-          image: map_image,
-          address: address
-        }
+        mapImage = 'http://api.tiles.mapbox.com/v4/mapbox.streets/pin-l-cross+482';
       }
       else if (this.props.complaint.beat_name) {
-        map_image = (
-          'http://api.tiles.mapbox.com/v4/mapbox.streets/url-' + encodeURIComponent(AppConstants.MAP_MARKER_ICON_URL) +'(' + lng + ',' + lat + ')/' + centerLng + ',' + lat + ',13/' +
-          this.getSize() +
-          '.png?access_token=' + AppConstants.MAP_TOKEN
-        );
-        address = (
-          <div>Beat # {this.props.complaint.beat_name}</div>
-        );
-        update_state = {
-          image: map_image,
-          address: address
-        }
+        mapImage = 'http://api.tiles.mapbox.com/v4/mapbox.streets/url-' + encodeURIComponent(AppConstants.MAP_MARKER_ICON_URL);
       }
 
       mapImage += locationImage + '?access_token=' + AppConstants.MAP_TOKEN;
