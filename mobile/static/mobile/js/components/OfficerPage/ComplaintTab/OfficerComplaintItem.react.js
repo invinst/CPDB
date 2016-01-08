@@ -1,6 +1,8 @@
 var React = require('react');
 var cx = require('classnames');
 
+var AppHistory = require('utils/History');
+
 var ComplaintPresenter = require('presenters/ComplaintPresenter');
 var OfficerPresenter = require('presenters/OfficerPresenter');
 var OfficerUtil = require('utils/OfficerUtil');
@@ -24,6 +26,12 @@ var OfficerComplaintItem = React.createClass({
     return circles;
   },
 
+  _onClicked : function () {
+    var complaint = this.props.complaint.data;
+    var presenter = ComplaintPresenter(complaint);
+    AppHistory.pushState(null, presenter.url);
+  },
+
   render: function () {
     var complaint = this.props.complaint.data;
     var numberOfInvolvedOfficers = this.props.complaint['allegation_counts'].length  - 1; // exclude himself
@@ -33,7 +41,7 @@ var OfficerComplaintItem = React.createClass({
     var officerPresenter = OfficerPresenter(officer);
     var complaintPresenter = ComplaintPresenter(complaint);
     return (
-      <div className='officer-complaint-item'>
+      <div className='officer-complaint-item' onClick={this._onClicked}>
         <div className='crid-info pad'>
           <div className='inline-block half-width align-left'>
             <span className='crid-title'>CRID &nbsp;</span>

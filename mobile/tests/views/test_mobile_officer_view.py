@@ -45,7 +45,6 @@ class MobileOfficerViewTest(SimpleTestCase):
             str(officer_allegation.allegation.crid))
         len(complaints[0]['allegation_counts']).should.be.equal(2)
         len(data['co_accused']).should.be.equal(1)
-        len(data['witness']).should.be.equal(1)
 
     def test_return_404_when_get_invalid_pk(self):
         invalid_pk = -1

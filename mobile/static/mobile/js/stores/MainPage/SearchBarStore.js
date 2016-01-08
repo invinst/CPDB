@@ -27,12 +27,20 @@ AppDispatcher.register(function (action) {
 
     case AppConstants.SEARCH_FOCUS:
       _state['status'] = 'focus';
+      _state['term'] = '';
       SearchBarStore.emitChange();
       break;
 
     case AppConstants.SEARCH_CLEAR:
       _state['status'] = 'blank';
       _state['term'] = '';
+      SearchBarStore.emitChange();
+      break;
+
+    case AppConstants.MAIN_PAGE_RECEIVED_DATA:
+    case AppConstants.MAIN_PAGE_FAILED_TO_RECEIVED_DATA:
+      SearchBarStore.updateState('term', action.query);
+      SearchBarStore.updateState('status', 'focus');
       SearchBarStore.emitChange();
       break;
 

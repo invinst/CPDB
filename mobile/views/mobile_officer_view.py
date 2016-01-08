@@ -27,8 +27,8 @@ class MobileOfficerView(APIView):
             'detail': officer,
             'co_accused':
                 RelatedOfficerService.co_accused_officers(officer.pk),
-            'witness': RelatedOfficerService.witness_officers(officer.pk),
-            'complaints': OfficerAllegationService.get_officer_allegations(officer.pk)
+            'complaints': OfficerAllegationService.get_officer_allegations(
+                officer.pk)
         })
 
         return Response(content.data)

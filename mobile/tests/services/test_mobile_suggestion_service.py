@@ -15,9 +15,8 @@ class MobileSuggestionServiceTest(SimpleTestCase):
         partial_query = crid[0:3]
 
         suggest_crid(partial_query).should.equal([])
-        suggest_crid(crid).should.equal([allegation.as_suggestion_entry()])
 
-        expected_allegation = allegation.as_suggestion_entry(suggestion_type='allegation_crid')
+        expected_allegation = allegation.as_suggestion_entry()
         allegation_result = suggest_crid(crid)
         allegation_result[0]['meta']['incident_date'] = allegation_result[0]['meta']['incident_date'].date()
         allegation_result.should.equal([expected_allegation])
@@ -32,8 +31,7 @@ class MobileSuggestionServiceTest(SimpleTestCase):
 
         suggest_officer_star(partial_query).should.equal([])
         suggest_officer_star(bad_query).should.equal([])
-        suggest_officer_star(star).should.equal(
-            [officer.as_suggestion_entry(suggestion_type='officer_badge')])
+        suggest_officer_star(star).should.equal([officer.as_suggestion_entry()])
 
     def test_suggest_officer_name(self):
         officer = OfficerFactory(officer_first='Test', officer_last='Name')

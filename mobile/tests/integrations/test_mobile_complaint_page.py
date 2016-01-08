@@ -8,7 +8,6 @@ class MobileComplaintPageTestMixin(BaseLivePhoneTestCase):
     def go_to_allegation_detail_page(self, crid=''):
         self.visit('/mobile/complaint/{crid}'.format(crid=crid))
 
-
 class MobileComplaintPageTest(MobileComplaintPageTestMixin):
     def test_allegation_with_full_information(self):
         document_id = 123

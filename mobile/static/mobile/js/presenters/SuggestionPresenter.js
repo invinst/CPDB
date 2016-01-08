@@ -2,6 +2,8 @@ var ComplaintService = require('services/ComplaintService');
 var AppConstants = require('constants/AppConstants');
 var HelperUtil = require('utils/HelperUtil');
 var GenderPresenter = require('presenters/GenderPresenter');
+var OfficerPresenter = require('presenters/OfficerPresenter');
+var ComplaintPresenter = require('presenters/ComplaintPresenter');
 
 
 var SuggestionPresenter = function (suggestion) {
@@ -22,25 +24,15 @@ var SuggestionPresenter = function (suggestion) {
     return HelperUtil.fetch(suggestion, 'resource_key', '');
   };
 
-  var suggestionType = function () {
-    return HelperUtil.fetch(suggestion, 'suggestion_type', '');
-  };
+  var getMetaPresenter = function () {
+    var meta  = HelperUtil.fetch(suggestion, 'meta', '');
 
-  var allegationsCount = function () {
-    return HelperUtil.fetch(suggestion, 'meta.allegations_count', '0');
-  };
+    var RESOURCE_PRESENTER_MAP = {
+      'officer': OfficerPresenter,
+      'allegation': ComplaintPresenter
+    };
 
-  var officerDescription = function () {
-    var gender = GenderPresenter(HelperUtil.fetch(suggestion, 'meta.gender', '')).humanReadable;
-    var race = HelperUtil.fetch(suggestion, 'meta.race', 'Race unknown');
-    return HelperUtil.format('{gender} {race}', {'gender': gender, 'race': race});
-  };
-
-  var incidentDate = function () {
-    var complaintMeta = HelperUtil.fetch(suggestion, 'meta', '');
-    var complaintService = ComplaintService(complaintMeta);
-    var incidentDate = complaintService.incidentDate;
-    return !!incidentDate ? incidentDate.format(AppConstants.LONG_DATE_FORMAT) : 'Unknown date';
+    return RESOURCE_PRESENTER_MAP[resource()](meta)
   };
 
   return {
@@ -48,11 +40,8 @@ var SuggestionPresenter = function (suggestion) {
     url: url(),
     resource: resource(),
     resourceKey: resourceKey(),
-    suggestionType: suggestionType(),
-    allegationsCount: allegationsCount(),
-    officerDescription: officerDescription(),
-    incidentDate: incidentDate()
-  }
+    meta: getMetaPresenter()
+  };
 };
 
 module.exports = SuggestionPresenter;

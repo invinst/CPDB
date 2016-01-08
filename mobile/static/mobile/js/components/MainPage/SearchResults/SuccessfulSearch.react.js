@@ -1,9 +1,7 @@
-var cx = require('classnames');
 var React = require('react');
 
-var OfficerBadgeResult = require('components/MainPage/SearchResults/SuccessSearch/OfficerBadgeResult.react');
-var OfficerNameResult = require('components/MainPage/SearchResults/SuccessSearch/OfficerNameResult.react');
-var ComplaintResult = require('components/MainPage/SearchResults/SuccessSearch/ComplaintResult.react');
+var OfficerResult = require('components/MainPage/SearchResults/SuccessfulSearch/OfficerResult.react');
+var ComplaintResult = require('components/MainPage/SearchResults/SuccessfulSearch/ComplaintResult.react');
 
 var SuggestionPresenter = require('presenters/SuggestionPresenter');
 var DataTypeUtil = require('utils/DataTypeUtil');
@@ -12,9 +10,8 @@ var DataTypeUtil = require('utils/DataTypeUtil');
 var SuccessfulSearch = React.createClass({
   getSubComponentFor: function (type) {
     var subComponentMapper = {
-      'officer_name': OfficerNameResult,
-      'officer_badge': OfficerBadgeResult,
-      'allegation_crid': ComplaintResult
+      'officer': OfficerResult,
+      'allegation': ComplaintResult
     };
 
     return subComponentMapper[type];
@@ -22,7 +19,7 @@ var SuccessfulSearch = React.createClass({
 
   renderSuggestionItem: function () {
     var suggestions = this.props.suggestions;
-    var suggestionType = SuggestionPresenter(suggestions[0]).suggestionType;
+    var suggestionType = SuggestionPresenter(suggestions[0]).resource;
     var term = this.props.term;
     var SubComponent = this.getSubComponentFor(suggestionType);
 
@@ -36,7 +33,7 @@ var SuccessfulSearch = React.createClass({
       <div className='success-search'>
         {this.renderSuggestionItem()}
       </div>
-    )
+    );
   }
 });
 
