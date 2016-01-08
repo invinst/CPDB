@@ -4,7 +4,8 @@ from django.test import SimpleTestCase
 from django.template.defaultfilters import slugify
 from rest_framework.status import HTTP_301_MOVED_PERMANENTLY
 
-from allegation.factories import OfficerFactory, AllegationFactory
+from allegation.factories import (
+    OfficerFactory, AllegationFactory, OfficerAllegationFactory)
 from common.models import Allegation
 from common.models import Officer
 
@@ -42,6 +43,7 @@ class LookupViewTest(SimpleTestCase):
 
     def test_lookup_by_allegation_crid(self):
         allegation = AllegationFactory()
+        OfficerAllegationFactory(allegation=allegation)
         response = self.client.get('/lookup/{query}'.format(
             query=allegation.crid))
         response.status_code.should.equals(HTTP_301_MOVED_PERMANENTLY)

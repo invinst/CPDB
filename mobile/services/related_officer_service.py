@@ -1,4 +1,4 @@
-ffrom common.models import Officer
+from common.models import Officer
 
 
 class RelatedOfficerService(object):

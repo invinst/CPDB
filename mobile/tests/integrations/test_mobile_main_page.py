@@ -31,12 +31,13 @@ class MobileMainPageTest(BaseLivePhoneTestCase):
 
         self.go_to_main_page()
         self.search_for(officer.officer_first)
+        
         self.wait_for_success_result()
 
         self.should_see_text_in_result(officer.officer_first)
         self.should_see_text_in_result(officer.officer_last)
 
-    def test_search_officer_badge(self):
+    def test_search_officer_badge_no_match(self):
         badge = '1234567'
         a_part_of_badge = '123'
         OfficerFactory(star=badge)
@@ -46,6 +47,12 @@ class MobileMainPageTest(BaseLivePhoneTestCase):
         self.search_for(a_part_of_badge)
         self.wait_for_error_message()
         self.should_see_text_in_result('No matches yet.')
+
+    def test_search_officer_badge(self):
+        badge = '1234567'
+        OfficerFactory(star=badge)
+
+        self.go_to_main_page()
 
         self.search_for(badge)
         self.wait_for_success_result()
