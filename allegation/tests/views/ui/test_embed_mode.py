@@ -60,7 +60,6 @@ class EmbedModeTestCase(BaseLiveTestCase):
 
         self.until(lambda: self.find(".autocomplete-officer").is_displayed())
         self.find(".autocomplete-officer").click()
-        import ipdb; ipdb.set_trace()
         len(self.find_all("#filter-tags .tag")).should.equal(1)
 
         self.link('Embed Mode').click()
