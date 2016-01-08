@@ -46,17 +46,19 @@ function prettyLabels(label, term) {
       this._super();
       this.widget().menu("option", "items", "> :not(." + AUTOCOMPLETE_CAT_CLASS + ")");
     },
+
     _renderMenu: function (ul, items) {
       var widget = this;
       var currentCategory = "";
       $.each(items, function (index, item) {
         if (item.category != currentCategory) {
-          ul.append(renderCategoryElement(widget.options.categoryNames[item.category]));
+          ul.append(renderCategoryElement(item['category']));
           currentCategory = item.category;
         }
         widget._renderItemData(ul, item);
       });
     },
+
     _renderItem: function (ul, item) {
       var label = item.type ? item.type + ": " + item.label : item.label;
       var element = $("<li>");
@@ -70,6 +72,7 @@ function prettyLabels(label, term) {
 
       return element.addClass('autocomplete-' + item.category).html(prettyLabels(label, $(this.element).val())).appendTo(ul);
     },
+
     displayMessage: function (value) {
       var ul = this.menu.element.empty();
       ul.append(renderCategoryElement(value));

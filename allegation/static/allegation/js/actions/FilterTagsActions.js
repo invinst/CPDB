@@ -7,7 +7,7 @@ var OutcomeAnalysisAPI = require('utils/OutcomeAnalysisAPI');
 var SessionAPI = require('utils/SessionAPI');
 var RaceGenderAPI = require('utils/RaceGenderAPI');
 var SunburstAPI = require('utils/SunburstAPI');
-var FilterStore = require('stores/FilterStore');
+var FilterTagStore = require('stores/FilterTagStore');
 var EmbedStore = require('stores/EmbedStore');
 
 
@@ -18,7 +18,7 @@ function updateSiteData(dontUpdateSession) {
   SunburstAPI.getData();
   if (!dontUpdateSession) {
     SessionAPI.updateSessionInfo({
-      'query': _.assign(FilterStore.getSession(), {
+      'query': _.assign(FilterTagStore.getSession(), {
         'active_officers': []
       })
     });
@@ -26,13 +26,14 @@ function updateSiteData(dontUpdateSession) {
 };
 
 var FilterTagsActions = {
-  addTag: function (category, filter) {
+  addTag: function (category, value, filter) {
     if (EmbedStore.isEmbedMode()) {
       return
     }
     AppDispatcher.dispatch({
       actionType: AppConstants.ADD_TAG,
       category: category,
+      value: value,
       filter: filter
     });
     updateSiteData();
@@ -74,19 +75,20 @@ var FilterTagsActions = {
       filter: filter
     });
 
-    SessionAPI.updateSessionInfo({'query': FilterStore.getSession()});
+    SessionAPI.updateSessionInfo({'query': FilterTagStore.getSession()});
   },
 
-  pinTag: function (category, filter) {
+  pinTag: function (category, value) {
     if (EmbedStore.isEmbedMode()) {
-      return
+      return;
     }
+
     AppDispatcher.dispatch({
       actionType: AppConstants.PIN_TAG,
       category: category,
-      filter: filter
+      value: value
     });
-    SessionAPI.updateSessionInfo({'query': FilterStore.getSession()});
+    SessionAPI.updateSessionInfo({'query': FilterTagStore.getSession()});
   }
 };
 

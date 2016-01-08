@@ -32,9 +32,6 @@ class SuggestView(View):
 
     def get(self, request):
         q = request.GET.get('term', '').lower()
-        # key = 'search%s' % q
-        # ret = cache.get(key)
-        # if not ret:
         if not q:
             return HttpResponseBadRequest()
 
@@ -43,32 +40,6 @@ class SuggestView(View):
         if len(q) > 2:
             self.track_suggestions_query(ret)
 
-        ret = self.to_jquery_ui_autocomplete_format(ret)
         ret = json.dumps(ret)
-            # cache.set(key, ret, 86400)
 
         return HttpResponse(ret)
-
-    def to_jquery_ui_autocomplete_format(self, data):
-        new_dict = OrderedDict()
-        for category in data:
-            new_dict[category] = []
-            other = None
-            for label in data[category]:
-                if isinstance(label, (list, tuple)):
-                    if len(label) > 2:  # area type
-                        other = label[2]
-                    value = label[1]
-                    label = label[0]
-                else:
-                    value = label
-
-                info = {
-                    'category': category,
-                    'label': label,
-                    'value': value,
-                }
-                if other:
-                    info['type'] = other
-                new_dict[category].append(info)
-        return new_dict

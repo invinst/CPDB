@@ -80,7 +80,7 @@ class Session(models.Model):
         filters = self.query.get('filters', {})
         results = {}
         for key in filters:
-            values = self.get_filter_values(key, filters[key])
+            values = filters[key]
             if values:
                 results[key] = values
         return results
@@ -122,8 +122,8 @@ class Session(models.Model):
     def query_string(self):
         filters = self.query.get('filters', {})
         query = []
-        for key in filters:
-            value = filters[key]['value']
-            query.append("&".join("{key}={value}".format(key=key, value=v) for v in value))
-        return "&".join(query)
+        for category in filters:
+            items = filters[category]
+            query.append('&'.join(item['filter'] for item in items))
+        return '&'.join(query)
 

@@ -18,9 +18,15 @@ class SuggestAllegationCity(SuggestBase):
             condition = Q(city__icontains=term),
             fields_to_get = ('city',)
         )
-        results = [[get_zipcode_from_city(x), x] for x in raw_results]
+        results = [
+            cls.entry_format(
+                label=get_zipcode_from_city(x),
+                value=x,
+                filter=cls.build_filter(category='city', value=x)
+            ) for x in raw_results
+        ]
 
-        return { 'city': results }
+        return { 'Zip Code': results }
 
 
 class SuggestAllegationCrid(SuggestBase):
