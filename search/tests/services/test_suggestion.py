@@ -1,5 +1,4 @@
 from freezegun import freeze_time
-import json
 
 from allegation.factories import OfficerFactory, AllegationCategoryFactory, AllegationFactory, AreaFactory
 from common.models import AllegationCategory, Officer

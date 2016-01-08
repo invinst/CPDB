@@ -4,6 +4,7 @@ var RelatedOfficerItem = require('components/OfficerPage/RelatedOfficersTab/Rela
 var NoRelatedOfficer = require('components/OfficerPage/RelatedOfficersTab/NoRelatedOfficer.react');
 
 
+//FIXME : Should refactor this component since we removed witness officers from the related officers
 var RelatedOfficersTab = React.createClass({
   renderRelatedOfficers: function (type) {
     return function (officer) {
@@ -20,14 +21,12 @@ var RelatedOfficersTab = React.createClass({
       return (<div></div>);
     }
 
-    var numberOfRelatedOfficers = coAccused.length;
-
-    if (numberOfRelatedOfficers == 0) {
+    if (coAccused.length == 0) {
       return (
         <div>
           <NoRelatedOfficer />
         </div>
-      )
+      );
     }
 
     return (

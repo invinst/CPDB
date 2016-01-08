@@ -14,7 +14,7 @@ var FailedSearch = React.createClass({
 
     return (
       <div className='failed-search pad'>{textMessage}</div>
-    )
+    );
   }
 });
 

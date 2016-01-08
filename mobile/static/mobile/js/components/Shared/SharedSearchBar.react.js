@@ -11,7 +11,7 @@ var SharedSearchBar = React.createClass({
   getInitialState: function () {
     return {
       'term': ''
-    }
+    };
   },
 
   onClick: function () {
@@ -29,7 +29,7 @@ var SharedSearchBar = React.createClass({
     // FIXME: Fix this setState() by using actions
     this.setState({
       'term': term
-    })
+    });
   },
 
   render: function () {

@@ -1,12 +1,11 @@
 var React = require('react');
 var cx = require('classnames');
 
-var AppHistory = require('utils/History');
-
 var OfficerCard = require('components/Shared/OfficerCard.react');
+var HighlightText = require('components/Shared/HighlightText.react');
 var SuggestionPresenter = require('presenters/SuggestionPresenter');
 var OfficerUtil = require('utils/OfficerUtil');
-var HighlightText = require('components/Shared/HighlightText.react');
+var AppHistory = require('utils/History');
 
 
 var OfficerNameResult = React.createClass({

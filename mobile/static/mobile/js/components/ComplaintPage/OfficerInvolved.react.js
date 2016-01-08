@@ -14,11 +14,11 @@ var AppHistory = require('utils/History');
 var OfficerInvolved = React.createClass({
 
   _onClick: function (officerPresenter) {
-    var officer_url = HelperUtil.format('/officer/{name}/{id}', {
+    var officerUrl = HelperUtil.format('/officer/{name}/{id}', {
       'name': officerPresenter.displayName,
       'id': officerPresenter.id
     });
-    AppHistory.pushState(null, officer_url);
+    AppHistory.pushState(null, officerUrl);
   },
 
   renderOfficerRow: function (officer) {
@@ -51,8 +51,9 @@ var OfficerInvolved = React.createClass({
       <Wrapper wrapperClass='officer-involved' visible={numberOfInvolvedOfficers > 0}>
         <div className='row section-header'>
           <span className='pad'>
-            <span className='section-title bold'>{pluralize('Officer', numberOfInvolvedOfficers, false)}
-              Involved&nbsp;</span>
+            <span className='section-title bold'>
+              {pluralize('Officer', numberOfInvolvedOfficers, false)} Involved&nbsp;
+            </span>
             <span className='title-count normal-weight'>({numberOfInvolvedOfficers})</span>
           </span>
         </div>

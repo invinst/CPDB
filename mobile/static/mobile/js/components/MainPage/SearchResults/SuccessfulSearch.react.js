@@ -33,7 +33,7 @@ var SuccessfulSearch = React.createClass({
       <div className='success-search'>
         {this.renderSuggestionItem()}
       </div>
-    )
+    );
   }
 });
 

@@ -12,11 +12,12 @@ var PageNotFound = React.createClass({
           Sorry, page not found!
         </div>
         <div className='page-not-found-description'>
-          <div>The link you entered isn’t recorded in our database. Please start a new search by entering in keywords below.
+          <div>
+            The link you entered isn’t recorded in our database. Please start a new search by entering in keywords below.
           </div>
         </div>
       </div>
-    )
+    );
   }
 });
 

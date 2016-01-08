@@ -20,6 +20,11 @@
     {% compress css %}
     <link rel="stylesheet" type="text/sass" href="{% static 'mobile/sass/style.sass' %}"/>
     {% endcompress %}
+    {% if DJANGO_ENV == 'test' %}
+      {% compress css %}
+        <link rel="stylesheet" type="text/sass" href="{% static 'sass/test.sass' %}" />
+      {% endcompress %}
+    {% endif %}
   </head>
   <body>
     {% csrf_token %}

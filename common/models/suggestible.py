@@ -5,7 +5,7 @@ class MobileSuggestible(object):
     def get_mobile_url(self):
         raise NotImplementedError
 
-    def as_suggestion_entry(self, suggestion_type=''):
+    def as_suggestion_entry(self):
         raise NotImplementedError
 
 
