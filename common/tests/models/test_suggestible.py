@@ -43,7 +43,7 @@ class MobileSuggestibleOfficerTest(TestCase):
                 'star': self.officer.star
             }
         }
-        self.officer.as_suggestion_entry(suggestion_type).should.be.equal(expected_entry)
+        self.officer.as_suggestion_entry().should.be.equal(expected_entry)
 
 
 class MobileSuggestibleAllegationTest(TestCase):
@@ -70,4 +70,4 @@ class MobileSuggestibleAllegationTest(TestCase):
                 }
             }
         }
-        self.allegation.as_suggestion_entry(suggestion_type).should.be.equal(expected_entry)
+        self.allegation.as_suggestion_entry().should.be.equal(expected_entry)
