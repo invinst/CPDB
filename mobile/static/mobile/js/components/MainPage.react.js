@@ -41,7 +41,7 @@ var MainPage = React.createClass(objectAssign(Base(MainPageStore), {
     );
   },
 
-  render: function ()
+  render: function () {
     var isSearchFocused = this.state.isSearchFocused;
     var term = HelperUtil.fetch(this, 'props.params.query', '');
 
