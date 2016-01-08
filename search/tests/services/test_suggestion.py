@@ -1,7 +1,7 @@
 from freezegun import freeze_time
 
 from allegation.factories import (
-    OfficerFactory, AllegationCategoryFactory, AllegationFactory, AreaFactory)
+    AllegationCategoryFactory, AllegationFactory, AreaFactory)
 from common.models import AllegationCategory, Officer
 from common.tests.core import SimpleTestCase
 from search.services.suggestion import Suggestion
@@ -42,7 +42,6 @@ class SuggestServiceTestCase(SimpleTestCase):
             ['February 2010', '2010-2'], ['February 2011', '2011-2'],
             ['February 2012', '2012-2'], ['February 2013', '2013-2'],
             ['February 2014', '2014-2'], ['February 2015', '2015-2'],
-            ['February 2016', '2016-2'],
         ])
 
     def test_suggest_custom_defined_text(self):
