@@ -299,7 +299,7 @@ module.exports = {
   OFFICER_PAGE_API_ENDPOINT: '/officer/',
   SESSION_API_ENDPOINT: '/api/allegations/session/',
   RACE_GENDER_API_ENDPOINT: '/api/officer-allegations/race-gender/',
-  ALLEGATION_DETAILS_API_ENDPOINT: '/api/investigation/',
+  ALLEGATION_DETAILS_API_ENDPOINT: '/api/police-witness/',
   ALLEGATIONS_API_ENDPOINT: '/api/officer-allegations/',
   INVESTIGATOR_API_ENDPOINT: '/investigator/',
 

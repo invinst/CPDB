@@ -106,7 +106,7 @@ var ComplaintListRow = React.createClass(_.assign(Base(ComplaintListStore), {
 
   toggleComplaint: function (e) {
     this.setState({hasShown: true});
-    ComplaintListActions.toggleComplaint(this.props.complaint.allegation.id);
+    ComplaintListActions.toggleComplaint(this.props.complaint.officer_allegation.id);
     SessionAPI.updateSessionInfo({'query': { activeComplaints: this.state.activeComplaints}});
   }
 
