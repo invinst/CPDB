@@ -34,7 +34,13 @@ class MobileSuggestibleOfficerTest(TestCase):
             'text': self.display_name,
             'resource': 'officer',
             'resource_key': self.officer_id,
-            'url': self.expected_url
+            'url': self.expected_url,
+            'meta': {
+                'allegations_count': self.officer.allegations_count,
+                'gender': self.officer.gender,
+                'race': self.officer.race,
+                'star': self.officer.star
+            }
         }
         self.officer.as_suggestion_entry().should.be.equal(expected_entry)
 
@@ -53,6 +59,13 @@ class MobileSuggestibleAllegationTest(TestCase):
             'text': self.crid,
             'resource': 'allegation',
             'resource_key': self.crid,
-            'url': self.expected_url
+            'url': self.expected_url,
+            'meta': {
+                'incident_date': self.allegation.incident_date,
+                'cat': {
+                    'allegation_name': self.allegation.cat.allegation_name,
+                    'category': self.allegation.cat.category
+                }
+            }
         }
         self.allegation.as_suggestion_entry().should.be.equal(expected_entry)

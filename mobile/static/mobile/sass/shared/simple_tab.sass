@@ -1,22 +1,8 @@
 .tab-content
   display: none
-  -webkit-animation: scale 0.7s ease-in-out
-  -moz-animation: scale 0.7s ease-in-out
-  animation: scale 0.7s ease-in-out
-
-.tab-content
+  animation: slide-out 0.3s forwards
+  -webkit-animation: slide-out 0.3s forwards
   &.active
     display: block
-
-@keyframes scale
-  0%
-    transform: scale(0.9)
-    opacity: 0
-
-  50%
-    transform: scale(1.01)
-    opacity: 0.5
-
-  100%
-    transform: scale(1)
-    opacity: 1
+    animation: slide-in 0.3s forwards
+    -webkit-animation: slide-in 0.3s forwards

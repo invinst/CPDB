@@ -9,4 +9,3 @@ class MobileOfficerViewSerializer(serializers.Serializer):
     detail = FullOfficerSerializer()
     complaints = AllegationDataSerializer(many=True)
     co_accused = RelatedOfficerSerializer(many=True)
-    witness = RelatedOfficerSerializer(many=True)
