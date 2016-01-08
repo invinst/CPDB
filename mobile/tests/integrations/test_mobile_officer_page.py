@@ -65,7 +65,6 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
         self.should_see_text(officer_race)
 
         self.show_officer_tab('Complaints')
-
         self.find('.crid-number').text.should.equal(str(allegation.crid))
         self.find('.final-finding').text.should.equal(
             allegation_final_finding_display)
@@ -81,7 +80,7 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
 
         len(self.find_all('.circles .circle')).should.equal(2)
 
-        self.show_officer_tab('Relative Officers')
+        self.show_officer_tab('Co-accused officer')
 
         self.should_see_text(other_officer.display_name)
         self.should_see_text(related_display)
@@ -94,13 +93,13 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
             'The id %s is not recorded in out database.' % bad_officer_pk
         self.go_to_officer_page(slug=officer_slug, pk=bad_officer_pk)
 
-        self.until(lambda: self.should_see_text(not_match_text))
+        self.should_see_text(not_match_text)
 
     def test_no_related_officer(self):
         officer = OfficerFactory()
         OfficerAllegationFactory(officer=officer)
         self.go_to_officer_page(slug=officer.officer_first, pk=officer.pk)
-        self.show_officer_tab('Relative Officers')
+        self.show_officer_tab('Co-accused officer')
         self.until(lambda: self.find('.no-related-officer'))
         no_related_officer_text = 'No any officer related to this officer.'
         self.should_see_text(no_related_officer_text)

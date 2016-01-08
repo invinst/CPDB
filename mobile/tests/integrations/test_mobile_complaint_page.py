@@ -8,7 +8,6 @@ class MobileComplaintPageTestMixin(BaseLivePhoneTestCase):
     def go_to_allegation_detail_page(self, crid=''):
         self.visit('/mobile/complaint/{crid}'.format(crid=crid))
 
-
 class MobileComplaintPageTest(MobileComplaintPageTestMixin):
     def test_allegation_with_full_information(self):
         document_id = 123
@@ -17,6 +16,8 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
         view_document_link_format = 'http://documentcloud.org/documents/{id}-{title}.html'
         view_document_link = view_document_link_format.format(
             id=document_id, title=document_normalized_title)
+        officer_gender = 'X'
+        officer_gender_display = 'Trans'
 
         final_finding_code = 'UN'
         final_finding_text = 'Unfounded'
@@ -28,7 +29,7 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
         address2 = 'N Kimball Ave'
         addresss = '{add1} {add2}'.format(add1=address1, add2=address2)
         category = AllegationCategoryFactory()
-        officer = OfficerFactory()
+        officer = OfficerFactory(gender=officer_gender)
         current_rank = 'SERGEANT OF POLICE'
         investigator = InvestigatorFactory(current_rank=current_rank)
 
@@ -55,7 +56,7 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
             category.allegation_name)
         self.find('.officer-involved').text.should.contain(
             officer.display_name)
-        self.find('.officer-involved').text.should.contain(officer.gender)
+        self.find('.officer-involved').text.should.contain(officer_gender_display)
         self.find('.complaining-witness-list').text.should.contain(
             complaint_witness_text)
         self.find('.investigator .name').text.should.contain(investigator.name)

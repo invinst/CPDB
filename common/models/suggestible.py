@@ -20,7 +20,13 @@ class MobileSuggestibleOfficer(MobileSuggestible):
             'text': self.display_name,
             'resource': 'officer',
             'url': self.get_mobile_url(),
-            'resource_key': self.pk
+            'resource_key': self.pk,
+            'meta': {
+                'allegations_count': self.allegations_count,
+                'gender': self.gender,
+                'race': self.race,
+                'star': self.star
+             }
         }
 
 
@@ -33,5 +39,12 @@ class MobileSuggestibleAllegation(MobileSuggestible):
             'text': self.crid,
             'resource': 'allegation',
             'url': self.get_mobile_url(),
-            'resource_key': self.crid
+            'resource_key': self.crid,
+            'meta': {
+                'incident_date': self.incident_date,
+                'cat': {
+                    'allegation_name': self.cat.allegation_name,
+                    'category': self.cat.category
+                }
+            }
         }

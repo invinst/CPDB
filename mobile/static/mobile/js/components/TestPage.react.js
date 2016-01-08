@@ -23,7 +23,7 @@ var TestPage = React.createClass({
           </div>
         </SimpleTab>
       </div>
-    )
+    );
   }
 });
 
