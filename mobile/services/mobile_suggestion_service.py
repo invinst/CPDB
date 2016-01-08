@@ -3,6 +3,8 @@ from common.constants import ALLEGATION_LIMIT
 from common.models import Officer, Allegation
 
 
+# TODO: Considering refactor this suggestion service by a better design, may use the same strategy which will be used in 
+# desktop one.
 def wrap_as_suggestion(suggestion):
     return [suggestion.as_suggestion_entry()] if suggestion else []
 
