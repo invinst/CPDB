@@ -15,7 +15,7 @@ class MobileSuggestibleOfficer(MobileSuggestible):
         return '/officer/{display_name}/{id}'.format(display_name=slugified_display_name,
                                                      id=self.id)
 
-    def as_suggestion_entry(self, suggestion_type=''):
+    def as_suggestion_entry(self):
         return {
             'text': self.display_name,
             'resource': 'officer',
@@ -34,7 +34,7 @@ class MobileSuggestibleAllegation(MobileSuggestible):
     def get_mobile_url(self):
         return '/complaint/{crid}'.format(crid=self.crid)
 
-    def as_suggestion_entry(self, suggestion_type=''):
+    def as_suggestion_entry(self):
         return {
             'text': self.crid,
             'resource': 'allegation',

@@ -16,18 +16,18 @@ def suggest_officer_star(query):
         return []
 
     officer = Officer.objects.filter(star=star).first()
-    return wrap_as_suggestion(officer, suggestion_type='officer_badge')
+    return wrap_as_suggestion(officer)
 
 
 def suggest_crid(query):
     allegation = Allegation.objects.filter(crid=query).first()
-    return wrap_as_suggestion(allegation, suggestion_type='allegation_crid')
+    return wrap_as_suggestion(allegation)
 
 
 def suggest_officer_name(query):
     officers = Officer.objects.filter(OfficerQuery.condition_by_name(query)). \
                    order_by('-allegations_count')[:ALLEGATION_LIMIT]
-    suggestions = [officer.as_suggestion_entry(suggestion_type='officer_name') for officer in officers]
+    suggestions = [officer.as_suggestion_entry() for officer in officers]
     return suggestions
 
 
