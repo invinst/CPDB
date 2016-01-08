@@ -199,8 +199,8 @@ EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 BROKER_URL = os.environ.get('BROKER_URL', 'redis://localhost:6379/0')
-COMPRESS_ENABLED = os.environ.get('COMPRESS_ENABLED') != 'False'
 COMPRESS_JS_FILTERS = []
+COMPRESS_CSS_FILTERS = ['compressor.filters.css_default.CssAbsoluteFilter',  'compressor.filters.cssmin.CSSMinFilter']
 COMPRESS_PRECOMPILERS = (
     ('text/less', 'lessc {infile}'),
     ('text/sass', 'sass {infile}'),

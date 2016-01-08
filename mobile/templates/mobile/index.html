@@ -13,13 +13,10 @@
     {% endblock %}
 
     {% compress css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'ratchet/dist/css/ratchet-theme-ios.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'ratchet/dist/css/ratchet.min.css' %}" />
-    {% endcompress %}
-
-    {% compress css %}
     <link rel="stylesheet" type="text/sass" href="{% static 'mobile/sass/style.sass' %}"/>
     {% endcompress %}
+
     {% if DJANGO_ENV == 'test' %}
       {% compress css %}
         <link rel="stylesheet" type="text/sass" href="{% static 'sass/test.sass' %}" />
@@ -29,11 +26,7 @@
   <body>
     {% csrf_token %}
     <div id="router"></div>
-
-    {% compress js %}
-    <script src="{% static 'ratchet/dist/js/ratchet.min.js' %}"></script>
-    {% endcompress %}
     <link href="https://api.mapbox.com/mapbox.js/v2.2.3/mapbox.css" rel="stylesheet"/>
-    <script src="{% static 'mobile/js/bundle.js' %}"></script>
+    <script async src="{% static 'mobile/js/bundle.js' %}"></script>
   </body>
 </html>
