@@ -36,7 +36,7 @@ class SuggestServiceTestCase(SimpleTestCase):
     def test_month_year_suggestion_by_month_name(self):
         self.suggestion.suggest_incident_year_month('feb').should.equal([
             ['February 2010', '2010-2'], ['February 2011', '2011-2'], ['February 2012', '2012-2'],
-            ['February 2013', '2013-2'], ['February 2014', '2014-2'], ['February 2015', '2015-2'],
+            ['February 2013', '2013-2'], ['February 2014', '2014-2'], ['February 2015', '2015-2']
         ])
 
     def test_suggest_custom_defined_text(self):
