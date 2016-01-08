@@ -57,10 +57,27 @@ class OfficerAllegationAPIView(View):
 
     def serialize_officer_allegations(self, officer_allegations):
         results = []
+        officer_allegations = officer_allegations.select_related(
+            'allegation__beat', 'allegation__investigator', 'allegation',
+            'officer')
+        allegation_pks = officer_allegations\
+            .values_list('allegation__pk', flat=True)
+        complaining_witnesses = ComplainingWitness.objects.filter(
+            allegation__pk__in=allegation_pks)
+        police_witnesses = PoliceWitness.objects.filter(
+            allegation__pk__in=allegation_pks)
 
         for officer_allegation in officer_allegations:
             allegation = officer_allegation.allegation
-            crid = allegation.crid
+
+            officer_allegation.final_finding = \
+                officer_allegation.get_final_finding_display()
+            officer_allegation.final_outcome = \
+                officer_allegation.get_final_outcome_display()
+            officer_allegation.recc_finding = \
+                officer_allegation.get_recc_finding_display()
+            officer_allegation.recc_outcome = \
+                officer_allegation.get_recc_outcome_display()
 
             ret = {
                 'officer_allegation': officer_allegation,
@@ -69,9 +86,12 @@ class OfficerAllegationAPIView(View):
                     self.related_officers(allegation, officer_allegation),
                 'category': officer_allegation.cat or None,
                 'officer': officer_allegation.officer,
-                'complaining_witness':
-                    ComplainingWitness.objects.filter(crid=crid),
-                'police_witness': PoliceWitness.objects.filter(crid=crid),
+                'complaining_witness': [
+                    o for o in complaining_witnesses
+                    if o.allegation_id == allegation.pk],
+                'police_witness': [
+                    o for o in police_witnesses
+                    if o.allegation_id == allegation.pk],
                 'beat_name': allegation.beat.name if allegation.beat else '',
                 'investigator': allegation.investigator,
             }

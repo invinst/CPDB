@@ -38,4 +38,4 @@ class RequestViewTestCase(BaseLiveTestCase):
             "We'll notify you when the document is made available.")
 
     def check_button_requested(self):
-        self.find(".complaint-row .btn-request").text.should.equal('Requested')
+        self.find(".complaint-row .btn-request").text.should.equal('Pending')

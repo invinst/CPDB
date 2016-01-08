@@ -1,16 +1,18 @@
-import inspect
-
-from django.db.models.query_utils import Q
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import D
+from django.db.models.query_utils import Q
 
+import inspect
+
+from allegation.utils.query import OfficerQuery
 from common.constants import FOIA_START_DATE
 from common.models import OUTCOMES, ComplainingWitness, Allegation
-from allegation.utils.query import OfficerQuery
 
 
-NO_DISCIPLINE_CODES = ('600', '000', '500', '700', '800', '900', '', None)
-DISCIPLINE_CODES = [x[0] for x in OUTCOMES if x[0] not in NO_DISCIPLINE_CODES]
+NO_DISCIPLINE_CODES = ('600', '000', '500', '700', '800', '900', '')
+DISCIPLINE_CODES = [
+    x[0] for x in OUTCOMES
+    if x[0] not in NO_DISCIPLINE_CODES and x[0] is not None]
 
 
 class OfficerAllegationQueryBuilder(object):
@@ -35,9 +37,8 @@ class OfficerAllegationQueryBuilder(object):
         queries = Q()
 
         for name, func in inspect.getmembers(self, predicate=inspect.ismethod):
-            if name[:3] != '_q_':
-                continue
-            queries &= func(query_params)
+            if name[:3] == '_q_':
+                queries &= func(query_params)
 
         return queries
 
@@ -52,7 +53,7 @@ class OfficerAllegationQueryBuilder(object):
 
     def _q_adhoc_queries(self, query_params):
         queries = Q()
-        adhoc_queries = [
+        ADHOC_QUERIES = [
             'id',
             'allegation__crid',
             'cat',
@@ -68,15 +69,13 @@ class OfficerAllegationQueryBuilder(object):
             'officer__rank',
             'officer__gender',
             'officer__race',
-            'officer__allegations_count__gt',
-            'officer__discipline_count__gt',
             'allegation__investigator',
             'cat__category',
             'allegation__city',
         ]
 
         for key in query_params.keys():
-            if key in adhoc_queries:
+            if key in ADHOC_QUERIES:
                 val_list = query_params.getlist(key)
                 sub_queries = Q()
                 for val in val_list:
@@ -128,7 +127,7 @@ class OfficerAllegationQueryBuilder(object):
 
     def _q_has_document(self, query_params):
         if 'has:document' in query_params.getlist('has_filters', []):
-            return Q(allegation__document_id__isnull=False)
+            return Q(allegation__document_id__gt=0)
         return Q()
 
     def _q_has_map(self, query_params):
@@ -158,35 +157,43 @@ class OfficerAllegationQueryBuilder(object):
         return Q()
 
     def _q_unsustained_final_finding(self, query_params):
+        UNSUSTAINED_FINAL_FINDINGS = ['DS', 'EX', 'NA', 'NC', 'NS', 'UN']
         if 'unsustained' in query_params.getlist('final_finding_text', []):
-            return Q(final_finding__in=['DS', 'EX', 'NA', 'NC', 'NS', 'UN'])
+            return Q(final_finding__in=UNSUSTAINED_FINAL_FINDINGS)
         return Q()
 
     def _q_outcome_any_discipline(self, query_params):
         if 'any discipline' in query_params.getlist('outcome_text', []):
-            return Q(final_finding='SU', final_outcome=DISCIPLINE_CODES)
+            return Q(final_finding='SU', final_outcome__in=DISCIPLINE_CODES)
         return Q()
 
     def _q_outcome_no_discipline(self, query_params):
         if 'no discipline' in query_params.getlist('outcome_text', []):
-            return Q(final_finding='SU', final_outcome=NO_DISCIPLINE_CODES)
+            return Q(final_finding='SU', final_outcome__in=NO_DISCIPLINE_CODES) | \
+                Q(final_finding='SU', final_outcome__isnull=True)
+        return Q()
+
+    def _query_outcome_text(
+            self, query_params, outcome_text, final_outcome__in):
+        if outcome_text in query_params.getlist('outcome_text', []):
+            return Q(final_outcome__in=final_outcome__in)
         return Q()
 
     def _q_outcome_1_9_days(self, query_params):
-        if '1-9 days' in query_params.getlist('outcome_text', []):
-            return Q(final_outcome__in=[str(x).zfill(3) for x in range(1, 10)])
-        return Q()
+        return self._query_outcome_text(
+            query_params, outcome_text='1-9 days',
+            final_outcome__in=[str(x).zfill(3) for x in range(1, 10)])
 
     def _q_outcome_10_30_days(self, query_params):
-        if '10-30 days' in query_params.getlist('outcome_text', []):
-            return Q(final_outcome__in=[
-                str(x).zfill(3) for x in range(10, 31)])
-        return Q()
+        return self._query_outcome_text(
+            query_params, outcome_text='10-30 days',
+            final_outcome__in=[str(x).zfill(3) for x in range(10, 31)])
 
     def _q_outcome_30_more_days(self, query_params):
-        if '30 more days' in query_params.getlist('outcome_text', []):
-            return Q(final_outcome=["045", "060", "090", "180", "200"])
-        return Q()
+        FINAL_OUTCOMES_30_MORE_DAYS = ['045', '060', '090', '180', '200']
+        return self._query_outcome_text(
+            query_params, outcome_text='30 more days',
+            final_outcome__in=FINAL_OUTCOMES_30_MORE_DAYS)
 
     def _query_by_complainant(self, query_params, param_key, query_key):
         if param_key in query_params:
@@ -221,8 +228,7 @@ class OfficerAllegationQueryBuilder(object):
                 query_params.getlist('incident_date_only__year_month'):
             year, month = year_month.split('-')
             allegation_queries |= Q(
-                Q(incident_date_only__year=year) &
-                Q(incident_date_only__month=month))
+                incident_date_only__year=year, incident_date_only__month=month)
 
         dates = [
             date.replace('/', '-')
