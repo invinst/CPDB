@@ -12,8 +12,8 @@ class MobileSuggestible(object):
 class MobileSuggestibleOfficer(MobileSuggestible):
     def get_mobile_url(self):
         slugified_display_name = slugify(self.display_name)
-        return '/officer/{display_name}/{id}'.format(display_name=slugified_display_name,
-                                                     id=self.id)
+        return '/officer/{display_name}/{id}'.format(
+            display_name=slugified_display_name, id=self.id)
 
     def as_suggestion_entry(self):
         return {
@@ -35,6 +35,7 @@ class MobileSuggestibleAllegation(MobileSuggestible):
         return '/complaint/{crid}'.format(crid=self.crid)
 
     def as_suggestion_entry(self):
+        cat = self.officerallegation_set.first().cat
         return {
             'text': self.crid,
             'resource': 'allegation',
@@ -43,8 +44,8 @@ class MobileSuggestibleAllegation(MobileSuggestible):
             'meta': {
                 'incident_date': self.incident_date,
                 'cat': {
-                    'allegation_name': self.cat.allegation_name,
-                    'category': self.cat.category
+                    'allegation_name': cat.allegation_name,
+                    'category': cat.category
                 }
             }
         }

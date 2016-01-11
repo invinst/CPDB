@@ -44,7 +44,7 @@ var SummaryStore = assign({}, EventEmitter.prototype, {
     if (ajax) {
       ajax.abort();
     }
-    ajax = $.getJSON('/api/allegations/summary/?' + queryString, function (data) {
+    ajax = $.getJSON('/api/officer-allegations/summary/?' + queryString, function (data) {
       _state['rows'] = data.summary;
       SummaryStore.emitChange();
     })

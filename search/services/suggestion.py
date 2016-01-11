@@ -8,16 +8,21 @@ from common.models import AllegationCategory, Allegation, Area, Investigator, Of
 from common.utils.hashid import hash_obj
 from search.models.alias import Alias
 from search.models.session_alias import SessionAlias
-from search.utils.date import *
-from search.utils.zip_code import *
+from search.utils.date import (
+    month_choices, generate_month_year_entry_from_2010, current_year,
+    START_SEARCHABLE_YEAR)
+from search.utils.zip_code import get_zipcode_from_city
 from search.services import REPEATER_DESC
-from share.models import Session
 
 
-AREA_SORT_ORDERS = { 'police-beats': 0, 'neighborhoods': 1, 'ward': 2, 'police-districts': 3, 'school-grounds': 5 }
+AREA_SORT_ORDERS = {
+    'police-beats': 0, 'neighborhoods': 1, 'ward': 2, 'police-districts': 3,
+    'school-grounds': 5}
 DATA_SOURCES = ['FOIA', 'pre-FOIA']
 SUGGEST_OFFICER_LIMIT = 20
 # TODO: More test for this one, especially test for ensure the order, returned format
+
+
 class Suggestion(object):
     def make_suggestion_format(self, match):
         return [match[1], match[0]]
@@ -39,7 +44,7 @@ class Suggestion(object):
             zip_code = get_zipcode_from_city(city)
             results[zip_code] = city
 
-        return [[zip_code, results[zip_code]] for zip_code in results]
+        return [[code, results[code]] for code in results]
 
     def suggest_unit_number(self, q):
         results = []
@@ -99,7 +104,9 @@ class Suggestion(object):
 
         if year.isnumeric() and month.isnumeric():
             days = ["%02d" % x for x in range(1, 32)]
-            results = ["%s/%s/%s" % (year, month, x) for x in days if x.startswith(day)]
+            results = [
+                "%s/%s/%s" % (year, month, x)
+                for x in days if x.startswith(day)]
 
             return results
 
@@ -107,7 +114,9 @@ class Suggestion(object):
         if q.count('/') != 0:
             return None
 
-        return [x for x in range(START_SEARCHABLE_YEAR, current_year() + 1) if str(x).startswith(q)]
+        return [
+            x for x in range(START_SEARCHABLE_YEAR, current_year() + 1)
+            if str(x).startswith(q)]
 
     def suggest_incident_date_only_year_month(self, q):
         if q.count('/') == 1:
@@ -115,7 +124,8 @@ class Suggestion(object):
             if year.isnumeric():
                 months = ["%02d" % x for x in range(1, 13)]
 
-                return ["%s/%s" % (year, x) for x in months if x.startswith(month)]
+                return [
+                    "%s/%s" % (year, x) for x in months if x.startswith(month)]
 
     def suggest_in_custom(self, q, data):
         results = []
@@ -140,10 +150,12 @@ class Suggestion(object):
         results = self.query_suggestions(
             model_cls=Officer,
             cond=condition,
-            fields_to_get=('officer_first', 'officer_last', 'allegations_count', 'id'),
+            fields_to_get=(
+                'officer_first', 'officer_last', 'allegations_count', 'id'),
             order_bys=('-allegations_count', 'officer_first', 'officer_last'),
             limit=SUGGEST_OFFICER_LIMIT)
-        results = [["%s %s (%s)" % (x[0], x[1], x[2]), x[3] ] for x in results]
+        results = [
+            ["%s %s (%s)" % (x[0], x[1], x[2]), x[3]] for x in results]
         return results
 
     def suggest_cat_category(self, q):
@@ -213,16 +225,20 @@ class Suggestion(object):
         return []
 
     def suggest_sessions(self, query, limit=5):
-        session_aliases = SessionAlias.objects.filter(alias__icontains=query)[:limit]
+        session_aliases = SessionAlias.objects\
+            .filter(alias__icontains=query)[:limit]
         suggestions = []
         for alias in session_aliases:
-            suggestions.append([alias.title, hash_obj.encode(alias.session_id)])
+            suggestions.append(
+                [alias.title, hash_obj.encode(alias.session_id)])
 
         return suggestions
 
-    def query_suggestions(self, model_cls, cond, fields_to_get, limit=5, order_bys=None):
+    def query_suggestions(
+            self, model_cls, cond, fields_to_get, limit=5, order_bys=None):
         flat = True if len(fields_to_get) == 1 else False
-        queryset = model_cls.objects.filter(cond).values_list(*fields_to_get, flat=flat)
+        queryset = model_cls.objects.filter(cond)\
+            .values_list(*fields_to_get, flat=flat)
         if order_bys:
             queryset = queryset.order_by(*order_bys)
         queryset = queryset.distinct()[:limit]
@@ -230,20 +246,23 @@ class Suggestion(object):
 
     def _make_suggestion(self, q):
         ret = OrderedDict()
-        ret['incident_date_only__year_month'] = self.suggest_incident_year_month(q)
+        ret['incident_date_only__year_month'] = \
+            self.suggest_incident_year_month(q)
         ret['officer__star'] = self.suggest_officer_star(q)
-        ret['city'] = self.suggest_zip_code(q)
-        ret['crid'] = self.suggest_crid(q)
+        ret['allegation__city'] = self.suggest_zip_code(q)
+        ret['allegation__crid'] = self.suggest_crid(q)
         ret['incident_date_only'] = self.suggest_incident_date_only(q)
         if q.count('/') == 1:
-            ret['incident_date_only__year_month'] = self.suggest_incident_date_only_year_month(q)
-        ret['incident_date_only__year'] = self.suggest_incident_date_only_year(q)
+            ret['incident_date_only__year_month'] = \
+                self.suggest_incident_date_only_year_month(q)
+        ret['incident_date_only__year'] = \
+            self.suggest_incident_date_only_year(q)
         ret['officer'] = self.suggest_office_name(q)
         ret['officer__unit'] = self.suggest_unit(q)
         ret['cat__category'] = self.suggest_cat_category(q)
         ret['cat'] = self.suggest_cat(q)
         ret['cat__cat_id'] = self.suggest_cat_id(q)
-        ret['investigator'] = self.suggest_investigator(q)
+        ret['allegation__investigator'] = self.suggest_investigator(q)
 
         ret['final_outcome'] = self.suggest_in(q, OUTCOMES)
         ret['recc_outcome'] = ret['final_outcome']
@@ -251,7 +270,7 @@ class Suggestion(object):
         ret['final_finding'] = self.suggest_in(q, FINDINGS)
         ret['recc_finding'] = ret['final_finding']
 
-        ret['areas__id'] = self.suggest_areas(q)
+        ret['allegation__areas__id'] = self.suggest_areas(q)
         ret['complainant_gender'] = self.suggest_in(q, GENDER)
         ret['complainant_race'] = self.suggest_in(q, RACES)
 
@@ -264,7 +283,8 @@ class Suggestion(object):
 
         ret['data_source'] = self.suggest_data_source(q)
 
-        ret['officer__allegations_count__gt'] = self.suggest_repeat_offenders(q)
+        ret['officer__allegations_count__gt'] = \
+            self.suggest_repeat_offenders(q)
 
         ret['session'] = self.suggest_sessions(q)
 

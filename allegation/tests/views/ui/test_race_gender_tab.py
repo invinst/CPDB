@@ -1,4 +1,6 @@
-from allegation.factories import AllegationFactory, OfficerFactory, ComplainingWitnessFactory, AllegationCategoryFactory
+from allegation.factories import (
+    OfficerAllegationFactory, OfficerFactory, ComplainingWitnessFactory,
+    AllegationCategoryFactory)
 from common.tests.core import BaseLiveTestCase
 from common.models import Allegation, ComplainingWitness, Officer
 
@@ -7,7 +9,8 @@ class RaceGenderTabTest(BaseLiveTestCase):
     RACES = ['White', 'Black', 'Hispanic', 'White/Hispanic', 'Black/Hispanic',
              'Indigenous', 'Asian', 'Unknown']
     DISPLAY_RACES_FOR_COMPLAINANTS = ['White', 'Black', 'Hispanic', 'Others']
-    DISPLAY_RACES_FOR_OFFICERS = ['White officers', 'Black officers', 'Hispanic officers', 'Others']
+    DISPLAY_RACES_FOR_OFFICERS = [
+        'White officers', 'Black officers', 'Hispanic officers', 'Others']
     NON_DISPLAY_RACES = ['Indigenous', 'Asian', 'Unknown', 'White/Hispanic',
                          'Black/Hispanic']
     GENDERS = ['M', 'F', 'X']
@@ -21,21 +24,28 @@ class RaceGenderTabTest(BaseLiveTestCase):
     def go_to_race_gender_tab(self):
         self.visit_home()
         self.link('Race & Gender').click()
-        self.element_by_tagname_and_text('li', 'Race & Gender').has_class('active')
+        self.element_by_tagname_and_text('li', 'Race & Gender')\
+            .has_class('active')
 
     def create_allegation_with_races(self, category=None):
         category = category or AllegationCategoryFactory()
 
         for race in self.RACES:
-            allegation = AllegationFactory(officer=OfficerFactory(race=race), cat=category)
-            ComplainingWitnessFactory(crid=allegation.crid, race=race)
+            officer_allegation = OfficerAllegationFactory(
+                officer=OfficerFactory(race=race), cat=category)
+            ComplainingWitnessFactory(
+                crid=officer_allegation.allegation.crid, race=race,
+                allegation=officer_allegation.allegation)
 
     def create_allegation_with_genders(self, category=None):
         category = category or AllegationCategoryFactory()
 
         for gender in self.GENDERS:
-            allegation = AllegationFactory(officer=OfficerFactory(gender=gender), cat=category)
-            ComplainingWitnessFactory(crid=allegation.crid, gender=gender)
+            officer_allegation = OfficerAllegationFactory(
+                officer=OfficerFactory(gender=gender), cat=category)
+            ComplainingWitnessFactory(
+                crid=officer_allegation.allegation.crid, gender=gender,
+                allegation=officer_allegation.allegation)
 
     def test_race_chart(self):
         # See RACES and how we create allegation for more information why
@@ -57,7 +67,8 @@ class RaceGenderTabTest(BaseLiveTestCase):
         self.go_to_race_gender_tab()
         self.until(self.ajax_complete)
 
-        self.ensure_the_correct_race_data_is_shown(analysis_for_complainants, analysis_for_officer, total)
+        self.ensure_the_correct_race_data_is_shown(
+            analysis_for_complainants, analysis_for_officer, total)
 
     def test_gender_chart(self):
         self.create_allegation_with_genders()
@@ -73,7 +84,8 @@ class RaceGenderTabTest(BaseLiveTestCase):
         other_category = AllegationCategoryFactory(category='Other Category')
 
         self.create_allegation_with_genders(category=category)
-        AllegationFactory(officer=OfficerFactory(gender='F'), cat=other_category)
+        OfficerAllegationFactory(
+            officer=OfficerFactory(gender='F'), cat=other_category)
 
         self.visit_home()
         self.link('Categories').click()
@@ -111,8 +123,11 @@ class RaceGenderTabTest(BaseLiveTestCase):
         other_category = AllegationCategoryFactory(category='Other Category')
 
         self.create_allegation_with_races(category=category)
-        allegation = AllegationFactory(officer=OfficerFactory(race='White'), cat=other_category)
-        ComplainingWitnessFactory(crid=allegation.crid, race='White')
+        officer_allegation = OfficerAllegationFactory(
+            officer=OfficerFactory(race='White'), cat=other_category)
+        ComplainingWitnessFactory(
+            crid=officer_allegation.allegation.crid, race='White',
+            allegation=officer_allegation.allegation)
 
         self.visit_home()
         self.link('Categories').click()
@@ -120,7 +135,8 @@ class RaceGenderTabTest(BaseLiveTestCase):
         self.link('Race & Gender').click()
         self.until(self.ajax_complete)
 
-        self.ensure_the_correct_race_data_is_shown(analysis_for_complainants, analysis_for_officer, total)
+        self.ensure_the_correct_race_data_is_shown(
+            analysis_for_complainants, analysis_for_officer, total)
 
     def test_toggle_filter_tags(self):
         self.create_allegation_with_genders()
@@ -130,26 +146,31 @@ class RaceGenderTabTest(BaseLiveTestCase):
 
         self.officer_gender_chart_block('.female').click()
         self.until_ajax_complete()
-        self.element_by_classname_and_text('filter-name', 'Female').should.be.ok
+        self.element_by_classname_and_text('filter-name', 'Female')\
+            .should.be.ok
 
         self.officer_gender_chart_block('.female').click()
         self.until_ajax_complete()
-        self.element_by_classname_and_text('filter-name', 'Female').shouldnt.be.ok
+        self.element_by_classname_and_text('filter-name', 'Female')\
+            .shouldnt.be.ok
 
         self.officer_gender_chart_block('.female').click()
         self.until_ajax_complete()
-        self.element_by_classname_and_text('filter-name', 'Female').should.be.ok
+        self.element_by_classname_and_text('filter-name', 'Female')\
+            .should.be.ok
 
         self.officer_gender_chart_block('.male').click()
         self.until_ajax_complete()
-        self.element_by_classname_and_text('filter-name', 'Female').shouldnt.be.ok
+        self.element_by_classname_and_text('filter-name', 'Female')\
+            .shouldnt.be.ok
         self.element_by_classname_and_text('filter-name', 'Male').should.be.ok
 
         self.find('.officer-count').text.should.contain('1')
         self.find('.complaint-count').text.should.contain('1')
 
     def officer_gender_chart_block(self, block_class):
-        block_css_path = ".officer-gender-chart {block_class} text".format(block_class=block_class)
+        block_css_path = ".officer-gender-chart {block_class} text"\
+            .format(block_class=block_class)
         return self.find(block_css_path)
 
     def ensure_the_correct_gender_data_is_shown(self, ratio):
@@ -157,10 +178,13 @@ class RaceGenderTabTest(BaseLiveTestCase):
         officer_gender_chart = self.find('.officer-gender-chart').text
 
         for gender in self.DISPLAY_GENDERS:
-            complaint_gender_chart.should.contain(self.percent_text(gender, ratio))
-            officer_gender_chart.should.contain(self.percent_text(gender, ratio))
+            complaint_gender_chart.should.contain(
+                self.percent_text(gender, ratio))
+            officer_gender_chart.should.contain(
+                self.percent_text(gender, ratio))
 
-    def ensure_the_correct_race_data_is_shown(self, analysis_for_complainants, analysis_for_officer, total):
+    def ensure_the_correct_race_data_is_shown(
+            self, analysis_for_complainants, analysis_for_officer, total):
         complaint_race_chart = self.find('.complaint-race-chart').text
         officer_race_chart = self.find('.officer-race-chart').text
 
@@ -173,6 +197,6 @@ class RaceGenderTabTest(BaseLiveTestCase):
             officer_race_chart.should.contain(self.percent_text(race, ratio))
 
     def percent_text(self, label, ratio):
-        percent = int(ratio *  100)
+        percent = int(ratio * 100)
         text = "%d" % percent
         return "{label} {percent}".format(label=label, percent=text)

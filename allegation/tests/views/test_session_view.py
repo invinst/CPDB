@@ -1,7 +1,5 @@
 import json
-from unittest import mock
 
-from django.http.request import HttpRequest
 from faker import Faker
 
 from common.tests.core import SimpleTestCase
@@ -42,7 +40,8 @@ class AllegationSessionApiView(SimpleTestCase):
         request_params = {
             'request_data': json.dumps(params)
         }
-        response = self.client.post('/api/allegations/session/', request_params)
+        response = self.client.post(
+            '/api/allegations/session/', request_params)
         data = self.json(response)
 
         return response, data
@@ -63,7 +62,8 @@ class AllegationSessionApiView(SimpleTestCase):
 
     def test_get_new_session_with_proxy(self):
         ip = fake.ipv4()
-        response = self.client.get('/api/allegations/session/', HTTP_X_FORWARDED_FOR=ip)
+        response = self.client.get(
+            '/api/allegations/session/', HTTP_X_FORWARDED_FOR=ip)
         data = self.json(response)
         data = data['data']
         session = self.get_session_from_data(data)
@@ -76,7 +76,8 @@ class AllegationSessionApiView(SimpleTestCase):
 
     def test_get_valid_session(self):
         session = SessionFactory()
-        response, data = self.call_get_session_api({'hash_id': session.hash_id})
+        response, data = self.call_get_session_api(
+            {'hash_id': session.hash_id})
         response.status_code.should.equal(200)
         data = data['data']
         data['new'].should.equal(False)
@@ -85,7 +86,6 @@ class AllegationSessionApiView(SimpleTestCase):
         response, data = self.call_post_session_api(self.update_params)
         response.status_code.should.equal(400)
         data['data']['msg'].should.equal('Hash is not owned')
-
 
     def test_invalid_session(self):
         session = self.client.session
@@ -116,7 +116,8 @@ class AllegationSessionApiView(SimpleTestCase):
         update_params['active_tab'] = active_tab
 
         response, data = self.call_post_session_api(update_params)
-        Session.objects.get(pk=self.db_session.id).active_tab.should.equal(active_tab)
+        Session.objects.get(
+            pk=self.db_session.id).active_tab.should.equal(active_tab)
 
     def test_tracking_filter(self):
         self.num_of_filter_logs().should.equal(0)

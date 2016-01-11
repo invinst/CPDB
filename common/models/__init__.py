@@ -1,13 +1,12 @@
-from django.db.models.signals import pre_save, post_save
-from django.dispatch.dispatcher import receiver
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 from django.contrib.gis.db import models
 from django.core.urlresolvers import reverse
+from django.db.models.query_utils import Q
+
 from allegation.models.allegation_manager import AllegationManager
-from common.models.suggestible import MobileSuggestibleOfficer, MobileSuggestibleAllegation
-from document.models import RequestEmail
-from document.utils import send_document_notification_by_crid_and_link
+from common.models.suggestible import (
+    MobileSuggestibleOfficer, MobileSuggestibleAllegation)
 
 
 class User(AbstractUser):
@@ -33,9 +32,12 @@ ACTIVE_CHOICES = [
     ['Unknown', 'Unknown']
 ]
 
+
 class Officer(MobileSuggestibleOfficer, models.Model):
-    officer_first = models.CharField(max_length=255, null=True, db_index=True, blank=True)
-    officer_last = models.CharField(max_length=255, null=True, db_index=True, blank=True)
+    officer_first = models.CharField(
+        max_length=255, null=True, db_index=True, blank=True)
+    officer_last = models.CharField(
+        max_length=255, null=True, db_index=True, blank=True)
     gender = models.CharField(max_length=1, null=True, blank=True)
     race = models.CharField(max_length=50, null=True, blank=True)
     appt_date = models.DateField(null=True, blank=True)
@@ -45,7 +47,8 @@ class Officer(MobileSuggestibleOfficer, models.Model):
     allegations_count = models.IntegerField(default=0, blank=True, null=True)
     discipline_count = models.IntegerField(default=0, blank=True, null=True)
     birth_year = models.IntegerField(default=0, blank=True, null=True)
-    active = models.CharField(choices=ACTIVE_CHOICES, max_length='10', default='Unknown')
+    active = models.CharField(
+        choices=ACTIVE_CHOICES, max_length='10', default='Unknown')
 
     @property
     def absolute_url(self):
@@ -80,6 +83,7 @@ class OfficerHistory(models.Model):
 class PoliceWitness(models.Model):
     pwit_id = models.AutoField(primary_key=True)
     crid = models.CharField(max_length=30, null=True, db_index=True)
+    allegation = models.ForeignKey('common.Allegation', null=True)
     gender = models.CharField(max_length=1, null=True)
     race = models.CharField(max_length=50, null=True)
     officer = models.ForeignKey(Officer, null=True)
@@ -88,6 +92,7 @@ class PoliceWitness(models.Model):
 class ComplainingWitness(models.Model):
     cwit_id = models.AutoField(primary_key=True)
     crid = models.CharField(max_length=30, null=True, db_index=True)
+    allegation = models.ForeignKey('common.Allegation', null=True)
     gender = models.CharField(max_length=1, null=True)
     race = models.CharField(max_length=50, null=True)
     age = models.IntegerField(null=True)
@@ -380,7 +385,7 @@ FINAL_FINDING_TEXT_DICT = {
     'unsustained': {
         'text': 'Unsustained',
         'condition': {
-            'final_finding': ['DS', 'EX', 'NA', 'NC', 'NS', 'UN']
+            'final_finding': ['DS', 'EX', 'NA', 'NC', 'NS', 'UN', 'ZZ']
         }
     }
 }
@@ -390,6 +395,42 @@ HAS_FILTERS_TEXT_DICT = {
         'text': 'has:document',
         'condition': {
             'document_id__gt': [0]
+        }
+    },
+    'has:map': {
+        'text': 'has:map',
+        'condition': {
+            'point__isnull': [False]
+        }
+    },
+    'has:address': {
+        'text': 'has:address',
+        'condition': {
+            'add1_or_add2__isnotnull': [Q(add1__isnull=False) | Q(add2__isnull=False)]
+        }
+    },
+    'has:location': {
+        'text': 'has:location',
+        'condition': {
+            'location__isnull': [False]
+        }
+    },
+    'has:summary': {
+        'text': 'has:summary',
+        'condition': {
+            'document_id__isnull': [False]
+        }
+    },
+    'has:identified': {
+        'text': 'has:identified',
+        'condition': {
+            'officer__isnull': [False]
+        }
+    },
+    'has:investigator': {
+        'text': 'has:investigator',
+        'condition': {
+            'investigator__isnull': [False]
         }
     }
 }
@@ -436,44 +477,60 @@ for location in LOCATION_CHOICES:
 class Allegation(MobileSuggestibleAllegation, models.Model):
     record_id = models.IntegerField(null=True, blank=True)
     crid = models.CharField(max_length=30, null=True, db_index=True)
-    officer = models.ForeignKey(Officer, null=True)
-
-    cat = models.ForeignKey(AllegationCategory, to_field='id', null=True)
-    recc_finding = models.CharField(choices=FINDINGS, max_length=2, null=True, db_index=True, blank=True)
-    recc_outcome = models.CharField(choices=OUTCOMES, max_length=3, null=True, db_index=True, blank=True)
-    final_finding = models.CharField(choices=FINDINGS, max_length=2, null=True, db_index=True, blank=True)
-    final_outcome = models.CharField(choices=OUTCOMES, max_length=3, null=True, db_index=True, blank=True)
-    final_outcome_class = models.CharField(max_length=20, null=True, blank=True)
     summary = models.TextField(null=True, blank=True)
 
-    areas = models.ManyToManyField('Area', blank=True)
-    location = models.CharField(max_length=20, null=True, blank=True, choices=LOCATION_CHOICES)
+    location = models.CharField(
+        max_length=20, null=True, blank=True, choices=LOCATION_CHOICES)
     add1 = models.IntegerField(null=True, blank=True)
     add2 = models.CharField(max_length=255, null=True, blank=True)
     city = models.CharField(max_length=255, null=True, blank=True)
     incident_date = models.DateTimeField(null=True, blank=True)
     incident_date_only = models.DateField(null=True, db_index=True, blank=True)
-    start_date = models.DateField(null=True, blank=True)
-    end_date = models.DateField(null=True, blank=True)
-    investigator_name = models.CharField(max_length=255, null=True, db_index=True, blank=True)
-    investigator = models.ForeignKey('common.Investigator', null=True, blank=True)
-    point = models.PointField(srid=4326, null=True, blank=True)
-    objects = AllegationManager()
+    investigator_name = models.CharField(
+        max_length=255, null=True, db_index=True, blank=True)
+    investigator = models.ForeignKey(
+        'common.Investigator', null=True, blank=True)
 
     document_id = models.IntegerField(null=True, blank=True)
-    document_normalized_title = models.CharField(max_length=255, null=True, blank=True)
+    document_normalized_title = models.CharField(
+        max_length=255, null=True, blank=True)
     document_title = models.CharField(max_length=255, null=True, blank=True)
     document_requested = models.BooleanField(default=False)
     document_pending = models.BooleanField(default=False)
     number_of_request = models.IntegerField(default=0)
     last_requested = models.DateTimeField(default=timezone.now)
+    areas = models.ManyToManyField('Area', blank=True)
+    point = models.PointField(srid=4326, null=True, blank=True)
 
-    beat = models.ForeignKey('Area', null=True, blank=True, related_name='beats')
+    beat = models.ForeignKey(
+        'Area', null=True, blank=True, related_name='beats')
 
     source = models.CharField(null=True, max_length=20)
 
+    objects = AllegationManager()
+
     def __str__(self):
-        return "%s" % self.crid
+        return '%s' % self.crid
+
+
+class OfficerAllegation(models.Model):
+    allegation = models.ForeignKey(Allegation, null=True)
+    cat = models.ForeignKey(AllegationCategory, to_field='id', null=True)
+    officer = models.ForeignKey(Officer, null=True)
+
+    recc_finding = models.CharField(
+        choices=FINDINGS, max_length=2, null=True, db_index=True, blank=True)
+    recc_outcome = models.CharField(
+        choices=OUTCOMES, max_length=3, null=True, db_index=True, blank=True)
+    final_finding = models.CharField(
+        choices=FINDINGS, max_length=2, null=True, db_index=True, blank=True)
+    final_outcome = models.CharField(
+        choices=OUTCOMES, max_length=3, null=True, db_index=True, blank=True)
+    final_outcome_class = models.CharField(
+        max_length=20, null=True, blank=True)
+    start_date = models.DateField(null=True, blank=True)
+    end_date = models.DateField(null=True, blank=True)
+    objects = models.GeoManager()
 
 
 class Investigator(models.Model):
@@ -501,33 +558,3 @@ class PendingPdfAllegation(models.Model):
     finding = models.CharField(max_length=255, blank=True, null=True)
     summary = models.TextField(blank=True, null=True)
     errors = models.TextField(blank=True, null=True)
-
-
-@receiver(pre_save, sender=Allegation)
-def check_document_update(**kwargs):
-    instance = kwargs['instance']
-    if instance.pk:
-
-        if instance.document_id and instance.document_normalized_title:
-            old_instance = Allegation.objects.get(pk=instance.pk)
-            if instance.document_id == old_instance.document_id:
-                return
-
-            url = 'http://documentcloud.org/documents/{id}-{title}.html'.format(
-                id=instance.document_id,
-                title=instance.document_normalized_title
-            )
-            send_document_notification_by_crid_and_link.delay(
-                instance.crid,
-                url
-            )
-            send_document_notification_by_crid_and_link.called = True
-
-
-def update_allegations(sender, instance, created, **kwargs):
-    if created:
-        count = Allegation.objects.filter(crid=instance.crid).first().number_of_request
-        Allegation.objects.filter(crid=instance.crid).update(number_of_request=count+1,
-                                                             last_requested=timezone.now())
-
-post_save.connect(update_allegations, sender=RequestEmail)

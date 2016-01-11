@@ -51,7 +51,6 @@
   "devDependencies": {
     "browserify": "^6.2.0",
     "envify": "^3.0.0",
-    "jest-cli": "^0.5.5",
     "react-addons-perf": "^0.14.3",
     "react-tools": "~0.13.3",
     "reactify": "^0.15.2",
@@ -67,8 +66,7 @@
     "build_mobile": "NODE_PATH=mobile/static/mobile/js browserify mobile/static/mobile/js/app.js -t [envify --NODE_ENV production] | uglifyjs -cm > mobile/static/mobile/js/bundle.min.js",
     "circleci": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js browserify allegation/static/allegation/js/app.js > allegation/static/allegation/js/bundle.js",
     "circleci_admin": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js browserify dashboard/static/dashboard/js/app.js > dashboard/static/dashboard/js/bundle.js",
-    "circleci_mobile": "NODE_PATH=mobile/static/mobile/js browserify mobile/static/mobile/js/app.js > mobile/static/mobile/js/bundle.js",
-    "test": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js jest"
+    "circleci_mobile": "NODE_PATH=mobile/static/mobile/js browserify mobile/static/mobile/js/app.js > mobile/static/mobile/js/bundle.js"
   },
   "author": "Stefan Georg",
   "browserify": {
@@ -76,15 +74,5 @@
       "reactify",
       "envify"
     ]
-  },
-  "jest": {
-    "scriptPreprocessor": "allegation/static/allegation/js/test-preprocessor.js",
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "<rootDir>/static/"
-    ],
-    "globals": {
-      "__DEV__": true
-    }
   }
 }

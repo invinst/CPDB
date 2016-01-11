@@ -3,11 +3,13 @@ import csv
 import datetime
 
 from django.core import management
-from django.core.exceptions import ValidationError, MultipleObjectsReturned
+from django.core.exceptions import MultipleObjectsReturned
 from django.core.management.base import BaseCommand
 from django.db.models import Q
 
-from common.models import Officer, Allegation, PoliceWitness, Area, AllegationCategory
+from common.models import (
+    Officer, Allegation, PoliceWitness, Area, AllegationCategory,
+    OfficerAllegation)
 from common.constants import FOIA_START_DATE
 
 
@@ -42,6 +44,11 @@ ALLEGATION_COLS = {
     'investigator_id': 22,
     'final_outcome_class': 23
 }
+OFFICER_ALLEGATION_COLS = [
+    'officer', 'cat', 'recc_finding', 'recc_outcome', 'final_finding',
+    'final_outcome', 'final_outcome_class', 'start_date', 'end_date'
+]
+
 
 class Command(BaseCommand):
     help = 'Import new data in csv format'
@@ -70,7 +77,8 @@ class Command(BaseCommand):
             allegation_cache[allegation.crid] = {
                 'number_of_request': allegation.number_of_request,
                 'document_id': allegation.document_id,
-                'document_normalized_title': allegation.document_normalized_title,
+                'document_normalized_title':
+                    allegation.document_normalized_title,
                 'document_title': allegation.document_title,
                 'document_requested': allegation.document_requested,
                 'document_pending': allegation.document_pending,
@@ -78,11 +86,16 @@ class Command(BaseCommand):
             }
 
         out = csv.writer(open('not_found_allegations.csv', 'w'))
-        out.writerow(['id', 'crid', 'officer_id', 'cat_id', 'category', 'allegation_name', 'recc_finding', 'recc_outcome', 'final_finding', 'final_outcome', 'finding_edit', 'result', 'outcome_edit', 'value', 'beat', 'location', 'add1', 'add2', 'city', 'incident_date', 'start_date', 'end_date', 'investigator_id', 'final_outcome_class', ''])
+        out.writerow([
+            'id', 'crid', 'officer_id', 'cat_id', 'category',
+            'allegation_name', 'recc_finding', 'recc_outcome', 'final_finding',
+            'final_outcome', 'finding_edit', 'result', 'outcome_edit',
+            'value', 'beat', 'location', 'add1', 'add2', 'city',
+            'incident_date', 'start_date', 'end_date', 'investigator_id',
+            'final_outcome_class', ''])
 
         Allegation.objects.all().delete()
         allegation_file = csv.reader(open(options['files'][1]))
-        batch = []
         next(allegation_file)
         counter = 0
         for row in allegation_file:
@@ -111,11 +124,13 @@ class Command(BaseCommand):
                     if col == 'beat':
                         try:
                             val = val.zfill(4)
-                            val = Area.objects.get(name=val, type='police-beats')
+                            val = Area.objects.get(
+                                name=val, type='police-beats')
                         except Area.DoesNotExist:
                             val = None
                         except MultipleObjectsReturned:
-                            val = Area.objects.filter(name=val, type='police-beats').first()
+                            val = Area.objects.filter(
+                                name=val, type='police-beats').first()
 
                     if col == 'cat':
                         try:
@@ -128,7 +143,8 @@ class Command(BaseCommand):
 
                     if col == 'incident_date':
                         if val:
-                            val = datetime.datetime.strptime(val, '%Y-%m-%d %H:%M')
+                            val = datetime.datetime.strptime(
+                                val, '%Y-%m-%d %H:%M')
                         else:
                             val = '1970-01-01 00:00'
 
@@ -145,12 +161,22 @@ class Command(BaseCommand):
                 if crid in allegation_cache:
                     for key in allegation_cache[crid]:
                         if key == 'last_requested':
-                            kwargs[key] = datetime.datetime.strftime(allegation_cache[crid][key], '%Y-%m-%d %H:%M:%S')
+                            kwargs[key] = datetime.datetime.strftime(
+                                allegation_cache[crid][key],
+                                '%Y-%m-%d %H:%M:%S')
                         else:
                             kwargs[key] = allegation_cache[crid][key]
 
             try:
-                Allegation.objects.create(**kwargs)
+                officer_allegation_kwargs = {
+                    k: v for k, v in kwargs if k in OFFICER_ALLEGATION_COLS}
+                kwargs = {
+                    k: v for k, v in kwargs
+                    if k not in OFFICER_ALLEGATION_COLS}
+                allegation = Allegation.objects.create(**kwargs)
+                officer_allegation_kwargs['allegation'] = allegation
+                OfficerAllegation.objects.create(
+                    **officer_allegation_kwargs)
             except Exception as inst:
                 print(inst, row)
 
@@ -187,24 +213,26 @@ class Command(BaseCommand):
                 appt_date_or_star |= Q(star=float(row[8]))
             officers = by_name.filter(appt_date_or_star)
 
-            #if row[1] == 'AGUILERA, DANIEL':
-            #    import pdb; pdb.set_trace()
-
             if len(officers) == 0:
                 self.rows['new'].append(row)
             elif len(officers) == 1:
-                update_queue, exclude_ids = self.handle_update(row, officers, update_queue, exclude_ids)
+                update_queue, exclude_ids = self.handle_update(
+                    row, officers, update_queue, exclude_ids)
             else:
                 if not row[10] or not row[0] in new_prefoia_ids:
-                    update_queue = self.handle_undecided(row, officers, update_queue)
+                    update_queue = self.handle_undecided(
+                        row, officers, update_queue)
                 else:
-                    officers = officers.filter(id__in=prefoia_ids, unit__icontains=row[10])
+                    officers = officers.filter(
+                        id__in=prefoia_ids, unit__icontains=row[10])
                     if len(officers) == 0:
                         self.rows['new'].append(row)
                     elif len(officers) == 1:
-                        update_queue, exclude_ids = self.handle_update(row, officers, update_queue, exclude_ids)
+                        update_queue, exclude_ids = self.handle_update(
+                            row, officers, update_queue, exclude_ids)
                     else:
-                        update_queue = self.handle_undecided(row, officers, update_queue)
+                        update_queue = self.handle_undecided(
+                            row, officers, update_queue)
 
         print("Updating officers")
         for officers, info, row in update_queue:
@@ -228,7 +256,10 @@ class Command(BaseCommand):
 
         next(file)
         for row in file:
-            if row[19] and datetime.datetime.strptime(row[19].split(' ')[0], '%Y-%m-%d') <  datetime.datetime.strptime(FOIA_START_DATE, '%Y-%m-%d'):
+            if row[19] and \
+                    datetime.datetime.strptime(
+                        row[19].split(' ')[0], '%Y-%m-%d') < \
+                    datetime.datetime.strptime(FOIA_START_DATE, '%Y-%m-%d'):
                 ids.append(row[2])
 
         return ids
@@ -237,8 +268,10 @@ class Command(BaseCommand):
         to_delete = max([o.id for o in officers])
         to_keep = officers.exclude(id=to_delete)
         if len(to_keep) == 1:
-            #Allegation.objects.filter(officer_id=to_delete).update(officer_id=to_keep.first().id)
-            PoliceWitness.objects.filter(officer_id=to_delete).update(officer_id=to_keep.first().id)
+            # Allegation.objects.filter(officer_id=to_delete)\
+            #     .update(officer_id=to_keep.first().id)
+            PoliceWitness.objects.filter(officer_id=to_delete)\
+                .update(officer_id=to_keep.first().id)
             officers.filter(id=to_delete).delete()
             update_queue.append((to_keep, self.build_officer_info(row), row))
             # solution = input('Officer ID to update or "c" to create. Delete manually in db and "s" to skip:')
@@ -253,7 +286,7 @@ class Command(BaseCommand):
         return update_queue
 
     def handle_update(self, row, officers, update_queue, exclude_ids):
-        if officers[0].id in [x[0].id for x,y,z in update_queue]:
+        if officers[0].id in [x[0].id for x, y, z in update_queue]:
             self.rows['new'].append(row)
         else:
             self.rows['update'].append(row)

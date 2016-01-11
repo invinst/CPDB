@@ -1,4 +1,4 @@
-from allegation.factories import AllegationFactory, OfficerFactory
+from allegation.factories import OfficerAllegationFactory
 from common.models import Officer
 from common.tests.core import BaseLiveTestCase
 from officer.factories import StoryFactory
@@ -7,21 +7,25 @@ from officer.factories import StoryFactory
 class StoryViewTestCase(BaseLiveTestCase):
     def setUp(self):
         Officer.objects.all().delete()
-        self.allegation = AllegationFactory()
-        self.officer = self.allegation.officer
+        self.officer_allegation = OfficerAllegationFactory()
+        self.officer = self.officer_allegation.officer
 
     def visit_officer(self):
-        self.visit("/officer/{officer.officer_first}-{officer.officer_last}/{officer.id}".format(officer=self.officer))
+        self.visit(
+            "/officer/{officer.officer_first}-{officer.officer_last}/{officer.id}"
+            .format(officer=self.officer))
 
     def test_display_stories(self):
-        story = StoryFactory(officer=self.allegation.officer)
+        story = StoryFactory(officer=self.officer)
         self.visit_officer()
 
         self.until(lambda: self.should_see_text(story.story_type))
         self.should_see_text(story.title)
 
     def test_long_description_cut(self):
-        StoryFactory(officer=self.allegation.officer, short_description="a b c" * 60)  # 300 chars
+        StoryFactory(
+            officer=self.officer,
+            short_description="a b c" * 60)  # 300 chars
 
         self.visit_officer()
         self.until(lambda: self.should_see_text('Read more'))
@@ -29,8 +33,8 @@ class StoryViewTestCase(BaseLiveTestCase):
     def test_story_category_order(self):
         story_type1 = 'story_type1'
         story_type2 = 'story_type2'
-        story1 = StoryFactory(officer=self.allegation.officer, story_type=story_type1)
-        story2 = StoryFactory(officer=self.allegation.officer, story_type=story_type2)
+        StoryFactory(officer=self.officer, story_type=story_type1)
+        StoryFactory(officer=self.officer, story_type=story_type2)
 
         settings = self.get_admin_settings()
         settings.story_types_order = ','.join([story_type2, story_type1])
@@ -44,7 +48,7 @@ class StoryViewTestCase(BaseLiveTestCase):
 
     def test_story_category_with_empty_setting(self):
         story_type = 'story_type'
-        story = StoryFactory(officer=self.allegation.officer, story_type=story_type)
+        StoryFactory(officer=self.officer, story_type=story_type)
 
         settings = self.get_admin_settings()
         settings.story_types_order = ''

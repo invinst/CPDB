@@ -6,7 +6,6 @@ from django.core.urlresolvers import reverse
 from allegation.factories import AllegationFactory
 from common.models import Allegation
 from common.tests.core import SimpleTestCase
-from dashboard.admin import AllegationResource
 
 
 class AdminInvestigationDocumentsExportViewTestCase(SimpleTestCase):
