@@ -155,7 +155,7 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
         expected_allegations = [
             OfficerAllegationFactory(final_finding=code)
             for code in ['DS', 'EX', 'NA', 'NC', 'NS', 'UN', 'ZZ']]
-        OfficerAllegationFactory(final_finding='ZZ')
+        OfficerAllegationFactory(final_finding='SU')
 
         query_string = 'final_finding_text=unsustained'
         expected_ids = [allegation.id for allegation in expected_allegations]
