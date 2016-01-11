@@ -153,9 +153,9 @@ class SuggestViewTestCase(SimpleTestCase):
     def test_suggest_city(self):
         AllegationFactory(city='Chicago IL 60616')
         self.get_suggestion('616')
-        self.get_suggestion('616').should.contain('city')
-        self.get_suggestion('123').shouldnt.contain('city')
-        self.get_suggestion('Chi').shouldnt.contain('city')
+        self.get_suggestion('616').should.contain('allegation__city')
+        self.get_suggestion('123').shouldnt.contain('allegation__city')
+        self.get_suggestion('Chi').shouldnt.contain('allegation__city')
 
     def test_search_with_alias(self):
         officer = OfficerFactory()
