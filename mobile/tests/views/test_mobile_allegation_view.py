@@ -1,12 +1,12 @@
 from rest_framework.reverse import reverse
-from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND
 from allegation.factories import OfficerFactory, AllegationFactory, ComplainingWitnessFactory
 from common.tests.core import SimpleTestCase
 
 
 class MobileAllegationTest(SimpleTestCase):
     def call_allegation_api(self, params={}):
-        response = self.client.get(reverse('mobile:allegation'), params)
+        response = self.client.get(reverse('mobile:mobile-allegation'), params)
         data = self.json(response)
 
         return response, data

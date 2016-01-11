@@ -6,7 +6,7 @@ from common.tests.core import SimpleTestCase
 
 class MobileOfficerViewTest(SimpleTestCase):
     def call_related_officer_api(self, params={}):
-        response = self.client.get(reverse('mobile:officer'), params)
+        response = self.client.get(reverse('mobile:mobile-officer'), params)
         data = self.json(response)
 
         return response, data
@@ -48,5 +48,3 @@ class MobileOfficerViewTest(SimpleTestCase):
         bad_pk = 'xyz'
         response, data = self.call_related_officer_api({'pk': bad_pk})
         response.status_code.should.equal(HTTP_400_BAD_REQUEST)
-
-

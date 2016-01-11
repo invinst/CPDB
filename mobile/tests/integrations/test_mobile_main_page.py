@@ -30,7 +30,7 @@ class MobileMainPageTest(BaseLivePhoneTestCase):
 
         self.go_to_main_page()
         self.search_for(officer.officer_first)
-        
+
         self.wait_for_success_result()
 
         self.should_see_text_in_result(officer.officer_first)

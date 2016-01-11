@@ -1,6 +1,6 @@
 from allegation.factories import AllegationFactory, OfficerFactory
 from common.tests.core import SimpleTestCase
-from mobile.services.mobile_suggestion_service import *
+from mobile.services.mobile_suggestion_service import suggest_officer_star, suggest_officer_name, suggest_crid
 
 
 class MobileSuggestionServiceTest(SimpleTestCase):

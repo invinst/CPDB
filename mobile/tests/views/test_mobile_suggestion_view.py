@@ -7,7 +7,7 @@ from common.tests.core import SimpleTestCase
 
 class MobileSuggestionViewTest(SimpleTestCase):
     def call_mobile_suggestion_api(self, params={}):
-        response = self.client.get(reverse('mobile:suggestion'), params)
+        response = self.client.get(reverse('mobile:mobile-suggestion'), params)
         data = self.json(response)
 
         return response, data
@@ -32,4 +32,3 @@ class MobileSuggestionViewTest(SimpleTestCase):
 
         response, data = self.call_mobile_suggestion_api(params)
         response.status_code.should.equal(HTTP_404_NOT_FOUND)
-

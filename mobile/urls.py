@@ -1,5 +1,4 @@
 from django.conf.urls import url, include
-from django.views.decorators.csrf import ensure_csrf_cookie
 
 from common.middleware.cache import orderless_cache_page
 from mobile.views.mobile_allegation_view import MobileAllegationView
@@ -15,9 +14,9 @@ urlpatterns = [
     url(r'^lookup/', include('common.urls', namespace='common')),
 
     # api urls
-    url(r'^api/suggestion/$', cache_view(MobileSuggestionView.as_view()), name='suggestion'),
-    url(r'^api/allegations/$', cache_view(MobileAllegationView.as_view()), name='allegation'),
-    url(r'^api/officer/$', cache_view(MobileOfficerView.as_view()), name='officer'),
+    url(r'^api/suggestion/$', cache_view(MobileSuggestionView.as_view()), name='mobile-suggestion'),
+    url(r'^api/allegation/$', cache_view(MobileAllegationView.as_view()), name='mobile-allegation'),
+    url(r'^api/officer/$', cache_view(MobileOfficerView.as_view()), name='mobile-officer'),
 
     # fall-back urls
     url(r'^mobile/api/suggestion/$', cache_view(MobileSuggestionView.as_view()), name='mobile-suggestion'),
