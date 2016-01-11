@@ -380,7 +380,7 @@ FINAL_FINDING_TEXT_DICT = {
     'unsustained': {
         'text': 'Unsustained',
         'condition': {
-            'final_finding': ['DS', 'EX', 'NA', 'NC', 'NS', 'UN']
+            'final_finding': ['DS', 'EX', 'NA', 'NC', 'NS', 'UN', 'ZZ']
         }
     }
 }
