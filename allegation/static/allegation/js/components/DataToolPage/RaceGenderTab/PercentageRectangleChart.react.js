@@ -31,7 +31,7 @@ var PercentageRectangleChart = React.createClass({
       return { 'label': blockData['label'], 'value': value };
     });
 
-    FilterTagsActions.addTag(this.props.filter, tags[0]);
+    FilterTagsActions.toggleTags(this.props.filter, tags);
     return false;
   }
 
