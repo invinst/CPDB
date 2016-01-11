@@ -63,14 +63,25 @@ var FilterTagStore = _.assign(Base(_state), {
     return _.get(this.getFilter(category, value), 'pinned');
   },
 
+  toggleFilter: function (category, value, filter) {
+    if (this.getFilter(category, value)) {
+      this.removeFilter(category, value);
+    } else {
+      this.addFilter(category, value, filter);
+      this.pinFilter(category, value);
+    }
+  },
+
   getQueryString: function (ignoreCategories) {
-    var filters = _.clone(_state['filters']);
+    var filters = _.filter(_state['filters'], function (item) {
+      return item.length > 0;
+    });
 
     _.each(ignoreCategories, function (category) {
       delete filters[category];
-    })
+    });
 
-    var query = _.map(filters, function (category, values) {
+    var query = _.map(filters, function (values, category) {
       return _.pluck(values, 'filter').join('&')
     }).join('&');
 
@@ -129,12 +140,18 @@ AppDispatcher.register(function (action) {
     break;
 
     case AppConstants.TOGGLE_TAGS:
-      var values = _(action.filters).chain().pluck('value');
+      // var values = _(action.filters).chain().pluck('value');
       // We do a trick here, first we add it in, then we pin it
       // When adding completely, we pin one more time to `unpin` it
       // This will help us for not adding a new exception to API
-      values.map(FilterTagStore.toogleFiltersFor(action.category));
-      values.map(FilterTagStore.justUnpinFor(action.category));
+      _.each(action.tags, function (tag) {
+        FilterTagStore.toggleFilter(action.category, tag.value, tag.filter);
+      });
+
+      _.each(action.tags, function (tag) {
+        FilterTagStore.pinFilter(action.category, tag.value);
+      });
+
       FilterTagStore.emitChange();
     break;
 
@@ -149,9 +166,9 @@ AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.RECEIVED_SESSION_DATA:
-      filters = _.get(action.data['data']['query']['filters'], {})
-      FilterTagStore.setSession(filters);
-      _state['initialized'] = filters;
+      session_query = _.get(action.data, 'data.query', {})
+      FilterTagStore.setSession(session_query);
+      _state['initialized'] = session_query['filters'] || {};
       FilterTagStore.emitChange();
       break;
 

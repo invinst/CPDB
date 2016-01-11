@@ -8,7 +8,7 @@ var _queryString = null;
 
 var MapAPI = {
   getMarkers: function (query) {
-    var queryString = FilterStore.getQueryString(['areas__id']);
+    var queryString = FilterStore.getQueryString(['allegation__areas__id']);
     queryString = query || queryString;
 
     if (_queryString == queryString) {

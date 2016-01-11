@@ -13,6 +13,14 @@ class SuggestHas(SuggestBase):
 
         for val, filter_text in HAS_FILTERS_LIST:
             if filter_text[:len(term)] == term:
-                results.append([filter_text, val])
+                results.append(val)
 
-        return { 'has_filters': results }
+        results = [
+            cls.entry_format(
+                label=entry,
+                value=entry,
+                filter=cls.build_filter(category='has_filters', value=entry)
+            ) for entry in results
+        ]
+
+        return {'has:': results}

@@ -9,6 +9,14 @@ class SuggestRepeatOffenders(SuggestBase):
 
     @classmethod
     def _query(cls, term):
-        results = [[value, int(key)] for key, value in REPEATER_DESC.items()]
+        raw_results = [[value, int(key)] for key, value in REPEATER_DESC.items()]
 
-        return { 'officer__allegations_count__gt': results }
+        results = [
+            cls.entry_format(
+                label=entry[0],
+                value=entry[0],
+                filter=cls.build_filter(category='officer__allegations_count__gt', value=entry[1])
+            ) for entry in raw_results
+        ]
+
+        return {'Repeater': results}

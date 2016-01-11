@@ -8,4 +8,14 @@ class SuggestDataSource(SuggestBase):
 
     @classmethod
     def _query(cls, term):
-        return { 'data_source': ['FOIA', 'pre-FOIA'] }
+        raw_results = ['FOIA', 'pre-FOIA']
+
+        results = [
+            cls.entry_format(
+                label=entry,
+                value=entry,
+                filter=cls.build_filter(category='data_source', value=entry)
+            ) for entry in raw_results
+        ]
+
+        return {'Data Source': results}

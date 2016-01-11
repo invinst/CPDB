@@ -112,9 +112,9 @@ var SummaryRow = React.createClass({
     var current = this.props.category;
 
     if (this.isActive(current)) {
-      FilterTagsActions.removeTag('cat__category', {label: current.name, value: current.name});
+      FilterTagsActions.removeTag('Category', current.name);
     } else {
-      FilterTagsActions.addTag('cat__category', {label: current.name, value: current.name});
+      FilterTagsActions.addTag('Category', current.name, 'cat__category=' + current.name, current.name);
     }
 
     SummaryStore.setCurrentActive(current.name);

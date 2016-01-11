@@ -1,7 +1,5 @@
 from collections import OrderedDict
 
-from haystack.query import SearchQuerySet
-
 from search.models.alias import Alias
 from search.services.suggest_format_service import SuggestFormatService
 from search.services.suggest.suggest_incident_date import SuggestIncidentDateOnlyYearMonth, SuggestIncidentDateOnly, SuggestIncidentDateOnlyYear
@@ -22,27 +20,27 @@ from search.services.suggest.suggest_finding import SuggestFinding
 class SuggestionService(object):
     def __init__(self):
         self.suggests = [
-            # SuggestIncidentDateOnlyYearMonth,
-            # SuggestIncidentDateOnly,
-            # SuggestIncidentDateOnlyYear,
+            SuggestIncidentDateOnlyYearMonth,
+            SuggestIncidentDateOnly,
+            SuggestIncidentDateOnlyYear,
             SuggestAllegationCity,
-            # SuggestAllegationCrid,
-            # SuggestAllegationCategoryCat,
-            # SuggestAllegationCategoryCategory,
-            # SuggestArea,
-            # SuggestHas,
-            # SuggestInvestigator,
-            # SuggestOfficerName,
-            # SuggestOfficerStar,
-            # SuggestOfficerUnit,
-            # SuggestOfficerRank,
+            SuggestAllegationCrid,
+            SuggestAllegationCategoryCategory,
+            SuggestAllegationCategoryCat,
+            SuggestArea,
+            SuggestHas,
+            SuggestInvestigator,
+            SuggestOfficerName,
+            SuggestOfficerStar,
+            SuggestOfficerUnit,
+            SuggestOfficerRank,
             # SuggestSessionAlias,
-            # SuggestDataSource,
-            # SuggestOutcome,
-            # SuggestOutcomeText,
-            # SuggestRepeatOffenders,
-            # SuggestRaceGender,
-            # SuggestFinding
+            SuggestDataSource,
+            SuggestOutcome,
+            SuggestOutcomeText,
+            SuggestRepeatOffenders,
+            SuggestRaceGender,
+            SuggestFinding
         ]
 
     def _make_suggestion(self, q):

@@ -8,6 +8,13 @@ class SuggestInvestigator(SuggestBase):
     def _query(cls, term):
         sqs = SearchQuerySet()
         raw_results = sqs.filter(investigator_name=term).order_by('-investigator_complaint_count')[:5]
-        results = [("%s (%s)" % (x.investigator_name, x.investigator_complaint_count), x.investigator_id) for x in raw_results]
 
-        return { 'allegation__investigator': results }
+        results = [
+            cls.entry_format(
+                label='{name} ({count})'.format(name=entry.investigator_name, count=entry.investigator_complaint_count),
+                value=entry.investigator_name,
+                filter=cls.build_filter(category='allegation__investigator', value=entry.investigator_id)
+            ) for entry in raw_results
+        ]
+
+        return {'Investigator': results}

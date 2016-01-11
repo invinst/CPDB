@@ -163,7 +163,7 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
       if (d.tagValue.removeParent) {
         FilterTagsActions.removeTag(d.parent.tagValue.category, d.parent.tagValue);
       }
-      FilterTagsActions.addTag(d.tagValue.category, d.tagValue);
+      FilterTagsActions.addTag(d.tagValue.category, d.tagValue.label, d.tagValue.filter + '=' + d.tagValue.value);
     }
 
     SunburstActions.selectArc(d);

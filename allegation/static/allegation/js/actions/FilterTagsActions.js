@@ -26,7 +26,7 @@ function updateSiteData(dontUpdateSession) {
 };
 
 var FilterTagsActions = {
-  addTag: function (category, value, filter) {
+  addTag: function (category, value, filter, text) {
     if (EmbedStore.isEmbedMode()) {
       return
     }
@@ -34,32 +34,33 @@ var FilterTagsActions = {
       actionType: AppConstants.ADD_TAG,
       category: category,
       value: value,
-      filter: filter
+      filter: filter,
+      text: text
     });
     updateSiteData();
   },
 
-  toggleTags: function (category, filters) {
+  toggleTags: function (category, tags) {
     if (EmbedStore.isEmbedMode()) {
       return
     }
     AppDispatcher.dispatch({
       actionType: AppConstants.TOGGLE_TAGS,
       category: category,
-      filters: filters
+      tags: tags
     });
 
     updateSiteData();
   },
 
-  removeTag: function (category, filter, dontUpdateSession) {
+  removeTag: function (category, value, dontUpdateSession) {
     if (EmbedStore.isEmbedMode()) {
       return
     }
     AppDispatcher.dispatch({
       actionType: AppConstants.REMOVE_TAG,
       category: category,
-      filter: filter
+      value: value
     });
 
     updateSiteData(dontUpdateSession);

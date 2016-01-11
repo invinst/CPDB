@@ -5,7 +5,7 @@ require('mapbox.js');
 require('leaflet.heat');
 
 var MapStore = require("stores/MapStore");
-var FilterStore = require('stores/FilterStore');
+var FilterTagStore = require('stores/FilterTagStore');
 var FilterActions = require("actions/FilterActions");
 var FilterTagsActions = require("actions/FilterTagsActions");
 var AppConstants = require('constants/AppConstants');
@@ -66,7 +66,7 @@ var Map = React.createClass({
     MapStore.addChangeMarkerListener(this.changeMarker);
     MapStore.addBeforeChangeMarkerListener(this.beforeChangeMarker);
 
-    FilterStore.addChangeListener(this._onChange);
+    FilterTagStore.addChangeListener(this._onChange);
     this.embedListener();
 
     // having this code async will not block the immediate rendering of the page
@@ -82,7 +82,7 @@ var Map = React.createClass({
     AppStore.removeDataToolInitListener(this.onDataToolInit);
     MapStore.removeChangeMarkerListener(this.changeMarker);
     MapStore.removeBeforeChangeMarkerListener(this.beforeChangeMarker);
-    FilterStore.removeChangeListener(this._onChange);
+    FilterTagStore.removeChangeListener(this._onChange);
 
     _baseLayers = {};
     this.first_layer_added = false;
@@ -94,7 +94,7 @@ var Map = React.createClass({
     var node = ReactDOM.findDOMNode(this);
     var width = $(node).width() + 2;
     var height = $(node).height() + 2;
-    var src = "/embed/?page=map&query=" + encodeURIComponent(FilterStore.getQueryString());
+    var src = "/embed/?page=map&query=" + encodeURIComponent(FilterTagStore.getQueryString());
     var state = MapStore.getState();
     state = {
       center: state.center,
@@ -212,15 +212,14 @@ var Map = React.createClass({
   },
 
   onEachFeature: function (feature, layer) {
-    var filters = FilterStore.getAll();
+    var filter = FilterTagStore.getFilter('Area', feature.properties.id);
     layer.selected = false;
-    if ('areas__id' in filters) {
-      if (filters['areas__id']['value'].indexOf(feature.properties.id) > -1) {
-        layer.selected = true;
-        layer.setStyle(highlightStyle);
 
-        selectedLayers[feature.properties.id] = layer;
-      }
+    if (filter) {
+      layer.selected = true;
+      layer.setStyle(highlightStyle);
+
+      selectedLayers[feature.properties.id] = layer;
     }
 
     allLayersIndex[feature.properties.id] = layer;
@@ -244,10 +243,10 @@ var Map = React.createClass({
       selectedLayers[feature.properties.id] = layer;
       layer.selected = !layer.selected;
       if (layer.selected) {
-        FilterTagsActions.addTag('areas__id', tagValue);
+        FilterTagsActions.addTag('Area', tagValue.label, 'allegation__areas__id=' + tagValue.value);
       }
       else {
-        FilterTagsActions.removeTag('areas__id', tagValue);
+        FilterTagsActions.removeTag('Area', tagValue.label);
       }
     });
     if (!(area_type in _layers)) {
@@ -329,15 +328,16 @@ var Map = React.createClass({
   },
 
   _onChange: function () {
-    var filters = FilterStore.getFilters();
-    if (!filters.areas__id) {
+    var filters = FilterTagStore.getFilters();
+    if (!filters['Area']) {
       return;
     }
 
-    var values = filters.areas__id.value;
+    var values = filters['Area'];
     for (var k in allLayersIndex) {
       var layer = allLayersIndex[k];
-      if (values.indexOf(parseInt(k)) == -1) {
+      var value = layer.feature.properties.type + ': ' + layer.feature.properties.name;
+      if (!FilterTagStore.getFilter('Area', value)) {
         layer.selected = false;
         layer.setStyle(_normalStyle);
         if (k in selectedLayers) {

@@ -4,6 +4,7 @@ from common.models import Officer, AllegationCategory, Allegation, Investigator,
 from search.models.session_alias import SessionAlias
 from search.search_backends import CustomEdgeNgramField, CustomNgramField, CustomIntegerNgramField
 
+
 class SuggestionBaseIndex(indexes.SearchIndex):
     text = indexes.CharField(document=True, use_template=True)
 

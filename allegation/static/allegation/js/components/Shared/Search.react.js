@@ -56,7 +56,7 @@ var Search = React.createClass({
     if (ui.item.category == 'session') {
       SessionAPI.getSessionInfo(ui.item.value);
     } else {
-      FilterTagsActions.addTag(ui.item.category, ui.item.value, ui.item.filter);
+      FilterTagsActions.addTag(ui.item.category, ui.item.value, ui.item.filter, ui.item.label);
       $("#autocomplete").val('');
     }
   },

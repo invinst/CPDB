@@ -5,21 +5,38 @@ from search.utils.date import START_SEARCHABLE_YEAR, generate_month_year_entry_f
 class SuggestIncidentDateOnlyYearMonth(SuggestBase):
     @classmethod
     def _query(cls, term):
+        raw_results = []
         results = []
 
         if term.count('/') == 1:
             year, month = term.split("/")
 
-            if year.isnumeric():
+            if year.isnumeric() and int(year) > START_SEARCHABLE_YEAR:
                 months = ["%02d" % x for x in range(1, 13)]
 
-                results = ["%s/%s" % (year, x) for x in months if x.startswith(month)]
+                raw_results = ["%s/%s" % (year, x) for x in months if x.startswith(month)]
+
+                results = [
+                    cls.entry_format(
+                        label=entry,
+                        value=entry,
+                        filter=cls.build_filter(category='incident_date_only__year_month', value=entry)
+                    ) for entry in raw_results
+                ]
         else:
             for month in month_choices():
                 if month[1].lower().startswith(term):
-                    results = results + generate_month_year_entry_from_2010(month)
+                    raw_results = raw_results + generate_month_year_entry_from_2010(month)
 
-        return { 'incident_date_only__year_month': results }
+                    results = [
+                        cls.entry_format(
+                            label=entry[0],
+                            value=entry[1],
+                            filter=cls.build_filter(category='incident_date_only__year_month', value=entry[1])
+                        ) for entry in raw_results
+                    ]
+
+        return {'Incident Year/Month': results}
 
 
 class SuggestIncidentDateOnly(SuggestBase):
@@ -33,9 +50,17 @@ class SuggestIncidentDateOnly(SuggestBase):
 
         if year.isnumeric() and month.isnumeric():
             days = ["%02d" % x for x in range(1, 32)]
-            results = ["%s/%s/%s" % (year, month, x) for x in days if x.startswith(day)]
+            raw_results = ["%s/%s/%s" % (year, month, x) for x in days if x.startswith(day)]
 
-            return { 'incident_date_only': results }
+            results = [
+                cls.entry_format(
+                    label=entry,
+                    value=entry,
+                    filter=cls.build_filter(category='incident_date_only', value=entry)
+                ) for entry in raw_results
+            ]
+
+            return {'Incident Date': results}
 
 
 class SuggestIncidentDateOnlyYear(SuggestBase):
@@ -46,6 +71,14 @@ class SuggestIncidentDateOnlyYear(SuggestBase):
     @classmethod
     def _query(cls, term):
         range_years = range(START_SEARCHABLE_YEAR, current_year() + 1)
-        results = [x for x in range_years if str(x).startswith(term)]
+        raw_results = [x for x in range_years if str(x).startswith(term)]
 
-        return { 'incident_date_only__year': results }
+        results = [
+            cls.entry_format(
+                label=entry,
+                value=entry,
+                filter=cls.build_filter(category='incident_date_only__year', value=entry)
+            ) for entry in raw_results
+        ]
+
+        return {'Incident Year': results}

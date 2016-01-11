@@ -22,13 +22,13 @@ var SummaryChildRow = React.createClass({
     e.preventDefault();
 
     var parent = this.props.category
-    FilterTagsActions.removeTag('cat__category', {label: parent.name, value: parent.name});
+    FilterTagsActions.removeTag('Category', parent.name);
 
     var child = this.props.subcategory;
     if (this.state.selected) {
-      FilterTagsActions.removeTag('cat__cat_id', {label: child.name, value: child.cat_id});
+      FilterTagsActions.removeTag('Category ID', child.cat_id);
     } else {
-      FilterTagsActions.addTag('cat__cat_id', {label: child.name, value: child.cat_id});
+      FilterTagsActions.addTag('Category ID', child.cat_id, 'cat__cat_id=' + child.cat_id, child.name);
     }
 
     this.state.selected = !this.state.selected;
