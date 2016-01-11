@@ -89,11 +89,10 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
     def test_bad_officer_pk(self):
         bad_officer_pk = 1234
         officer_slug = 'xxxx'
-        not_match_text = \
-            'The id %s is not recorded in out database.' % bad_officer_pk
-        self.go_to_officer_page(slug=officer_slug, pk=bad_officer_pk)
+        not_match_text = 'The id %s is not recorded in out database.' % bad_officer_pk
 
-        self.should_see_text(not_match_text)
+        self.go_to_officer_page(slug=officer_slug, pk=bad_officer_pk)
+        self.until(lambda: self.should_see_text(not_match_text))
 
     def test_no_related_officer(self):
         officer = OfficerFactory()

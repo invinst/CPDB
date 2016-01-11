@@ -15,9 +15,8 @@ var OfficerComplaintItem = React.createClass({
     var officerUtil = OfficerUtil();
 
     for (var i = 0; i < allegationCounts.length; i++) {
-
       circles.push(
-        <div className={cx('circle-wrapper', HelperUtil.format('officer-{index}', {'index': i}))} >
+        <div className={cx('circle-wrapper', HelperUtil.format('officer-{index}', {'index': i}))} key={i}>
           <span className={cx('circle', officerUtil.getStarClass(allegationCounts[i]))} ></span>
         </div>
       );

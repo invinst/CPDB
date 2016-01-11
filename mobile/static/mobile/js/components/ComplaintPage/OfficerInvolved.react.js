@@ -12,7 +12,6 @@ var AppHistory = require('utils/History');
 
 
 var OfficerInvolved = React.createClass({
-
   _onClick: function (officerPresenter) {
     var officerUrl = HelperUtil.format('/officer/{name}/{id}', {
       'name': officerPresenter.displayName,
@@ -23,8 +22,9 @@ var OfficerInvolved = React.createClass({
 
   renderOfficerRow: function (officer) {
     var officerPresenter = OfficerPresenter(officer);
+
     return (
-      <div onClick={this._onClick.bind(this, officerPresenter)}>
+      <div onClick={this._onClick.bind(this, officerPresenter)} key={officer.id}>
         <OfficerCard
           officerId={officer.id}
           allegationsCount={officerPresenter.allegationsCount}
