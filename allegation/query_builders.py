@@ -157,7 +157,7 @@ class OfficerAllegationQueryBuilder(object):
         return Q()
 
     def _q_unsustained_final_finding(self, query_params):
-        UNSUSTAINED_FINAL_FINDINGS = ['DS', 'EX', 'NA', 'NC', 'NS', 'UN']
+        UNSUSTAINED_FINAL_FINDINGS = ['DS', 'EX', 'NA', 'NC', 'NS', 'UN', 'ZZ']
         if 'unsustained' in query_params.getlist('final_finding_text', []):
             return Q(final_finding__in=UNSUSTAINED_FINAL_FINDINGS)
         return Q()
