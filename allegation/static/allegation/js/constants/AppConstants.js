@@ -276,7 +276,7 @@ module.exports = {
     'complainant_gender': 'Complainant Gender',
     'complainant_race': 'Complainant Race',
     'outcome_text': 'Outcome',
-    'city': 'Zip Code',
+    'allegation__city': 'Zip Code',
     'data_source': 'Data Source',
     'officer__allegations_count__gt': 'Repeater',
     'session': 'Session',

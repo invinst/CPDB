@@ -154,7 +154,7 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
     def test_unsustained_final_finding(self):
         expected_allegations = [
             OfficerAllegationFactory(final_finding=code)
-            for code in ['DS', 'EX', 'NA', 'NC', 'NS', 'UN']]
+            for code in ['DS', 'EX', 'NA', 'NC', 'NS', 'UN', 'ZZ']]
         OfficerAllegationFactory(final_finding='ZZ')
 
         query_string = 'final_finding_text=unsustained'
