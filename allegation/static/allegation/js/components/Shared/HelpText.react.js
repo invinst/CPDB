@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactToolTip = require('react-tooltip');
 
 
 var HelpText = React.createClass({
@@ -6,15 +7,9 @@ var HelpText = React.createClass({
     var placement = this.props.placement ? this.props.placement : 'right';
     var text = INTERFACE_TEXTS[this.props.identifier] ? INTERFACE_TEXTS[this.props.identifier] : "Not set in admin: '" + this.props.identifier +"'";
     return (
-      <span className='fa fa-question-circle' data-toggle="tooltip" data-placement={placement} title={text}></span>
+      <span className='fa fa-question-circle' data-tip={text}><ReactToolTip /></span>
     )
-  },
-  componentDidMount: function () {
-    $(function () {
-      $('[data-toggle="tooltip"]').tooltip()
-    });
   }
-
 });
 
 module.exports = HelpText;
