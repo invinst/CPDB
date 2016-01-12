@@ -18,7 +18,7 @@ var SearchablePage = React.createClass(objectAssign(Base(SearchablePageStore), {
   render: function () {
     if (this.state.focus) {
       return (
-        <div>
+        <div className='searchable-page'>
           <SearchBar />
           <SearchResults />
       </div>
@@ -26,7 +26,7 @@ var SearchablePage = React.createClass(objectAssign(Base(SearchablePageStore), {
     }
 
     return (
-      <div>
+      <div className='searchable-page'>
         <SearchBar />
         {this.props.children}
       </div>
