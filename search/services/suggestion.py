@@ -249,7 +249,7 @@ class Suggestion(object):
         ret['incident_date_only__year_month'] = \
             self.suggest_incident_year_month(q)
         ret['officer__star'] = self.suggest_officer_star(q)
-        ret['city'] = self.suggest_zip_code(q)
+        ret['allegation__city'] = self.suggest_zip_code(q)
         ret['allegation__crid'] = self.suggest_crid(q)
         ret['incident_date_only'] = self.suggest_incident_date_only(q)
         if q.count('/') == 1:

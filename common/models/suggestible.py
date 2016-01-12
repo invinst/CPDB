@@ -20,7 +20,13 @@ class MobileSuggestibleOfficer(MobileSuggestible):
             'text': self.display_name,
             'resource': 'officer',
             'url': self.get_mobile_url(),
-            'resource_key': self.pk
+            'resource_key': self.pk,
+            'meta': {
+                'allegations_count': self.allegations_count,
+                'gender': self.gender,
+                'race': self.race,
+                'star': self.star
+             }
         }
 
 
@@ -29,9 +35,17 @@ class MobileSuggestibleAllegation(MobileSuggestible):
         return '/complaint/{crid}'.format(crid=self.crid)
 
     def as_suggestion_entry(self):
+        cat = self.officerallegation_set.first().cat
         return {
             'text': self.crid,
             'resource': 'allegation',
             'url': self.get_mobile_url(),
-            'resource_key': self.crid
+            'resource_key': self.crid,
+            'meta': {
+                'incident_date': self.incident_date,
+                'cat': {
+                    'allegation_name': cat.allegation_name,
+                    'category': cat.category
+                }
+            }
         }

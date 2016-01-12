@@ -5,7 +5,7 @@ from allegation.models import hooks
 from allegation.views import AreaAPIView
 from allegation.views import (
     OfficerAllegationGISApiView, OfficerAllegationClusterApiView)
-from allegation.views import InvestigationAPIView
+from allegation.views import PoliceWitnessAPIView
 from allegation.views import (
     OfficerAllegationSummaryApiView, OfficerListAPIView)
 from allegation.views.officer_allegation_analysis_api_view import (
@@ -50,8 +50,8 @@ urlpatterns = [
         name='officer-allegation-api-sunburst'),
 
     url(r'^api/areas/$', cache_view(AreaAPIView.as_view()), name='area-api'),
-    url(r'^api/investigation/$',
-        cache_view(InvestigationAPIView.as_view()), name='investigation'),
+    url(r'^api/police-witness/$',
+        cache_view(PoliceWitnessAPIView.as_view()), name='police-witness'),
 
     url(r'^allegations/download/',
         (AllegationDownloadView.as_view()), name='allegation-download'),

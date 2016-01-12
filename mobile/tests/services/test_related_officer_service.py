@@ -21,17 +21,3 @@ class RelatedOfficerTest(SimpleTestCase):
         SqlHelper.len_of_raw_queryset(co_accused_officers).should.be.equal(1)
         co_accused_officers[0].id.should.be.equal(co_accused_officer.id)
         co_accused_officers[0].num_allegations.should.be.equal(1)
-
-    def test_witness_officer(self):
-        officer = OfficerFactory()
-        witness_officer = OfficerFactory()
-        officer_allegation = OfficerAllegationFactory(officer=officer)
-        PoliceWitnessFactory(
-            crid=officer_allegation.allegation.crid, officer=witness_officer,
-            allegation=officer_allegation.allegation)
-
-        witness_officers = RelatedOfficerService.witness_officers(officer.id)
-
-        SqlHelper.len_of_raw_queryset(witness_officers).should.be.equal(1)
-        witness_officers[0].id.should.be.equal(witness_officer.id)
-        witness_officers[0].num_allegations.should.be.equal(1)

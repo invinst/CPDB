@@ -7,6 +7,7 @@ from django.db.models import Count
 from django.http.response import HttpResponse
 from django.views.generic import TemplateView
 from django.views.generic import View
+from django.db.models.query_utils import Q
 
 from allegation.views.officer_allegation_api_view import (
     OfficerAllegationAPIView)
@@ -252,44 +253,53 @@ class OfficerListAPIView(OfficerAllegationAPIView):
         return HttpResponse(content, content_type="application/json")
 
 
-class InvestigationAPIView(View):
+class PoliceWitnessAPIView(View):
     def get(self, request):
-        crid = request.GET.get('crid')
-        ret = {}
-        if crid:
-            officer_allegations = OfficerAllegation.objects.filter(
-                allegation__crid=crid)
-            allegation_officers = Officer.objects.filter(
-                pk__in=officer_allegations.values('officer'))
+        try:
+            allegation = Allegation.objects.get(crid=request.GET['crid'])
+        except (KeyError, Allegation.DoesNotExist):
+            return HttpResponse('{}', content_type="application/json")
 
-            ret['police_witness'] = []
-            for witness in PoliceWitness.objects.filter(crid=crid):
-                officers = []
-                witness.officer_name = "%s %s" % (
-                    witness.officer.officer_first,
-                    witness.officer.officer_last)
-                for officer in allegation_officers:
-                    complaints = OfficerAllegation.objects.filter(
-                        officer__in=(officer.id, witness.officer_id))
-                    num_complaints = complaints.count()
-                    non_disciplined_complaints = complaints.filter(
-                        final_outcome__in=NO_DISCIPLINE_CODES)
-                    non_disciplined_complaints = non_disciplined_complaints\
-                        .filter(final_outcome__isnull=True)
-                    no_action_taken_count = non_disciplined_complaints.count()
-                    officers.append({
-                        'num_complaints': num_complaints,
-                        'no_action_taken': no_action_taken_count,
-                        'officer': officer,
-                    })
-                ret['police_witness'].append({
-                    'witness': witness,
-                    'witness_officer': witness.officer,
-                    'officers': officers,
+        related_officers = Officer.objects.filter(
+            officerallegation__allegation__pk=allegation.pk)
+        witnesses = PoliceWitness.objects.filter(allegation__pk=allegation.pk)
+
+        ret = {'police_witness': []}
+        for witness in witnesses:
+            witness.officer_name = "%s %s" % (
+                witness.officer.officer_first, witness.officer.officer_last)
+
+            officers = []
+            for officer in related_officers:
+                allegation_pks = OfficerAllegation.objects\
+                    .filter(officer=officer)\
+                    .values_list('allegation__pk', flat=True)
+                total_witnesses = PoliceWitness.objects.filter(
+                    officer__pk=witness.officer_id,
+                    allegation_id=allegation_pks)
+                related_officer_allegations = OfficerAllegation.objects\
+                    .filter(allegation__pk__in=allegation_pks)\
+                    .filter(
+                        Q(officer__pk=witness.officer_id) |
+                        Q(allegation__pk__in=total_witnesses
+                            .values_list('allegation__pk', flat=True),
+                          officer__pk=officer.pk))
+
+                num_complaints = related_officer_allegations.count()
+                no_action_taken_count = related_officer_allegations.filter(
+                    Q(final_outcome__in=NO_DISCIPLINE_CODES) |
+                    Q(final_outcome__isnull=True)).count()
+                officers.append({
+                    'num_complaints': num_complaints,
+                    'no_action_taken': no_action_taken_count,
+                    'officer': officer,
                 })
 
-            ret['complaint_witness'] = ComplainingWitness.objects\
-                .filter(crid=crid)
+            ret['police_witness'].append({
+                'witness': witness,
+                'witness_officer': witness.officer,
+                'officers': officers,
+            })
 
         content = JSONSerializer().serialize(ret)
         return HttpResponse(content, content_type="application/json")
