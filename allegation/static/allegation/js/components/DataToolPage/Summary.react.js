@@ -1,3 +1,5 @@
+var _ = require('lodash');
+
 var React = require('react');
 var ReactDOM = require('react-dom');
 var Filters = require('components/DataToolPage/Filters.react');
@@ -6,7 +8,7 @@ var SummaryRow = require("components/DataToolPage/SummaryRow.react");
 var SummaryChildRow = require("components/DataToolPage/SummaryChildRow.react");
 var EmbedMixin = require('./Embed/Mixin.react');
 var SummaryStore = require("stores/SummaryStore");
-var FilterStore = require("stores/FilterStore");
+var FilterTagStore = require("stores/FilterTagStore");
 var ExtraInformation = require('components/DataToolPage/SummarySection/ExtraInformation.react');
 
 
@@ -22,16 +24,10 @@ var Summary = React.createClass({
     var node = ReactDOM.findDOMNode(this);
     var width = $(node).width();
     var height = $(node).height();
-    var src = "/embed/?page=summary&query=" + encodeURIComponent(FilterStore.getQueryString(['cat', 'cat__category']));
+    var src = "/embed/?page=summary&query=" + encodeURIComponent(FilterTagStore.getQueryString(['Allegation type', 'Category']));
 
-    var selectedCategories = [];
-    var cats = [FilterStore.getAll('cat__cat_id'), FilterStore.getAll('cat__category')];
-    for (var i = 0; i < cats.length; i++) {
-      var cat = cats[i];
-      if (cat) {
-        selectedCategories = selectedCategories.concat(cat.value);
-      }
-    }
+    var cats = _.union([], FilterTagStore.getAll('Category ID'), FilterTagStore.getAll('Category'));
+    var selectedCategories = _.pluck(cats, 'value');
 
     var state = {
       selectedCategories: selectedCategories,

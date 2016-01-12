@@ -4,7 +4,7 @@ var classnames = require('classnames');
 var Filters = require('components/DataToolPage/Filters.react');
 var MapStore = require('stores/MapStore');
 var FilterTagsActions = require('actions/FilterTagsActions');
-var FilterStore = require('stores/FilterStore');
+var FilterTagStore = require('stores/FilterTagStore');
 var SummaryStore = require('stores/SummaryStore');
 var SummaryActions = require('actions/SummaryActions');
 var AppConstants = require('constants/AppConstants');
@@ -28,13 +28,13 @@ var SummaryRow = React.createClass({
   },
 
   hasActiveChildren: function () {
-    var filters = FilterStore.getAll();
-    if ('cat__cat_id' in filters) {
+    var filters = FilterTagStore.getAll();
+    if ('Category ID' in filters) {
       var category = this.props.category;
-      for (var i = 0; i < filters['cat__cat_id'].value.length; i++) {
+      for (var i = 0; i < filters['Category ID'].value.length; i++) {
         for (var j = 0; j < category.subcategories.length; j++) {
           var childCategoryName = category.subcategories[j].cat_id;
-          if (filters['cat__cat_id'].value[i].indexOf(childCategoryName) > -1) {
+          if (filters['Category ID'].value[i].indexOf(childCategoryName) > -1) {
             return true;
           }
         }
@@ -48,8 +48,8 @@ var SummaryRow = React.createClass({
     if (selectedCategories) {
       return selectedCategories.indexOf(category.name) > -1;
     }
-    var filters = FilterStore.getAll();
-    return 'cat__category' in filters && filters['cat__category'].value.indexOf(category.name) > -1
+    var filters = FilterTagStore.getAll();
+    return 'Category' in filters && filters['Category'].value.indexOf(category.name) > -1
   },
 
   render: function () {

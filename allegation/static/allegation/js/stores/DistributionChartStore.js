@@ -13,7 +13,7 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var AppConstants = require('../constants/AppConstants');
 var assign = require('object-assign');
-var FilterStore = require('./FilterStore');
+var FilterTagStore = require('./FilterTagStore');
 var CHANGE_EVENT = 'change';
 var SUMMARY_CHANGE = 'summary-change';
 var _state = {};
@@ -130,7 +130,7 @@ var DistributionChartStore = assign({}, EventEmitter.prototype, {
     if (ajax) {
       ajax.abort();
     }
-    var queryString = FilterStore.getQueryString();
+    var queryString = FilterTagStore.getQueryString();
     ajax = $.get('/officer/count/?by=num_complaints&' + queryString, function (data) {
       drawChart(data);
     });

@@ -88,6 +88,14 @@ var FilterTagStore = _.assign(Base(_state), {
     return query;
   },
 
+  getAll: function (category) {
+    if (category) {
+      return _state['filters'][category];
+    }
+
+    return _state['filters'];
+  },
+
   // Old interface
   isInitialized: function() {
     return _state['initialized'];
@@ -108,16 +116,32 @@ var FilterTagStore = _.assign(Base(_state), {
     _state['filters'] = session.filters || {};
   },
 
-  getAll: function (category) {
-    if (category) {
-      return _state['filters'][category];
-    }
-
+  getFilters: function () {
     return _state['filters'];
   },
 
-  getFilters: function () {
-    return _state['filters'];
+  addDisableListener: function (callback) {
+    this.on(DISABLE_EVENT, callback);
+  },
+
+  removeDisableListener: function(callback) {
+    this.removeListener(DISABLE_EVENT, callback);
+  },
+
+  emitDisable: function () {
+    this.emit(DISABLE_EVENT);
+  },
+
+  addEnableListener: function (callback) {
+    this.on(ENABLE_EVENT, callback);
+  },
+
+  removeEnableListener: function(callback) {
+    this.removeListener(ENABLE_EVENT, callback);
+  },
+
+  emitEnable: function () {
+    this.emit(ENABLE_EVENT);
   },
 });
 

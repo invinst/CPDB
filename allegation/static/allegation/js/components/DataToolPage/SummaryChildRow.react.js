@@ -4,7 +4,7 @@ var Filters = require('components/DataToolPage/Filters.react');
 var MapStore = require('stores/MapStore');
 var SummaryActions = require('actions/SummaryActions');
 var FilterTagsActions = require('actions/FilterTagsActions');
-var FilterStore = require('stores/FilterStore');
+var FilterTagStore = require('stores/FilterTagStore');
 var AppConstants = require('constants/AppConstants');
 var numeral = require('numeral');
 
@@ -35,7 +35,7 @@ var SummaryChildRow = React.createClass({
   },
 
   isActive: function () {
-    var filters = FilterStore.getAll();
+    var filters = FilterTagStore.getAll();
     var catId = this.props.subcategory.cat_id;
     var selectedCategories = this.props.summary.props.selectedCategories;
     return (

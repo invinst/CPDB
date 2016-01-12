@@ -1,10 +1,10 @@
 NO_CAP_CATEGORIES = [
-  'has_filters',
-  'cat__cat_id'
+  'has:',
+  'Category ID'
 ];
 
 UPPER_CATEGORIES = [
-  'cat__cat_id'
+  'Category ID'
 ];
 
 function suggestionExists(term, suggestions) {
@@ -16,6 +16,13 @@ function suggestionExists(term, suggestions) {
   return false;
 }
 
+function slugify (title) {
+  var asciiTitle = title.replace(/\s{2,}/g, ' ');
+  var singleSpaceTitle = asciiTitle.replace(/[^\w\s]/gi, '').trim();
+  var lowerCaseTitle  = singleSpaceTitle.toLowerCase();
+
+  return lowerCaseTitle.replace(/\s/g, '-').trim();
+}
 
 function prettyLabels(label, term) {
   label = String(label).toLowerCase();
@@ -70,7 +77,7 @@ function prettyLabels(label, term) {
         element.addClass('uppercase');
       }
 
-      return element.addClass('autocomplete-' + item.category).html(prettyLabels(label, $(this.element).val())).appendTo(ul);
+      return element.addClass('autocomplete-' + slugify(item.category)).html(prettyLabels(label, $(this.element).val())).appendTo(ul);
     },
 
     displayMessage: function (value) {

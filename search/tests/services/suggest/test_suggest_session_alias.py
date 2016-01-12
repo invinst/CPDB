@@ -10,7 +10,7 @@ class SuggestSessionAliasTestCase(SuggestBaseTestCase):
 
         self.rebuild_index()
 
-        expect_suggestion = (session_alias.title, hash_obj.encode(session_alias.session.id))
+        expect_suggestion = session_alias.title
 
-        SuggestSessionAlias.query('skull')['session'].should.be.equal([expect_suggestion])
-        SuggestSessionAlias.query('something wrong')['session'].should.be.equal([])
+        SuggestSessionAlias.query('skull')['Session'][0]['value'].should.be.equal(expect_suggestion)
+        SuggestSessionAlias.query('something wrong')['Session'].should.be.equal([])

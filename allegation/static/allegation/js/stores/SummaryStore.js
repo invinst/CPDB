@@ -13,7 +13,7 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var AppConstants = require('../constants/AppConstants');
 var assign = require('object-assign');
-var FilterStore = require('./FilterStore');
+var FilterTagStore = require('./FilterTagStore');
 var CHANGE_EVENT = 'change';
 var SUMMARY_CHANGE = 'summary-change';
 var ajax = false;
@@ -40,7 +40,7 @@ function create(id, complaint) {
 
 var SummaryStore = assign({}, EventEmitter.prototype, {
   update: function (query) {
-    var queryString = query || FilterStore.getQueryString();
+    var queryString = query || FilterTagStore.getQueryString();
     if (ajax) {
       ajax.abort();
     }

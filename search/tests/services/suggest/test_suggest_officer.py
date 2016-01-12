@@ -15,24 +15,24 @@ class SuggestOfficerTestCase(SuggestBaseTestCase):
             allegations_count=officer.allegations_count
         )
 
-        SuggestOfficerName.query('Mich')['officer'].should.be.equal([ (expect_suggest, officer.id) ])
-        SuggestOfficerName.query('olford')['officer'].should.be.equal([ (expect_suggest, officer.id) ])
-        SuggestOfficerName.query('Bad')['officer'].should.be.equal([])
+        SuggestOfficerName.query('Mich')['Officer'][0]['label'].should.be.equal(expect_suggest)
+        SuggestOfficerName.query('olford')['Officer'][0]['label'].should.be.equal(expect_suggest)
+        SuggestOfficerName.query('Bad')['Officer'].should.be.equal([])
 
     def test_suggest_officer_star(self):
         officer = OfficerFactory(star=110910)
 
         self.rebuild_index()
 
-        SuggestOfficerStar.query('1109')['officer__star'].should.be.equal([officer.star])
-        SuggestOfficerStar.query('1090')['officer__star'].should.be.equal([])
+        SuggestOfficerStar.query('1109')['Badge number'][0]['value'].should.be.equal(officer.star)
+        SuggestOfficerStar.query('1090')['Badge number'].should.be.equal([])
         SuggestOfficerStar.query('notdigit').should.be.equal(None)
 
     def test_suggest_officer_unit(self):
-        SuggestOfficerUnit.query('independent')['officer__unit'].should.be.equal([['Independent Police Review Authority (IPRA)', '113']])
-        SuggestOfficerUnit.query('113')['officer__unit'].should.be.equal([['Independent Police Review Authority (IPRA)', '113']])
-        SuggestOfficerUnit.query('not in suggest')['officer__unit'].should.be.equal([])
+        SuggestOfficerUnit.query('independent')['Officer Unit'][0]['label'].should.be.equal('Independent Police Review Authority (IPRA)')
+        SuggestOfficerUnit.query('113')['Officer Unit'][0]['label'].should.be.equal('Independent Police Review Authority (IPRA)')
+        SuggestOfficerUnit.query('not in suggest')['Officer Unit'].should.be.equal([])
 
     def test_suggest_officer_rank(self):
-        SuggestOfficerRank.query('training')['officer__rank'].should.be.equal([['Field Training Officer', 'FTO']])
-        SuggestOfficerRank.query('FTO')['officer__rank'].should.be.equal([])
+        SuggestOfficerRank.query('training')['Officer Rank'][0]['label'].should.be.equal('Field Training Officer')
+        SuggestOfficerRank.query('FTO')['Officer Rank'].should.be.equal([])

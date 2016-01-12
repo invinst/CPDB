@@ -34,7 +34,7 @@ class SuggestionService(object):
             SuggestOfficerStar,
             SuggestOfficerUnit,
             SuggestOfficerRank,
-            # SuggestSessionAlias,
+            SuggestSessionAlias,
             SuggestDataSource,
             SuggestOutcome,
             SuggestOutcomeText,
