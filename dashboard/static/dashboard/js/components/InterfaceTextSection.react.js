@@ -10,47 +10,56 @@ var InterfaceTextActions = require('actions/InterfaceTextActions');
 
 
 var InterfaceTextSection = React.createClass(_.assign(Base(InterfaceTextSectionStore), {
+
+  renderActive: function () {
+    return (
+      <div className='row' key={i}>
+          <div className='col-md-3'>
+            <input className='form-control' id="id_key" type='text' value={this.state.activeText.key} onChange={this.changeText.bind(this, 'key')} />
+          </div>
+          <div className='col-md-7'>
+            <textarea id="id_text" className='form-control' onChange={this.changeText.bind(this, 'text')} value={this.state.activeText.text}></textarea>
+          </div>
+          <div className='col-md-2'>
+            <button onClick={this.save.bind(this, this.state.activeText)} className='btn btn-info'>
+              <i className='fa fa-floppy-o'/>
+            </button>
+            <button onClick={this.editText.bind(this, null)} className='btn btn-danger'>
+              <i className='fa fa-remove'/>
+            </button>
+          </div>
+      </div>
+    )
+  },
+
+  renderRow: function () {
+    return (
+      <div className='row' key={i}>
+        <div className='col-md-3'>
+          {text.key}
+        </div>
+        <div className='col-md-7'>
+          {text.text}
+        </div>
+        <div className='col-md-2'>
+          <button onClick={this.editText.bind(this, text)} className='btn btn-danger'>
+            <i className='fa fa-pencil'/>
+          </button>
+        </div>
+      </div>
+    )
+  },
+
   content: function () {
     var children = [];
     if (this.state.texts.length > 0) {
       for (var i = 0; i < this.state.texts.length; i++) {
         var text = this.state.texts[i];
         if (this.state.activeText && text.id == this.state.activeText.id) {
-          children.push(
-            <div className='row' key={i}>
-              <div className='col-md-3'>
-                <input className='form-control' id="id_key" type='text' value={this.state.activeText.key} onChange={this.changeText.bind(this, 'key')} />
-              </div>
-              <div className='col-md-7'>
-                <textarea id="id_text" className='form-control' onChange={this.changeText.bind(this, 'text')} value={this.state.activeText.text}></textarea>
-              </div>
-              <div className='col-md-2'>
-                <button onClick={this.save.bind(this, this.state.activeText)} className='btn btn-info'>
-                  <i className='fa fa-floppy-o'/>
-                </button>
-                <button onClick={this.editText.bind(this, null)} className='btn btn-danger'>
-                  <i className='fa fa-remove'/>
-                </button>
-              </div>
-            </div>
-          )
+          children.push(this.renderActive())
         }
         else {
-          children.push(
-            <div className='row' key={i}>
-              <div className='col-md-3'>
-                {text.key}
-              </div>
-              <div className='col-md-7'>
-                {text.text}
-              </div>
-              <div className='col-md-2'>
-                <button onClick={this.editText.bind(this, text)} className='btn btn-danger'>
-                  <i className='fa fa-pencil'/>
-                </button>
-              </div>
-            </div>
-          )
+          children.push(this.renderRow(text))
         }
       }
     }
