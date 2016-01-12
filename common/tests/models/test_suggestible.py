@@ -1,7 +1,8 @@
 from django.template.defaultfilters import slugify
 from django.test import TestCase
 
-from allegation.factories import OfficerFactory, AllegationFactory
+from allegation.factories import (
+    OfficerFactory, AllegationFactory, OfficerAllegationFactory)
 from common.models.suggestible import MobileSuggestible
 
 
@@ -49,12 +50,14 @@ class MobileSuggestibleAllegationTest(TestCase):
     def setUp(self):
         self.crid = '1011111'
         self.allegation = AllegationFactory(crid=self.crid)
+        OfficerAllegationFactory(allegation=self.allegation)
         self.expected_url = '/complaint/{crid}'.format(crid=self.crid)
 
     def test_get_url(self):
         self.allegation.get_mobile_url().should.equal(self.expected_url)
 
     def test_suggestion_entry(self):
+        cat = self.allegation.officerallegation_set.first().cat
         expected_entry = {
             'text': self.crid,
             'resource': 'allegation',
@@ -63,8 +66,8 @@ class MobileSuggestibleAllegationTest(TestCase):
             'meta': {
                 'incident_date': self.allegation.incident_date,
                 'cat': {
-                    'allegation_name': self.allegation.cat.allegation_name,
-                    'category': self.allegation.cat.category
+                    'allegation_name': cat.allegation_name,
+                    'category': cat.category
                 }
             }
         }

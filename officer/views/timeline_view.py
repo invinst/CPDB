@@ -2,15 +2,17 @@ from django.http.response import HttpResponse
 from django.views.generic.base import View
 
 from common.json_serializer import JSONSerializer
-from common.models import Officer, Allegation
+from common.models import Officer, OfficerAllegation
 
 
 class TimelineView(View):
     def get(self, request):
         officer_id = request.GET.get('officer')
         officer = Officer.objects.get(pk=officer_id)
-        allegations = Allegation.objects.filter(officer=officer)
-        allegations_date = allegations.values_list('incident_date_only','start_date').order_by('incident_date')
+        officer_allegations = OfficerAllegation.objects.filter(officer=officer)
+        allegations_date = officer_allegations\
+            .values_list('allegation__incident_date_only', 'start_date')\
+            .order_by('allegation__incident_date')
 
         items = []
         for date in allegations_date:

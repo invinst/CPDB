@@ -1,16 +1,16 @@
-from allegation.factories import AllegationFactory
+from allegation.factories import OfficerAllegationFactory
 from common.tests.core import BaseLiveTestCase
 from share.models import Session
 
 
 class ActiveOfficerTestCase(BaseLiveTestCase):
     def test_change_filter_clear_active_officers(self):
-        allegation = AllegationFactory()
+        officer_allegation = OfficerAllegationFactory()
         self.visit_home()
         self.click_first_officer()
 
         self.click_active_tab('Categories')
-        self.until(lambda: self.link(allegation.cat.category).click())
+        self.until(lambda: self.link(officer_allegation.cat.category).click())
         self.until_ajax_complete()
 
         session_hash = self.browser.current_url.split("/")[4]

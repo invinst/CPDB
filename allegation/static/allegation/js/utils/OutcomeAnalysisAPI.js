@@ -12,7 +12,7 @@ var OutcomeAnalysisAPI = {
         ajax.abort();
       }
 
-      ajax = $.getJSON('/api/allegations/analysis?' + OfficerListStore.getQueryString(), function (data) {
+      ajax = $.getJSON('/api/officer-allegations/analysis?' + OfficerListStore.getQueryString(), function (data) {
         OutcomeAnalysisServerActionCreator.receivedAnalysisInformation(data);
       });
     }
