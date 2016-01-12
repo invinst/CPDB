@@ -39,6 +39,17 @@ class SuggestServiceTestCase(SimpleTestCase):
             ['February 2013', '2013-2'], ['February 2014', '2014-2'], ['February 2015', '2015-2']
         ])
 
+    @freeze_time('2015-05-05 01:01:01')
+    def test_month_year_suggestion_by_month_year_name(self):
+        self.suggestion.suggest_incident_year_month('february ').should.equal([
+            ['February 2010', '2010-2'], ['February 2011', '2011-2'], ['February 2012', '2012-2'],
+            ['February 2013', '2013-2'], ['February 2014', '2014-2'], ['February 2015', '2015-2']
+        ])
+
+        self.suggestion.suggest_incident_year_month('february 2012').should.equal([
+            ['February 2012', '2012-2']
+        ])
+
     def test_suggest_custom_defined_text(self):
         data = self.suggestion.make_suggestion('discipline')
         data.should.contain('outcome_text')
