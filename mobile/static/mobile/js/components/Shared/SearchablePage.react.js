@@ -1,3 +1,4 @@
+var cx = require('classnames');
 var objectAssign = require('object-assign');
 var React = require('react');
 
@@ -16,19 +17,19 @@ var SearchablePage = React.createClass(objectAssign(Base(SearchablePageStore), {
   },
 
   render: function () {
-    if (this.state.focus) {
-      return (
-        <div className='searchable-page'>
-          <SearchBar />
-          <SearchResults />
-      </div>
-      )
-    }
+    var focus = this.state.focus;
+    var childrenClassName = cx('child-content', {'invisible': focus});
+    var searchResultClassName = cx('result-content', {'invisible': !focus});
 
     return (
       <div className='searchable-page'>
         <SearchBar />
-        {this.props.children}
+        <div className={searchResultClassName}>
+          <SearchResults />
+        </div>
+        <div className={childrenClassName}>
+          {this.props.children}
+        </div>
       </div>
     )
   }
