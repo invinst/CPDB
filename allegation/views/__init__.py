@@ -207,6 +207,7 @@ class OfficerAllegationSummaryApiView(OfficerAllegationAPIView):
             summary_value['subcategories'].append({
                 'name': category.allegation_name,
                 'cat_id': category.cat_id,
+                'id': category.id,
                 'count': count,
                 'id': category.id
             })

@@ -39,9 +39,9 @@ var SummaryChildRow = React.createClass({
     var catId = this.props.subcategory.cat_id;
     var selectedCategories = this.props.summary.props.selectedCategories;
     return (
-      ('cat__cat_id' in filters && filters['cat__cat_id'].value.indexOf(catId) > -1)
+      ('cat' in filters && filters['cat'].value.indexOf(id) > -1)
       || ('cat__category' in filters && filters['cat__category'].value.indexOf(this.props.category.name) > -1)
-      || (selectedCategories && selectedCategories.indexOf(catId) > -1)
+      || (selectedCategories && selectedCategories.indexOf(id) > -1)
     );
   },
 
