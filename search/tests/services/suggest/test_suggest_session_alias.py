@@ -12,5 +12,5 @@ class SuggestSessionAliasTestCase(SuggestBaseTestCase):
 
         expect_suggestion = session_alias.title
 
-        SuggestSessionAlias.query('skull')['Session'][0]['value'].should.be.equal(expect_suggestion)
+        SuggestSessionAlias.query('skull')['Session'][0]['label'].should.be.equal(expect_suggestion)
         SuggestSessionAlias.query('something wrong')['Session'].should.be.equal([])

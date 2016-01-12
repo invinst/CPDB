@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var React = require('react');
 var classnames = require('classnames');
 
@@ -16,6 +17,7 @@ function getSummaryRowState() {
   }
 }
 
+
 var SummaryRow = React.createClass({
   getInitialState: function () {
     return getSummaryRowState();
@@ -29,15 +31,12 @@ var SummaryRow = React.createClass({
 
   hasActiveChildren: function () {
     var filters = FilterTagStore.getAll();
-    if ('Category ID' in filters) {
-      var category = this.props.category;
-      for (var i = 0; i < filters['Category ID'].value.length; i++) {
-        for (var j = 0; j < category.subcategories.length; j++) {
-          var childCategoryName = category.subcategories[j].cat_id;
-          if (filters['Category ID'].value[i].indexOf(childCategoryName) > -1) {
-            return true;
-          }
-        }
+    var category = this.props.category;
+
+    for (var i = 0; i < category.subcategories.length; i++) {
+      childCategoryName = category.subcategories[i].cat_id
+      if (FilterTagStore.getFilter('Category ID', childCategoryName)) {
+        return true;
       }
     }
     return false;
@@ -49,7 +48,7 @@ var SummaryRow = React.createClass({
       return selectedCategories.indexOf(category.name) > -1;
     }
     var filters = FilterTagStore.getAll();
-    return 'Category' in filters && filters['Category'].value.indexOf(category.name) > -1
+    return !!FilterTagStore.getFilter('Category', category.name);
   },
 
   render: function () {

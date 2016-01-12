@@ -25,7 +25,7 @@ var SunburstStore = _.assign(Base(_state), {
 
   isSelected: function (category, value) {
     var selected = _state.selected;
-    return selected && selected.tagValue && selected.tagValue.category == category && selected.tagValue.value== value
+    return selected && selected.tagValue && selected.tagValue.category == category && selected.tagValue.label == value
   },
 
   getSelectedParentTag: function () {

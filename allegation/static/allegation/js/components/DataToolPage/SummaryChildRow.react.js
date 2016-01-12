@@ -35,13 +35,13 @@ var SummaryChildRow = React.createClass({
   },
 
   isActive: function () {
-    var filters = FilterTagStore.getAll();
     var catId = this.props.subcategory.cat_id;
     var selectedCategories = this.props.summary.props.selectedCategories;
+
     return (
-      ('cat' in filters && filters['cat'].value.indexOf(id) > -1)
-      || ('cat__category' in filters && filters['cat__category'].value.indexOf(this.props.category.name) > -1)
-      || (selectedCategories && selectedCategories.indexOf(id) > -1)
+      !!FilterTagStore.getFilter('Allegation type', catId)
+      || !!FilterTagStore.getFilter('Category', this.props.category.name)
+      || (selectedCategories && selectedCategories.indexOf(catId) > -1)
     );
   },
 
