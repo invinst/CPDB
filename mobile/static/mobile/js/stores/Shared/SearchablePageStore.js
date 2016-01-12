@@ -6,38 +6,27 @@ var Base = require('stores/Base');
 
 
 var _state = {
-  'pk': '',
-  'loading': false,
-  'found': false,
-  'complaint': {}
+  'focus': 0
 };
 
-var OfficerPageStore = objectAssign(Base(_state), {});
+var SearchablePageStore = objectAssign(Base(_state), {});
 
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
-    case AppConstants.OFFICER_PAGE_RECEIVED_DATA:
-      _state['officer'] = action.data;
-      _state['pk'] = action.data['detail']['id'];
-      _state['found'] = true;
-      _state['loading'] = false;
-      OfficerPageStore.emitChange();
+    case AppConstants.SEARCH_FOCUS:
+      SearchablePageStore.updateState('focus', 1);
+      SearchablePageStore.emitChange();
       break;
 
-    case AppConstants.OFFICER_PAGE_FAILED_TO_RECEIVED_DATA:
-      _state['pk'] = action.data;
-      _state['found'] = false;
-      _state['loading'] = false;
-      OfficerPageStore.emitChange();
+    case AppConstants.SEARCH_BLUR:
+    case AppConstants.SEARCH_CLEAR:
+      SearchablePageStore.updateState('focus', 0);
+      SearchablePageStore.emitChange();
       break;
-
-    case AppConstants.OFFICER_PAGE_RELOAD:
-      _state['loading'] = true;
-      OfficerPageStore.emitChange();
 
     default:
       break;
   }
 });
 
-module.exports = OfficerPageStore;
+module.exports = SearchablePageStore;
