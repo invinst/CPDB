@@ -8,7 +8,7 @@ var MainPageStore = require('stores/MainPageStore');
 var SearchResults = require('components/MainPage/SearchResults.react');
 var LoadingPage = require('components/Shared/LoadingPage.react');
 var HelperUtil = require('utils/HelperUtil');
-var SearchComponent = require('components/MainPage/SearchComponent.react');
+var MainPageContent = require('components/MainPage/MainPageContent.react');
 var SuggestionAPI = require('utils/SuggestionAPI');
 
 
@@ -24,7 +24,7 @@ var MainPage = React.createClass(objectAssign(Base(MainPageStore), {
 
     return (
       <div className='main-page content'>
-        <SearchComponent topLeft={isSearchFocused} />
+        <MainPageContent topLeft={isSearchFocused} />
         <About topLeft={isSearchFocused}/>
       </div>
     );
