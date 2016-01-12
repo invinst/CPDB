@@ -1,17 +1,12 @@
 var cx = require('classnames');
 var React = require('react');
-var objectAssign = require('object-assign');
 
-var Base = require('components/Base.react');
 var SearchBar = require('components/MainPage/SearchComponent/SearchBar.react');
-var FailedSearch = require('components/MainPage/SearchResults/FailedSearch.react');
+var SearchResults = require('components/MainPage/SearchResults.react');
 var ProjectSummary = require('components/MainPage/SearchComponent/ProjectSummary.react');
-var SuccessfulSearch = require('components/MainPage/SearchResults/SuccessfulSearch.react');
-var SearchResultsStore = require('stores/MainPage/SearchResultsStore');
-var Wrapper = require('components/Shared/Wrapper.react');
 
 
-var SearchComponent = React.createClass(objectAssign(Base(SearchResultsStore), {
+var MainPageContent = React.createClass({
   render: function () {
     var topLeft = this.props.topLeft;
     var classNames = cx('search-wrapper animation content', {'top-left': topLeft});
@@ -22,10 +17,11 @@ var SearchComponent = React.createClass(objectAssign(Base(SearchResultsStore), {
         <ProjectSummary topLeft={topLeft} />
         <div className={classNames}>
           <SearchBar />
+          <SearchResults />
         </div>
       </div>
     );
   }
-}));
+});
 
-module.exports = SearchComponent;
+module.exports = MainPageContent;

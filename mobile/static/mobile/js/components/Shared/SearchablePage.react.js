@@ -4,8 +4,8 @@ var React = require('react');
 var Base = require('components/Base.react');
 
 var SearchBar = require('components/MainPage/SearchComponent/SearchBar.react');
-var SearchResults = require('components/MainPage/SearchResults.react'); // TODO: Change this
 var SearchablePageStore = require('stores/Shared/SearchablePageStore');
+var SearchResults = require('components/MainPage/SearchResults.react');
 
 
 var SearchablePage = React.createClass(objectAssign(Base(SearchablePageStore), {
