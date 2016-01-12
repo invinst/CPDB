@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var classnames = require('classnames');
 
 require('utils/jQuery');
@@ -19,14 +20,14 @@ var RequestModal = (function () {
       };
     },
     show: function () {
-      jQuery(this.getDOMNode()).modal("show");
-      var emailInput = jQuery(this.getDOMNode()).find("input[name='email']");
+      jQuery(ReactDOM.findDOMNode(this)).modal("show");
+      var emailInput = jQuery(ReactDOM.findDOMNode(this)).find("input[name='email']");
       setTimeout(function () {
         emailInput.focus();
       }, 500);
     },
     hide: function () {
-      jQuery(this.getDOMNode()).modal("hide");
+      jQuery(ReactDOM.findDOMNode(this)).modal("hide");
     },
     componentDidMount: function () {
       mountedInstant = this;
@@ -80,7 +81,7 @@ var RequestModal = (function () {
       );
     },
     email: function () {
-      return jQuery(this.getDOMNode()).find("input[name='email']").val();
+      return jQuery(ReactDOM.findDOMNode(this)).find("input[name='email']").val();
     },
     register: function () {
       RequestDocumentActions.registerEmail(allegation.crid, this.email());

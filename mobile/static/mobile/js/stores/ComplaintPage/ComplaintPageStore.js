@@ -18,7 +18,7 @@ AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.COMPLAINT_PAGE_RECEIVED_DATA:
       _state['complaint'] = action.data;
-      _state['crid'] = action.data['allegation']['crid'];
+      _state['crid'] = action.data['officer_allegation']['crid'];
       _state['found'] = true;
       _state['loading'] = false;
       ComplaintPageStore.emitChange();

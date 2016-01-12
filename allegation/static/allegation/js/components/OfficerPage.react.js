@@ -25,7 +25,7 @@ var OfficerPage = React.createClass({
   getInitialState: function() {
     return {
       data: {
-        allegations: [],
+        officer_allegations: [],
         officer: {},
         relatedOfficers: [],
         hasMap: false
@@ -76,7 +76,7 @@ var OfficerPage = React.createClass({
   stateHasNewUpdates: function (nextState) {
     return (
       (_.get(nextState, 'timelineData.items.length') && !_.get(this.state, 'timelineData.items')) ||
-      (_.get(nextState, 'data.allegations.length') && !_.get(this.state, 'data.allegations.length')));
+      (_.get(nextState, 'data.officer_allegations.length') && !_.get(this.state, 'data.officer_allegations.length')));
   },
 
   shouldComponentUpdate: function (nextProps, nextState) {
@@ -85,7 +85,6 @@ var OfficerPage = React.createClass({
   },
 
   render: function () {
-    var allegations = this.state.data['allegations'];
     var officer = this.state.data['officer'];
     var relatedOfficers = this.state.data['relatedOfficers'];
     var hasMap = this.state.data['has_map'];

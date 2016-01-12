@@ -4,7 +4,7 @@ import datetime
 from django.core.exceptions import MultipleObjectsReturned
 from django.core.management.base import BaseCommand
 
-from common.models import Officer, Allegation
+from common.models import Officer, OfficerAllegation
 
 OFFICER_COLS = {
     'name': 3,
@@ -61,11 +61,12 @@ class Command(BaseCommand):
         last_name = last_name.strip()
 
         try:
-            allegation = Allegation.objects.get(crid=crid,
-                                                officer__officer_first__iexact=first_name,
-                                                officer__officer_last__iexact=last_name)
-            return allegation.officer
-        except Allegation.DoesNotExist:
+            officer_allegation = OfficerAllegation.objects.get(
+                allegation__crid=crid,
+                officer__officer_first__iexact=first_name,
+                officer__officer_last__iexact=last_name)
+            return officer_allegation.officer
+        except OfficerAllegation.DoesNotExist:
             pass
 
         try:
@@ -83,29 +84,34 @@ class Command(BaseCommand):
                 )
 
             except MultipleObjectsReturned:
-                print("CRID: %s has an issue with multiple officers: %s %s %s" % (crid,first_name, last_name, star))
+                print(
+                    "CRID: %s has an issue with multiple officers: %s %s %s" %
+                    (crid, first_name, last_name, star))
                 return
             except Officer.DoesNotExist:
-                print("CRID: %s officer does not exist: %s %s %s" % (crid,first_name, last_name, star))
+                print(
+                    "CRID: %s officer does not exist: %s %s %s" %
+                    (crid, first_name, last_name, star))
                 return
 
         except:
-            print ("CRID: %s has no star  %s %s %s" % (crid,first_name, last_name, star))
+            print (
+                "CRID: %s has no star  %s %s %s" %
+                (crid, first_name, last_name, star))
 
-
-    def get_allegation(self, crid, officer=None):
+    def get_officer_allegation(self, crid, officer=None):
 
         try:
-            return Allegation.objects.get(crid=crid, officer=officer)
+            return OfficerAllegation.objects.get(
+                allegation__crid=crid, officer=officer)
 
-        except Allegation.DoesNotExist:
+        except OfficerAllegation.DoesNotExist:
             if officer:
-                return self.get_allegation(crid)
-        return 
-
+                return self.get_officer_allegation(crid)
+        return
 
     def handle(self, *args, **options):
-        if not options.get('start_row',"").isnumeric():
+        if not options.get('start_row', "").isnumeric():
             print("You must supply a start row, ex: --start-row 15")
             return
 
@@ -153,15 +159,18 @@ class Command(BaseCommand):
                             officer_kw['officer_first'] = first_name.title()
                             officer_kw['officer_last'] = last_name.title()
 
-                            officer = self.get_officer(first_name, last_name, crid, star)
+                            officer = self.get_officer(
+                                first_name, last_name, crid, star)
                             if officer:
                                 officer_kw['id'] = officer.pk
 
                         elif col == 'race':
-                            officer_kw[col] = RACE_TABLE[row[OFFICER_COLS[col]].upper()]
+                            officer_kw[col] = RACE_TABLE[
+                                row[OFFICER_COLS[col]].upper()]
 
                         elif col == 'appt_date':
-                            officer_kw[col] = datetime.datetime.strptime(row[OFFICER_COLS[col]], APPT_DATE_FORMAT)
+                            officer_kw[col] = datetime.datetime.strptime(
+                                row[OFFICER_COLS[col]], APPT_DATE_FORMAT)
 
                         else:
                             officer_kw[col] = row[OFFICER_COLS[col]]
@@ -171,27 +180,34 @@ class Command(BaseCommand):
                         self.counters['officers_created'] += 1
 
                     else:
-                        Officer.objects.filter(id=officer.pk).update(**officer_kw)
+                        Officer.objects.filter(id=officer.pk)\
+                            .update(**officer_kw)
 
-                    allegation = self.get_allegation(allegation_kw['crid'], officer)
+                    officer_allegation = self.get_officer_allegation(
+                        allegation_kw['crid'], officer)
                     allegation_kw['officer'] = officer
 
-                    if not allegation:
+                    if not officer_allegation:
                         try:
-                            allegation = Allegation.objects.filter(crid=allegation_kw['crid']).first()
-                            if not allegation:
-                                raise Allegation.DoesNotExist
+                            officer_allegation = OfficerAllegation.objects\
+                                .filter(allegation__crid=allegation_kw['crid'])\
+                                .first()
+                            if not officer_allegation:
+                                raise OfficerAllegation.DoesNotExist
 
-                            allegation.pk = None
-                            allegation.save()
-                            Allegation.objects.filter(pk=allegation.pk).update(**allegation_kw)
+                            officer_allegation.pk = None
+                            officer_allegation.save()
+                            OfficerAllegation.objects.filter(pk=officer_allegation.pk)\
+                                .update(**allegation_kw)
 
-                        except Allegation.DoesNotExist:
-                            allegation = Allegation.objects.create(**allegation_kw)
-                            self.counters['created'] +=1
+                        except OfficerAllegation.DoesNotExist:
+                            officer_allegation = OfficerAllegation.objects\
+                                .create(**allegation_kw)
+                            self.counters['created'] += 1
 
                     else:
-                        Allegation.objects.filter(pk=allegation.pk).update(**allegation_kw)
+                        OfficerAllegation.objects.filter(pk=officer_allegation.pk)\
+                            .update(**allegation_kw)
                         self.counters['updated'] += 1
 
         print(self.counters)

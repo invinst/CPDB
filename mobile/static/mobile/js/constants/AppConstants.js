@@ -17,6 +17,11 @@ module.exports = {
   //OfficerPage events
   OFFICER_PAGE_RECEIVED_DATA: c++,
   OFFICER_PAGE_FAILED_TO_RECEIVED_DATA: c++,
+  OFFICER_PAGE_RELOAD: c++,
+
+  // MainPage events
+  MAIN_PAGE_RECEIVED_DATA: c++,
+  MAIN_PAGE_FAILED_TO_RECEIVED_DATA: c++,
 
   // MainPage events
   MAIN_PAGE_RECEIVED_DATA: c++,
@@ -184,6 +189,6 @@ module.exports = {
 
   //Time format
   SIMPLE_DATE_FORMAT: 'MMM DD, YYYY',
-  LONG_DATE_FORMAT: 'MMMM Do, YYYY',
+  SEARCH_INCIDENT_DATE_FORMAT: 'MMM Do, YYYY',
   FIRST_AVAILABLE_DATE: '02/01/1970'
 };

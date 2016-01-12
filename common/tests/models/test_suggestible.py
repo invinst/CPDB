@@ -1,7 +1,8 @@
 from django.template.defaultfilters import slugify
 from django.test import TestCase
 
-from allegation.factories import OfficerFactory, AllegationFactory
+from allegation.factories import (
+    OfficerFactory, AllegationFactory, OfficerAllegationFactory)
 from common.models.suggestible import MobileSuggestible
 
 
@@ -30,41 +31,44 @@ class MobileSuggestibleOfficerTest(TestCase):
         self.officer.get_mobile_url().should.equal(self.expected_url)
 
     def test_suggestion_entry(self):
-        suggestion_type = 'suggestion_type'
         expected_entry = {
             'text': self.display_name,
             'resource': 'officer',
             'resource_key': self.officer_id,
             'url': self.expected_url,
-            'suggestion_type': suggestion_type,
             'meta': {
                 'allegations_count': self.officer.allegations_count,
                 'gender': self.officer.gender,
-                'race': self.officer.race
+                'race': self.officer.race,
+                'star': self.officer.star
             }
         }
-        self.officer.as_suggestion_entry(suggestion_type).should.be.equal(expected_entry)
+        self.officer.as_suggestion_entry().should.be.equal(expected_entry)
 
 
 class MobileSuggestibleAllegationTest(TestCase):
     def setUp(self):
         self.crid = '1011111'
         self.allegation = AllegationFactory(crid=self.crid)
+        OfficerAllegationFactory(allegation=self.allegation)
         self.expected_url = '/complaint/{crid}'.format(crid=self.crid)
 
     def test_get_url(self):
         self.allegation.get_mobile_url().should.equal(self.expected_url)
 
     def test_suggestion_entry(self):
-        suggestion_type = 'suggestion_type'
+        cat = self.allegation.officerallegation_set.first().cat
         expected_entry = {
             'text': self.crid,
             'resource': 'allegation',
             'resource_key': self.crid,
             'url': self.expected_url,
-            'suggestion_type': suggestion_type,
             'meta': {
-                'incident_date': self.allegation.incident_date
+                'incident_date': self.allegation.incident_date,
+                'cat': {
+                    'allegation_name': cat.allegation_name,
+                    'category': cat.category
+                }
             }
         }
-        self.allegation.as_suggestion_entry(suggestion_type).should.be.equal(expected_entry)
+        self.allegation.as_suggestion_entry().should.be.equal(expected_entry)

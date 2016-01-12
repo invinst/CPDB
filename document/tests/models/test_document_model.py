@@ -11,4 +11,5 @@ class DocumentModelTestCase(SimpleTestCase):
         num_requests = allegation.number_of_request
         RequestEmailFactory(crid=allegation.crid)
 
-        Allegation.objects.get(id=allegation.id).number_of_request.should.equal(num_requests + 1)
+        Allegation.objects.get(id=allegation.id)\
+            .number_of_request.should.equal(num_requests + 1)

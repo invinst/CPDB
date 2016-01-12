@@ -3,8 +3,7 @@ import json
 from django.core import management
 from django.core.urlresolvers import reverse
 
-from allegation.factories import OfficerFactory, AllegationFactory
-from common.models import Officer
+from allegation.factories import OfficerFactory, OfficerAllegationFactory
 from common.tests.core import SimpleTestCase
 
 
@@ -15,7 +14,7 @@ class CountViewTestCase(SimpleTestCase):
             self.officers.append(OfficerFactory())
 
         for i in range(2):
-            AllegationFactory(officer=self.officers[i])
+            OfficerAllegationFactory(officer=self.officers[i])
 
         management.call_command('calculate_allegations_count')
 

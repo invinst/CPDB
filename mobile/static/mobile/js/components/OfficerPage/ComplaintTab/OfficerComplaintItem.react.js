@@ -1,6 +1,8 @@
 var React = require('react');
 var cx = require('classnames');
 
+var AppHistory = require('utils/History');
+
 var ComplaintPresenter = require('presenters/ComplaintPresenter');
 var OfficerPresenter = require('presenters/OfficerPresenter');
 var OfficerUtil = require('utils/OfficerUtil');
@@ -13,15 +15,20 @@ var OfficerComplaintItem = React.createClass({
     var officerUtil = OfficerUtil();
 
     for (var i = 0; i < allegationCounts.length; i++) {
-
       circles.push(
-        <div className={cx('circle-wrapper', HelperUtil.format('officer-{index}', {'index': i}))} >
+        <div className={cx('circle-wrapper', HelperUtil.format('officer-{index}', {'index': i}))} key={i}>
           <span className={cx('circle', officerUtil.getStarClass(allegationCounts[i]))} ></span>
         </div>
       );
     }
 
     return circles;
+  },
+
+  _onClicked : function () {
+    var complaint = this.props.complaint.data;
+    var presenter = ComplaintPresenter(complaint);
+    AppHistory.pushState(null, presenter.url);
   },
 
   render: function () {
@@ -33,7 +40,7 @@ var OfficerComplaintItem = React.createClass({
     var officerPresenter = OfficerPresenter(officer);
     var complaintPresenter = ComplaintPresenter(complaint);
     return (
-      <div className='officer-complaint-item'>
+      <div className='officer-complaint-item' onClick={this._onClicked}>
         <div className='crid-info pad'>
           <div className='inline-block half-width align-left'>
             <span className='crid-title'>CRID &nbsp;</span>

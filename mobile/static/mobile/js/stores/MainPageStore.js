@@ -14,6 +14,11 @@ var MainPageStore = objectAssign(Base(_state), {});
 
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
+    case AppConstants.SEARCH_CLEAR:
+      MainPageStore.updateState('isSearchFocused', 0);
+      MainPageStore.emitChange();
+      break;
+
     case AppConstants.SEARCH_FOCUS:
       MainPageStore.updateState('isSearchFocused', 1);
       MainPageStore.emitChange();
@@ -32,6 +37,8 @@ AppDispatcher.register(function (action) {
     case AppConstants.MAIN_PAGE_RECEIVED_DATA:
     case AppConstants.MAIN_PAGE_FAILED_TO_RECEIVED_DATA:
       MainPageStore.updateState('isSearching', 0);
+      MainPageStore.updateState('isSearchFocused', 1);
+      MainPageStore.updateState('term', action.query);
       MainPageStore.emitChange();
       break;
 
