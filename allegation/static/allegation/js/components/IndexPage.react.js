@@ -102,7 +102,7 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
     var cond = scrollTop >= $welcome.height();
     $landingNav.toggleClass('fixed-nav', cond);
     $landingNav.toggleClass('border-top', scrollTop != 0);
-    $main.toggleClass('margin-top-90', cond);
+    $main.toggleClass('margin-top-45', cond);
     var opacity = scrollTop / $welcome.height()
     $cpdpLogo.css('opacity', opacity);
     $iiLogo.css('opacity', 1 - opacity);
