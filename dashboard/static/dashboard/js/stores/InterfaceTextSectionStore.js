@@ -15,7 +15,7 @@ var InterfaceTextSectionStore = _.assign(Base(_state), {
 AppDispatcher.register(function(action) {
   switch (action.actionType) {
     case AppConstants.RECEIVED_INTERFACE_TEXTS:
-      _state.texts = action.data;
+      InterfaceTextSectionStore.updateState('texts', action.data);
       InterfaceTextSectionStore.emitChange();
       break;
 
@@ -27,6 +27,7 @@ AppDispatcher.register(function(action) {
         }
       }
       InterfaceTextSectionStore.emitChange();
+      break;
 
     default:
       break;

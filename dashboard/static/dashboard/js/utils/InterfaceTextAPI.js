@@ -27,7 +27,6 @@ var InterfaceTextAPI = {
         appendURL += interfaceText.id + "/";
     }
 
-    console.log(appendURL);
     ajax = jQuery.ajax({
       type: 'PUT',
       url: AppConstants.INTERFACE_TEXT_API_ENDPOINT + appendURL,
