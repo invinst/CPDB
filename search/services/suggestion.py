@@ -63,10 +63,15 @@ class Suggestion(object):
 
     def suggest_incident_year_month(self, q):
         results = []
+        year = None
+        splitted = q.split(' ')
+        month = splitted[0]
+        if len(splitted) > 1:
+            year = splitted[1]
 
-        for month in month_choices():
-            if month[1].lower().startswith(q):
-                results = results + generate_month_year_entry_from_2010(month)
+        for m in month_choices():
+            if m[1].lower().startswith(month):
+                results = results + generate_month_year_entry_from_2010(m, year)
 
         return results
 
