@@ -91,7 +91,7 @@ class OfficerDetailPageTestCase(BaseLiveTestCase):
     def test_display_stories(self):
         story1 = StoryFactory(officer=self.officer, url=TEST_DOCUMENT_URL)
         story2 = StoryFactory(officer=self.officer, url=TEST_DOCUMENT_URL)
-        story_types_order = [story2.story_type, story1.story_type]
+        story_types_order = [story2.story_type.capitalize(), story1.story_type.capitalize()]
 
         self.setting.story_types_order = ",".join(story_types_order)
         self.setting.save()
