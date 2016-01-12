@@ -13,7 +13,7 @@ var InterfaceTextSection = React.createClass(_.assign(Base(InterfaceTextSectionS
 
   renderActive: function () {
     return (
-      <div className='row' key={i}>
+      <div className='row' key={this.state.activeText.key}>
           <div className='col-md-3'>
             <input className='form-control' id="id_key" type='text' value={this.state.activeText.key} onChange={this.changeText.bind(this, 'key')} />
           </div>
@@ -32,9 +32,9 @@ var InterfaceTextSection = React.createClass(_.assign(Base(InterfaceTextSectionS
     )
   },
 
-  renderRow: function () {
+  renderRow: function (text) {
     return (
-      <div className='row' key={i}>
+      <div className='row' key={text.id}>
         <div className='col-md-3'>
           {text.key}
         </div>
@@ -50,7 +50,7 @@ var InterfaceTextSection = React.createClass(_.assign(Base(InterfaceTextSectionS
     )
   },
 
-  content: function () {
+  renderContent: function () {
     var children = [];
     if (this.state.texts.length > 0) {
       for (var i = 0; i < this.state.texts.length; i++) {
@@ -103,7 +103,7 @@ var InterfaceTextSection = React.createClass(_.assign(Base(InterfaceTextSectionS
           <div className='row margin-top'>
             <div className='col-md-12'>
               <form className='form-horizontal'>
-                { this.content() }
+                { this.renderContent() }
               </form>
             </div>
           </div>
