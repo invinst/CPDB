@@ -13,7 +13,7 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var AppConstants = require('../constants/AppConstants');
 var assign = require('object-assign');
-var FilterStore = require('./FilterStore');
+var FilterTagStore = require('stores/FilterTagStore');
 
 var CHANGE_EVENT = 'change';
 var SUMMARY_CHANGE = 'summary-change';
@@ -38,7 +38,7 @@ var OfficerListStore = assign({}, EventEmitter.prototype, {
   },
 
   getQueryString: function () {
-    var queryString = FilterStore.getQueryString();
+    var queryString = FilterTagStore.getQueryString();
     for (var i = 0; i < _state['active_officers'].length; i++) {
       queryString += "officer=" + _state['active_officers'][i] + "&"
     }
@@ -49,7 +49,7 @@ var OfficerListStore = assign({}, EventEmitter.prototype, {
     if (ajax) {
       ajax.abort();
     }
-    var queryString = query || FilterStore.getQueryString();
+    var queryString = query || FilterTagStore.getQueryString();
 
     _state.filtered = queryString;
 

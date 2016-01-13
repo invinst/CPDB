@@ -5,7 +5,7 @@ var ReactDOM = require('react-dom');
 
 var Base = require('components/Base.react');
 var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
-var FilterStore = require("stores/FilterStore");
+var FilterTagStore = require("stores/FilterTagStore");
 var PercentageRectangleChart = require('components/DataToolPage/RaceGenderTab/PercentageRectangleChart.react');
 var RaceGenderAPITransformation = require('utils/RaceGenderAPITransformation');
 var RaceGenderTabStore = require('stores/DataToolPage/RaceGenderTab/RaceGenderTabStore');
@@ -28,7 +28,7 @@ var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
     var node = ReactDOM.findDOMNode(this);
     var width = jQuery(node).width();
     var height = jQuery(node).height();
-    var src = "/embed/?page=race-gender&query=" + encodeURIComponent(FilterStore.getQueryString());
+    var src = "/embed/?page=race-gender&query=" + encodeURIComponent(FilterTagStore.getQueryString());
     return '<iframe width="' + width + 'px" height="' + height + 'px" frameborder="0" src="' + this.absoluteUri(src)
        + '"></iframe>';
   },
@@ -86,10 +86,10 @@ var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
             <div className='col-lg-10 col-md-11 col-sm-10 col-xs-0 col-md-offset-1'>
               <div className='complaint-race-chart col-lg-4 col-md-4 col-sm-3 col-xs-4 relative'>
                 <span className='vertical-title'>Complainant</span>
-                <PercentageRectangleChart data={complaintRacesData} options={raceOptions} filter='complainant_race' />
+                <PercentageRectangleChart data={complaintRacesData} options={raceOptions} filter='complainant_race' category='Complainant Race' />
               </div>
               <div className='complaint-gender-chart col-lg-4 col-md-4 col-sm-3 col-xs-4'>
-                <PercentageRectangleChart data={complaintGendersData} options={genderOptions} filter='complainant_gender' />
+                <PercentageRectangleChart data={complaintGendersData} options={genderOptions} filter='complainant_gender' category='Complainant Gender' />
               </div>
             </div>
           </div>
@@ -98,10 +98,10 @@ var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
             <div className='col-lg-10 col-md-11 col-sm-10 col-xs-0 col-md-offset-1'>
               <div className='officer-race-chart col-lg-4 col-md-4 col-sm-3 col-xs-4 relative'>
                 <span className='vertical-title'>Officer</span>
-                <PercentageRectangleChart data={officerRacesData} options={raceOptions} filter='officer__race' />
+                <PercentageRectangleChart data={officerRacesData} options={raceOptions} filter='officer__race' category='Officer Race' />
               </div>
               <div className='officer-gender-chart col-lg-4 col-md-4 col-sm-3 col-xs-4'>
-                <PercentageRectangleChart data={officerGendersData} options={genderOptions} filter='officer__gender' />
+                <PercentageRectangleChart data={officerGendersData} options={genderOptions} filter='officer__gender' category='Officer Gender' />
               </div>
             </div>
           </div>

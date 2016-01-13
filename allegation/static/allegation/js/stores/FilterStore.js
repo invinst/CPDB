@@ -241,63 +241,63 @@ var FilterStore = assign({}, EventEmitter.prototype, {
 
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
-    case AppConstants.MAP_REPLACE_FILTERS:
-      _initialized = false;
-      FilterStore.replaceFilters(action.filters);
-      break;
+    // case AppConstants.MAP_REPLACE_FILTERS:
+    //   _initialized = false;
+    //   FilterStore.replaceFilters(action.filters);
+    //   break;
 
-    case AppConstants.MAP_CHANGE_FILTER:
-      _initialized = false;
-      update(action.key, action.value);
-      FilterStore.emitChange();
-      break;
+    // case AppConstants.MAP_CHANGE_FILTER:
+    //   _initialized = false;
+    //   update(action.key, action.value);
+    //   FilterStore.emitChange();
+    //   break;
 
-    case AppConstants.MAP_ADD_FILTER:
-      _initialized = false;
-      create(action.key, action.value);
-      FilterStore.emitCreate();
-      break;
+    // case AppConstants.MAP_ADD_FILTER:
+    //   _initialized = false;
+    //   create(action.key, action.value);
+    //   FilterStore.emitCreate();
+    //   break;
 
-    case AppConstants.ENTER_EMBED_MODE:
-      _initialized = false;
-      FilterStore.emitDisable();
-      break;
+    // case AppConstants.ENTER_EMBED_MODE:
+    //   _initialized = false;
+    //   FilterStore.emitDisable();
+    //   break;
 
-    case AppConstants.LEAVE_EMBED_MODE:
-      _initialized = false;
-      FilterStore.emitEnable();
-      break;
+    // case AppConstants.LEAVE_EMBED_MODE:
+    //   _initialized = false;
+    //   FilterStore.emitEnable();
+    //   break;
 
-    case AppConstants.ADD_TAG:
-      FilterStore.addFilter(action.category, action.filter.value);
-      FilterStore.emitChange();
-    break;
+    // case AppConstants.ADD_TAG:
+    //   FilterStore.addFilter(action.category, action.filter.value);
+    //   FilterStore.emitChange();
+    // break;
 
-    case AppConstants.TOGGLE_TAGS:
-      var values = _(action.filters).chain().pluck('value');
-      // We do a trick here, first we add it in, then we pin it
-      // When adding completely, we pin one more time to `unpin` it
-      // This will help us for not adding a new exception to API
-      values.map(FilterStore.toogleFiltersFor(action.category));
-      values.map(FilterStore.justUnpinFor(action.category));
-      FilterStore.emitChange();
-    break;
+    // case AppConstants.TOGGLE_TAGS:
+    //   var values = _(action.filters).chain().pluck('value');
+    //   // We do a trick here, first we add it in, then we pin it
+    //   // When adding completely, we pin one more time to `unpin` it
+    //   // This will help us for not adding a new exception to API
+    //   values.map(FilterStore.toogleFiltersFor(action.category));
+    //   values.map(FilterStore.justUnpinFor(action.category));
+    //   FilterStore.emitChange();
+    // break;
 
-    case AppConstants.REMOVE_TAG:
-      FilterStore.removeFilter(action.category, action.filter.value);
-      FilterStore.emitChange();
-      break;
+    // case AppConstants.REMOVE_TAG:
+    //   FilterStore.removeFilter(action.category, action.filter.value);
+    //   FilterStore.emitChange();
+    //   break;
 
-    case AppConstants.PIN_TAG:
-      FilterStore.pinFilter(action.category, action.filter.value);
-      FilterStore.emitChange();
-      break;
+    // case AppConstants.PIN_TAG:
+    //   FilterStore.pinFilter(action.category, action.filter.value);
+    //   FilterStore.emitChange();
+    //   break;
 
-    case AppConstants.RECEIVED_SESSION_DATA:
-      FilterStore.setSession(action.data['data']['query'] || {});
-      _initialized = action.data['data'].readable_query || {};
-      FilterStore.emitChange();
-      break;
+    // case AppConstants.RECEIVED_SESSION_DATA:
+    //   FilterStore.setSession(action.data['data']['query'] || {});
+    //   _initialized = action.data['data'].readable_query || {};
+    //   FilterStore.emitChange();
+    //   break;
 
     default:
       break;

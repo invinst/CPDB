@@ -2,7 +2,7 @@ var _ = require('lodash');
 
 var AppDispatcher = require('dispatcher/AppDispatcher');
 var AppConstants = require('constants/AppConstants');
-var FilterStore = require('stores/FilterStore');
+var FilterTagStore = require('stores/FilterTagStore');
 var SessionStore = require('stores/SessionStore');
 var Base = require('stores/Base');
 
@@ -25,7 +25,7 @@ var SunburstStore = _.assign(Base(_state), {
 
   isSelected: function (category, value) {
     var selected = _state.selected;
-    return selected && selected.tagValue && selected.tagValue.category == category && selected.tagValue.value== value
+    return selected && selected.tagValue && selected.tagValue.category == category && selected.tagValue.label == value
   },
 
   getSelectedParentTag: function () {
@@ -35,12 +35,13 @@ var SunburstStore = _.assign(Base(_state), {
   tryZoomOut: function (category, filter) {
     if (this.isSelected(category, filter.value)) {
       var parent = _state.selected = _state.selected.parent;
+      var tagValue = parent.tagValue;
 
-      if (parent.tagValue) {
-        FilterStore.addFilter(parent.tagValue.category, parent.tagValue.value);
-        FilterStore.emitChange();
+      if (tagValue) {
+        FilterTagStore.addFilter(tagValue.category, tagValue.label, tagValue.filter + '=' + tagValue.value);
+        FilterTagStore.emitChange();
 
-        SessionStore.addTag(parent.tagValue.category, parent.tagValue);
+        SessionStore.addTag(tagValue.category, tagValue);
         SessionStore.emitChange();
       }
 

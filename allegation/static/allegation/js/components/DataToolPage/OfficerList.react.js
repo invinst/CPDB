@@ -7,7 +7,7 @@ var OfficerActions = require('actions/OfficerActions');
 var Officer = require("components/DataToolPage/Officer.react");
 var Counter = require("components/DataToolPage/Counter.react");
 
-var FilterStore = require("stores/FilterStore");
+var FilterTagStore = require("stores/FilterTagStore");
 var OfficerListStore = require("stores/OfficerListStore");
 
 var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
@@ -42,7 +42,7 @@ var OfficerList = React.createClass({
     var node = ReactDOM.findDOMNode(this);
     var width = $(node).width();
     var height = $(node).height();
-    var src = "/embed/?page=officers&query=" + encodeURIComponent(FilterStore.getQueryString());
+    var src = "/embed/?page=officers&query=" + encodeURIComponent(FilterTagStore.getQueryString());
     return '<iframe width="' + width + 'px" height="' + height + 'px" frameborder="0" src="' + this.absoluteUri(src)
        + '"></iframe>';
   },
