@@ -6,7 +6,8 @@ var OfficerSection = require('./OfficerSection.react');
 var SearchSection = require('./SearchSection.react');
 var SessionSection = require('components/SessionSection.react');
 var DocumentSection = require('./DocumentSection.react');
-var SettingSection = require('components/SettingSection.react')
+var SettingSection = require('components/SettingSection.react');
+var InterfaceTextSection = require('components/InterfaceTextSection.react')
 
 
 var ContentStore = require("../stores/ContentStore.js");
@@ -22,6 +23,7 @@ var Content = React.createClass({
     '/document': 'documentSection',
     '/session': 'sessionSection',
     '/setting': 'settingSection',
+    '/interface-text': 'interfaceTextSection',
   },
 
   overviewSection: function() {
@@ -46,6 +48,10 @@ var Content = React.createClass({
 
   settingSection: function () {
     return <SettingSection />
+  },
+
+  interfaceTextSection: function () {
+    return <InterfaceTextSection />
   },
 
   getInitialState: function() {

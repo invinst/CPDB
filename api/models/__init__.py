@@ -17,3 +17,7 @@ class Setting(models.Model):
     requested_document_email_text = models.TextField(blank=True, null=True)
 
     DEFAULT_SITE_TITLE = DEFAULT_SITE_TITLE
+
+class InterfaceText(models.Model):
+    key = models.SlugField()
+    text = models.TextField()
