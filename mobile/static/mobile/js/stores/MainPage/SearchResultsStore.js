@@ -39,6 +39,7 @@ AppDispatcher.register(function (action) {
 
     case AppConstants.SEARCH_CLEAR:
       SearchResultsStore.updateState('term', '');
+      SearchResultsStore.updateState('suggestions', []);
       SearchResultsStore.emitChange();
       break;
 
