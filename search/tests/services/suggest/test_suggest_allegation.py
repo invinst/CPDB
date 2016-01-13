@@ -12,6 +12,8 @@ class SuggestAllegationTestCase(SuggestBaseTestCase):
 
         AllegationFactory(city=city)
 
+        self.rebuild_index()
+
         suggest_entry = SuggestAllegationCity.query(available_zip_code)['Zip Code'][0]
         suggest_entry['value'].should.be.equal(city)
         suggest_entry['label'].should.be.equal('60616')
@@ -24,6 +26,8 @@ class SuggestAllegationTestCase(SuggestBaseTestCase):
         available_zip_code = '60616'
         AllegationFactory(city=city1)
         AllegationFactory(city=city2)
+
+        self.rebuild_index()
 
         len(SuggestAllegationCity.query(available_zip_code)).should.equal(1)
 
