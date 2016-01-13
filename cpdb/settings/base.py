@@ -58,6 +58,7 @@ INSTALLED_APPS = (
     'wagtail.contrib.wagtailsearchpromotions',
 
     'home',
+    'haystack',
     'common',
     'allegation',
     'officer',
@@ -251,9 +252,12 @@ SITE_INFO = {
     'mobile_host': 'm.cpdb.co',
 }
 
+<<<<<<< HEAD
 # WAGTAIL
 WAGTAIL_SITE_NAME = 'CPDB'
 
+=======
+>>>>>>> feature/788-refactor-suggestion-api
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'search.search_backends.CustomElasticSearchEngine',
