@@ -8,12 +8,16 @@ var Wrapper = require('components/Shared/Wrapper.react');
 var SimpleTab = React.createClass({
   getInitialState: function () {
     return {
-      'activeIndex': 0
+      'activeIndex': 0,
+      'previousIndex': 0
     }
   },
 
   setActiveTab: function (index) {
+    var previousIndex = this.state.activeIndex;
+
     this.setState({
+      'previousIndex': previousIndex,
       'activeIndex': index
     });
   },
@@ -41,11 +45,13 @@ var SimpleTab = React.createClass({
     var self = this;
 
     return items.props.children.map(function (item, i) {
-      var itemKey = HelperUtil.format('{prefix}-{i}', {'prefix': prefix, 'i': i});
-      var classNames = cx(prefix, {
-        'active': (i == self.state.activeIndex)
-      });
-
+      var itemKey = HelperUtil.format('{prefix}-{i} l', {'prefix': prefix, 'i': i});
+      var classNames = cx(prefix,
+        {
+          'active': (i == self.state.activeIndex),
+          'reverse-animation': (i > self.state.previousIndex)
+        }
+      );
 
       return React.cloneElement(item, {
         'key': itemKey,
