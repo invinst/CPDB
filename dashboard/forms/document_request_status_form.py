@@ -21,14 +21,16 @@ class DocumentRequestStatusForm(forms.Form):
         if self.errors:
             return cleaned_data
 
-        error_status_not_assignable = 'This document cannot be assigned that status'
+        error_status_not_assignable = \
+            'This document cannot be assigned that status'
 
         crid = cleaned_data['crid']
         status = cleaned_data['status']
 
         allegation = Allegation.objects.filter(crid=crid)[0]
         if status == 'pending':
-            if not allegation.document_requested or allegation.document_pending:
+            if not allegation.document_requested or \
+                    allegation.document_pending:
                 raise forms.ValidationError(error_status_not_assignable)
 
         return cleaned_data

@@ -9,18 +9,23 @@ from common.models import Area, AllegationCategory
 
 
 class ProcessAllegationFromPdfBaseCommand(BaseCommand):
-    ALLEGATION_SEPARATOR_PATTERN = re.compile('|'.join([re.escape(s) for s in ['Log No. / C.R. ', 'Log/C.R. ', 'Log/ C.R. ', 'LOG/C.R. ','LOG/C.R ', 'Log/CR ']]))
+    ALLEGATION_SEPARATOR_PATTERN = re.compile('|'.join([re.escape(s) for s in [
+        'Log No. / C.R. ', 'Log/C.R. ', 'Log/ C.R. ', 'LOG/C.R. ',
+        'LOG/C.R ', 'Log/CR ']]))
     CONTENT_PATTERN = r'((No|NO)\. ?)?(?P<crid>\d+) (?P<content>.*)'
     FIELDS_PATTERN = r'\s*Notification Date: (?P<notification_date>.+) Location: (?P<location>.+) Complaint: (?P<complaint>.+) Summary: (?P<summary>.+) Findings?: (?P<finding>.+)'
     FINDING_PATTERN = r'\"[^\"]+\"'
 
     def add_arguments(self, parser):
-        parser.add_argument('path', help='Please pass path to pdf files directory')
+        parser.add_argument(
+            'path', help='Please pass path to pdf files directory')
 
     def clean_text(self, text):
         result_text = re.sub(r'\uFB01|\uFB02', '"', text)
         result_text = re.sub(r'\u2122', '\'', result_text)
-        result_text = re.sub(r'Created by INDEPENDENT POLICE REVIEW AUTHORITY|Page \d+ of \d+|\n|Abstracts of Sustained Cases\s+[A-Z]+\s+\d+', '', result_text)
+        result_text = re.sub(
+            r'Created by INDEPENDENT POLICE REVIEW AUTHORITY|Page \d+ of \d+|\n|Abstracts of Sustained Cases\s+[A-Z]+\s+\d+',
+            '', result_text)
         result_text = re.sub(r'\s+', ' ', result_text)
 
         return result_text
@@ -44,9 +49,12 @@ class ProcessAllegationFromPdfBaseCommand(BaseCommand):
         self.errors = []
 
         if matched:
-            fields['notification_date'] = self.get_notification_date(matched.group('notification_date').strip())
-            fields['location'] = self.get_location(matched.group('location').strip())
-            fields['complaint'] = self.get_complaint(matched.group('complaint').strip())
+            fields['notification_date'] = self.get_notification_date(
+                matched.group('notification_date').strip())
+            fields['location'] = self.get_location(
+                matched.group('location').strip())
+            fields['complaint'] = self.get_complaint(
+                matched.group('complaint').strip())
             fields['summary'] = matched.group('summary')
             fields['finding'] = self.get_finding(matched.group('finding'))
         else:
@@ -62,7 +70,8 @@ class ProcessAllegationFromPdfBaseCommand(BaseCommand):
         try:
             notification_date = datetime.strptime(text, '%B %d, %Y')
         except ValueError:
-            self.errors.append('Error: Invalid date {value}.'.format(value=text))
+            self.errors.append(
+                'Error: Invalid date {value}.'.format(value=text))
             notification_date = None
 
         return notification_date
@@ -77,7 +86,8 @@ class ProcessAllegationFromPdfBaseCommand(BaseCommand):
                 location_name = text
             location = [Area.objects.get(name=location_name.upper())]
         except Area.DoesNotExist:
-            self.errors.append('Error: Area {location} not found.'.format(location=text))
+            self.errors.append(
+                'Error: Area {location} not found.'.format(location=text))
             location = []
 
         return location
@@ -86,17 +96,20 @@ class ProcessAllegationFromPdfBaseCommand(BaseCommand):
         text = ' / '.join([s.strip() for s in text.split('/')])
 
         try:
-            complaint = AllegationCategory.objects.get(allegation_name__contains=text)
+            complaint = AllegationCategory.objects.get(
+                allegation_name__contains=text)
         except AllegationCategory.DoesNotExist:
-            self.errors.append('Error: Cannot find matching category "{complaint}"'.format(complaint=text))
+            self.errors.append(
+                'Error: Cannot find matching category "{complaint}"'
+                .format(complaint=text))
             complaint = None
         except AllegationCategory.MultipleObjectsReturned:
-            categories = AllegationCategory.objects.filter(allegation_name__contains=text).values_list('allegation_name', flat=True)
-            self.errors.append('Error: Cannot define category "{complaint}": {categories}.'.format(
-                complaint=text,
-                categories=','.join(categories)
-                )
-            )
+            categories = AllegationCategory.objects.filter(
+                allegation_name__contains=text)\
+                .values_list('allegation_name', flat=True)
+            self.errors.append(
+                'Error: Cannot define category "{complaint}": {categories}.'
+                .format(complaint=text, categories=','.join(categories)))
             complaint = None
 
         return complaint
@@ -108,7 +121,9 @@ class ProcessAllegationFromPdfBaseCommand(BaseCommand):
             finding = findings[0]
         else:
             finding = None
-            self.errors.append('Error: Multiple finding values {findings}'.format(findings='.'.join(findings)))
+            self.errors.append(
+                'Error: Multiple finding values {findings}'
+                .format(findings='.'.join(findings)))
 
         return finding
 
@@ -122,14 +137,16 @@ class ProcessAllegationFromPdfBaseCommand(BaseCommand):
         print('Processing file {file_name}...'.format(file_name=file_name))
 
         file_text = self.extract_text(file_name=file_name)
-        file_text_splitted = re.split(self.ALLEGATION_SEPARATOR_PATTERN, file_text)
+        file_text_splitted = re.split(
+            self.ALLEGATION_SEPARATOR_PATTERN, file_text)
 
         for text in file_text_splitted:
             matched = re.match(self.CONTENT_PATTERN, text)
 
             # Check if content contains CRID
             if matched:
-                self.process_allegation(matched.group('crid'), matched.group('content'))
+                self.process_allegation(
+                    matched.group('crid'), matched.group('content'))
 
     def handle(self, *args, **options):
         path = options['path']

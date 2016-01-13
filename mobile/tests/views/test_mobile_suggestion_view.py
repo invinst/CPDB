@@ -1,7 +1,7 @@
 from django.core.urlresolvers import reverse
 from rest_framework.status import HTTP_200_OK, HTTP_404_NOT_FOUND
 
-from allegation.factories import AllegationFactory
+from allegation.factories import AllegationFactory, OfficerAllegationFactory
 from common.tests.core import SimpleTestCase
 
 
@@ -14,6 +14,7 @@ class MobileSuggestionViewTest(SimpleTestCase):
 
     def test_mobile_suggestion_view_should_return_suggestion_for_allegation(self):
         allegation = AllegationFactory()
+        OfficerAllegationFactory(allegation=allegation)
         params = {
             'query': allegation.crid
         }

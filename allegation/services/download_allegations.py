@@ -7,15 +7,17 @@ from django.http.request import QueryDict
 import xlsxwriter
 from allegation.models import Download
 
-from allegation.views.allegation_api_view import AllegationAPIView
-from common.models import PoliceWitness, ComplainingWitness, Officer, FINDINGS, OUTCOMES
+from allegation.views.officer_allegation_api_view import (
+    OfficerAllegationAPIView)
+from common.models import (
+    PoliceWitness, ComplainingWitness, Officer, FINDINGS, OUTCOMES)
 from cpdb.celery import app
 
 FINDINGS_DICT = dict(FINDINGS)
 OUTCOME_DICT = dict(OUTCOMES)
 
 
-class AllegationsDownload(AllegationAPIView):
+class AllegationsDownload(OfficerAllegationAPIView):
     def __init__(self, download_id, **kwargs):
         super(AllegationsDownload, self).__init__(**kwargs)
         self.download = Download.objects.get(pk=download_id)
@@ -23,7 +25,7 @@ class AllegationsDownload(AllegationAPIView):
         self.filename = ""
         self.filepath = ""
         self.header_format = None
-        self.allegations = []
+        self.officer_allegations = []
         self.crids = []
 
     def init_workbook(self):
@@ -102,40 +104,57 @@ Investigator"""
 
     def write_allegations_data(self, sheet):
         row_count = 1
-        for allegation in self.allegations:
-            sheet.write(row_count, 0, allegation.crid)
+        for officer_allegation in self.officer_allegations:
+            sheet.write(row_count, 0, officer_allegation.allegation.crid)
 
-            if allegation.officer:
-                sheet.write(row_count, 1, allegation.officer.id)
-                sheet.write(row_count, 2, allegation.officer.officer_first)
-                sheet.write(row_count, 3, allegation.officer.officer_last)
+            if officer_allegation.officer:
+                sheet.write(row_count, 1, officer_allegation.officer.id)
+                sheet.write(
+                    row_count, 2, officer_allegation.officer.officer_first)
+                sheet.write(
+                    row_count, 3, officer_allegation.officer.officer_last)
 
-            if allegation.cat:
-                sheet.write(row_count, 4, allegation.cat.cat_id)
-                sheet.write(row_count, 5, allegation.cat.category)
-                sheet.write(row_count, 6, allegation.cat.allegation_name)
+            if officer_allegation.cat:
+                sheet.write(row_count, 4, officer_allegation.cat.cat_id)
+                sheet.write(row_count, 5, officer_allegation.cat.category)
+                sheet.write(
+                    row_count, 6, officer_allegation.cat.allegation_name)
 
-            sheet.write(row_count, 7, allegation.recc_finding)
-            sheet.write(row_count, 8, allegation.recc_outcome)
-            sheet.write(row_count, 9, allegation.final_finding)
-            sheet.write(row_count, 10, allegation.final_outcome)
-            sheet.write(row_count, 11, FINDINGS_DICT.get(allegation.final_finding))
-            sheet.write(row_count, 12, OUTCOME_DICT.get(allegation.final_outcome))
+            sheet.write(row_count, 7, officer_allegation.recc_finding)
+            sheet.write(row_count, 8, officer_allegation.recc_outcome)
+            sheet.write(row_count, 9, officer_allegation.final_finding)
+            sheet.write(row_count, 10, officer_allegation.final_outcome)
+            sheet.write(
+                row_count, 11,
+                FINDINGS_DICT.get(officer_allegation.final_finding))
+            sheet.write(
+                row_count, 12,
+                OUTCOME_DICT.get(officer_allegation.final_outcome))
 
-            if allegation.beat:
-                sheet.write(row_count, 13, allegation.beat.name)
+            if officer_allegation.allegation.beat:
+                sheet.write(
+                    row_count, 13, officer_allegation.allegation.beat.name)
 
-            sheet.write(row_count, 14, allegation.location)
-            sheet.write(row_count, 15, allegation.add1)
-            sheet.write(row_count, 16, allegation.add2)
-            sheet.write(row_count, 17, allegation.city)
-            if allegation.incident_date and allegation.incident_date.year > 1970:
-                sheet.write(row_count, 18, allegation.incident_date.strftime("%Y-%m-%d %H:%M:%S"))
-            if allegation.start_date:
-                sheet.write(row_count, 19, allegation.start_date.strftime("%Y-%m-%d"))
-            if allegation.end_date:
-                sheet.write(row_count, 20, allegation.end_date.strftime("%Y-%m-%d"))
-            sheet.write(row_count, 21, allegation.investigator_name)
+            sheet.write(row_count, 14, officer_allegation.allegation.location)
+            sheet.write(row_count, 15, officer_allegation.allegation.add1)
+            sheet.write(row_count, 16, officer_allegation.allegation.add2)
+            sheet.write(row_count, 17, officer_allegation.allegation.city)
+            if officer_allegation.allegation.incident_date and \
+                    officer_allegation.allegation.incident_date.year > 1970:
+                sheet.write(
+                    row_count, 18,
+                    officer_allegation.allegation.incident_date.strftime(
+                        "%Y-%m-%d %H:%M:%S"))
+            if officer_allegation.start_date:
+                sheet.write(
+                    row_count, 19,
+                    officer_allegation.start_date.strftime("%Y-%m-%d"))
+            if officer_allegation.end_date:
+                sheet.write(
+                    row_count, 20,
+                    officer_allegation.end_date.strftime("%Y-%m-%d"))
+            sheet.write(
+                row_count, 21, officer_allegation.allegation.investigator_name)
 
             row_count += 1
 
@@ -189,7 +208,7 @@ Investigator"""
 
         self.write_headers(sheet, headers.split(","))
 
-        officer_ids = [o.officer_id for o in self.allegations]
+        officer_ids = [o.officer_id for o in self.officer_allegations]
         officers = Officer.objects.filter(id__in=officer_ids)
 
         row_count = 1
@@ -215,8 +234,8 @@ Investigator"""
         return QueryDict(self.download.query)
 
     def generate(self):
-        self.allegations = self.get_allegations()
-        self.crids = [o.crid for o in self.allegations]
+        self.officer_allegations = self.get_officer_allegations()
+        self.crids = [o.allegation.crid for o in self.officer_allegations]
 
         self.init_workbook()
         self.write_disclaimer()

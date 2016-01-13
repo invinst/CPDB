@@ -1,11 +1,11 @@
 from django.core.urlresolvers import reverse
 
-from allegation.factories import AllegationFactory, OfficerFactory, ComplainingWitnessFactory
+from allegation.factories import (
+    OfficerAllegationFactory, OfficerFactory, ComplainingWitnessFactory)
 from common.tests.core import SimpleTestCase
-from common.models import Allegation
 
 
-RACE_GENDER_API_ENDPOINT = reverse('allegation:allegation-race-gender-api')
+RACE_GENDER_API_ENDPOINT = reverse('allegation:officer-allegation-race-gender-api')
 
 
 class RaceGenderAPI(SimpleTestCase):
@@ -18,10 +18,14 @@ class RaceGenderAPI(SimpleTestCase):
     def test_race_gender_api(self):
         officer_1 = OfficerFactory(race='black', gender='M')
         officer_2 = OfficerFactory(race='white', gender='F')
-        allegation_1 = AllegationFactory(officer=officer_1)
-        allegation_2 = AllegationFactory(officer=officer_2)
-        ComplainingWitnessFactory(race='black', gender='M', crid=allegation_1.crid)
-        ComplainingWitnessFactory(race='white', gender='F', crid=allegation_2.crid)
+        officer_allegation_1 = OfficerAllegationFactory(officer=officer_1)
+        officer_allegation_2 = OfficerAllegationFactory(officer=officer_2)
+        ComplainingWitnessFactory(
+            crid=officer_allegation_1.allegation.crid, gender='M',
+            race='black', allegation=officer_allegation_1.allegation)
+        ComplainingWitnessFactory(
+            race='white', crid=officer_allegation_2.allegation.crid,
+            gender='F', allegation=officer_allegation_2.allegation)
 
         response, data = self.get_race_gender_info()
 
@@ -51,12 +55,17 @@ class RaceGenderAPI(SimpleTestCase):
     def test_race_gender_api_with_filter(self):
         officer_1 = OfficerFactory(race='black', gender='M')
         officer_2 = OfficerFactory(race='white', gender='F')
-        allegation_1 = AllegationFactory(officer=officer_1)
-        allegation_2 = AllegationFactory(officer=officer_2)
-        ComplainingWitnessFactory(race='black', gender='M', crid=allegation_1.crid)
-        ComplainingWitnessFactory(race='white', gender='F', crid=allegation_2.crid)
+        officer_allegation_1 = OfficerAllegationFactory(officer=officer_1)
+        officer_allegation_2 = OfficerAllegationFactory(officer=officer_2)
+        ComplainingWitnessFactory(
+            race='black', crid=officer_allegation_1.allegation.crid,
+            gender='M', allegation=officer_allegation_1.allegation)
+        ComplainingWitnessFactory(
+            race='white', crid=officer_allegation_2.allegation.crid,
+            gender='F', allegation=officer_allegation_2.allegation)
 
-        response, data = self.get_race_gender_info(crid=allegation_2.crid)
+        response, data = self.get_race_gender_info(
+            allegation__crid=officer_allegation_2.allegation.crid)
 
         response.status_code.should.equal(200)
         for x in ['officers', 'complaining_witness']:
@@ -68,10 +77,14 @@ class RaceGenderAPI(SimpleTestCase):
     def test_filter_by_one_graph_does_not_change_others(self):
         officer_1 = OfficerFactory(race='black', gender='M')
         officer_2 = OfficerFactory(race='white', gender='F')
-        allegation_1 = AllegationFactory(officer=officer_1)
-        allegation_2 = AllegationFactory(officer=officer_2)
-        ComplainingWitnessFactory(race='black', gender='M', crid=allegation_1.crid)
-        ComplainingWitnessFactory(race='white', gender='F', crid=allegation_2.crid)
+        officer_allegation_1 = OfficerAllegationFactory(officer=officer_1)
+        officer_allegation_2 = OfficerAllegationFactory(officer=officer_2)
+        ComplainingWitnessFactory(
+            race='black', crid=officer_allegation_1.allegation.crid,
+            gender='M', allegation=officer_allegation_1.allegation)
+        ComplainingWitnessFactory(
+            race='white', crid=officer_allegation_2.allegation.crid,
+            gender='F', allegation=officer_allegation_2.allegation)
 
         response, data = self.get_race_gender_info(officer__gender='F')
 

@@ -1,6 +1,7 @@
 from faker import Faker
 
-from allegation.factories import AllegationFactory, AreaFactory
+from allegation.factories import AllegationFactory, AreaFactory,\
+    OfficerAllegationFactory
 from common.tests.core import BaseLiveTestCase
 
 
@@ -13,7 +14,8 @@ class AllegationDetailTestCase(BaseLiveTestCase):
 
     def test_marker_should_be_available(self):
         area = AreaFactory()
-        AllegationFactory(add1=None, add2=None, point=area.polygon.centroid)
+        allegation = AllegationFactory(add1=None, add2=None, point=area.polygon.centroid)
+        OfficerAllegationFactory(allegation=allegation)
 
         self.open_complaint_detail()
 
@@ -32,6 +34,7 @@ class AllegationDetailTestCase(BaseLiveTestCase):
         very_long_sentence = fake.sentence(200)
 
         allegation = AllegationFactory(summary=very_long_sentence)
+        OfficerAllegationFactory(allegation=allegation)
 
         self.open_complaint_detail()
 

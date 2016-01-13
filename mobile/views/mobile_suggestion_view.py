@@ -4,7 +4,7 @@ from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
 
 from mobile.serializers.suggestible_serializer import SuggestibleSerializer
-from mobile.services.mobile_suggestion_service import *
+from mobile.services.mobile_suggestion_service import suggest
 
 
 class MobileSuggestionView(APIView):

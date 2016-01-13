@@ -22,7 +22,7 @@ var Map = React.createClass({
     }).setMaxBounds(maxBounds);
   },
   drawHeatMap: function (query_string) {
-    $.getJSON("/api/allegations/gis/?" + query_string, function (markers) {
+    $.getJSON("/api/officer-allegations/gis/?" + query_string, function (markers) {
 
         function iconCreateFunction (cluster) {
         var childCount = cluster.getChildCount();

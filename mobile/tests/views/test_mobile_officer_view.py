@@ -1,6 +1,8 @@
 from rest_framework.reverse import reverse
-from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
-from allegation.factories import OfficerFactory, AllegationFactory, PoliceWitnessFactory
+from rest_framework.status import (
+    HTTP_200_OK, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND)
+from allegation.factories import (
+    OfficerFactory, PoliceWitnessFactory, OfficerAllegationFactory)
 from common.tests.core import SimpleTestCase
 
 
@@ -15,9 +17,13 @@ class MobileOfficerViewTest(SimpleTestCase):
         officer = OfficerFactory()
         co_accused_officer = OfficerFactory()
         witness_officer = OfficerFactory()
-        allegation = AllegationFactory(officer=officer)
-        PoliceWitnessFactory(crid=allegation.crid, officer=witness_officer)
-        AllegationFactory(crid=allegation.crid, officer=co_accused_officer)
+        officer_allegation = OfficerAllegationFactory(officer=officer)
+        PoliceWitnessFactory(
+            crid=officer_allegation.allegation.crid, officer=witness_officer,
+            allegation=officer_allegation.allegation)
+        OfficerAllegationFactory(
+            allegation=officer_allegation.allegation,
+            officer=co_accused_officer)
 
         response, data = self.call_related_officer_api({'pk': officer.pk})
         response.status_code.should.equal(HTTP_200_OK)
@@ -35,7 +41,8 @@ class MobileOfficerViewTest(SimpleTestCase):
         detail['officer_last'].should.be.equal(officer.officer_last)
 
         len(complaints).should.be(1)
-        complaints[0]['data']['crid'].should.be.equal(str(allegation.crid))
+        complaints[0]['data']['crid'].should.be.equal(
+            str(officer_allegation.allegation.crid))
         len(complaints[0]['allegation_counts']).should.be.equal(2)
         len(data['co_accused']).should.be.equal(1)
 
@@ -48,5 +55,3 @@ class MobileOfficerViewTest(SimpleTestCase):
         bad_pk = 'xyz'
         response, data = self.call_related_officer_api({'pk': bad_pk})
         response.status_code.should.equal(HTTP_400_BAD_REQUEST)
-
-

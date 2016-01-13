@@ -1,7 +1,8 @@
 from django.conf.urls import url, include
 from django.views.decorators.csrf import ensure_csrf_cookie
 
-from mobile.views.mobile_allegation_view import MobileAllegationView
+from mobile.views.mobile_allegation_view import \
+    MobileAllegationView
 from mobile.views.mobile_officer_view import MobileOfficerView
 from mobile.views.mobile_site_view import MobileSiteView
 from mobile.views.mobile_suggestion_view import MobileSuggestionView

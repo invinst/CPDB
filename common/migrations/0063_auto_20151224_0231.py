@@ -1,12 +1,32 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import csv
-from django.core import management
 
 from django.db import models, migrations
-from django.db.models.query_utils import Q
+from django.db.models import Count
 
-from common.constants import FOIA_START_DATE
+
+def calculate_allegations_count(apps):
+    Officer = apps.get_model('common', 'Officer')
+    AllegationCategory = apps.get_model('common', 'AllegationCategory')
+    Allegation = apps.get_model('common', 'Allegation')
+
+    officers = Officer.objects.all().annotate(
+        count=Count('allegation'))
+
+    for officer in officers:
+        officer.allegations_count = officer.count
+        officer.discipline_count = officer.allegation_set\
+            .filter(final_outcome_class='disciplined').count()
+        officer.save()
+
+    for allegation_cat in AllegationCategory.objects.all():
+        allegation_cat.allegations_count = \
+            allegation_cat.allegation_set.count()
+        allegation_cat.category_count = Allegation.objects.filter(
+            cat__category=allegation_cat.category).count()
+        allegation_cat.save()
+
 
 def update_categories(apps, schema_editor):
     Allegation = apps.get_model('common', 'Allegation')
@@ -23,7 +43,8 @@ def update_categories(apps, schema_editor):
         for row in csv_reader:
             if row[1].lower() != row[4].lower():
                 try:
-                    current_allegation = AllegationCategory.objects.get(cat_id=row[3])
+                    current_allegation = AllegationCategory.objects.get(
+                        cat_id=row[3])
                 except AllegationCategory.DoesNotExist:
                     continue
                 new_allegation = AllegationCategory.objects.create(
@@ -38,7 +59,7 @@ def update_categories(apps, schema_editor):
                 )
                 to_update.update(cat=new_allegation)
 
-        management.call_command('calculate_allegations_count')
+        calculate_allegations_count(apps)
 
 class Migration(migrations.Migration):
 

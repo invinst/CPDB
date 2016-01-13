@@ -1,8 +1,10 @@
 class TimelineService(object):
 
     @classmethod
-    def get_timeline(cls, allegations):
-        allegations_date = allegations.values_list('incident_date_only', 'start_date').order_by('incident_date')
+    def get_timeline(cls, officer_allegations):
+        allegations_date = officer_allegations\
+            .values_list('allegation__incident_date_only', 'start_date')\
+            .order_by('allegation__incident_date')
 
         items = []
         for date in allegations_date:

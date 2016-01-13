@@ -8,6 +8,7 @@
  */
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 var FilterStore = require('stores/FilterStore');
 var MapStore = require('stores/MapStore');
 var OfficerListStore = require('stores/OfficerListStore');
@@ -25,7 +26,7 @@ var AutoComplete = React.createClass({
     if (event.item && event.item.layer) {
       event.item.layer.toggleStyle();
     }
-    var tags = $(this.getDOMNode()).tagsinput("items");
+    var tags = $(ReactDOM.findDOMNode(this)).tagsinput("items");
     if (tags.length) {
       setTimeout(function () {
         $(".bootstrap-tagsinput .tag").addClass('fadeIn');
@@ -48,7 +49,7 @@ var AutoComplete = React.createClass({
     FilterStore.removeEnableListener(this._onEnable)
   },
   componentDidMount: function () {
-    var element = this.getDOMNode();
+    var element = ReactDOM.findDOMNode(this);
     $(element).tagsinput({
       itemValue: 'value',
       itemText: 'text',
@@ -69,14 +70,14 @@ var AutoComplete = React.createClass({
   },
 
   beforeItemAdd: function (event) {
-    var tags = $(this.getDOMNode()).tagsinput('items');
+    var tags = $(ReactDOM.findDOMNode(this)).tagsinput('items');
     var tag = event.item;
     event.cancel = TagUtil.isDuplicatedTag(tags, tag)
   },
 
   _onDisable: function () {
     $("#search-wrapper").hide();
-    var element = this.getDOMNode();
+    var element = ReactDOM.findDOMNode(this);
     $(element).off("beforeItemAdd", this.beforeItemAdd)
       .on("beforeItemAdd", this.cancelItemChange)
       .on("beforeItemRemove", this.cancelItemChange);
@@ -84,7 +85,7 @@ var AutoComplete = React.createClass({
 
   _onEnable: function () {
     $("#search-wrapper").show();
-    var element = this.getDOMNode();
+    var element = ReactDOM.findDOMNode(this);
     $(element).on("beforeItemAdd", this.beforeItemAdd)
       .off("beforeItemAdd", this.cancelItemChange)
       .off("beforeItemRemove", this.cancelItemChange);
@@ -107,7 +108,7 @@ var AutoComplete = React.createClass({
     if (filters) {
       this.inAction = true;
       try {
-        var element = this.getDOMNode();
+        var element = ReactDOM.findDOMNode(this);
       } catch(e) {
         return;
       };
