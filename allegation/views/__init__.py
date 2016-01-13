@@ -9,9 +9,10 @@ from django.views.generic import TemplateView
 from django.views.generic import View
 from django.db.models.query_utils import Q
 
+
 from allegation.views.officer_allegation_api_view import (
     OfficerAllegationAPIView)
-from api.models import Setting
+from api.models import Setting, InterfaceText
 from common.json_serializer import JSONSerializer
 from common.models import (
     Allegation, Area, AllegationCategory, Officer, OfficerAllegation)
@@ -38,6 +39,11 @@ class AllegationListView(TemplateView):
         context = super(AllegationListView, self).get_context_data(**kwargs)
         admin_settings = Setting.objects.first()
         context.update({'admin_settings': admin_settings})
+
+        interface_texts = {}
+        for text in InterfaceText.objects.all():
+            interface_texts[text.key] = text.text
+        context.update({'interface_texts': json.dumps(interface_texts)})
         return context
 
     def get(self, request, hash_id=None, *args, **kwargs):

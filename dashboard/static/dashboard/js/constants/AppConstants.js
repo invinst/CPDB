@@ -84,6 +84,8 @@ module.exports = {
   RECEIVED_SESSION_ALIAS_CREATION_RESULT: c++,
   FAILED_TO_CREATE_SESSION_ALIAS: c++,
   DELETED_SESSION_ALIAS: c++,
+  RECEIVED_INTERFACE_TEXTS: c++,
+  UPDATE_INTERFACE_TEXTS: c++,
 
   QUERY_LIST_FILTERS: {
     'all': 'All',
@@ -163,7 +165,8 @@ module.exports = {
     { page: '/officer', icon: 'user', text: 'Officer Profiles' },
     { page: '/document', icon: 'folder-open', text: 'Investigation Documents' },
     { page: '/session', icon: 'history', text: 'Sessions' },
-    { page: '/setting', icon: 'cogs', text: 'Settings' }
+    { page: '/setting', icon: 'cogs', text: 'Settings' },
+    { page: '/interface-text', icon: 'file-text', text: 'Interface Texts' }
   ],
 
   DATE_ONLY_FORMAT: 'YYYY-M-DD',
@@ -187,5 +190,6 @@ module.exports = {
   SESSION_ALIAS2_API_ENDPOINT: '/api/dashboard/session-alias2/',
   SETTINGS_API_ENDPOINT: '/api/dashboard/settings/',
   NEW_SESSION_ANALYTICS_API_ENDPOINT: '/api/dashboard/new-sessions-analytics/',
-  DOCUMENT_EXPORT_END_POINT: '/api/dashboard/documents_export/'
+  DOCUMENT_EXPORT_END_POINT: '/api/dashboard/documents_export/',
+  INTERFACE_TEXT_API_ENDPOINT: '/api/dashboard/interface-texts/',
 };
