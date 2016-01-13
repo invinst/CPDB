@@ -46,7 +46,7 @@ var SimpleTab = React.createClass({
 
     return items.props.children.map(function (item, i) {
       var itemKey = HelperUtil.format('{prefix}-{i}', {'prefix': prefix, 'i': i});
-      var classNames = cx(prefix, {
+      var classNames = cx(item.props.className, prefix, {
         'active': (i == self.state.activeIndex),
         'no-animation': (self.state.previousIndex == -1),
        'reverse-animation': (i > self.state.previousIndex)
