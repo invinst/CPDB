@@ -24,9 +24,14 @@ class SuggestIncidentDateOnlyYearMonth(SuggestBase):
                     ) for entry in raw_results
                 ]
         else:
-            for month in month_choices():
-                if month[1].lower().startswith(term):
-                    raw_results = raw_results + generate_month_year_entry_from_2010(month)
+            year = None
+            splitted = term.split(' ')
+            month = splitted[0]
+            if len(splitted) > 1:
+                year = splitted[1]
+            for m in month_choices():
+                if m[1].lower().startswith(month):
+                    raw_results = raw_results + generate_month_year_entry_from_2010(m, year)
 
                     results = [
                         cls.entry_format(
