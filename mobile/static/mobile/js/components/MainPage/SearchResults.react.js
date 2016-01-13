@@ -29,13 +29,13 @@ var SearchResults = React.createClass(objectAssign(Base(SearchResultsStore), {
 
     if (!this.state.success) {
       return (
-        <Wrapper wrapperClass='search-result' visible={this.state.term}>
+        <Wrapper wrapperClass='search-results' visible={this.state.term}>
           <FailedSearch term={this.state.term} />
         </Wrapper>
       );
     }
     return (
-      <Wrapper wrapperClass='search-result' visible={this.state.term}>
+      <Wrapper wrapperClass='search-results' visible={this.state.term}>
         <SuccessfulSearch term={this.state.term} suggestions={this.state.suggestions} />
       </Wrapper>
     );
