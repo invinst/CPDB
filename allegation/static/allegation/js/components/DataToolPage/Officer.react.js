@@ -67,6 +67,20 @@ var Officer = React.createClass({
     return !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
   },
 
+  renderAllegationsCount: function (officer) {
+    if (this.props.filtered) {
+      return (
+        <div>
+          <Counter to={officer.filtered_allegations_count} />
+        </div>
+      );
+    } else {
+      return (
+        <div>{officer.allegations_count}</div>
+      )
+    }
+  },
+
   render: function () {
     var officer = this.props.officer;
     if (!officer) {
@@ -125,7 +139,7 @@ var Officer = React.createClass({
                     <div>disciplines</div>
                   </div>
                   <div className='col-xs-3 officer-complaints-disciplines'>
-                    <div>{officer.allegations_count}</div>
+                    <div>{this.renderAllegationsCount(officer)}</div>
                     <div>{officer.discipline_count}</div>
                   </div>
                 </div>
