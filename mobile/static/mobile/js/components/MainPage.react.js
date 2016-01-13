@@ -15,7 +15,15 @@ var SuggestionAPI = require('utils/SuggestionAPI');
 var MainPage = React.createClass(objectAssign(Base(MainPageStore), {
   getInitialState: function () {
     return {
-      'isSearchFocused': 0,
+      'isSearchFocused': 0
+    }
+  },
+
+  componentDidMount: function () {
+    MainPageStore.addChangeListener(this._onChange);
+    var term = HelperUtil.fetch(this, 'props.params.query', '');
+    if (term) {
+      SuggestionAPI.get(term)
     }
   },
 
