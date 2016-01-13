@@ -8,6 +8,7 @@ from allegation.factories import (
     OfficerAllegationFactory)
 from api.models import Setting
 from common.tests.core import BaseLiveTestCase
+from common.utils.haystack import rebuild_index
 from share.models import Session
 from home.factories import HomePageFactory
 from home.models import HomePage
@@ -128,6 +129,8 @@ class HomePageTestCase(BaseLiveTestCase):
         self.visit_home()
         officer = self.officer_allegation.officer
 
+        rebuild_index()
+
         self.until(
             lambda:
             self.fill_in('.ui-autocomplete-input', officer.officer_first))
@@ -232,6 +235,9 @@ class HomePageTestCase(BaseLiveTestCase):
 
     def test_replace_old_filter_in_same_category(self):
         officer_allegation = OfficerAllegationFactory()
+
+        rebuild_index()
+
         self.visit_home()
         self.search_officer(officer_allegation.officer)
         self.should_see_text(officer_allegation.officer.display_name)
@@ -242,6 +248,10 @@ class HomePageTestCase(BaseLiveTestCase):
 
     def test_pin_tag(self):
         officer_allegation = OfficerAllegationFactory()
+        another = OfficerAllegationFactory()
+
+        rebuild_index()
+
         self.visit_home()
         self.search_officer(officer_allegation.officer)
         self.should_see_text(officer_allegation.officer.display_name)
@@ -255,7 +265,6 @@ class HomePageTestCase(BaseLiveTestCase):
         self.should_see_text(self.officer_allegation.officer.display_name)
         self.should_see_text(officer_allegation.officer.display_name)
 
-        another = OfficerAllegationFactory()
         self.search_officer(another.officer)
         self.should_see_text(another.officer.display_name)
         self.should_see_text(officer_allegation.officer.display_name)
@@ -263,6 +272,10 @@ class HomePageTestCase(BaseLiveTestCase):
 
     def test_unpin_tag(self):
         officer_allegation = OfficerAllegationFactory()
+        another = OfficerAllegationFactory()
+
+        rebuild_index()
+
         self.visit_home()
         self.search_officer(officer_allegation.officer)
         self.should_see_text(officer_allegation.officer.display_name)
@@ -277,7 +290,6 @@ class HomePageTestCase(BaseLiveTestCase):
         self.until(
             lambda: element.get_attribute('class').shouldnt.contain('pinned'))
 
-        another = OfficerAllegationFactory()
         self.search_officer(another.officer)
         self.should_see_text(another.officer.display_name)
         self.should_not_see_text(officer_allegation.officer.display_name)

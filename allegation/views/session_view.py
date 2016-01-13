@@ -149,9 +149,13 @@ class InitSession(SessionAPIView):
                 title="Police Beat %s" % beat.name,
                 query={
                     'filters': {
-                        'areas__id': {
-                            'value': [beat.id]
-                        }
+                        'Area': [
+                            {
+                                'value': beat.id,
+                                'filters': 'allegation__areas_id={id}'.format(id=beat.id),
+                                'pinned': False
+                            }
+                        ]
                     }
                 }
             )

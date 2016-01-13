@@ -4,7 +4,7 @@ var Filters = require('components/DataToolPage/Filters.react');
 var MapStore = require('stores/MapStore');
 var SummaryActions = require('actions/SummaryActions');
 var FilterTagsActions = require('actions/FilterTagsActions');
-var FilterStore = require('stores/FilterStore');
+var FilterTagStore = require('stores/FilterTagStore');
 var AppConstants = require('constants/AppConstants');
 var numeral = require('numeral');
 
@@ -22,26 +22,26 @@ var SummaryChildRow = React.createClass({
     e.preventDefault();
 
     var parent = this.props.category
-    FilterTagsActions.removeTag('cat__category', {label: parent.name, value: parent.name});
+    FilterTagsActions.removeTag('Category', parent.name);
 
     var child = this.props.subcategory;
     if (this.state.selected) {
-      FilterTagsActions.removeTag('cat', {label: child.name, value: child.id});
+      FilterTagsActions.removeTag('Category ID', child.cat_id);
     } else {
-      FilterTagsActions.addTag('cat', {label: child.name, value: child.id});
+      FilterTagsActions.addTag('Category ID', child.cat_id, 'cat__cat_id=' + child.cat_id, child.name);
     }
 
     this.state.selected = !this.state.selected;
   },
 
   isActive: function () {
-    var filters = FilterStore.getAll();
-    var id = this.props.subcategory.id;
+    var catId = this.props.subcategory.cat_id;
     var selectedCategories = this.props.summary.props.selectedCategories;
+
     return (
-      ('cat' in filters && filters['cat'].value.indexOf(id) > -1)
-      || ('cat__category' in filters && filters['cat__category'].value.indexOf(this.props.category.name) > -1)
-      || (selectedCategories && selectedCategories.indexOf(id) > -1)
+      !!FilterTagStore.getFilter('Allegation type', catId)
+      || !!FilterTagStore.getFilter('Category', this.props.category.name)
+      || (selectedCategories && selectedCategories.indexOf(catId) > -1)
     );
   },
 

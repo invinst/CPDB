@@ -11,7 +11,7 @@ var SummaryActions = require('actions/SummaryActions');
 var SunburstActions = require('actions/SunburstActions');
 var FilterTagsActions = require('actions/FilterTagsActions');
 var SunburstStore = require("stores/SunburstStore");
-var FilterStore = require("stores/FilterStore");
+var FilterTagStore = require("stores/FilterTagStore");
 var SunburstAPI = require('utils/SunburstAPI');
 var SessionAPI = require('utils/SessionAPI');
 
@@ -119,7 +119,7 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
     var node = ReactDOM.findDOMNode(this);
     var width = jQuery(node).width();
     var height = jQuery(node).height();
-    var src = "/embed/?page=sunburst&query=" + encodeURIComponent(FilterStore.getQueryString());
+    var src = "/embed/?page=sunburst&query=" + encodeURIComponent(FilterTagStore.getQueryString());
     src += "&state=" + this.stateToString({name: this.state.selected.name});
     return '<iframe width="' + width + 'px" height="' + height + 'px" frameborder="0" src="' + this.absoluteUri(src)
        + '"></iframe>';
@@ -163,7 +163,7 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
       if (d.tagValue.removeParent) {
         FilterTagsActions.removeTag(d.parent.tagValue.category, d.parent.tagValue);
       }
-      FilterTagsActions.addTag(d.tagValue.category, d.tagValue);
+      FilterTagsActions.addTag(d.tagValue.category, d.tagValue.label, d.tagValue.filter + '=' + d.tagValue.value);
     }
 
     SunburstActions.selectArc(d);

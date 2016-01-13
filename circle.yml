@@ -26,6 +26,10 @@ dependencies:
     - pyenv local 3.4.2
   cache_directories:
     - "bower_components"
+    - "elasticsearch-1.7.1"
+  post:
+    - if [[ ! -e elasticsearch-1.7.1 ]]; then wget https://download.elastic.co/elasticsearch/elasticsearch/elasticsearch-1.7.1.tar.gz && tar -xvf elasticsearch-1.7.1.tar.gz; fi
+    - elasticsearch-1.7.1/bin/elasticsearch: {background: true}
 test:
   pre:
     - python manage.py collectstatic --noinput
