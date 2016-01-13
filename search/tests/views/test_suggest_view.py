@@ -165,6 +165,9 @@ class SuggestViewTestCase(SimpleTestCase):
 
     def test_suggest_city(self):
         AllegationFactory(city='Chicago IL 60616')
+
+        rebuild_index()
+
         self.get_suggestion('616')
         self.get_suggestion('616').should.contain('Zip Code')
         self.get_suggestion('123').shouldnt.contain('Zip Code')
