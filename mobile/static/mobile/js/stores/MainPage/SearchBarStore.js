@@ -21,13 +21,11 @@ AppDispatcher.register(function (action) {
 
     case AppConstants.SEARCH_BLUR:
       _state['status'] = 'blank';
-      _state['term'] = '';
       SearchBarStore.emitChange();
       break;
 
     case AppConstants.SEARCH_FOCUS:
       _state['status'] = 'focus';
-      _state['term'] = '';
       SearchBarStore.emitChange();
       break;
 
