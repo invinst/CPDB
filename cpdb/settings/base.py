@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'jsonify',
     'django_nose',
     'django_user_agents',
+    'haystack',
     'taggit',
     'modelcluster',
 
@@ -58,7 +59,6 @@ INSTALLED_APPS = (
     'wagtail.contrib.wagtailsearchpromotions',
 
     'home',
-    'haystack',
     'common',
     'allegation',
     'officer',
