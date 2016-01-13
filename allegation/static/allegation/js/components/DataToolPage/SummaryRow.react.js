@@ -29,12 +29,12 @@ var SummaryRow = React.createClass({
 
   hasActiveChildren: function () {
     var filters = FilterStore.getAll();
-    if ('cat' in filters) {
+    if ('cat__cat_id' in filters) {
       var category = this.props.category;
-      for (var i = 0; i < filters['cat'].value.length; i++) {
+      for (var i = 0; i < filters['cat__cat_id'].value.length; i++) {
         for (var j = 0; j < category.subcategories.length; j++) {
           var childCategoryName = category.subcategories[j].cat_id;
-          if (filters['cat'].value[i].indexOf(childCategoryName) > -1) {
+          if (filters['cat__cat_id'].value[i].indexOf(childCategoryName) > -1) {
             return true;
           }
         }

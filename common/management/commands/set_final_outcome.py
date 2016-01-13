@@ -1,25 +1,29 @@
 from django.core.management.base import BaseCommand
 
-from common.models import Allegation, NO_DISCIPLINE_CODES, DISCIPLINE_CODES
+from common.models import (
+    OfficerAllegation, NO_DISCIPLINE_CODES, DISCIPLINE_CODES)
 
 
 class Command(BaseCommand):
     help = 'Calculate officer complaints count'
 
     def handle(self, *args, **options):
-        for allegation in Allegation.objects.all():
-            if allegation.final_finding == 'SU':
-                if allegation.final_outcome in DISCIPLINE_CODES:
-                    allegation.final_outcome_class = 'disciplined'
+        for officer_allegation in OfficerAllegation.objects.all():
+            if officer_allegation.final_finding == 'SU':
+                if officer_allegation.final_outcome in DISCIPLINE_CODES:
+                    officer_allegation.final_outcome_class = 'disciplined'
                 else:
-                    allegation.final_outcome_class = 'sustained'
-            elif allegation.final_outcome and allegation.final_outcome in NO_DISCIPLINE_CODES:
-                allegation.final_outcome_class = "not-sustained"
+                    officer_allegation.final_outcome_class = 'sustained'
+            elif officer_allegation.final_outcome and \
+                    officer_allegation.final_outcome in NO_DISCIPLINE_CODES:
+                officer_allegation.final_outcome_class = "not-sustained"
 
             else:
-                if allegation.final_finding in ['NS', 'UN', 'EX', 'DS', 'NA', 'NC']:
-                    allegation.final_outcome_class = 'not-sustained'
+                if officer_allegation.final_finding in [
+                        'NS', 'UN', 'EX', 'DS', 'NA', 'NC']:
+                    officer_allegation.final_outcome_class = 'not-sustained'
                 else:
-                    allegation.final_outcome_class = 'open-investigation'
+                    officer_allegation.final_outcome_class = \
+                        'open-investigation'
 
-            allegation.save()
+            officer_allegation.save()

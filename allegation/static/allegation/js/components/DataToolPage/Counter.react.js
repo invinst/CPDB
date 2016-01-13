@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var numeral = require('numeral');
 var AppConstants = require('constants/AppConstants');
 
@@ -6,8 +7,16 @@ var AppConstants = require('constants/AppConstants');
 var Counter = React.createClass({
   from: 0,
 
+  componentDidMount: function () {
+    this.runCounter();
+  },
+
   componentDidUpdate: function () {
-    $(this.getDOMNode()).countTo({
+    this.runCounter();
+  },
+
+  runCounter: function () {
+    $(ReactDOM.findDOMNode(this)).countTo({
       from: this.from,
       to: this.props.to,
       refreshInterval: 20,

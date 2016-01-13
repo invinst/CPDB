@@ -2,24 +2,34 @@
 from django.core.urlresolvers import reverse
 
 from allegation.factories import AreaFactory
-from common.models import Area
-from common.tests.core import BaseLiveTestCase
+from common.tests.core import SimpleTestCase
+from share.models import Session
 
 
-class AllegationInitApiView(BaseLiveTestCase):
+class AllegationInitApiViewTestCase(SimpleTestCase):
     def setUp(self):
         self.name = '1233'
-        Area.objects.all().delete()
         self.area = AreaFactory(type='police-beats', name=self.name)
 
     def test_init_in_area(self):
         lng, lat = self.area.polygon.centroid
 
-        url = "{url}?lat={lat}&lng={lng}".format(url=reverse('init'), lat=lat, lng=lng)
-        self.visit(url)
+        self.visit(reverse('init'), {
+            'lat': lat,
+            'lng': lng,
+        })
 
-        self.filter_tags().should.contain('police-beats')
-        self.filter_tags().should.contain(self.name)
+        self.response.status_code.should.equal(302)
+        hash_id = self.response['location'].split('/')[-1]
+        session_id = Session.id_from_hash(hash_id)[0]
+        session = Session.objects.get(id=session_id)
+        session.query['filters']['areas__id']['value']\
+            .should.equal([self.area.id])
 
-    def filter_tags(self):
-        return self.find('#filter-tags').text
+    def test_init_no_area(self):
+        self.visit(reverse('init'), {
+            'lat': -1,
+            'lng': -1,
+        })
+        self.response.status_code.should.equal(302)
+        self.response['location'].should.match(r'/data/$')

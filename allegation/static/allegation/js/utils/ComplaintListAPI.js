@@ -12,7 +12,7 @@ var ComplaintListAPI = {
   preloadDataForOtherTab: function () {
     for (filter in AppConstants.FILTERS) {
       var queryString = AllegationFetcherQueryBuilder.buildQuery(filter);
-      ajax = jQuery.getJSON('/api/allegations/?' + queryString, function (data) {
+      ajax = jQuery.getJSON('/api/officer-allegations/?' + queryString, function (data) {
       });
     }
   },
@@ -27,25 +27,43 @@ var ComplaintListAPI = {
         ajax.abort();
       }
 
-      ajax = jQuery.getJSON('/api/allegations/?' + queryString, function (data) {
+      ajax = jQuery.getJSON('/api/officer-allegations/?' + queryString, function (data) {
         ComplaintListServerActions.receivedData(data, fromFilter);
         if (!fromFilter) {
           that.preloadDataForOtherTab();
         }
       });
     } else {
-      ComplaintListServerActions.receivedData({'allegations': [], 'analytics': {}, noQuery: true}, fromFilter);
+      ComplaintListServerActions.receivedData({'officer_allegations': [], 'analytics': {}, noQuery: true}, fromFilter);
     }
   },
 
   getAllForOfficer: function(officer) {
-    var endpoint = '/api/allegations/?officer=' + officer + '&length=-1';
+    var params = {
+      officer: officer,
+      length: -1
+    };
 
     if (ajax) {
       ajax.abort();
     }
 
-    ajax = jQuery.getJSON(endpoint, function (data) {
+    ajax = jQuery.getJSON(AppConstants.ALLEGATIONS_API_ENDPOINT, params, function (data) {
+      ComplaintListServerActions.receivedOfficerComplaints(data);
+    });
+  },
+
+  getAllForInvestigator: function(investigator) {
+    var params = {
+      investigator: investigator,
+      length: -1
+    };
+
+    if (ajax) {
+      ajax.abort();
+    }
+
+    ajax = jQuery.getJSON(AppConstants.ALLEGATIONS_API_ENDPOINT, params, function (data) {
       ComplaintListServerActions.receivedOfficerComplaints(data);
     });
   },
@@ -55,13 +73,9 @@ var ComplaintListAPI = {
     var pagedQuery = [queryString, 'page=' + pageNumber, 'length=50'].join('&');
 
     if (queryString) {
-
-      jQuery.getJSON('/api/allegations/?' + pagedQuery, function (data) {
+      jQuery.getJSON('/api/officer-allegations/?' + pagedQuery, function (data) {
         ComplaintListServerActions.receivedMoreData(data);
       });
-    }
-    else {
-      ComplaintListStore.unlockScroll();
     }
   },
 };

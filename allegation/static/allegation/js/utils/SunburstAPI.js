@@ -27,7 +27,7 @@ var SunburstAPI = {
       ajax.abort();
     }
 
-    ajax = jQuery.getJSON("/api/allegations/sunburst/?" + queryString, function (data) {
+    ajax = jQuery.getJSON("/api/officer-allegations/sunburst/?" + queryString, function (data) {
       SunburstActions.receivedData(data);
     });
   }

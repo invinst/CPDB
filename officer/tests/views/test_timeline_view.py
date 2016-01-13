@@ -1,22 +1,36 @@
 import json
 
 from django.core.urlresolvers import reverse
-from django.test.testcases import SimpleTestCase
 
-from allegation.factories import OfficerFactory, AllegationFactory
+from allegation.factories import (
+    OfficerFactory, OfficerAllegationFactory, AllegationFactory)
+from common.tests.core import SimpleTestCase
 
 
 class TimelineViewTestCase(SimpleTestCase):
-    def test_count_by_num_complaints(self):
-        officer = OfficerFactory()
-        for _ in range(5):
-            AllegationFactory(officer=officer)
+    def setUp(self):
+        self.officer = OfficerFactory()
+        OfficerAllegationFactory.create_batch(2, officer=self.officer)
 
+    def test_timeline_view(self):
         response = self.client.get(reverse('officer:timeline'), {
-            'officer': officer.id
+            'officer': self.officer.id
         })
 
         response = json.loads(response.content.decode())
 
         response.should.contain('items')
         isinstance(response['items'], list).should.be.true
+        response['items'].should.have.length_of(3)  # officer appt_date
+
+    def test_timeline_use_allegation_start_date_when_incident_date_non(self):
+        allegation = AllegationFactory(incident_date_only=None)
+        officer_allegation = OfficerAllegationFactory(
+            officer=self.officer, allegation=allegation)
+        self.visit(reverse('officer:timeline'), {
+            'officer': self.officer.id
+        })
+        data = self.json(self.response)
+        data['items'].should.have.length_of(4)
+        data['items'].should.contain(
+            officer_allegation.start_date.strftime("%Y-%m-%d"))

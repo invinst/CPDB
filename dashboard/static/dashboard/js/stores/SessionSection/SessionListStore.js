@@ -34,6 +34,7 @@ AppDispatcher.register(function(action) {
         SessionListStore.emitChange();
       }
       break;
+
     default:
       break;
   }

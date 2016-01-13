@@ -13,9 +13,11 @@ def _default_story_types_order():
 class Setting(models.Model):
     default_site_title = models.CharField(max_length=255, default=DEFAULT_SITE_TITLE)
     story_types_order = models.TextField(default=_default_story_types_order)
+    requested_document_email_subject = models.CharField(max_length=255, blank=True, null=True)
+    requested_document_email_text = models.TextField(blank=True, null=True)
 
     DEFAULT_SITE_TITLE = DEFAULT_SITE_TITLE
 
-    @classmethod
-    def _default_story_types_order(cls):
-        return _default_story_types_order()
+class InterfaceText(models.Model):
+    key = models.SlugField()
+    text = models.TextField()

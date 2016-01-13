@@ -16,16 +16,21 @@ class AdminAllegationRequestAnalysisViewTest(SimpleTestCase):
         SuggestionLog.objects.all().delete()
 
     def call_allegation_request_analysis(self):
-        response = self.client.get(reverse('dashboard-allegation-request-analysis'))
+        response = self.client.get(
+            reverse('dashboard-allegation-request-analysis'))
         data = self.json(response)
 
         return response, data
 
     def test_return_analaysis_of_document_requests(self):
-        AllegationFactory(document_requested=False, document_id=0)  # Missing
-        AllegationFactory(document_pending=False, document_requested=True, document_id=0)  # Requested
+        AllegationFactory(
+            document_requested=False, document_id=0)  # Missing
+        AllegationFactory(
+            document_pending=False, document_requested=True,
+            document_id=0)  # Requested
         AllegationFactory(document_id=1)  # Fulfilled
-        AllegationFactory(document_pending=True, document_requested=True)  # Pending
+        AllegationFactory(
+            document_pending=True, document_requested=True)  # Pending
 
         response, data = self.call_allegation_request_analysis()
         response.status_code.should.equal(200)

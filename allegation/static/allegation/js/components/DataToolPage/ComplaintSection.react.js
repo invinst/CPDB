@@ -45,9 +45,9 @@ var ComplaintSection = React.createClass({
 
     for (var i = 0; i < complaints.length; i++) {
       var complaint = complaints[i];
-      var allegation = complaint.allegation;
-      var key = 'allegation' + allegation.id;
-      rows.push(<ComplaintListRow key={key} complaint={complaint} officer={officer} finding={allegation.final_finding}/>)
+      var officer_allegation = complaint.officer_allegation;
+      var key = 'allegation' + officer_allegation.id;
+      rows.push(<ComplaintListRow key={key} complaint={complaint} officer={officer} finding={officer_allegation.final_finding}/>)
     }
 
     return rows;
@@ -63,7 +63,7 @@ var ComplaintSection = React.createClass({
     var analytics = this.state.analytics;
     var loading = this.state.loading;
     var items = this.renderComplaints(this.state.complaints, this.props.officer);
-    var className = classnames('complaint_list', {
+    var className = classnames('complaint-list', {
       'hidden': this.state.noQuery
     });
 

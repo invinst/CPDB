@@ -1,11 +1,16 @@
 import json
+from faker import Faker
 
-from allegation.factories import OfficerFactory, AllegationCategoryFactory, AllegationFactory
+from allegation.factories import (
+    OfficerFactory, AllegationCategoryFactory, AllegationFactory, AreaFactory)
 from common.models import AllegationCategory, Officer
 from common.tests.core import SimpleTestCase
-from search.factories import AliasFactory
+from search.factories import AliasFactory, SessionAliasFactory
 from search.models import SuggestionLog
 from search.models.alias import Alias
+
+
+fake = Faker()
 
 
 class SuggestViewTestCase(SimpleTestCase):
@@ -18,6 +23,12 @@ class SuggestViewTestCase(SimpleTestCase):
             'term': term
         })
         return json.loads(response.content.decode())
+
+    def test_suggestion_no_query(self):
+        response = self.client.get("/search/suggest/", {
+            'term': ''
+        })
+        response.status_code.should.equal(400)
 
     def test_detect_suggest_type_officer_name(self):
         OfficerFactory(officer_first='Jerry', officer_last="Dao")
@@ -64,19 +75,19 @@ class SuggestViewTestCase(SimpleTestCase):
         AllegationFactory(investigator__name='Someone Name')
 
         data = self.get_suggestion('Some')
-        data.should.contain('investigator')
+        data.should.contain('allegation__investigator')
 
     def test_detect_suggest_type_complaint_id_number(self):
         AllegationFactory(crid=123456)
 
         data = self.get_suggestion('1234')
-        data.should.contain('crid')
+        data.should.contain('allegation__crid')
 
         data = self.get_suggestion('123')
-        data.shouldnt.contain('crid')
+        data.shouldnt.contain('allegation__crid')
 
         data = self.get_suggestion('8908')
-        data.shouldnt.contain('crid')
+        data.shouldnt.contain('allegation__crid')
 
     def test_suggest_incident_date_year(self):
         data = self.get_suggestion('20')
@@ -141,10 +152,10 @@ class SuggestViewTestCase(SimpleTestCase):
 
     def test_suggest_city(self):
         AllegationFactory(city='Chicago IL 60616')
-        data = self.get_suggestion('616')
-        self.get_suggestion('616').should.contain('city')
-        self.get_suggestion('123').shouldnt.contain('city')
-        self.get_suggestion('Chi').shouldnt.contain('city')
+        self.get_suggestion('616')
+        self.get_suggestion('616').should.contain('allegation__city')
+        self.get_suggestion('123').shouldnt.contain('allegation__city')
+        self.get_suggestion('Chi').shouldnt.contain('allegation__city')
 
     def test_search_with_alias(self):
         officer = OfficerFactory()
@@ -158,3 +169,17 @@ class SuggestViewTestCase(SimpleTestCase):
 
         alias = Alias.objects.get(id=alias.id)
         alias.num_usage.should.equal(1)
+
+    def test_suggest_area_type(self):
+        area = AreaFactory()
+        data = self.get_suggestion(area.name[0:3])
+        data.should.contain('allegation__areas__id')
+        data['allegation__areas__id'].should.have.length_of(1)
+        data['allegation__areas__id'][0].should.contain('type')
+
+    def test_search_session_alias(self):
+        session_alias = SessionAliasFactory(title=fake.name())
+        data = self.get_suggestion(session_alias.alias[0:2])
+        data.should.contain('session')
+        [x['label'] for x in data['session']]\
+            .should.contain(session_alias.title)

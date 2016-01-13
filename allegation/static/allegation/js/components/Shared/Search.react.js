@@ -5,6 +5,7 @@ var React = require('react');
 var AppConstants = require('constants/AppConstants');
 var FilterTagsActions = require('actions/FilterTagsActions');
 var NavActions = require('actions/NavActions');
+var SessionAPI = require('utils/SessionAPI');
 
 
 var Search = React.createClass({
@@ -16,6 +17,9 @@ var Search = React.createClass({
     $("#autocomplete").catcomplete({
       autoFocus: true,
       source: function (request, response) {
+        var that = this
+        this.displayMessage('Searching...')
+
         $.ajax({
           url: "/search/suggest/",
           dataType: "json",
@@ -27,8 +31,11 @@ var Search = React.createClass({
             $.each(data, function (i, subdata) {
               newData = newData.concat(subdata);
             });
-
-            response(newData);
+            if (newData.length > 0) {
+              response(newData);
+            } else {
+              that.displayMessage('No matches found')
+            }
           }
         });
       },
@@ -44,8 +51,13 @@ var Search = React.createClass({
 
   select: function (event, ui) {
     event.preventDefault();
-    FilterTagsActions.addTag(ui.item.category, ui.item);
-    $("#autocomplete").val('');
+
+    if (ui.item.category == 'session') {
+      SessionAPI.getSessionInfo(ui.item.value)
+    } else {
+      FilterTagsActions.addTag(ui.item.category, ui.item);
+      $("#autocomplete").val('');
+    }
   },
 
   onSearchClick: function () {

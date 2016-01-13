@@ -1,20 +1,16 @@
 from allegation.factories import AllegationFactory
 from allegation.tests.constants import TEST_DOCUMENT_URL
 from common.models import Allegation
-from common.tests.core import BaseLiveTestCase
+from common.tests.core import BaseAdminTestCase
 
 
-class DocumentRequestTestCase(BaseLiveTestCase):
-    def setUp(self):
-        self.login_user()
-        self.visit('/admin/')
-
+class DocumentRequestTestCase(BaseAdminTestCase):
     def tearDown(self):
         super(DocumentRequestTestCase, self).tearDown()
-        Allegation.objects.all().delete()
 
     def go_to_documents(self):
-        self.element_by_tagname_and_text('span', 'Investigation Documents').click()
+        self.element_by_tagname_and_text(
+            'span', 'Investigation Documents').click()
 
     def tab(self, text):
         selector = '.tab-{tabname}'.format(tabname=text.lower())
@@ -28,6 +24,7 @@ class DocumentRequestTestCase(BaseLiveTestCase):
         self.tab(text).has_class('active').should.be.true
 
     def test_see_document_request_tab(self):
+        allegation = AllegationFactory()
         self.should_see_text('Investigation Documents')
         self.go_to_documents()
         self.find("h1").text.should.equal('Investigation Documents')
@@ -43,8 +40,14 @@ class DocumentRequestTestCase(BaseLiveTestCase):
             self.go_to_tab(tab)
             self.tab_should_active(tab)
 
+        self.go_to_tab("All")
+        self.find('.document td').click()
+        self.until_ajax_complete()
+        self.should_see_text('{crid} information'.format(crid=allegation.crid))
+
     def test_filter_pending_documents(self):
-        allegation = AllegationFactory(document_requested=True, document_pending=True)
+        allegation = AllegationFactory(
+            document_requested=True, document_pending=True)
 
         self.go_to_documents()
         self.go_to_tab('Pending')
@@ -58,7 +61,8 @@ class DocumentRequestTestCase(BaseLiveTestCase):
         self.go_to_tab('Requested')
         self.button('Request').click()
 
-        self.until(lambda: self.should_see_text('%s document has been requested.' % allegation.crid))
+        self.until(lambda: self.should_see_text(
+            '%s document has been requested.' % allegation.crid))
 
         self.go_to_tab('Pending')
         self.should_see_text(allegation.crid)
@@ -66,13 +70,15 @@ class DocumentRequestTestCase(BaseLiveTestCase):
         buttons.shouldnt.contain("Pending")
 
     def test_cancel_pending(self):
-        allegation = AllegationFactory(document_requested=True, document_pending=True)
+        allegation = AllegationFactory(
+            document_requested=True, document_pending=True)
 
         self.go_to_documents()
         self.go_to_tab('Pending')
         self.button('Cancel Pending').click()
 
-        self.until(lambda: self.should_see_text('%s document pending has been cancelled.' % allegation.crid))
+        self.until(lambda: self.should_see_text(
+            '%s document pending has been cancelled.' % allegation.crid))
         self.find_all('.status>span')[-1].text.should.equal('Requested')
 
         self.go_to_tab('Requested')
@@ -87,7 +93,8 @@ class DocumentRequestTestCase(BaseLiveTestCase):
 
         self.element_for_label('Enter URL').send_keys(TEST_DOCUMENT_URL)
         self.button('SUBMIT').click()
-        self.until(lambda: self.should_see_text('The document is successfully added to allegation #1002643!'))
+        self.until(lambda: self.should_see_text(
+            'The document is successfully added to allegation #1002643!'))
 
     def test_error_adding_link(self):
         AllegationFactory()
@@ -98,7 +105,8 @@ class DocumentRequestTestCase(BaseLiveTestCase):
 
         self.element_for_label('Enter URL').send_keys('aaa')
         self.button('SUBMIT').click()
-        self.until(lambda: self.should_see_text('Invalid link! Please check URL'))
+        self.until(lambda: self.should_see_text(
+            'Invalid link! Please check URL'))
 
     def test_cancel_document_request(self):
         allegation = AllegationFactory(document_requested=True)
@@ -107,7 +115,8 @@ class DocumentRequestTestCase(BaseLiveTestCase):
         self.button('OK').click()
         self.until(self.ajax_complete)
 
-        Allegation.objects.get(id=allegation.id).document_requested.should.be.false
+        Allegation.objects.get(id=allegation.id)\
+            .document_requested.should.be.false
 
     def test_go_to_request_by_crid(self):
         allegation = AllegationFactory()
@@ -124,9 +133,12 @@ class DocumentRequestTestCase(BaseLiveTestCase):
 
     def test_get_document_request_analysis(self):
         AllegationFactory(document_requested=False, document_id=0)  # Missing
-        AllegationFactory(document_pending=False, document_requested=True, document_id=0)  # Requested
+        AllegationFactory(
+            document_pending=False, document_requested=True,
+            document_id=0)  # Requested
         AllegationFactory(document_id=1)  # Fulfilled
-        AllegationFactory(document_pending=True, document_requested=True)  # Pending
+        AllegationFactory(
+            document_pending=True, document_requested=True)  # Pending
 
         self.go_to_documents()
         self.until_ajax_complete()

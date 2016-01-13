@@ -55,6 +55,8 @@ INSTALLED_APPS = (
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    # 'common.middleware.subdomain.SubdomainURLRoutingMiddleware',
+    # 'common.middleware.mobile_redirect.MobileRedirectMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -100,7 +102,7 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': os.environ.get('DB_NAME', 'cpdb'),
         'USER': os.environ.get('DB_USER', 'eastagile'),
-        'PASSWORD': '',
+        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
         'HOST': '127.0.0.1',
         ***REMOVED***
     }
@@ -155,7 +157,7 @@ BOWER_INSTALLED_APPS = (
     'c3',
     'components-font-awesome#4.4.0',
     'moment',
-    'highcharts#4.1.6',
+    'highcharts-release#4.1.10',
     'pluralize',
     'jqueryui-touch-punch#4bc0091452',
     'zeroclipboard',
@@ -197,8 +199,6 @@ EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 BROKER_URL = os.environ.get('BROKER_URL', 'redis://localhost:6379/0')
-COMPRESS_ENABLED = os.environ.get('COMPRESS_ENABLED') != 'False'
-COMPRESS_JS_FILTERS = []
 COMPRESS_PRECOMPILERS = (
     ('text/less', 'lessc {infile}'),
     ('text/sass', 'sass {infile}'),
@@ -215,6 +215,17 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 20,
 }
 
-TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
+TEST_RUNNER = 'common.tests.runner.DjangoNoseTestSuiteRunner'
 
 SITE_ID = 1
+
+SUBDOMAIN_URLCONFS = {
+    None: 'cpdb.urls',
+    'm': 'mobile.urls',
+}
+
+# This should be override in corresponding settings
+SITE_INFO = {
+    'domain': 'cpdb.co',
+    'mobile_host': 'm.cpdb.co',
+}

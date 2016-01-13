@@ -1,4 +1,3 @@
-from django.utils import timezone
 from django import forms
 from django.http.response import Http404
 
@@ -22,7 +21,8 @@ class RequestEmailForm(forms.ModelForm):
         return crid
 
     def save(self, commit=True):
-        Allegation.objects.filter(crid=self.cleaned_data['crid']).update(document_requested=True)
+        Allegation.objects.filter(crid=self.cleaned_data['crid'])\
+            .update(document_requested=True)
         super(RequestEmailForm, self).save(commit=commit)
 
     class Meta:

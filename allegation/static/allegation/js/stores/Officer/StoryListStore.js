@@ -23,11 +23,6 @@ AppDispatcher.register(function (action) {
       StoryListStore.emitChange();
       break;
 
-    case AppConstants.SET_STORY_DOCUMENT_THUMB:
-      action.story.thumbUrl = action.thumbUrl;
-      StoryListStore.emitChange();
-      break;
-
     default:
       break;
   }

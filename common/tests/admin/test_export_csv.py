@@ -1,29 +1,29 @@
-from allegation.factories import AllegationFactory
-from common.tests.core import BaseLiveTestCase, SimpleTestCase
-from share.models import Session
-from share.factories import SessionFactory
+from allegation.factories import OfficerAllegationFactory
+from common.tests.core import SimpleTestCase
 
 
-class AllegationAdminTestCase(SimpleTestCase):
+class OfficerAllegationAdminTestCase(SimpleTestCase):
     def setUp(self):
         self.login_user()
-        self.allegation = AllegationFactory()
+        self.officer_allegation = OfficerAllegationFactory()
 
     def test_see_export_option(self):
         self.visit("/admin/models/")
-        self.link("Allegations").should.be.ok
+        self.link("Officer allegations").should.be.ok
 
-        self.visit(self.link("Allegations").attrs['href'])
-        self.should_see_text('Export Allegations to CSV')
+        self.visit(self.link("Officer allegations").attrs['href'])
+        self.should_see_text('Export Officer allegations to CSV')
 
         options = self.find_all(".actions select option")
         options = {o.text: o.attrs['value'] for o in options}
-        options['Export Allegations to CSV'].should.equal('export_as_csv')
+        options['Export Officer allegations to CSV']\
+            .should.equal('export_as_csv')
 
     def test_browse_session_admin(self):
-        response = self.client.post("/admin/models/common/allegation/", {
-            '_selected_action': str(self.allegation.id),
-            'action': 'export_as_csv',
-            'select_across': '0'
-        })
+        response = self.client.post(
+            "/admin/models/common/officerallegation/", {
+                '_selected_action': str(self.officer_allegation.id),
+                'action': 'export_as_csv',
+                'select_across': '0'
+            })
         response['content-type'].should.equal('text/csv')

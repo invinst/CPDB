@@ -14,6 +14,10 @@ class AdminSessionsView(viewsets.ModelViewSet):
     def get_queryset(self):
         queryset = super(AdminSessionsView, self).get_queryset()
         query = self.request.GET.get('q', '')
+        session_id = Session.id_from_hash(query)
+
+        if session_id:
+            return queryset.filter(id=session_id[0])
 
         if query:
             queryset = queryset.filter(title__icontains=query.lower())

@@ -1,19 +1,21 @@
+from django.http import Http404
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.renderers import JSONRenderer
 
-from mobile.serializers.mobile_suggestion_serializer import MobileSuggestionSerializer
-from mobile.services.mobile_suggestion_service import MobileSuggestionService
+from mobile.serializers.suggestible_serializer import SuggestibleSerializer
+from mobile.services.mobile_suggestion_service import suggest
 
 
 class MobileSuggestionView(APIView):
+    renderer_classes = (JSONRenderer, )
+
     def get(self, request):
         query = request.GET.get('query', '')
-        suggestion_service = MobileSuggestionService()
+        suggestions = suggest(query)
 
-        content = MobileSuggestionSerializer({
-            'allegation': suggestion_service.suggest_crid(query),
-            'officer_by_star': suggestion_service.suggest_officer_star(query),
-            'officers_by_name': suggestion_service.suggest_officer_name(query)
-        }, context={'request': request})
+        if not suggestions:
+            raise Http404()
 
+        content = SuggestibleSerializer(suggestions, many=True)
         return Response(content.data)

@@ -8,13 +8,13 @@
  */
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 var FilterStore = require('stores/FilterStore');
 var MapStore = require('stores/MapStore');
 var OfficerListStore = require('stores/OfficerListStore');
 var FilterActions = require('actions/FilterActions');
 var SessionAPI = require('utils/SessionAPI');
 var TagUtil = require('utils/TagUtil');
-var cx = require('react/lib/cx');
 var _sessionData = {};
 var init_data = typeof(INIT_DATA) == 'undefined' ? false : INIT_DATA;
 var init_filters = typeof(INIT_FILTERS) == 'undefined' ? {} : INIT_FILTERS;
@@ -26,7 +26,7 @@ var AutoComplete = React.createClass({
     if (event.item && event.item.layer) {
       event.item.layer.toggleStyle();
     }
-    var tags = $(this.getDOMNode()).tagsinput("items");
+    var tags = $(ReactDOM.findDOMNode(this)).tagsinput("items");
     if (tags.length) {
       setTimeout(function () {
         $(".bootstrap-tagsinput .tag").addClass('fadeIn');
@@ -49,14 +49,7 @@ var AutoComplete = React.createClass({
     FilterStore.removeEnableListener(this._onEnable)
   },
   componentDidMount: function () {
-    // TODO: Move this stuff cpdbAutocomplate to be a React one?
-    $(document).ready(function() {
-      if ($("#autocomplete").length) {
-        cpdbAutocomplete($("#autocomplete"));
-      }
-    })
-
-    var element = this.getDOMNode();
+    var element = ReactDOM.findDOMNode(this);
     $(element).tagsinput({
       itemValue: 'value',
       itemText: 'text',
@@ -77,14 +70,14 @@ var AutoComplete = React.createClass({
   },
 
   beforeItemAdd: function (event) {
-    var tags = $(this.getDOMNode()).tagsinput('items');
+    var tags = $(ReactDOM.findDOMNode(this)).tagsinput('items');
     var tag = event.item;
     event.cancel = TagUtil.isDuplicatedTag(tags, tag)
   },
 
   _onDisable: function () {
     $("#search-wrapper").hide();
-    var element = this.getDOMNode();
+    var element = ReactDOM.findDOMNode(this);
     $(element).off("beforeItemAdd", this.beforeItemAdd)
       .on("beforeItemAdd", this.cancelItemChange)
       .on("beforeItemRemove", this.cancelItemChange);
@@ -92,7 +85,7 @@ var AutoComplete = React.createClass({
 
   _onEnable: function () {
     $("#search-wrapper").show();
-    var element = this.getDOMNode();
+    var element = ReactDOM.findDOMNode(this);
     $(element).on("beforeItemAdd", this.beforeItemAdd)
       .off("beforeItemAdd", this.cancelItemChange)
       .off("beforeItemRemove", this.cancelItemChange);
@@ -115,7 +108,7 @@ var AutoComplete = React.createClass({
     if (filters) {
       this.inAction = true;
       try {
-        var element = this.getDOMNode();
+        var element = ReactDOM.findDOMNode(this);
       } catch(e) {
         return;
       };

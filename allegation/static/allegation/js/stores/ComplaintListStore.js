@@ -61,9 +61,9 @@ AppDispatcher.register(function(action) {
       break;
 
     case AppConstants.COMPLAINT_LIST_RECEIVED_MORE_DATA:
-      if (!_.isEmpty(action.data.allegations)) {
+      if (!_.isEmpty(action.data.officer_allegations)) {
         _state['pageNumber']++;
-        $.merge(_state['complaints'], action.data.allegations);
+        $.merge(_state['complaints'], action.data.officer_allegations);
         ComplaintListStore.emitChange();
       } else {
         _state['handleInfiniteLoad'] = false;
@@ -78,7 +78,7 @@ AppDispatcher.register(function(action) {
       break;
 
     case AppConstants.COMPLAINT_LIST_RECEIVED_DATA:
-      _state['complaints'] = action.data.allegations;
+      _state['complaints'] = action.data.officer_allegations;
       if (!action.fromFilter) {
         _state['analytics'] = action.data.analytics;
       }

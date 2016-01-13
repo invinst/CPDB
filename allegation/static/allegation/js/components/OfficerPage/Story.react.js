@@ -7,20 +7,40 @@ var Base = require('components/Base.react')
 var StoryStore =require('stores/OfficerPage/StoryStore');
 var DocumentCloudAPI = require('utils/DocumentCloudAPI');
 var AppConstants = require('constants/AppConstants');
+var DateTimeUtil = require('utils/DateTimeUtil');
 
 
-var Story = React.createClass(_.assign(Base(StoryStore), {
+var Story = React.createClass({
+  getInitialState: function () {
+    return {
+      thumbUrl: ''
+    };
+  },
 
   componentDidMount: function() {
     if (this.props.story.url){
-      DocumentCloudAPI.getThumbnail(this.props.story);
+      var story = this.props.story;
+      DocumentCloudAPI.getThumbnail(story);
     } else {
       this.props.story.url = '#';
+    }
+    StoryStore.addChangeThumbUrlListener(this._onThumbUrlChange);
+  },
+
+  componentWillUnmount: function () {
+    StoryStore.removeChangeThumbUrlListener(this._onThumbUrlChange);
+  },
+
+  _onThumbUrlChange: function () {
+    if (StoryStore.isSameStory(this.props.story)) {
+      this.setState({
+        thumbUrl: StoryStore.getThumbUrl()
+      });
     }
   },
 
   renderDocumentLink: function () {
-    var thumbUrl = this.props.story.thumbUrl;
+    var thumbUrl = this.state.thumbUrl;
     if (thumbUrl) {
       return (
         <div className="col-md-2">
@@ -42,8 +62,8 @@ var Story = React.createClass(_.assign(Base(StoryStore), {
     }
 
     var descCol = classnames({
-      'col-md-12': !this.props.story.thumbUrl,
-      'col-md-10': this.props.story.thumbUrl
+      'col-md-12': !story.thumbUrl,
+      'col-md-10': story.thumbUrl
     });
 
     return (
@@ -54,7 +74,7 @@ var Story = React.createClass(_.assign(Base(StoryStore), {
   },
 
   renderCreatedDate: function () {
-    var date = moment(this.props.story.created_date).format(AppConstants.DATE_FORMAT);
+    var date = DateTimeUtil.displayDateTime(this.props.story['created_date'], AppConstants.DATE_FORMAT);
 
     return (
       <div className="date">{date}</div>
@@ -80,6 +100,6 @@ var Story = React.createClass(_.assign(Base(StoryStore), {
     );
   }
 
-}));
+});
 
 module.exports = Story;

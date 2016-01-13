@@ -6,34 +6,39 @@ var Base = require('stores/Base');
 
 
 var _state = {
-  searchStatus: 'blank',
-  searchTerm: ''
+  isSearchFocused: 0,
+  isSearching: 0
 };
 
 var MainPageStore = objectAssign(Base(_state), {});
 
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
-    case AppConstants.ACTIVATE_SEARCH:
-      _state['searchStatus'] = 'suggesting';
+    case AppConstants.SEARCH_CLEAR:
+      MainPageStore.updateState('isSearchFocused', 0);
       MainPageStore.emitChange();
       break;
 
-    case AppConstants.DEACTIVATE_SEARCH:
-      if (!_state['searchTerm']) {
-        _state['searchStatus'] = 'blank';
-      }
+    case AppConstants.SEARCH_FOCUS:
+      MainPageStore.updateState('isSearchFocused', 1);
       MainPageStore.emitChange();
       break;
 
-    case AppConstants.SEARCH_FOR:
-      _state['searchTerm'] = action.data;
-      _state['searchStatus'] = 'suggesting';
+    case AppConstants.SEARCH_BLUR:
+      MainPageStore.updateState('isSearchFocused', 0);
       MainPageStore.emitChange();
       break;
 
-    case AppConstants.GO_FOR_SEARCH_DETAIL:
-      _state['searchStatus'] = 'results';
+    case AppConstants.SEARCH_INPUT_CHANGED:
+      MainPageStore.updateState('isSearching', 1);
+      MainPageStore.emitChange();
+      break;
+
+    case AppConstants.MAIN_PAGE_RECEIVED_DATA:
+    case AppConstants.MAIN_PAGE_FAILED_TO_RECEIVED_DATA:
+      MainPageStore.updateState('isSearching', 0);
+      MainPageStore.updateState('isSearchFocused', 1);
+      MainPageStore.updateState('term', action.query);
       MainPageStore.emitChange();
       break;
 

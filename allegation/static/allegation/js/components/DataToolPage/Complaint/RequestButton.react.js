@@ -25,7 +25,7 @@ var RequestButton = React.createClass({
     var iconClassName = 'fa fa-file-pdf-o';
     var target = '';
     if (this.state.requested) {
-      documentLabel = 'Requested';
+      documentLabel = 'Pending';
     }
     if (allegation.document_id) {
       target = '_blank';

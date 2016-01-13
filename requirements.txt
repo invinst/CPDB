@@ -18,6 +18,7 @@ django-debug-toolbar==1.4
 django-extensions==1.5.3
 django-factory==0.11
 django-filter==0.11.0
+django-import-export==0.3.1
 django-jsonify==0.3.0
 django-nose==1.4.1
 django-postgrespool==0.3.0
@@ -36,10 +37,12 @@ kombu==3.0.26
 linecache2==1.0.0
 Markdown==2.6.2
 mock==1.0.1
+nose-timer==0.5.0
 pathtools==0.1.2
 pbr==0.11.0
 ply==3.6
 psycopg2==2.6
+PyPDF2==1.25.1
 pyproj==1.9.4
 pyshp==1.2.1
 python-dateutil==2.4.2

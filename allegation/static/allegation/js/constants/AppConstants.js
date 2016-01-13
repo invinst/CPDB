@@ -15,6 +15,8 @@ module.exports = {
   COMPLAINT_LIST_GET_DATA: c++,
   COMPLAINT_LIST_GET_MORE_DATA: c++,
 
+  ALLEGATION_DETAILS_DATA_RECEIVED: c++,
+
   OFFICER_COMPLAINT_LIST_RECEIVED_DATA: c++,
   OFFICER_MOUSE_OUT: c++,
   MAP_CHANGE_FILTER: c++,
@@ -68,6 +70,8 @@ module.exports = {
   NAV_GO_TO_PAGE: c++,
 
   MAP_CHANGE_MARKERS: c++,
+
+  RECEIVED_INVESTIGATOR_DATA: c++,
 
   AVG_COMPLAINTS_NUMBER_GREEN: 20,
   AVG_COMPLAINTS_NUMBER_YELLOW: 60,
@@ -248,10 +252,11 @@ module.exports = {
   },
 
   AUTOCOMPLETE_CATEGORY_NAMES: {
-    'crid': 'Allegation ID',
+    'allegation__crid': 'Allegation ID',
     'cat__category': 'Category',
+    'cat__cat_id': 'Category ID',
     'cat': 'Allegation type',
-    'investigator': 'Investigator',
+    'allegation__investigator': 'Investigator',
     'officer': 'Officer',
     'officer__star': 'Badge number',
     'officer__unit': 'Officer Unit',
@@ -267,13 +272,15 @@ module.exports = {
     'incident_date_only__year': 'Incident Year',
     'incident_date_only__year_month': 'Incident Year/Month',
     'incident_date_only': 'Incident Date',
-    'areas__id': 'Area',
+    'allegation__areas__id': 'Area',
     'complainant_gender': 'Complainant Gender',
     'complainant_race': 'Complainant Race',
     'outcome_text': 'Outcome',
-    'city': 'Zip Code',
+    'allegation__city': 'Zip Code',
     'data_source': 'Data Source',
-    'officer__allegations_count__gt': 'Repeater (10+ complaints)',
+    'officer__allegations_count__gt': 'Repeater',
+    'session': 'Session',
+    'has_filters': 'has:'
   },
 
   AUTOCOMPLETE_DISPLAY_CATEGORY_IN_TAG: [
@@ -291,8 +298,10 @@ module.exports = {
   MAP_MARKER_ICON_URL: 'http://cpdb.co/static/img/64x_map_marker.png', // it must be a full url
   OFFICER_PAGE_API_ENDPOINT: '/officer/',
   SESSION_API_ENDPOINT: '/api/allegations/session/',
-  RACE_GENDER_API_ENDPOINT: '/api/allegations/race-gender/',
-
+  RACE_GENDER_API_ENDPOINT: '/api/officer-allegations/race-gender/',
+  ALLEGATION_DETAILS_API_ENDPOINT: '/api/police-witness/',
+  ALLEGATIONS_API_ENDPOINT: '/api/officer-allegations/',
+  INVESTIGATOR_API_ENDPOINT: '/investigator/',
 
   DATE_FORMAT: 'D MMM, YYYY',
 
@@ -306,7 +315,7 @@ module.exports = {
   TABS: {
     'outcomes': 0,
     'categories': 1,
-    'race_gender': 2,
+    'race-gender': 2,
     'map': 3,
   }
 };

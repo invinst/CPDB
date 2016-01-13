@@ -1,6 +1,8 @@
-var React = require('react');
-var numeral = require('numeral');
 var _ = require('lodash');
+var jQuery = require('jquery');
+var numeral = require('numeral');
+var React = require('react');
+var ReactDOM = require('react-dom');
 
 var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
 var Base = require('components/Base.react');
@@ -11,6 +13,7 @@ var FilterTagsActions = require('actions/FilterTagsActions');
 var SunburstStore = require("stores/SunburstStore");
 var FilterStore = require("stores/FilterStore");
 var SunburstAPI = require('utils/SunburstAPI');
+var SessionAPI = require('utils/SessionAPI');
 
 var width = 390,
   height = 390,
@@ -44,7 +47,7 @@ var width = 390,
     '30+ days': '#930c0c'
   };
 
-if ($(window).width() <= 1200) {
+if (jQuery(window).width() <= 1200) {
     height = width = 300;
 }
 radius = Math.min(width, height) / 2.2;
@@ -113,9 +116,9 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
 
   // embedding
   getEmbedCode: function () {
-    var node = this.getDOMNode();
-    var width = $(node).width();
-    var height = $(node).height();
+    var node = ReactDOM.findDOMNode(this);
+    var width = jQuery(node).width();
+    var height = jQuery(node).height();
     var src = "/embed/?page=sunburst&query=" + encodeURIComponent(FilterStore.getQueryString());
     src += "&state=" + this.stateToString({name: this.state.selected.name});
     return '<iframe width="' + width + 'px" height="' + height + 'px" frameborder="0" src="' + this.absoluteUri(src)
@@ -164,9 +167,14 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
     }
 
     SunburstActions.selectArc(d);
+    SessionAPI.updateSessionInfo({'sunburst_arc': d.name});
   },
 
   zoomToSelected: function (d) {
+    if (typeof(d) == 'string') {
+      d = this.findPathByName(d);
+    }
+
     path.transition()
       .duration(750)
       .attrTween("d", arcTween(d));
@@ -289,8 +297,8 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
   },
 
   componentDidMount: function () {
-    if ($(window).width() <= 1200) {
-      $("#sunburst-chart").addClass("small");
+    if (jQuery(window).width() <= 1200) {
+      jQuery("#sunburst-chart").addClass("small");
     }
 
     SunburstStore.addChangeListener(this._onChange);
@@ -403,7 +411,7 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
         }
       }
       if (selected.children) {
-        $.each(selected.children, function(i, child) {
+        jQuery.each(selected.children, function(i, child) {
           legends.push(that.makeLegend(child));
         });
       }

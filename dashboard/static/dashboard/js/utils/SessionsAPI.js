@@ -32,8 +32,8 @@ var SessionsAPI = {
     limit += count;
 
     var params = {
-      limit: limit,
-      offset: limit + count,
+      limit: count,
+      offset: limit,
       q: SessionSearchStore.getState()['query']
     };
 

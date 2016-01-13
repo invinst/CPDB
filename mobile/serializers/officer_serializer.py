@@ -3,7 +3,7 @@ from rest_framework import serializers
 from common.models import Officer
 
 
-class OfficerSerializer(serializers.HyperlinkedModelSerializer):
+class OfficerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Officer
         fields = (
@@ -11,5 +11,6 @@ class OfficerSerializer(serializers.HyperlinkedModelSerializer):
             'officer_first',
             'officer_last',
             'race',
-            'gender'
+            'gender',
+            'allegations_count'
         )

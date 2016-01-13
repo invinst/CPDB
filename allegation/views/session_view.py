@@ -1,13 +1,16 @@
 import json
-from django.contrib.gis.geos.factory import fromstr
+
 from django.contrib.gis.geos.point import Point
-from django.http.response import HttpResponse, HttpResponseBadRequest, Http404, HttpResponseRedirect
+from django.http import QueryDict
+from django.http.response import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.views.generic import View
 
+from allegation.query_builders import OfficerAllegationQueryBuilder
 from common.json_serializer import JSONSerializer
-from common.models import Area
+from common.models import Area, OfficerAllegation
 from common.utils.http_request import get_client_ip
+from search.models import FilterLog
 from share.models import Session
 
 
@@ -86,22 +89,43 @@ class SessionAPIView(View):
                 'query': session.query,
                 'readable_query': session.readable_query,
                 'title': session.title,
-                'active_tab': session.active_tab
+                'active_tab': session.active_tab,
+                'sunburst_arc': session.sunburst_arc,
             }
         }
 
     def error_response(self, error_message):
-         return HttpResponse(JSONSerializer().serialize({
-                'data': {
-                    'msg':  error_message
-                }
+        return HttpResponse(JSONSerializer().serialize({
+            'data': {
+                'msg':  error_message
+            }
             }), status=400)
+
+    def track_filter(self, session):
+        if not session.query:
+            return
+        query_string = session.query_string
+        if not query_string or query_string == '&':
+            return
+
+        queries = OfficerAllegationQueryBuilder()\
+            .build(QueryDict(query_string))
+        officer_allegations = OfficerAllegation.objects.filter(queries)
+        num_allegations = officer_allegations.count()
+
+        FilterLog.objects.create(tag_name=query_string,
+                                 session_id=session.hash_id,
+                                 num_allegations=num_allegations)
 
     def update_session_data(self, session, data):
         updates = data['query'] or {}
-        session.query.update(**updates)
+        if session.query != updates:
+            session.query.update(**updates)
+            self.track_filter(session)
         if 'active_tab' in data:
             session.active_tab = data['active_tab']
+        if 'sunburst_arc' in data:
+            session.sunburst_arc = data['sunburst_arc']
         if 'title' in data:
             session.title = data['title']
         session.save()
@@ -115,7 +139,8 @@ class InitSession(SessionAPIView):
         lng = float(request.GET.get('lng', -87.6500523))
 
         point = Point(lng, lat)
-        beats = Area.objects.filter(type='police-beats', polygon__contains=point)
+        beats = Area.objects.filter(
+            type='police-beats', polygon__contains=point)
 
         if beats.exists():
             beat = beats.first()
@@ -130,6 +155,7 @@ class InitSession(SessionAPIView):
                     }
                 }
             )
-            return HttpResponseRedirect("/data/{session_hash}".format(session_hash=session.hash_id))
+            return HttpResponseRedirect(
+                "/data/{session_hash}".format(session_hash=session.hash_id))
 
         return HttpResponseRedirect("/data/")

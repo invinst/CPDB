@@ -106,8 +106,13 @@ input:-ms-input-placeholder
 .ui-menu .ui-menu-item
   padding: 0 1em
   border-left: 4px solid transparent
-  text-transform: capitalize
   padding: 0.2em 1.76em
+
+  &.capitalize
+    text-transform: capitalize
+
+  &.uppercase
+    text-transform: uppercase
 
 .ui-widget-content .ui-state-focus
   @extend .extend_15

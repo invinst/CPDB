@@ -1,8 +1,10 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var ReactRouter = require('react-router');
 var History = require('history');
 var classnames = require('classnames');
 var pluralize = require('pluralize');
+var _ = require('lodash');
 
 var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
@@ -13,6 +15,7 @@ var Filters = require('components/DataToolPage/Filters.react');
 var OfficerMixin = require('components/DataToolPage/Officer/OfficerMixin.react');
 var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
 var CheckMark = require('components/DataToolPage/Officer/CheckMark.react');
+var Counter = require("components/DataToolPage/Counter.react");
 var OfficerPresenter = require('presenters/OfficerPresenter');
 var jQuery = require('utils/jQuery');
 var StringUtil = require('utils/StringUtil');
@@ -29,7 +32,7 @@ var Officer = React.createClass({
   },
 
   copyEmbed: function () {
-    jQuery(this.getDOMNode()).find(".embed").each(function () {
+    jQuery(ReactDOM.findDOMNode(this)).find(".embed").each(function () {
       var client = new ZeroClipboard(this);
       var that = this;
       client.on( "ready", function( readyEvent ) {
@@ -58,6 +61,10 @@ var Officer = React.createClass({
     var src = "/embed/?page=officer-card&pk=" + encodeURIComponent(this.props.officer.id);
     return '<iframe width="170px" height="110px" frameborder="0" src="' + this.absoluteUri(src)
        + '"></iframe>';
+  },
+
+  shouldComponentUpdate: function (nextProps, nextState) {
+    return !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
   },
 
   render: function () {

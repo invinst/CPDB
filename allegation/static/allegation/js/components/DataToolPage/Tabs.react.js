@@ -3,6 +3,7 @@
  */
 var _ = require('lodash');
 var React = require('react');
+var ReactDOM = require('react-dom');
 var classnames = require('classnames');
 var slugify = require('slugify');
 var isMobile = require('ismobilejs');
@@ -39,13 +40,16 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
     this.embedding = false;
   },
 
+  componentDidUpdate: function () {
+    this.activeTabIndex = AppConstants.TABS[this.state.activeTab];
+  },
 
   // embedding
   activeTab: function (number, tab, e) {
     this.activeTabIndex = number;
 
     if (this.embedding) {
-      $(this.getDOMNode()).parent().find(".embed-code input").val(this.getEmbedCode());
+      $(ReactDOM.findDOMNode(this)).parent().find(".embed-code input").val(this.getEmbedCode());
     }
 
     TabActions.setActiveTab(tab);
@@ -78,7 +82,7 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
 
   enterEmbedMode: function () {
     this.embedding = true;
-    var node = this.getDOMNode();
+    var node = ReactDOM.findDOMNode(this);
     var parent = $(node).parent();
     $(parent).prepend(this.getEmbedNode());
   },
@@ -90,13 +94,13 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
   // end embedding
 
   isActive: function (target) {
-    return this.state['active_tab'] == target || (!this.state['active_tab'] && target == 'outcomes');
+    return this.state.activeTab == target || (!this.state.activeTab && target == 'outcomes');
   },
 
   renderNavTab: function (label) {
     var target = slugify(label.toLowerCase().replace('&', ''));
     var data_target = '#' + target;
-    var tab = target.replace('-', '_')
+    var tab = target;
 
     if (tab == 'map' && !isMobile.any) {
       return;
@@ -133,13 +137,6 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
   },
 
   render: function () {
-    var isActive = {
-      'active': !isMobile.any
-    };
-
-    var outcomeClassName = classnames(isActive);
-    var outcomeContentClassName = classnames('tab-pane', isActive);
-
     return (
       <div className="chart-row">
         <ul className="nav nav-tabs" role="tablist">

@@ -9,7 +9,7 @@ class Command(BaseCommand):
     help = 'Update complaint documents info'
 
     id_delim = '-'
-    search_syntax = 'title:CR %s'
+    search_syntax = 'account: 10146-invisible-institute title:"CR %s"'
 
     def add_arguments(self, parser):
         parser.add_argument('--start')
@@ -25,9 +25,6 @@ class Command(BaseCommand):
                 document = results[0]
                 self.document_by_crid[allegation.crid] = document
 
-                if document.title != allegation.document_title:  # new document found
-                    # send notification
-                    send_document_notification(allegation, document)
             else:
                 self.document_by_crid[allegation.crid] = None
         return self.document_by_crid[allegation.crid]
