@@ -1,20 +1,27 @@
-from allegation.factories import AllegationFactory, OfficerFactory
+from allegation.factories import (
+    AllegationFactory, OfficerFactory, OfficerAllegationFactory)
 from common.tests.core import SimpleTestCase
-from mobile.services.mobile_suggestion_service import *
+from mobile.services.mobile_suggestion_service import (
+    suggest_crid, suggest_officer_star, suggest_officer_name)
 
 
 class MobileSuggestionServiceTest(SimpleTestCase):
     def test_suggest_crid(self):
         allegation = AllegationFactory(crid='1051333')
-        AllegationFactory(crid='306697')
+        OfficerAllegationFactory(allegation=allegation)
+        OfficerAllegationFactory(allegation=AllegationFactory(crid='306697'))
 
         crid = str(allegation.crid)
         partial_query = crid[0:3]
 
         suggest_crid(partial_query).should.equal([])
-        suggest_crid(crid).should.equal([allegation.as_suggestion_entry()])
 
-    def test_suggest_officer(self):
+        expected_allegation = allegation.as_suggestion_entry()
+        allegation_result = suggest_crid(crid)
+        allegation_result[0]['meta']['incident_date'] = allegation_result[0]['meta']['incident_date'].date()
+        allegation_result.should.equal([expected_allegation])
+
+    def test_suggest_officer_badge(self):
         officer = OfficerFactory(star=19663)
         OfficerFactory(star=17489)
 
@@ -24,7 +31,8 @@ class MobileSuggestionServiceTest(SimpleTestCase):
 
         suggest_officer_star(partial_query).should.equal([])
         suggest_officer_star(bad_query).should.equal([])
-        suggest_officer_star(star).should.equal([officer.as_suggestion_entry()])
+        suggest_officer_star(star).should.equal(
+            [officer.as_suggestion_entry()])
 
     def test_suggest_officer_name(self):
         officer = OfficerFactory(officer_first='Test', officer_last='Name')
@@ -40,9 +48,12 @@ class MobileSuggestionServiceTest(SimpleTestCase):
 
     def test_order_officer_by_number_of_complaints(self):
         officer_name = 'matched'
-        officer_1 = OfficerFactory(officer_first=officer_name, allegations_count=1)
-        officer_2 = OfficerFactory(officer_first=officer_name, allegations_count=3)
-        officer_3 = OfficerFactory(officer_first=officer_name, allegations_count=2)
+        officer_1 = OfficerFactory(
+            officer_first=officer_name, allegations_count=1)
+        officer_2 = OfficerFactory(
+            officer_first=officer_name, allegations_count=3)
+        officer_3 = OfficerFactory(
+            officer_first=officer_name, allegations_count=2)
 
         officers = suggest_officer_name(officer_name)
 

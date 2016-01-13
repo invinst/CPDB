@@ -1,5 +1,3 @@
-import datetime
-
 from django.test import SimpleTestCase
 from django.utils import timezone
 from freezegun import freeze_time
@@ -12,6 +10,7 @@ from document.forms import RequestEmailForm
 
 LAST_REQUEST_TIME = '2000-01-01 01:01:01'
 REQUEST_TIME = timezone.now()
+
 
 class RequestEmailFormTest(SimpleTestCase):
     def setUp(self):

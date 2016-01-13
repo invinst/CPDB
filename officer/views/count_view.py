@@ -1,13 +1,16 @@
-from allegation.views import AllegationAPIView
+from allegation.views.officer_allegation_api_view import \
+    OfficerAllegationAPIView
 from common.models import Officer
 from document.response import JsonResponse
 
 
-class CountView(AllegationAPIView):
+class CountView(OfficerAllegationAPIView):
     def get(self, request):
-        allegations = self.get_allegations()
-        officer_list = Officer.objects.filter(id__in=allegations.values('officer').distinct())
-        count_by_officer = officer_list.values_list('allegations_count', flat=True)
+        officer_allegations = self.get_officer_allegations()
+        officer_list = Officer.objects.filter(
+            id__in=officer_allegations.values('officer').distinct())
+        count_by_officer = officer_list.values_list(
+            'allegations_count', flat=True)
 
         try:
             max_allegation_count = max(count_by_officer)

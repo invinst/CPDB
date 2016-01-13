@@ -17,7 +17,7 @@ var Complaint = React.createClass({
   },
   componentDidMount: function () {
     if (this.state.police_witness == 0) {
-      $.getJSON('/api/investigation/', {'crid': this.props.complaint.allegation.crid}, this.setInvestigation);
+      $.getJSON('/api/police-witness/', {'crid': this.props.complaint.allegation.crid}, this.setInvestigation);
     }
   },
   render: function () {

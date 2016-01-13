@@ -13,8 +13,8 @@
     <meta http-equiv="cache-control" content="public" />
     <meta name="robots" content="follow, all" />
     <meta name="language" content="{{ LANGUAGE_CODE }}" />
-    <meta name="description" content="{% block meta-description %}CPDB{% endblock %}" />
-    <meta name="keywords" content="{% block meta-keywords %}{% endblock %}" />
+    <meta name="description" content="{% block meta-description %}The Citizens Police Data Project stores a searchable database of police disciplinary information obtained from the City of Chicago.{% endblock %}" />
+    <meta name="keywords" content="{% block meta-keywords %}Chicago Police Department, Citizens Police Data Project, Invisible Institute, Police, Allegations, Disciplines{% endblock %}" />
     <title>{{ admin_settings.default_site_title }}</title>
     {% endblock %}
       <link rel="shortcut icon" type='image/png' href="{% static 'img/favicon.ico' %}" />
@@ -136,6 +136,9 @@
       function ldinsp(){if(typeof window.__inspld != "undefined") return; window.__inspld = 1; var insp = document.createElement('script'); insp.type = 'text/javascript'; insp.async = true; insp.id = "inspsync"; insp.src = ('https:' == document.location.protocol ? 'https' : 'http') + '://cdn.inspectlet.com/inspectlet.js'; var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(insp, x); };
       setTimeout(ldinsp, 500); document.readyState != "complete" ? (window.attachEvent ? window.attachEvent('onload', ldinsp) : window.addEventListener('load', ldinsp, false)) : ldinsp();
       })();
+    </script>
+    <script>
+        var INTERFACE_TEXTS = {{interface_texts|safe}};
     </script>
   </body>
 </html>

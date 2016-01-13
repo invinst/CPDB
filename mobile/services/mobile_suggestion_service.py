@@ -3,6 +3,8 @@ from common.constants import ALLEGATION_LIMIT
 from common.models import Officer, Allegation
 
 
+# TODO: Considering refactor this suggestion service by a better design, may use the same strategy which will be used in
+# desktop one.
 def wrap_as_suggestion(suggestion):
     return [suggestion.as_suggestion_entry()] if suggestion else []
 
@@ -23,8 +25,8 @@ def suggest_crid(query):
 
 
 def suggest_officer_name(query):
-    officers = Officer.objects.filter(OfficerQuery.condition_by_name(query)). \
-                   order_by('-allegations_count')[:ALLEGATION_LIMIT]
+    officers = Officer.objects.filter(OfficerQuery.condition_by_name(query))\
+        .order_by('-allegations_count')[:ALLEGATION_LIMIT]
     suggestions = [officer.as_suggestion_entry() for officer in officers]
     return suggestions
 

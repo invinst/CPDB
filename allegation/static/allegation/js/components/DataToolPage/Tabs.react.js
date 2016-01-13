@@ -3,6 +3,7 @@
  */
 var _ = require('lodash');
 var React = require('react');
+var ReactDOM = require('react-dom');
 var classnames = require('classnames');
 var slugify = require('slugify');
 var isMobile = require('ismobilejs');
@@ -48,7 +49,7 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
     this.activeTabIndex = number;
 
     if (this.embedding) {
-      $(this.getDOMNode()).parent().find(".embed-code input").val(this.getEmbedCode());
+      $(ReactDOM.findDOMNode(this)).parent().find(".embed-code input").val(this.getEmbedCode());
     }
 
     TabActions.setActiveTab(tab);
@@ -81,7 +82,7 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
 
   enterEmbedMode: function () {
     this.embedding = true;
-    var node = this.getDOMNode();
+    var node = ReactDOM.findDOMNode(this);
     var parent = $(node).parent();
     $(parent).prepend(this.getEmbedNode());
   },

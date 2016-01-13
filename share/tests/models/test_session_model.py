@@ -12,10 +12,10 @@ class SessionModelTestCase(SimpleTestCase):
         investigator = InvestigatorFactory()
         self.session.query = {
             'filters': {
-                'investigator': {
+                'allegation__investigator': {
                     'value': [investigator.id],
                 },
-                'areas__id': {
+                'allegation__areas__id': {
                     'value': [area.id],
                 },
                 'officer__allegations_count__gt': {
@@ -25,11 +25,11 @@ class SessionModelTestCase(SimpleTestCase):
         }
 
         self.session.readable_query.should.equal({
-            'investigator': [{
+            'allegation__investigator': [{
                 'text': investigator.name,
                 'value': investigator.id,
             }],
-            'areas__id': [{
+            'allegation__areas__id': [{
                 'text': "%s: %s" % (area.type, area.name),
                 'value': area.id
             }],
