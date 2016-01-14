@@ -8,16 +8,14 @@ var MainPageStore = require('stores/MainPageStore');
 var SearchResults = require('components/MainPage/SearchResults.react');
 var LoadingPage = require('components/Shared/LoadingPage.react');
 var HelperUtil = require('utils/HelperUtil');
-var SearchComponent = require('components/MainPage/SearchComponent.react');
+var MainPageContent = require('components/MainPage/MainPageContent.react');
 var SuggestionAPI = require('utils/SuggestionAPI');
 
 
 var MainPage = React.createClass(objectAssign(Base(MainPageStore), {
   getInitialState: function () {
     return {
-      'isSearchFocused': 0,
-      'isSearching': 0,
-      'term': ''
+      'isSearchFocused': 0
     }
   },
 
@@ -29,26 +27,12 @@ var MainPage = React.createClass(objectAssign(Base(MainPageStore), {
     }
   },
 
-  renderSearchResults: function (term) {
-    if (this.state.isSearching) {
-      return (
-        <LoadingPage />
-      )
-    }
-
-    return (
-      <SearchResults term={term} />
-    );
-  },
-
   render: function () {
     var isSearchFocused = this.state.isSearchFocused;
-    var term = HelperUtil.fetch(this, 'props.params.query', '');
 
     return (
       <div className='main-page content'>
-        <SearchComponent topLeft={isSearchFocused} />
-        {this.renderSearchResults(term)}
+        <MainPageContent topLeft={isSearchFocused} />
         <About topLeft={isSearchFocused}/>
       </div>
     );

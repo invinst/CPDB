@@ -1,0 +1,21 @@
+.searchable-page
+  .result-content
+    position: absolute
+    top: 60px
+    right: 0
+    bottom: 0
+    left: 0
+    overflow: auto
+  .search-bar
+    z-index: 3
+  .result-content
+    &.invisible
+      z-index: 1
+  .child-content
+    .content
+      top: 60px
+      z-index: 2
+    &.invisible
+      .content
+        z-index: -1
+        animation: slide-up 0.3s forwards
