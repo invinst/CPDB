@@ -19,11 +19,11 @@ class MobileSearchablePageTest(BaseLivePhoneTestCase):
         for page in [self.officer_page, self.complaint_page]:
             self.go_to_detail_page(page)
             self.search_for(self.officer.officer_first)
-            self.until(lambda :self.should_see_text(self.officer.display_name))
+            self.until(lambda: self.should_see_text(self.officer.display_name))
 
     def test_bad_data(self):
         bad_query = 'bad_query'
         for page in [self.officer_page, self.complaint_page]:
             self.go_to_detail_page(page)
             self.search_for(bad_query)
-            self.until(lambda :self.should_see_text("Sorry, there's no results for your search in the database."))
+            self.until(lambda: self.should_see_text("Sorry, there's no results for your search in the database."))

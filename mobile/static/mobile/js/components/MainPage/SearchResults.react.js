@@ -24,7 +24,7 @@ var SearchResults = React.createClass(objectAssign(Base(SearchResultsStore), {
     if (this.state.searching) {
       return (
         <LoadingPage />
-      )
+      );
     }
 
     if (!this.state.success) {
