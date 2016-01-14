@@ -13,8 +13,8 @@
     {% endblock %}
 
     {% compress css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'ratchet/dist/css/ratchet.min.css' %}" />
-    <link rel="stylesheet" type="text/sass" href="{% static 'mobile/sass/style.sass' %}"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'ratchet/dist/css/ratchet.min.css' %}" />
+        <link rel="stylesheet" type="text/sass" href="{% static 'mobile/sass/style.sass' %}"/>
     {% endcompress %}
 
     {% if DJANGO_ENV == 'test' %}
