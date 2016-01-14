@@ -10,12 +10,13 @@ class Command(ProcessAllegationFromPdfBaseCommand):
 
         if Allegation.objects.filter(crid=crid).exists():
             Allegation.objects.filter(crid=crid)\
-                .update(description=fields['summary'])
+                .update(summary=fields['summary'])
+
         else:
             pending_pdf_allegation, _ = \
                 PendingPdfAllegation.objects.update_or_create(
                     crid=crid,
-                    defaults = {
+                    defaults={
                         'crid': crid,
                         'raw_content': content,
                         'notification_date': fields.get('notification_date'),
