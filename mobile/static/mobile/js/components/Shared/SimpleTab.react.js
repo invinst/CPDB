@@ -17,8 +17,8 @@ var SimpleTab = React.createClass({
     var previousIndex = this.state.activeIndex;
 
     this.setState({
-      'previousIndex': previousIndex,
       'activeIndex': index,
+      'previousIndex': previousIndex
     });
   },
 
@@ -50,7 +50,6 @@ var SimpleTab = React.createClass({
         'active': (i == self.state.activeIndex),
         'no-animation': (self.state.previousIndex == -1),
        'reverse-animation': (i > self.state.previousIndex)
-
       });
 
       return React.cloneElement(item, {

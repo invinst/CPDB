@@ -9,13 +9,13 @@ var ProjectSummary = require('components/MainPage/SearchComponent/ProjectSummary
 var MainPageContent = React.createClass({
   render: function () {
     var topLeft = this.props.topLeft;
-    var searchBarWrapperClassName = cx('search-wrapper animation', {'top-left': topLeft});
+    var searchBarWrapperClassNames = cx('search-wrapper animation', {'top-left': topLeft});
     var projectSummaryClassNames = cx('search-component', {'top-left': topLeft});
 
     return (
       <div className={projectSummaryClassNames}>
         <ProjectSummary topLeft={topLeft} />
-        <div className={searchBarWrapperClassName}>
+        <div className={searchBarWrapperClassNames}>
           <SearchBar />
         </div>
         <SearchResults />
