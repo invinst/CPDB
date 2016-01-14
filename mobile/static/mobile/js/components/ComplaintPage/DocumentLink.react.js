@@ -11,7 +11,8 @@ var DocumentLink = React.createClass({
 
     if (deviceUtil.isiOSDevice) {
       return presenter.pdfLink;
-    }
+    };
+
     return presenter.cloudLink;
   },
 
@@ -21,7 +22,7 @@ var DocumentLink = React.createClass({
 
     if (!documentId) {
       return (<div></div>);
-    }
+    };
 
     var documentLink = this.getDocumentLink(documentId, documentNormalizedTitle);
     return (
