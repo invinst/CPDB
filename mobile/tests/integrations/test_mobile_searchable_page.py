@@ -1,4 +1,4 @@
-from allegation.factories import OfficerFactory, AllegationFactory
+from allegation.factories import OfficerFactory, AllegationFactory, OfficerAllegationFactory
 from common.tests.core import BaseLivePhoneTestCase
 
 
@@ -11,9 +11,10 @@ class MobileSearchablePageTest(BaseLivePhoneTestCase):
 
     def setUp(self):
         self.officer = OfficerFactory()
-        self.complaint = AllegationFactory()
+        self.allegation = AllegationFactory()
+        OfficerAllegationFactory(officer=self.officer, allegation=self.allegation)
         self.officer_page = '/mobile/officer/{slug}/{id}'.format(slug=self.officer.display_name, id=self.officer.id)
-        self.complaint_page = '/mobile/complaint/{crid}'.format(crid=self.complaint.crid)
+        self.complaint_page = '/mobile/complaint/{crid}'.format(crid=self.allegation.crid)
 
     def test_good_data(self):
         for page in [self.officer_page, self.complaint_page]:

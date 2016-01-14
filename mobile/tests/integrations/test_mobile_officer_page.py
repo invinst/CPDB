@@ -90,8 +90,8 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
 
     def test_no_related_officer(self):
         officer = OfficerFactory()
-        OfficerAllegationFactory(officer=officer)
-        AllegationFactory(officer=officer)
+        allegation = AllegationFactory()
+        OfficerAllegationFactory(officer=officer, allegation=allegation)
 
         self.go_to_officer_page(slug=officer.officer_first, pk=officer.pk)
         self.find('.tab-navs .tab-co-accused').click()
