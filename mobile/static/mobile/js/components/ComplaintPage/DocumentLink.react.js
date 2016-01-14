@@ -7,7 +7,9 @@ var DocumentLinkPresenter = require('presenters/DocumentLinkPresenter');
 var DocumentLink = React.createClass({
   getDocumentLink: function (documentId, documentNormalizedTitle) {
     var presenter = DocumentLinkPresenter(documentId, documentNormalizedTitle);
-    if (DeviceUtil().isiOSDevice) {
+    var deviceUtil = DeviceUtil();
+
+    if (deviceUtil.isiOSDevice) {
       return presenter.pdfLink;
     }
     return presenter.cloudLink;
@@ -26,7 +28,7 @@ var DocumentLink = React.createClass({
       <a href={documentLink} className='document-link'>
         View documents
       </a>
-    )
+    );
   }
 });
 
