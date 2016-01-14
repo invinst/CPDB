@@ -18,6 +18,7 @@ def current_year():
 def month_year_entry(month, year):
     return ["%s %s" % (month[1], year), "%s-%s" % (year, month[0])]
 
+
 def generate_month_year_entry_from_2010(month, year=None):
     results = []
 

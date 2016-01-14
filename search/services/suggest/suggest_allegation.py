@@ -1,7 +1,5 @@
-from django.db.models import Q
 from haystack.query import SearchQuerySet
 
-from common.models import Allegation
 from search.services.suggest import SuggestBase
 from search.utils.zip_code import get_zipcode_from_city
 
@@ -13,11 +11,9 @@ class SuggestAllegationCity(SuggestBase):
 
     @classmethod
     def _query(cls, term):
-        raw_results = cls._query_database(
-            model_cls=Allegation,
-            condition=Q(city__icontains=term),
-            fields_to_get=('city',)
-        )
+        sqs = SearchQuerySet()
+        raw_results = sqs.filter(allegation_distinct_city=term).values_list('allegation_distinct_city', flat=True)[:5]
+
         results = [
             cls.entry_format(
                 label=get_zipcode_from_city(entry),

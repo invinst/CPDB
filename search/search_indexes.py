@@ -2,6 +2,7 @@ from haystack import indexes
 
 from common.models import Officer, AllegationCategory, Allegation, Investigator, Area
 from search.models.session_alias import SessionAlias
+from search.models.proxy_models import AllegationCategoryProxy, AllegationProxy
 from search.search_backends import CustomEdgeNgramField, CustomNgramField, CustomIntegerNgramField
 
 
@@ -41,17 +42,47 @@ class AllegationIndex(SuggestionBaseIndex, indexes.Indexable):
     allegation_crid_sort = indexes.CharField(model_attr='crid')
 
 
+class AllegationDistinctCityIndex(SuggestionBaseIndex, indexes.Indexable):
+    DEFAULT_MODEL = AllegationProxy
+
+    allegation_distinct_city = CustomNgramField(model_attr='city', null=True)
+
+    def index_queryset(self, using=None):
+        # This is for PostgreSQL only
+        return self.get_model().objects.all().distinct('city')
+
+    def build_queryset(self, using=None, start_date=None, end_date=None):
+        # A hack for the this to work
+        index = super(AllegationDistinctCityIndex, self).build_queryset(using, start_date, end_date)
+        return index.order_by()
+
+
 class AllegationCategoryIndex(SuggestionBaseIndex, indexes.Indexable):
     DEFAULT_MODEL = AllegationCategory
 
     allegationcategory_name_and_id = CustomNgramField(use_template=True)
-    allegationcategory_category = CustomNgramField(model_attr='category')
 
     allegationcategory_id = indexes.IntegerField(model_attr='id')
     allegationcategory_allegation_name = indexes.CharField(model_attr='allegation_name')
     allegationcategory_cat_id = indexes.CharField(model_attr='cat_id')
-    allegationcategory_category_count = indexes.IntegerField(model_attr='category_count')
     allegationcategory_allegation_count = indexes.IntegerField(model_attr='allegation_count')
+
+
+class AllegationCategoryDistinctCategoryIndex(SuggestionBaseIndex, indexes.Indexable):
+    DEFAULT_MODEL = AllegationCategoryProxy
+
+    allegationcategory_distinct_category = CustomNgramField(model_attr='category')
+
+    allegationcategory_distinct_category_count = indexes.IntegerField(model_attr='category_count')
+
+    def index_queryset(self, using=None):
+        # This is for PostgreSQL only
+        return self.get_model().objects.all().distinct('category')
+
+    def build_queryset(self, using=None, start_date=None, end_date=None):
+        # A hack for the this to work
+        index = super(AllegationCategoryDistinctCategoryIndex, self).build_queryset(using, start_date, end_date)
+        return index.order_by()
 
 
 class InvestigatorIndex(SuggestionBaseIndex, indexes.Indexable):

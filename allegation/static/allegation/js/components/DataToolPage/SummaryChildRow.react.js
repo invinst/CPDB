@@ -39,7 +39,7 @@ var SummaryChildRow = React.createClass({
     var selectedCategories = this.props.summary.props.selectedCategories;
 
     return (
-      !!FilterTagStore.getFilter('Allegation type', catId)
+      !!FilterTagStore.getFilter('Category ID', catId)
       || !!FilterTagStore.getFilter('Category', this.props.category.name)
       || (selectedCategories && selectedCategories.indexOf(catId) > -1)
     );

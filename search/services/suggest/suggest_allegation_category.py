@@ -36,9 +36,9 @@ class SuggestAllegationCategoryCategory(SuggestBase):
     @classmethod
     def _query(cls, term):
         sqs = SearchQuerySet()
-        raw_results = sqs.filter(allegationcategory_category=term)\
-            .values_list('allegationcategory_category', flat=True)\
-            .order_by('-allegationcategory_category_count')[:5]
+        raw_results = sqs.filter(allegationcategory_distinct_category=term)\
+            .values_list('allegationcategory_distinct_category', flat=True)\
+            .order_by('-allegationcategory_distinct_category_count')[:5]
 
         results = [
             cls.entry_format(

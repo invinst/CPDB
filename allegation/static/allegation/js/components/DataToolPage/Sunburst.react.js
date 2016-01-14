@@ -156,12 +156,12 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
 
   selectAnimationDone: function (d, selected) {
     if ((d == selected.parent) && selected.tagValue) {
-      FilterTagsActions.removeTag(selected.tagValue.category, selected.tagValue)
+      FilterTagsActions.removeTag(selected.tagValue.category, selected.tagValue.label)
     }
 
     if (d.tagValue) {
       if (d.tagValue.removeParent) {
-        FilterTagsActions.removeTag(d.parent.tagValue.category, d.parent.tagValue);
+        FilterTagsActions.removeTag(d.parent.tagValue.category, d.parent.tagValue.label);
       }
       FilterTagsActions.addTag(d.tagValue.category, d.tagValue.label, d.tagValue.filter + '=' + d.tagValue.value);
     }
