@@ -239,6 +239,8 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
 ELASTICSEARCH_SETTINGS = {
     'settings': {
         'number_of_shards': 1,
