@@ -104,7 +104,7 @@ class OfficerAllegationSunburstView(OfficerAllegationAPIView):
             'tagValue': {
                 'label': 'Unknown',
                 'category': 'final_finding',
-                'value': None,
+                'value': 'ZZ',
                 'removeParent': True
             },
         }]
