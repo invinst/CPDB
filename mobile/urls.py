@@ -22,6 +22,6 @@ urlpatterns = [
     url(r'^mobile/api/officer/$', MobileOfficerView.as_view(), name='mobile-officer'),
 
     # overriding for client-side routing
-    url(r'^(officer/[^/]+/\d+|complaint/\d+|search/\w+)?$', ensure_csrf_cookie(MobileSiteView.as_view()), name='home'),
+    url(r'^(officer/[^/]+/\d+|complaint/\d+|search/.*)?$', ensure_csrf_cookie(MobileSiteView.as_view()), name='home'),
     url(r'^(test)?$', ensure_csrf_cookie(MobileSiteView.as_view()), name='home'),
 ]
