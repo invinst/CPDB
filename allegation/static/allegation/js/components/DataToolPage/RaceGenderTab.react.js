@@ -5,10 +5,13 @@ var ReactDOM = require('react-dom');
 
 var Base = require('components/Base.react');
 var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
-var FilterTagStore = require("stores/FilterTagStore");
 var PercentageRectangleChart = require('components/DataToolPage/RaceGenderTab/PercentageRectangleChart.react');
-var RaceGenderAPITransformation = require('utils/RaceGenderAPITransformation');
+
 var RaceGenderTabStore = require('stores/DataToolPage/RaceGenderTab/RaceGenderTabStore');
+
+var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFilterTagsQueryBuilder');
+var RaceGenderAPITransformation = require('utils/RaceGenderAPITransformation');
+
 
 var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
   mixins: [EmbedMixin],
@@ -28,7 +31,7 @@ var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
     var node = ReactDOM.findDOMNode(this);
     var width = jQuery(node).width();
     var height = jQuery(node).height();
-    var src = "/embed/?page=race-gender&query=" + encodeURIComponent(FilterTagStore.getQueryString());
+    var src = "/embed/?page=race-gender&query=" + encodeURIComponent(AllegationFilterTagsQueryBuilder.buildQuery());
     return '<iframe width="' + width + 'px" height="' + height + 'px" frameborder="0" src="' + this.absoluteUri(src)
        + '"></iframe>';
   },

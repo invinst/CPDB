@@ -7,7 +7,6 @@ var Base = require('stores/Base');
 var TagUtil = require('utils/TagUtil');
 
 var CHANGE_EVENT = 'CHANGE_EVENT';
-var CREATE_EVENT = 'CREATE_EVENT';
 var ENABLE_EVENT = 'ENABLE_EVENT';
 var DISABLE_EVENT = 'DISABLE_EVENT';
 
@@ -16,6 +15,12 @@ var _state = {
   initialized: false,
   filters: {},
 }
+
+function isNotPinned(item) {
+  return !item.pinned;
+}
+
+
 
 var FilterTagStore = _.assign(Base(_state), {
   update: function (category, values) {
@@ -27,9 +32,7 @@ var FilterTagStore = _.assign(Base(_state), {
   },
 
   addFilter: function (category, value, filter) {
-    _.remove(_state['filters'][category], function (item) {
-      return !item.pinned;
-    });
+    _.remove(_state['filters'][category], isNotPinned);
 
     _state['filters'][category] = _state['filters'][category] || [];
 
@@ -70,22 +73,6 @@ var FilterTagStore = _.assign(Base(_state), {
       this.addFilter(category, value, filter);
       this.pinFilter(category, value);
     }
-  },
-
-  getQueryString: function (ignoreCategories) {
-    var filters = _.filter(_state['filters'], function (item) {
-      return item.length > 0;
-    });
-
-    _.each(ignoreCategories, function (category) {
-      delete filters[category];
-    });
-
-    var query = _.map(filters, function (values, category) {
-      return _.pluck(values, 'filter').join('&')
-    }).join('&');
-
-    return query;
   },
 
   getAll: function (category) {

@@ -1,14 +1,19 @@
 var AppConstants = require('constants/AppConstants');
-var OfficerPageActions = require('actions/OfficerPage/OfficerPageActions');
-var FilterTagStore = require('stores/FilterTagStore');
+
 var MapActions = require('actions/MapActions');
+var OfficerPageActions = require('actions/OfficerPage/OfficerPageActions');
+
+var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFilterTagsQueryBuilder');
 
 var ajax = null;
 var _queryString = null;
 
+var AREA_FILTER = ['Area'];
+
+
 var MapAPI = {
   getMarkers: function (query) {
-    var queryString = FilterTagStore.getQueryString(['allegation__areas__id']);
+    var queryString = AllegationFilterTagsQueryBuilder.buildQuery(AREA_FILTER);
     queryString = query || queryString;
 
     if (_queryString == queryString) {

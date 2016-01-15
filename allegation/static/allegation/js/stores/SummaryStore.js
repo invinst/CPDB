@@ -9,11 +9,14 @@
  * MapStore
  */
 
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var EventEmitter = require('events').EventEmitter;
-var AppConstants = require('../constants/AppConstants');
 var assign = require('object-assign');
-var FilterTagStore = require('./FilterTagStore');
+var EventEmitter = require('events').EventEmitter;
+
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+var AppConstants = require('../constants/AppConstants');
+
+var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFilterTagsQueryBuilder');
+
 var CHANGE_EVENT = 'change';
 var SUMMARY_CHANGE = 'summary-change';
 var ajax = false;
@@ -40,7 +43,7 @@ function create(id, complaint) {
 
 var SummaryStore = assign({}, EventEmitter.prototype, {
   update: function (query) {
-    var queryString = query || FilterTagStore.getQueryString();
+    var queryString = query || AllegationFilterTagsQueryBuilder.buildQuery();
     if (ajax) {
       ajax.abort();
     }
