@@ -46,6 +46,11 @@ var SearchBar = React.createClass(objectAssign(Base(SearchBarStore), {
     SearchBarStore.addChangeListener(this._onChange)
   },
 
+  componentWillUnmount: function () {
+    SearchBarStore.removeChangeListener(this._onChange);
+    SearchBarStore.recycle();
+  },
+
   render: function () {
     var status = this.state.status;
     var iconClassName = cx('icon', {
