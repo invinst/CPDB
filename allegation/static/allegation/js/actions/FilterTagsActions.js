@@ -23,7 +23,8 @@ function updateSiteData(dontUpdateSession) {
       })
     });
   }
-};
+}
+
 
 var FilterTagsActions = {
   addTag: function (category, value, filter, text) {

@@ -2,7 +2,6 @@ var _ = require('lodash');
 var React = require('react');
 var classnames = require('classnames');
 
-var Filters = require('components/DataToolPage/Filters.react');
 var MapStore = require('stores/MapStore');
 var FilterTagsActions = require('actions/FilterTagsActions');
 var FilterTagStore = require('stores/FilterTagStore');

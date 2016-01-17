@@ -3,7 +3,6 @@ require('utils/jQuery');
 var classnames = require('classnames');
 var Infinite = require('react-infinite');
 
-var Filters = require('components/DataToolPage/Filters.react');
 var Download = require('components/DataToolPage/Download.react');
 var Counter = require('components/DataToolPage/Counter.react');
 var OutcomeFilter = require('components/DataToolPage/ComplaintList/OutcomeFilter.react');

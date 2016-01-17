@@ -1,6 +1,5 @@
 var HOST = 'http://localhost:8000';
 var React = require('react');
-var Filters = require('components/DataToolPage/Filters.react');
 var MapStore = require('stores/MapStore');
 var SummaryActions = require('actions/SummaryActions');
 var FilterTagsActions = require('actions/FilterTagsActions');

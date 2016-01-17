@@ -13,8 +13,8 @@ var DISABLE_EVENT = 'DISABLE_EVENT';
 
 var _state = {
   initialized: false,
-  filters: {},
-}
+  filters: {}
+};
 
 function isNotPinned(item) {
   return !item.pinned;
@@ -95,7 +95,7 @@ var FilterTagStore = _.assign(Base(_state), {
   getSession: function () {
     // TODO: clean empty category
     return {
-      filters: _state['filters'],
+      filters: _state['filters']
     };
   },
 
@@ -129,7 +129,7 @@ var FilterTagStore = _.assign(Base(_state), {
 
   emitEnable: function () {
     this.emit(ENABLE_EVENT);
-  },
+  }
 });
 
 
@@ -177,7 +177,7 @@ AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.RECEIVED_SESSION_DATA:
-      session_query = _.get(action.data, 'data.query', {})
+      session_query = _.get(action.data, 'data.query', {});
       FilterTagStore.setSession(session_query);
       _state['initialized'] = session_query['filters'] || {};
       FilterTagStore.emitChange();
