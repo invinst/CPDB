@@ -20,6 +20,12 @@ function isNotPinned(item) {
   return !item.pinned;
 }
 
+function matchValue(value) {
+  return function (item) {
+    return item.value == value;
+  };
+}
+
 
 
 var FilterTagStore = _.assign(Base(_state), {
@@ -44,15 +50,17 @@ var FilterTagStore = _.assign(Base(_state), {
   },
 
   removeFilter: function (category, value) {
-    _.remove(_state['filters'][category], function (item) {
-      return item.value == value;
-    });
+    if (_state['filters'][category]) {
+      _.remove(_state['filters'][category], matchValue(value));
+
+      if (_state['filters'][category].length == 0) {
+        delete _state['filters'][category];
+      }
+    }
   },
 
   getFilter: function (category, value) {
-    return _.find(_state['filters'][category], function (item) {
-      return item.value == value;
-    });
+    return _.find(_state['filters'][category], matchValue(value));
   },
 
   pinFilter: function (category, value) {
@@ -93,7 +101,6 @@ var FilterTagStore = _.assign(Base(_state), {
   },
 
   getSession: function () {
-    // TODO: clean empty category
     return {
       filters: _state['filters']
     };
