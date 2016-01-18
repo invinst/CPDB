@@ -5,14 +5,12 @@ var AppConstants = require('constants/AppConstants');
 var Base = require('stores/Base');
 
 
-var _state = {
+var SearchResultsStore = objectAssign(Base({
   suggestions: [],
   term: '',
   success: false,
   searching: 0
-};
-
-var SearchResultsStore = objectAssign(Base(_state), {});
+}), {});
 
 AppDispatcher.register(function (action) {
   switch (action.actionType) {

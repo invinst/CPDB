@@ -5,33 +5,31 @@ var AppConstants = require('constants/AppConstants');
 var Base = require('stores/Base');
 
 
-var _state = {
+var SearchBarStore = objectAssign(Base({
   status: 'blank',
   term: ''
-};
-
-var SearchBarStore = objectAssign(Base(_state), {});
+}), {});
 
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.SEARCH_INPUT_CHANGED:
-      _state['term'] = action.data;
+      SearchBarStore.updateState('term', action.data);
       SearchBarStore.emitChange();
       break;
 
     case AppConstants.SEARCH_BLUR:
-      _state['status'] = 'blank';
+      SearchBarStore.updateState('status', 'blank');
       SearchBarStore.emitChange();
       break;
 
     case AppConstants.SEARCH_FOCUS:
-      _state['status'] = 'focus';
+      SearchBarStore.updateState('status', 'focus');
       SearchBarStore.emitChange();
       break;
 
     case AppConstants.SEARCH_CLEAR:
-      _state['status'] = 'blank';
-      _state['term'] = '';
+      SearchBarStore.updateState('status', 'blank');
+      SearchBarStore.updateState('term', '');
       SearchBarStore.emitChange();
       break;
 
