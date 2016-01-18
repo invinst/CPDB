@@ -31,19 +31,20 @@ var PercentageRectangleChart = {
       .append('svg')
       .attr('width', width)
       .attr('height', height)
-      .selectAll('rect').data(data)
-                  .enter().append('g')
-                  .attr('class', function (data, i) { return data.label.toLowerCase() })
-                  .attr('transform', function(data, i) {
-                    return 'translate(0,' + ys[i] + ')';
-                  });
+      .selectAll('rect')
+      .data(data)
+      .enter().append('g')
+      .attr('class', function (data, i) {
+        var inactiveClass = data['active'] ? '' : ' inactive';
+        return data.label.toLowerCase() + inactiveClass;
+      })
+      .attr('transform', function(data, i) {
+        return 'translate(0,' + ys[i] + ')';
+      });
 
     blocks.append('rect')
       .style('fill', function(data, i) {
         return colors[i];
-      })
-      .style('opacity', function (data, i) {
-        return data['active'] ? '1' : '0.1';
       })
       .attr('width', width)
       .attr('height', function(data, i) {

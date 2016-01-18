@@ -177,8 +177,25 @@ class RaceGenderTabTest(BaseLiveTestCase):
         self.officer_gender_chart_block('.female').click()
         self.until_ajax_complete()
 
-        faded_out_segments = self.find_all('.percentage-rectangle-chart .inactive')
-        len(faded_out_segments).should.equal(13)
+        # other sections in officer gender chart fade out
+        other_sections = ['male', 'trans']
+        [
+            self.find('.officer-gender-chart .{section}'.format(section=section))
+                .has_class('inactive').should.be.true
+            for section in other_sections
+        ]
+
+        # other charts do not fade out
+        other_charts = ['complaint-gender-chart', 'complaint-race-chart', 'officer-race-chart']
+        [
+            len(self.find_all('.{chart} .inactive'.format(chart=chart))).should.equal(0)
+            for chart in other_charts
+        ]
+
+    def complainant_gender_chart_block(self, block_class):
+        block_css_class = '.complaint-gender-chart {block_class}'\
+            .format(block_class=block_class)
+        return self.find(block_css_class)
 
     def officer_gender_chart_block(self, block_class):
         block_css_path = ".officer-gender-chart {block_class} text"\
