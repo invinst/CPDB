@@ -6,7 +6,7 @@ var Base = require('components/Base.react');
 
 var SearchBar = require('components/MainPage/SearchComponent/SearchBar.react');
 var SearchablePageStore = require('stores/Shared/SearchablePageStore');
-var SearchResults = require('components/MainPage/SearchResults.react');
+var SearchResults = require('components/Shared/SearchablePage/SearchResults.react');
 
 
 var SearchablePage = React.createClass(objectAssign(Base(SearchablePageStore), {
