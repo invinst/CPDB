@@ -54,11 +54,13 @@ var RaceGenderAPITransform = {
     var hasActiveFilter = FilterTagStore.getAll(filterCategory).length > 0;
 
     return _(genders).map(function(x, y) {
+      var genderLabel = that.genderPresenter(y)
+
       return {
-        'label': that.genderPresenter(y),
+        'label': genderLabel,
         'filterValue': y,
         'value': x,
-        'active': !hasActiveFilter || FilterTagStore.isInFilter(filterCategory, y)
+        'active': !hasActiveFilter || FilterTagStore.isInFilter(filterCategory, genderLabel)
       };
     }).sortBy('label').value();
   },
