@@ -11,6 +11,7 @@ class Command(ProcessAllegationFromPdfBaseCommand):
         if Allegation.objects.filter(crid=crid).exists():
             Allegation.objects.filter(crid=crid)\
                 .update(description=fields['summary'])
+
         else:
             pending_pdf_allegation, _ = \
                 PendingPdfAllegation.objects.update_or_create(
