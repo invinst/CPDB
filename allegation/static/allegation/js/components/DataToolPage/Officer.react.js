@@ -66,6 +66,37 @@ var Officer = React.createClass({
   shouldComponentUpdate: function (nextProps, nextState) {
     return !_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state);
   },
+  renderAllegationsDisciplines: function (officer) {
+    return (
+      <div>
+          <div className='col-xs-7'>
+            <div>complaints</div>
+            <div>disciplines</div>
+          </div>
+          <div className='col-xs-3 officer-complaints-disciplines'>
+              <div>{officer.allegations_count}</div>
+              <div>{officer.discipline_count}</div>
+          </div>
+      </div>
+    )
+  },
+
+  renderAllegationsCount: function (officer) {
+    if (this.props.filtered) {
+      return (
+        <div>
+          <div className='col-xs-7'>
+            <div className='larger'>complaints</div>
+          </div>
+          <div className='col-xs-3 officer-complaints-disciplines larger'>
+            <Counter to={officer.filtered_allegations_count} />
+          </div>
+        </div>
+      );
+    } else {
+      return this.renderAllegationsDisciplines(officer);
+    }
+  },
 
   render: function () {
     var officer = this.props.officer;
@@ -119,16 +150,7 @@ var Officer = React.createClass({
             <div className='complaint-discipline-row'>
               <div className='row'>
                 <div className="col-xs-12 border-top-row" />
-                <div>
-                  <div className='col-xs-7'>
-                    <div>complaints</div>
-                    <div>disciplines</div>
-                  </div>
-                  <div className='col-xs-3 officer-complaints-disciplines'>
-                    <div>{officer.allegations_count}</div>
-                    <div>{officer.discipline_count}</div>
-                  </div>
-                </div>
+                {this.renderAllegationsCount(officer)}
               </div>
             </div>
           </div>
