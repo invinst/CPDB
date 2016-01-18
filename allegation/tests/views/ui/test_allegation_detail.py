@@ -45,3 +45,23 @@ class AllegationDetailTestCase(BaseLiveTestCase):
         self.link('Read more...').click()
         self.should_see_text(allegation.summary)
         self.link('Read more...').should.be.false
+
+    def test_complaint_correct_final_status_unknown(self):
+        allegation = AllegationFactory()
+        OfficerAllegationFactory(allegation=allegation, final_finding=None, final_outcome=None)
+
+        self.open_complaint_detail()
+
+        self.until(lambda: self.element_exist('.complaint-list'))
+        self.find('.complaint-row > .row').click()
+        self.should_see_text('Unknown')
+
+    def test_complaint_correct_final_status_known(self):
+        allegation = AllegationFactory()
+        OfficerAllegationFactory(allegation=allegation, final_finding='NC', final_outcome="000")
+        self.open_complaint_detail()
+
+        self.until(lambda: self.element_exist('.complaint-list'))
+        self.find('.complaint-row > .row').click()
+        self.should_see_text('No Cooperation')
+        self.should_see_text('Violation Noted')
