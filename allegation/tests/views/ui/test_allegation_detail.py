@@ -38,11 +38,13 @@ class AllegationDetailTestCase(BaseLiveTestCase):
 
         self.open_complaint_detail()
 
-        self.until(lambda: self.element_exist('.complaint-list'))
         self.find('.complaint-row > .row').click()
         self.element_exist('.complaint_detail').should.equal(True)
 
-        self.link('Read more...').click()
+        self.browser.execute_script('return arguments[0].click();', self.link(
+            'Read more...'
+            ))
+
         self.should_see_text(allegation.summary)
         self.link('Read more...').should.be.false
 
@@ -65,3 +67,29 @@ class AllegationDetailTestCase(BaseLiveTestCase):
         self.find('.complaint-row > .row').click()
         self.should_see_text('No Cooperation')
         self.should_see_text('Violation Noted')
+
+    def test_complaint_detail_summary(self):
+        allegation = AllegationFactory()
+        officer_allegation = OfficerAllegationFactory(
+            allegation=allegation,
+            final_finding='UN'
+            )
+
+        self.visit_home()
+        self.find('.checkmark').click()
+        self.until_ajax_complete()
+        self.find('.complaint-row > .row').click()
+        self.element_exist('.complaint_detail').should.equal(True)
+
+        self.should_see_text('Final Outcome\n{final_outcome}'.format(
+            final_outcome=officer_allegation.get_final_outcome_display()
+            )
+        )
+        self.should_see_text('CRID {crid}'.format(crid=allegation.crid))
+        self.should_see_text(officer_allegation.cat.category)
+        self.should_see_text(officer_allegation.cat.allegation_name)
+        self.should_see_text('Disciplinary action\n{final_finding}'.format(
+            final_finding=officer_allegation.get_final_finding_display()
+            )
+        )
+
