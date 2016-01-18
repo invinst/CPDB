@@ -33,7 +33,7 @@ var MainPage = React.createClass(objectAssign(Base(MainPageStore), {
     if (this.state.isSearching) {
       return (
         <LoadingPage />
-      )
+      );
     }
 
     return (

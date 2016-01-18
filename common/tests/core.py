@@ -2,14 +2,13 @@ import json
 import os
 import threading
 import time
-from unittest import skipIf, skipUnless
 
 from bs4 import BeautifulSoup
 from django.core import management
 from django.core.urlresolvers import reverse
 from django.test.testcases import LiveServerTestCase, TestCase as DjangoSimpleTestCase
 from nose.plugins.attrib import attr
-from selenium.common.exceptions import NoSuchElementException, WebDriverException
+from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver import ActionChains
 from selenium.webdriver.firefox.webdriver import WebDriver
 from selenium.webdriver.remote.webelement import WebElement
@@ -155,7 +154,7 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         super(BaseLiveTestCase, cls).tearDownClass()
 
     def get_current_javascript_report(self):
-        self.browser.execute_script('blanket.onTestsDone();');
+        self.browser.execute_script('blanket.onTestsDone();')
         report = self.browser.execute_script('return window.coverage_results;')
         world.js_coverages.append(report)
 
@@ -357,7 +356,7 @@ class BaseMobileLiveTestCase(BaseLiveTestCase):
 class BaseLivePhoneTestCase(BaseLiveTestCase):
     IPHONE6_BROWSER_SIZE = {'width': 375, 'height': 627}
     IPHONE6_USER_AGENT = 'Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.3 (KHTML, ' \
-                    'like Gecko) Version/8.0 Mobile/12A4345d Safari/600.1.4'
+                         'like Gecko) Version/8.0 Mobile/12A4345d Safari/600.1.4'
 
     def init_firefox_profile(self):
         profile = super(BaseLivePhoneTestCase, self).init_firefox_profile()
