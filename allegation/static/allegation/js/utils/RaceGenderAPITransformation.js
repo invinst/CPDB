@@ -1,39 +1,64 @@
 var _ = require('lodash');
 
+var FilterTagStore = require('stores/FilterTagStore');
+
 isHispanic = function (x, y) { return _(y.toLowerCase()).contains('hispanic') };
 
 var RaceGenderAPITransform = {
-  transformRacesForComplaint: function(complaintRaces, isOfficer) {
+  transformRaces: function(complaintRaces, isOfficer) {
     var all = _(complaintRaces).sum();
     var white = _(complaintRaces).get('White', 0);
     var black = _(complaintRaces).get('Black', 0);
     var hispanic = _(complaintRaces).filter(isHispanic).sum();
     var others = all - white - black - hispanic;
 
-    return _([
+    raceData = _([
       { label: this.raceLabel('White', isOfficer), value: white, filterValue: 'White'},
       { label: this.raceLabel('Black', isOfficer), value: black, filterValue: 'Black' },
       { label: this.raceLabel('Hispanic', isOfficer), value: hispanic, filterValue: 'Hispanic' },
       { label: 'Others', value: others, filterValue: ['Native American', 'Unknown', 'Asian', 'White/Hispanic']}
     ]).chain().reject(function(x) { return x.value == 0 }).value();
-  },
 
-  transformRacesForOfficer: function(complaintRaces) {
-    return this.transformRacesForComplaint(complaintRaces, true);
+    var filterCategory = isOfficer ? 'Officer Race' : 'Complainant Race';
+    var hasActiveFilter = FilterTagStore.getAll(filterCategory).length > 0;
+
+    raceData = _.each(raceData, function (item) {
+      var isActive = false;
+
+      if (!hasActiveFilter) {
+        isActive = true;
+      } else {
+        if (item.label == 'Others') {
+          isActive = _(item.filterValue).reduce(function (active, filter) {
+            return active || FilterTagStore.isInFilter(filterCategory, filter);
+          }, false);
+        } else {
+          isActive = FilterTagStore.isInFilter(filterCategory, item.filterValue);
+        }
+      }
+
+      item['active'] = isActive;
+    });
+
+    return raceData;
   },
 
   raceLabel: function (race, isOfficer) {
     return isOfficer ? race + ' officers' : race;
   },
 
-  transformGenders: function(genders) {
+  transformGenders: function(genders, isOfficer) {
     var that = this;
+
+    var filterCategory = isOfficer ? 'Officer Gender' : 'Complainant Gender';
+    var hasActiveFilter = FilterTagStore.getAll(filterCategory).length > 0;
 
     return _(genders).map(function(x, y) {
       return {
         'label': that.genderPresenter(y),
         'filterValue': y,
-        'value': x
+        'value': x,
+        'active': !hasActiveFilter || FilterTagStore.isInFilter(filterCategory, y)
       };
     }).sortBy('label').value();
   },

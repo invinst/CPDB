@@ -94,7 +94,7 @@ var FilterTagStore = _.assign(Base(_state), {
 
   getAll: function (category) {
     if (category) {
-      return _state['filters'][category];
+      return _.get(_state['filters'], category, []);
     }
 
     return _state['filters'];
