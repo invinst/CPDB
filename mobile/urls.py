@@ -24,5 +24,5 @@ urlpatterns = [
     url(r'^mobile/api/officer/$', cache_view(MobileOfficerView.as_view()), name='mobile-officer'),
 
     # overriding for client-side routing
-    url(r'^(officer/[^/]+/\d+|complaint/\d+|search/\w+)?$', cache_view(MobileSiteView.as_view()), name='home'),
+    url(r'^(officer/[^/]+/\d+|complaint/\d+|search/.*)?$', cache_view(MobileSiteView.as_view()), name='home')
 ]

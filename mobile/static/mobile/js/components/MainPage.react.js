@@ -22,8 +22,10 @@ var MainPage = React.createClass(objectAssign(Base(MainPageStore), {
   componentDidMount: function () {
     MainPageStore.addChangeListener(this._onChange);
     var term = HelperUtil.fetch(this, 'props.params.query', '');
-    if (term) {
-      SuggestionAPI.get(term)
+    var santinizedTerm = term.replace(/\+|\-|\_/g, ' ');
+
+    if (santinizedTerm) {
+      SuggestionAPI.get(santinizedTerm)
     }
   },
 
