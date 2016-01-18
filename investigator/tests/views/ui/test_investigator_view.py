@@ -35,14 +35,14 @@ class InvestigatorViewTestCase(BaseLiveTestCase):
     def test_expand_complaint_row(self):
         OfficerAllegationFactory(
             allegation=self.officer_allegation.allegation,
-            final_outcome_class='other'
+            final_outcome_class='not-disciplined'
             )
         self.visit('/investigator/sluglify/{id}'.format(
             id=self.investigator.id
             ))
 
         # Check two complaint rows exist
-        self.element_exist('.complaint-row.other')
+        self.element_exist('.complaint-row.not-disciplined')
         self.element_exist('.complaint-row.disciplined')
 
         # Expand one row
@@ -54,5 +54,5 @@ class InvestigatorViewTestCase(BaseLiveTestCase):
             ).should.be.false
         # And don't expand another
         self.element_exist(
-            '.complaint-row.other .complaint_detail'
+            '.complaint-row.not-disciplined .complaint_detail'
             ).should.be.false
