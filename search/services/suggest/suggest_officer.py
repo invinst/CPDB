@@ -55,7 +55,7 @@ class SuggestOfficerUnit(SuggestBase):
         results = [
             cls.entry_format(
                 label=entry[0],
-                value=entry[1],
+                value=entry[0],
                 filter=cls.build_filter(category='officer__unit', value=entry[1])
             ) for entry in raw_results
         ]
@@ -71,7 +71,7 @@ class SuggestOfficerRank(SuggestBase):
         results = [
             cls.entry_format(
                 label=entry[0],
-                value=entry[1],
+                value=entry[0],
                 filter=cls.build_filter(category='officer__rank', value=entry[1])
             ) for entry in raw_results
         ]

@@ -4,14 +4,15 @@ var ReactDOM = require('react-dom');
 require('mapbox.js');
 require('leaflet.heat');
 
+var AppStore = require('stores/AppStore');
 var MapStore = require("stores/MapStore");
 var FilterTagStore = require('stores/FilterTagStore');
 var FilterActions = require("actions/FilterActions");
 var FilterTagsActions = require("actions/FilterTagsActions");
 var AppConstants = require('constants/AppConstants');
 var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
-var AppStore = require('stores/AppStore');
 var MapAPI = require('utils/MapAPI');
+var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFilterTagsQueryBuilder');
 
 
 L.mapbox.accessToken = AppConstants.MAP_TOKEN;
@@ -94,7 +95,8 @@ var Map = React.createClass({
     var node = ReactDOM.findDOMNode(this);
     var width = $(node).width() + 2;
     var height = $(node).height() + 2;
-    var src = "/embed/?page=map&query=" + encodeURIComponent(FilterTagStore.getQueryString());
+    var filters = FilterTagStore.getAll();
+    var src = "/embed/?page=map&query=" + encodeURIComponent(AllegationFilterTagsQueryBuilder.buildQuery(filters));
     var state = MapStore.getState();
     state = {
       center: state.center,

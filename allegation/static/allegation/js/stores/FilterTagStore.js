@@ -7,15 +7,26 @@ var Base = require('stores/Base');
 var TagUtil = require('utils/TagUtil');
 
 var CHANGE_EVENT = 'CHANGE_EVENT';
-var CREATE_EVENT = 'CREATE_EVENT';
 var ENABLE_EVENT = 'ENABLE_EVENT';
 var DISABLE_EVENT = 'DISABLE_EVENT';
 
 
 var _state = {
   initialized: false,
-  filters: {},
+  filters: {}
+};
+
+function isNotPinned(item) {
+  return !item.pinned;
 }
+
+function matchValue(value) {
+  return function (item) {
+    return item.value == value;
+  };
+}
+
+
 
 var FilterTagStore = _.assign(Base(_state), {
   update: function (category, values) {
@@ -27,9 +38,7 @@ var FilterTagStore = _.assign(Base(_state), {
   },
 
   addFilter: function (category, value, filter) {
-    _.remove(_state['filters'][category], function (item) {
-      return !item.pinned;
-    });
+    this.removeFiltersInCategory(category);
 
     _state['filters'][category] = _state['filters'][category] || [];
 
@@ -40,16 +49,27 @@ var FilterTagStore = _.assign(Base(_state), {
     });
   },
 
+  removeFiltersInCategory: function (category) {
+    _.remove(_state['filters'][category], isNotPinned);
+    this.removeCategory(category);
+  },
+
   removeFilter: function (category, value) {
-    _.remove(_state['filters'][category], function (item) {
-      return item.value == value;
-    });
+    if (_state['filters'][category]) {
+      _.remove(_state['filters'][category], matchValue(value));
+
+      this.removeCategory(category)
+    }
+  },
+
+  removeCategory: function (category) {
+    if (_state['filters'][category] && _state['filters'][category].length == 0) {
+      delete _state['filters'][category];
+    }
   },
 
   getFilter: function (category, value) {
-    return _.find(_state['filters'][category], function (item) {
-      return item.value == value;
-    });
+    return _.find(_state['filters'][category], matchValue(value));
   },
 
   pinFilter: function (category, value) {
@@ -72,22 +92,6 @@ var FilterTagStore = _.assign(Base(_state), {
     }
   },
 
-  getQueryString: function (ignoreCategories) {
-    var filters = _.filter(_state['filters'], function (item) {
-      return item.length > 0;
-    });
-
-    _.each(ignoreCategories, function (category) {
-      delete filters[category];
-    });
-
-    var query = _.map(filters, function (values, category) {
-      return _.pluck(values, 'filter').join('&')
-    }).join('&');
-
-    return query;
-  },
-
   getAll: function (category) {
     if (category) {
       return _state['filters'][category];
@@ -106,9 +110,8 @@ var FilterTagStore = _.assign(Base(_state), {
   },
 
   getSession: function () {
-    // TODO: clean empty category
     return {
-      filters: _state['filters'],
+      filters: _state['filters']
     };
   },
 
@@ -142,7 +145,7 @@ var FilterTagStore = _.assign(Base(_state), {
 
   emitEnable: function () {
     this.emit(ENABLE_EVENT);
-  },
+  }
 });
 
 
@@ -190,7 +193,7 @@ AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.RECEIVED_SESSION_DATA:
-      session_query = _.get(action.data, 'data.query', {})
+      session_query = _.get(action.data, 'data.query', {});
       FilterTagStore.setSession(session_query);
       _state['initialized'] = session_query['filters'] || {};
       FilterTagStore.emitChange();

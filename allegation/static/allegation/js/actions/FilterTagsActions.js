@@ -23,12 +23,13 @@ function updateSiteData(dontUpdateSession) {
       })
     });
   }
-};
+}
+
 
 var FilterTagsActions = {
   addTag: function (category, value, filter, text) {
     if (EmbedStore.isEmbedMode()) {
-      return
+      return;
     }
     AppDispatcher.dispatch({
       actionType: AppConstants.ADD_TAG,

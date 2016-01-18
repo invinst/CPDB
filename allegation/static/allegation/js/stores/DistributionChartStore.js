@@ -9,13 +9,17 @@
  * MapStore
  */
 
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var EventEmitter = require('events').EventEmitter;
-var AppConstants = require('../constants/AppConstants');
 var assign = require('object-assign');
-var FilterTagStore = require('./FilterTagStore');
+var EventEmitter = require('events').EventEmitter;
+
+var AppConstants = require('../constants/AppConstants');
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+
+var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFilterTagsQueryBuilder');
+
 var CHANGE_EVENT = 'change';
 var SUMMARY_CHANGE = 'summary-change';
+
 var _state = {};
 var ajax = null;
 
@@ -130,7 +134,7 @@ var DistributionChartStore = assign({}, EventEmitter.prototype, {
     if (ajax) {
       ajax.abort();
     }
-    var queryString = FilterTagStore.getQueryString();
+    var queryString = AllegationFilterTagsQueryBuilder.buildQuery();
     ajax = $.get('/officer/count/?by=num_complaints&' + queryString, function (data) {
       drawChart(data);
     });

@@ -11,7 +11,6 @@ var Route = ReactRouter.Route;
 var Link = ReactRouter.Link;
 
 var OfficerActions = require('actions/OfficerActions');
-var Filters = require('components/DataToolPage/Filters.react');
 var OfficerMixin = require('components/DataToolPage/Officer/OfficerMixin.react');
 var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
 var CheckMark = require('components/DataToolPage/Officer/CheckMark.react');

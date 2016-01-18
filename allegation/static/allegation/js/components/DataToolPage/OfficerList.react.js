@@ -2,17 +2,16 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var classnames = require('classnames');
 
-var Filters = require('components/DataToolPage/Filters.react');
 var OfficerActions = require('actions/OfficerActions');
 var Officer = require("components/DataToolPage/Officer.react");
 var Counter = require("components/DataToolPage/Counter.react");
 
-var FilterTagStore = require("stores/FilterTagStore");
 var OfficerListStore = require("stores/OfficerListStore");
 
 var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
 var OfficerMixin = require('components/DataToolPage/Officer/OfficerMixin.react');
 
+var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFilterTagsQueryBuilder');
 
 
 var VIEW_PORT_COUNT=6,
@@ -42,7 +41,7 @@ var OfficerList = React.createClass({
     var node = ReactDOM.findDOMNode(this);
     var width = $(node).width();
     var height = $(node).height();
-    var src = "/embed/?page=officers&query=" + encodeURIComponent(FilterTagStore.getQueryString());
+    var src = "/embed/?page=officers&query=" + encodeURIComponent(AllegationFilterTagsQueryBuilder.buildQuery());
     return '<iframe width="' + width + 'px" height="' + height + 'px" frameborder="0" src="' + this.absoluteUri(src)
        + '"></iframe>';
   },
