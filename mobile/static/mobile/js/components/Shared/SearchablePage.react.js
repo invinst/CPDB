@@ -4,7 +4,7 @@ var React = require('react');
 
 var Base = require('components/Base.react');
 
-var SearchBar = require('components/MainPage/SearchComponent/SearchBar.react');
+var SearchBar = require('components/Shared/SearchablePage/SearchBar.react');
 var SearchablePageStore = require('stores/Shared/SearchablePageStore');
 var SearchResults = require('components/Shared/SearchablePage/SearchResults.react');
 
