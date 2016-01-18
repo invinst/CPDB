@@ -1,5 +1,4 @@
 .search-bar
-  padding: 0 10px
   background-color: $search-bar-background-color
   color: $search-bar-color
   width: 100%
@@ -10,7 +9,9 @@
   .input-text
     background-color: $search-bar-background-color
     color: $search-bar-color
-    width: calc(100% - 30px)
+    width: calc(100% - 60px)
+    height: 100%
+    padding: 0 10px
     border: 0
     font-size: 15px
   .input-text:focus
@@ -19,6 +20,7 @@
     float: right
     font-weight: 900
     line-height: 60px
+    padding: 0 10px
   ::-webkit-input-placeholder
     color: $search-bar-color
   :-moz-placeholder
