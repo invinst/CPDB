@@ -4,11 +4,12 @@ var React = require('react');
 var Base = require('components/Base.react');
 
 var About = require('components/Shared/About.react');
-var MainPageStore = require('stores/MainPageStore');
-var SearchResults = require('components/MainPage/SearchResults.react');
+var SearchResults = require('components/Shared/SearchablePage/SearchResults.react');
 var LoadingPage = require('components/Shared/LoadingPage.react');
-var HelperUtil = require('utils/HelperUtil');
 var MainPageContent = require('components/MainPage/MainPageContent.react');
+
+var MainPageStore = require('stores/MainPageStore');
+var HelperUtil = require('utils/HelperUtil');
 var SuggestionAPI = require('utils/SuggestionAPI');
 
 
