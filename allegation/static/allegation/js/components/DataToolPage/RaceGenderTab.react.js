@@ -38,16 +38,16 @@ var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
 
   render: function () {
     var complaintRaces = _.get(this.state.data, 'complaining_witness.race', []);
-    var complaintRacesData = RaceGenderAPITransformation.transformRacesForComplaint(complaintRaces);
+    var complaintRacesData = RaceGenderAPITransformation.transformRaces(complaintRaces, false);
 
     var officerRaces = _.get(this.state.data, 'officers.race', []);
-    var officerRacesData = RaceGenderAPITransformation.transformRacesForOfficer(officerRaces);
+    var officerRacesData = RaceGenderAPITransformation.transformRaces(officerRaces, true);
 
     var complaintGenders = _.get(this.state.data, 'complaining_witness.gender', []);
-    var complaintGendersData = RaceGenderAPITransformation.transformGenders(complaintGenders);
+    var complaintGendersData = RaceGenderAPITransformation.transformGenders(complaintGenders, false);
 
     var officerGenders = _.get(this.state.data, 'officers.gender', []);
-    var officerGendersData = RaceGenderAPITransformation.transformGenders(officerGenders);
+    var officerGendersData = RaceGenderAPITransformation.transformGenders(officerGenders, true);
 
     var genderOptions = {
       colors: ['#003366', '#ff6633', '#669966'], // Female, Male, Trans

@@ -28,12 +28,9 @@ var PercentageRectangleChart = React.createClass({
     var category = this.props.category;
     var filter = this.props.filter;
     var vals = typeof(blockData['filterValue']) == 'object' ? blockData['filterValue'] : [blockData['filterValue']];
-    var text = blockData['label'];
-    var useValueAsText = (text == 'Others');
 
     var tags = vals.map(function(value) {
-      text = useValueAsText ? value : text;
-      return { 'value': text, 'filter': filter + '=' + value };
+      return { 'value': value, 'filter': filter + '=' + value };
     });
 
     FilterTagsActions.toggleTags(category, tags);

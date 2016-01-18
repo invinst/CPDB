@@ -38,9 +38,12 @@ var PercentageRectangleChart = {
                     return 'translate(0,' + ys[i] + ')';
                   });
 
-      blocks.append('rect')
+    blocks.append('rect')
       .style('fill', function(data, i) {
         return colors[i];
+      })
+      .style('opacity', function (data, i) {
+        return data['active'] ? '1' : '0.1';
       })
       .attr('width', width)
       .attr('height', function(data, i) {
@@ -48,19 +51,19 @@ var PercentageRectangleChart = {
       })
       .on("click", clickHandler);
 
-      blocks.append('svg:text')
-                   .attr('font-size', 12)
-                   .attr('fill', 'white')
-                   .attr('x', 20)
-                   .attr('y', function(d) { return heightScale(d.value) / 2 + minHeight - 5})
-                   .text(function(d, i) {
-                     var percent = d.value * 100 / sum;
-                     if (percent < 1) {
-                       percent = 1;
-                     }
-                     return d.label + ' ' + (Math.floor(percent)) + '%';
-                   })
-                   .on("click", clickHandler);
+    blocks.append('svg:text')
+      .attr('font-size', 12)
+      .attr('fill', 'white')
+      .attr('x', 20)
+      .attr('y', function(d) { return heightScale(d.value) / 2 + minHeight - 5})
+      .text(function(d, i) {
+        var percent = d.value * 100 / sum;
+        if (percent < 1) {
+          percent = 1;
+        }
+        return d.label + ' ' + (Math.floor(percent)) + '%';
+      })
+      .on("click", clickHandler);
   }
 };
 

@@ -168,6 +168,18 @@ class RaceGenderTabTest(BaseLiveTestCase):
         self.find('.officer-count').text.should.contain('1')
         self.find('.complaint-count').text.should.contain('1')
 
+    def test_dim_out_inactive_sections(self):
+        self.create_allegation_with_races()
+        self.create_allegation_with_genders()
+
+        self.go_to_race_gender_tab()
+        self.until_ajax_complete()
+        self.officer_gender_chart_block('.female').click()
+        self.until_ajax_complete()
+
+        faded_out_segments = self.find_all('.percentage-rectangle-chart .inactive')
+        len(faded_out_segments).should.equal(13)
+
     def officer_gender_chart_block(self, block_class):
         block_css_path = ".officer-gender-chart {block_class} text"\
             .format(block_class=block_class)
