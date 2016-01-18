@@ -83,8 +83,14 @@ var SimpleTab = React.createClass({
     return (
       <Wrapper visible={!!this.props.navigation} wrapperClass='tab-navigations'>
         <div className='row'>
-          <div className='six columns' onClick={this.setActiveTab.bind(this, prevIndex)}><span className='icon icon-left'></span>{prev}</div>
-          <div className='six columns align-right' onClick={this.setActiveTab.bind(this, nextIndex)}>{next}<span className='icon icon-right'></span></div>
+          <div className='six columns' onClick={this.setActiveTab.bind(this, prevIndex)}>
+            <span className='icon icon-left'/>
+            {prev}
+          </div>
+          <div className='six columns align-right' onClick={this.setActiveTab.bind(this, nextIndex)}>
+            {next}
+            <span className='icon icon-right'/>
+          </div>
         </div>
       </Wrapper>
     );
