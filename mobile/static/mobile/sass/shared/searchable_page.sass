@@ -11,7 +11,6 @@
   .search-bar
     z-index: 3
   .result-content
-    z-index: 2
     &.invisible
       z-index: -1
   .child-content
@@ -21,7 +20,10 @@
     &.invisible
       .content
         z-index: -1
-        animation: slide-up 0.3s forwards
+        animation: slide-up 0.7s forwards
+        -webkit-animation: slide-up 0.7s forwards
+        -moz-animation: slide-up 0.7s forwards
+        -o-animation: slide-up 0.7s forwards
 
 @import 'searchable_page/search_bar'
 @import 'searchable_page/search_results'
