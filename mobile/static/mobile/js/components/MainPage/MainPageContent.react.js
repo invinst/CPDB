@@ -1,16 +1,16 @@
 var cx = require('classnames');
 var React = require('react');
 
-var SearchBar = require('components/MainPage/SearchComponent/SearchBar.react');
-var SearchResults = require('components/MainPage/SearchResults.react');
-var ProjectSummary = require('components/MainPage/SearchComponent/ProjectSummary.react');
+var SearchBar = require('components/Shared/SearchablePage/SearchBar.react');
+var SearchResults = require('components/Shared/SearchablePage/SearchResults.react');
+var ProjectSummary = require('components/MainPage/ProjectSummary.react');
 
 
 var MainPageContent = React.createClass({
   render: function () {
     var topLeft = this.props.topLeft;
     var searchBarWrapperClassNames = cx('search-wrapper animation', {'top-left': topLeft});
-    var projectSummaryClassNames = cx('search-component', {'top-left': topLeft});
+    var projectSummaryClassNames = cx('main-page-content', {'top-left': topLeft});
 
     return (
       <div className={projectSummaryClassNames}>

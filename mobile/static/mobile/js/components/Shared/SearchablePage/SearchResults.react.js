@@ -3,8 +3,8 @@ var objectAssign = require('object-assign');
 
 var Base = require('components/Base.react');
 
-var FailedSearch = require('components/MainPage/SearchResults/FailedSearch.react');
-var SuccessfulSearch = require('components/MainPage/SearchResults/SuccessfulSearch.react');
+var FailedSearch = require('components/Shared/SearchablePage/SearchResults/FailedSearch.react');
+var SuccessfulSearch = require('components/Shared/SearchablePage/SearchResults/SuccessfulSearch.react');
 var Wrapper = require('components/Shared/Wrapper.react');
 var SearchResultsStore = require('stores/MainPage/SearchResultsStore');
 var LoadingPage = require('components/Shared/LoadingPage.react');
