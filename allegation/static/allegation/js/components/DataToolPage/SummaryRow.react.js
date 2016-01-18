@@ -33,8 +33,8 @@ var SummaryRow = React.createClass({
     var category = this.props.category;
 
     for (var i = 0; i < category.subcategories.length; i++) {
-      childCategoryName = category.subcategories[i].cat_id
-      if (FilterTagStore.getFilter('Category ID', childCategoryName)) {
+      childCategoryName = category.subcategories[i].name
+      if (FilterTagStore.getFilter('Allegation type', childCategoryName)) {
         return true;
       }
     }
@@ -108,6 +108,8 @@ var SummaryRow = React.createClass({
     }
 
     var current = this.props.category;
+
+    FilterTagStore.removeFiltersInCategory('Allegation type');
 
     if (this.isActive(current)) {
       FilterTagsActions.removeTag('Category', current.name);

@@ -38,7 +38,7 @@ var FilterTagStore = _.assign(Base(_state), {
   },
 
   addFilter: function (category, value, filter) {
-    _.remove(_state['filters'][category], isNotPinned);
+    this.removeFiltersInCategory(category);
 
     _state['filters'][category] = _state['filters'][category] || [];
 
@@ -49,13 +49,22 @@ var FilterTagStore = _.assign(Base(_state), {
     });
   },
 
+  removeFiltersInCategory: function (category) {
+    _.remove(_state['filters'][category], isNotPinned);
+    this.removeCategory(category);
+  },
+
   removeFilter: function (category, value) {
     if (_state['filters'][category]) {
       _.remove(_state['filters'][category], matchValue(value));
 
-      if (_state['filters'][category].length == 0) {
-        delete _state['filters'][category];
-      }
+      this.removeCategory(category)
+    }
+  },
+
+  removeCategory: function (category) {
+    if (_state['filters'][category] && _state['filters'][category].length == 0) {
+      delete _state['filters'][category];
     }
   },
 
