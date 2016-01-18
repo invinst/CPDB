@@ -47,11 +47,11 @@ class MobileSuggestionServiceTest(SimpleTestCase):
     def test_order_officer_by_number_of_complaints(self):
         officer_name = 'matched'
         officer_1 = OfficerFactory(
-            officer_first=officer_name, allegations_count=1)
+            officer_first=officer_name, officer_last='officer_1', allegations_count=1)
         officer_2 = OfficerFactory(
-            officer_first=officer_name, allegations_count=3)
+            officer_first=officer_name, officer_last='officer_2', allegations_count=3)
         officer_3 = OfficerFactory(
-            officer_first=officer_name, allegations_count=2)
+            officer_first=officer_name, officer_last='officer_3', allegations_count=2)
 
         officers = suggest_officer_name(officer_name)
 
