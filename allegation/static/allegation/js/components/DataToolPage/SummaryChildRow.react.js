@@ -1,6 +1,5 @@
 var HOST = 'http://localhost:8000';
 var React = require('react');
-var Filters = require('components/DataToolPage/Filters.react');
 var MapStore = require('stores/MapStore');
 var SummaryActions = require('actions/SummaryActions');
 var FilterTagsActions = require('actions/FilterTagsActions');
@@ -26,20 +25,20 @@ var SummaryChildRow = React.createClass({
 
     var child = this.props.subcategory;
     if (this.state.selected) {
-      FilterTagsActions.removeTag('Category ID', child.cat_id);
+      FilterTagsActions.removeTag('Allegation type', child.id);
     } else {
-      FilterTagsActions.addTag('Category ID', child.cat_id, 'cat__cat_id=' + child.cat_id, child.name);
+      FilterTagsActions.addTag('Allegation type', child.name, 'cat=' + child.id);
     }
 
     this.state.selected = !this.state.selected;
   },
 
   isActive: function () {
-    var catId = this.props.subcategory.cat_id;
+    var catName = this.props.subcategory.name;
     var selectedCategories = this.props.summary.props.selectedCategories;
 
     return (
-      !!FilterTagStore.getFilter('Category ID', catId)
+      !!FilterTagStore.getFilter('Allegation type', catName)
       || !!FilterTagStore.getFilter('Category', this.props.category.name)
       || (selectedCategories && selectedCategories.indexOf(catId) > -1)
     );

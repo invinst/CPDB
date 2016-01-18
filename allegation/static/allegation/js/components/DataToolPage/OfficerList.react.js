@@ -2,7 +2,6 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var classnames = require('classnames');
 
-var Filters = require('components/DataToolPage/Filters.react');
 var OfficerActions = require('actions/OfficerActions');
 var Officer = require("components/DataToolPage/Officer.react");
 var Counter = require("components/DataToolPage/Counter.react");

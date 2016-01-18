@@ -15,7 +15,6 @@ var _state = {
     'title': '',
     'hash': '',
     'query': {},
-    'readable_query': {},
     'active_tab': ''
   },
   'siteTitle': AppConstants.DEFAULT_SITE_TITLE
@@ -24,7 +23,7 @@ var _state = {
 var SESSION_CREATED_EVENT = 'SESSION_CREATED_EVENT';
 var SessionStore = _.assign(Base(_state), {
   updateSession: function(data) {
-    _state['data'] =_.assign(_state['data'], data);
+    _state['data'] = _.assign(_state['data'], data);
     this.emitChange();
   },
 

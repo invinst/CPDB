@@ -101,6 +101,26 @@ class HomePageTestCase(BaseLiveTestCase):
         self.until(
             lambda: self.number_of_active_subcategories().should.equal(1))
 
+    def test_categories_replacement_logic(self):
+        category = self.allegation_category.category
+        other_category = AllegationCategoryFactory()
+        sub_category = AllegationCategoryFactory(category=category)
+        OfficerAllegationFactory(cat=other_category)
+        OfficerAllegationFactory(cat=sub_category)
+
+        self.filter_complaint_type()
+        self.until(lambda: self.link(category).click())
+        self.element_by_classname_and_text('filter-name', category).should.be.ok
+
+        self.until(lambda: self.link(sub_category.allegation_name).click())
+        self.element_by_classname_and_text('filter-name', sub_category.allegation_name).should.be.ok
+        self.element_by_classname_and_text('filter-name', category).should.be.false
+
+        self.until(lambda: self.link(other_category.category).click())
+        self.element_by_classname_and_text('filter-name', other_category.category).should.be.ok
+        self.until_ajax_complete()
+        self.element_by_classname_and_text('filter-name', sub_category.allegation_name).should.be.false
+
     def number_of_active_subcategories(self):
         active_subcategories = self.find_all(
             '.child-rows .category-name.active')

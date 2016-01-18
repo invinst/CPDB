@@ -34,7 +34,7 @@ var Summary = React.createClass({
       AllegationFilterTagsQueryBuilder.buildQuery(EMBED_QUERY_IGNORE_FILTERS)
     );
 
-    var cats = _.union([], FilterTagStore.getAll('Category ID'), FilterTagStore.getAll('Category'));
+    var cats = _.union([], FilterTagStore.getAll('Allegation type'), FilterTagStore.getAll('Category'));
     var selectedCategories = _.pluck(cats, 'value');
 
     var state = {

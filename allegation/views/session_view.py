@@ -87,7 +87,6 @@ class SessionAPIView(View):
                 'new': is_new,
                 'hash': session.hash_id,
                 'query': session.query,
-                'readable_query': session.readable_query,
                 'title': session.title,
                 'active_tab': session.active_tab,
                 'sunburst_arc': session.sunburst_arc,

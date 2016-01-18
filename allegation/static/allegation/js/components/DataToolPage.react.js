@@ -7,7 +7,7 @@ var AppConstants = require('constants/AppConstants');
 var Base = require('components/Base.react');
 var ComplaintSection = require('components/DataToolPage/ComplaintSection.react');
 var Footer = require('components/DataToolPage/Footer.react');
-var Filters = require('components/DataToolPage/Filters.react');
+var FilterTags = require('components/DataToolPage/FilterTags.react');
 var Map = require('components/DataToolPage/Map.react');
 var OfficerList = require('components/DataToolPage/OfficerList.react');
 var SessionAPI = require('utils/SessionAPI');
@@ -105,7 +105,7 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
         <div className='container-fluid'>
             <div className="row" id='filter-row'>
                <div className="col-md-10">
-                  <Filters />
+                  <FilterTags />
                </div>
             </div>
         </div>
