@@ -5,8 +5,23 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
 
 
+function cloneObject(obj) {
+    var temp;
+
+    if (obj === null || typeof obj !== 'object') {
+        return obj;
+    }
+
+    temp = obj.constructor();
+    for (var key in obj) {
+        temp[key] = cloneObject(obj[key]);
+    }
+    return temp;
+}
+
 var Base = function(state) {
   return objectAssign({}, EventEmitter.prototype, {
+    _originalState: cloneObject(state),
     _state: state,
 
     getState: function() {
@@ -27,6 +42,14 @@ var Base = function(state) {
 
     emitChange: function() {
       this.emit(AppConstants.CHANGE_EVENT);
+    },
+
+    recycle: function () {
+      this._state = cloneObject(this._originalState);
+    },
+
+    recycleKey: function (key) {
+      this._state[key] = this._originalState[key];
     }
   });
 };
