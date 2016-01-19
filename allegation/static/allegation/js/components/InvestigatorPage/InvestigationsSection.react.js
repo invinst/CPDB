@@ -2,27 +2,33 @@ var _ = require('lodash');
 var React = require('react');
 
 var Base = require('components/Base.react');
-var InvestigationList = require('components/InvestigatorPage/InvestigationList.react');
 var ComplaintListAPI = require('utils/ComplaintListAPI');
-var ComplaintSectionStore = require('stores/OfficerPage/ComplaintSectionStore');
+var ComplaintListStore = require('stores/ComplaintListStore');
 var Counter = require('components/DataToolPage/Counter.react');
+var InvestigationList = require('components/InvestigatorPage/InvestigationList.react');
 var OutcomeFilter = require('components/DataToolPage/ComplaintList/OutcomeFilter.react');
+var OutcomeFilterActions = require('actions/ComplaintList/OutcomeFilterActions');
 var RequestModal = require('components/DataToolPage/Complaint/RequestModal.react');
 
-var InvestigationsSection = React.createClass(_.assign(Base(ComplaintSectionStore), {
+
+var InvestigationsSection = React.createClass(_.assign(Base(ComplaintListStore), {
   componentDidMount: function () {
-    ComplaintSectionStore.addChangeListener(this._onChange);
+    ComplaintListStore.addChangeListener(this._onChange);
     var investigator = this.props.investigator.id || '';
     ComplaintListAPI.getAllForInvestigator(investigator);
   },
 
   componentWillUnmount: function () {
-    ComplaintSectionStore.removeChangeListener(this._onChange);
+    ComplaintListStore.removeChangeListener(this._onChange);
   },
 
   componentWillReceiveProps: function (newProps) {
     var investigator = newProps.investigator.id || '';
     ComplaintListAPI.getAllForInvestigator(investigator);
+  },
+
+  setActiveFilter: function(investigatorId, activeFilter) {
+    OutcomeFilterActions.setActiveFilterInvestigator(investigatorId, activeFilter);
   },
 
   render: function () {
@@ -33,7 +39,11 @@ var InvestigationsSection = React.createClass(_.assign(Base(ComplaintSectionStor
             <h3 className="margin-top-0">Investigations (<Counter to={this.state.complaints.length} />)</h3>
           </div>
           <div className='col-md-9 text-right'>
-            <OutcomeFilter activeFilter={this.state.activeFilter} analytics={this.state.analytics} />
+            <OutcomeFilter
+              activeFilter={this.state.activeFilter}
+              analytics={this.state.analytics}
+              setActiveFilter={this.setActiveFilter.bind(this, this.props.investigator.id)}
+              />
           </div>
         </div>
         <InvestigationList complaints={this.state.complaints} />
