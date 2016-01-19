@@ -326,6 +326,9 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         self.scroll_to()
         self.link(tab).click()
 
+    def click_by_js(self, element):
+        self.browser.execute_script('return arguments[0].click();', element)
+
 
 class BaseAdminTestCase(BaseLiveTestCase):
     def setUp(self):

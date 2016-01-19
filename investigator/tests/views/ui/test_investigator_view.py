@@ -22,7 +22,7 @@ class InvestigatorViewTestCase(BaseLiveTestCase):
         # click by javascript to avoid random failed
         self.browser.execute_script('jQuery(".investigator-name").click()')
         self.until(lambda: self.should_see_text(self.investigator.name))
-        len(self.find_all('.complaint-row')).should.equal(1)
+        self.element_exist('.complaint-row').should.be.true
         self.should_see_text(self.officer_allegation.cat.allegation_name)
 
     def test_highlight_disciplined_row(self):
