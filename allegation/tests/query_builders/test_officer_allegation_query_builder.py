@@ -46,25 +46,32 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
         self.check_built_query(query_string, expected_ids)
 
     def test_officer_allegation_count(self):
-        expected_allegations = [
-            OfficerAllegationFactory(
-                officer=OfficerFactory(allegations_count=11))]
-        OfficerAllegationFactory(officer=OfficerFactory(allegations_count=10))
-        OfficerAllegationFactory(officer=OfficerFactory(allegations_count=9))
+        officer = OfficerFactory()
 
-        query_string = 'officer__allegations_count__gt=10'
+
+        expected_allegations = [
+            OfficerAllegationFactory(officer=officer),
+            OfficerAllegationFactory(officer=officer),
+            OfficerAllegationFactory(officer=officer)
+        ]
+        OfficerAllegationFactory(officer=OfficerFactory())
+        OfficerAllegationFactory(officer=OfficerFactory())
+        query_string = 'officer__allegations_count__gt=2'
         expected_ids = [allegation.id for allegation in expected_allegations]
 
         self.check_built_query(query_string, expected_ids)
 
     def test_officer_discipline_count(self):
-        expected_allegations = [
-            OfficerAllegationFactory(
-                officer=OfficerFactory(discipline_count=11))]
-        OfficerAllegationFactory(officer=OfficerFactory(discipline_count=10))
-        OfficerAllegationFactory(officer=OfficerFactory(discipline_count=9))
+        officer = OfficerFactory()
 
-        query_string = 'officer__discipline_count__gt=10'
+        expected_allegations = [
+            OfficerAllegationFactory(officer=officer, final_finding='SU', final_outcome='120'),
+            OfficerAllegationFactory(officer=officer, final_finding='SU', final_outcome='120')
+        ]
+        OfficerAllegationFactory(officer=OfficerFactory())
+        OfficerAllegationFactory(officer=OfficerFactory())
+
+        query_string = 'officer__discipline_count__gt=1'
         expected_ids = [allegation.id for allegation in expected_allegations]
 
         self.check_built_query(query_string, expected_ids)

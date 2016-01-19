@@ -88,6 +88,8 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
             officer = OfficerFactory(allegations_count=allegations_count)
             officers[circle_class] = officer
             OfficerAllegationFactory(allegation=allegation, officer=officer)
+            officer.allegations_count = allegations_count
+            officer.save() #hack because with the post save function we are now recalculating allegation/discipline counts
 
         self.go_to_allegation_detail_page(crid=crid)
 
