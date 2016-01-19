@@ -55,6 +55,8 @@ class DataToolCategoriesTabTestCase(BaseLiveTestCase):
 
         self.check_number_officer(1)
 
+        self.browser.refresh()
+
         self.find('.checkmark').click()
         self.until(lambda: self.element_exist('.complaint-list'))
         self.find('.complaint-row > .row').click()
