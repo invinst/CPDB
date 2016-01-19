@@ -213,7 +213,6 @@ class OfficerAllegationQueryBuilder(object):
 
     def _q_incident_date_only(self, query_params):
         allegation_queries = Q()
-
         for date_range in query_params.getlist('incident_date_only__range'):
             date_range = date_range.split(',')
             allegation_queries |= Q(incident_date_only__range=date_range)
@@ -223,6 +222,7 @@ class OfficerAllegationQueryBuilder(object):
 
         for year_month in \
                 query_params.getlist('incident_date_only__year_month'):
+            year_month = year_month.replace('/', '-')
             year, month = year_month.split('-')
             allegation_queries |= Q(
                 incident_date_only__year=year, incident_date_only__month=month)

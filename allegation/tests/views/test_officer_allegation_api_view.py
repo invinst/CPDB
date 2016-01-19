@@ -10,7 +10,7 @@ from allegation.factories import (
 from allegation.tests.views.base import OfficerAllegationApiTestBase
 from common.models import (
     Allegation, Officer, Area, DISCIPLINE_CODES, NO_DISCIPLINE_CODES,
-    OfficerAllegation)
+    OfficerAllegation, LOCATION_CHOICES)
 
 
 class OfficerAllegationFilterMixin(object):
@@ -248,6 +248,18 @@ class OfficerAllegationApiViewTestCase(
             officer_allegation = OfficerAllegation.objects.get(
                 pk=row['officer_allegation']['id'])
             officer_allegation.final_finding.shouldnt.equal('SU')
+
+    def test_location_format(self):
+        allegation = AllegationFactory(location=LOCATION_CHOICES[0][0])
+        output_format = "{id}. {name}".format(
+            id=allegation.location,
+            name=allegation.get_location_display()
+        )
+
+        OfficerAllegationFactory(allegation=allegation)
+        data = self.fetch_officer_allegations(allegation__crid=allegation.crid)
+        for row in data:
+            row['allegation']['location'].should.equal(output_format)
 
     def test_filter_by_has_document(self):
         allegation = AllegationFactory(document_id=1)
