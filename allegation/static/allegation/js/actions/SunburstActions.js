@@ -1,6 +1,7 @@
 var AppDispatcher = require('dispatcher/AppDispatcher');
 var AppConstants = require('constants/AppConstants');
 
+
 var SunburstActions = {
   receivedData: function(data) {
     AppDispatcher.dispatch({
@@ -9,10 +10,11 @@ var SunburstActions = {
     });
   },
 
-  selectArc: function (path) {
+  selectArc: function (path, selected) {
     AppDispatcher.dispatch({
       actionType: AppConstants.SUNBURST_SELECT_ARC,
-      data: path
+      arc: path,
+      selected: selected
     });
   },
 
@@ -33,7 +35,7 @@ var SunburstActions = {
     AppDispatcher.dispatch({
       actionType: AppConstants.SUNBURST_CLEAR_CONTROL
     });
-  },
+  }
 };
 
 module.exports = SunburstActions;

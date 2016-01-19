@@ -13,12 +13,12 @@ var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFi
 var ajax = null;
 var _queryString = null;
 
-var SUNBURST_IGNORE_FILTERS = ['Final Outcome', 'Final Finding', 'Outcome', 'final_finding_text'];
+var SUNBURST_IGNORE_FILTERS = ['Final Outcome', 'Final Finding', 'Outcome'];
 
 
 var SunburstAPI = {
   getData: function(query) {
-    var filter = AllegationFilterTagsQueryBuilder.buildQuery();
+    var filter = AllegationFilterTagsQueryBuilder.buildQuery(SUNBURST_IGNORE_FILTERS);
     var queryString = query || filter;
 
     if (_queryString == queryString) {

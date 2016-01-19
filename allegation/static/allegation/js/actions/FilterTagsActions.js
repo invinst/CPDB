@@ -91,6 +91,11 @@ var FilterTagsActions = {
       value: value
     });
     SessionAPI.updateSessionInfo({'query': FilterTagStore.getSession()});
+  },
+
+  // Temporary function to hold sunburst logic
+  saveTags: function () {
+    updateSiteData();
   }
 };
 

@@ -12,7 +12,7 @@ var AllegationFilterTagsQueryBuilder = {
     ignoreFilters = ignoreFilters || [];
 
     filters = _.filter(filters, function (entries, category) {
-      return category in ignoreFilters || entries.length > 0;
+      return ignoreFilters.indexOf(category) == -1 && entries.length > 0;
     });
 
     var query = _.map(filters, function (values, category) {
