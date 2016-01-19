@@ -3,6 +3,7 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 
 from mobile.views.mobile_allegation_view import \
     MobileAllegationView
+from mobile.views.mobile_data_tool_view import MobileDataToolView
 from mobile.views.mobile_officer_view import MobileOfficerView
 from mobile.views.mobile_site_view import MobileSiteView
 from mobile.views.mobile_suggestion_view import MobileSuggestionView
@@ -24,4 +25,8 @@ urlpatterns = [
     # overriding for client-side routing
     url(r'^(officer/[^/]+/\d+|complaint/\d+|search/\w+)?$', ensure_csrf_cookie(MobileSiteView.as_view()), name='home'),
     url(r'^(test)?$', ensure_csrf_cookie(MobileSiteView.as_view()), name='home'),
+
+    # for interpret from desktop version
+    url(r'^data/(?P<hash_id>\w+)/(?P<slug>.*)$', MobileDataToolView.as_view(), name='data-tool'),
+    url(r'^mobile/data/(?P<hash_id>\w+)/(?P<slug>.*)$', MobileDataToolView.as_view(), name='mobile-data-tool')
 ]
