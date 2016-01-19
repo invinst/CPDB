@@ -30,7 +30,7 @@ class SearchResultTestCase(BaseAdminTestCase):
         self.try_to_create_new_alias()
 
         self.until(lambda: self.should_see_text("Add new alias successfully"))
-        self.find(".modal").is_displayed().should.be.false
+        self.until(lambda: self.find(".modal").is_displayed().should.be.false)
 
         Alias.objects.filter(alias="alias", target="target").count().should.equal(1)
 
@@ -38,7 +38,7 @@ class SearchResultTestCase(BaseAdminTestCase):
         alias = AliasFactory()
         self.try_to_create_new_alias(alias.alias, alias.target)
         self.until(lambda: self.should_see_text("Alias with this Alias and Target already exists"))
-        self.find(".modal").is_displayed().should.be.false
+        self.until(lambda: self.find(".modal").is_displayed().should.be.false)
 
     def try_to_create_new_alias(self, alias='alias', target='target'):
         self.go_to_search_result()

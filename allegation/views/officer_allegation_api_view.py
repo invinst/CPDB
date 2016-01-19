@@ -79,6 +79,11 @@ class OfficerAllegationAPIView(View):
             officer_allegation.recc_outcome = \
                 officer_allegation.get_recc_outcome_display()
 
+            allegation.location = "{id}. {name}".format(
+                id=allegation.location,
+                name=allegation.get_location_display()
+            )
+
             ret = {
                 'officer_allegation': officer_allegation,
                 'allegation': allegation,
