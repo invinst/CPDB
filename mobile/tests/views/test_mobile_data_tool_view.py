@@ -9,7 +9,11 @@ from share.factories import SessionFactory
 
 
 class MobileDataToolViewTest(SimpleTestCase):
-    def call_mobile_data_tool_view(self, params={}):
+    def call_mobile_data_tool_view_with_hash_id(self, hash_id):
+        params = {
+            'hash_id': hash_id,
+            'slug': 'citizens-police-data-proj'
+        }
         return self.client.get(reverse('mobile:data-tool', kwargs=params))
 
     def test_redirect_to_officer_page(self):
@@ -28,11 +32,7 @@ class MobileDataToolViewTest(SimpleTestCase):
         }
 
         session = SessionFactory(query=query)
-        params = {
-            'hash_id': session.hash_id,
-            'slug': 'citizens-police-data-proj'
-        }
-        response = self.call_mobile_data_tool_view(params=params)
+        response = self.call_mobile_data_tool_view_with_hash_id(hash_id=session.hash_id)
         response.status_code.should.equal(HTTP_301_MOVED_PERMANENTLY)
         response.url.should.contain(expected_url_part)
 
@@ -48,6 +48,38 @@ class MobileDataToolViewTest(SimpleTestCase):
             }
         }
 
+        session = SessionFactory(query=query)
+        response = self.call_mobile_data_tool_view_with_hash_id(hash_id=session.hash_id)
+        response.status_code.should.equal(HTTP_301_MOVED_PERMANENTLY)
+        response.url.should.contain(expected_url_part)
+
+    def test_redirect_to_not_exist_officer_page(self):
+        fake_officer_id = 123
+        query = {
+            'filters': {
+                'officer': {
+                    'value': [fake_officer_id]
+                }
+            }
+        }
+        session = SessionFactory(query=query)
+        response = self.call_mobile_data_tool_view_with_hash_id(hash_id=session.hash_id)
+        response.status_code.should.equal(HTTP_301_MOVED_PERMANENTLY)
+
+    def test_redirect_officer_page_by_officer_badge(self):
+        officer = OfficerFactory(star=123)
+        expected_url_part = '/officer/{officer_name}/{officer_id}'.format(
+            officer_name=slugify(officer.display_name),
+            officer_id=officer.id
+        )
+
+        query = {
+            'filters': {
+                'officer__star': {
+                    'value': [officer.star]
+                }
+            }
+        }
         session = SessionFactory(query=query)
         params = {
             'hash_id': session.hash_id,
