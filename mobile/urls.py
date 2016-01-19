@@ -23,5 +23,6 @@ urlpatterns = [
 
     # overriding for client-side routing
     url(r'^(officer/[^/]+/\d+|complaint/\d+|search/.*)?$', ensure_csrf_cookie(MobileSiteView.as_view()), name='home'),
-    url(r'^(test)?$', ensure_csrf_cookie(MobileSiteView.as_view()), name='home'),
+    url(r'^mobile/(officer/[^/]+/\d+|complaint/\d+|search/.*)?$', ensure_csrf_cookie(MobileSiteView.as_view()),
+        name='home')
 ]

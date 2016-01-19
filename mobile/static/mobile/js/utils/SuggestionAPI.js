@@ -5,11 +5,16 @@ var AppConstants = require('constants/AppConstants');
 var MainPageServerActions = require('actions/MainPage/MainPageServerActions');
 
 
+var ajax = null;
+
 var SuggestionAPI = {
-  // TODO: only trigger the api after threshold, could put it to be defaul 300ms
-  // TODO: cancel the previous api if it's not triggered yet
+  // TODO: only trigger the api after threshold, could put it to be default 300ms
   get: function (query) {
-    request.get(AppConstants.SUGGESTION_API_ENDPOINT)
+    if (ajax) {
+      ajax.abort()
+    }
+
+    ajax = request.get(AppConstants.SUGGESTION_API_ENDPOINT)
       .query({query: query})
       .end(function (err, res) {
         if (res.ok) {
