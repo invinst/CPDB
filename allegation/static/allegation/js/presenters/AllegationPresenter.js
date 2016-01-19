@@ -9,13 +9,12 @@ var AllegationPresenter = function (allegation) {
       return complainingWitness(item);
     });
   };
-
   return {
     crid: _.get(allegation, 'allegation.crid', ''),
     mainCategory: _.get(allegation, 'category.category', 'Unknown'),
     subCategory: _.get(allegation, 'category.allegation_name', ''),
-    finalOutcome: _.get(allegation, 'allegation.allegation.final_outcome', 'Unknown'),
-    finalFinding: _.get(allegation, 'allegation.allegation.final_finding', 'Unknown'),
+    finalOutcome: _.get(allegation, 'officer_allegation.final_outcome', 'Unknown'),
+    finalFinding: _.get(allegation, 'officer_allegation.final_finding', 'Unknown'),
     complainingWitness: allegationComplainingWitness()
   };
 };
