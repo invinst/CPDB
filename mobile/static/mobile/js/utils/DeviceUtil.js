@@ -5,7 +5,7 @@ var DeviceUtil = function () {
 
   return {
     isiOSDevice: isiOSDevice()
-  }
+  };
 };
 
 module.exports = DeviceUtil;

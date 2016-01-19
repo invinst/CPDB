@@ -23,7 +23,7 @@ var DocumentLinkPresenter = function (documentId, documentNormalizedTitle) {
   return {
     pdfLink: pdfLink(),
     cloudLink: cloudLink()
-  }
+  };
 };
 
 module.exports = DocumentLinkPresenter;

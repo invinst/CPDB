@@ -39,10 +39,12 @@ var Location = React.createClass({
     if (allegation.add1 && allegation.add2) {
       return (
         <div className='address-info row'>
-          <div className='col-xs-3 col-md-12 text-bold'>{allegation.add1} {allegation.add2}</div>
-          <div className='col-xs-3 col-md-12'><span className='title'>Beat</span> {this.props.complaint.beat_name}</div>
-          <div className='col-xs-3 col-md-12'><span className='title'>Location Type</span> {allegation.location}</div>
-          <div className='col-xs-3 col-md-12'><span className='title'>City</span> {allegation.city}</div>
+          <div className='col-xs-12'>
+            <div className='address-item'>{allegation.add1} {allegation.add2}</div>
+            <div className='address-item'><span className='title'>Beat</span> {this.props.complaint.beat_name}</div>
+            <div className='address-item'><span className='title'>Location Type</span> {allegation.location}</div>
+            <div className='address-item'><span className='title'>City</span> {allegation.city}</div>
+          </div>
         </div>
       );
     } else if (this.props.complaint.beat_name) {
