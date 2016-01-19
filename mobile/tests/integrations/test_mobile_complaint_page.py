@@ -14,9 +14,7 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
         document_id = 123
         document_normalized_title = 'abcd'
         view_document_text = 'View documents'
-        view_document_link_format = 'http://documentcloud.org/documents/{id}-{title}.html'
-        view_document_link = view_document_link_format.format(
-            id=document_id, title=document_normalized_title)
+
         officer_gender = 'X'
         officer_gender_display = 'Trans'
 
@@ -64,8 +62,6 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
         self.find('.investigator .rank').text.should.contain(
             investigator.current_rank)
         self.find('.location-detail').text.should.contain(allegation.beat.name)
-        self.find('.document-link').get_attribute('href')\
-            .should.equal(view_document_link)
 
         self.should_see_text(view_document_text)
         self.should_see_text(addresss)

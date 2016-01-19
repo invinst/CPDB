@@ -1,0 +1,7 @@
+{
+  "browserify": true,
+  "camelcase": true,
+  "undef": true,
+  "maxlen": 120,
+  "sub": true
+}

@@ -55,7 +55,7 @@ var ComplaintListAPI = {
 
   getAllForInvestigator: function(investigator) {
     var params = {
-      investigator: investigator,
+      allegation__investigator: investigator,
       length: -1
     };
 

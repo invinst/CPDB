@@ -1,4 +1,4 @@
-from allegation.factories import (OfficerFactory, OfficerAllegationFactory)
+from allegation.factories import OfficerFactory, OfficerAllegationFactory
 from common.tests.core import SimpleTestCase
 from mobile.services.related_officer_service import RelatedOfficerService
 from mobile.utils.sql_helper import SqlHelper
