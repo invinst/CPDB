@@ -42,8 +42,8 @@ class InvestigatorViewTestCase(BaseLiveTestCase):
             ))
 
         # Check two complaint rows exist
-        self.element_exist('.complaint-row.not-disciplined')
-        self.element_exist('.complaint-row.disciplined')
+        self.element_exist('.complaint-row.not-disciplined').should.be.true
+        self.element_exist('.complaint-row.disciplined').should.be.true
 
         # Expand one row
         self.find('.complaint-row.disciplined').click()
