@@ -36,7 +36,6 @@ class AreaFactory(factory.django.DjangoModelFactory):
 class OfficerFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Officer
-        django_get_or_create = ('officer_first', 'officer_last')
 
     officer_first = factory.Sequence(lambda n: capitalize_word())
     officer_last = factory.Sequence(lambda n: capitalize_word())
