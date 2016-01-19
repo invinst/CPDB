@@ -1,3 +1,5 @@
+from selenium.webdriver.common.keys import Keys
+
 from allegation.factories import (
     AllegationCategoryFactory, OfficerAllegationFactory)
 from allegation.tests.utils.outcome_filter import \
@@ -113,6 +115,27 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         self.until(
             lambda: self.element_by_classname_and_text(
                 'filter-name', 'has:document').should.be.ok)
+
+    def test_sticky_tag_shortcut(self):
+        # select 2 tags
+        self.fill_in('#autocomplete', 'has:document')
+        self.find('.autocomplete-has_filters').click()
+        self.fill_in('#autocomplete', 'not sustained')
+        self.find('.autocomplete-final_finding').click()
+
+        self.until(self.ajax_complete)
+
+        self.number_of_tags().should.equal(2)
+
+        self.send_shortcut_keys(modifier=Keys.CONTROL, key='i')
+
+        self.number_of_pinned_tags().should.equal(2)
+
+    def number_of_tags(self):
+        return len(self.find_all('span.tag'))
+
+    def number_of_pinned_tags(self):
+        return len(self.find_all('span.tag.pinned'))
 
     def number_of_complaints(self):
         return len(self.find_all('.complaint-row'))
