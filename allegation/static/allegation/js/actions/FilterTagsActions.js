@@ -87,6 +87,12 @@ var FilterTagsActions = {
       filter: filter
     });
     SessionAPI.updateSessionInfo({'query': FilterStore.getSession()});
+  },
+
+  toggleAllTags: function () {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.TOGGLE_ALL_TAGS,
+    });
   }
 };
 

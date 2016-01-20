@@ -1,5 +1,6 @@
 var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
+var _ = require('lodash');
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
@@ -167,7 +168,7 @@ var FilterStore = assign({}, EventEmitter.prototype, {
     this.emitChange();
   },
 
-  toogleFiltersFor: function (category) {
+  toggleFiltersFor: function (category) {
     return function(value) {
       if (!TagUtil.isATagIn(_filters)(category, value)) {
         FilterStore.addFilter(category, value);
@@ -235,6 +236,33 @@ var FilterStore = assign({}, EventEmitter.prototype, {
       }
     }
     return query;
+  },
+
+  isAllTagsPinned: function () {
+    var total_pinned = _.reduce(_pinned, function (sum, list) {
+      return sum + list.length;
+    }, 0);
+    var total_filters = _.reduce(_filters, function (sum, obj) {
+      return sum + obj['value'].length;
+    }, 0);
+    return total_pinned == total_filters;
+  },
+
+  toggleAllTags: function () {
+    if (FilterStore.isAllTagsPinned()) {
+      _pinned = {};
+    } else {
+      _.forOwn(_filters, function (data, category) {
+        _.each(data['value'], function (value) {
+          if (!FilterStore.isPinned(category, value)) {
+            if (!_pinned[category]) {
+              _pinned[category] = [];
+            }
+            _pinned[category].push(value);
+          }
+        });
+      });
+    }
   }
 });
 
@@ -278,7 +306,7 @@ AppDispatcher.register(function (action) {
       // We do a trick here, first we add it in, then we pin it
       // When adding completely, we pin one more time to `unpin` it
       // This will help us for not adding a new exception to API
-      values.map(FilterStore.toogleFiltersFor(action.category));
+      values.map(FilterStore.toggleFiltersFor(action.category));
       values.map(FilterStore.justUnpinFor(action.category));
       FilterStore.emitChange();
     break;
@@ -290,6 +318,11 @@ AppDispatcher.register(function (action) {
 
     case AppConstants.PIN_TAG:
       FilterStore.pinFilter(action.category, action.filter.value);
+      FilterStore.emitChange();
+      break;
+
+    case AppConstants.TOGGLE_ALL_TAGS:
+      FilterStore.toggleAllTags();
       FilterStore.emitChange();
       break;
 

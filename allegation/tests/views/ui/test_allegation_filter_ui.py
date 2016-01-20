@@ -1,5 +1,3 @@
-from selenium.webdriver.common.keys import Keys
-
 from allegation.factories import (
     AllegationCategoryFactory, OfficerAllegationFactory)
 from allegation.tests.utils.outcome_filter import \
@@ -127,9 +125,22 @@ class AllegationFilterTestCase(BaseLiveTestCase):
 
         self.number_of_tags().should.equal(2)
 
-        self.send_shortcut_keys(modifier=Keys.CONTROL, key='i')
+        self.find('body').send_keys('p')
 
         self.number_of_pinned_tags().should.equal(2)
+
+        self.find('.pin').click()
+
+        self.number_of_pinned_tags().should.equal(1)
+
+        self.find('body').send_keys('p')
+
+        self.number_of_pinned_tags().should.equal(2)
+
+        self.find('body').send_keys('p')
+
+        self.number_of_pinned_tags().should.equal(0)
+        self.number_of_tags().should.equal(2)
 
     def number_of_tags(self):
         return len(self.find_all('span.tag'))

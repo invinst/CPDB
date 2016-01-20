@@ -15,6 +15,7 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.select import Select
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+import sure
 
 from api.models import Setting
 from common.factories import UserFactory
@@ -266,9 +267,6 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         selector_input = self.find(selector)
         selector_input.clear()
         selector_input.send_keys(value)
-
-    def send_shortcut_keys(self, modifier, key):
-        ActionChains(self.browser).key_down(modifier).send_keys(key).key_up(modifier).perform()
 
     def sleep(self, seconds):
         time.sleep(seconds)
