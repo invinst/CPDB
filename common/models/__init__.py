@@ -561,24 +561,3 @@ class PendingPdfAllegation(models.Model):
     finding = models.CharField(max_length=255, blank=True, null=True)
     summary = models.TextField(blank=True, null=True)
     errors = models.TextField(blank=True, null=True)
-
-
-def set_counts(instance, related_name, allegation_field, discipline_field, discipline_lookup_field='final_outcome__in'):
-    kwargs = {discipline_lookup_field: DISCIPLINE_CODES}
-    related_queryset = getattr(instance, related_name, None)
-    if related_queryset:
-        setattr(instance, allegation_field, related_queryset.all().count())
-        if discipline_field:
-            setattr(instance, discipline_field, related_queryset.filter(**kwargs).count())
-        instance.save()
-
-@receiver(post_save, sender=OfficerAllegation)
-def recalculate_counts(**kwargs):
-    instance = kwargs['instance']
-    set_counts(instance.officer, 'officerallegation_set', 'allegations_count', 'discipline_count')
-    set_counts(instance.allegation.investigator,
-               'allegation_set',
-               'complaint_count',
-               'discipline_count',
-               'officerallegation__final_outcome__in')
-    set_counts(instance.cat, 'officerallegation_set', 'allegation_count', None)
