@@ -121,7 +121,7 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         self.fill_in('#autocomplete', 'not sustained')
         self.find('.autocomplete-final_finding').click()
 
-        self.until(self.ajax_complete)
+        self.until_ajax_complete()
 
         self.number_of_tags().should.equal(2)
 

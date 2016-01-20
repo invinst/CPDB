@@ -239,13 +239,13 @@ var FilterStore = assign({}, EventEmitter.prototype, {
   },
 
   isAllTagsPinned: function () {
-    var total_pinned = _.reduce(_pinned, function (sum, list) {
+    var totalPinned = _.reduce(_pinned, function (sum, list) {
       return sum + list.length;
     }, 0);
-    var total_filters = _.reduce(_filters, function (sum, obj) {
+    var totalFilters = _.reduce(_filters, function (sum, obj) {
       return sum + obj['value'].length;
     }, 0);
-    return total_pinned == total_filters;
+    return totalPinned == totalFilters;
   },
 
   toggleAllTags: function () {
@@ -328,7 +328,7 @@ AppDispatcher.register(function (action) {
 
     case AppConstants.RECEIVED_SESSION_DATA:
       FilterStore.setSession(action.data['data']['query'] || {});
-      _initialized = action.data['data'].readable_query || {};
+      _initialized = action.data['data']['readable_query'] || {};
       FilterStore.emitChange();
       break;
 
