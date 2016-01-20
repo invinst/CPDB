@@ -19,7 +19,6 @@ class MobileDataToolService(object):
         except (IndexError, Session.DoesNotExist):
             self.filters = {}
 
-
     def get_model_map(self, value):
         return {
             'officer__star': {
@@ -50,7 +49,7 @@ class MobileDataToolService(object):
         if len(filters) != 1:
             return self.DEFAULT_REDIRECT_URL
 
-        filter, value = next(filters)
+        filter, value = filters[0]
 
         try:
             model_map = self.get_model_map(value)[filter]
@@ -58,4 +57,4 @@ class MobileDataToolService(object):
         except ObjectDoesNotExist:
             return self.DEFAULT_REDIRECT_URL
 
-        return model_object.get_mobile_url()
+        return self.DEFAULT_REDIRECT_URL + model_object.get_mobile_url()
