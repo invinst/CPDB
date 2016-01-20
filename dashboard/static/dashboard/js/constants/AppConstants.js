@@ -169,7 +169,6 @@ module.exports = {
     { page: '/interface-text', icon: 'file-text', text: 'Interface Texts' }
   ],
 
-  DATE_ONLY_FORMAT: 'YYYY-M-DD',
   DATE_FORMAT: 'YYYY-MM-DD',
   HUMAN_READABLE_FORMAT: 'hh:mm a, DD MMM YYYY',
   NUMBER_OF_DAYS_SHOWN_IN_NEW_SESSION_CHART: 30,

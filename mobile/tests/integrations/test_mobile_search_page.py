@@ -32,7 +32,7 @@ class MobileSearchPageTest(BaseLivePhoneTestCase):
     def test_search_with_special_character(self):
         officer = OfficerFactory()
 
-        query_formats = ['{first}_{last}', '{first}+{last}', '{first} {last}', '{first}_{last}']
+        query_formats = ['{first}_{last}', '{first}+{last}', '{first} {last}', '{first}-{last}']
 
         for query_format in query_formats:
             query = query_format.format(first=officer.officer_first, last=officer.officer_last)
