@@ -1,13 +1,17 @@
-from django.template.defaultfilters import slugify
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.models import Q
 
 from common.models import Officer, Allegation
 from share.models import Session
 
 
 class MobileDataToolService(object):
-    default_redirect_url = '/mobile'
+    # FIXME: put this in to constants.py
+    DEFAULT_REDIRECT_URL = '/mobile'
 
     def __init__(self, hash_id=''):
+        self.hash_id = hash_id
+
         try:
             session_id = Session.id_from_hash(hash_id)[0]
             session = Session.objects.get(id=session_id)
@@ -15,50 +19,43 @@ class MobileDataToolService(object):
         except (IndexError, Session.DoesNotExist):
             self.filters = {}
 
-    def fetch_filters(self, field):
-        values = self.filters.get(field, {}).get('value', [])
-        if len(values) == 1:
-            return values[0]
 
-        return None
+    def get_model_map(self, value):
+        return {
+            'officer__star': {
+                'model': Officer,
+                'query': Q(star=value)
+            },
+            'officer': {
+                'model': Officer,
+                'query': Q(pk=value)
+            },
+            'allegation__crid': {
+                'model': Allegation,
+                'query': Q(crid=value)
+            }
+        }
 
-    def direct_url_from_officer(self, officer):
-        return '/mobile/officer/{slug}/{id}'.format(slug=slugify(officer.display_name), id=officer.id)
+    def filter_values(self, k, vs):
+        return [(k, v) for v in vs]
 
-    def redirect_url_from_officer_id(self):
-        officer_id = self.fetch_filters('officer')
+    def fetch_filters(self):
+        results = []
+        for k in self.filters:
+            results.extend(self.filter_values(k, self.filters[k]['value']))
+        return results
+
+    def get_redirect_url(self):
+        filters = self.fetch_filters()
+        if len(filters) != 1:
+            return self.DEFAULT_REDIRECT_URL
+
+        filter, value = next(filters)
+
         try:
-            officer = Officer.objects.get(pk=officer_id)
-        except Officer.DoesNotExist:
-            return None
+            model_map = self.get_model_map(value)[filter]
+            model_object = model_map['model'].objects.get(model_map['query'])
+        except ObjectDoesNotExist:
+            return self.DEFAULT_REDIRECT_URL
 
-        return self.direct_url_from_officer(officer)
-
-    def redirect_url_from_officer_star(self):
-        officer_star = self.fetch_filters('officer__star')
-        if not officer_star:
-            return None
-        try:
-            officer = Officer.objects.get(star=officer_star)
-        except Officer.DoesNotExist:
-            return None
-
-        return self.direct_url_from_officer(officer)
-
-    def redirect_url_from_allegation(self):
-        allegation_crid = self.fetch_filters('allegation__crid')
-        if allegation_crid:
-            return '/mobile/complaint/{crid}'.format(crid=allegation_crid)
-        return None
-
-    def redirect_url(self):
-        redirect_urls = [x for x in [
-            self.redirect_url_from_officer_id(),
-            self.redirect_url_from_officer_star(),
-            self.redirect_url_from_allegation(),
-        ] if x is not None]
-
-        if len(redirect_urls) == 1:
-            return redirect_urls[0]
-
-        return self.default_redirect_url
+        return model_object.get_mobile_url()

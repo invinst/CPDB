@@ -81,10 +81,6 @@ class MobileDataToolViewTest(SimpleTestCase):
             }
         }
         session = SessionFactory(query=query)
-        params = {
-            'hash_id': session.hash_id,
-            'slug': 'citizens-police-data-proj'
-        }
-        response = self.call_mobile_data_tool_view(params=params)
+        response = self.call_mobile_data_tool_view_with_hash_id(hash_id=session.hash_id)
         response.status_code.should.equal(HTTP_301_MOVED_PERMANENTLY)
         response.url.should.contain(expected_url_part)
