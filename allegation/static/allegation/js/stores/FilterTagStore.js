@@ -199,6 +199,38 @@ AppDispatcher.register(function (action) {
       FilterTagStore.emitChange();
       break;
 
+    case AppConstants.SUNBURST_SELECT_ARC:
+      var arc = action.arc;
+      var selected = action.selected;
+
+      var isArcParentSelected = false;
+      var current = selected;
+      while (current.parent) {
+        isArcParentSelected = isArcParentSelected || (arc == current.parent);
+        current = current.parent;
+      }
+
+      if (selected && isArcParentSelected && selected.tagValue) {
+        current = selected;
+        while (current != arc) {
+          FilterTagStore.removeFilter(
+            current.tagValue.category, current.tagValue.label);
+          current = current.parent;
+        }
+      }
+
+      if (arc.tagValue) {
+        if (arc.tagValue.removeParent) {
+          FilterTagStore.removeFilter(
+              arc.parent.tagValue.category, arc.parent.tagValue.label);
+        }
+        FilterTagStore.addFilter(
+            arc.tagValue.category, arc.tagValue.label,
+            arc.tagValue.filter + '=' + arc.tagValue.value);
+      }
+      FilterTagStore.emitChange();
+      break;
+
     default:
       break;
   }

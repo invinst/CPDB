@@ -100,6 +100,7 @@ OfficerListStore.dispatchEvent = AppDispatcher.register(function (action) {
     case AppConstants.ADD_TAG:
     case AppConstants.REMOVE_TAG:
     case AppConstants.TOGGLE_TAGS:
+    case AppConstants.SUNBURST_SELECT_ARC:
       if (!firstCall) {
         OfficerListStore.set('active_officers', []);
       }
