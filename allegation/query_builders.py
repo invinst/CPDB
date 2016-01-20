@@ -198,10 +198,7 @@ class OfficerAllegationQueryBuilder(object):
     def _query_by_complainant(self, query_params, param_key, query_key):
         if param_key in query_params:
             vals = query_params.getlist(param_key)
-            allegation_pks = list(filter(
-                None, ComplainingWitness.objects.filter(**{query_key: vals})
-                .values_list('allegation__pk', flat=True)))
-            return Q(allegation__pk__in=allegation_pks)
+            return Q(**{'allegation__complainingwitness__%s' % query_key: vals})
         return Q()
 
     def _q_complainant_gender(self, query_params):
