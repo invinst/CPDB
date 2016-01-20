@@ -24,11 +24,8 @@ var SunburstStore = _.assign(Base(_state), {
     var root = data.sunburst;
     _state.data = root;
 
+    SunburstStore.updateSelected();
     SunburstStore.emitDataChange();
-
-    if (_state.selected && _state.selected.fromSession) {
-      _state.selected = SunburstChartD3.findPathByName(_state.selected.name);
-    }
   },
 
   isSelected: function (category, value) {
@@ -36,8 +33,28 @@ var SunburstStore = _.assign(Base(_state), {
     return selected && selected.tagValue && selected.tagValue.category == category && selected.tagValue.label == value
   },
 
+  updateSelected: function () {
+    if (_state.selected) {
+      var arc = SunburstChartD3.findPathByName(_state.selected.name);
+
+      if (_state.selected.fromSession) {
+        if (arc) {
+          _state.selected = arc;
+        }
+      } else {
+        _state.selected = arc;
+      }
+    }
+  },
+
   getSelected: function () {
-    return _state.selected;
+    SunburstStore.updateSelected();
+
+    if (_state.selected && _state.selected.fromSession) {
+      return false;
+    } else {
+      return _state.selected;
+    }
   },
 
   getSelectedParentTag: function () {
@@ -146,12 +163,14 @@ AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.RECEIVED_SESSION_DATA:
+      var arcName = 'Allegations';
       if (action.data && action.data.data.sunburst_arc) {
-        _state.selected = {
-          name: action.data.data.sunburst_arc,
-          fromSession: true
-        };
+        arcName = action.data.data.sunburst_arc;
       }
+      _state.selected = {
+        name: arcName,
+        fromSession: true
+      };
       break;
 
     default:

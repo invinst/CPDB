@@ -20,7 +20,7 @@ var Breadcrumb = React.createClass(_.assign(Base(SunburstStore), {
   },
 
   renderBreadcrumb: function () {
-    var arc = this.state.hovering || this.state.selected;
+    var arc = this.state.hovering || SunburstStore.getSelected();
     if (!arc) {
       return '';
     }
@@ -45,7 +45,7 @@ var Breadcrumb = React.createClass(_.assign(Base(SunburstStore), {
   },
 
   clickHandler: function (arc) {
-    SunburstActions.selectArc(arc, this.state.selected);
+    SunburstActions.selectArc(arc, SunburstStore.getSelected());
     FilterTagsActions.saveTags();
   }
 }));

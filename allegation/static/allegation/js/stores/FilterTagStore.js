@@ -203,9 +203,20 @@ AppDispatcher.register(function (action) {
       var arc = action.arc;
       var selected = action.selected;
 
-      if (selected && arc == selected.parent && selected.tagValue) {
-        FilterTagStore.removeFilter(
-            selected.tagValue.category, selected.tagValue.label);
+      var isArcParentSelected = false;
+      var current = selected;
+      while (current.parent) {
+        isArcParentSelected = isArcParentSelected || (arc == current.parent);
+        current = current.parent;
+      }
+
+      if (selected && isArcParentSelected && selected.tagValue) {
+        current = selected;
+        while (current != arc) {
+          FilterTagStore.removeFilter(
+            current.tagValue.category, current.tagValue.label);
+          current = current.parent;
+        }
       }
 
       if (arc.tagValue) {

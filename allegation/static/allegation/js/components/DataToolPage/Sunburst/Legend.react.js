@@ -11,7 +11,7 @@ var FilterTagsActions = require('actions/FilterTagsActions');
 
 var Legend = React.createClass(_.assign(Base(SunburstStore), {
   render: function () {
-    var arc = this.state.hovering || this.state.selected;
+    var arc = this.state.hovering || SunburstStore.getSelected();
 
     if (!arc) {
       return <div></div>;
@@ -95,7 +95,7 @@ var Legend = React.createClass(_.assign(Base(SunburstStore), {
       );
     }
 
-    return '';
+    return <div></div>;
   },
 
   getLegends: function (arc) {
@@ -117,7 +117,7 @@ var Legend = React.createClass(_.assign(Base(SunburstStore), {
   },
 
   renderLegends: function () {
-    var selected = this.state.selected;
+    var selected = SunburstStore.getSelected();
 
     if (selected) {
       var legends = this.getLegends(selected);
@@ -126,7 +126,7 @@ var Legend = React.createClass(_.assign(Base(SunburstStore), {
       return _.map(legends, function (item, key) {
         var total = SunburstStore.getArcSize(item);
         if (!total) {
-          return '';
+          return <tr></tr>;
         }
 
         var formattedTotal = numeral(total).format(AppConstants.NUMERAL_FORMAT);
@@ -136,7 +136,7 @@ var Legend = React.createClass(_.assign(Base(SunburstStore), {
 
         return (
           <tr key={key} className='sunburst-legend' onClick={that.clickHandler.bind(that, item)}>
-            <td className='color'><span className='fa fa-stop' style={style}></span></td>
+            <td className='color'><i className='fa fa-stop' style={style}></i></td>
             <td className='size'>{formattedTotal}</td>
             <td className='name'>{item.name}</td>
           </tr>
@@ -144,11 +144,11 @@ var Legend = React.createClass(_.assign(Base(SunburstStore), {
       });
     }
 
-    return '';
+    return <tr></tr>;
   },
 
   clickHandler: function (arc) {
-    SunburstActions.selectArc(arc, this.state.selected);
+    SunburstActions.selectArc(arc, SunburstStore.getSelected());
     FilterTagsActions.saveTags();
   }
 }));
