@@ -46,19 +46,15 @@ class AllegationDetailTestCase(BaseLiveTestCase):
         self.open_complaint_detail()
 
         self.find('.complaint-row > .row').click()
-        self.element_exist('.complaint_detail').should.equal(True)
+        self.element_exist('.complaint_detail').should.be.true
 
-        self.browser.execute_script('return arguments[0].click();', self.link(
-            'Read more...'
-            ))
+        self.click_by_js(self.link('Read more...'))
 
         self.should_see_text(allegation.summary)
         self.link('Read more...').should.be.false
 
     def test_complaint_correct_final_status_unknown(self):
-        allegation = AllegationFactory()
         OfficerAllegationFactory(
-            allegation=allegation,
             final_finding=None,
             final_outcome=None
             )
@@ -70,9 +66,7 @@ class AllegationDetailTestCase(BaseLiveTestCase):
         self.should_see_text('Unknown')
 
     def test_complaint_correct_final_status_known(self):
-        allegation = AllegationFactory()
         OfficerAllegationFactory(
-            allegation=allegation,
             final_finding='NC',
             final_outcome='000'
             )
@@ -91,12 +85,12 @@ class AllegationDetailTestCase(BaseLiveTestCase):
             )
 
         self.visit_home()
-        # Select an officer
-        self.find('.checkmark').click()
+        self.find('.officer.active .checkmark').click()
+
         self.until_ajax_complete()
-        # Expand first complaint row
+
         self.find('.complaint-row > .row').click()
-        self.element_exist('.complaint_detail').should.equal(True)
+        self.element_exist('.complaint_detail').should.be.true
 
         # Verify content in expanded view are correct
         self.should_see_text('Final Outcome\n{final_outcome}'.format(
@@ -112,26 +106,25 @@ class AllegationDetailTestCase(BaseLiveTestCase):
         )
 
     def test_high_light_disciplined_row(self):
-        allegation = AllegationFactory()
         OfficerAllegationFactory(
-            allegation=allegation,
             final_outcome_class='disciplined'
             )
 
         self.visit_home()
-        self.find('.checkmark').click()
+        self.find('.officer.active .checkmark').click()
+
         self.until_ajax_complete()
-        len(self.find_all('.complaint-row.disciplined')).should.equal(1)
-        self.find('.complaint-row > .row').click()
+
+        self.element_exist('.complaint-row.disciplined').should.be.true
 
     def test_highlight_not_disciplined_row(self):
-        allegation = AllegationFactory()
         OfficerAllegationFactory(
-            allegation=allegation,
             final_outcome_class='not-disciplined'
             )
 
         self.visit_home()
-        self.find('.checkmark').click()
+        self.find('.officer.active .checkmark').click()
+
         self.until_ajax_complete()
-        len(self.find_all('.complaint-row.disciplined')).should.equal(0)
+
+        self.element_exist('.complaint-row.disciplined').should.be.false

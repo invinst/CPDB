@@ -251,6 +251,13 @@ class Suggestion(object):
         queryset = queryset.distinct()[:limit]
         return list(queryset)
 
+    def suggest_investigator_rank(self, q):
+        if q.startswith('ia'):
+            return [['IAD', 'iad']]
+        elif q.startswith('ip'):
+            return [['IPRA', 'ipra']]
+
+
     def _make_suggestion(self, q):
         ret = OrderedDict()
         ret['incident_date_only__year_month'] = \
@@ -296,6 +303,8 @@ class Suggestion(object):
         ret['session'] = self.suggest_sessions(q)
 
         ret['has_filters'] = self.suggest_has_filters(q)
+
+        ret['allegation__investigator__agency'] = self.suggest_investigator_rank(q)
 
         ret = OrderedDict((k, v) for k, v in ret.items() if v)
         return ret
