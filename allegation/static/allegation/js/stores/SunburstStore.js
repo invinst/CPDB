@@ -57,6 +57,33 @@ var SunburstStore = _.assign(Base(_state), {
     }
   },
 
+  getAncestorArcs: function (arc) {
+    // This also include arc
+    var ancestors = [arc];
+    var current = arc;
+
+    while (current.parent) {
+      ancestors.unshift(current.parent);
+      current = current.parent;
+    }
+
+    return ancestors;
+  },
+
+  getArcSize: function (arc) {
+    // TODO: don't calculate recursively
+    var size = 0;
+
+    if (arc.children) {
+      for (var i = 0; i < arc.children.length; i++) {
+        size += this.getArcSize(arc.children[i]);
+      }
+    } else {
+      size = arc.size || 0;
+    }
+    return size;
+  },
+
   addDataChangeListener: function (callback) {
     this.on(SUNBURST_DATA_CHANGE_EVENT, callback);
   },
@@ -108,15 +135,15 @@ AppDispatcher.register(function (action) {
       }
       break;
 
-    // case AppConstants.SUNBURST_HOVER_ARC:
-    //   _state.hovering = action.data;
-    //   SunburstStore.emitChange();
-    //   break;
+    case AppConstants.SUNBURST_HOVER_ARC:
+      _state['hovering'] = action.data;
+      SunburstStore.emitChange();
+      break;
 
-    // case AppConstants.SUNBURST_LEAVE_ARC:
-    //   _state.hovering = false;
-    //   SunburstStore.emitChange();
-    //   break;
+    case AppConstants.SUNBURST_LEAVE_ARC:
+      _state['hovering'] = false;
+      SunburstStore.emitChange();
+      break;
 
     case AppConstants.RECEIVED_SESSION_DATA:
       if (action.data && action.data.data.sunburst_arc) {

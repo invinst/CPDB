@@ -3,6 +3,8 @@ var React = require('react');
 
 var Base = require('components/Base.react');
 
+var Breadcrumb = require('components/DataToolPage/Sunburst/Breadcrumb.react');
+var Legend = require('components/DataToolPage/Sunburst/Legend.react');
 var SunburstActions = require('actions/SunburstActions');
 var FilterTagsActions = require('actions/FilterTagsActions');
 var SunburstStore = require("stores/SunburstStore");
@@ -11,14 +13,6 @@ var SessionAPI = require('utils/SessionAPI');
 
 
 var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
-
-  renderBreadCrumb: function () {
-    return '';
-  },
-
-  renderLegend: function () {
-    return '';
-  },
 
   componentDidMount: function () {
     SunburstStore.addChangeListener(this._onChange);
@@ -51,7 +45,9 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
   getChartData: function () {
     return {
       data: SunburstStore.getState().data,
-      clickHandler: this.clickHandler
+      clickHandler: this.clickHandler,
+      mouseOverHandler: this.mouseOverHandler,
+      mouseLeaveHandler: this.mouseLeaveHandler
     }
   },
 
@@ -60,14 +56,22 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
     FilterTagsActions.saveTags();
   },
 
+  mouseOverHandler: function (d) {
+    SunburstActions.hoverArc(d);
+  },
+
+  mouseLeaveHandler: function (d) {
+    SunburstActions.leaveArc();
+  },
+
   render: function () {
     return (
       <div className="clearfix">
         <div className="col-md-12">
-          {this.renderBreadCrumb()}
+          <Breadcrumb />
         </div>
         <div className="col-md-5 col-xs-5">
-          {this.renderLegend()}
+          <Legend />
         </div>
         <div id="sunburst-chart" className="col-md-7 col-xs-7">
         </div>
