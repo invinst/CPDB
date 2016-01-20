@@ -250,3 +250,16 @@ class OfficerAllegationQueryBuilder(object):
             return Q(allegation__incident_date__gte=FOIA_START_DATE)
 
         return Q()
+
+    def _q_investigator_agency(self, query_params):
+        ranks = query_params.getlist('allegation__investigator__agency', [])
+        if len(ranks) == 0:
+            return Q()
+
+        ranks = [x.lower() for x in ranks]
+
+        if 'ipra' in ranks:
+            return Q(allegation__investigator__agency__icontains='ipra')
+        elif 'iad' in ranks:
+            return Q(allegation__investigator__agency__icontains='iad')
+        return Q()
