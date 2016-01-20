@@ -42,13 +42,3 @@ class SendDocumentNotificationTestCase(SimpleTestCase):
 
                 #it is being called, I've checked with pdb, but not being set
                 send_document_notification_by_crid_and_link.called.should.be.true
-
-    def test_update_document_clear_data_on_link_not_found(self):
-        with mock.patch(self.document_cloud_path) as document_cloud:
-            instance = document_cloud.return_value
-            instance.documents.search.return_value = None
-
-            management.call_command('update_documents')
-
-            allegation = Allegation.objects.get(id=self.allegation.id)
-            allegation.document_title.should.be.empty
