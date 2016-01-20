@@ -45,8 +45,7 @@ var Breadcrumb = React.createClass(_.assign(Base(SunburstStore), {
   },
 
   clickHandler: function (arc) {
-    SunburstActions.selectArc(arc, SunburstStore.getSelected());
-    FilterTagsActions.saveTags();
+    this.props.clickHandler(arc);
   }
 }));
 
