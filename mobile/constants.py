@@ -1,0 +1,1 @@
+DEFAULT_REDIRECT_URL = '/mobile'

@@ -1,6 +1,6 @@
 from django.core.urlresolvers import reverse
 
-from allegation.factories import OfficerFactory, AllegationFactory, OfficerAllegationFactory
+from allegation.factories import OfficerFactory, OfficerAllegationFactory
 from common.tests.core import BaseLivePhoneTestCase
 from share.factories import SessionFactory
 
@@ -61,4 +61,3 @@ class MobileDataToolTest(BaseLivePhoneTestCase):
         session = SessionFactory(query=query)
         self.enter_data_tool_url(hash_id=session.hash_id)
         self.until(lambda: self.should_see_text(officer_allegation.allegation.crid))
-

@@ -19,8 +19,8 @@ class MobileDataToolViewTest(SimpleTestCase):
     def test_redirect_to_officer_page(self):
         officer = OfficerFactory()
         expected_url_part = '/officer/{officer_name}/{officer_id}'.format(
-                officer_name=slugify(officer.display_name),
-                officer_id=officer.id
+            officer_name=slugify(officer.display_name),
+            officer_id=officer.id
         )
 
         query = {
