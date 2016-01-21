@@ -17,6 +17,12 @@ var SiteTitle = require('components/Shared/SiteTitle.react');
 
 
 var Nav = React.createClass(_.assign(Base(AppStore), {
+  getDefaultProps: function () {
+    return {
+      page: 'data'
+    }
+  },
+
   goToPage: function (page) {
     NavActions.goToPage(page);
   },
@@ -39,7 +45,7 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
 
   getNavClass: function (tab) {
     return classnames('nav-link', {
-      'active': tab == this.state.page,
+      'active': tab == this.props.page,
     });
   },
 
@@ -79,23 +85,36 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
     SessionAPI.getSessionInfo('');
   },
 
+  renderTitleBox: function () {
+    if (this.props.displayTitleBox) {
+      return (
+        <div className='site-title pull-left'>
+          <SiteTitle changable={true} />
+        </div>
+      );
+    } else {
+      return '';
+    }
+  },
+
+  renderSubNav: function () {
+    if (this.props.displaySubNav) {
+      return (
+        <div>
+          <nav className='sub-nav story-nav'>
+            <a href="#" className="pull-right" data-target="#next-steps">Next Steps</a>
+            <a href="#" className="pull-right" data-target="#invisible-institute">The Invisible Institute</a>
+            <a href="#" className="pull-right active" data-target="#stateway">Stateway Gardens Litigation</a>
+          </nav>
+        </div>
+      );
+    } else {
+      return '';
+    }
+  },
+
   render: function () {
     var mobileExpanded = isMobile.any && this.state.searchExpanded;
-
-    var subNavClass = classnames('sub-nav', {
-      'hidden': !AppStore.isStoryPage()
-    });
-
-    var navClass = classnames('landing-nav', {
-      'fixed-nav': !AppStore.isFindingPage()
-    });
-
-    var navbarClass = classnames(
-      'navbar-collapse',
-      {
-        'hidden': mobileExpanded
-      }
-    );
 
     var dataToolUrl = AppStore.getDataToolUrl();
     var siteTitleClass = classnames('site-title pull-left', {
@@ -108,9 +127,7 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
           <a href="/" onClick={this.startNewSession} id="logo_link">
             <img className="pull-left cpdp-logo" src="/static/img/cpdp-logo.svg" />
           </a>
-          <div className={siteTitleClass}>
-            <SiteTitle changable={true} />
-          </div>
+          { this.renderTitleBox() }
           <ul className="pull-right" role="tablist">
             <span className="moving-arrow" />
             <li className={this.getNavClass("data")}><Link onClick={this.goToDataTool} to={dataToolUrl} aria-controls="data">Data</Link></li>
@@ -119,13 +136,7 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
             <li className={this.getNavClass("findings")}><Link onClick={this.goToFindingPage} to="/findings" aria-controls="findings">Findings</Link></li>
           </ul>
         </div>
-        <div className={subNavClass}>
-          <nav className='story-nav'>
-            <a href="#" className="pull-right" data-target="#next-steps">Next Steps</a>
-            <a href="#" className="pull-right" data-target="#invisible-institute">The Invisible Institute</a>
-            <a href="#" className="pull-right active" data-target="#stateway">Stateway Gardens Litigation</a>
-          </nav>
-        </div>
+        { this.renderSubNav() }
       </nav>
     );
   }

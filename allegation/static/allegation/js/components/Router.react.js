@@ -12,52 +12,11 @@ var IndexPage = require('components/IndexPage.react');
 var DataToolPage = require('components/DataToolPage.react');
 var OfficerPage = require('components/OfficerPage.react');
 var InvestigatorPage = require('components/InvestigatorPage.react');
-var StatePropagateCSSTransitionGroup = require(
-  'components/Shared/StatePropagateCSSTransitionGroup.react');
 
-
-var RootPage = React.createClass({
-
-  render: function () {
-    return (
-      <div className='page-wrapper'>
-        <StatePropagateCSSTransitionGroup transitionName="page" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
-          <PageAnimator className='page' key={this.props.location.pathname}>
-            {this.props.children}
-          </PageAnimator>
-        </StatePropagateCSSTransitionGroup>
-      </div>
-    )
-  }
-});
-
-var PageAnimator = React.createClass({
-  componentWillReceiveProps: function (nextProps) {
-    if (nextProps.transitioning && !this.props.transitioning) {
-      this.animatePageScrollToTop();
-    }
-  },
-
-  animatePageScrollToTop: function () {
-    $('html,body').animate({
-      scrollTop: 0
-    }, 300);
-  },
-
-  renderChildren: function () {
-    var animator = this;
-
-    return React.cloneElement(this.props.children, {
-      transitioning: this.props.transitioning,
-    });
-  },
-
-  render: function () {
-    return <div className={this.props.className}>
-      {this.renderChildren()}
-    </div>;
-  },
-})
+var DataPage = require('components/IndexTabContent/DataPage.react');
+var FindingPage = require('components/IndexTabContent/FindingPage.react');
+var MethodPage = require('components/IndexTabContent/MethodPage.react');
+var StoryPage = require('components/IndexTabContent/StoryPage.react');
 
 var RootRouter = React.createClass({
   render: function() {
@@ -67,19 +26,19 @@ var RootRouter = React.createClass({
 
     return (
       <Router history={history}>
-        <Route path="/" component={RootPage}>
-          <IndexRoute component={IndexPage} />
-          <Route path="/findings" component={IndexPage}>
+        <Route path="/" component={IndexPage}>
+          <IndexRoute component={DataPage} />
+          <Route path="/findings" component={FindingPage}>
           </Route>
-          <Route path="/method" component={IndexPage}>
+          <Route path="/method" component={MethodPage}>
           </Route>
-          <Route path="/story" component={IndexPage}>
+          <Route path="/story" component={StoryPage}>
           </Route>
-          <Route path="/data" component={IndexPage}>
+          <Route path="/data" component={DataPage}>
           </Route>
-          <Route path="/data/:session/" component={IndexPage}>
+          <Route path="/data/:session/" component={DataPage}>
           </Route>
-          <Route path="/data/:session/:title" component={IndexPage}>
+          <Route path="/data/:session/:title" component={DataPage}>
           </Route>
           <Route path="/officer/:slug/:id" component={OfficerPage}>
           </Route>

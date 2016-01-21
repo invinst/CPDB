@@ -31,13 +31,13 @@ var NavActions = {
 
     first = false;
 
-    if (page == 'data') {
-      setTimeout(function () {  // wait scroll animation done
-        AppDispatcher.dispatch({
-          actionType: AppConstants.INIT_DATA_TOOL
-        });
-      }, 1200);
-    }
+    // if (page == 'data') {
+    //   setTimeout(function () {  // wait scroll animation done
+    //     AppDispatcher.dispatch({
+    //       actionType: AppConstants.INIT_DATA_TOOL
+    //     });
+    //   }, 1200);
+    // }
   }
 };
 
