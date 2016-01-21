@@ -92,6 +92,33 @@ var FilterTagStore = _.assign(Base(_state), {
     }
   },
 
+  isAllTagsPinned: function () {
+    var allTagsPinned = true;
+    _.forOwn(_state['filters'], function (list, category) {
+      var pinned_tags = _.reduce(list, function (sum, obj) {
+        return sum + (obj.pinned ? 1 : 0);
+      }, 0);
+      if (list.length != pinned_tags) {
+        allTagsPinned = false;
+        return false;
+      }
+    });
+    return allTagsPinned;
+  },
+
+  toggleAllTags: function () {
+    var allTagsPinned = this.isAllTagsPinned();
+    var self = this;
+
+    _.forOwn(_state['filters'], function (list, category) {
+      _.each(list, function (obj) {
+        if (allTagsPinned || !self.isPinned(category, obj.value)) {
+          self.pinFilter(category, obj.value);
+        }
+      });
+    });
+  },
+
   getAll: function (category) {
     if (category) {
       return _.get(_state['filters'], category, []);
@@ -194,6 +221,11 @@ AppDispatcher.register(function (action) {
 
     case AppConstants.PIN_TAG:
       FilterTagStore.pinFilter(action.category, action.value);
+      FilterTagStore.emitChange();
+      break;
+
+    case AppConstants.TOGGLE_ALL_TAGS:
+      FilterTagStore.toggleAllTags();
       FilterTagStore.emitChange();
       break;
 

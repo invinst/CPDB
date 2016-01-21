@@ -121,5 +121,39 @@ class AllegationFilterTestCase(BaseLiveTestCase):
             lambda: self.element_by_classname_and_text(
                 'filter-name', 'has:document').should.be.ok)
 
+    def test_sticky_tag_shortcut(self):
+        # select 2 tags
+        self.fill_in('#autocomplete', 'has:document')
+        self.find('.autocomplete-has').click()
+        self.fill_in('#autocomplete', 'rep')
+        self.find('.autocomplete-repeater').click()
+
+        self.until_ajax_complete()
+
+        self.number_of_tags().should.equal(2)
+
+        self.find('body').send_keys('p')
+
+        self.number_of_pinned_tags().should.equal(2)
+
+        self.find('.pin').click()
+
+        self.number_of_pinned_tags().should.equal(1)
+
+        self.find('body').send_keys('p')
+
+        self.number_of_pinned_tags().should.equal(2)
+
+        self.find('body').send_keys('p')
+
+        self.number_of_pinned_tags().should.equal(0)
+        self.number_of_tags().should.equal(2)
+
+    def number_of_tags(self):
+        return len(self.find_all('span.tag'))
+
+    def number_of_pinned_tags(self):
+        return len(self.find_all('span.tag.pinned'))
+
     def number_of_complaints(self):
         return len(self.find_all('.complaint-row'))
