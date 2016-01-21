@@ -1,0 +1,3 @@
+{{ object.officer_first }}
+{{ object.officer_last }}
+{{ object.star }}
