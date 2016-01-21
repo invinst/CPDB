@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'jsonify',
     'django_nose',
     'django_user_agents',
+    'haystack',
 
     'common',
     'allegation',
@@ -229,3 +230,48 @@ SITE_INFO = {
     'domain': 'cpdb.co',
     'mobile_host': 'm.cpdb.co',
 }
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'search.search_backends.CustomElasticSearchEngine',
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': 'suggestion',
+    },
+}
+
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+ELASTICSEARCH_SETTINGS = {
+    'settings': {
+        'number_of_shards': 1,
+        'analysis': {
+            'analyzer': {
+                'ngram_analyzer': {
+                    'type': 'custom',
+                    'tokenizer': 'whitespace',
+                    'filter': ['haystack_ngram', 'lowercase']
+                },
+                'edgengram_analyzer': {
+                    'type': 'custom',
+                    'tokenizer': 'whitespace',
+                    'filter': ['haystack_edgengram', 'lowercase']
+                }
+            },
+            'filter': {
+                'haystack_ngram': {
+                    'type': 'nGram',
+                    'min_gram': 2,
+                    'max_gram': 15
+                },
+                'haystack_edgengram': {
+                    'type': 'edge_ngram',
+                    'min_gram': 2,
+                    'max_gram': 15
+                }
+            }
+        }
+    }
+}
+
+if 'test' in sys.argv:
+    from cpdb.settings.test import *

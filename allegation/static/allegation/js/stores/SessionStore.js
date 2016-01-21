@@ -3,7 +3,7 @@ var _ = require('lodash');
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
 var Base = require('stores/Base');
-var FilterStore = require('../stores/FilterStore');
+var FilterTagStore = require('../stores/FilterTagStore');
 var MapStore = require('../stores/MapStore');
 var OfficerListStore = require('../stores/OfficerListStore');
 var OfficerPresenter = require('presenters/OfficerPresenter');
@@ -15,7 +15,6 @@ var _state = {
     'title': '',
     'hash': '',
     'query': {},
-    'readable_query': {},
     'active_tab': ''
   },
   'siteTitle': AppConstants.DEFAULT_SITE_TITLE
@@ -24,7 +23,7 @@ var _state = {
 var SESSION_CREATED_EVENT = 'SESSION_CREATED_EVENT';
 var SessionStore = _.assign(Base(_state), {
   updateSession: function(data) {
-    _state['data'] =_.assign(_state['data'], data);
+    _state['data'] = _.assign(_state['data'], data);
     this.emitChange();
   },
 
@@ -37,45 +36,42 @@ var SessionStore = _.assign(Base(_state), {
   },
 
   removeTagInCategory: function (category) {
-    if (!_state.data.readable_query[category]) {
-      return;
-    }
-    var filters = _state.data.readable_query[category];
-    var newValue = [];
-    for (var i in filters) {
-      if (FilterStore.isPinned(category, filters[i].value)) {
-        newValue.push(filters[i]);
-      }
-    }
-    _state.data.readable_query[category] = newValue;
+    // if (!_state.data.readable_query[category]) {
+    //   return;
+    // }
+    // var filters = _state.data.readable_query[category];
+    // var newValue = [];
+    // for (var i in filters) {
+    //   if (FilterTagStore.isPinned(category, filters[i].value)) {
+    //     newValue.push(filters[i]);
+    //   }
+    // }
+    // _state.data.readable_query[category] = newValue;
   },
 
-  addTag: function (category, filter) {
-    this.removeTagInCategory(category);
+  addTag: function (category, value, filter) {
+    // this.removeTagInCategory(category);
 
-    var filterObject = {
-      'text': filter.label,
-      'value': filter.value
-    }
+    // var filterObject = this.formatFilter(filter);
 
-    var tags = _state.data.readable_query[category]
-    if (tags) {
-      tags.push(filterObject);
-    } else {
-      _state.data.readable_query[category] = [filterObject];
-    }
+    // var tags = _state.data.readable_query[category];
+    // if (tags) {
+    //   tags.push(filterObject);
+    // } else {
+    //   _state.data.readable_query[category] = [filterObject];
+    // }
   },
 
   removeTag: function (category, filter) {
-    var tags = _state.data.readable_query[category]
-    if (tags) {
-      for (i in tags) {
-        if (tags[i].value == filter.value) {
-          tags.splice(i, 1);
-          break;
-        }
-      }
-    }
+    // var tags = _state.data.readable_query[category]
+    // if (tags) {
+    //   for (i in tags) {
+    //     if (tags[i].value == filter.value) {
+    //       tags.splice(i, 1);
+    //       break;
+    //     }
+    //   }
+    // }
   },
 
   isNoQuery: function () {
@@ -126,7 +122,7 @@ SessionStore.dispatcherToken = AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.ADD_TAG:
-      SessionStore.addTag(action.category, action.filter);
+      SessionStore.addTag(action.category, action.value, action.filter);
       SessionStore.emitChange();
       break;
 

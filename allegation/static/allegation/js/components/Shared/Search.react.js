@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var classnames = require('classnames');
 var navigate = require('react-mini-router').navigate;
 var React = require('react');
@@ -52,10 +53,10 @@ var Search = React.createClass({
   select: function (event, ui) {
     event.preventDefault();
 
-    if (ui.item.category == 'session') {
-      SessionAPI.getSessionInfo(ui.item.value)
+    if (ui.item.category == 'Session') {
+      SessionAPI.getSessionInfo(ui.item.value);
     } else {
-      FilterTagsActions.addTag(ui.item.category, ui.item);
+      FilterTagsActions.addTag(ui.item.category, ui.item.value, ui.item.filter, ui.item.label);
       $("#autocomplete").val('');
     }
   },
