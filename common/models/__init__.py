@@ -4,7 +4,7 @@ from django.contrib.gis.db import models
 from django.core.urlresolvers import reverse
 from django.db.models.query_utils import Q
 
-from allegation.models.allegation_manager import AllegationManager
+from allegation.models.managers import AllegationManager, OfficerAllegationManager
 from common.models.suggestible import (
     MobileSuggestibleOfficer, MobileSuggestibleAllegation)
 
@@ -531,7 +531,8 @@ class OfficerAllegation(models.Model):
         max_length=20, null=True, blank=True)
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
-    objects = models.GeoManager()
+
+    objects = OfficerAllegationManager()
 
 
 class Investigator(models.Model):
