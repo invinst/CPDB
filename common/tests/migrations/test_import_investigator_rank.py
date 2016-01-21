@@ -7,8 +7,8 @@ from common.models import Investigator
 
 class TestImportInvestigatorRank(TransactionTestCase):
 
-    start_migration = '0069_investigator_agency'
-    end_migration = '0070_auto_20160119_0516'
+    start_migration = '0070_investigator_agency'
+    end_migration = '0071_auto_20160119_0516'
     django_application = 'common'
     model = 'Investigator'
 

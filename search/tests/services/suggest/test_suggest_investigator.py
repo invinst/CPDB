@@ -31,16 +31,16 @@ class SuggestInvestigatorTestCase(SuggestBaseTestCase):
         suggest_entries[1]['label'].should.be.equal(expect_investigator2)
 
     def test_suggest_investigator_agency_all(self):
-        suggest_entries = SuggestInvestigatorAgency.query('i')['Investigation Agency]']
+        suggest_entries = SuggestInvestigatorAgency.query('i')['Investigation Agency']
 
         len(suggest_entries).should.be.equal(2)
 
     def test_suggest_investigator_agency_ipra(self):
-        suggest_entries = SuggestInvestigatorAgency.query('ip')['Investigation Agency]']
+        suggest_entries = SuggestInvestigatorAgency.query('ip')['Investigation Agency']
 
         len(suggest_entries).should.be.equal(1)
 
     def test_suggest_investigator_agency_iad(self):
-        suggest_entries = SuggestInvestigatorAgency.query('ia')['Investigation Agency]']
+        suggest_entries = SuggestInvestigatorAgency.query('ia')['Investigation Agency']
 
         len(suggest_entries).should.be.equal(1)
