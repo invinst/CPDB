@@ -105,6 +105,14 @@ var SunburstChartD3 = {
         }
       });
 
+      if (path && path.size == 0) {
+        svg.selectAll('path').each(function (d) {
+          if (d.name == 'Allegations') {
+            path = d;
+          }
+        });
+      }
+
       return path
     }
 
