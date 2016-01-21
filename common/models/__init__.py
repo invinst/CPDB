@@ -4,6 +4,7 @@ from django.contrib.gis.db import models
 from django.core.urlresolvers import reverse
 from django.db.models.query_utils import Q
 
+from common.models.time_stamp import TimeStampedModel
 from allegation.models.managers import AllegationManager, OfficerAllegationManager
 from common.models.suggestible import (
     MobileSuggestibleOfficer, MobileSuggestibleAllegation)
@@ -33,7 +34,7 @@ ACTIVE_CHOICES = [
 ]
 
 
-class Officer(MobileSuggestibleOfficer, models.Model):
+class Officer(MobileSuggestibleOfficer, TimeStampedModel):
     officer_first = models.CharField(
         max_length=255, null=True, db_index=True, blank=True)
     officer_last = models.CharField(
@@ -105,7 +106,7 @@ CITIZEN_DEPTS = [
 ]
 
 
-class AllegationCategory(models.Model):
+class AllegationCategory(TimeStampedModel):
     id = models.AutoField(primary_key=True)
     cat_id = models.CharField(max_length=255)
     category = models.CharField(max_length=255, null=True, db_index=True)
@@ -126,7 +127,7 @@ class AllegationCategory(models.Model):
         }
 
 
-class Area(models.Model):
+class Area(TimeStampedModel):
     name = models.CharField(max_length=100)
     type = models.CharField(max_length=30, choices=[['beat', 'Beat'], ['neighborhood', 'Neighborhood'],
                                                     ['school-grounds', 'School Grounds'], ['ward', 'Ward'],
@@ -475,7 +476,7 @@ for location in LOCATION_CHOICES:
     LCOATIONS_DICT[location[0]] = location[1]
 
 
-class Allegation(MobileSuggestibleAllegation, models.Model):
+class Allegation(MobileSuggestibleAllegation, TimeStampedModel):
     record_id = models.IntegerField(null=True, blank=True)
     crid = models.CharField(max_length=30, null=True, db_index=True)
     summary = models.TextField(null=True, blank=True)
@@ -535,7 +536,7 @@ class OfficerAllegation(models.Model):
     objects = OfficerAllegationManager()
 
 
-class Investigator(models.Model):
+class Investigator(TimeStampedModel):
     raw_name = models.CharField(max_length=160)
     name = models.CharField(max_length=160)
     complaint_count = models.IntegerField(default=0)

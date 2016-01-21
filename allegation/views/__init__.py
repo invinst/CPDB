@@ -87,7 +87,7 @@ class OfficerAllegationGISApiView(OfficerAllegationAPIView):
     def get(self, request):
         seen_crids = {}
         officer_allegations = self.get_officer_allegations(
-            ignore_filters=['areas__id'])
+            ignore_filters=['allegation__areas__id'])
         allegation_dict = {
             "type": "FeatureCollection",
             "features": [],

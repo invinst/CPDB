@@ -7,7 +7,7 @@ var OutcomeAnalysisAPI = require('utils/OutcomeAnalysisAPI');
 var SessionAPI = require('utils/SessionAPI');
 var RaceGenderAPI = require('utils/RaceGenderAPI');
 var SunburstAPI = require('utils/SunburstAPI');
-var FilterStore = require('stores/FilterStore');
+var FilterTagStore = require('stores/FilterTagStore');
 var EmbedStore = require('stores/EmbedStore');
 
 
@@ -18,55 +18,68 @@ function updateSiteData(dontUpdateSession) {
   SunburstAPI.getData();
   if (!dontUpdateSession) {
     SessionAPI.updateSessionInfo({
-      'query': _.assign(FilterStore.getSession(), {
+      'query': _.assign(FilterTagStore.getSession(), {
         'active_officers': []
       })
     });
   }
-};
+}
+
 
 var FilterTagsActions = {
-  addTag: function (category, filter) {
+  addTag: function (category, value, filter, text) {
     if (EmbedStore.isEmbedMode()) {
-      return
+      return;
     }
     AppDispatcher.dispatch({
       actionType: AppConstants.ADD_TAG,
       category: category,
-      filter: filter
+      value: value,
+      filter: filter,
+      text: text
     });
     updateSiteData();
   },
 
-  toggleTags: function (category, filters) {
+  toggleTags: function (category, tags) {
     if (EmbedStore.isEmbedMode()) {
-      return
+      return;
     }
     AppDispatcher.dispatch({
       actionType: AppConstants.TOGGLE_TAGS,
       category: category,
-      filters: filters
+      tags: tags
     });
 
     updateSiteData();
   },
 
-  removeTag: function (category, filter, dontUpdateSession) {
+  removeTag: function (category, value, dontUpdateSession) {
     if (EmbedStore.isEmbedMode()) {
-      return
+      return;
     }
     AppDispatcher.dispatch({
       actionType: AppConstants.REMOVE_TAG,
       category: category,
-      filter: filter
+      value: value
     });
 
     updateSiteData(dontUpdateSession);
   },
 
+  removeCategory: function (category) {
+    if (EmbedStore.isEmbedMode()) {
+      return;
+    }
+    AppDispatcher.dispatch({
+      actionType: AppConstants.REMOVE_CATEGORY,
+      category: category
+    });
+  },
+
   removedTag: function (category, filter) {
     if (EmbedStore.isEmbedMode()) {
-      return
+      return;
     }
     AppDispatcher.dispatch({
       actionType: AppConstants.REMOVED_TAG,
@@ -74,19 +87,25 @@ var FilterTagsActions = {
       filter: filter
     });
 
-    SessionAPI.updateSessionInfo({'query': FilterStore.getSession()});
+    SessionAPI.updateSessionInfo({'query': FilterTagStore.getSession()});
   },
 
-  pinTag: function (category, filter) {
+  pinTag: function (category, value) {
     if (EmbedStore.isEmbedMode()) {
-      return
+      return;
     }
+
     AppDispatcher.dispatch({
       actionType: AppConstants.PIN_TAG,
       category: category,
-      filter: filter
+      value: value
     });
-    SessionAPI.updateSessionInfo({'query': FilterStore.getSession()});
+    SessionAPI.updateSessionInfo({'query': FilterTagStore.getSession()});
+  },
+
+  // Temporary function to hold sunburst logic
+  saveTags: function () {
+    updateSiteData();
   }
 };
 
