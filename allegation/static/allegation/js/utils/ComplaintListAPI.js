@@ -38,6 +38,35 @@ var ComplaintListAPI = {
     }
   },
 
+  getInvestigations: function (investigatorId, activeOutcomeFilter) {
+    var queryString = '?' + AllegationFetcherQueryBuilder.buildQueryInvestigatorPage(
+      investigatorId,
+      activeOutcomeFilter
+      )
+
+    if (ajax) {
+      ajax.abort();
+    }
+
+    ajax = jQuery.getJSON(AppConstants.ALLEGATIONS_API_ENDPOINT + queryString, function (data) {
+      ComplaintListServerActions.receivedData(data, true);
+    });
+  },
+
+  getOfficerComplaints: function (officerId, activeOutcomeFilter) {
+    var queryString = '?' + AllegationFetcherQueryBuilder.buildQueryOfficerPage(
+      officerId,
+      activeOutcomeFilter);
+
+    if (ajax) {
+      ajax.abort();
+    }
+
+    ajax = jQuery.getJSON(AppConstants.ALLEGATIONS_API_ENDPOINT + queryString, function (data) {
+      ComplaintListServerActions.receivedData(data, true);
+    });
+  },
+
   getAllForOfficer: function(officer) {
     var params = {
       officer: officer,
@@ -49,7 +78,7 @@ var ComplaintListAPI = {
     }
 
     ajax = jQuery.getJSON(AppConstants.ALLEGATIONS_API_ENDPOINT, params, function (data) {
-      ComplaintListServerActions.receivedOfficerComplaints(data);
+      ComplaintListServerActions.receivedData(data);
     });
   },
 
@@ -64,7 +93,7 @@ var ComplaintListAPI = {
     }
 
     ajax = jQuery.getJSON(AppConstants.ALLEGATIONS_API_ENDPOINT, params, function (data) {
-      ComplaintListServerActions.receivedOfficerComplaints(data);
+      ComplaintListServerActions.receivedData(data);
     });
   },
 

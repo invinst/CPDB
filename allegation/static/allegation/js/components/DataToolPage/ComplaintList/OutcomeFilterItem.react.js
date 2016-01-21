@@ -1,13 +1,8 @@
 var React = require('react');
-var OutcomeFilterActions = require('actions/ComplaintList/OutcomeFilterActions');
 var numeral = require('numeral');
 var AppConstants = require('constants/AppConstants');
 
 var OutcomeFilterItem = React.createClass({
-  setOutcomeFilter: function(filter) {
-    OutcomeFilterActions.setActiveFilter(filter);
-  },
-
   render: function() {
     var type = this.props.type || 'all';
     var name = this.props.name || 'All';
@@ -24,7 +19,7 @@ var OutcomeFilterItem = React.createClass({
     var activeClass = this.props.active ? 'active' : '';
 
     return (
-      <span className={activeClass} key={type} onClick={this.setOutcomeFilter.bind(this, type)}>
+      <span className={activeClass} key={type} onClick={this.props.clickFunction}>
         { filterIcon }
       </span>
     )
