@@ -187,6 +187,11 @@ AppDispatcher.register(function (action) {
       FilterTagStore.emitChange();
       break;
 
+    case AppConstants.REMOVE_CATEGORY:
+      FilterTagStore.removeFiltersInCategory(action.category);
+      FilterTagStore.emitChange();
+      break;
+
     case AppConstants.PIN_TAG:
       FilterTagStore.pinFilter(action.category, action.value);
       FilterTagStore.emitChange();
