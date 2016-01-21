@@ -1,19 +1,10 @@
 var React = require('react');
 
 var AppConstants = require('constants/AppConstants');
-var OutcomeFilterActions = require('actions/ComplaintList/OutcomeFilterActions');
 var OutcomeFilterItem = require('components/DataToolPage/ComplaintList/OutcomeFilterItem.react');
 
 
 var OutcomeFilter = React.createClass({
-  getDefaultProps: function () {
-    return {
-      setActiveFilter: function (activeFilter) {
-        OutcomeFilterActions.setActiveFilter(activeFilter);
-      }
-    }
-  },
-
   renderOutcomeFilterItems: function() {
     var activeFilter = this.props.activeFilter;
     var analytics = this.props.analytics;
@@ -30,7 +21,7 @@ var OutcomeFilter = React.createClass({
             active={type==activeFilter}
             name={name}
             quantity={quantity}
-            clickFunction={this.props.setActiveFilter.bind(this, type)}/>
+            callAPI={this.props.callAPI}/>
           )
       }
     }

@@ -94,7 +94,11 @@ var ComplaintSection = React.createClass({
             <h3 className="margin-top-0">Complaints <Counter to={analytics.All} /></h3>
           </div>
           <div className='col-md-9 text-right'>
-            <OutcomeFilter loading={loading} activeFilter={activeFilter} analytics={analytics}/>
+            <OutcomeFilter
+              loading={loading}
+              activeFilter={activeFilter}
+              analytics={analytics}
+              callAPI={true}/>
           </div>
         </div>
         {complaintList}

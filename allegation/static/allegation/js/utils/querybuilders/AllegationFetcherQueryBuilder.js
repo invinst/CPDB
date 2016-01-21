@@ -26,22 +26,6 @@ var AllegationFetcherQueryBuilder = {
     ]).join('&');
   },
 
-  buildQueryInvestigatorPage: function (investigatorId, activeOutcomeFilter) {
-    investigatorQuery = 'allegation__investigator=' + investigatorId;
-    return _.compact([
-      investigatorQuery,
-      AllegationOutcomeFilterQueryBuilder.buildQuery(activeOutcomeFilter)
-    ]).join('&')
-  },
-
-  buildQueryOfficerPage: function (officerId, activeOutcomeFilter) {
-    var officerQuery = 'officer=' + officerId;
-    return _.compact([
-      officerQuery,
-      AllegationOutcomeFilterQueryBuilder.buildQuery(activeOutcomeFilter)
-    ]).join('&')
-  },
-
   buildAnalysisOutcomeQuery: function () {
     return _.compact([
       AllegationFilterTagsQueryBuilder.buildQuery(),
