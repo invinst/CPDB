@@ -11,7 +11,7 @@ var FindingPage = React.createClass({
   mixins: [IndexTabContentMixin],
 
   componentDidMount: function () {
-    // this.scrollTop(this.onScrollTopFindPage, this.getScrollTime());
+    this.scrollTop(this.onScrollTopFindPage, this.getScrollTime());
   },
 
   scrollTop: function (callback, elapseTime) {
@@ -29,8 +29,6 @@ var FindingPage = React.createClass({
   },
 
   onScrollTopFindPage: function () {
-    var $landingPageContainer = $("#landing-page");
-
     this.scrollToggleShow();
   },
 
