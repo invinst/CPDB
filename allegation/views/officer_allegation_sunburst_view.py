@@ -9,7 +9,7 @@ from document.response import JsonResponse
 class OfficerAllegationSunburstView(OfficerAllegationAPIView):
     def get(self, request):
         officer_allegations = self.get_officer_allegations(
-            ignore_filters=['final_outcome', 'final_finding'])
+            ignore_filters=['final_outcome', 'final_finding', 'final_finding_text'])
         output = self.fetch_output(self.levels, officer_allegations)
 
         return JsonResponse({
@@ -112,7 +112,7 @@ class OfficerAllegationSunburstView(OfficerAllegationAPIView):
                 'label': 'Unknown',
                 'category': 'Final Finding',
                 'filter': 'final_finding',
-                'value': None,
+                'value': 'ZZ',
                 'removeParent': True
             },
         }]
@@ -269,7 +269,7 @@ class OfficerAllegationSunburstView(OfficerAllegationAPIView):
                 'condition': Q(final_outcome='800'),
                 'name': 'Not served (resigned)',
                 'tagValue': {
-                    'label': 'ot served (resigned)',
+                    'label': 'Not served (resigned)',
                     'category': 'Final Outcome',
                     'filter': 'final_outcome',
                     'value': '800',

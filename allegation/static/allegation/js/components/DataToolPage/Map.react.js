@@ -96,7 +96,8 @@ var Map = React.createClass({
     var width = $(node).width() + 2;
     var height = $(node).height() + 2;
     var filters = FilterTagStore.getAll();
-    var src = "/embed/?page=map&query=" + encodeURIComponent(AllegationFilterTagsQueryBuilder.buildQuery(filters));
+    var src = "/embed/?page=map&query="
+      + encodeURIComponent(AllegationFilterTagsQueryBuilder.buildQuery());
     var state = MapStore.getState();
     state = {
       center: state.center,
@@ -106,6 +107,7 @@ var Map = React.createClass({
     return '<iframe width="' + width + 'px" height="' + height + 'px" frameborder="0" src="' + this.absoluteUri(src)
        + '"></iframe>';
   },
+
   getEmbedNode: function () {
     this.embedNode = this.embedNode || $('<div class="embed-code"></div>');
     this.embedNode.append('<i class="fa fa-code"></i>');

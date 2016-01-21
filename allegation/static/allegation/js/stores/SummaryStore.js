@@ -107,6 +107,7 @@ AppDispatcher.register(function (action) {
     case AppConstants.ADD_TAG:
     case AppConstants.REMOVE_TAG:
     case AppConstants.RECEIVED_SESSION_DATA:
+    case AppConstants.SUNBURST_SELECT_ARC:
       SummaryStore.update();
       break;
 

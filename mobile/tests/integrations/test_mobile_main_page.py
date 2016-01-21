@@ -11,7 +11,7 @@ class MobileMainPageTest(BaseLivePhoneTestCase):
         self.fill_in('.input-text', query)
 
     def should_see_text_in_result(self, text):
-        self.find('.search-result').text.should.contain(text)
+        self.find('.search-results').text.should.contain(text)
 
     def wait_for_success_result(self):
         self.until(lambda: self.find('.suggestion-list'))

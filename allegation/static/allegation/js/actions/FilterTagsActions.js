@@ -23,7 +23,8 @@ function updateSiteData(dontUpdateSession) {
       })
     });
   }
-};
+}
+
 
 var FilterTagsActions = {
   addTag: function (category, value, filter, text) {
@@ -42,7 +43,7 @@ var FilterTagsActions = {
 
   toggleTags: function (category, tags) {
     if (EmbedStore.isEmbedMode()) {
-      return
+      return;
     }
     AppDispatcher.dispatch({
       actionType: AppConstants.TOGGLE_TAGS,
@@ -55,7 +56,7 @@ var FilterTagsActions = {
 
   removeTag: function (category, value, dontUpdateSession) {
     if (EmbedStore.isEmbedMode()) {
-      return
+      return;
     }
     AppDispatcher.dispatch({
       actionType: AppConstants.REMOVE_TAG,
@@ -66,9 +67,19 @@ var FilterTagsActions = {
     updateSiteData(dontUpdateSession);
   },
 
+  removeCategory: function (category) {
+    if (EmbedStore.isEmbedMode()) {
+      return;
+    }
+    AppDispatcher.dispatch({
+      actionType: AppConstants.REMOVE_CATEGORY,
+      category: category
+    });
+  },
+
   removedTag: function (category, filter) {
     if (EmbedStore.isEmbedMode()) {
-      return
+      return;
     }
     AppDispatcher.dispatch({
       actionType: AppConstants.REMOVED_TAG,
@@ -90,6 +101,11 @@ var FilterTagsActions = {
       value: value
     });
     SessionAPI.updateSessionInfo({'query': FilterTagStore.getSession()});
+  },
+
+  // Temporary function to hold sunburst logic
+  saveTags: function () {
+    updateSiteData();
   }
 };
 

@@ -13,11 +13,17 @@ var DISABLE_EVENT = 'DISABLE_EVENT';
 
 var _state = {
   initialized: false,
-  filters: {},
-}
+  filters: {}
+};
 
 function isNotPinned(item) {
   return !item.pinned;
+}
+
+function matchValue(value) {
+  return function (item) {
+    return item.value == value;
+  };
 }
 
 
@@ -32,7 +38,7 @@ var FilterTagStore = _.assign(Base(_state), {
   },
 
   addFilter: function (category, value, filter) {
-    _.remove(_state['filters'][category], isNotPinned);
+    this.removeFiltersInCategory(category);
 
     _state['filters'][category] = _state['filters'][category] || [];
 
@@ -43,16 +49,27 @@ var FilterTagStore = _.assign(Base(_state), {
     });
   },
 
+  removeFiltersInCategory: function (category) {
+    _.remove(_state['filters'][category], isNotPinned);
+    this.removeCategory(category);
+  },
+
   removeFilter: function (category, value) {
-    _.remove(_state['filters'][category], function (item) {
-      return item.value == value;
-    });
+    if (_state['filters'][category]) {
+      _.remove(_state['filters'][category], matchValue(value));
+
+      this.removeCategory(category)
+    }
+  },
+
+  removeCategory: function (category) {
+    if (_state['filters'][category] && _state['filters'][category].length == 0) {
+      delete _state['filters'][category];
+    }
   },
 
   getFilter: function (category, value) {
-    return _.find(_state['filters'][category], function (item) {
-      return item.value == value;
-    });
+    return _.find(_state['filters'][category], matchValue(value));
   },
 
   pinFilter: function (category, value) {
@@ -93,9 +110,8 @@ var FilterTagStore = _.assign(Base(_state), {
   },
 
   getSession: function () {
-    // TODO: clean empty category
     return {
-      filters: _state['filters'],
+      filters: _state['filters']
     };
   },
 
@@ -129,7 +145,7 @@ var FilterTagStore = _.assign(Base(_state), {
 
   emitEnable: function () {
     this.emit(ENABLE_EVENT);
-  },
+  }
 });
 
 
@@ -171,15 +187,52 @@ AppDispatcher.register(function (action) {
       FilterTagStore.emitChange();
       break;
 
+    case AppConstants.REMOVE_CATEGORY:
+      FilterTagStore.removeFiltersInCategory(action.category);
+      FilterTagStore.emitChange();
+      break;
+
     case AppConstants.PIN_TAG:
       FilterTagStore.pinFilter(action.category, action.value);
       FilterTagStore.emitChange();
       break;
 
     case AppConstants.RECEIVED_SESSION_DATA:
-      session_query = _.get(action.data, 'data.query', {})
+      session_query = _.get(action.data, 'data.query', {});
       FilterTagStore.setSession(session_query);
       _state['initialized'] = session_query['filters'] || {};
+      FilterTagStore.emitChange();
+      break;
+
+    case AppConstants.SUNBURST_SELECT_ARC:
+      var arc = action.arc;
+      var selected = action.selected;
+
+      var isArcParentSelected = false;
+      var current = selected;
+      while (current.parent) {
+        isArcParentSelected = isArcParentSelected || (arc == current.parent);
+        current = current.parent;
+      }
+
+      if (selected && isArcParentSelected && selected.tagValue) {
+        current = selected;
+        while (current != arc) {
+          FilterTagStore.removeFilter(
+            current.tagValue.category, current.tagValue.label);
+          current = current.parent;
+        }
+      }
+
+      if (arc.tagValue) {
+        if (arc.tagValue.removeParent) {
+          FilterTagStore.removeFilter(
+              arc.parent.tagValue.category, arc.parent.tagValue.label);
+        }
+        FilterTagStore.addFilter(
+            arc.tagValue.category, arc.tagValue.label,
+            arc.tagValue.filter + '=' + arc.tagValue.value);
+      }
       FilterTagStore.emitChange();
       break;
 

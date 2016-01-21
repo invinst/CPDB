@@ -4,6 +4,7 @@ var Wrapper = require('components/Shared/Wrapper.react');
 var ComplaintPresenter = require('presenters/ComplaintPresenter');
 var HelperUtil = require('utils/HelperUtil');
 var ComplaintService = require('services/ComplaintService');
+var DocumentLink = require('components/ComplaintPage/DocumentLink.react');
 
 
 var ComplaintDetail = React.createClass({
@@ -29,9 +30,8 @@ var ComplaintDetail = React.createClass({
         <div className='complaint-sub-category'>
           {complaintPresenter.allegationName}
         </div>
-        <Wrapper visible={complaintService.hasDocument}>
-          <a href={complaintPresenter.documentLink} className='document-link'>View documents</a>
-        </Wrapper>
+        <DocumentLink documentId={complaintPresenter.documentId}
+                      documentNormalizedTitle={complaintPresenter.documentNormalizedTitle} />
       </div>
     );
   }

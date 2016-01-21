@@ -41,12 +41,12 @@ var ComplaintPresenter = function (complaint) {
     return [complaint.add1, complaint.add2].join(' ').trim(); // a bit magic here :>)
   };
 
-  var documentLink = function () {
-    var linkFormat = 'http://documentcloud.org/documents/{documentId}-{documentNormalizedTitle}.html';
-    var documentId = HelperUtil.fetch(complaint, 'document_id', '');
-    var documentNormalizedTitle = HelperUtil.fetch(complaint, 'document_normalized_title', '');
+  var documentId = function () {
+    return HelperUtil.fetch(complaint, 'document_id', '');
+  };
 
-    return HelperUtil.format(linkFormat, {'documentId': documentId, 'documentNormalizedTitle': documentNormalizedTitle});
+  var documentNormalizedTitle = function () {
+    return HelperUtil.fetch(complaint, 'document_normalized_title', '');
   };
 
   var crid = function () {
@@ -70,7 +70,8 @@ var ComplaintPresenter = function (complaint) {
     city: HelperUtil.fetch(complaint, 'city', ''),
     locationType: HelperUtil.fetch(complaint, 'location', ''),
     beat: HelperUtil.fetch(complaint, 'beat.name', ''),
-    documentLink: documentLink(),
+    documentId: documentId(),
+    documentNormalizedTitle: documentNormalizedTitle(),
     getIncidentDate: incidentDate,
     url: url()
   }
