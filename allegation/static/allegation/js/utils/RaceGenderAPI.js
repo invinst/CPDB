@@ -2,7 +2,7 @@ require('utils/jQuery');
 
 var AppConstants = require('../constants/AppConstants');
 var RaceGenderTabActions = require('actions/DataToolPage/RaceGenderTabActions');
-var AllegationFetcherQueryBuilder = require('./AllegationFetcherQueryBuilder');
+var AllegationFetcherQueryBuilder = require('utils/querybuilders/AllegationFetcherQueryBuilder');
 
 var ajax = null;
 

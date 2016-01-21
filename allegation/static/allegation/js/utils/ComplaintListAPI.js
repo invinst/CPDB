@@ -1,6 +1,6 @@
 require('utils/jQuery');
 
-var AllegationFetcherQueryBuilder = require('./AllegationFetcherQueryBuilder');
+var AllegationFetcherQueryBuilder = require('utils/querybuilders/AllegationFetcherQueryBuilder');
 var AppConstants = require('../constants/AppConstants');
 var ComplaintListStore = require('stores/ComplaintListStore');
 var ComplaintListServerActions = require('../actions/ComplaintList/ComplaintListServerActions');
