@@ -1,8 +1,8 @@
 from allegation.factories import OfficerAllegationFactory
-from common.tests.core import BaseLiveTestCase
+from common.tests.mixins.outcome_filter_mixin import OutcomeFilterTestMixin
 
 
-class OfficerOutcomeFilterTestCase(BaseLiveTestCase):
+class OfficerOutcomeFilterTestCase(OutcomeFilterTestMixin):
     def setUp(self):
         super(OfficerOutcomeFilterTestCase, self).setUp()
 
@@ -18,5 +18,4 @@ class OfficerOutcomeFilterTestCase(BaseLiveTestCase):
         self.visit('/officer/slugify/{id}'.format(
             id=self.officer.id
             ))
-        self.get_outcome_tab_at(1).click()
-        len(self.find_all('.complaint-row')).should.equal(1)
+        self.assert_number_of_complaints_in_tab(numbers=1, position=1)
