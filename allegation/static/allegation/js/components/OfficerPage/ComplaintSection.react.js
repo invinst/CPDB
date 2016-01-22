@@ -2,18 +2,18 @@ var _ = require('lodash');
 var React = require('react');
 
 var Base = require('components/Base.react');
-var ComplaintListStore = require('stores/ComplaintListStore');
+var ComplaintSectionStore = require('stores/OfficerPage/ComplaintSectionStore');
 var ComplaintListAPI = require('utils/ComplaintListAPI');
 var ComplaintList = require('components/OfficerPage/ComplaintList.react');
 var Counter = require("components/DataToolPage/Counter.react");
 var OutcomeFilter = require('components/DataToolPage/ComplaintList/OutcomeFilter.react');
-var OutcomeFilterActions = require('actions/ComplaintList/OutcomeFilterActions');
 var RequestModal = require('components/DataToolPage/Complaint/RequestModal.react');
 
-var ComplaintSection = React.createClass(_.assign(Base(ComplaintListStore), {
+
+var ComplaintSection = React.createClass(_.assign(Base(ComplaintSectionStore), {
   componentDidMount: function() {
     var officer = this.props.officer.id || '';
-    ComplaintListStore.addChangeListener(this._onChange);
+    ComplaintSectionStore.addChangeListener(this._onChange);
     if (officer) {
       ComplaintListAPI.getAllForOfficer(officer);
     }
@@ -26,10 +26,6 @@ var ComplaintSection = React.createClass(_.assign(Base(ComplaintListStore), {
     }
   },
 
-  setActiveFilter: function (officerId, activeFilter) {
-    OutcomeFilterActions.setActiveFilterOfficer(officerId, activeFilter);
-  },
-
   render: function() {
     return (
         <div className="complaint-list">
@@ -40,9 +36,7 @@ var ComplaintSection = React.createClass(_.assign(Base(ComplaintListStore), {
           <div className='col-md-10 text-right'>
             <OutcomeFilter
               activeFilter={this.state.activeFilter}
-              analytics={this.state.analytics}
-              setActiveFilter={this.setActiveFilter.bind(this, this.props.officer.id)}
-              />
+              analytics={this.state.analytics}/>
           </div>
         </div>
         <ComplaintList officer={this.props.officer} complaints={this.state.complaints} />

@@ -3,32 +3,27 @@ var React = require('react');
 
 var Base = require('components/Base.react');
 var ComplaintListAPI = require('utils/ComplaintListAPI');
-var ComplaintListStore = require('stores/ComplaintListStore');
+var ComplaintSectionStore = require('stores/OfficerPage/ComplaintSectionStore');
 var Counter = require('components/DataToolPage/Counter.react');
 var InvestigationList = require('components/InvestigatorPage/InvestigationList.react');
 var OutcomeFilter = require('components/DataToolPage/ComplaintList/OutcomeFilter.react');
-var OutcomeFilterActions = require('actions/ComplaintList/OutcomeFilterActions');
 var RequestModal = require('components/DataToolPage/Complaint/RequestModal.react');
 
 
-var InvestigationsSection = React.createClass(_.assign(Base(ComplaintListStore), {
+var InvestigationsSection = React.createClass(_.assign(Base(ComplaintSectionStore), {
   componentDidMount: function () {
-    ComplaintListStore.addChangeListener(this._onChange);
+    ComplaintSectionStore.addChangeListener(this._onChange);
     var investigator = this.props.investigator.id || '';
     ComplaintListAPI.getAllForInvestigator(investigator);
   },
 
   componentWillUnmount: function () {
-    ComplaintListStore.removeChangeListener(this._onChange);
+    ComplaintSectionStore.removeChangeListener(this._onChange);
   },
 
   componentWillReceiveProps: function (newProps) {
     var investigator = newProps.investigator.id || '';
     ComplaintListAPI.getAllForInvestigator(investigator);
-  },
-
-  setActiveFilter: function(investigatorId, activeFilter) {
-    OutcomeFilterActions.setActiveFilterInvestigator(investigatorId, activeFilter);
   },
 
   render: function () {
@@ -42,7 +37,6 @@ var InvestigationsSection = React.createClass(_.assign(Base(ComplaintListStore),
             <OutcomeFilter
               activeFilter={this.state.activeFilter}
               analytics={this.state.analytics}
-              setActiveFilter={this.setActiveFilter.bind(this, this.props.investigator.id)}
               />
           </div>
         </div>
