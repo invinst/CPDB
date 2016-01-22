@@ -5,7 +5,6 @@ from allegation.factories import InvestigatorFactory
 from common.models import Investigator
 
 
-
 class TestImportInvestigatorRank(TransactionTestCase):
 
     start_migration = '0069_investigator_agency'
