@@ -98,6 +98,7 @@ OfficerListStore.dispatchEvent = AppDispatcher.register(function (action) {
     case AppConstants.MAP_CHANGE_FILTER:
     case AppConstants.MAP_ADD_FILTER:
     case AppConstants.ADD_TAG:
+    case AppConstants.SAVE_TAGS:
     case AppConstants.REMOVE_TAG:
     case AppConstants.TOGGLE_TAGS:
     case AppConstants.SUNBURST_SELECT_ARC:

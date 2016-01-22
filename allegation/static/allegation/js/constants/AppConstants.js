@@ -55,6 +55,7 @@ module.exports = {
   REMOVED_TAG: c++,
   PIN_TAG: c++,
   REMOVE_CATEGORY: c++,
+  SAVE_TAGS: c++,
 
   RECEIVED_SUNBURST_DATA: c++,
   SUNBURST_SELECT_ARC: c++,
