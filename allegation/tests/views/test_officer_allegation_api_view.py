@@ -8,10 +8,8 @@ from allegation.factories import (
     AreaFactory, ComplainingWitnessFactory, AllegationFactory,
     OfficerAllegationFactory)
 from allegation.tests.views.base import OfficerAllegationApiTestBase
-from common.models import (
-    Officer, Area, DISCIPLINE_CODES, NO_DISCIPLINE_CODES,
-    OfficerAllegation, LOCATION_CHOICES)
-
+from common.models import Officer, Area, Allegation, OfficerAllegation
+from common.constants import DISCIPLINE_CODES, NO_DISCIPLINE_CODES, LOCATION_CHOICES
 
 class OfficerAllegationFilterMixin(object):
     def fetch_officer_allegations(self, **params):
