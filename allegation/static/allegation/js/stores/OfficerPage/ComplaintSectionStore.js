@@ -82,7 +82,7 @@ AppDispatcher.register(function(action) {
       ComplaintSectionStore.emitChange();
       break;
 
-    case AppConstants.SET_ACTIVE_COMPLAINT_LIST_FILTER:
+    case AppConstants.SET_ACTIVE_COMPLAINT_LIST_FILTER_SUB_PAGE:
       AppDispatcher.waitFor([RelatedOfficersStore.dispatchEvents]);
       ComplaintSectionStore.updateComplaints(action.filter);
       ComplaintSectionStore.emitChange();
