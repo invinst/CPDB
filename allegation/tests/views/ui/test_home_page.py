@@ -145,15 +145,15 @@ class HomePageTestCase(BaseLiveTestCase):
         self.visit_home()
         self.click_active_tab("Outcomes")
 
-        with self.browser_no_wait():
-            self.should_see_text('Officers (2)')
+        self.until(lambda: self.should_see_text('Officers (2)'))
 
         self.click_sunburst_legend(us)
         self.click_sunburst_legend(ns)
         self.until(lambda: self.element_by_classname_and_text('filter-name', ns))
 
         self.find(".tag .remove").click()
-        self.until(self.should_see_text('Officers (1)'))
+        self.until(lambda: self.element_by_classname_and_text('filter-name', us))
+        self.until(lambda: self.should_see_text('Officers (1)'))
 
     def test_sticky_footer(self):
         officer = self.officer_allegation.officer
