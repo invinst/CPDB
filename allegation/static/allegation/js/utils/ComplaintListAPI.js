@@ -49,7 +49,7 @@ var ComplaintListAPI = {
     }
 
     ajax = jQuery.getJSON(AppConstants.ALLEGATIONS_API_ENDPOINT, params, function (data) {
-      ComplaintListServerActions.receivedOfficerComplaints(data);
+      ComplaintListServerActions.receivedFullComplaints(data);
     });
   },
 
@@ -64,7 +64,7 @@ var ComplaintListAPI = {
     }
 
     ajax = jQuery.getJSON(AppConstants.ALLEGATIONS_API_ENDPOINT, params, function (data) {
-      ComplaintListServerActions.receivedOfficerComplaints(data);
+      ComplaintListServerActions.receivedFullComplaints(data);
     });
   },
 
