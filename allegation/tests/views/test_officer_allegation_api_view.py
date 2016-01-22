@@ -9,9 +9,9 @@ from allegation.factories import (
     OfficerAllegationFactory)
 from allegation.tests.views.base import OfficerAllegationApiTestBase
 from common.models import (
-    Allegation, Officer, Area, DISCIPLINE_CODES, NO_DISCIPLINE_CODES,
+    Allegation, Officer, Area,
     OfficerAllegation, LOCATION_CHOICES)
-
+from common.constants import DISCIPLINE_CODES, NO_DISCIPLINE_CODES
 
 class OfficerAllegationFilterMixin(object):
     def fetch_officer_allegations(self, **params):
