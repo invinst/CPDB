@@ -5,14 +5,8 @@ from django.db.models.query_utils import Q
 import inspect
 
 from allegation.utils.query import OfficerQuery
-from common.constants import FOIA_START_DATE
-from common.models import OUTCOMES, ComplainingWitness, Allegation
-
-
-NO_DISCIPLINE_CODES = ('600', '000', '500', '700', '800', '900', '')
-DISCIPLINE_CODES = [
-    x[0] for x in OUTCOMES
-    if x[0] not in NO_DISCIPLINE_CODES and x[0] is not None]
+from common.constants import FOIA_START_DATE, DISCIPLINE_CODES, NO_DISCIPLINE_CODES
+from common.models import Allegation
 
 
 class OfficerAllegationQueryBuilder(object):

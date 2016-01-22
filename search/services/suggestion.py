@@ -1,11 +1,10 @@
 from collections import OrderedDict
 
-from django.db.models.aggregates import Count
 from django.db.models.query_utils import Q
 
 from allegation.utils.query import OfficerQuery
-from common.models import AllegationCategory, Allegation, Area, Officer, FINDINGS, OUTCOMES, UNITS, GENDER, \
-    RACES, OUTCOME_TEXT_DICT, RANKS, HAS_FILTERS_LIST, OfficerAllegation
+from common.models import AllegationCategory, Allegation, Area, Investigator, Officer, FINDINGS, OUTCOMES, UNITS, GENDER, \
+    RACES, OUTCOME_TEXT_DICT, RANKS, HAS_FILTERS_LIST
 from common.utils.hashid import hash_obj
 from search.models.alias import Alias
 from search.models.session_alias import SessionAlias
@@ -184,14 +183,13 @@ class Suggestion(object):
             order_bys=['-allegation_count'])
 
     def suggest_investigator(self, q):
-        results = OfficerAllegation.objects.filter(allegation__investigator__name__istartswith=q)\
-            .values('allegation__investigator__name', 'allegation__investigator_id')\
-            .annotate(complaint_count=Count('allegation__investigator'))\
-            .order_by('-complaint_count')[0:5]
-
-        results = [["%s (%s)" % (x['allegation__investigator__name'],
-                                 x['complaint_count']),
-                    x['allegation__investigator_id']] for x in results]
+        condition = Q(name__icontains=q)
+        results = self.query_suggestions(
+            model_cls=Investigator,
+            cond=condition,
+            fields_to_get=['name', 'complaint_count', 'id'],
+            order_bys=['-complaint_count'])
+        results = [["%s (%s)" % (x[0], x[1]), x[2]] for x in results]
         return results
 
     def suggest_areas(self, q):

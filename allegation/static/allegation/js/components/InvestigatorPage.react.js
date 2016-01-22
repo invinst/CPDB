@@ -41,14 +41,13 @@ var InvestigatorPage = React.createClass(_.assign(Base(InvestigatorPageStore), {
     if (_.isEmpty(investigator)) {
       return (<i className='fa fa-spin fa-spinner' />);
     }
-
     return (
       <div>
         <Nav />
         <div id='officer-profile'>
           <div className="map-row">
             <div className="container">
-              <InvestigatorDetail investigator={investigator} />
+              <InvestigatorDetail investigator={investigator} data={this.state.data} />
             </div>
           </div>
           <div className="white-background">

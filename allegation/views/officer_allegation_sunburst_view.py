@@ -2,7 +2,7 @@ from django.db.models.query_utils import Q
 
 from allegation.views.officer_allegation_api_view import (
     OfficerAllegationAPIView)
-from common.models import DISCIPLINE_CODES
+from common.constants import DISCIPLINE_CODES
 from document.response import JsonResponse
 
 

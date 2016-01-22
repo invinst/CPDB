@@ -1,7 +1,7 @@
 from django.views.generic.base import View
 from django.shortcuts import get_object_or_404
 
-from common.models import Investigator
+from common.models import Investigator, OfficerAllegation
 from document.response import JsonResponse
 from investigator.services.investigator_details_service import \
     InvestigatorDetailsService
@@ -18,6 +18,8 @@ class InvestigatorDetailView(View):
         return JsonResponse(
             data={
                 'investigator': investigator,
+                'num_disciplined': details['num_disciplined'],
+                'num_allegations': details['num_allegations'],
                 'allegations': details['allegations'],
                 'timeline': details['timeline'],
                 'has_map': details['has_map']
