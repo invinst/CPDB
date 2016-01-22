@@ -106,6 +106,12 @@ var FilterTagsActions = {
   // Temporary function to hold sunburst logic
   saveTags: function () {
     updateSiteData();
+  },
+
+  toggleAllTags: function () {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.TOGGLE_ALL_TAGS,
+    });
   }
 };
 
