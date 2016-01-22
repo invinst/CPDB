@@ -49,6 +49,7 @@ class TimeoutException(AssertionError):
 world = threading.local()
 world.browser = None
 world.mobile_browser = None
+world.android_browser = None
 world.phone_browser = None
 world.js_coverages = []
 
@@ -326,6 +327,9 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         self.scroll_to()
         self.link(tab).click()
 
+    def click_by_js(self, element):
+        self.browser.execute_script('return arguments[0].click();', element)
+
 
 class BaseAdminTestCase(BaseLiveTestCase):
     def setUp(self):
@@ -384,6 +388,35 @@ class BaseLivePhoneTestCase(BaseLiveTestCase):
             world.phone_browser = self.init_firefox()
         return world.phone_browser
 
+class BaseLiveAndroidPhoneTestCase(BaseLiveTestCase):
+    GALAXY_S6_BROWSER_SIZE = {'width': 375, 'height': 627}
+    GALAXY_S6_USER_AGENT = 'Mozilla/5.0 (Linux; Android 5.1.1; SM-G920F Build/LMY47X) AppleWebKit/537.36 ' \
+                           '(KHTML, like Gecko) Chrome/46.0.2490.43 Mobile'
+
+    def init_firefox_profile(self):
+        profile = super(BaseLiveAndroidPhoneTestCase, self).init_firefox_profile()
+        profile.set_preference(
+            "general.useragent.override",
+            self.GALAXY_S6_USER_AGENT
+        )
+        return profile
+
+    def init_firefox(self):
+        desired_capabilities = DesiredCapabilities.FIREFOX
+        desired_capabilities['loggingPrefs'] = {'browser': 'ALL'}
+
+        browser = WebDriver(
+            capabilities=desired_capabilities,
+            firefox_profile=self.init_firefox_profile())
+        browser.implicitly_wait(10)
+        browser.set_window_size(**self.GALAXY_S6_BROWSER_SIZE)
+        return browser
+
+    @property
+    def browser(self):
+        if world.android_browser is None:
+            world.android_browser = self.init_firefox()
+        return world.android_browser
 
 @attr('simple')
 class SimpleTestCase(DjangoSimpleTestCase, UserTestBaseMixin):

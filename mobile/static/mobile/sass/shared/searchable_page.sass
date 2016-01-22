@@ -1,0 +1,29 @@
+.searchable-page
+  .icon.icon-close
+    z-index: 5
+  .result-content
+    position: absolute
+    top: 60px
+    right: 0
+    bottom: 0
+    left: 0
+    overflow: auto
+  .search-bar
+    z-index: 3
+  .result-content
+    &.invisible
+      z-index: -1
+  .child-content
+    .content
+      top: 60px
+      z-index: 2
+    &.invisible
+      .content
+        z-index: -1
+        animation: slide-up 0.7s forwards
+        -webkit-animation: slide-up 0.7s forwards
+        -moz-animation: slide-up 0.7s forwards
+        -o-animation: slide-up 0.7s forwards
+
+@import 'searchable_page/search_bar'
+@import 'searchable_page/search_results'

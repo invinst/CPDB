@@ -75,55 +75,15 @@ class Session(models.Model):
         session.save()
         return session
 
-    @property
-    def readable_query(self):
-        filters = self.query.get('filters', {})
-        results = {}
-        for key in filters:
-            values = self.get_filter_values(key, filters[key])
-            if values:
-                results[key] = values
-        return results
-
     def __str__(self):
         return self.title or self.hash_id
-
-    @staticmethod
-    def get_filter_values(key, values):
-        if key == 'allegation__areas__id':
-            ret = []
-            for pk in values['value']:
-                area = Area.objects.get(pk=pk)
-                ret.append({'text': "%s: %s" % (area.type, area.name), 'value': pk})
-            return ret
-
-        if key in KEYS:
-            values = KEYS[key].objects.filter(pk__in=values['value'])
-            return [o.tag_value for o in values]
-
-        if key in OTHER_KEYS:
-            return [{
-                'text': OTHER_KEYS[key].get(o),
-                'value': o,
-            } for o in values['value']]
-
-        if key in CUSTOM_FILTER_DICT:
-            return [{
-                'text': CUSTOM_FILTER_DICT[key][o]['text'],
-                'value': o,
-            } for o in values['value']]
-        if key == 'officer__allegations_count__gt':
-            value = values['value'][0]
-            return [{'text': REPEATER_DESC[str(value)], 'value': value}]
-
-        return [{'value': x, 'text': x} for x in values['value']]
 
     @property
     def query_string(self):
         filters = self.query.get('filters', {})
         query = []
-        for key in filters:
-            value = filters[key]['value']
-            query.append("&".join("{key}={value}".format(key=key, value=v) for v in value))
-        return "&".join(query)
+        for category in filters:
+            items = filters[category]
+            query.append('&'.join(item['filter'] for item in items))
+        return '&'.join(query)
 

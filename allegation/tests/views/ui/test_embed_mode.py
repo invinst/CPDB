@@ -1,5 +1,6 @@
 from allegation.factories import AllegationFactory, OfficerAllegationFactory
 from common.tests.core import BaseLiveTestCase
+from common.utils.haystack import rebuild_index
 
 
 class EmbedModeTestCase(BaseLiveTestCase):
@@ -32,10 +33,12 @@ class EmbedModeTestCase(BaseLiveTestCase):
         tabs_column_code.should.be.ok
         tabs_column_code.get_attribute('value')\
             .should.contain('/embed/?page=sunburst&query=&state=')
-        self.link('Categories').click()
+
+        self.click_active_tab('Categories')
         tabs_column_code.get_attribute('value')\
             .should.contain('/embed/?page=summary&query=&state=')
-        self.link('Race & Gender').click()
+
+        self.click_active_tab('Race & Gender')
         tabs_column_code.get_attribute('value')\
             .should.contain('/embed/?page=race-gender&query=')
 
@@ -52,6 +55,8 @@ class EmbedModeTestCase(BaseLiveTestCase):
             .format(officer_id=self.officer_allegation.officer_id))
 
     def test_can_not_change_filter_in_embed_mode(self):
+        rebuild_index()
+
         self.link('Exit mode').click()
 
         self.until(lambda: self.fill_in(
