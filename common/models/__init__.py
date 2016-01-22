@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 
 from common.constants import FINDINGS, OUTCOMES, ACTIVE_CHOICES, CITIZEN_DEPTS, LOCATION_CHOICES
 from common.models.time_stamp import TimeStampedModel
-from allegation.models.managers import OfficerAllegationManager, DisciplinedManager
+from allegation.models.managers import AllegationManager, OfficerAllegationManager, DisciplinedManager
 from common.models.suggestible import (
     MobileSuggestibleOfficer, MobileSuggestibleAllegation)
 
