@@ -56,8 +56,8 @@ class LookupViewTest(SimpleTestCase):
         response = self.client.get('/lookup/{query}'.format(query=bad_query))
         response.status_code.should.equals(HTTP_301_MOVED_PERMANENTLY)
 
-        expected_url = 'search/{query}'.format(query=bad_query)
-        response.url.should.contain(expected_url)
+        expected_uri = '/mobile/search/{query}'.format(query=bad_query)
+        urllib.parse.urlparse(response.url).path.should.equal(expected_uri)
 
     def test_translate_underscore_officer_lookup_url(self):
         officer_first = 'First'
