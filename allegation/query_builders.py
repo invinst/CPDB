@@ -260,7 +260,7 @@ class OfficerAllegationQueryBuilder(object):
         sqs = SearchQuerySet()
         matched_allegation_ids = []
         for term in terms:
-            raw_results = sqs.filter(allegation_summary=term).values_list('pk', flat=True)
+            raw_results = sqs.filter(allegation_summary__exact=term).values_list('pk', flat=True)
             casted_results = [int(x) for x in raw_results]
             matched_allegation_ids += casted_results
 

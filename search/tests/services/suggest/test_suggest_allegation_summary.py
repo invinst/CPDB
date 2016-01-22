@@ -12,13 +12,27 @@ class SuggestAllegationTestCase(SuggestBaseTestCase):
         self.rebuild_index()
 
         search_term = 'so'
-        expected_terms = ['some', 'sorry', 'some some', 'some really']
+        expected_terms = ['some', 'sorry', 'some really', 'some some']
 
         results = SuggestAllegationSummary.query('keyword:'+search_term)['Allegation Summary']
         suggested_terms = [x['value'] for x in results]
 
-        for term in expected_terms:
-            suggested_terms.should.contain(term)
+        suggested_terms.should.equal(expected_terms)
+
+    def test_suggest_allegation_summary_multiple_word_term(self):
+        summary_1 = 'some some really long summary I am sorry'
+
+        AllegationFactory(summary=summary_1)
+
+        self.rebuild_index()
+
+        search_term = 'some some'
+        expected_terms = ['some some', 'some some really']
+
+        results = SuggestAllegationSummary.query('keyword:'+search_term)['Allegation Summary']
+        suggested_terms = [x['value'] for x in results]
+
+        suggested_terms.should.equal(expected_terms)
 
     def test_suggest_allegation_summary_max_5(self):
         summary_1 = 'some some really long summary I am sorry some else some elves some elks'

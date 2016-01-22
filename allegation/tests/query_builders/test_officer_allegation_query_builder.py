@@ -393,6 +393,20 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
 
         self.check_built_query(query_string, expected_ids)
 
+    def test_allegation_summary_multiple_word_term(self):
+        expected_allegations = [
+            OfficerAllegationFactory(allegation=AllegationFactory(
+                summary='some some really long summary'))]
+        OfficerAllegationFactory(
+                allegation=AllegationFactory(summary='I am so sorry some'))
+
+        rebuild_index()
+
+        query_string = 'allegation_summary=some some'
+        expected_ids = [allegation.id for allegation in expected_allegations]
+
+        self.check_built_query(query_string, expected_ids)
+
     def check_built_query(self, query_string, expected_ids):
         params = QueryDict(query_string)
 

@@ -55,7 +55,7 @@ class SuggestAllegationSummary(SuggestBase):
 
     @classmethod
     def find_suggestion(cls, term, summary):
-        pattern = '(^| )(?P<term>(?P<word>{term}\w*)( \w+)?)'.format(term=term)
+        pattern = '(?=(^| )(?P<term>(?P<word>{term}\w*)( \w+)?))'.format(term=term)
         matched = [m.groupdict() for m in re.finditer(pattern=pattern, string=summary, flags=re.IGNORECASE)]
         suggestion_entries = [(m['word'].lower(), m['term'].lower()) for m in matched]
 
