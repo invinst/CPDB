@@ -293,6 +293,24 @@ module.exports = {
 
   DEFAULT_SITE_TITLE: DEFAULT_SITE_TITLE,  // from global variable
   STORY_TYPES_ORDER: STORY_TYPES_ORDER,  // from global variable
+  DEFAULT_NAV_TABS: [
+    {
+      name: 'data',
+      display: 'Data'
+    },
+    {
+      name: 'method',
+      display: 'Collaboration'
+    },
+    {
+      name: 'story',
+      display: 'Backstory'
+    },
+    {
+      name: 'findings',
+      display: 'Findings'
+    }
+  ],
 
   MEDIA_URL: '/media/',
 

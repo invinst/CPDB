@@ -1,9 +1,9 @@
 var _ = require('lodash');
+var classnames = require('classnames');
 var navigate = require('react-mini-router').navigate;
 var React = require('react');
 var ReactRouter = require('react-router');
-var History = require('history');
-var classnames = require('classnames');
+var PureRenderMixin = require('react-addons-pure-render-mixin');
 
 var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
@@ -11,53 +11,31 @@ var Link = ReactRouter.Link;
 
 var AppConstants = require('constants/AppConstants');
 var Base = require('components/Base.react');
-var AppStore = require('stores/AppStore');
 var NavActions = require('actions/NavActions');
 var PageAnimator = require('components/PageAnimator.react');
 var StatePropagateCSSTransitionGroup = require(
   'components/Shared/StatePropagateCSSTransitionGroup.react');
+var Nav = require('components/Shared/Nav2.react');
+var IndexTabContentMixin = require('mixins/IndexTabContentMixin');
+var Disclaimer = require('components/DataToolPage/Disclaimer.react');
+var LandingFooter = require('components/Shared/LandingFooter.react');
+var Footer = require('components/DataToolPage/Footer.react');
+var HappyFox = require('components/Shared/HappyFox.react');
 
 
-var IndexPage = React.createClass(_.assign(Base(AppStore), {
+var IndexPage = React.createClass({
+  contextTypes: {
+    router: React.PropTypes.object.isRequired
+  },
+
+  mixins: [PureRenderMixin, IndexTabContentMixin],
+
   componentDidMount: function () {
-    AppStore.addChangeListener(this._onChange);
-    AppStore.addChangeSessionListener(this.onChangeSession);
-
     $(window).on('scroll', this.scrollToggleShow);
   },
 
   componentWillUnmount: function () {
-    AppStore.removeChangeListener(this._onChange);
-    AppStore.removeChangeSessionListener(this.onChangeSession)
     $(window).off('scroll', this.scrollToggleShow);
-  },
-
-  componentWillMount: function () {
-    this.displayTabByPath();
-  },
-
-  onChangeSession: function () {
-    if (AppStore.isDataToolPage()) {
-      history.replaceState(null, null, AppStore.getDataToolUrl());
-    }
-  },
-
-  shouldComponentUpdate: function (nextProps, nextState) {
-    return (!_.isEqual(nextProps, this.props) || !_.isEqual(nextState, this.state));
-  },
-
-  componentDidUpdate: function () {
-    this.displayTabByPath();
-  },
-
-  displayTabByPath: function () {
-    var page = _.remove(window.location.pathname.split('/'))[0];
-    if (!page) {
-      page = 'data';
-    }
-    if (!AppStore.isPage(page)) {
-      NavActions.goToPage(page, this.params);
-    }
   },
 
   scrollToggleShow: function () {
@@ -72,7 +50,7 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
     $landingNav.toggleClass('fixed-nav', cond);
     $landingNav.toggleClass('border-top', scrollTop != 0);
     $main.toggleClass('margin-top-45', cond);
-    var opacity = scrollTop / $welcome.height()
+    var opacity = scrollTop / $welcome.height();
     $cpdpLogo.css('opacity', opacity);
     $iiLogo.css('opacity', 1 - opacity);
     this.syncNavState();
@@ -86,9 +64,6 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
     for(var index = 0; index < navItems.length; index++) {
       var item = $(navItems[index]);
       var $control = $(item.data('target'));
-      if(!$control.offset()){
-        console.log($control);
-      }
 
       if (currentPos >= $control.offset().top) {
         navItems.removeClass('active');
@@ -98,7 +73,64 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
     }
   },
 
+  isLandingPage: function () {
+    var isActive = this.context.router.isActive;
+    return !(isActive('investigator') || isActive('officer') || isActive('data'));
+  },
+
+  renderFooter: function () {
+    return (
+      <div className='container-fluid'>
+        <div className='sticky-footer'>
+          <Footer withEmbedBar={this.context.router.isActive('data')}/>
+        </div>
+      </div>
+    );
+  },
+
+  renderFooterLandingPage: function () {
+    return (
+      <div className="landing-page">
+        <LandingFooter />
+      </div>
+    );
+  },
+
+  renderFooterWrapper: function () {
+    return (
+      <div>
+        { this.isLandingPage() ? this.renderFooterLandingPage() : this.renderFooter() }
+        <Disclaimer />
+        <HappyFox />
+      </div>
+    );
+  },
+
+  renderContent: function () {
+    var isActive = this.context.router.isActive;
+
+    var tabPanelClass = classnames('tab-pane active',{
+      'landing-page': !(isActive('data') || isActive('officer') || isActive('investigator'))
+    });
+
+    return (
+      <div className="main">
+        <div className="tab-content">
+          <div role="tabpanel" className={tabPanelClass}>
+            { this.props.children }
+          </div>
+        </div>
+      </div>
+    );
+  },
+
   render: function() {
+    var isActive = this.context.router.isActive;
+
+    var pageClassName = classnames('',{
+      'scroll-to-top': !isActive('findings')
+    });
+
     return (
       <div className='page-wrapper'>
         <StatePropagateCSSTransitionGroup
@@ -106,12 +138,16 @@ var IndexPage = React.createClass(_.assign(Base(AppStore), {
           transitionEnterTimeout={500}
           transitionLeaveTimeout={500}>
             <PageAnimator className='page' key={this.props.location.pathname}>
-              { React.cloneElement(this.props.children) }
+              <div id='landing-page' className={pageClassName}>
+                <Nav isActive={this.context.router.isActive}/>
+                { this.renderContent() }
+                { this.renderFooterWrapper() }
+              </div>
             </PageAnimator>
         </StatePropagateCSSTransitionGroup>
       </div>
     );
   }
-}));
+});
 
 module.exports = IndexPage;

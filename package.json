@@ -31,6 +31,7 @@
     "q": "~1.4.1",
     "react": "^0.14.3",
     "react-addons-css-transition-group": "^0.14.3",
+    "react-addons-pure-render-mixin": "^0.14.6",
     "react-chartjs": "^0.6.0",
     "react-cookie": "^0.4.2",
     "react-date-picker": "^3.1.7",
