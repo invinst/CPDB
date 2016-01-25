@@ -13,7 +13,6 @@ var LeafletClusters = require("leaflet.markercluster");
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var AppConstants = require('../constants/AppConstants');
-var FilterStore = require('./FilterStore');
 var AppStore = require('stores/AppStore');
 var FilterActions = require('../actions/FilterActions');
 var assign = require('object-assign');

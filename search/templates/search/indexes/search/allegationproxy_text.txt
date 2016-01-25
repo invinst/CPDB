@@ -1,0 +1,1 @@
+{{ object.allegationcategory_distinct_category }}

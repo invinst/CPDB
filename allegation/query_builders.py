@@ -156,6 +156,11 @@ class OfficerAllegationQueryBuilder(object):
             return Q(officer__isnull=False)
         return Q()
 
+    def _q_has_summary(self, query_params):
+        if 'has:summary' in query_params.getlist('has_filters', []):
+            return Q(allegation__summary__isnull=False)
+        return Q()
+
     def _q_unsustained_final_finding(self, query_params):
         UNSUSTAINED_FINAL_FINDINGS = ['DS', 'EX', 'NA', 'NC', 'NS', 'UN', 'ZZ']
         if 'unsustained' in query_params.getlist('final_finding_text', []):
@@ -198,10 +203,7 @@ class OfficerAllegationQueryBuilder(object):
     def _query_by_complainant(self, query_params, param_key, query_key):
         if param_key in query_params:
             vals = query_params.getlist(param_key)
-            allegation_pks = list(filter(
-                None, ComplainingWitness.objects.filter(**{query_key: vals})
-                .values_list('allegation__pk', flat=True)))
-            return Q(allegation__pk__in=allegation_pks)
+            return Q(**{'allegation__complainingwitness__%s' % query_key: vals})
         return Q()
 
     def _q_complainant_gender(self, query_params):
@@ -216,7 +218,6 @@ class OfficerAllegationQueryBuilder(object):
 
     def _q_incident_date_only(self, query_params):
         allegation_queries = Q()
-
         for date_range in query_params.getlist('incident_date_only__range'):
             date_range = date_range.split(',')
             allegation_queries |= Q(incident_date_only__range=date_range)
@@ -226,6 +227,7 @@ class OfficerAllegationQueryBuilder(object):
 
         for year_month in \
                 query_params.getlist('incident_date_only__year_month'):
+            year_month = year_month.replace('/', '-')
             year, month = year_month.split('-')
             allegation_queries |= Q(
                 incident_date_only__year=year, incident_date_only__month=month)

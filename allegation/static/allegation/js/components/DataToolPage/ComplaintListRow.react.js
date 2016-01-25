@@ -5,7 +5,6 @@ var classnames = require('classnames');
 var Base = require("components/Base.react");
 var ComplaintListActions = require("actions/ComplaintList/ComplaintListActions");
 var ComplaintListStore = require("stores/ComplaintListStore");
-var Filters = require('components/DataToolPage/Filters.react');
 var MapStore = require('stores/MapStore');
 var SessionAPI = require('utils/SessionAPI');
 var Officer = require("components/DataToolPage/Officer.react");

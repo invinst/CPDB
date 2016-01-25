@@ -1,7 +1,8 @@
-var OfficerListStore = require('../stores/OfficerListStore');
 var OutcomeAnalysisServerActionCreator = require('../actions/ComplaintList/OutcomeAnalysisServerActionCreator');
-var AllegationFetcherQueryBuilder = require('./AllegationFetcherQueryBuilder');
+var AllegationFetcherQueryBuilder = require('utils/querybuilders/AllegationFetcherQueryBuilder');
+
 var ajax = null;
+
 
 var OutcomeAnalysisAPI = {
   getAnalysisInformation: function () {
@@ -12,7 +13,7 @@ var OutcomeAnalysisAPI = {
         ajax.abort();
       }
 
-      ajax = $.getJSON('/api/officer-allegations/analysis?' + OfficerListStore.getQueryString(), function (data) {
+      ajax = $.getJSON('/api/officer-allegations/analysis?' + AllegationFetcherQueryBuilder.buildAnalysisOutcomeQuery(), function (data) {
         OutcomeAnalysisServerActionCreator.receivedAnalysisInformation(data);
       });
     }

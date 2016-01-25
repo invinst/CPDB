@@ -9,6 +9,7 @@ var Counter = require("components/DataToolPage/Counter.react");
 var OutcomeFilter = require('components/DataToolPage/ComplaintList/OutcomeFilter.react');
 var RequestModal = require('components/DataToolPage/Complaint/RequestModal.react');
 
+
 var ComplaintSection = React.createClass(_.assign(Base(ComplaintSectionStore), {
   componentDidMount: function() {
     var officer = this.props.officer.id || '';
@@ -33,7 +34,9 @@ var ComplaintSection = React.createClass(_.assign(Base(ComplaintSectionStore), {
             <h3 className="margin-top-0">Complaints (<Counter to={this.state.complaints.length} />)</h3>
           </div>
           <div className='col-md-10 text-right'>
-            <OutcomeFilter activeFilter={this.state.activeFilter} analytics={this.state.analytics} />
+            <OutcomeFilter
+              activeFilter={this.state.activeFilter}
+              analytics={this.state.analytics}/>
           </div>
         </div>
         <ComplaintList officer={this.props.officer} complaints={this.state.complaints} />
@@ -44,10 +47,6 @@ var ComplaintSection = React.createClass(_.assign(Base(ComplaintSectionStore), {
         </div>
       </div>
     );
-  },
-
-  _onChange: function() {
-    this.setState(ComplaintSectionStore.getState());
   }
 }));
 
