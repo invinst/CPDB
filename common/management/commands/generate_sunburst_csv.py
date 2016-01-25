@@ -6,7 +6,8 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.db.models.query_utils import Q
 
-from common.models import OfficerAllegation, DISCIPLINE_CODES
+from common.constants import DISCIPLINE_CODES
+from common.models import OfficerAllegation
 
 
 class Command(BaseCommand):

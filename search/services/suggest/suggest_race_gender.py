@@ -1,4 +1,4 @@
-from common.models import GENDER, RACES
+from common.constants import GENDER, RACES
 from search.services.suggest import SuggestBase
 
 

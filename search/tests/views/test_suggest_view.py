@@ -2,8 +2,7 @@ import json
 from faker import Faker
 
 from allegation.factories import (
-    OfficerFactory, AllegationCategoryFactory, AllegationFactory, AreaFactory, InvestigatorFactory,
-    OfficerAllegationFactory)
+    OfficerFactory, AllegationCategoryFactory, AllegationFactory, AreaFactory)
 from common.models import AllegationCategory, Officer
 from common.tests.core import SimpleTestCase
 from search.factories import AliasFactory, SessionAliasFactory
@@ -82,9 +81,7 @@ class SuggestViewTestCase(SimpleTestCase):
         data.should.contain('Category')
 
     def test_detect_suggest_type_investigator(self):
-        investigator = InvestigatorFactory(name='Some Name')
-        allegation = AllegationFactory(investigator=investigator)
-        OfficerAllegationFactory(allegation=allegation)
+        AllegationFactory(investigator__name='Someone Name')
 
         rebuild_index()
 

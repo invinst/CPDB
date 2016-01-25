@@ -1,4 +1,4 @@
-from common.models import HAS_FILTERS_LIST
+from common.constants import HAS_FILTERS_LIST
 from search.services.suggest import SuggestBase
 
 

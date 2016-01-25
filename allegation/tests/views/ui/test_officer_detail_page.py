@@ -2,7 +2,7 @@ from allegation.factories import (
     AllegationFactory, OfficerFactory, PoliceWitnessFactory,
     OfficerAllegationFactory)
 from allegation.tests.constants import TEST_DOCUMENT_URL
-from common.models import UNITS
+from common.constants import UNITS
 from common.tests.core import BaseLiveTestCase
 from officer.factories import StoryFactory
 
