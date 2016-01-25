@@ -25,7 +25,7 @@ urlpatterns = [
     # overriding for client-side routing
     url(r'^(officer/[^/]+/\d+|complaint/\d+|search/.*)?$', ensure_csrf_cookie(MobileSiteView.as_view()), name='home'),
     url(r'^mobile/(officer/[^/]+/\d+|complaint/\d+|search/.*)?$', ensure_csrf_cookie(MobileSiteView.as_view()),
-        name='home')
+        name='home'),
 
     # for interpret from desktop version
     url(r'^data/(?P<hash_id>\w+)/(?P<slug>.*)$', MobileDataToolView.as_view(), name='data-tool'),
