@@ -63,7 +63,7 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
 
   componentDidMount: function () {
     this.moveArrow();
-AppStore.addChangeListener(this._onChange);
+    AppStore.addChangeListener(this._onChange);
   },
 
   componentDidUpdate: function () {

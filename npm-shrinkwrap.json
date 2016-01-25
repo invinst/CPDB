@@ -1422,11 +1422,6 @@
         }
       }
     },
-    "tmpl": {
-      "version": "1.0.4",
-      "from": "tmpl@>=1.0.0 <1.1.0",
-      "resolved": "https://registry.npmjs.org/tmpl/-/tmpl-1.0.4.tgz"
-    },
     "toastr": {
       "version": "2.1.2",
       "from": "toastr@>=2.1.2 <3.0.0",
