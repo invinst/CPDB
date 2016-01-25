@@ -52,6 +52,15 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
     });
   },
 
+  getIndexLink: function () {
+    var isActive = this.props.isActive;
+
+    if(isActive('officer') || isActive('investigator')) {
+      return AppStore.getDataToolUrl();
+    }
+    return '/';
+  },
+
   componentDidMount: function () {
     this.moveArrow();
   },
@@ -61,7 +70,8 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
   },
 
   startNewSession: function (e) {
-    if (this.props.isActive('data')){
+    var isActive = this.props.isActive;
+    if (isActive('data')){
       e.preventDefault();
       SessionAPI.getSessionInfo('');
     }
@@ -166,7 +176,7 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
         { display.welcomeMessage ? this.renderWelcome() : '' }
         <nav className="landing-nav">
           <div className="items clearfix">
-            <Link to='/' onClick={this.startNewSession} id='logo_link'>
+            <Link to={this.getIndexLink()} onClick={this.startNewSession} id='logo_link'>
               <img className="pull-left cpdp-logo" src="/static/img/cpdp-logo.svg" />
             </Link>
             { display.backLink ? <Back /> : '' }
