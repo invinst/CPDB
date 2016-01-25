@@ -4,10 +4,6 @@ var OutcomeAnalysisAPI = require('utils/OutcomeAnalysisAPI');
 var AppConstants = require('constants/AppConstants');
 
 var OutcomeFilter = React.createClass({
-  componentDidMount: function() {
-     OutcomeAnalysisAPI.getAnalysisInformation();
-  },
-
   renderOutcomeFilterItems: function() {
     var activeFilter = this.props.activeFilter;
     var analytics = this.props.analytics;
@@ -17,7 +13,14 @@ var OutcomeFilter = React.createClass({
       var name = AppConstants.FILTERS[type];
       var quantity = analytics[name];
       if (quantity) {
-        outcomeFilters.push(<OutcomeFilterItem type={type} key={type} active={type==activeFilter} name={name} quantity={quantity}/>)
+        outcomeFilters.push(
+          <OutcomeFilterItem
+            type={type}
+            key={type}
+            active={type==activeFilter}
+            name={name}
+            quantity={quantity}/>
+        );
       }
     }
 
@@ -29,7 +32,7 @@ var OutcomeFilter = React.createClass({
       <div className='filters'>
         { this.renderOutcomeFilterItems() }
       </div>
-    )
+    );
   }
 });
 

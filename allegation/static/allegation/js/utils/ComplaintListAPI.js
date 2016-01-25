@@ -18,7 +18,9 @@ var ComplaintListAPI = {
   },
 
   getData: function (fromFilter) {
-    var queryString = AllegationFetcherQueryBuilder.buildQuery();
+    var activeOutcomeFilter = !fromFilter ? 'all' : '';
+
+    var queryString = AllegationFetcherQueryBuilder.buildQuery(activeOutcomeFilter);
     var that = this;
     ComplaintListServerActions.getData();
 

@@ -9,6 +9,7 @@ var RaceGenderAPI = require('utils/RaceGenderAPI');
 var SunburstAPI = require('utils/SunburstAPI');
 var FilterTagStore = require('stores/FilterTagStore');
 var EmbedStore = require('stores/EmbedStore');
+var MapAPI = require('utils/MapAPI');
 
 
 function updateSiteData(dontUpdateSession) {
@@ -16,6 +17,7 @@ function updateSiteData(dontUpdateSession) {
   OutcomeAnalysisAPI.getAnalysisInformation();
   RaceGenderAPI.getData();
   SunburstAPI.getData();
+  MapAPI.getMarkers();
   if (!dontUpdateSession) {
     SessionAPI.updateSessionInfo({
       'query': _.assign(FilterTagStore.getSession(), {

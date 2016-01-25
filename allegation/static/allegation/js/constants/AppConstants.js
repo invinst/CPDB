@@ -67,7 +67,6 @@ module.exports = {
   DOWNLOAD_PROCESS: c++,
   GENERATED_DOWNLOAD: c++,
 
-  INIT_DATA_TOOL: c++,
   NAV_GO_TO_PAGE: c++,
 
   MAP_CHANGE_MARKERS: c++,

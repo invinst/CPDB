@@ -16,20 +16,11 @@ var NavActions = {
     });
   },
 
-  initDataTool: function () {
-    AppDispatcher.dispatch({
-      actionType: AppConstants.INIT_DATA_TOOL
-    });
-  },
-
   goToPage: function (page, params) {
     AppDispatcher.dispatch({
       actionType: AppConstants.NAV_GO_TO_PAGE,
       page: page,
-      first: first
     });
-
-    first = false;
   }
 };
 

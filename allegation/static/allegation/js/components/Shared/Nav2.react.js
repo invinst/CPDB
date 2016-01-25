@@ -58,27 +58,11 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
 
   componentDidUpdate: function () {
     this.moveArrow();
-    this.displayTabByPath();
-  },
-
-  componentWillMount: function () {
-    this.displayTabByPath();
   },
 
   startNewSession: function (e) {
     e.preventDefault();
     SessionAPI.getSessionInfo('');
-  },
-
-
-  displayTabByPath: function () {
-    var page = _.compact(window.location.pathname.split('/'))[0];
-    if (!page) {
-      page = 'data';
-    }
-    if (!AppStore.isPage(page)) {
-      NavActions.goToPage(page, this.params);
-    }
   },
 
   moveArrow: function () {

@@ -14,6 +14,7 @@ var SunburstStore = require("stores/SunburstStore");
 var SunburstChartD3 = require('utils/d3utils/SunburstChartD3');
 var SessionAPI = require('utils/SessionAPI');
 var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFilterTagsQueryBuilder');
+var SunburstServerActions = require('actions/DataToolPage/SunburstServerActions');
 
 
 var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
@@ -57,6 +58,7 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
     SunburstStore.addSelectedChangeListener(this._onSelectedChange);
 
     this.initTabs();
+    SunburstServerActions.initData();
   },
 
   componentWillUnmount: function() {

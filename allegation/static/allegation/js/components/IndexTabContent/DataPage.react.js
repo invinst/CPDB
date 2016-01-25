@@ -8,7 +8,6 @@ var NavActions = require('actions/NavActions');
 var DataPage = React.createClass({
   componentDidMount: function () {
     AppStore.addChangeSessionListener(this.onChangeSession);
-    NavActions.initDataTool();
   },
 
   componentWillUnmount: function () {

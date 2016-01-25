@@ -11,6 +11,7 @@ var RaceGenderTabStore = require('stores/DataToolPage/RaceGenderTab/RaceGenderTa
 
 var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFilterTagsQueryBuilder');
 var RaceGenderAPITransformation = require('utils/RaceGenderAPITransformation');
+var RaceGenderTabServerActions = require('actions/DataToolPage/RaceGenderTabServerActions');
 
 
 var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
@@ -19,6 +20,7 @@ var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
   componentDidMount: function() {
     RaceGenderTabStore.addChangeListener(this._onChange);
     this.initTabs();
+    RaceGenderTabServerActions.initData();
   },
 
   initTabs: function () {
