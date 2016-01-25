@@ -114,7 +114,6 @@ var OfficerPage = React.createClass({
                 transitionEnterTimeout={500}
                 transitionLeaveTimeout={500}>
               { this.renderRelatedOfficers(relatedOfficers) }
-              <StoryList officer={officer} />
             </ReactCSSTransitionGroup>
             <StoryList officer={officer} />
           </div>
