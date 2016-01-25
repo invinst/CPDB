@@ -177,20 +177,11 @@ class RaceGenderTabTest(BaseLiveTestCase):
         self.officer_gender_chart_block('.female').click()
         self.until_ajax_complete()
 
-        # other sections in officer gender chart fade out
         other_sections = ['male', 'trans']
-        [
-            self.find('.officer-gender-chart .{section}'.format(section=section))
-                .has_class('inactive').should.be.true
-            for section in other_sections
-        ]
+        [self.assert_active(section) for section in other_sections]
 
-        # other charts do not fade out
         other_charts = ['complaint-gender-chart', 'complaint-race-chart', 'officer-race-chart']
-        [
-            len(self.find_all('.{chart} .inactive'.format(chart=chart))).should.equal(0)
-            for chart in other_charts
-        ]
+        [self.assert_inactive(chart) for chart in other_charts]
 
     def complainant_gender_chart_block(self, block_class):
         block_css_class = '.complaint-gender-chart {block_class}'\
@@ -229,3 +220,10 @@ class RaceGenderTabTest(BaseLiveTestCase):
         percent = int(ratio * 100)
         text = "%d" % percent
         return "{label} {percent}".format(label=label, percent=text)
+
+    def assert_active(self, section):
+         return self.find('.officer-gender-chart .{section}'.format(section=section)).\
+             has_class('inactive').should.be.true
+
+    def assert_inactive(self, chart):
+        len(self.find_all('.{chart} .inactive'.format(chart=chart))).should.equal(0)

@@ -25,11 +25,13 @@ var PercentageRectangleChart = React.createClass({
   },
 
   clickHandler: function (blockData) {
+    var RACE_FILTERS = ['Complainant Race', 'Officer Race'];
     var category = this.props.category;
     var filter = this.props.filter;
     var vals = typeof(blockData['filterValue']) == 'object' ? blockData['filterValue'] : [blockData['filterValue']];
     var text = blockData['label'];
-    var useValueAsText = (category == 'Complainant Race') || (category == 'Officer Race');
+
+    var useValueAsText = _(RACE_FILTERS).contains(category);
 
     var tags = vals.map(function (value) {
       text = useValueAsText ? value : text;
