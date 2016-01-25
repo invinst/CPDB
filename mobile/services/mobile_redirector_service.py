@@ -2,6 +2,7 @@ import inspect
 
 from common.models import Officer, Allegation
 
+
 def active_for(filter):
     def active_for_decorator(func):
         def func_wrapper(self):
@@ -26,7 +27,6 @@ class DesktopToMobileRedirectorMixin(object):
 
 
 class OfficerSessionDesktopToMobileRedirector(DesktopToMobileRedirectorMixin):
-
     @active_for('officer')
     def _redirect_officer_id_only_session(self, values):
         officers = Officer.objects.filter(id__in=values)
@@ -39,7 +39,6 @@ class OfficerSessionDesktopToMobileRedirector(DesktopToMobileRedirectorMixin):
 
 
 class AllegationSessionDesktopToMobileRedirector(DesktopToMobileRedirectorMixin):
-
     @active_for('allegation__crid')
     def _redirect_allegation_crid_only_session(self, values):
         values = self.filters['allegation__crid'].get('value', [])
@@ -48,11 +47,8 @@ class AllegationSessionDesktopToMobileRedirector(DesktopToMobileRedirectorMixin)
 
 
 class DesktopToMobileRedirectorService(object):
-    def __init__(self):
-        self.redirectors = [
-            OfficerSessionDesktopToMobileRedirector,
-            AllegationSessionDesktopToMobileRedirector
-        ]
+    def __init__(self, redirectors):
+        self.redirectors = redirectors or []
 
     def register(self, redirector):
         self.redirectors.append(redirector)
