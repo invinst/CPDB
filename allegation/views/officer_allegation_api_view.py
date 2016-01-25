@@ -104,8 +104,6 @@ class OfficerAllegationAPIView(View):
 
     def get(self, request):
         officer_allegations = self.get_officer_allegations()
-        officer_allegations = officer_allegations.null_last_order_by(
-            '-allegation__incident_date', '-start_date', 'allegation__crid')
         officer_allegations = officer_allegations.select_related('cat')
         start, end = self.get_fetch_range(request, officer_allegations)
 
