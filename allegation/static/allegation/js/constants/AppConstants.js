@@ -1,5 +1,5 @@
 if (!global.DEFAULT_SITE_TITLE) {
-  global.DEFAULT_SITE_TITLE = '';
+  global.DEFAULT_SITE_TITLE = 'Citizens Police Data Project';
 }
 if (!global.STORY_TYPES_ORDER) {
   global.STORY_TYPES_ORDER = '';
@@ -70,7 +70,6 @@ module.exports = {
   DOWNLOAD_PROCESS: c++,
   GENERATED_DOWNLOAD: c++,
 
-  INIT_DATA_TOOL: c++,
   NAV_GO_TO_PAGE: c++,
 
   MAP_CHANGE_MARKERS: c++,
@@ -299,6 +298,24 @@ module.exports = {
 
   DEFAULT_SITE_TITLE: DEFAULT_SITE_TITLE,  // from global variable
   STORY_TYPES_ORDER: STORY_TYPES_ORDER,  // from global variable
+  DEFAULT_NAV_TABS: [
+    {
+      name: 'data',
+      display: 'Data'
+    },
+    {
+      name: 'method',
+      display: 'Collaboration'
+    },
+    {
+      name: 'story',
+      display: 'Backstory'
+    },
+    {
+      name: 'findings',
+      display: 'Findings'
+    }
+  ],
 
   MEDIA_URL: '/media/',
 

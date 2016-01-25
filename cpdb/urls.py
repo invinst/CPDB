@@ -37,7 +37,7 @@ urlpatterns = [
     url(r'^/session/(?P<hash_id>[\w-]+)/$', ensure_csrf_cookie(AllegationListView.as_view()), name='homepage-share'),
     url(r'^/session/(?P<hash_id>[\w-]+)/(?P<slugified_url>[\w-]+)$',
         ensure_csrf_cookie(AllegationListView.as_view()), name='homepage-share-with-title'),
-    url(r'^(findings|story|method|data(/\w+/(.+)?)?|officer/[^/]+/\d+|investigator/[^/]+/\d+)?$',
+    url(r'^(findings|story|method|data(/\w+/(.+)?)?|officer/[^/]+/\d+|investigator/[^/]+/\d+)?/?$',
        ensure_csrf_cookie(AllegationListView.as_view()), name='homepage'),
 
     url(r'^wagtail-admin/', include(wagtailadmin_urls)),

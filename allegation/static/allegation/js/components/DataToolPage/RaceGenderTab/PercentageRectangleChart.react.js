@@ -1,7 +1,6 @@
 var cx = require('classnames');
 var d3 = require('d3');
 var React = require('react');
-var ReactDOM = require('react-dom');
 var FilterTagsActions = require("actions/FilterTagsActions");
 var D3PercentageRectangleChart = require("utils/d3utils/PercentageRectangleChart");
 
@@ -12,8 +11,23 @@ var PercentageRectangleChart = React.createClass({
     };
   },
 
+  drawPercentageRectangleChart: function () {
+    var className = '.' + this.state.uniqueId;
+
+    D3PercentageRectangleChart.draw(
+      this.props.data,
+      this.props.options,
+      className,
+      this.clickHandler
+    );
+  },
+
+  componentDidMount: function () {
+    this.drawPercentageRectangleChart();
+  },
+
   componentDidUpdate: function() {
-    D3PercentageRectangleChart.draw(this.props.data, this.props.options, '.' + this.state.uniqueId, this.clickHandler);
+    this.drawPercentageRectangleChart();
   },
 
   render: function () {

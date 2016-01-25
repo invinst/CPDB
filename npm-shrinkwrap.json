@@ -1055,6 +1055,11 @@
       "from": "react-addons-css-transition-group@>=0.14.3 <0.15.0",
       "resolved": "https://registry.npmjs.org/react-addons-css-transition-group/-/react-addons-css-transition-group-0.14.6.tgz"
     },
+    "react-addons-pure-render-mixin": {
+      "version": "0.14.6",
+      "from": "react-addons-pure-render-mixin@>=0.14.6 <0.15.0",
+      "resolved": "https://registry.npmjs.org/react-addons-pure-render-mixin/-/react-addons-pure-render-mixin-0.14.6.tgz"
+    },
     "react-chartjs": {
       "version": "0.6.0",
       "from": "react-chartjs@>=0.6.0 <0.7.0",
