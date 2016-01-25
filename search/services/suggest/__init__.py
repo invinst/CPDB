@@ -41,7 +41,8 @@ class SuggestBase(object):
 
     @classmethod
     def build_filter(cls, category, value):
-        return '{category}={value}'.format(category=category, value=value)
+        processed_value = value or 'null'
+        return '{category}={value}'.format(category=category, value=processed_value)
 
     @classmethod
     def _query_database(cls, model_cls, condition, fields_to_get, limit=5, order_bys=None):

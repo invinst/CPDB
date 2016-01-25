@@ -73,6 +73,9 @@ class OfficerAllegationQueryBuilder(object):
                 val_list = query_params.getlist(key)
                 sub_queries = Q()
                 for val in val_list:
+                    if val.lower() in ('none', 'null'):
+                        val = True
+                        key = "%s__isnull" % key
                     sub_queries |= Q(**{key: val})
                 queries &= sub_queries
 
