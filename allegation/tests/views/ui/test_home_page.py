@@ -1,12 +1,9 @@
 import json
 
-from selenium.webdriver.common.keys import Keys
 from wagtail.wagtailcore.models import Site
 
 from allegation.factories import (
-    AllegationFactory, AllegationCategoryFactory,
-    OfficerAllegationFactory)
-from api.models import Setting
+    AllegationCategoryFactory, OfficerAllegationFactory)
 from common.tests.core import BaseLiveTestCase
 from common.utils.haystack import rebuild_index
 from share.models import Session
@@ -281,7 +278,8 @@ class HomePageTestCase(BaseLiveTestCase):
             {
                 'value': [
                     {
-                        'value': '<p>{content}</p>'.format(content=body_content),
+                        'value': '<p>{content}</p>'.format(
+                            content=body_content),
                         'type': 'half_paragraph'
                     }
                 ],
@@ -289,9 +287,13 @@ class HomePageTestCase(BaseLiveTestCase):
             }
         ])
         HomePage.get_tree().all().delete()
-        root = HomePage.add_root(instance=HomePageFactory.build(title='Root'))
-        homepage = root.add_child(instance=HomePageFactory.build(title='child', body=body))
-        default_site = Site.objects.create(is_default_site=True, root_page=root, hostname='localhost')
+        root = HomePage.add_root(instance=HomePageFactory.build(
+            title='Root', slug='root'))
+        homepage = root.add_child(
+            instance=HomePageFactory.build(
+                title='child', body=body, slug='child'))
+        Site.objects.create(
+            is_default_site=True, root_page=root, hostname='localhost')
 
         self.visit_home(fresh=True)
         self.should_see_text(homepage.title)
