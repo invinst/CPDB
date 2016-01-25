@@ -58,6 +58,7 @@ var RootRouter = React.createClass({
               </Route>
             </Route>
           </Route>
+
           <Route path="officer">
             <Route path=":slug">
               <Route path=":id" component={OfficerPage}>

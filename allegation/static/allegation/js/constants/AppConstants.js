@@ -1,5 +1,5 @@
 if (!global.DEFAULT_SITE_TITLE) {
-  global.DEFAULT_SITE_TITLE = '';
+  global.DEFAULT_SITE_TITLE = 'Citizens Police Data Project';
 }
 if (!global.STORY_TYPES_ORDER) {
   global.STORY_TYPES_ORDER = '';
