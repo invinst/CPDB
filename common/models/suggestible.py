@@ -1,17 +1,15 @@
 from django.template.defaultfilters import slugify
 
 
-class HadMobileUrl(object):
+class MobileSuggestible(object):
     def get_mobile_url(self):
         raise NotImplementedError
 
-
-class MobileSuggestible(object):
     def as_suggestion_entry(self):
         raise NotImplementedError
 
 
-class MobileSuggestibleOfficer(HadMobileUrl, MobileSuggestible):
+class MobileSuggestibleOfficer(MobileSuggestible):
     def get_mobile_url(self):
         slugified_display_name = slugify(self.display_name)
         return '/mobile/officer/{display_name}/{id}'.format(
@@ -32,7 +30,7 @@ class MobileSuggestibleOfficer(HadMobileUrl, MobileSuggestible):
         }
 
 
-class MobileSuggestibleAllegation(HadMobileUrl, MobileSuggestible):
+class MobileSuggestibleAllegation(MobileSuggestible):
     def get_mobile_url(self):
         return '/mobile/complaint/{crid}'.format(crid=self.crid)
 
