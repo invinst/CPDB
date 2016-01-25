@@ -6,7 +6,7 @@ import inspect
 
 from allegation.utils.query import OfficerQuery
 from common.constants import FOIA_START_DATE
-from common.models import OUTCOMES, ComplainingWitness, Allegation
+from common.models import OUTCOMES, Allegation
 
 
 NO_DISCIPLINE_CODES = ('600', '000', '500', '700', '800', '900', '')
