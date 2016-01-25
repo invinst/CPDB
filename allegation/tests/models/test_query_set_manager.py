@@ -1,8 +1,6 @@
-import datetime
-
-from allegation.factories import AllegationFactory, OfficerAllegationFactory
+from allegation.factories import AllegationFactory
 from common.tests.core import SimpleTestCase
-from common.models import Allegation, OfficerAllegation
+from common.models import Allegation
 
 
 class QuerySetManagerTestCase(SimpleTestCase):
@@ -54,22 +52,3 @@ class QuerySetManagerTestCase(SimpleTestCase):
         document_ids = Allegation.objects.filter(crid=allegation.crid)\
             .values_list('document_id', flat=True)
         all([doc_id == 1 for doc_id in document_ids]).should.be.true
-
-    def test_null_last_order_by(self):
-        OfficerAllegationFactory(start_date=datetime.datetime(2010, 11, 1))
-        OfficerAllegationFactory(start_date=None)
-
-        [o.start_date for o in
-         OfficerAllegation.objects.all().null_last_order_by('-start_date')].index(None).should.equal(1)
-        [o.start_date for o in
-         OfficerAllegation.objects.all().null_last_order_by('start_date')].index(None).should.equal(0)
-
-        OfficerAllegation.objects.all().delete()
-
-        OfficerAllegationFactory(allegation=AllegationFactory(incident_date=datetime.datetime(2011, 10, 1)))
-        OfficerAllegationFactory(allegation=AllegationFactory(incident_date=None))
-
-        [o.allegation.incident_date for o in
-         OfficerAllegation.objects.all().null_last_order_by('-allegation__incident_date')].index(None).should.equal(1)
-        [o.allegation.incident_date for o in
-         OfficerAllegation.objects.all().null_last_order_by('allegation__incident_date')].index(None).should.equal(0)
