@@ -42,7 +42,7 @@
     "react-infinite": "^0.6.0",
     "react-medium-editor": "^1.6.1",
     "react-mini-router": "^2.0.0",
-    "react-router": "^1.0.0",
+    "react-router": "^2.0.0-rc5",
     "react-select": "^0.6.12",
     "react-tag-input": "^2.0.2",
     "react-tooltip": "^1.0.3",
