@@ -6,7 +6,7 @@ from django.utils import timezone
 
 from allegation.factories import (
     AreaFactory, ComplainingWitnessFactory, AllegationFactory,
-    OfficerAllegationFactory)
+    OfficerAllegationFactory, InvestigatorFactory)
 from allegation.tests.views.base import OfficerAllegationApiTestBase
 from common.models import (
     Allegation, Officer, Area,
@@ -343,3 +343,17 @@ class OfficerAllegationApiViewTestCase(
         len(data).should.equal(3)
         [obj['allegation']['id'] for obj in data]\
             .shouldnt.contain(allegation.id)
+
+    def test_invalid_investigator_count(self):
+        investigator = InvestigatorFactory(complaint_count=100, discipline_count=99)
+        allegation = AllegationFactory(investigator=investigator)
+        OfficerAllegationFactory(allegation=allegation, final_outcome=DISCIPLINE_CODES[0], final_finding='SU')
+        OfficerAllegationFactory(allegation=AllegationFactory(investigator=investigator),
+                                 final_outcome=NO_DISCIPLINE_CODES[0])
+
+        data = self.fetch_officer_allegations(allegation__investigator=investigator.id)
+
+        data[0]['investigator']['complaint_count'].should.equal(2)
+        data[0]['investigator']['discipline_count'].should.equal(1)
+
+
