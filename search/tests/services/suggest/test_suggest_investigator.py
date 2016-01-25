@@ -1,4 +1,5 @@
 from allegation.factories import InvestigatorFactory
+from common.models import OfficerAllegation
 from search.tests.services.suggest.test_suggest_base import SuggestBaseTestCase
 from search.services.suggest.suggest_investigator import SuggestInvestigator
 
@@ -9,7 +10,8 @@ class SuggestInvestigatorTestCase(SuggestBaseTestCase):
 
         self.rebuild_index()
 
-        expect_investigator_label = '{name} ({count})'.format(name=investigator.name, count=investigator.complaint_count)
+        num_allegations = OfficerAllegation.objects.filter(allegation__investigator=investigator).count()
+        expect_investigator_label = '{name} ({count})'.format(name=investigator.name, count=num_allegations)
 
         suggest_entry = SuggestInvestigator.query('neu')['Investigator'][0]
         suggest_entry['label'].should.be.equal(expect_investigator_label)
@@ -22,8 +24,10 @@ class SuggestInvestigatorTestCase(SuggestBaseTestCase):
 
         self.rebuild_index()
 
-        expect_investigator1 = '{name} ({count})'.format(name=investigator1.name, count=investigator1.complaint_count)
-        expect_investigator2 = '{name} ({count})'.format(name=investigator2.name, count=investigator2.complaint_count)
+        num_allegations1 = OfficerAllegation.objects.filter(allegation__investigator=investigator1).count()
+        num_allegations2 = OfficerAllegation.objects.filter(allegation__investigator=investigator2).count()
+        expect_investigator1 = '{name} ({count})'.format(name=investigator1.name, count=num_allegations1)
+        expect_investigator2 = '{name} ({count})'.format(name=investigator2.name, count=num_allegations2)
 
         suggest_entries = SuggestInvestigator.query('neu')['Investigator']
         suggest_entries[0]['label'].should.be.equal(expect_investigator1)

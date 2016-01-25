@@ -9,8 +9,9 @@ from faker import Faker
 from allegation.models import Download
 from common.models import (
     AllegationCategory, Officer, Area, Allegation, Investigator,
-    ComplainingWitness, RACES, OUTCOMES, PoliceWitness, GENDER_DICT,
-    RACES_DICT, FINDINGS, OfficerAllegation)
+    ComplainingWitness,  PoliceWitness, OfficerAllegation)
+from common.constants import (
+    RACES, OUTCOMES, GENDER_DICT,RACES_DICT, FINDINGS)
 
 fake = Faker()
 
