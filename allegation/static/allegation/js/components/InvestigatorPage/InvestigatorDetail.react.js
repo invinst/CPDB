@@ -27,7 +27,7 @@ var InvestigatorDetail = React.createClass({
   },
 
   render: function () {
-    var investigator = this.props.investigator;
+    var investigator = this.props.data.investigator;
     var chartColors = this.getChartColors();
     var chartData = this.getChartData();
 
