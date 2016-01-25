@@ -2,7 +2,6 @@ from django.core.urlresolvers import reverse
 
 from django.test import SimpleTestCase
 from rest_framework.status import HTTP_301_MOVED_PERMANENTLY
-from django.template.defaultfilters import slugify
 
 from allegation.factories import OfficerFactory, AllegationFactory
 from mobile.constants import DEFAULT_REDIRECT_URL
