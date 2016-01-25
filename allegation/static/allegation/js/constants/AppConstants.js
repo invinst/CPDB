@@ -87,6 +87,7 @@ module.exports = {
   MAP_TYPE: 'datamade.7e795301',
 
   WAGTAIL_PAGES_RECEIVED_DATA: c++,
+  CHANGE_WAGTAIL_PAGE: c++,
 
   NUMERAL_FORMAT: '0,0',
 

@@ -18,7 +18,14 @@ var SessionAPI = require('utils/SessionAPI');
 var SiteTitle = require('components/Shared/SiteTitle.react');
 var WagtailPagesStore = require('stores/WagtailPagesStore');
 
-var Nav = React.createClass(_.assign(Base(AppStore), {
+
+var Nav = React.createClass({
+  getInitialState: function () {
+    return _.extend({}, AppStore.getState(), {
+      wagtailPages: WagtailPagesStore.getWagtailPages()
+    });
+  },
+
   getDefaultProps: function () {
     return {
       page: 'data',
@@ -64,10 +71,24 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
   componentDidMount: function () {
     this.moveArrow();
     AppStore.addChangeListener(this._onChange);
+    WagtailPagesStore.addChangeListener(this._receiveWagtailPage);
+  },
+
+  componentWillUnmount: function () {
+    AppStore.removeChangeListener(this._onChange);
+    WagtailPagesStore.removeChangeListener(this._receiveWagtailPage);
   },
 
   componentDidUpdate: function () {
     this.moveArrow();
+  },
+
+  _onChange: function () {
+    this.setState(AppStore.getState());
+  },
+
+  _receiveWagtailPage: function () {
+    this.setState({wagtailPages:WagtailPagesStore.getWagtailPages()});
   },
 
   startNewSession: function (e) {
@@ -104,15 +125,19 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
   renderWagtailTabs: function () {
     var that = this;
 
-    return this.state.wagtailPages.map(function (wagtailPage, index) {
-      var wagtailPageTo = '/' + wagtailPage.slug;
+    if (this.state.wagtailPages) {
+      return this.state.wagtailPages.map(function (wagtailPage, index) {
+        var wagtailPageTo = '/' + wagtailPage.slug;
 
-      return (
-        <li className={that.getNavClass(wagtailPage.slug)} key={index}>
-          <Link onClick={that.goToPage.bind(that, wagtailPage.slug)} to={wagtailPageTo}>{wagtailPage.title}</Link>
-        </li>
-      );
-    });
+        return (
+          <li className={that.getNavClass(wagtailPage.slug)} key={index}>
+            <Link onClick={that.goToPage.bind(that, wagtailPage.slug)} to={wagtailPageTo}>{wagtailPage.title}</Link>
+          </li>
+        );
+      });
+    }
+
+    return '';
   },
 
   renderTitleBox: function () {
@@ -204,6 +229,6 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
       </div>
     );
   }
-}));
+});
 
 module.exports = Nav;

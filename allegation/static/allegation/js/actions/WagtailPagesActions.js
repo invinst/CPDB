@@ -8,6 +8,13 @@ var WagtailPagesActions = {
       data: data
     });
   },
+
+  changeWagtailPage: function (wagtailPage) {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.CHANGE_WAGTAIL_PAGE,
+      wagtailPage: wagtailPage
+    });
+  }
 };
 
 module.exports = WagtailPagesActions;

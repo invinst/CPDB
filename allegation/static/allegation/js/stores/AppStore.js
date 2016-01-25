@@ -11,8 +11,7 @@ var CHANGE_SESSION_EVENT = 'CHANGE_SESSION_EVENT';
 var _state = {
   page: 'data',
   session_title: null,
-  session_hash: null,
-  wagtailPages: []
+  session_hash: null
 };
 
 
@@ -93,11 +92,6 @@ AppStore.dispatcherToken = AppDispatcher.register(function (action) {
 
     case AppConstants.UPDATE_TITLE:
       _state.session_title = action.title;
-      AppStore.emitChange();
-      break;
-
-    case AppConstants.WAGTAIL_PAGES_RECEIVED_DATA:
-      _state.wagtailPages = action.data.pages;
       AppStore.emitChange();
       break;
 

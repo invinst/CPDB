@@ -20,6 +20,7 @@ var MethodPage = require('components/IndexTabContent/MethodPage.react');
 var StoryPage = require('components/IndexTabContent/StoryPage.react');
 var SessionAPI = require('utils/SessionAPI');
 var StringUtil = require('utils/StringUtil');
+var WagtailPage = require('components/WagtailPage.react');
 
 // disable scroll restoration
 if (history.scrollRestoration){
@@ -71,7 +72,7 @@ var RootRouter = React.createClass({
               </Route>
             </Route>
           </Route>
-          <Route path="/:page" component={IndexPage}>
+          <Route path="/:page" component={WagtailPage}>
           </Route>
         </Route>
       </Router>
