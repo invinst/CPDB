@@ -5,82 +5,45 @@ from rest_framework.status import HTTP_301_MOVED_PERMANENTLY
 from django.template.defaultfilters import slugify
 
 from allegation.factories import OfficerFactory, AllegationFactory
+from mobile.constants import DEFAULT_REDIRECT_URL
 from share.factories import SessionFactory
 
 
 class MobileDataToolViewTest(SimpleTestCase):
-    def call_mobile_data_tool_view_with_hash_id(self, hash_id):
+    def request_mobile_data_tool_page(self, hash_id):
         params = {
             'hash_id': hash_id,
-            'slug': 'citizens-police-data-proj'
+            'slug': 'any-slug'
         }
         return self.client.get(reverse('mobile:data-tool', kwargs=params))
 
-    def test_redirect_to_officer_page(self):
+    def test_redirect_desktop_session_to_mobile_detail_page(self):
         officer = OfficerFactory()
-        expected_url_part = '/officer/{officer_name}/{officer_id}'.format(
-            officer_name=slugify(officer.display_name),
-            officer_id=officer.id
-        )
+        session = SessionFactory(query={'filters': {'officer': {'value': [officer.id]}}})
+        expected_url = officer.get_mobile_url()
 
-        query = {
-            'filters': {
-                'officer': {
-                    'value': [officer.id]
-                }
-            }
-        }
+        response = self.request_mobile_data_tool_page(hash_id=session.hash_id)
 
-        session = SessionFactory(query=query)
-        response = self.call_mobile_data_tool_view_with_hash_id(hash_id=session.hash_id)
         response.status_code.should.equal(HTTP_301_MOVED_PERMANENTLY)
-        response.url.should.contain(expected_url_part)
+        response.url.should.contain(expected_url)
 
-    def test_redirect_to_complaint_page(self):
+    def test_redirect_desktop_session_to_mobile_search_page(self):
+        officer = OfficerFactory()
         allegation = AllegationFactory()
-        expected_url_part = '/complaint/{crid}'.format(crid=allegation.crid)
+        session = SessionFactory(query={'filters': {
+            'officer': {'value': [officer.id]},
+            'allegation__crid': {'value': [allegation.crid]}
+        }})
 
-        query = {
-            'filters': {
-                'allegation__crid': {
-                    'value': [allegation.crid]
-                }
-            }
-        }
+        response = self.request_mobile_data_tool_page(hash_id=session.hash_id)
 
-        session = SessionFactory(query=query)
-        response = self.call_mobile_data_tool_view_with_hash_id(hash_id=session.hash_id)
         response.status_code.should.equal(HTTP_301_MOVED_PERMANENTLY)
-        response.url.should.contain(expected_url_part)
+        response.url.should.contain(DEFAULT_REDIRECT_URL)
 
-    def test_redirect_to_not_exist_officer_page(self):
-        fake_officer_id = 123
-        query = {
-            'filters': {
-                'officer': {
-                    'value': [fake_officer_id]
-                }
-            }
-        }
-        session = SessionFactory(query=query)
-        response = self.call_mobile_data_tool_view_with_hash_id(hash_id=session.hash_id)
+    def test_redirect_invalid_desktop_session_to_mobile_search_page(self):
+        bad_hash_id = 'invalidsession'
+
+        response = self.request_mobile_data_tool_page(hash_id=bad_hash_id)
+
         response.status_code.should.equal(HTTP_301_MOVED_PERMANENTLY)
-
-    def test_redirect_officer_page_by_officer_badge(self):
-        officer = OfficerFactory(star=123)
-        expected_url_part = '/officer/{officer_name}/{officer_id}'.format(
-            officer_name=slugify(officer.display_name),
-            officer_id=officer.id
-        )
-
-        query = {
-            'filters': {
-                'officer__star': {
-                    'value': [officer.star]
-                }
-            }
-        }
-        session = SessionFactory(query=query)
-        response = self.call_mobile_data_tool_view_with_hash_id(hash_id=session.hash_id)
-        response.status_code.should.equal(HTTP_301_MOVED_PERMANENTLY)
-        response.url.should.contain(expected_url_part)
+        response.url.should.contain(DEFAULT_REDIRECT_URL)
