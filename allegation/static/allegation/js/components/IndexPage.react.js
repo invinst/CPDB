@@ -127,7 +127,7 @@ var IndexPage = React.createClass({
   render: function() {
     var isActive = this.context.router.isActive;
 
-    var pageClassName = classnames('',{
+    var pageClassName = classnames({
       'scroll-to-top': !isActive('findings')
     });
 

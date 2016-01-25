@@ -11,21 +11,23 @@ var PercentageRectangleChart = React.createClass({
     };
   },
 
-  componentDidMount: function () {
+  drawPercentageRectangleChart: function () {
+    var className = '.' + this.state.uniqueId;
+
     D3PercentageRectangleChart.draw(
       this.props.data,
       this.props.options,
-      '.'+this.state.uniqueId,
+      className,
       this.clickHandler
     );
   },
 
-  shouldComponentUpdate: function () {
-    return true;
+  componentDidMount: function () {
+    this.drawPercentageRectangleChart();
   },
 
   componentDidUpdate: function() {
-    D3PercentageRectangleChart.draw(this.props.data, this.props.options, '.'+this.state.uniqueId, this.clickHandler);
+    this.drawPercentageRectangleChart();
   },
 
   render: function () {

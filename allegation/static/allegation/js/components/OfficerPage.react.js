@@ -80,6 +80,20 @@ var OfficerPage = React.createClass({
     return ((!_.isEqual(nextProps, this.props) || this.stateHasNewUpdates(nextState)));
   },
 
+  renderRelatedOfficers: function (relatedOfficers) {
+    if (relatedOfficers.length) {
+      return <RelatedOfficers relatedOfficers={relatedOfficers} />;
+    }
+    return null;
+  },
+
+  renderComplaintSection: function (officer) {
+    if (officer.discipline_count !== undefined){
+      return <ComplaintSection officer={officer}/>;
+    }
+    return <div className="complaint-list-placeholder"/>;
+  },
+
   render: function () {
     var officer = this.state.data['officer'];
     var relatedOfficers = this.state.data['relatedOfficers'];
@@ -99,10 +113,7 @@ var OfficerPage = React.createClass({
                 transitionName="related-officers"
                 transitionEnterTimeout={500}
                 transitionLeaveTimeout={500}>
-              {relatedOfficers.length
-                ? <RelatedOfficers relatedOfficers={relatedOfficers} />
-                : null
-              }
+              { this.renderRelatedOfficers(relatedOfficers) }
             </ReactCSSTransitionGroup>
             <StoryList officer={officer} />
           </div>
@@ -112,10 +123,7 @@ var OfficerPage = React.createClass({
               transitionName="complaint-list"
               transitionEnterTimeout={500}
               transitionLeaveTimeout={500}>
-            {officer.discipline_count !== undefined
-              ? <ComplaintSection officer={officer}/>
-              : <div className="complaint-list-placeholder"/>
-            }
+            { this.renderComplaintSection(officer) }
           </ReactCSSTransitionGroup>
         </div>
       </div>

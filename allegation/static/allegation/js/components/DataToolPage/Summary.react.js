@@ -105,7 +105,7 @@ var Summary = React.createClass({
           text: subcategory.name,
           value: ['cat__cat_id', subcategory.cat_id]
         };
-        childRows.push(<SummaryChildRow key={subcategory.id} category={category} key={subcategory.id}
+        childRows.push(<SummaryChildRow category={category} key={subcategory.id}
                                         subcategory={subcategory} summary={this}/>);
       }
       var id = "child-rows-" + category.id;

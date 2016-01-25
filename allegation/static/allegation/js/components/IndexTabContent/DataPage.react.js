@@ -21,7 +21,7 @@ var DataPage = React.createClass({
   render: function () {
     return (
       <DataToolPage />
-		);
+    );
   }
 });
 

@@ -328,6 +328,9 @@ var Map = React.createClass({
 
   _onChange: function () {
     var filters = FilterTagStore.getFilters();
+    if (!filters['Area']) {
+      return;
+    }
 
     var values = filters['Area'];
     for (var k in allLayersIndex) {
