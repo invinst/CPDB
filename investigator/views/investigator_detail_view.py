@@ -18,6 +18,8 @@ class InvestigatorDetailView(View):
         return JsonResponse(
             data={
                 'investigator': investigator,
+                'num_disciplined': details['num_disciplined'],
+                'num_allegations': details['num_allegations'],
                 'allegations': details['allegations'],
                 'timeline': details['timeline'],
                 'has_map': details['has_map']
