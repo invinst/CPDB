@@ -7,6 +7,7 @@ var OutcomeAnalysisAPI = require('utils/OutcomeAnalysisAPI');
 var SessionAPI = require('utils/SessionAPI');
 var RaceGenderAPI = require('utils/RaceGenderAPI');
 var SunburstAPI = require('utils/SunburstAPI');
+var MapAPI = require('utils/MapAPI');
 var FilterTagStore = require('stores/FilterTagStore');
 var EmbedStore = require('stores/EmbedStore');
 var MapAPI = require('utils/MapAPI');
@@ -107,7 +108,16 @@ var FilterTagsActions = {
 
   // Temporary function to hold sunburst logic
   saveTags: function () {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.SAVE_TAGS
+    });
     updateSiteData();
+  },
+
+  toggleAllTags: function () {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.TOGGLE_ALL_TAGS,
+    });
   }
 };
 

@@ -25,6 +25,7 @@
     "mapbox.js": "~2.2.1",
     "medium-editor": "^5.8.2",
     "moment": "^2.10.3",
+    "mousetrap": "^1.5.3",
     "numeral": "^1.5.3",
     "object-assign": "^1.0.0",
     "pluralize": "~1.1.2",
@@ -53,7 +54,7 @@
   "devDependencies": {
     "browserify": "^6.2.0",
     "envify": "^3.0.0",
-    "react-addons-perf": "^0.14.3",
+    "react-addons-perf": "0.14.3",
     "react-tools": "~0.13.3",
     "reactify": "^0.15.2",
     "uglify-js": "~2.4.15",

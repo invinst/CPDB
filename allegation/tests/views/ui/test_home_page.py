@@ -135,6 +135,26 @@ class HomePageTestCase(BaseLiveTestCase):
         with self.browser_no_wait():
             self.element_by_tagname_and_text('td', ns).shouldnt.be.ok
 
+    def test_sunburst_remove_tag(self):
+        us = 'Unsustained'
+        ns = 'Not Sustained'
+
+        self.officer_allegation = OfficerAllegationFactory(
+            cat=self.allegation_category, final_outcome='300')
+
+        self.visit_home()
+        self.click_active_tab("Outcomes")
+
+        self.until(lambda: self.should_see_text('Officers (2)'))
+
+        self.click_sunburst_legend(us)
+        self.click_sunburst_legend(ns)
+        self.until(lambda: self.element_by_classname_and_text('filter-name', ns))
+
+        self.find(".tag .remove").click()
+        self.until(lambda: self.element_by_classname_and_text('filter-name', us))
+        self.until(lambda: self.should_see_text('Officers (1)'))
+
     def test_sticky_footer(self):
         officer = self.officer_allegation.officer
         OfficerAllegationFactory.create_batch(40, officer=officer)

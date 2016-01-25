@@ -56,6 +56,7 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
     SunburstStore.addChangeListener(this._onChange);
     SunburstStore.addDataChangeListener(this._onDataChange);
     SunburstStore.addSelectedChangeListener(this._onSelectedChange);
+    SunburstStore.addSunburstZoomedOutListener(this._onZoomedOut);
 
     this.initTabs();
     SunburstServerActions.initData();
@@ -65,6 +66,7 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
     SunburstStore.removeChangeListener(this._onChange);
     SunburstStore.removeDataChangeListener(this._onDataChange);
     SunburstStore.removeSelectedChangeListener(this._onSelectedChange);
+    SunburstStore.removeSunburstZoomedOutListener(this._onZoomedOut);
   },
 
   _onDataChange: function () {
@@ -81,6 +83,13 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
     var selected = SunburstStore.getSelected();
     SunburstChartD3.selectArc(selected);
     SessionAPI.updateSessionInfo({'sunburst_arc': selected.name});
+  },
+
+  _onZoomedOut: function () {
+    // Update session in case a parent arc tag is added
+    setTimeout(function () {
+      FilterTagsActions.saveTags();
+    }, 1);
   },
 
   getChartData: function () {

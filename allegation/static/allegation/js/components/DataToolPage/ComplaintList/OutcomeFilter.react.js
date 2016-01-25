@@ -1,7 +1,8 @@
 var React = require('react');
-var OutcomeFilterItem = require('components/DataToolPage/ComplaintList/OutcomeFilterItem.react');
-var OutcomeAnalysisAPI = require('utils/OutcomeAnalysisAPI');
+
 var AppConstants = require('constants/AppConstants');
+var OutcomeFilterItem = require('components/DataToolPage/ComplaintList/OutcomeFilterItem.react');
+
 
 var OutcomeFilter = React.createClass({
   renderOutcomeFilterItems: function() {
@@ -19,8 +20,9 @@ var OutcomeFilter = React.createClass({
             key={type}
             active={type==activeFilter}
             name={name}
-            quantity={quantity}/>
-        );
+            quantity={quantity}
+            callAPI={this.props.callAPI}/>
+          )
       }
     }
 
