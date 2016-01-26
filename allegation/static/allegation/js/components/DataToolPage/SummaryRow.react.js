@@ -109,7 +109,7 @@ var SummaryRow = React.createClass({
 
     var current = this.props.category;
 
-    FilterTagStore.removeFiltersInCategory('Allegation type');
+    FilterTagsActions.removeCategory('Allegation type');
 
     if (this.isActive(current)) {
       FilterTagsActions.removeTag('Category', current.name);

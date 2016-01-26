@@ -29,7 +29,7 @@ var ComplaintSectionStore = _.assign(Base(_state), {
   hasOutcome: function (outcome) {
     return function(complaint) {
       if (outcome == 'all') return true;
-      if (outcome == 'disciplined') return (complaint.allegation.final_outcome_class == 'disciplined');
+      if (outcome == 'disciplined') return (complaint.officer_allegation.final_outcome_class == 'disciplined');
       return ComplaintSectionStore.finalOutcome(complaint) == AppConstants.FILTERS[outcome];
     };
   },
@@ -43,7 +43,7 @@ var ComplaintSectionStore = _.assign(Base(_state), {
   },
 
   finalOutcome: function (complaint) {
-    var final_finding = complaint.allegation.final_finding;
+    var final_finding = complaint.officer_allegation.final_finding;
 
     if (_(AppConstants.FILTERS).values().contains(final_finding)) {
       return final_finding;
@@ -53,7 +53,7 @@ var ComplaintSectionStore = _.assign(Base(_state), {
   },
 
   isDisciplined: function (complaint) {
-    return complaint.allegation.final_outcome_class == 'disciplined';
+    return complaint.officer_allegation.final_outcome_class == 'disciplined';
   },
 
   analyzeComplaints: function (complaints) {
@@ -82,7 +82,7 @@ AppDispatcher.register(function(action) {
       ComplaintSectionStore.emitChange();
       break;
 
-    case AppConstants.SET_ACTIVE_COMPLAINT_LIST_FILTER:
+    case AppConstants.SET_ACTIVE_COMPLAINT_LIST_FILTER_SUB_PAGE:
       AppDispatcher.waitFor([RelatedOfficersStore.dispatchEvents]);
       ComplaintSectionStore.updateComplaints(action.filter);
       ComplaintSectionStore.emitChange();

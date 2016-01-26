@@ -2,14 +2,14 @@ from django.db.models.query_utils import Q
 
 from allegation.views.officer_allegation_api_view import (
     OfficerAllegationAPIView)
-from common.models import DISCIPLINE_CODES
+from common.constants import DISCIPLINE_CODES
 from document.response import JsonResponse
 
 
 class OfficerAllegationSunburstView(OfficerAllegationAPIView):
     def get(self, request):
         officer_allegations = self.get_officer_allegations(
-            ignore_filters=['final_outcome', 'final_finding'])
+            ignore_filters=['final_outcome', 'final_finding', 'final_finding_text'])
         output = self.fetch_output(self.levels, officer_allegations)
 
         return JsonResponse({
@@ -269,7 +269,7 @@ class OfficerAllegationSunburstView(OfficerAllegationAPIView):
                 'condition': Q(final_outcome='800'),
                 'name': 'Not served (resigned)',
                 'tagValue': {
-                    'label': 'ot served (resigned)',
+                    'label': 'Not served (resigned)',
                     'category': 'Final Outcome',
                     'filter': 'final_outcome',
                     'value': '800',

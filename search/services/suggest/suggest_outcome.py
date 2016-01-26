@@ -1,4 +1,4 @@
-from common.models import OUTCOMES, OUTCOME_TEXT_DICT
+from common.constants import OUTCOMES, OUTCOME_TEXT_DICT
 from search.services.suggest import SuggestBase
 
 

@@ -33,4 +33,3 @@ class MobileSuggestionViewTest(SimpleTestCase):
 
         response, data = self.call_mobile_suggestion_api(params)
         response.status_code.should.equal(HTTP_404_NOT_FOUND)
-

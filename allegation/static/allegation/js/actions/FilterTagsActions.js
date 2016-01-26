@@ -7,6 +7,7 @@ var OutcomeAnalysisAPI = require('utils/OutcomeAnalysisAPI');
 var SessionAPI = require('utils/SessionAPI');
 var RaceGenderAPI = require('utils/RaceGenderAPI');
 var SunburstAPI = require('utils/SunburstAPI');
+var MapAPI = require('utils/MapAPI');
 var FilterTagStore = require('stores/FilterTagStore');
 var EmbedStore = require('stores/EmbedStore');
 
@@ -16,6 +17,7 @@ function updateSiteData(dontUpdateSession) {
   OutcomeAnalysisAPI.getAnalysisInformation();
   RaceGenderAPI.getData();
   SunburstAPI.getData();
+  MapAPI.getMarkers();
   if (!dontUpdateSession) {
     SessionAPI.updateSessionInfo({
       'query': _.assign(FilterTagStore.getSession(), {
@@ -43,7 +45,7 @@ var FilterTagsActions = {
 
   toggleTags: function (category, tags) {
     if (EmbedStore.isEmbedMode()) {
-      return
+      return;
     }
     AppDispatcher.dispatch({
       actionType: AppConstants.TOGGLE_TAGS,
@@ -56,7 +58,7 @@ var FilterTagsActions = {
 
   removeTag: function (category, value, dontUpdateSession) {
     if (EmbedStore.isEmbedMode()) {
-      return
+      return;
     }
     AppDispatcher.dispatch({
       actionType: AppConstants.REMOVE_TAG,
@@ -67,9 +69,19 @@ var FilterTagsActions = {
     updateSiteData(dontUpdateSession);
   },
 
+  removeCategory: function (category) {
+    if (EmbedStore.isEmbedMode()) {
+      return;
+    }
+    AppDispatcher.dispatch({
+      actionType: AppConstants.REMOVE_CATEGORY,
+      category: category
+    });
+  },
+
   removedTag: function (category, filter) {
     if (EmbedStore.isEmbedMode()) {
-      return
+      return;
     }
     AppDispatcher.dispatch({
       actionType: AppConstants.REMOVED_TAG,
@@ -91,6 +103,20 @@ var FilterTagsActions = {
       value: value
     });
     SessionAPI.updateSessionInfo({'query': FilterTagStore.getSession()});
+  },
+
+  // Temporary function to hold sunburst logic
+  saveTags: function () {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.SAVE_TAGS
+    });
+    updateSiteData();
+  },
+
+  toggleAllTags: function () {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.TOGGLE_ALL_TAGS,
+    });
   }
 };
 

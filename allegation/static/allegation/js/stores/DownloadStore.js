@@ -49,6 +49,8 @@ AppDispatcher.register(function (action) {
     case AppConstants.ADD_TAG:
     case AppConstants.REMOVE_TAG:
     case AppConstants.TOGGLE_TAGS:
+    case AppConstants.SUNBURST_SELECT_ARC:
+    case AppConstants.SAVE_TAGS:
     case AppConstants.SET_ACTIVE_OFFICER:
     case AppConstants.RECEIVED_SESSION_DATA:
       AppDispatcher.waitFor([OfficerListStore.dispatchEvent]);
@@ -56,6 +58,7 @@ AppDispatcher.register(function (action) {
       _state.processing = false;
       _state.query = AllegationFetcherQueryBuilder.buildAnalysisOutcomeQuery();
       DownloadStore.emitChange();
+      break;
 
     default:
       break;

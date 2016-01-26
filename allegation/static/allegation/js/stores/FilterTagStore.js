@@ -92,6 +92,33 @@ var FilterTagStore = _.assign(Base(_state), {
     }
   },
 
+  isAllTagsPinned: function () {
+    var allTagsPinned = true;
+    _.forOwn(_state['filters'], function (list, category) {
+      var pinned_tags = _.reduce(list, function (sum, obj) {
+        return sum + (obj.pinned ? 1 : 0);
+      }, 0);
+      if (list.length != pinned_tags) {
+        allTagsPinned = false;
+        return false;
+      }
+    });
+    return allTagsPinned;
+  },
+
+  toggleAllTags: function () {
+    var allTagsPinned = this.isAllTagsPinned();
+    var self = this;
+
+    _.forOwn(_state['filters'], function (list, category) {
+      _.each(list, function (obj) {
+        if (allTagsPinned || !self.isPinned(category, obj.value)) {
+          self.pinFilter(category, obj.value);
+        }
+      });
+    });
+  },
+
   getAll: function (category) {
     if (category) {
       return _.get(_state['filters'], category, []);
@@ -187,8 +214,18 @@ AppDispatcher.register(function (action) {
       FilterTagStore.emitChange();
       break;
 
+    case AppConstants.REMOVE_CATEGORY:
+      FilterTagStore.removeFiltersInCategory(action.category);
+      FilterTagStore.emitChange();
+      break;
+
     case AppConstants.PIN_TAG:
       FilterTagStore.pinFilter(action.category, action.value);
+      FilterTagStore.emitChange();
+      break;
+
+    case AppConstants.TOGGLE_ALL_TAGS:
+      FilterTagStore.toggleAllTags();
       FilterTagStore.emitChange();
       break;
 
@@ -196,6 +233,38 @@ AppDispatcher.register(function (action) {
       session_query = _.get(action.data, 'data.query', {});
       FilterTagStore.setSession(session_query);
       _state['initialized'] = session_query['filters'] || {};
+      FilterTagStore.emitChange();
+      break;
+
+    case AppConstants.SUNBURST_SELECT_ARC:
+      var arc = action.arc;
+      var selected = action.selected;
+
+      var isArcParentSelected = false;
+      var current = selected;
+      while (current.parent) {
+        isArcParentSelected = isArcParentSelected || (arc == current.parent);
+        current = current.parent;
+      }
+
+      if (selected && isArcParentSelected && selected.tagValue) {
+        current = selected;
+        while (current != arc) {
+          FilterTagStore.removeFilter(
+            current.tagValue.category, current.tagValue.label);
+          current = current.parent;
+        }
+      }
+
+      if (arc.tagValue) {
+        if (arc.tagValue.removeParent) {
+          FilterTagStore.removeFilter(
+              arc.parent.tagValue.category, arc.parent.tagValue.label);
+        }
+        FilterTagStore.addFilter(
+            arc.tagValue.category, arc.tagValue.label,
+            arc.tagValue.filter + '=' + arc.tagValue.value);
+      }
       FilterTagStore.emitChange();
       break;
 
