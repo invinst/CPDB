@@ -5,14 +5,8 @@ from django.db.models.query_utils import Q
 import inspect
 
 from allegation.utils.query import OfficerQuery
-from common.constants import FOIA_START_DATE
-from common.models import OUTCOMES, ComplainingWitness, Allegation
-
-
-NO_DISCIPLINE_CODES = ('600', '000', '500', '700', '800', '900', '')
-DISCIPLINE_CODES = [
-    x[0] for x in OUTCOMES
-    if x[0] not in NO_DISCIPLINE_CODES and x[0] is not None]
+from common.constants import FOIA_START_DATE, DISCIPLINE_CODES, NO_DISCIPLINE_CODES
+from common.models import Allegation
 
 
 class OfficerAllegationQueryBuilder(object):
@@ -79,6 +73,9 @@ class OfficerAllegationQueryBuilder(object):
                 val_list = query_params.getlist(key)
                 sub_queries = Q()
                 for val in val_list:
+                    if val.lower() in ('none', 'null'):
+                        val = True
+                        key = "%s__isnull" % key
                     sub_queries |= Q(**{key: val})
                 queries &= sub_queries
 
@@ -254,4 +251,17 @@ class OfficerAllegationQueryBuilder(object):
         elif 'FOIA' in data_source:
             return Q(allegation__incident_date__gte=FOIA_START_DATE)
 
+        return Q()
+
+    def _q_investigator_agency(self, query_params):
+        ranks = query_params.getlist('allegation__investigator__agency', [])
+        if len(ranks) == 0:
+            return Q()
+
+        ranks = [x.lower() for x in ranks]
+
+        if 'ipra' in ranks:
+            return Q(allegation__investigator__agency__icontains='ipra')
+        elif 'iad' in ranks:
+            return Q(allegation__investigator__agency__icontains='iad')
         return Q()

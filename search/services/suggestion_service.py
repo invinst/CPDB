@@ -7,6 +7,7 @@ from search.services.suggest.suggest_allegation_category import SuggestAllegatio
 from search.services.suggest.suggest_area import SuggestArea
 from search.services.suggest.suggest_has import SuggestHas
 from search.services.suggest.suggest_investigator import SuggestInvestigator
+from search.services.suggest.suggest_investigator_agency import SuggestInvestigatorAgency
 from search.services.suggest.suggest_officer import SuggestOfficerName, SuggestOfficerStar, SuggestOfficerUnit, SuggestOfficerRank
 from search.services.suggest.suggest_session_alias import SuggestSessionAlias
 from search.services.suggest.suggest_data_source import SuggestDataSource
@@ -41,6 +42,7 @@ class SuggestionService(object):
             SuggestRepeatOffenders,
             SuggestSessionAlias,
             SuggestHas,
+            SuggestInvestigatorAgency,
         ]
 
     def _make_suggestion(self, q):

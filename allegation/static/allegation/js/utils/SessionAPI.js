@@ -10,6 +10,18 @@ var ajax = null;
 
 
 var SessionAPI = {
+  getSessionInfoRouter: function (session, callback) {
+    var params = {
+      'hash_id': session
+    };
+
+    ajax = $.getJSON(AppConstants.SESSION_API_ENDPOINT, params, function (data) {
+      SessionActions.receivedSessionInfoData(data);
+      ComplaintListAPI.getData();
+      callback(data.data);
+    });
+  },
+
   getSessionInfo: function(session) {
     var params = {
       'hash_id': session

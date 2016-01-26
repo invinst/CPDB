@@ -29,6 +29,10 @@ var SunburstChartD3 = {
     var width = 390;
     var height = 390;
 
+    if (!data) {
+      return;
+    }
+
     radius = Math.min(width, height) / 2.2;
     var color = d3.scale.category20c();
 
