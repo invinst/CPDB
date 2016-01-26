@@ -328,7 +328,8 @@ var Map = React.createClass({
 
   _onChange: function () {
     var filters = FilterTagStore.getFilters();
-    if (!filters['Area']) {
+    if (!filters['Area'] || filters['Area'].length == 0) {
+      _map.fitBounds(_defaultBounds);
       return;
     }
 
