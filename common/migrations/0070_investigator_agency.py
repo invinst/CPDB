@@ -17,4 +17,10 @@ class Migration(migrations.Migration):
             field=models.CharField(choices=[['IPRA', 'IPRA'], ['IAD', 'IAD']], default='IAD', max_length=10),
             preserve_default=False,
         ),
+        migrations.AddField(
+            model_name='investigator',
+            name='unit',
+            field=models.CharField(null=True, blank=True, max_length=50),
+            preserve_default=False,
+        ),
     ]
