@@ -96,14 +96,14 @@ class RaceGenderTabTest(BaseLiveTestCase):
 
         self.ensure_the_correct_gender_data_is_shown(ratio)
 
-    def test_trigger_4_different_filters_when_click_on_other_block(self):
+    def test_trigger_different_filters_when_click_on_other_block(self):
         self.create_allegation_with_races()
         self.go_to_race_gender_tab()
 
         self.find('.officer-race-chart .others text').click()
         self.until_ajax_complete()
 
-        len(self.find_all('.filter-name')).should.equal(4)
+        len(self.find_all('.filter-name')).should.equal(3)
 
     def test_race_chart_by_filter(self):
         analysis_for_complainants = {
@@ -138,6 +138,23 @@ class RaceGenderTabTest(BaseLiveTestCase):
         self.ensure_the_correct_race_data_is_shown(
             analysis_for_complainants, analysis_for_officer, total)
 
+    def test_race_chart_allegation_count(self):
+        complaints_by_class = [
+            ('.white', 1),
+            ('.black', 1),
+            ('.hispanic', 3),
+            ('.others', 3)
+        ]
+
+        self.create_allegation_with_races()
+        self.go_to_race_gender_tab()
+        self.until(self.ajax_complete)
+
+        for class_name, complaints_count in complaints_by_class:
+            self.complainant_race_chart_block(class_name).click()
+            self.until_ajax_complete()
+            self.find('.complaint-count h3 span:nth-child(2)').text.should.equal(str(complaints_count))
+
     def test_toggle_filter_tags(self):
         self.create_allegation_with_genders()
 
@@ -170,6 +187,11 @@ class RaceGenderTabTest(BaseLiveTestCase):
 
     def officer_gender_chart_block(self, block_class):
         block_css_path = ".officer-gender-chart {block_class} text"\
+            .format(block_class=block_class)
+        return self.find(block_css_path)
+
+    def complainant_race_chart_block(self, block_class):
+        block_css_path = ".complaint-race-chart {block_class} text"\
             .format(block_class=block_class)
         return self.find(block_css_path)
 
