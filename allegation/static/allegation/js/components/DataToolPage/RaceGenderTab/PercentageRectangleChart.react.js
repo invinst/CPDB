@@ -12,7 +12,7 @@ var PercentageRectangleChart = React.createClass({
   },
 
   componentDidUpdate: function() {
-    D3PercentageRectangleChart.draw(this.props.data, this.props.options, '.'+this.state.uniqueId, this.clickHandler);
+    D3PercentageRectangleChart.draw(this.props.data, this.props.options, '.' + this.state.uniqueId, this.clickHandler);
   },
 
   render: function () {
@@ -31,8 +31,9 @@ var PercentageRectangleChart = React.createClass({
     var text = blockData['label'];
     var useValueAsText = vals.length > 1;
 
-    var tags = vals.map(function(value) {
+    var tags = vals.map(function (value) {
       text = useValueAsText ? value : text;
+
       return { 'value': text, 'filter': filter + '=' + value };
     });
 

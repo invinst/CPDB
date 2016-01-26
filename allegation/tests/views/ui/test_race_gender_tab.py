@@ -185,6 +185,26 @@ class RaceGenderTabTest(BaseLiveTestCase):
         self.find('.officer-count').text.should.contain('1')
         self.find('.complaint-count').text.should.contain('1')
 
+    def test_dim_out_inactive_sections(self):
+        self.create_allegation_with_races()
+        self.create_allegation_with_genders()
+
+        self.go_to_race_gender_tab()
+        self.until_ajax_complete()
+        self.officer_gender_chart_block('.female').click()
+        self.until_ajax_complete()
+
+        other_sections = ['male', 'trans']
+        [self.assert_active(section) for section in other_sections]
+
+        other_charts = ['complaint-gender-chart', 'complaint-race-chart', 'officer-race-chart']
+        [self.assert_inactive(chart) for chart in other_charts]
+
+    def complainant_gender_chart_block(self, block_class):
+        block_css_class = '.complaint-gender-chart {block_class}'\
+            .format(block_class=block_class)
+        return self.find(block_css_class)
+
     def officer_gender_chart_block(self, block_class):
         block_css_path = ".officer-gender-chart {block_class} text"\
             .format(block_class=block_class)
@@ -222,3 +242,10 @@ class RaceGenderTabTest(BaseLiveTestCase):
         percent = int(ratio * 100)
         text = "%d" % percent
         return "{label} {percent}".format(label=label, percent=text)
+
+    def assert_active(self, section):
+        return self.find('.officer-gender-chart .{section}'.format(section=section)).\
+            has_class('inactive').should.be.true
+
+    def assert_inactive(self, chart):
+        len(self.find_all('.{chart} .inactive'.format(chart=chart))).should.equal(0)
