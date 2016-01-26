@@ -126,7 +126,7 @@ var Legend = React.createClass(_.assign(Base(SunburstStore), {
       return _.map(legends, function (item, key) {
         var total = SunburstStore.getArcSize(item);
         if (!total) {
-          return <tr></tr>;
+          return <tr key={key}></tr>;
         }
 
         var formattedTotal = numeral(total).format(AppConstants.NUMERAL_FORMAT);

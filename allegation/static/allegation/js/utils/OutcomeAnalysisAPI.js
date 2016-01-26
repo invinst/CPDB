@@ -6,16 +6,19 @@ var ajax = null;
 
 var OutcomeAnalysisAPI = {
   getAnalysisInformation: function () {
-    var queryString = AllegationFetcherQueryBuilder.buildQuery();
+    var queryString = AllegationFetcherQueryBuilder.buildQuery('all');
 
     if (queryString) {
       if (ajax) {
         ajax.abort();
       }
 
-      ajax = $.getJSON('/api/officer-allegations/analysis?' + AllegationFetcherQueryBuilder.buildAnalysisOutcomeQuery(), function (data) {
-        OutcomeAnalysisServerActionCreator.receivedAnalysisInformation(data);
-      });
+      ajax = $.getJSON(
+        '/api/officer-allegations/analysis?' + queryString,
+        function (data) {
+          OutcomeAnalysisServerActionCreator.receivedAnalysisInformation(data);
+        }
+      );
     }
   }
 };

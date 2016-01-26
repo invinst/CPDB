@@ -100,10 +100,11 @@ class OfficerAllegationAPIView(View):
                 name=allegation.get_location_display()
             )
 
-            allegation.investigator.complaint_count = investigator_allegation_count_map['complaints']\
-                .get(allegation.investigator_id, 0)
-            allegation.investigator.discipline_count = investigator_allegation_count_map['disciplined']\
-                .get(allegation.investigator_id, 0)
+            if allegation.investigator:
+                allegation.investigator.complaint_count = investigator_allegation_count_map['complaints']\
+                    .get(allegation.investigator_id, 0)
+                allegation.investigator.discipline_count = investigator_allegation_count_map['disciplined']\
+                    .get(allegation.investigator_id, 0)
 
             ret = {
                 'officer_allegation': officer_allegation,

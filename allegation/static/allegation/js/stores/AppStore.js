@@ -5,58 +5,28 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
 var Base = require('../stores/Base');
 
-
-var INIT_DATA_TOOL_EVENT = 'INIT_DATA_TOOL_EVENT';
 var CHANGE_PAGE_EVENT = 'CHANGE_PAGE_EVENT';
 var CHANGE_SESSION_EVENT = 'CHANGE_SESSION_EVENT';
 
 var _state = {
-  isDataToolInit: true,
   page: 'data',
   session_title: null,
   session_hash: null
 };
 
-var AppStore = _.assign(Base(_state), {
-  isDataToolInit: function () {
-    return _state.isDataToolInit;
-  },
 
+var AppStore = _.assign(Base(_state), {
   updatePage: function (page) {
     _state.page = page;
     this.emitChange();
-  },
-
-  removeDataToolInitListener: function(callback) {
-    this.removeListener(INIT_DATA_TOOL_EVENT, callback);
-  },
-
-  addDataToolInitListener: function (callback) {
-    this.on(INIT_DATA_TOOL_EVENT, callback);
-  },
-
-  emitDataToolInit: function () {
-    this.emit(INIT_DATA_TOOL_EVENT);
   },
 
   isPage: function (page) {
     return _state.page == page;
   },
 
-  isStoryPage: function () {
-    return this.isPage('story');
-  },
-
-  isFindingPage: function () {
-    return this.isPage('findings');
-  },
-
   isDataToolPage: function () {
     return this.isPage('data');
-  },
-
-  isMethodPage: function () {
-    return this.isPage('method');
   },
 
   removeChangePageListener: function(callback) {
@@ -83,6 +53,13 @@ var AppStore = _.assign(Base(_state), {
     this.on(CHANGE_SESSION_EVENT, callback);
   },
 
+  getNavTabUrl: function (navTab) {
+    if (navTab == 'data') {
+      return this.getDataToolUrl();
+    }
+    return '/' + navTab + '/';
+  },
+
   getDataToolUrl: function () {
     if (_state.session_hash) {
       if (_state.session_title) {
@@ -91,25 +68,14 @@ var AppStore = _.assign(Base(_state), {
       return '/data/' + _state.session_hash + '/';
     }
     return '/data';
-  },
-
+  }
 });
 
 // Register callback to handle all updates
 AppStore.dispatcherToken = AppDispatcher.register(function (action) {
   switch (action.actionType) {
-    case AppConstants.INIT_DATA_TOOL:
-      if (!_state.isDataToolInit) {
-        _state.isDataToolInit = true;
-        AppStore.emitDataToolInit();
-      }
-      break;
-
     case AppConstants.NAV_GO_TO_PAGE:
       _state.page = action.page;
-      if (action.first) {
-        _state.isDataToolInit = AppStore.isDataToolPage();
-      }
       AppStore.emitChange();
       AppStore.emitChangePage();
       break;

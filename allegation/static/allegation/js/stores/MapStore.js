@@ -83,10 +83,9 @@ AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.MAP_CHANGE_MARKERS:
       _markers = action.markers;
-      if (AppStore.isDataToolInit()) {
-        MapStore.emitBeforeChangeMarker();
-        MapStore.emitChangeMarker();
-      }
+
+      MapStore.emitBeforeChangeMarker();
+      MapStore.emitChangeMarker();
       break;
 
     default:
