@@ -1,4 +1,5 @@
 from allegation.factories import InvestigatorFactory
+from search.services.suggest.suggest_investigator_agency import SuggestInvestigatorAgency
 from common.models import OfficerAllegation
 from search.tests.services.suggest.test_suggest_base import SuggestBaseTestCase
 from search.services.suggest.suggest_investigator import SuggestInvestigator
@@ -32,3 +33,18 @@ class SuggestInvestigatorTestCase(SuggestBaseTestCase):
         suggest_entries = SuggestInvestigator.query('neu')['Investigator']
         suggest_entries[0]['label'].should.be.equal(expect_investigator1)
         suggest_entries[1]['label'].should.be.equal(expect_investigator2)
+
+    def test_suggest_investigator_agency_all(self):
+        suggest_entries = SuggestInvestigatorAgency.query('i')['Investigation Agency']
+
+        len(suggest_entries).should.be.equal(2)
+
+    def test_suggest_investigator_agency_ipra(self):
+        suggest_entries = SuggestInvestigatorAgency.query('ip')['Investigation Agency']
+
+        len(suggest_entries).should.be.equal(1)
+
+    def test_suggest_investigator_agency_iad(self):
+        suggest_entries = SuggestInvestigatorAgency.query('ia')['Investigation Agency']
+
+        len(suggest_entries).should.be.equal(1)
