@@ -60,6 +60,7 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
 
     this.initTabs();
     SunburstServerActions.initData();
+    this.drawSunburst();
   },
 
   componentWillUnmount: function() {
@@ -70,13 +71,7 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
   },
 
   _onDataChange: function () {
-    SunburstChartD3.draw(this.getChartData());
-
-    var selected = SunburstStore.getSelected();
-
-    if (selected) {
-      SunburstChartD3.selectArc(selected);
-    }
+    this.drawSunburst();
   },
 
   _onSelectedChange: function () {
@@ -90,6 +85,16 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
     setTimeout(function () {
       FilterTagsActions.saveTags();
     }, 1);
+  },
+
+  drawSunburst: function () {
+    SunburstChartD3.draw(this.getChartData());
+
+    var selected = SunburstStore.getSelected();
+
+    if (selected) {
+      SunburstChartD3.selectArc(selected);
+    }
   },
 
   getChartData: function () {
