@@ -3,6 +3,8 @@ var ReactDOM = require('react-dom');
 var Router = require('./components/Router.react');
 var Embed = require('./components/DataToolPage/Embed.react');
 
+require('keyboardShortcuts');
+
 
 global.initReact = function () {
   var element = document.getElementById('router');

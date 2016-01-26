@@ -4,6 +4,7 @@ import mock
 from django.core.urlresolvers import reverse
 
 from allegation.factories import InvestigatorFactory
+from common.models import OfficerAllegation
 from common.tests.core import SimpleTestCase
 
 
@@ -12,19 +13,10 @@ class InvestigatorDetailViewTestCase(SimpleTestCase):
     def setUp(self):
         self.investigator = InvestigatorFactory()
 
-    @mock.patch('investigator.views.investigator_detail_view.InvestigatorDetailsService')
-    def test_get_investigator(self, mock_investigator_details_serivce):
-        allegations = 'allegations'
-        timeline = 'timeline'
-        has_map = 'has_map'
+    def test_get_investigator(self):
 
-        details = {
-            'allegations': allegations,
-            'timeline': timeline,
-            'has_map': has_map
-        }
-        mock_investigator_details_serivce.get_details.return_value = details
-
+        allegations = OfficerAllegation.objects.filter(allegation__investigator=self.investigator)
+        disciplined = OfficerAllegation.disciplined.filter(allegation__investigator=self.investigator)
         response = self.client.get(reverse('investigator:detail'), {
             'pk': self.investigator.id
         })
@@ -32,6 +24,7 @@ class InvestigatorDetailViewTestCase(SimpleTestCase):
         response = json.loads(response.content.decode())
 
         response['investigator']['id'].should.equal(self.investigator.id)
-        response['allegations'].should.equal(allegations)
-        response['timeline'].should.equal(timeline)
-        response['has_map'].should.equal(has_map)
+        len(response['allegations']).should.equal(allegations.count())
+        response['num_disciplined'].should.equal(disciplined.count())
+        response.should.contain('timeline')
+        response.should.contain('has_map')

@@ -153,6 +153,17 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
 
         self.check_built_query(query_string, expected_ids)
 
+    def test_has_summary(self):
+        expected_allegations = [
+            OfficerAllegationFactory(
+                allegation=AllegationFactory(summary='Some summary'))]
+        OfficerAllegationFactory()
+
+        query_string = 'has_filters=has:summary'
+        expected_ids = [allegation.id for allegation in expected_allegations]
+
+        self.check_built_query(query_string, expected_ids)
+
     def test_unsustained_final_finding(self):
         expected_allegations = [
             OfficerAllegationFactory(final_finding=code)

@@ -6,7 +6,6 @@ from django.http.response import HttpResponseBadRequest, HttpResponse
 from django.views.generic.base import View
 from search.models.suggestion import SuggestionLog
 
-from search.services.suggestion import Suggestion
 from search.services.suggestion_service import SuggestionService
 
 

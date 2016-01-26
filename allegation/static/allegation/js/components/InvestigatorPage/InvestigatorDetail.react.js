@@ -13,10 +13,9 @@ var InvestigatorDetail = React.createClass({
   },
 
   getChartData: function () {
-    var investigator = this.props.investigator;
     return {
-      'Disciplined': investigator['discipline_count'],
-      'Complaints': investigator['complaint_count']
+      'Disciplined': this.props.data['num_disciplined'],
+      'Complaints': this.props.data['num_allegations']
     }
   },
 
@@ -28,7 +27,7 @@ var InvestigatorDetail = React.createClass({
   },
 
   render: function () {
-    var investigator = this.props.investigator;
+    var investigator = this.props.data.investigator;
     var chartColors = this.getChartColors();
     var chartData = this.getChartData();
 

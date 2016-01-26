@@ -5,14 +5,8 @@ from django.db.models.query_utils import Q
 import inspect
 
 from allegation.utils.query import OfficerQuery
-from common.constants import FOIA_START_DATE
-from common.models import OUTCOMES, ComplainingWitness, Allegation
-
-
-NO_DISCIPLINE_CODES = ('600', '000', '500', '700', '800', '900', '')
-DISCIPLINE_CODES = [
-    x[0] for x in OUTCOMES
-    if x[0] not in NO_DISCIPLINE_CODES and x[0] is not None]
+from common.constants import FOIA_START_DATE, DISCIPLINE_CODES, NO_DISCIPLINE_CODES
+from common.models import Allegation
 
 
 class OfficerAllegationQueryBuilder(object):
@@ -154,6 +148,11 @@ class OfficerAllegationQueryBuilder(object):
     def _q_has_identified(self, query_params):
         if 'has:identified' in query_params.getlist('has_filters', []):
             return Q(officer__isnull=False)
+        return Q()
+
+    def _q_has_summary(self, query_params):
+        if 'has:summary' in query_params.getlist('has_filters', []):
+            return Q(allegation__summary__isnull=False)
         return Q()
 
     def _q_unsustained_final_finding(self, query_params):
