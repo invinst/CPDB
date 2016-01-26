@@ -6,6 +6,10 @@ import csv
 from django.db import models, migrations
 
 
+def do_nothing(*args):
+    pass
+
+
 def set_investigators(apps, schema_editor):
     Allegation = apps.get_model('common', 'allegation')
     Investigator = apps.get_model('common', 'investigator')
@@ -20,10 +24,7 @@ def set_investigators(apps, schema_editor):
             investigator = Investigator.objects.get(raw_name=row[1])
 
         except Investigator.DoesNotExist:
-            print(row, "Does not exist, creating")
-            investigator = Investigator(raw_name=row[1])
-            splitted = row[1].split(",")
-            investigator.name = "{first} {last}".format(first=splitted[1].capitalize(), last=splitted[0].capitalize())
+            continue
 
         investigator.current_rank = row[2]
         investigator.unit = row[3]
@@ -37,7 +38,6 @@ def set_investigators(apps, schema_editor):
         try:
             allegation = Allegation.objects.get(crid=row[0])
         except Allegation.DoesNotExist:
-            print(row, "Does not exist")
             continue
 
         if row[1] in investigator_map:
@@ -52,5 +52,5 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(set_investigators)
+        migrations.RunPython(set_investigators, do_nothing)
     ]
