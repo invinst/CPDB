@@ -17,16 +17,21 @@ var RaceGenderAPITransform = {
       return _(x.toLowerCase()).contains('hispanic');
     });
     var otherFilterValues = _.difference(allFilterValues, _.union(hispanicFilterValues, ['White', 'Black']));
-
-    raceData = _([
-      { label: this.raceLabel('White', isOfficer), value: white, filterValue: 'White'},
-      { label: this.raceLabel('Black', isOfficer), value: black, filterValue: 'Black' },
-      { label: this.raceLabel('Hispanic', isOfficer), value: hispanic, filterValue: hispanicFilterValues },
-      { label: 'Others', value: others, filterValue: otherFilterValues}
-    ]).chain().reject(function(x) { return x.value == 0 }).value();
-
+    var hispanicFilters = _.map(hispanicFilterValues, function (x) {
+      return { value: x, label: x };
+    });
+    var otherFilters = _.map(otherFilterValues, function (x) {
+      return { value: x, label: x };
+    });
     var filterCategory = isOfficer ? 'Officer Race' : 'Complainant Race';
     var hasActiveFilter = FilterTagStore.getAll(filterCategory).length > 0;
+
+    raceData = _([
+      { label: this.raceLabel('White', isOfficer), value: white, filters: [{ value: 'White', label: this.raceLabel('White', isOfficer) }] },
+      { label: this.raceLabel('Black', isOfficer), value: black, filters: [{ value: 'Black', label: this.raceLabel('Black', isOfficer) }] },
+      { label: this.raceLabel('Hispanic', isOfficer), value: hispanic, filters: hispanicFilters },
+      { label: 'Others', value: others, filters: otherFilters }
+    ]).chain().reject(function(x) { return x.value == 0 }).value();
 
     raceData = _.each(raceData, function (item) {
       var isActive = false;
@@ -34,13 +39,9 @@ var RaceGenderAPITransform = {
       if (!hasActiveFilter) {
         isActive = true;
       } else {
-        if (item.label == 'Others') {
-          isActive = _(item.filterValue).reduce(function (active, filter) {
-            return active || FilterTagStore.isInFilter(filterCategory, filter);
-          }, false);
-        } else {
-          isActive = FilterTagStore.isInFilter(filterCategory, item.filterValue);
-        }
+        isActive = _(item.filters).reduce(function (active, filter) {
+          return active && FilterTagStore.isInFilter(filterCategory, filter.label);
+        }, true);
       }
 
       item['active'] = isActive;
@@ -64,7 +65,7 @@ var RaceGenderAPITransform = {
 
       return {
         'label': genderLabel,
-        'filterValue': y,
+        'filters': [{ value: y, label: genderLabel}],
         'value': x,
         'active': !hasActiveFilter || FilterTagStore.isInFilter(filterCategory, genderLabel)
       };

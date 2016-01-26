@@ -185,20 +185,30 @@ class RaceGenderTabTest(BaseLiveTestCase):
         self.find('.officer-count').text.should.contain('1')
         self.find('.complaint-count').text.should.contain('1')
 
-    def test_dim_out_inactive_sections(self):
+    def test_dim_out_inactive_segments(self):
         self.create_allegation_with_races()
         self.create_allegation_with_genders()
 
         self.go_to_race_gender_tab()
         self.until_ajax_complete()
-        self.officer_gender_chart_block('.female').click()
-        self.until_ajax_complete()
 
-        other_sections = ['male', 'trans']
-        [self.assert_active(section) for section in other_sections]
+        for chart in self.find_all('.percentage-rectangle-chart'):
+            # go through each segment, click and check that other segments are dim
+            segment_classes = [
+                segment.get_attribute('class').replace('inactive', '').replace('officers', '').strip()
+                for segment in chart.find_all('g')]
+            for segment_class in segment_classes:
+                chart.find_element_by_css_selector('g.%s' % segment_class).click()
+                self.until_ajax_complete()
+                chart.find_element_by_css_selector('g.%s' % segment_class)\
+                    .has_class('inactive').should.be.false
+                [seg.has_class('inactive').should.be.true
+                 for seg in chart.find_all('g')
+                 if segment_class not in seg.get_attribute('class')]
 
-        other_charts = ['complaint-gender-chart', 'complaint-race-chart', 'officer-race-chart']
-        [self.assert_inactive(chart) for chart in other_charts]
+            # deactivate chart
+            chart.find_element_by_css_selector('g.%s' % segment_class).click()
+            self.until_ajax_complete()
 
     def complainant_gender_chart_block(self, block_class):
         block_css_class = '.complaint-gender-chart {block_class}'\
@@ -242,10 +252,3 @@ class RaceGenderTabTest(BaseLiveTestCase):
         percent = int(ratio * 100)
         text = "%d" % percent
         return "{label} {percent}".format(label=label, percent=text)
-
-    def assert_active(self, section):
-        return self.find('.officer-gender-chart .{section}'.format(section=section)).\
-            has_class('inactive').should.be.true
-
-    def assert_inactive(self, chart):
-        len(self.find_all('.{chart} .inactive'.format(chart=chart))).should.equal(0)
