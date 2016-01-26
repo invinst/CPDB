@@ -35,45 +35,28 @@ var InvestigatorPage = React.createClass(_.assign(Base(InvestigatorPageStore), {
     document.title = investigatorName.toUpperCase();
   },
 
-  renderContent: function () {
+  render: function () {
     var investigator = this.state.data['investigator'];
 
     if (_.isEmpty(investigator)) {
       return (<i className='fa fa-spin fa-spinner' />);
     }
+
     return (
-      <div>
-        <Nav />
-        <div id='officer-profile'>
-          <div className="map-row">
-            <div className="container">
-              <InvestigatorDetail data={this.state.data} />
-            </div>
+      <div id='officer-profile'>
+        <div className="map-row">
+          <div className="container">
+            <InvestigatorDetail data={this.state.data} />
           </div>
-          <div className="white-background">
-            <div className="container">
-              <InvestigationsSection investigator={investigator} />
-            </div>
-          </div>
-          <div className='container-fluid'>
-            <div className='sticky-footer'>
-              <Footer />
-            </div>
+        </div>
+        <div className="white-background">
+          <div className="container">
+            <InvestigationsSection investigator={investigator} />
           </div>
         </div>
       </div>
     );
-  },
-
-  render: function () {
-    return (
-      <div>
-        {this.renderContent()}
-        <Disclaimer />
-        <HappyFox />
-      </div>
-    );
-  },
+  }
 }));
 
 module.exports = InvestigatorPage;

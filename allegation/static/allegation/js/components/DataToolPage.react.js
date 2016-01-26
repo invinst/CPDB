@@ -13,21 +13,11 @@ var OfficerList = require('components/DataToolPage/OfficerList.react');
 var SessionAPI = require('utils/SessionAPI');
 var SessionStore = require('stores/SessionStore');
 var Tabs = require('components/DataToolPage/Tabs.react');
-var Nav = require('components/Shared/Nav.react');
-var HappyFox = require('components/Shared/HappyFox.react');
 var Search = require('components/Shared/Search.react');
 
 
 var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
   componentDidMount: function () {
-    var session = this.props.session || '';
-
-    $('.smooth-scroll').click(function() {
-      var target = $(this).data('target');
-      var top = $(target).offset().top - 100;
-      $("html, body").animate({scrollTop: top}, 500);
-    });
-
     SessionStore.addChangeListener(this._onChange);
 
     this.initStickyFooter();
@@ -120,12 +110,6 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
         <div className={complaintListContainerClassName}>
           <div id='complaint-list'><ComplaintSection /></div>
         </div>
-        <div className='container-fluid'>
-          <div className='sticky-footer'>
-            <Footer withEmbedBar={true}/>
-          </div>
-        </div>
-        <HappyFox />
       </div>
     );
   }
