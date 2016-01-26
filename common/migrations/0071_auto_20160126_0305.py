@@ -48,7 +48,7 @@ def set_investigators(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', '0069_add_timestamp_fields'),
+        ('common', '0070_investigator_agency'),
     ]
 
     operations = [

@@ -7,7 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', '0070_auto_20160126_0305'),
+        ('common', '0069_add_timestamp_fields'),
     ]
 
     operations = [

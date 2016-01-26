@@ -27,7 +27,7 @@ def do_nothing(*args):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', '0070_investigator_agency'),
+        ('common', '0071_auto_20160126_0305'),
     ]
 
     operations = [
