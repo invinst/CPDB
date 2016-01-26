@@ -27,6 +27,8 @@ AppDispatcher.register(function (action) {
     case AppConstants.RECEIVED_SESSION_DATA:
       if (action.data.data.active_tab) {
         _state.activeTab = ifNotMobileChangeMapToOutcome(action.data.data.active_tab);
+      } else {
+        _state.activeTab = defaultTab();
       }
       TabsStore.emitChange();
       break;

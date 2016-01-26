@@ -17,14 +17,14 @@ class OfficerDetailView(View):
         related_query = OfficerAllegation.objects.filter(
             allegation__pk__in=officer_allegations.values_list(
                 'allegation__pk', flat=True))
-        related_query = related_query.exclude(officer_id=officer_id)
+        related_query = related_query.exclude(officer_id=officer_id).exclude(officer_id__isnull=True)
         related_officers_ordered = related_query.values('officer')\
             .annotate(total=Count('allegation__pk')).order_by('-total')
 
         related_witness = PoliceWitness.objects.filter(
             allegation__pk__in=officer_allegations.values_list(
                 'allegation__pk', flat=True))
-        related_witness = related_witness.exclude(officer_id=officer_id)
+        related_witness = related_witness.exclude(officer_id=officer_id).exclude(officer_id__isnull=True)
         related_witness_ordered = related_witness.values('officer')\
             .annotate(total=Count('crid')).order_by('-total')
 
@@ -33,14 +33,15 @@ class OfficerDetailView(View):
             related_officers.append({
                 'num_allegations': related_officer['total'],
                 'witness': False,
-                'officer': Officer.objects.get(pk=related_officer['officer'])})
+                'officer': Officer.objects.get(pk=related_officer['officer'])
+            })
 
         for witness in related_witness_ordered:
-
             related_officers.append({
                 'num_allegations': witness['total'],
                 'witness': True,
-                'officer': Officer.objects.get(pk=witness['officer'])})
+                'officer': Officer.objects.get(pk=witness['officer'])
+            })
 
         related_officers = sorted(
             related_officers, key=lambda n: n['num_allegations'], reverse=True)
