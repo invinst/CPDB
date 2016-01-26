@@ -10,6 +10,7 @@ var SunburstAPI = require('utils/SunburstAPI');
 var MapAPI = require('utils/MapAPI');
 var FilterTagStore = require('stores/FilterTagStore');
 var EmbedStore = require('stores/EmbedStore');
+var MapAPI = require('utils/MapAPI');
 
 
 function updateSiteData(dontUpdateSession) {

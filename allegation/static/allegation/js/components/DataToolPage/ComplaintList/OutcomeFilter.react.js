@@ -34,7 +34,7 @@ var OutcomeFilter = React.createClass({
       <div className='filters'>
         { this.renderOutcomeFilterItems() }
       </div>
-    )
+    );
   }
 });
 

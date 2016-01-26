@@ -2,19 +2,18 @@ require('utils/jQuery');
 
 var AppConstants = require('../constants/AppConstants');
 var RaceGenderTabActions = require('actions/DataToolPage/RaceGenderTabActions');
-var AllegationFetcherQueryBuilder = require('utils/querybuilders/AllegationFetcherQueryBuilder');
+var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFilterTagsQueryBuilder');
 
 var ajax = null;
 
 var RaceGenderAPI = {
   getData: function() {
-    var queryString = AllegationFetcherQueryBuilder.buildQuery();
+    var queryString = AllegationFilterTagsQueryBuilder.buildQuery();
 
     if (ajax) {
       ajax.abort();
     };
 
-    var queryString = AllegationFetcherQueryBuilder.buildQuery('all');
     var url  = AppConstants.RACE_GENDER_API_ENDPOINT + '?' + queryString;
 
     ajax = jQuery.getJSON(url, function(data){

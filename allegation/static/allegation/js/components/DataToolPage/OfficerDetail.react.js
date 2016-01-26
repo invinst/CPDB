@@ -58,7 +58,8 @@ var OfficerDetail = React.createClass({
         </div>
         <ReactCSSTransitionGroup
             transitionName="information"
-            transitionEnterTimeout={500}>
+            transitionEnterTimeout={500}
+            transitionLeaveTimeout={500}>
           {officer.discipline_count !== undefined
             ? <OfficerInformation officer={officer} />
             : <div className='information-placeholder'/>
@@ -69,7 +70,8 @@ var OfficerDetail = React.createClass({
           <div className={columnClass}>
             <ReactCSSTransitionGroup
                 transitionName="timeline"
-                transitionEnterTimeout={500}>
+                transitionEnterTimeout={500}
+                transitionLeaveTimeout={500}>
               {this.props.timelineData.items
                 ? <Timeline data={this.props.timelineData} officer={officer}/>
                 : null
@@ -79,7 +81,8 @@ var OfficerDetail = React.createClass({
           <div className={columnClass}>
             <ReactCSSTransitionGroup
                 transitionName="donut-chart"
-                transitionEnterTimeout={500}>
+                transitionEnterTimeout={500}
+                transitionLeaveTimeout={500}>
               {officer.discipline_count !== undefined
                 ? <DonutChart officer={officer}/>
                 : null
