@@ -21,7 +21,7 @@ var InvestigatorSection = React.createClass({
           </div>
         </div>
       </div>
-    )
+    );
   },
 
   render: function () {
@@ -33,7 +33,7 @@ var InvestigatorSection = React.createClass({
         </div>
         {this.renderInvestigator(investigator)}
       </Wrapper>
-    )
+    );
   }
 });
 

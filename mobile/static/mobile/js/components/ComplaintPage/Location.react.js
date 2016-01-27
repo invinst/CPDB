@@ -1,7 +1,6 @@
 var cx = require('classnames');
 var React = require('react');
 
-var HelperUtil = require('utils/HelperUtil');
 var Map = require('components/ComplaintPage/Location/Map.react');
 var ComplaintService = require('services/ComplaintService');
 var ComplaintPresenter= require('presenters/ComplaintPresenter');

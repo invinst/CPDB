@@ -9,7 +9,7 @@ var FailedSearch = React.createClass({
     var textMessage = 'No matches yet.';
 
     if (!DataTypeUtil.isNumeric(term)) {
-      textMessage = "Sorry, there's no results for your search in the database."
+      textMessage = 'Sorry, there\'s no results for your search in the database.';
     }
 
     return (

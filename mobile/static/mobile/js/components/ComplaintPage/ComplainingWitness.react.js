@@ -1,6 +1,5 @@
 var React = require('react');
 
-var HelperUtil = require('utils/HelperUtil');
 var ComplainingWitnessPresenter = require('presenters/ComplainingWitnessPresenter');
 var Wrapper = require('components/Shared/Wrapper.react');
 

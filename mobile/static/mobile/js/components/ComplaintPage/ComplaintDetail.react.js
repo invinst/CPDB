@@ -1,9 +1,6 @@
 var React = require('react');
 
-var Wrapper = require('components/Shared/Wrapper.react');
 var ComplaintPresenter = require('presenters/ComplaintPresenter');
-var HelperUtil = require('utils/HelperUtil');
-var ComplaintService = require('services/ComplaintService');
 var DocumentLink = require('components/ComplaintPage/DocumentLink.react');
 
 
@@ -11,7 +8,6 @@ var ComplaintDetail = React.createClass({
   render: function () {
     var info = this.props.info || {};
     var complaintPresenter = ComplaintPresenter(info);
-    var complaintService = ComplaintService(info);
 
     return (
       <div className='complaint-detail pad'>

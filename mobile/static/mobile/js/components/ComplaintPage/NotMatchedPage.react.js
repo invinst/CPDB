@@ -15,7 +15,7 @@ var NotMatchedPage = React.createClass({
           search box for new search session.
         </div>
       </div>
-    )
+    );
   }
 });
 

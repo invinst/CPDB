@@ -4,7 +4,6 @@ var cx = require('classnames');
 var OfficerCard = require('components/Shared/OfficerCard.react');
 var HighlightText = require('components/Shared/HighlightText.react');
 var SuggestionPresenter = require('presenters/SuggestionPresenter');
-var OfficerUtil = require('utils/OfficerUtil');
 var AppHistory = require('utils/History');
 
 

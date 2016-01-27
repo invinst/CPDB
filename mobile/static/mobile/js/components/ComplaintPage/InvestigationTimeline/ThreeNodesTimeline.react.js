@@ -44,7 +44,7 @@ var ThreeNodesTimeline = React.createClass({
           </g>
         </g>
       </svg>
-    )
+    );
   }
 });
 

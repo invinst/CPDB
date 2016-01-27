@@ -1,9 +1,6 @@
-var pluralize = require('pluralize');
 var React = require('react');
 var cx = require('classnames');
 
-var OfficerPresenter = require('presenters/OfficerPresenter');
-var Wrapper = require('components/Shared/Wrapper.react');
 var HelperUtil = require('utils/HelperUtil');
 var OfficerUtil = require('utils/OfficerUtil');
 

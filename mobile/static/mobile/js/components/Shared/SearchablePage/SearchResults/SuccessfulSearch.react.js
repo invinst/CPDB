@@ -4,7 +4,6 @@ var OfficerResult = require('components/Shared/SearchablePage/SearchResults/Succ
 var ComplaintResult = require('components/Shared/SearchablePage/SearchResults/SuccessfulSearch/ComplaintResult.react');
 
 var SuggestionPresenter = require('presenters/SuggestionPresenter');
-var DataTypeUtil = require('utils/DataTypeUtil');
 
 
 var SuccessfulSearch = React.createClass({

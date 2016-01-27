@@ -10,7 +10,7 @@ var SimpleTab = React.createClass({
     return {
       'activeIndex': 0,
       'previousIndex': -1
-    }
+    };
   },
 
   setActiveTab: function (index) {
@@ -49,24 +49,24 @@ var SimpleTab = React.createClass({
       var classNames = cx(item.props.className, prefix, {
         'active': (i == self.state.activeIndex),
         'no-animation': (self.state.previousIndex == -1),
-       'reverse-animation': (i > self.state.previousIndex)
+        'reverse-animation': (i > self.state.previousIndex)
       });
 
       return React.cloneElement(item, {
         'key': itemKey,
         className: classNames
       });
-    })
+    });
   },
 
   renderTabNav: function () {
     var navs = this.props.children[0];
-    return this.renderChildren('tab-nav', navs)
+    return this.renderChildren('tab-nav', navs);
   },
 
   renderTabContent: function () {
     var tabs = this.props.children[1];
-    return this.renderChildren('tab-content', tabs)
+    return this.renderChildren('tab-content', tabs);
   },
 
   renderNavigation: function () {

@@ -4,7 +4,6 @@ var objectAssign = require('object-assign');
 
 var Base = require('components/Base.react');
 
-var HelperUtil = require('utils/HelperUtil');
 var SuggestionAPI = require('utils/SuggestionAPI');
 var SearchBarActions = require('actions/MainPage/SearchBarActions');
 var SearchBarStore = require('stores/MainPage/SearchBarStore');
@@ -43,7 +42,7 @@ var SearchBar = React.createClass(objectAssign(Base(SearchBarStore), {
     if (term) {
       SuggestionAPI.get(term);
     }
-    SearchBarStore.addChangeListener(this._onChange)
+    SearchBarStore.addChangeListener(this._onChange);
   },
 
   componentWillUnmount: function () {

@@ -4,8 +4,6 @@ var React = require('react');
 var Base = require('components/Base.react');
 
 var About = require('components/Shared/About.react');
-var SearchResults = require('components/Shared/SearchablePage/SearchResults.react');
-var LoadingPage = require('components/Shared/LoadingPage.react');
 var MainPageContent = require('components/MainPage/MainPageContent.react');
 
 var MainPageStore = require('stores/MainPageStore');
@@ -17,7 +15,7 @@ var MainPage = React.createClass(objectAssign(Base(MainPageStore), {
   getInitialState: function () {
     return {
       'isSearchFocused': 0
-    }
+    };
   },
 
   componentDidMount: function () {
@@ -26,7 +24,7 @@ var MainPage = React.createClass(objectAssign(Base(MainPageStore), {
     var santinizedTerm = term.replace(/\+|\-|\_/g, ' ');
 
     if (santinizedTerm) {
-      SuggestionAPI.get(santinizedTerm)
+      SuggestionAPI.get(santinizedTerm);
     }
   },
 

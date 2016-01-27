@@ -156,7 +156,7 @@ module.exports = {
     '393': 'Gang Enforcement Division',
     '441': 'Special Activities Section',
     '442': 'Bomb Unit',
-    '443': "Bomb Unit - O'Hare Airport'",
+    '443': 'Bomb Unit - O\'Hare Airport\'',
     '541': 'FOP Detail',
     '542': 'Detached Services - Governmental Security Detail',
     '543': 'Detached Services-Miscellaneous Detail',

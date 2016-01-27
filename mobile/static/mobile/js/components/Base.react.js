@@ -17,7 +17,7 @@ var Base = function (Store) {
         this.setState(Store.getState());
       }
     }
-  }
+  };
 };
 
 module.exports = Base;

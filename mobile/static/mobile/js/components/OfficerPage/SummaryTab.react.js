@@ -2,7 +2,6 @@ var React = require('react');
 
 var OfficerSummarySection = require('components/OfficerPage/SummaryTab/OfficerSummarySection.react');
 var OfficerAnalyticSection = require('components/OfficerPage/SummaryTab/OfficerAnalyticSection.react');
-var OfficerPresenter = require('presenters/OfficerPresenter');
 
 
 var SummaryTab = React.createClass({

@@ -10,7 +10,7 @@ var _state = {
     relatedOfficers: [],
     hasMap: false
   }
-}
+};
 
 var OfficerPageStore = _.assign(Base(_state), {
 });

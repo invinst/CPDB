@@ -13,7 +13,7 @@ var SearchablePage = React.createClass(objectAssign(Base(SearchablePageStore), {
   getInitialState: function () {
     return {
       'focus': 0
-    }
+    };
   },
 
   render: function () {
@@ -31,7 +31,7 @@ var SearchablePage = React.createClass(objectAssign(Base(SearchablePageStore), {
           {this.props.children}
         </div>
       </div>
-    )
+    );
   }
 }));
 

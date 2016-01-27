@@ -6,12 +6,10 @@ var OfficerCard = require('components/Shared/OfficerCard.react');
 
 var OfficerPresenter = require('presenters/OfficerPresenter');
 var HelperUtil = require('utils/HelperUtil');
-var OfficerUtil = require('utils/OfficerUtil');
 var AppHistory = require('utils/History');
 
 
 var OfficerInvolved = React.createClass({
-
   _onClick: function (officerPresenter) {
     var officerUrl = HelperUtil.format('/officer/{name}/{id}', {
       'name': officerPresenter.displayName,

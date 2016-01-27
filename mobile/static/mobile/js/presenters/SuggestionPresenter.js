@@ -1,7 +1,4 @@
-var ComplaintService = require('services/ComplaintService');
-var AppConstants = require('constants/AppConstants');
 var HelperUtil = require('utils/HelperUtil');
-var GenderPresenter = require('presenters/GenderPresenter');
 var OfficerPresenter = require('presenters/OfficerPresenter');
 var ComplaintPresenter = require('presenters/ComplaintPresenter');
 
@@ -32,7 +29,7 @@ var SuggestionPresenter = function (suggestion) {
       'allegation': ComplaintPresenter
     };
 
-    return RESOURCE_PRESENTER_MAP[resource()](meta)
+    return RESOURCE_PRESENTER_MAP[resource()](meta);
   };
 
   return {

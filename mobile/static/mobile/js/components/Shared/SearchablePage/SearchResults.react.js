@@ -17,7 +17,7 @@ var SearchResults = React.createClass(objectAssign(Base(SearchResultsStore), {
       'success': false,
       'term': '',
       'suggestions': []
-    }
+    };
   },
 
   render: function () {

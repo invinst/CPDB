@@ -1,3 +1,4 @@
+/*global L*/
 var React = require('react');
 require('mapbox.js');
 
@@ -37,7 +38,7 @@ var Map = React.createClass({
     return(
         <Wrapper wrapperClass='map' visible={!!this.props.info.point}>
         </Wrapper>
-      )
+      );
   }
 });
 

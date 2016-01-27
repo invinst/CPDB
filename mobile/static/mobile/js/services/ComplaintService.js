@@ -35,7 +35,7 @@ var ComplaintService = function (complaint) {
   var startInvestigatingAtIncidentDate = function () {
     // NOTE: We always have investigation date when we already have incident date but the opposite condition is not
     // correct
-    return !startInvestigationDate() || startInvestigationDate().isSame(incidentDate(), 'day')
+    return !startInvestigationDate() || startInvestigationDate().isSame(incidentDate(), 'day');
   };
 
   var hasLocation = function() {
@@ -70,8 +70,8 @@ var ComplaintService = function (complaint) {
     hasFullAddress: hasFullAddress(),
     hasNoData: hasNoData(),
     hasNoIncidentDate: hasNoIncidentDate(),
-    hasDocument: hasDocument(),
-  }
+    hasDocument: hasDocument()
+  };
 };
 
 module.exports = ComplaintService;

@@ -1,22 +1,21 @@
 var objectAssign = require('object-assign');
 var EventEmitter = require('events').EventEmitter;
 
-var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
 
 
 function cloneObject(obj) {
-    var temp;
+  var temp;
 
-    if (obj === null || typeof obj !== 'object') {
-        return obj;
-    }
+  if (obj === null || typeof obj !== 'object') {
+    return obj;
+  }
 
-    temp = obj.constructor();
-    for (var key in obj) {
-        temp[key] = cloneObject(obj[key]);
-    }
-    return temp;
+  temp = obj.constructor();
+  for (var key in obj) {
+    temp[key] = cloneObject(obj[key]);
+  }
+  return temp;
 }
 
 var Base = function(state) {
