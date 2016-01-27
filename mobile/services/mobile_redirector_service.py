@@ -3,14 +3,20 @@ import inspect
 from common.models import Officer, Allegation
 
 
-def active_for(filter):
+def get_filter_value(filter):
+    return filter.split('=')[1]
+
+
+def active_for(type):
     def active_for_decorator(func):
         def func_wrapper(self):
-            if filter in self.filters:
-                values = self.filters[filter].get('value', [])
+            if type in self.filters:
+                values = [get_filter_value(filter_object['filter']) for filter_object in self.filters[type]]
                 return func(self, values)
             return []
+
         return func_wrapper
+
     return active_for_decorator
 
 
@@ -27,21 +33,20 @@ class DesktopToMobileRedirectorMixin(object):
 
 
 class OfficerSessionDesktopToMobileRedirector(DesktopToMobileRedirectorMixin):
-    @active_for('officer')
+    @active_for('Officer')
     def _redirect_officer_id_only_session(self, values):
         officers = Officer.objects.filter(id__in=values)
         return [officer.get_mobile_url() for officer in officers]
 
-    @active_for('officer__star')
+    @active_for('Badge number')
     def _redirect_officer_badge_only_session(self, values):
         officers = Officer.objects.filter(star__in=values)
         return [officer.get_mobile_url() for officer in officers]
 
 
 class AllegationSessionDesktopToMobileRedirector(DesktopToMobileRedirectorMixin):
-    @active_for('allegation__crid')
+    @active_for('Allegation ID')
     def _redirect_allegation_crid_only_session(self, values):
-        values = self.filters['allegation__crid'].get('value', [])
         allegations = Allegation.objects.filter(crid__in=values)
         return [allegation.get_mobile_url() for allegation in allegations]
 

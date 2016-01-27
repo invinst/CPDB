@@ -18,7 +18,8 @@ class MobileDataToolViewTest(SimpleTestCase):
 
     def test_redirect_desktop_session_to_mobile_detail_page(self):
         officer = OfficerFactory()
-        session = SessionFactory(query={'filters': {'officer': {'value': [officer.id]}}})
+        filters = {'Officer': [{'filter': 'officer={officer_id}'.format(officer_id=officer.id)}]}
+        session = SessionFactory(query={'filters': filters})
         expected_url = officer.get_mobile_url()
 
         response = self.request_mobile_data_tool_page(hash_id=session.hash_id)
@@ -29,10 +30,11 @@ class MobileDataToolViewTest(SimpleTestCase):
     def test_redirect_desktop_session_to_mobile_search_page(self):
         officer = OfficerFactory()
         allegation = AllegationFactory()
-        session = SessionFactory(query={'filters': {
-            'officer': {'value': [officer.id]},
-            'allegation__crid': {'value': [allegation.crid]}
-        }})
+        filters = {
+            'Allegation ID': [{'filter': 'allegation__crid={crid}'.format(crid=allegation.crid)}],
+            'Officer': [{'filter': 'officer={officer_id}'.format(officer_id=officer.id)}]
+        }
+        session = SessionFactory(query={'filters': filters})
 
         response = self.request_mobile_data_tool_page(hash_id=session.hash_id)
 
