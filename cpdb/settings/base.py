@@ -1,5 +1,6 @@
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os, sys
+import os
+import sys
 
 from django.core.urlresolvers import reverse_lazy
 
@@ -186,7 +187,7 @@ CACHES = {
 GRAPH_DISTCURVE_NUM_X_TICKS = 6
 GRAPH_DISTCURVE_NUM_Y_TICKS = 4
 MAP_POINT_THRESHOLD = 3
-SHELL_PLUS ='ipython'
+SHELL_PLUS = 'ipython'
 DJANGO_ENV = 'dev'
 
 if len(sys.argv) > 1 and sys.argv[1] == 'test':
@@ -274,4 +275,4 @@ ELASTICSEARCH_SETTINGS = {
 }
 
 if 'test' in sys.argv:
-    from cpdb.settings.test import *
+    from cpdb.settings.test import *  # NOQA

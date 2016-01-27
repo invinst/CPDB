@@ -1,11 +1,8 @@
 import json
-import datetime
+
 from django.db import connection
-from django.db.models.aggregates import Count, Max
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.views.generic.base import View
-
-from search.models.suggestion import SuggestionLog
 
 
 class AdminQueryDataApi(View):
@@ -42,13 +39,14 @@ class AdminQueryDataApi(View):
 
             cursor = connection.cursor()
             cursor.execute('''
-            SELECT DISTINCT search_query, COUNT(search_query) as num_usage, MAX(created_at) as updated_at, MAX(num_suggestions) as max_num_suggestions
+            SELECT DISTINCT search_query, COUNT(search_query) as num_usage, MAX(created_at) as updated_at,\
+            MAX(num_suggestions) as max_num_suggestions
             FROM search_suggestionlog
             WHERE lower(search_query) LIKE '%{search_query}%' AND char_length(search_query) > 2 {additional_condition}
             GROUP BY search_query ORDER BY {order_by} {order} OFFSET {start} LIMIT {limit}
             '''.format(
                 search_query=q,
-                additional_condition = additional_condition,
+                additional_condition=additional_condition,
                 order_by=order_by,
                 order=order,
                 start=start,
@@ -64,4 +62,4 @@ class AdminQueryDataApi(View):
 
             return HttpResponse(json.dumps(data))
         except Exception as e:
-            return HttpResponseBadRequest(json.dumps({ 'error': str(e)}))
+            return HttpResponseBadRequest(json.dumps({'error': str(e)}))

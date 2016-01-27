@@ -8,7 +8,7 @@ from django.http.response import HttpResponse
 from allegation.query_builders import OfficerAllegationQueryBuilder
 from allegation.services.outcome_analytics import OutcomeAnalytics
 from common.models import (
-    OfficerAllegation, ComplainingWitness, PoliceWitness, Allegation, Officer)
+    OfficerAllegation, ComplainingWitness, PoliceWitness)
 from common.json_serializer import JSONSerializer
 
 

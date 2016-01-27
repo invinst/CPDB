@@ -1,4 +1,4 @@
-from cpdb.settings.base import *
+from cpdb.settings.base import *  # NOQA
 
 
 DEBUG = True

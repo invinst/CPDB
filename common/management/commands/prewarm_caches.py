@@ -19,6 +19,7 @@ CACHE_APIS = [
     'allegation-api-sunburst'
 ]
 
+
 class Command(BaseCommand):
     help = 'Run automatically in the background'
 
@@ -36,7 +37,7 @@ class Command(BaseCommand):
     def cache_allegations(self):
         for category in AllegationCategory.objects.distinct().values_list('category', flat=True):
             category = urllib.parse.quote(category)
-            for api in CACHE_APIS :
+            for api in CACHE_APIS:
                 url = "%s%s?cat__category=%s" % (settings.DOMAIN, reverse('allegation:%s' % api), category)
                 urllib.request.urlopen(url)
 

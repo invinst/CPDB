@@ -1,7 +1,6 @@
 from django.conf.urls import url
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 
-from allegation.models import hooks
 from allegation.views import AreaAPIView
 from allegation.views import (
     OfficerAllegationGISApiView, OfficerAllegationClusterApiView)

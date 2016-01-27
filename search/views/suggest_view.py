@@ -1,6 +1,4 @@
-from collections import OrderedDict
 import json
-from django.core.cache import cache
 
 from django.http.response import HttpResponseBadRequest, HttpResponse
 from django.views.generic.base import View

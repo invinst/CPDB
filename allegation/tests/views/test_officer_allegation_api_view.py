@@ -356,5 +356,3 @@ class OfficerAllegationApiViewTestCase(
 
         data[0]['investigator']['complaint_count'].should.equal(2)
         data[0]['investigator']['discipline_count'].should.equal(1)
-
-

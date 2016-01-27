@@ -36,7 +36,7 @@ class SessionViewTestCase(SimpleTestCase):
         SessionFactory()
         session = SessionFactory()
 
-        params = {'q': session.hash_id }
+        params = {'q': session.hash_id}
         response, data = self.get_sessions(params)
         response.status_code.should.equal(200)
 
