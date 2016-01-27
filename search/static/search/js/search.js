@@ -27,10 +27,9 @@ function slugify (title) {
 }
 
 function prettyLabels(label, term) {
-  term = String(term).toLowerCase();
-  var re = new RegExp(term, 'i');
+  var re = new RegExp("("+term+")", 'i');
   var result = label.replace(/-/g, " ");
-  result = result.replace(re, "<span class='term'>" + term + "</span>");
+  result = result.replace(re, "<span class='term'>$1</span>");
   return result;
 }
 
