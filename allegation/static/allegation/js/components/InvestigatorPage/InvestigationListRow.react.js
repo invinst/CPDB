@@ -29,7 +29,7 @@ var InvestigationListRow = React.createClass(_.assign(Base(ComplaintListStore), 
   },
 
   detailIsCurrentlyShown: function() {
-    return this.state.activeComplaints.indexOf(this.props.complaint['officer_allegation']['id']) > -1
+    return this.state.activeComplaints.indexOf(this.props.complaint['officer_allegation']['id']) > -1;
   },
 
   renderShowMore: function () {
@@ -38,7 +38,7 @@ var InvestigationListRow = React.createClass(_.assign(Base(ComplaintListStore), 
 
     return this.detailRendered() ? (
       <Allegation allegation={complaint} hide={!detailIsShown} toggleAllegation={this.toggleComplaint} />
-    ) : '';
+    ) : null;
   },
 
   render: function () {
