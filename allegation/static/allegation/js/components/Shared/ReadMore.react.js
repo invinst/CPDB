@@ -8,13 +8,18 @@ var PropTypes = React.PropTypes;
 var ReadMore = React.createClass({
   propTypes: {
     limit: PropTypes.number.isRequired,
-    content: PropTypes.string.isRequired
+    content: PropTypes.string.isRequired,
+  },
+
+  getDefaultProps: function () {
+    return {
+      over: 1
+    };
   },
 
   getInitialState: function () {
     return {
       expanded: true,
-      maxHeight: '100px',
     };
   },
 
@@ -25,11 +30,11 @@ var ReadMore = React.createClass({
     var height = parseInt(contentParagraph.css('height'));
     var line = Math.floor(height / lineHeight);
 
-    if (line > limit) {
+    if (line > limit + this.props.over) {
       this.setState({
         expanded: false,
         maxHeight: (limit * lineHeight) + 'px'
-      })
+      });
     }
   },
 
@@ -65,7 +70,7 @@ var ReadMore = React.createClass({
   toggleContent: function (event) {
     this.setState({
       expanded: !this.state.expanded
-    })
+    });
   }
 });
 
