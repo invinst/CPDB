@@ -58,11 +58,7 @@ var Map = React.createClass({
 
   componentDidMount: function () {
     var self = this;
-    if (AppStore.isDataToolInit()) {
-      this.onDataToolInit();
-    } else {
-      AppStore.addDataToolInitListener(this.onDataToolInit);
-    }
+    this.onDataToolInit();
 
     MapStore.addChangeMarkerListener(this.changeMarker);
     MapStore.addBeforeChangeMarkerListener(this.beforeChangeMarker);
@@ -80,7 +76,6 @@ var Map = React.createClass({
   },
 
   componentWillUnmount: function() {
-    AppStore.removeDataToolInitListener(this.onDataToolInit);
     MapStore.removeChangeMarkerListener(this.changeMarker);
     MapStore.removeBeforeChangeMarkerListener(this.beforeChangeMarker);
     FilterTagStore.removeChangeListener(this._onChange);
@@ -333,7 +328,8 @@ var Map = React.createClass({
 
   _onChange: function () {
     var filters = FilterTagStore.getFilters();
-    if (!filters['Area']) {
+    if (!filters['Area'] || filters['Area'].length == 0) {
+      _map.fitBounds(_defaultBounds);
       return;
     }
 

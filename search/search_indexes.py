@@ -1,6 +1,7 @@
+from django.db.models.aggregates import Count
 from haystack import indexes
 
-from common.models import Officer, AllegationCategory, Allegation, Investigator, Area
+from common.models import Officer, AllegationCategory, Allegation, Investigator, Area, OfficerAllegation
 from search.models.session_alias import SessionAlias
 from search.models.proxy_models import AllegationCategoryProxy, AllegationProxy
 from search.search_backends import CustomEdgeNgramField, CustomNgramField, CustomIntegerNgramField
@@ -94,6 +95,9 @@ class InvestigatorIndex(SuggestionBaseIndex, indexes.Indexable):
     investigator_id = indexes.IntegerField(model_attr='id')
     investigator_complaint_count = indexes.CharField(model_attr='complaint_count')
 
+    def prepare_investigator_complaint_count(self, obj):
+        return OfficerAllegation.objects.filter(allegation__investigator=obj).count()
+        
 
 class AreaIndex(SuggestionBaseIndex, indexes.Indexable):
     DEFAULT_MODEL = Area

@@ -20,6 +20,7 @@ from search.services.suggest.suggest_officer import (
     SuggestOfficerStar,
     SuggestOfficerUnit,
     SuggestOfficerRank)
+from search.services.suggest.suggest_investigator_agency import SuggestInvestigatorAgency
 from search.services.suggest.suggest_session_alias import SuggestSessionAlias
 from search.services.suggest.suggest_data_source import SuggestDataSource
 from search.services.suggest.suggest_outcome import (
@@ -56,6 +57,7 @@ class SuggestionService(object):
             SuggestRepeatOffenders,
             SuggestSessionAlias,
             SuggestHas,
+            SuggestInvestigatorAgency,
         ]
 
     def _make_suggestion(self, q):

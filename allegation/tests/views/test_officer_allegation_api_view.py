@@ -6,11 +6,12 @@ from django.utils import timezone
 
 from allegation.factories import (
     AreaFactory, ComplainingWitnessFactory, AllegationFactory,
-    OfficerAllegationFactory)
+    OfficerAllegationFactory, InvestigatorFactory)
 from allegation.tests.views.base import OfficerAllegationApiTestBase
 from common.models import (
-    Officer, Area, DISCIPLINE_CODES, NO_DISCIPLINE_CODES,
-    OfficerAllegation, LOCATION_CHOICES)
+    Officer, Area,
+    OfficerAllegation)
+from common.constants import DISCIPLINE_CODES, NO_DISCIPLINE_CODES, LOCATION_CHOICES
 
 
 class OfficerAllegationFilterMixin(object):
@@ -344,26 +345,16 @@ class OfficerAllegationApiViewTestCase(
         [obj['allegation']['id'] for obj in data]\
             .shouldnt.contain(allegation.id)
 
-    def test_allegation_order(self):
-        OfficerAllegation.objects.all().delete()
+    def test_invalid_investigator_count(self):
+        investigator = InvestigatorFactory(complaint_count=100, discipline_count=99)
+        allegation = AllegationFactory(investigator=investigator)
+        OfficerAllegationFactory(allegation=allegation, final_outcome=DISCIPLINE_CODES[0], final_finding='SU')
+        OfficerAllegationFactory(allegation=AllegationFactory(investigator=investigator),
+                                 final_outcome=NO_DISCIPLINE_CODES[0])
 
-        oa3 = OfficerAllegationFactory(
-            allegation=AllegationFactory(crid='0123', incident_date=datetime.datetime(2011, 8, 1)),
-            start_date=datetime.datetime(2012, 12, 1))
-        oa4 = OfficerAllegationFactory(
-            allegation=AllegationFactory(crid='0123', incident_date=datetime.datetime(2011, 8, 1)),
-            start_date=datetime.datetime(2012, 11, 1))
-        oa5 = OfficerAllegationFactory(
-            allegation=AllegationFactory(crid='0124', incident_date=datetime.datetime(2011, 8, 1)),
-            start_date=datetime.datetime(2012, 10, 1))
-        oa6 = OfficerAllegationFactory(
-            allegation=AllegationFactory(crid='0125', incident_date=datetime.datetime(2011, 8, 1)),
-            start_date=datetime.datetime(2012, 10, 1))
-        oa1 = OfficerAllegationFactory(allegation=AllegationFactory(incident_date=datetime.datetime(2011, 10, 1)))
-        oa2 = OfficerAllegationFactory(allegation=AllegationFactory(incident_date=datetime.datetime(2011, 9, 1)))
-        oa7 = OfficerAllegationFactory(allegation=AllegationFactory(incident_date=None))
+        data = self.fetch_officer_allegations(allegation__investigator=investigator.id)
 
-        data = self.fetch_officer_allegations()
-        len(data).should.equal(7)
-        [obj['officer_allegation']['id'] for obj in data].should.equal([
-            oa1.id, oa2.id, oa3.id, oa4.id, oa5.id, oa6.id, oa7.id])
+        data[0]['investigator']['complaint_count'].should.equal(2)
+        data[0]['investigator']['discipline_count'].should.equal(1)
+
+

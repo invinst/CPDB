@@ -11,12 +11,8 @@ var LandingFooter = React.createClass(_.assign(Base(AppStore), {
     var updateUrl = '//invisibleinstitute.us1.list-manage.com/subscribe/post?u=5c80c1740c24b198f0f284cd3&id=8dfb7bdd4b';
     var subscribeUrl = '//invisibleinstitute.us1.list-manage.com/subscribe/post?u=5c80c1740c24b198f0f284cd3&id=dee1a647b0';
 
-    var footerClassName = classnames('footer', {
-      'hidden': AppStore.isDataToolPage()
-    });
-
     return (
-      <div className={footerClassName}>
+      <div className="footer">
         <div className="container">
           <div className="col-sm-4">
             <a className="btn" href="/static/img/complaint_process.png" target="_blank">Complaints Process</a>

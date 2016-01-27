@@ -11,6 +11,7 @@ var SunburstChartD3 = require('utils/d3utils/SunburstChartD3');
 
 var SUNBURST_DATA_CHANGE_EVENT = 'SUNBURST_DATA_CHANGE_EVENT';
 var SUNBURST_SELECTED_CHANGE_EVENT = 'SUNBURST_SELECTED_CHANGE_EVENT';
+var SUNBURST_ZOOMED_OUT_EVENT = 'SUNBURST_ZOOMED_OUT_EVENT';
 
 
 var _state = {
@@ -123,6 +124,18 @@ var SunburstStore = _.assign(Base(_state), {
 
   emitSelectedChange: function () {
     this.emit(SUNBURST_SELECTED_CHANGE_EVENT);
+  },
+
+  addSunburstZoomedOutListener: function (callback) {
+    this.on(SUNBURST_ZOOMED_OUT_EVENT, callback);
+  },
+
+  removeSunburstZoomedOutListener: function (callback) {
+    this.removeListener(SUNBURST_ZOOMED_OUT_EVENT, callback);
+  },
+
+  emitSunburstZoomedOut: function () {
+    this.emit(SUNBURST_ZOOMED_OUT_EVENT);
   }
 });
 
@@ -139,6 +152,7 @@ AppDispatcher.register(function (action) {
       SunburstStore.tryZoomOut(action.category, action.filter);
       SunburstStore.emitChange();
       SunburstStore.emitSelectedChange();
+      SunburstStore.emitSunburstZoomedOut();
       break;
 
     case AppConstants.SUNBURST_SELECT_ARC:

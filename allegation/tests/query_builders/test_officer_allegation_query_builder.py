@@ -12,6 +12,8 @@ from common.models import OfficerAllegation, Allegation, OUTCOMES
 from common.tests.core import SimpleTestCase
 from common.utils.haystack import rebuild_index
 
+from allegation.factories import InvestigatorFactory
+
 
 class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
     def setUp(self):
@@ -148,6 +150,17 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
             officer=None)
 
         query_string = 'has_filters=has:identified'
+        expected_ids = [allegation.id for allegation in expected_allegations]
+
+        self.check_built_query(query_string, expected_ids)
+
+    def test_has_summary(self):
+        expected_allegations = [
+            OfficerAllegationFactory(
+                allegation=AllegationFactory(summary='Some summary'))]
+        OfficerAllegationFactory()
+
+        query_string = 'has_filters=has:summary'
         expected_ids = [allegation.id for allegation in expected_allegations]
 
         self.check_built_query(query_string, expected_ids)
@@ -403,6 +416,35 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
         rebuild_index()
 
         query_string = 'allegation_summary=some some'
+        expected_ids = [allegation.id for allegation in expected_allegations]
+
+        self.check_built_query(query_string, expected_ids)
+
+    def test_investigator_agency(self):
+        self._test_investigator_agency_ipra()
+        self.clean_db()
+        self._test_investigator_agency_iad()
+
+    def _test_investigator_agency_ipra(self):
+        expected_allegations = [
+            OfficerAllegationFactory(allegation=AllegationFactory(
+                investigator=InvestigatorFactory(agency='IPRA')))]
+        OfficerAllegationFactory(allegation=AllegationFactory(
+            investigator=InvestigatorFactory(agency='IAD')))
+
+        query_string = 'allegation__investigator__agency=IPRA'
+        expected_ids = [allegation.id for allegation in expected_allegations]
+
+        self.check_built_query(query_string, expected_ids)
+
+    def _test_investigator_agency_iad(self):
+        expected_allegations = [
+            OfficerAllegationFactory(allegation=AllegationFactory(
+                investigator=InvestigatorFactory(agency='IAD')))]
+        OfficerAllegationFactory(allegation=AllegationFactory(
+            investigator=InvestigatorFactory(agency='IPRA')))
+
+        query_string = 'allegation__investigator__agency=IAD'
         expected_ids = [allegation.id for allegation in expected_allegations]
 
         self.check_built_query(query_string, expected_ids)

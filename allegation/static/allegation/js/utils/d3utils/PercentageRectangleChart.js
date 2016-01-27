@@ -31,14 +31,18 @@ var PercentageRectangleChart = {
       .append('svg')
       .attr('width', width)
       .attr('height', height)
-      .selectAll('rect').data(data)
-                  .enter().append('g')
-                  .attr('class', function (data, i) { return data.label.toLowerCase() })
-                  .attr('transform', function(data, i) {
-                    return 'translate(0,' + ys[i] + ')';
-                  });
+      .selectAll('rect')
+      .data(data)
+      .enter().append('g')
+      .attr('class', function (data, i) {
+        var inactiveClass = data['active'] ? '' : ' inactive';
+        return data.label.toLowerCase() + inactiveClass;
+      })
+      .attr('transform', function(data, i) {
+        return 'translate(0,' + ys[i] + ')';
+      });
 
-      blocks.append('rect')
+    blocks.append('rect')
       .style('fill', function(data, i) {
         return colors[i];
       })
@@ -48,19 +52,19 @@ var PercentageRectangleChart = {
       })
       .on("click", clickHandler);
 
-      blocks.append('svg:text')
-                   .attr('font-size', 12)
-                   .attr('fill', 'white')
-                   .attr('x', 20)
-                   .attr('y', function(d) { return heightScale(d.value) / 2 + minHeight - 5})
-                   .text(function(d, i) {
-                     var percent = d.value * 100 / sum;
-                     if (percent < 1) {
-                       percent = 1;
-                     }
-                     return d.label + ' ' + (Math.floor(percent)) + '%';
-                   })
-                   .on("click", clickHandler);
+    blocks.append('svg:text')
+      .attr('font-size', 12)
+      .attr('fill', 'white')
+      .attr('x', 20)
+      .attr('y', function(d) { return heightScale(d.value) / 2 + minHeight - 5})
+      .text(function(d, i) {
+        var percent = d.value * 100 / sum;
+        if (percent < 1) {
+          percent = 1;
+        }
+        return d.label + ' ' + (Math.floor(percent)) + '%';
+      })
+      .on("click", clickHandler);
   }
 };
 

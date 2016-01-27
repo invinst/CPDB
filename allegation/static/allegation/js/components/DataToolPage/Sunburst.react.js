@@ -14,6 +14,7 @@ var SunburstStore = require("stores/SunburstStore");
 var SunburstChartD3 = require('utils/d3utils/SunburstChartD3');
 var SessionAPI = require('utils/SessionAPI');
 var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFilterTagsQueryBuilder');
+var SunburstServerActions = require('actions/DataToolPage/SunburstServerActions');
 
 
 var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
@@ -55,17 +56,38 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
     SunburstStore.addChangeListener(this._onChange);
     SunburstStore.addDataChangeListener(this._onDataChange);
     SunburstStore.addSelectedChangeListener(this._onSelectedChange);
+    SunburstStore.addSunburstZoomedOutListener(this._onZoomedOut);
 
     this.initTabs();
+    SunburstServerActions.initData();
+    this.drawSunburst();
   },
 
   componentWillUnmount: function() {
     SunburstStore.removeChangeListener(this._onChange);
     SunburstStore.removeDataChangeListener(this._onDataChange);
     SunburstStore.removeSelectedChangeListener(this._onSelectedChange);
+    SunburstStore.removeSunburstZoomedOutListener(this._onZoomedOut);
   },
 
   _onDataChange: function () {
+    this.drawSunburst();
+  },
+
+  _onSelectedChange: function () {
+    var selected = SunburstStore.getSelected();
+    SunburstChartD3.selectArc(selected);
+    SessionAPI.updateSessionInfo({'sunburst_arc': selected.name});
+  },
+
+  _onZoomedOut: function () {
+    // Update session in case a parent arc tag is added
+    setTimeout(function () {
+      FilterTagsActions.saveTags();
+    }, 1);
+  },
+
+  drawSunburst: function () {
     SunburstChartD3.draw(this.getChartData());
 
     var selected = SunburstStore.getSelected();
@@ -73,12 +95,6 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
     if (selected) {
       SunburstChartD3.selectArc(selected);
     }
-  },
-
-  _onSelectedChange: function () {
-    var selected = SunburstStore.getSelected();
-    SunburstChartD3.selectArc(selected);
-    SessionAPI.updateSessionInfo({'sunburst_arc': selected.name});
   },
 
   getChartData: function () {

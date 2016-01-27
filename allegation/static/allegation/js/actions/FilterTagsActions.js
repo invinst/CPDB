@@ -7,8 +7,10 @@ var OutcomeAnalysisAPI = require('utils/OutcomeAnalysisAPI');
 var SessionAPI = require('utils/SessionAPI');
 var RaceGenderAPI = require('utils/RaceGenderAPI');
 var SunburstAPI = require('utils/SunburstAPI');
+var MapAPI = require('utils/MapAPI');
 var FilterTagStore = require('stores/FilterTagStore');
 var EmbedStore = require('stores/EmbedStore');
+var MapAPI = require('utils/MapAPI');
 
 
 function updateSiteData(dontUpdateSession) {
@@ -16,6 +18,7 @@ function updateSiteData(dontUpdateSession) {
   OutcomeAnalysisAPI.getAnalysisInformation();
   RaceGenderAPI.getData();
   SunburstAPI.getData();
+  MapAPI.getMarkers();
   if (!dontUpdateSession) {
     SessionAPI.updateSessionInfo({
       'query': _.assign(FilterTagStore.getSession(), {
@@ -105,6 +108,9 @@ var FilterTagsActions = {
 
   // Temporary function to hold sunburst logic
   saveTags: function () {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.SAVE_TAGS
+    });
     updateSiteData();
   },
 

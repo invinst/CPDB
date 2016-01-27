@@ -21,7 +21,7 @@ var OfficerActions = {
 
     // We only do API call on Officer instance on homepage
     ComplaintListAPI.getData();
-    OutcomeAnalysisAPI.getAnalysisInformation();
+    // OutcomeAnalysisAPI.getAnalysisInformation();
     SessionAPI.updateSessionInfo({ 'query': OfficerListStore.getSession()});
   },
 
