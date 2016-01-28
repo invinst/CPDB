@@ -15,7 +15,8 @@ class Command(BaseCommand):
         if beat and beat.polygon:
             proximity = "&proximity=%(lng)s,%(lat)s" % {'lng': beat.polygon.centroid.x, 'lat': beat.polygon.centroid.y}
 
-        url = "http://api.tiles.mapbox.com/v4/geocode/mapbox.places/%(address)s.json?access_token=%(mapbox_api_key)s%(proximity)s" \
+        url = "http://api.tiles.mapbox.com/v4/geocode/mapbox.places/%(address)s.json?access_token=%(mapbox_api_key)s%" \
+              "(proximity)s" \
               % {'address': urllib.parse.quote(address), 'mapbox_api_key': settings.MAP_BOX_API_KEY,
                  'proximity': proximity}
         # print(url)

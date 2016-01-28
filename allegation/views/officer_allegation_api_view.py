@@ -60,7 +60,8 @@ class OfficerAllegationAPIView(View):
         investigators = officer_allegations.values_list('allegation__investigator_id', flat=True)
         investigator_complaint_counts = OfficerAllegation.objects.filter(allegation__investigator__in=investigators)\
             .values('allegation__investigator_id').annotate(count=Count('allegation_id'))
-        investigator_discipline_counts = OfficerAllegation.disciplined.filter(allegation__investigator__in=investigators)\
+        investigator_discipline_counts = OfficerAllegation.disciplined.filter(
+            allegation__investigator__in=investigators)\
             .values('allegation__investigator_id').annotate(count=Count('allegation_id'))
 
         complaints = {x['allegation__investigator_id']: x['count'] for x in investigator_complaint_counts}
