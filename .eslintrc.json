@@ -20,7 +20,90 @@
         "no-unused-vars": [
             2,
             { "args": "none" }
-        ]
+        ],
+        "no-multi-spaces": [
+            2
+        ],
+        "max-len": [
+            2,
+            120,
+            2
+        ],
+        "camelcase": [
+            2,
+            {"properties": "always"}
+        ],
+        "eol-last": [
+            2
+        ],
+        "no-trailing-spaces": [
+            2
+        ],
+        "react/jsx-boolean-value": [
+            1,
+            "always"
+        ],
+        "react/jsx-curly-spacing": [
+            2,
+            "always"
+        ],
+        "react/jsx-equals-spacing": [
+            2,
+            "never"
+        ],
+        "react/jsx-indent-props": [
+            1,
+            2,
+            2
+        ],
+        "react/jsx-indent": [
+            1,
+            2,
+            2
+        ],
+        "react/jsx-key": 1,
+        "react/jsx-no-duplicate-props": 1,
+        "react/jsx-no-undef": 1,
+        "react/jsx-pascal-case": 1,
+        "react/jsx-quotes": [
+            2,
+            "single",
+            "avoid-escape"
+        ],
+        "react/jsx-uses-vars": 1,
+        "react/no-danger": 1,
+        "react/no-deprecated": [
+            1,
+            { "react": "0.14.3" }
+        ],
+        "react/no-did-mount-set-state": 1,
+        "react/no-did-update-set-state": 1,
+        "react/no-direct-mutation-state": 1,
+        "react/no-is-mounted": 1,
+        "react/no-multi-comp": [
+            1,
+            { "ignoreStateless": true }
+        ],
+        "react/no-set-state": 1,
+        "react/no-unknown-property": 1,
+        "react/prop-types": 1,
+        "react/react-in-jsx-scope": 1,
+        "react/self-closing-comp": 1,
+        "react/sort-comp": [
+            1,
+            {
+                "groups":
+                {
+                    "rendering":
+                    [
+                      "/^render.+$/",
+                      "render"
+                    ]
+                }
+            }
+
+        ],
+        "react/wrap-multilines": 1
     },
     "env": {
         "browser": true,
@@ -29,8 +112,7 @@
     },
     "extends": "eslint:recommended",
     "ecmaFeatures": {
-        "jsx": true,
-        "experimentalObjectRestSpread": true
+        "jsx": true
     },
     "plugins": [
         "react"
