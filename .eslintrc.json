@@ -95,7 +95,6 @@
             1,
             { "ignoreStateless": true }
         ],
-        "react/no-set-state": 1,
         "react/no-unknown-property": 1,
         "react/prop-types": 1,
         "react/react-in-jsx-scope": 1,
