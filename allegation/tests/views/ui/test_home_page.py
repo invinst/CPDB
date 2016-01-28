@@ -1,6 +1,7 @@
 from allegation.factories import (
     OfficerAllegationFactory, AllegationCategoryFactory)
 from common.tests.core import BaseLiveTestCase
+from common.utils.haystack import rebuild_index
 from share.models import Session
 
 
@@ -42,73 +43,6 @@ class HomePageTestCase(BaseLiveTestCase):
         link_texts.should.contain('Categories')
         link_texts.should.contain('Race & Gender')
 
-    def filter_complaint_type(self):
-        self.visit_home()
-        self.link("Categories").click()
-        self.until_ajax_complete()
-
-    def check_number_officer(self, num):
-        self.until(lambda: self.number_of_officers().should.equal(num))
-
-    def test_click_on_category_only_show_allegation_belong_to_it(self):
-        other_category = AllegationCategoryFactory()
-        OfficerAllegationFactory(cat=other_category)
-        self.filter_complaint_type()
-
-        self.check_number_officer(2)
-
-        self.until(
-            lambda:
-            self.link(self.allegation_category.category).is_displayed())
-        self.link(self.allegation_category.category).click()
-
-        self.check_number_officer(1)
-
-    def test_click_on_officer_will_show_compliant(self):
-        self.filter_complaint_type()
-
-        self.check_number_officer(1)
-
-        self.find('.checkmark').click()
-        self.until(lambda: self.element_exist('.complaint-list'))
-        self.find('.complaint-row > .row').click()
-
-        self.element_exist('.complaint_detail').should.equal(True)
-
-    def test_all_subcategories_should_be_selected(self):
-        category = self.allegation_category.category
-        allegation_category = AllegationCategoryFactory(category=category)
-        OfficerAllegationFactory(cat=allegation_category)
-
-        # First, we click a category, we should see the arrow beside the category
-        self.filter_complaint_type()
-        with self.browser_no_wait():
-            self.element_exist('.row .arrow-container').should.equal(False)
-
-        self.until(
-            lambda: self.link(self.allegation_category.category).click())
-        # TODO: We should have another test to check which main category this arrow belong to?
-        self.element_exist('.row .arrow-container').should.equal(True)
-
-        # And it should have a an arrow on the category
-        self.until(
-            lambda: self.number_of_active_subcategories().should.equal(2))
-        self.until(
-            lambda:
-            self.should_see_text(self.allegation_category.allegation_name))
-        self.link(self.allegation_category.allegation_name).click()
-        self.until(
-            lambda: self.number_of_active_subcategories().should.equal(1))
-
-    def number_of_active_subcategories(self):
-        active_subcategories = self.find_all(
-            '.child-rows .category-name.active')
-        return len(active_subcategories)
-
-    def number_of_officers(self):
-        officers = self.find_all('.officer')
-        return len(officers)
-
     def test_close_disclaimer(self):
         self.visit_home()
         self.link('About the data').click()
@@ -118,6 +52,8 @@ class HomePageTestCase(BaseLiveTestCase):
     def test_see_session_query_on_reload(self):
         self.visit_home()
         officer = self.officer_allegation.officer
+
+        rebuild_index()
 
         self.until(
             lambda:
@@ -199,6 +135,26 @@ class HomePageTestCase(BaseLiveTestCase):
         with self.browser_no_wait():
             self.element_by_tagname_and_text('td', ns).shouldnt.be.ok
 
+    def test_sunburst_remove_tag(self):
+        us = 'Unsustained'
+        ns = 'Not Sustained'
+
+        self.officer_allegation = OfficerAllegationFactory(
+            cat=self.allegation_category, final_outcome='300')
+
+        self.visit_home()
+        self.click_active_tab("Outcomes")
+
+        self.until(lambda: self.should_see_text('Officers (2)'))
+
+        self.click_sunburst_legend(us)
+        self.click_sunburst_legend(ns)
+        self.until(lambda: self.element_by_classname_and_text('filter-name', ns))
+
+        self.find(".tag .remove").click()
+        self.until(lambda: self.element_by_classname_and_text('filter-name', us))
+        self.until(lambda: self.should_see_text('Officers (1)'))
+
     def test_sticky_footer(self):
         officer = self.officer_allegation.officer
         OfficerAllegationFactory.create_batch(40, officer=officer)
@@ -223,6 +179,9 @@ class HomePageTestCase(BaseLiveTestCase):
 
     def test_replace_old_filter_in_same_category(self):
         officer_allegation = OfficerAllegationFactory()
+
+        rebuild_index()
+
         self.visit_home()
         self.search_officer(officer_allegation.officer)
         self.should_see_text(officer_allegation.officer.display_name)
@@ -233,6 +192,10 @@ class HomePageTestCase(BaseLiveTestCase):
 
     def test_pin_tag(self):
         officer_allegation = OfficerAllegationFactory()
+        another = OfficerAllegationFactory()
+
+        rebuild_index()
+
         self.visit_home()
         self.search_officer(officer_allegation.officer)
         self.should_see_text(officer_allegation.officer.display_name)
@@ -246,7 +209,6 @@ class HomePageTestCase(BaseLiveTestCase):
         self.should_see_text(self.officer_allegation.officer.display_name)
         self.should_see_text(officer_allegation.officer.display_name)
 
-        another = OfficerAllegationFactory()
         self.search_officer(another.officer)
         self.should_see_text(another.officer.display_name)
         self.should_see_text(officer_allegation.officer.display_name)
@@ -254,6 +216,10 @@ class HomePageTestCase(BaseLiveTestCase):
 
     def test_unpin_tag(self):
         officer_allegation = OfficerAllegationFactory()
+        another = OfficerAllegationFactory()
+
+        rebuild_index()
+
         self.visit_home()
         self.search_officer(officer_allegation.officer)
         self.should_see_text(officer_allegation.officer.display_name)
@@ -268,7 +234,6 @@ class HomePageTestCase(BaseLiveTestCase):
         self.until(
             lambda: element.get_attribute('class').shouldnt.contain('pinned'))
 
-        another = OfficerAllegationFactory()
         self.search_officer(another.officer)
         self.should_see_text(another.officer.display_name)
         self.should_not_see_text(officer_allegation.officer.display_name)
@@ -288,7 +253,7 @@ class HomePageTestCase(BaseLiveTestCase):
     def search_officer(self, officer):
         self.fill_in("#autocomplete", officer.officer_first)
         self.until_ajax_complete()
-        self.until(lambda: self.find(".ui-autocomplete").is_displayed())
+        self.find(".ui-autocomplete").is_displayed()
         self.until(lambda: self.autocomplete_available(officer.display_name))
         self.autocomplete_select(officer.display_name)
         self.until_ajax_complete()

@@ -9,8 +9,9 @@ from faker import Faker
 from allegation.models import Download
 from common.models import (
     AllegationCategory, Officer, Area, Allegation, Investigator,
-    ComplainingWitness, RACES, OUTCOMES, PoliceWitness, GENDER_DICT,
-    RACES_DICT, FINDINGS, OfficerAllegation)
+    ComplainingWitness,  PoliceWitness, OfficerAllegation)
+from common.constants import (
+    RACES, OUTCOMES, GENDER_DICT,RACES_DICT, FINDINGS)
 
 fake = Faker()
 
@@ -36,7 +37,6 @@ class AreaFactory(factory.django.DjangoModelFactory):
 class OfficerFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Officer
-        django_get_or_create = ('officer_first', 'officer_last')
 
     officer_first = factory.Sequence(lambda n: capitalize_word())
     officer_last = factory.Sequence(lambda n: capitalize_word())

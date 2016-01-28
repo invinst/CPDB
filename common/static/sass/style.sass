@@ -355,7 +355,7 @@ footer
   font-size: 21px
   font-family: $font_1, $font_4
   margin: 8px 0 0 10px
-  width: calc(100% - 600px)
+  width: calc(100% - 900px)
   font-weight: 300
   input
     border: none
@@ -538,6 +538,7 @@ footer
   .officers .col-sm-2
     padding-right: 5px
 
+
 .officer-count, .complaint-count
   font-family: $font_1, $font_4
   font-size: 21px
@@ -687,6 +688,9 @@ footer
   width: 169px
   float: left
   margin-left: 25px
+
+  .larger
+    font-size: 1.2em
 
 
 .officer
@@ -858,7 +862,6 @@ footer
   margin-top: 0.3em
 
 .complaint-row
-  padding: 11px 0 0
   border-bottom: 1px solid $color_celeste_approx
   font-family: $font_0, $font_4
   font-size: 16px
@@ -878,7 +881,7 @@ footer
     background-color: $color_pattens_blue_approx
 
   .cursor
-    margin-bottom: 11px
+    padding: 11px 0
 
   .title
     color: $color_mountain_mist_approx
@@ -956,6 +959,12 @@ footer
     margin-bottom: 12px
     .title
       font-size: 16px
+    .address-item
+      display: block
+
+      @media(max-width: 768px)
+        display: inline-block
+        padding-right: 10px
 
   .row.police-witness
     padding-left: 15px
@@ -1387,6 +1396,9 @@ footer
   padding: 2px 15px 0
   line-height: 1.1em
   min-height: 15px
+
+.percentage-rectangle-chart .inactive
+  opacity: 0.3
 
 .border-top-row
   border-top: 1px solid $color_mountain_mist_approx

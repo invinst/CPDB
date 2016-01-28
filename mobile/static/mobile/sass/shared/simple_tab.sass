@@ -2,7 +2,15 @@
   display: none
   animation: slide-out 0.3s forwards
   -webkit-animation: slide-out 0.3s forwards
-  &.active
-    display: block
+  -moz-animation: slide-out 0.3s forwards
+  -o-animation: slide-out 0.3s forwards
+  &.reverse-animation
     animation: slide-in 0.3s forwards
     -webkit-animation: slide-in 0.3s forwards
+    -moz-animation: slide-in 0.3s forwards
+    -o-animation: slide-in 0.3s forwards
+  &.active
+    display: block
+    &.no-animation
+      animation: 0
+      -webkit-animation: 0

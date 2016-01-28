@@ -8,13 +8,17 @@ var Wrapper = require('components/Shared/Wrapper.react');
 var SimpleTab = React.createClass({
   getInitialState: function () {
     return {
-      'activeIndex': 0
+      'activeIndex': 0,
+      'previousIndex': -1
     }
   },
 
   setActiveTab: function (index) {
+    var previousIndex = this.state.activeIndex;
+
     this.setState({
-      'activeIndex': index
+      'activeIndex': index,
+      'previousIndex': previousIndex
     });
   },
 
@@ -42,10 +46,11 @@ var SimpleTab = React.createClass({
 
     return items.props.children.map(function (item, i) {
       var itemKey = HelperUtil.format('{prefix}-{i}', {'prefix': prefix, 'i': i});
-      var classNames = cx(prefix, {
-        'active': (i == self.state.activeIndex)
+      var classNames = cx(item.props.className, prefix, {
+        'active': (i == self.state.activeIndex),
+        'no-animation': (self.state.previousIndex == -1),
+       'reverse-animation': (i > self.state.previousIndex)
       });
-
 
       return React.cloneElement(item, {
         'key': itemKey,
@@ -78,8 +83,14 @@ var SimpleTab = React.createClass({
     return (
       <Wrapper visible={!!this.props.navigation} wrapperClass='tab-navigations'>
         <div className='row'>
-          <div className='six columns' onClick={this.setActiveTab.bind(this, prevIndex)}><span className='icon icon-left'></span>{prev}</div>
-          <div className='six columns align-right' onClick={this.setActiveTab.bind(this, nextIndex)}>{next}<span className='icon icon-right'></span></div>
+          <div className='six columns' onClick={this.setActiveTab.bind(this, prevIndex)}>
+            <span className='icon icon-left'/>
+            {prev}
+          </div>
+          <div className='six columns align-right' onClick={this.setActiveTab.bind(this, nextIndex)}>
+            {next}
+            <span className='icon icon-right'/>
+          </div>
         </div>
       </Wrapper>
     );

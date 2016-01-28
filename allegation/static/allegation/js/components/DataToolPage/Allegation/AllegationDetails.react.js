@@ -11,6 +11,7 @@ var Timeline = require('components/DataToolPage/Complaint/Timeline.react');
 var AllegationDetailsStore = require('stores/Complaint/AllegationDetailsStore');
 var AllegationAPI = require('utils/AllegationAPI');
 var ReadMore = require('components/Shared/ReadMore.react');
+var HelpText = require('components/Shared/HelpText.react');
 
 
 var AllegationDetails = React.createClass(_.assign(Base(AllegationDetailsStore), {
@@ -39,7 +40,7 @@ var AllegationDetails = React.createClass(_.assign(Base(AllegationDetailsStore),
         <div className='row'>
           <div className='col-xs-12 col-md-10'>
             <div className='section-title'>
-              Case Summary <span className='fa fa-question-circle'></span>
+              Case Summary <HelpText identifier='summary-help-text' />
             </div>
             <div className='section-summary'>
               <ReadMore limit={5} content={summary} />

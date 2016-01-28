@@ -1,5 +1,6 @@
 from allegation.factories import OfficerAllegationFactory
 from common.tests.core import BaseLiveTestCase
+from common.utils.haystack import rebuild_index
 from share.models import Session
 
 
@@ -20,10 +21,13 @@ class ShareSessionTestCase(BaseLiveTestCase):
         Session.objects.all().count().should.equal(session_count)
 
     def test_save_current_filter_in_session(self):
+        officer_allegation = OfficerAllegationFactory()
+
+        rebuild_index()
+
         self.visit_home()
         self.find("body").click()
 
-        officer_allegation = OfficerAllegationFactory()
         self.find(".ui-autocomplete-input").send_keys(
             officer_allegation.officer.officer_first)
 

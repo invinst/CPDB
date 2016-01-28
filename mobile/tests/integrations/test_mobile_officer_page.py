@@ -9,10 +9,6 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
     def go_to_officer_page(self, slug='', pk=''):
         self.visit('/mobile/officer/{slug}/{pk}'.format(slug=slug, pk=pk))
 
-    def show_officer_tab(self, tab_name):
-        self.browser.find_elements_by_xpath(
-            "//*[contains(text(), '%s')]" % tab_name)[0].click()
-
     def test_all_good_data(self):
         officer_rank = 'PO'
         officer_rank_display = 'Police Officer'
@@ -64,7 +60,7 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
         self.should_see_text(officer_gender_display)
         self.should_see_text(officer_race)
 
-        self.show_officer_tab('Complaints')
+        self.find('.tab-navs .tab-complaints').click()
         self.find('.crid-number').text.should.equal(str(allegation.crid))
         self.find('.final-finding').text.should.equal(
             allegation_final_finding_display)
@@ -74,14 +70,12 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
             officer_allegation.cat.allegation_name)
 
         self.should_see_text(allegation_incident_date_display)
-        allegation_officers_display = officer.display_name + ' and 1 other'
+        allegation_officers_display = '{display_name} and 1 other'.format(display_name=officer.display_name)
 
         self.should_see_text(allegation_officers_display)
-
         len(self.find_all('.circles .circle')).should.equal(2)
 
-        self.show_officer_tab('Co-accused officer')
-
+        self.find('.tab-navs .tab-co-accused').click()
         self.should_see_text(other_officer.display_name)
         self.should_see_text(related_display)
         self.should_see_text(other_officer_description)
@@ -89,17 +83,19 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
     def test_bad_officer_pk(self):
         bad_officer_pk = 1234
         officer_slug = 'xxxx'
-        not_match_text = 'The id %s is not recorded in out database.' % bad_officer_pk
+        not_match_text = 'The id {officer_id} is not recorded in out database.'.format(officer_id=bad_officer_pk)
 
         self.go_to_officer_page(slug=officer_slug, pk=bad_officer_pk)
-        self.until(lambda: self.should_see_text(not_match_text))
 
+        self.until(lambda: self.should_see_text(not_match_text))
 
     def test_no_related_officer(self):
         officer = OfficerFactory()
         OfficerAllegationFactory(officer=officer)
+
         self.go_to_officer_page(slug=officer.officer_first, pk=officer.pk)
-        self.show_officer_tab('Co-accused officer')
+        self.find('.tab-navs .tab-co-accused').click()
+
         self.until(lambda: self.find('.no-related-officer'))
         no_related_officer_text = 'No any officer related to this officer.'
         self.should_see_text(no_related_officer_text)
@@ -116,7 +112,7 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
         officer_race_display = 'Race unknown'
 
         self.go_to_officer_page(slug=officer.officer_first, pk=officer.pk)
-        self.show_officer_tab('Summary')
+        self.find('.tab-navs .tab-summary').click()
         self.until(lambda: self.find('.officer-summary-section'))
 
         self.should_see_text(officer_rank_display)

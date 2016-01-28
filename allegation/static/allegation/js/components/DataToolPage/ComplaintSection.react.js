@@ -3,7 +3,6 @@ require('utils/jQuery');
 var classnames = require('classnames');
 var Infinite = require('react-infinite');
 
-var Filters = require('components/DataToolPage/Filters.react');
 var Download = require('components/DataToolPage/Download.react');
 var Counter = require('components/DataToolPage/Counter.react');
 var OutcomeFilter = require('components/DataToolPage/ComplaintList/OutcomeFilter.react');
@@ -95,7 +94,11 @@ var ComplaintSection = React.createClass({
             <h3 className="margin-top-0">Complaints <Counter to={analytics.All} /></h3>
           </div>
           <div className='col-md-9 text-right'>
-            <OutcomeFilter loading={loading} activeFilter={activeFilter} analytics={analytics}/>
+            <OutcomeFilter
+              loading={loading}
+              activeFilter={activeFilter}
+              analytics={analytics}
+              callAPI={true}/>
           </div>
         </div>
         {complaintList}

@@ -16,7 +16,7 @@ class Command(BaseCommand):
         for allegation_id in Allegation.objects.filter(areas__type='school-grounds').values_list('id', flat=True):
             Allegation(id=allegation_id).areas.filter(type='school-grounds').delete()
 
-        for school in Area.objects.filter(type='school-grounds'):
+        for school in Area.objects.filter(type='school-grounds').defer('created_at', 'modified_at'):
             center = school.polygon.centroid
             for allegation_id in Allegation.objects.filter(point__distance_lte=(center, D(m=radius))).values_list('id', flat=True):
                 Allegation(id=allegation_id).areas.add(school)

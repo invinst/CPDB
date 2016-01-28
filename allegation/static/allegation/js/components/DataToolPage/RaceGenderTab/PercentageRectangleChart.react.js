@@ -11,8 +11,23 @@ var PercentageRectangleChart = React.createClass({
     };
   },
 
+  drawPercentageRectangleChart: function () {
+    var className = '.' + this.state.uniqueId;
+
+    D3PercentageRectangleChart.draw(
+      this.props.data,
+      this.props.options,
+      className,
+      this.clickHandler
+    );
+  },
+
+  componentDidMount: function () {
+    this.drawPercentageRectangleChart();
+  },
+
   componentDidUpdate: function() {
-    D3PercentageRectangleChart.draw(this.props.data, this.props.options, '.'+this.state.uniqueId, this.clickHandler);
+    this.drawPercentageRectangleChart();
   },
 
   render: function () {
@@ -24,13 +39,16 @@ var PercentageRectangleChart = React.createClass({
     );
   },
 
-  clickHandler: function(blockData){
-    var vals = typeof(blockData['filterValue']) == 'object' ? blockData['filterValue'] : [blockData['filterValue']];
-    var tags = vals.map(function(value) {
-      return { 'label': blockData['label'], 'value': value };
+  clickHandler: function (blockData) {
+    var category = this.props.category;
+    var filter = this.props.filter;
+    var filters = blockData['filters'];
+
+    var tags = filters.map(function (obj) {
+      return { 'value': obj.label, 'filter': filter + '=' + obj.value };
     });
 
-    FilterTagsActions.toggleTags(this.props.filter, tags);
+    FilterTagsActions.toggleTags(category, tags);
     return false;
   }
 

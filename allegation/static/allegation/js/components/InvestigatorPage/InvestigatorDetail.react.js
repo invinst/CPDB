@@ -1,6 +1,5 @@
 var React = require('react');
 var classnames = require('classnames');
-var PropTypes = React.PropTypes;
 
 var InvestigatorDonutChart = require('components/InvestigatorPage/InvestigatorDonutChart.react');
 var InvestigatorInformation = require('components/InvestigatorPage/InvestigatorInformation.react');
@@ -8,15 +7,10 @@ var Timeline = require('components/InvestigatorPage/Timeline.react');
 
 
 var InvestigatorDetail = React.createClass({
-  propTypes: {
-    investigator: PropTypes.object.isRequired
-  },
-
   getChartData: function () {
-    var investigator = this.props.investigator;
     return {
-      'Disciplined': investigator['discipline_count'],
-      'Complaints': investigator['complaint_count']
+      'Disciplined': this.props.data['num_disciplined'],
+      'Complaints': this.props.data['num_allegations']
     }
   },
 
@@ -28,7 +22,7 @@ var InvestigatorDetail = React.createClass({
   },
 
   render: function () {
-    var investigator = this.props.investigator;
+    var investigator = this.props.data.investigator;
     var chartColors = this.getChartColors();
     var chartData = this.getChartData();
 

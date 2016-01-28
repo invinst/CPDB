@@ -9,14 +9,15 @@ from django.views.generic import TemplateView
 from django.views.generic import View
 from django.db.models.query_utils import Q
 
+
 from allegation.views.officer_allegation_api_view import (
     OfficerAllegationAPIView)
-from api.models import Setting
+from api.models import Setting, InterfaceText
+from common.constants import NO_DISCIPLINE_CODES
 from common.json_serializer import JSONSerializer
 from common.models import (
     Allegation, Area, AllegationCategory, Officer, OfficerAllegation)
-from common.models import (
-    ComplainingWitness, NO_DISCIPLINE_CODES, PoliceWitness)
+from common.models import ComplainingWitness, PoliceWitness
 
 
 OFFICER_COMPLAINT_COUNT_RANGE = [
@@ -38,6 +39,11 @@ class AllegationListView(TemplateView):
         context = super(AllegationListView, self).get_context_data(**kwargs)
         admin_settings = Setting.objects.first()
         context.update({'admin_settings': admin_settings})
+
+        interface_texts = {}
+        for text in InterfaceText.objects.all():
+            interface_texts[text.key] = text.text
+        context.update({'interface_texts': json.dumps(interface_texts)})
         return context
 
     def get(self, request, hash_id=None, *args, **kwargs):
@@ -81,7 +87,7 @@ class OfficerAllegationGISApiView(OfficerAllegationAPIView):
     def get(self, request):
         seen_crids = {}
         officer_allegations = self.get_officer_allegations(
-            ignore_filters=['areas__id'])
+            ignore_filters=['allegation__areas__id'])
         allegation_dict = {
             "type": "FeatureCollection",
             "features": [],
@@ -207,6 +213,7 @@ class OfficerAllegationSummaryApiView(OfficerAllegationAPIView):
             summary_value['subcategories'].append({
                 'name': category.allegation_name,
                 'cat_id': category.cat_id,
+                'id': category.id,
                 'count': count,
                 'id': category.id
             })

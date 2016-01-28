@@ -21,17 +21,10 @@ var QueryList = React.createClass({
   },
 
   buildQuery: function (query) {
-    var result = [];
-    _.map(query, function (x) {  // through all key
-      _.map(x, function (y) {  // through all value
-        if (typeof y == 'string') {
-          result.push(y);
-        } else {
-          result.push(y.text); // get the text
-        }
-      });
+    var result = _.map(query, function (values) {
+      return _.pluck(values, 'value');
     });
-    return result;
+    return _.flatten(result);
   },
 
   render: function () {
