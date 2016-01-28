@@ -19,7 +19,12 @@
         ],
         "no-unused-vars": [
             2,
-            { "args": "none" }
+            {
+                "args": "none",
+                "ignore": [
+                    "React"
+                ]
+            }
         ],
         "no-multi-spaces": [
             2
@@ -112,6 +117,14 @@
     "extends": "eslint:recommended",
     "ecmaFeatures": {
         "jsx": true
+    },
+    "globals": {
+        "ga": false,
+        "toastr": false,
+        "PAGE": false,
+        "PK": false,
+        "QUERY": false,
+        "STATE": false
     },
     "plugins": [
         "react"
