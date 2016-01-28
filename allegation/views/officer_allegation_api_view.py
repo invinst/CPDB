@@ -8,7 +8,7 @@ from django.http.response import HttpResponse
 from allegation.query_builders import OfficerAllegationQueryBuilder
 from allegation.services.outcome_analytics import OutcomeAnalytics
 from common.models import (
-    OfficerAllegation, ComplainingWitness, PoliceWitness, Allegation, Officer)
+    OfficerAllegation, ComplainingWitness, PoliceWitness)
 from common.json_serializer import JSONSerializer
 
 
@@ -74,12 +74,10 @@ class OfficerAllegationAPIView(View):
         officer_allegations = officer_allegations.select_related(
             'allegation__beat', 'allegation__investigator', 'allegation',
             'officer')
-        allegation_pks = officer_allegations\
-            .values_list('allegation__pk', flat=True)
         complaining_witnesses = ComplainingWitness.objects.filter(
-            allegation__pk__in=allegation_pks)
+            allegation__officerallegation__in=officer_allegations)
         police_witnesses = PoliceWitness.objects.filter(
-            allegation__pk__in=allegation_pks)
+            allegation__officerallegation__in=officer_allegations)
 
         investigator_allegation_count_map = self.create_investigator_allegation_count_map(officer_allegations)
 
@@ -128,6 +126,8 @@ class OfficerAllegationAPIView(View):
 
     def get(self, request):
         officer_allegations = self.get_officer_allegations()
+        officer_allegations = officer_allegations.null_last_order_by(
+            '-allegation__incident_date', '-start_date', 'allegation__crid')
         officer_allegations = officer_allegations.select_related('cat')
         start, end = self.get_fetch_range(request, officer_allegations)
 
