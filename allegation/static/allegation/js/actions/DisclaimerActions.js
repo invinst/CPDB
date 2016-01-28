@@ -8,13 +8,13 @@ var DisclaimerActions = {
     cookie.save('disclaimered', 1);
     AppDispatcher.dispatch({
       actionType: AppConstants.SHOW_DISCLAIMER
-    })
+    });
   },
 
   hidden: function() {
     AppDispatcher.dispatch({
       actionType: AppConstants.DISCLAIMER_HIDDEN
-    })
+    });
   }
 };
 

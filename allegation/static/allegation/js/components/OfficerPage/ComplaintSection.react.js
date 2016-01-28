@@ -5,7 +5,7 @@ var Base = require('components/Base.react');
 var ComplaintSectionStore = require('stores/OfficerPage/ComplaintSectionStore');
 var ComplaintListAPI = require('utils/ComplaintListAPI');
 var ComplaintList = require('components/OfficerPage/ComplaintList.react');
-var Counter = require("components/DataToolPage/Counter.react");
+var Counter = require('components/DataToolPage/Counter.react');
 var OutcomeFilter = require('components/DataToolPage/ComplaintList/OutcomeFilter.react');
 var RequestModal = require('components/DataToolPage/Complaint/RequestModal.react');
 
@@ -31,15 +31,15 @@ var ComplaintSection = React.createClass(_.assign(Base(ComplaintSectionStore), {
         <div className="complaint-list">
         <div className='row'>
           <div className='col-md-2'>
-            <h3 className="margin-top-0">Complaints (<Counter to={this.state.complaints.length} />)</h3>
+            <h3 className="margin-top-0">Complaints (<Counter to={ this.state.complaints.length } />)</h3>
           </div>
           <div className='col-md-10 text-right'>
             <OutcomeFilter
-              activeFilter={this.state.activeFilter}
-              analytics={this.state.analytics}/>
+              activeFilter={ this.state.activeFilter }
+              analytics={ this.state.analytics }/>
           </div>
         </div>
-        <ComplaintList officer={this.props.officer} complaints={this.state.complaints} />
+        <ComplaintList officer={ this.props.officer } complaints={ this.state.complaints } />
         <RequestModal />
         <div className="row">
           <div className="col-md-2 col-md-offset-10">

@@ -1,6 +1,6 @@
 var React = require('react');
-var MapStore = require("stores/MapStore");
-var AppConstants = require("constants/AppConstants");
+var MapStore = require('stores/MapStore');
+var AppConstants = require('constants/AppConstants');
 
 var Location = React.createClass({
 
@@ -28,7 +28,7 @@ var Location = React.createClass({
 
     return (
       <div className='complaint-map'>
-        <img alt='Marker is currently not available' src={mapImage} />
+        <img alt='Marker is currently not available' src={ mapImage } />
       </div>
     );
   },
@@ -40,21 +40,21 @@ var Location = React.createClass({
       return (
         <div className='address-info row'>
           <div className='col-xs-12'>
-            <div className='address-item'>{allegation.add1} {allegation.add2}</div>
-            <div className='address-item'><span className='title'>Beat</span> {this.props.complaint.beat_name}</div>
-            <div className='address-item'><span className='title'>Location Type</span> {allegation.location}</div>
-            <div className='address-item'><span className='title'>City</span> {allegation.city}</div>
+            <div className='address-item'>{ allegation.add1 } { allegation.add2 }</div>
+            <div className='address-item'><span className='title'>Beat</span> { this.props.complaint.beat_name }</div>
+            <div className='address-item'><span className='title'>Location Type</span> { allegation.location }</div>
+            <div className='address-item'><span className='title'>City</span> { allegation.city }</div>
           </div>
         </div>
       );
     } else if (this.props.complaint.beat_name) {
       return (
         <div className='address-info row'>
-          <div className='col-xs-3 col-md-12'><span className='title'>Beat</span> {this.props.complaint.beat_name}</div>
+          <div className='col-xs-3 col-md-12'><span className='title'>Beat</span> { this.props.complaint.beat_name }</div>
         </div>
       );
     }
-    return "Exact Address Not Available";
+    return 'Exact Address Not Available';
   },
 
   render: function () {

@@ -43,31 +43,31 @@ var RootRouter = React.createClass({
 
   render: function() {
     return (
-      <Router history={History}>
-        <Route path="/" component={IndexPage}>
-          <IndexRoute onEnter={this.onEnterData}/>
-          <Route path="findings" component={FindingPage}>
+      <Router history={ History }>
+        <Route path="/" component={ IndexPage }>
+          <IndexRoute onEnter={ this.onEnterData }/>
+          <Route path="findings" component={ FindingPage }>
           </Route>
-          <Route path="method" component={MethodPage}>
+          <Route path="method" component={ MethodPage }>
           </Route>
-          <Route path="story" component={StoryPage}>
+          <Route path="story" component={ StoryPage }>
           </Route>
-          <Route path="data" onEnter={this.onEnterData}>
+          <Route path="data" onEnter={ this.onEnterData }>
             <Route path=":session">
-              <Route path=":title" component={DataPage}>
+              <Route path=":title" component={ DataPage }>
               </Route>
             </Route>
           </Route>
 
           <Route path="officer">
             <Route path=":slug">
-              <Route path=":id" component={OfficerPage}>
+              <Route path=":id" component={ OfficerPage }>
               </Route>
             </Route>
           </Route>
           <Route path="investigator">
             <Route path=":slug">
-              <Route path=":id" component={InvestigatorPage}>
+              <Route path=":id" component={ InvestigatorPage }>
               </Route>
             </Route>
           </Route>

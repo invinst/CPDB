@@ -18,12 +18,12 @@ var CheckMark = React.createClass({
   },
 
   componentWillUnmount: function() {
-    CheckMarkStore.removeChangeListener(this._onChange)
+    CheckMarkStore.removeChangeListener(this._onChange);
   },
 
   // embedding
   getEmbedCode: function () {
-    var src = "/embed/?page=officer-card&pk=" + encodeURIComponent(this.props.officer.id);
+    var src = '/embed/?page=officer-card&pk=' + encodeURIComponent(this.props.officer.id);
     return '<iframe width="170px" height="129px" frameborder="0" src="' + this.absoluteUri(src)
        + '"></iframe>';
   },
@@ -34,13 +34,13 @@ var CheckMark = React.createClass({
     var justChange = CheckMarkStore.getCheckMarkStatus(officer.id);
 
     if (justChange) {
-      checkMarkClass += ' justChange'
+      checkMarkClass += ' justChange';
     }
 
     var selectableArea = <div></div>;
     if (this.props.clickable) {
       selectableArea = (
-        <div onClick={this.onClick} key={officer.id} className={checkMarkClass} onMouseOut={this.onMouseOut.bind(this, officer)}>
+        <div onClick={ this.onClick } key={ officer.id } className={ checkMarkClass } onMouseOut={ this.onMouseOut.bind(this, officer) }>
           <i className='fa fa-check'></i>
         </div>
       );
@@ -48,7 +48,7 @@ var CheckMark = React.createClass({
 
     if (this.props.embed) {
       selectableArea = (
-        <div data-clipboard-text={this.getEmbedCode()} className='checkmark embed cursor' onMouseOut={this.onMouseOut.bind(this, officer)}
+        <div data-clipboard-text={ this.getEmbedCode() } className='checkmark embed cursor' onMouseOut={ this.onMouseOut.bind(this, officer) }
              aria-label="Copy to clipboard" data-copied-hint="Copied!">
           <i className='fa fa-code'></i>
           <div className="tooltip bottom" role="tooltip">
@@ -77,7 +77,7 @@ var CheckMark = React.createClass({
   },
 
   onMouseOut: function(officer) {
-    CheckMarkActions.mouseOut(officer)
+    CheckMarkActions.mouseOut(officer);
   },
 
   _onChange: function() {

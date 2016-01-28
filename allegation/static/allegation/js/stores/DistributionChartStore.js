@@ -94,7 +94,7 @@ function drawChart(col, rotated) {
         return {
           top: -15,
           left: 300
-        }
+        };
       },
       contents: function (d, defaultTitleFormat, defaultValueFormat, color) {
         var point = d[0];

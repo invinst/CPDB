@@ -1,4 +1,4 @@
-var _ = require('lodash')
+var _ = require('lodash');
 var classnames = require('classnames');
 var React = require('react');
 var PropTypes = React.PropTypes;
@@ -24,7 +24,7 @@ var AllegationSummary = React.createClass({
         <div className='title'>Complaining Witness</div>
         <div>
           <ul>
-            {this.renderComplainingWitness(allegation)}
+            { this.renderComplainingWitness(allegation) }
           </ul>
         </div>
       </div>
@@ -34,8 +34,8 @@ var AllegationSummary = React.createClass({
   renderComplainingWitness: function (allegation) {
     return allegation.complainingWitness.map(function (item, i) {
       return (
-        <li key={i}>
-          {item}
+        <li key={ i }>
+          { item }
         </li>
       );
     });
@@ -46,7 +46,7 @@ var AllegationSummary = React.createClass({
       return (
         <div className='col-xs-12'>
           <div className='title'>Investigator</div>
-          <Investigator complaint={allegation}/>
+          <Investigator complaint={ allegation }/>
         </div>
       );
     }
@@ -61,8 +61,8 @@ var AllegationSummary = React.createClass({
     if (!this.props.noButton) {
       return (
         <div className='allegation-function'>
-          <RequestButton complaint={allegation} />
-          <button type='button' className='btn btn-close' onClick={this.props.toggleComplaint}>
+          <RequestButton complaint={ allegation } />
+          <button type='button' className='btn btn-close' onClick={ this.props.toggleComplaint }>
             <i className='fa fa-times' /> Close
           </button>
         </div>
@@ -79,26 +79,26 @@ var AllegationSummary = React.createClass({
       <div className='col-xs-12'>
         <div className='allegation-info'>
           <div>
-            <span className='title'>CRID</span> {presenter.crid}
+            <span className='title'>CRID</span> { presenter.crid }
           </div>
           <div>
-            <div className='main-category'>{presenter.mainCategory}</div>
-            <div className='title'>{presenter.subCategory}</div>
+            <div className='main-category'>{ presenter.mainCategory }</div>
+            <div className='title'>{ presenter.subCategory }</div>
           </div>
           <div>
             <div className='title'>Final Outcome</div>
-            <div>{presenter.finalOutcome}</div>
+            <div>{ presenter.finalOutcome }</div>
           </div>
           <div>
             <div className='title'>Disciplinary action</div>
-            <div>{presenter.finalFinding}</div>
+            <div>{ presenter.finalFinding }</div>
           </div>
-          {this.renderComplainingWitnessSection(presenter)}
+          { this.renderComplainingWitnessSection(presenter) }
           <div className='row'>
-            {this.renderInvestigator(allegation)}
+            { this.renderInvestigator(allegation) }
           </div>
         </div>
-        {this.renderDocumentRequestButton(allegation)}
+        { this.renderDocumentRequestButton(allegation) }
       </div>
     );
   }

@@ -10,8 +10,8 @@ var Summary = React.createClass({
     if (category) {
       return (
         <div className="col">
-          <div className="title">{category.category}</div>
-          {category.allegation_name}
+          <div className="title">{ category.category }</div>
+          { category.allegation_name }
         </div>
       );
     } else {
@@ -28,7 +28,7 @@ var Summary = React.createClass({
     return (
       <div className="col">
         <div className="title">Final Finding</div>
-        {allegation.final_finding || 'Unknown'}
+        { allegation.final_finding || 'Unknown' }
       </div>
     );
   },
@@ -37,7 +37,7 @@ var Summary = React.createClass({
     return (
       <div className="col">
         <div className="title">Final Outcome</div>
-        {allegation.final_outcome || 'Unknown'}
+        { allegation.final_outcome || 'Unknown' }
       </div>
     );
   },
@@ -46,28 +46,28 @@ var Summary = React.createClass({
     var witnesses = [];
     for (var i = 0; i < witness.length; i++) {
       if (i > 0) {
-        witnesses.push(", ");
+        witnesses.push(', ');
       }
-      var person = "";
-      person += witness[i].race || "Unknown race";
-      person += " ";
-      person += witness[i].gender ? (witness[i].gender == "F" ? "Female" : "Male") : "Person";
-      witnesses.push(person)
+      var person = '';
+      person += witness[i].race || 'Unknown race';
+      person += ' ';
+      person += witness[i].gender ? (witness[i].gender == 'F' ? 'Female' : 'Male') : 'Person';
+      witnesses.push(person);
     }
     return (
       <div className="col">
         <div className="title">Complaining Witness</div>
-        {witnesses.length ? witnesses : "Unknown"}
+        { witnesses.length ? witnesses : 'Unknown' }
       </div>
     );
   },
   render: function () {
     return (
       <div className="row summary">
-        {this.getCategory()}
-        {this.getFinalFinding()}
-        {this.getAction()}
-        {this.getWitness()}
+        { this.getCategory() }
+        { this.getFinalFinding() }
+        { this.getAction() }
+        { this.getWitness() }
       </div>
     );
   }

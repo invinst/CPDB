@@ -3,7 +3,7 @@ var _ = require('lodash');
 var moment = require('moment');
 var classnames = require('classnames');
 
-var Base = require('components/Base.react')
+var Base = require('components/Base.react');
 var StoryStore =require('stores/OfficerPage/StoryStore');
 var DocumentCloudAPI = require('utils/DocumentCloudAPI');
 var AppConstants = require('constants/AppConstants');
@@ -44,8 +44,8 @@ var Story = React.createClass({
     if (thumbUrl) {
       return (
         <div className="col-md-2">
-          <a className="document-url" href={this.props.story.url}>
-            <img className="document-thumbnail" src={thumbUrl} alt="thumbnail" />
+          <a className="document-url" href={ this.props.story.url }>
+            <img className="document-thumbnail" src={ thumbUrl } alt="thumbnail" />
           </a>
         </div>
       );
@@ -67,8 +67,8 @@ var Story = React.createClass({
     });
 
     return (
-      <div className={descCol}>
-        <div className="short-description" dangerouslySetInnerHTML={{__html: description + ' ' + readmore}}></div>
+      <div className={ descCol }>
+        <div className="short-description" dangerouslySetInnerHTML={ {__html: description + ' ' + readmore} }></div>
       </div>
     );
   },
@@ -77,7 +77,7 @@ var Story = React.createClass({
     var date = DateTimeUtil.displayDateTime(this.props.story['created_date'], AppConstants.DATE_FORMAT);
 
     return (
-      <div className="date">{date}</div>
+      <div className="date">{ date }</div>
     );
   },
 
@@ -88,7 +88,7 @@ var Story = React.createClass({
       <div className="col-md-6">
         <div className="story">
           <h5 className="title">
-            <a href={story.url}>{story.title}<i className="fa fa-external-link"></i></a>
+            <a href={ story.url }>{ story.title }<i className="fa fa-external-link"></i></a>
           </h5>
           { this.renderCreatedDate() }
           <div className="row">

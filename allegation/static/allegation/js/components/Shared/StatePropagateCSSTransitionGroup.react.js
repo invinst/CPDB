@@ -26,8 +26,8 @@ function createTransitionTimeoutPropValidator(transitionType) {
 
         // If the duration isn't a number
       } else if (typeof props[timeoutPropName] !== 'number') {
-          return new Error(timeoutPropName + ' must be a number (in milliseconds)');
-        }
+        return new Error(timeoutPropName + ' must be a number (in milliseconds)');
+      }
     }
   };
 }

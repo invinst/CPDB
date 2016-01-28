@@ -15,15 +15,15 @@ var Search = React.createClass({
   },
 
   initAutocomplete: function () {
-    $("#autocomplete").catcomplete({
+    $('#autocomplete').catcomplete({
       autoFocus: true,
       source: function (request, response) {
-        var that = this
-        this.displayMessage('Searching...')
+        var that = this;
+        this.displayMessage('Searching...');
 
         $.ajax({
-          url: "/search/suggest/",
-          dataType: "json",
+          url: '/search/suggest/',
+          dataType: 'json',
           data: {
             term: request.term
           },
@@ -35,7 +35,7 @@ var Search = React.createClass({
             if (newData.length > 0) {
               response(newData);
             } else {
-              that.displayMessage('No matches found')
+              that.displayMessage('No matches found');
             }
           }
         });
@@ -57,7 +57,7 @@ var Search = React.createClass({
       SessionAPI.getSessionInfo(ui.item.value);
     } else {
       FilterTagsActions.addTag(ui.item.category, ui.item.value, ui.item.filter, ui.item.label);
-      $("#autocomplete").val('');
+      $('#autocomplete').val('');
     }
   },
 
@@ -85,13 +85,13 @@ var Search = React.createClass({
               <input type="text" id="autocomplete" placeholder="Search by a name/place/category, or click inside the graphs below"
                    className="ui-autocomplete-input form-control" autoComplete="off"/>
               <span className="input-group-btn">
-                <button className="btn btn-primary" id="btn-search" type="button" onClick={this.onSearchClick}><i className={searchIconClass}></i></button>
+                <button className="btn btn-primary" id="btn-search" type="button" onClick={ this.onSearchClick }><i className={ searchIconClass }></i></button>
               </span>
             </div>
           </form>
         </div>
       </div>
-    )
+    );
   }
 });
 

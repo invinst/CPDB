@@ -33,7 +33,7 @@ var Timeline = React.createClass({
   },
 
   hasNoHourAndMinutes: function (date) {
-    return date.get('hour') == 0 && date.get('minute') == 0
+    return date.get('hour') == 0 && date.get('minute') == 0;
   },
 
   normalizeIncidentDate: function (incidentDate) {
@@ -69,7 +69,7 @@ var Timeline = React.createClass({
 
   componentDidMount: function () {
     var allegation = this.props.complaint.allegation;
-    var container = $(ReactDOM.findDOMNode(this)).find(".timeline")[0];
+    var container = $(ReactDOM.findDOMNode(this)).find('.timeline')[0];
     var firstDate, lastDate, incidentDate;
     var items = [];
 
@@ -131,7 +131,7 @@ var Timeline = React.createClass({
       options.end = moment(lastDate).add(add, 'months');
     }
 
-    new vis.Timeline(container, items, options)
+    new vis.Timeline(container, items, options);
   },
 
   render: function () {

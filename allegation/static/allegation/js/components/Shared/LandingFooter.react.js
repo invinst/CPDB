@@ -24,16 +24,16 @@ var LandingFooter = React.createClass(_.assign(Base(AppStore), {
               Get updates
             </h4>
             <p>
-            </p><form action={updateUrl} method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" className="validate" target="_blank" noValidate>
+            </p><form action={ updateUrl } method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" className="validate" target="_blank" noValidate={ true }>
               <div id="mc_embed_signup_scroll">
                 <div className="mc-field-group">
                   <input type="email" placeholder="Email Address" name="EMAIL" className="required email" id="mce-EMAIL" />
                 </div>
                 <div id="mce-responses" className="clear">
-                  <div className="response" id="mce-error-response" style={{display: 'none'}} />
-                  <div className="response" id="mce-success-response" style={{display: 'none'}} />
-                </div>    {/* real people should not fill this in and expect good things - do not remove this or risk form bot signups*/}
-                <div style={{position: 'absolute', left: '-5000px'}}><input type="text" name="b_5c80c1740c24b198f0f284cd3_8dfb7bdd4b" tabIndex={-1} /></div>
+                  <div className="response" id="mce-error-response" style={ {display: 'none'} } />
+                  <div className="response" id="mce-success-response" style={ {display: 'none'} } />
+                </div>      {/* real people should not fill this in and expect good things - do not remove this or risk form bot signups*/}
+                <div style={ {position: 'absolute', left: '-5000px'} }><input type="text" name="b_5c80c1740c24b198f0f284cd3_8dfb7bdd4b" tabIndex={ -1 } /></div>
                 <div className="clear"><input type="submit" defaultValue="Sign up" name="subscribe" id="mc-embedded-subscribe" className="btn" /></div>
               </div>
             </form>
@@ -46,19 +46,19 @@ var LandingFooter = React.createClass(_.assign(Base(AppStore), {
             <p>
               Are you a researcher, journalist, data professional or community member interested in analyzing the data? Sign up with your name and email address to request access to the full dataset within the Citizens Police Data Project.
               {/* Begin MailChimp Download Data Form */}
-            </p><form action={subscribeUrl} method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" className="validate" target="_blank" noValidate>
+            </p><form action={ subscribeUrl } method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form" className="validate" target="_blank" noValidate={ true }>
               <div id="mc_embed_signup_scroll">
                 <div className="mc-field-group">
-                  <input placeholder="Full Name" type="text" name="FNAME" className id="mce-FNAME" />
+                  <input placeholder="Full Name" type="text" name="FNAME" className={ true } id="mce-FNAME" />
                 </div>
                 <div className="mc-field-group">
                   <input placeholder="Email Address" type="email" name="EMAIL" className="required email" id="mce-EMAIL" />
                 </div>
                 <div id="mce-responses" className="clear">
-                  <div className="response" id="mce-error-response" style={{display: 'none'}} />
-                  <div className="response" id="mce-success-response" style={{display: 'none'}} />
-                </div>    {/* real people should not fill this in and expect good things - do not remove this or risk form bot signups*/}
-                <div style={{position: 'absolute', left: '-5000px'}}><input type="text" name="b_5c80c1740c24b198f0f284cd3_dee1a647b0" tabIndex={-1} /></div>
+                  <div className="response" id="mce-error-response" style={ {display: 'none'} } />
+                  <div className="response" id="mce-success-response" style={ {display: 'none'} } />
+                </div>      {/* real people should not fill this in and expect good things - do not remove this or risk form bot signups*/}
+                <div style={ {position: 'absolute', left: '-5000px'} }><input type="text" name="b_5c80c1740c24b198f0f284cd3_dee1a647b0" tabIndex={ -1 } /></div>
                 <div className="clear"><input type="submit" defaultValue="Collaborate" name="subscribe" id="mc-embedded-subscribe" className="btn" /></div>
               </div>
             </form>

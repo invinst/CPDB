@@ -3,18 +3,18 @@ var React = require('react');
 var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
 var AppConstants = require('constants/AppConstants');
-var MapStore = require("stores/MapStore");
-var FilterActions = require("actions/FilterActions");
-var Timeline = require("components/DataToolPage/Officer/Timeline.react");
-var Map = require("components/DataToolPage/Officer/Map.react");
-var DonutChart = require("components/DataToolPage/Officer/DonutChart.react");
-var OfficerMixin = require("components/DataToolPage/Officer/OfficerMixin.react");
+var MapStore = require('stores/MapStore');
+var FilterActions = require('actions/FilterActions');
+var Timeline = require('components/DataToolPage/Officer/Timeline.react');
+var Map = require('components/DataToolPage/Officer/Map.react');
+var DonutChart = require('components/DataToolPage/Officer/DonutChart.react');
+var OfficerMixin = require('components/DataToolPage/Officer/OfficerMixin.react');
 var OfficerInformation = require('components/DataToolPage/OfficerDetail/OfficerInformation.react');
 
 var OfficerDetail = React.createClass({
   mixins: [OfficerMixin],
   getInitialState: function () {
-    return {}
+    return {};
   },
 
   componentDidMount: function () {
@@ -33,7 +33,7 @@ var OfficerDetail = React.createClass({
       'col-sm-4' : hasMap,
       'col-sm-6' : !hasMap
     });
-    var mapDiv = "";
+    var mapDiv = '';
     var radius = 8;
     if(hasMap){
       var options = {
@@ -43,48 +43,48 @@ var OfficerDetail = React.createClass({
         scrollWheelZoom: false
       };
       mapDiv = (
-        <div className={columnClass}>
-          <Map officer={officer} style={mapStyle} radius={radius} options={options} />
+        <div className={ columnClass }>
+          <Map officer={ officer } style={ mapStyle } radius={ radius } options={ options } />
         </div>
       );
     }
     return (
-      <div id='OfficerDetail' className={complaintRate}>
+      <div id='OfficerDetail' className={ complaintRate }>
         <div className='row'>
           <div className="col-sm-9 h3">
-            <span className="star">{officer.star}</span>
-            {officer.officer_first} {officer.officer_last}
+            <span className="star">{ officer.star }</span>
+            { officer.officer_first } { officer.officer_last }
           </div>
         </div>
         <ReactCSSTransitionGroup
             transitionName="information"
-            transitionEnterTimeout={500}
-            transitionLeaveTimeout={500}>
-          {officer.discipline_count !== undefined
-            ? <OfficerInformation officer={officer} />
+            transitionEnterTimeout={ 500 }
+            transitionLeaveTimeout={ 500 }>
+          { officer.discipline_count !== undefined
+            ? <OfficerInformation officer={ officer } />
             : <div className='information-placeholder'/>
           }
         </ReactCSSTransitionGroup>
         <div className="row visualization-information">
-          {mapDiv}
-          <div className={columnClass}>
+          { mapDiv }
+          <div className={ columnClass }>
             <ReactCSSTransitionGroup
                 transitionName="timeline"
-                transitionEnterTimeout={500}
-                transitionLeaveTimeout={500}>
-              {this.props.timelineData.items
-                ? <Timeline data={this.props.timelineData} officer={officer}/>
+                transitionEnterTimeout={ 500 }
+                transitionLeaveTimeout={ 500 }>
+              { this.props.timelineData.items
+                ? <Timeline data={ this.props.timelineData } officer={ officer }/>
                 : null
               }
             </ReactCSSTransitionGroup>
           </div>
-          <div className={columnClass}>
+          <div className={ columnClass }>
             <ReactCSSTransitionGroup
                 transitionName="donut-chart"
-                transitionEnterTimeout={500}
-                transitionLeaveTimeout={500}>
-              {officer.discipline_count !== undefined
-                ? <DonutChart officer={officer}/>
+                transitionEnterTimeout={ 500 }
+                transitionLeaveTimeout={ 500 }>
+              { officer.discipline_count !== undefined
+                ? <DonutChart officer={ officer }/>
                 : null
               }
             </ReactCSSTransitionGroup>

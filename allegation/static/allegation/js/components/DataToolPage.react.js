@@ -25,7 +25,7 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
 
   isPassAllegationSection: function () {
     var top = $(window).scrollTop();
-    var documentList = $("#complaint-list");
+    var documentList = $('#complaint-list');
     if (!documentList.size()) {
       return false;
     }
@@ -34,7 +34,7 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
       return false;
     }
 
-    return top >= $("#complaint-list").offset().top;
+    return top >= $('#complaint-list').offset().top;
   },
 
   unsetStickyFooter: function () {
@@ -66,7 +66,7 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
       return (
         <div className='row map-row mobile'>
           <div className='col-md-12'>
-            <Search mobileExpanded={mobileExpanded} />
+            <Search mobileExpanded={ mobileExpanded } />
             <Tabs mobile='true' />
           </div>
         </div>
@@ -78,7 +78,7 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
             <Map />
           </div>
           <div className='col-md-6 tabs-column'>
-            <Search mobileExpanded={mobileExpanded} />
+            <Search mobileExpanded={ mobileExpanded } />
             <Tabs />
           </div>
         </div>
@@ -107,7 +107,7 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
             <div id='officer-cards'><OfficerList /></div>
           </div>
         </div>
-        <div className={complaintListContainerClassName}>
+        <div className={ complaintListContainerClassName }>
           <div id='complaint-list'><ComplaintSection /></div>
         </div>
       </div>

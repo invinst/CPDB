@@ -18,8 +18,8 @@ var OfficerList = React.createClass({
 
     return officers.map(function (officer, index) {
       return (
-        <div className='col-md-3 col-sm-4 col-xs-6' key={officer.id}>
-          <Officer active={true} officer={officer} noClick={true}/>
+        <div className='col-md-3 col-sm-4 col-xs-6' key={ officer.id }>
+          <Officer active={ true } officer={ officer } noClick={ true }/>
         </div>
       );
     });

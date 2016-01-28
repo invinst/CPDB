@@ -12,9 +12,9 @@ var RaceGenderAPI = {
 
     if (ajax) {
       ajax.abort();
-    };
+    }
 
-    var url  = AppConstants.RACE_GENDER_API_ENDPOINT + '?' + queryString;
+    var url = AppConstants.RACE_GENDER_API_ENDPOINT + '?' + queryString;
 
     ajax = jQuery.getJSON(url, function(data){
       RaceGenderTabActions.receivedData(data);

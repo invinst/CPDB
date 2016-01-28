@@ -79,10 +79,10 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
 
   moveArrow: function () {
     $target = jQuery('.nav-link.active');
-    $arrow = jQuery(".moving-arrow");
+    $arrow = jQuery('.moving-arrow');
 
     if ($target.length && $arrow.length) {
-      jQuery(".moving-arrow").css({
+      jQuery('.moving-arrow').css({
         left: $target.offset().left - 5,
         width: $target.width() + 10,
       }, 500);
@@ -103,7 +103,7 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
   renderTitleBox: function () {
     return (
       <div className='site-title pull-left'>
-        <SiteTitle changable={true} />
+        <SiteTitle changable={ true } />
       </div>
     );
   },
@@ -112,13 +112,13 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
     return (
       <div>
         <nav className='sub-nav story-nav'>
-          <a href="#" className="pull-right" data-target="#next-steps" onClick={this.navigateSub}>
+          <a href="#" className="pull-right" data-target="#next-steps" onClick={ this.navigateSub }>
             Next Steps
           </a>
-          <a href="#" className="pull-right" data-target="#invisible-institute" onClick={this.navigateSub}>
+          <a href="#" className="pull-right" data-target="#invisible-institute" onClick={ this.navigateSub }>
             The Invisible Institute
           </a>
-          <a href="#" className="pull-right active" data-target="#stateway" onClick={this.navigateSub}>
+          <a href="#" className="pull-right active" data-target="#stateway" onClick={ this.navigateSub }>
             Stateway Gardens Litigation
           </a>
         </nav>
@@ -131,11 +131,11 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
 
     return this.props.navTabs.map(function (navTab, index) {
       return (
-        <li key={index} className={ self.getNavClass(navTab.name) }>
+        <li key={ index } className={ self.getNavClass(navTab.name) }>
           <Link
-            onClick={self.goToPage.bind(self, navTab.name)}
-            to={AppStore.getNavTabUrl(navTab.name)}
-            aria-controls={navTab.name}>{navTab.display}</Link>
+            onClick={ self.goToPage.bind(self, navTab.name) }
+            to={ AppStore.getNavTabUrl(navTab.name) }
+            aria-controls={ navTab.name }>{ navTab.display }</Link>
         </li>
       );
     });
@@ -176,7 +176,7 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
         { display.welcomeMessage ? this.renderWelcome() : '' }
         <nav className="landing-nav">
           <div className="items clearfix">
-            <Link to={this.getIndexLink()} onClick={this.startNewSession} id='logo_link'>
+            <Link to={ this.getIndexLink() } onClick={ this.startNewSession } id='logo_link'>
               <img className="pull-left cpdp-logo" src="/static/img/cpdp-logo.svg" />
             </Link>
             { display.backLink ? <Back /> : '' }

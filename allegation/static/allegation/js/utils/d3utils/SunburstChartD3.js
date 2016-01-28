@@ -48,7 +48,7 @@ var SunburstChartD3 = {
         .innerRadius(function(d) { return Math.max(0, y(d.y)); })
         .outerRadius(function(d) { return Math.max(0, y(d.y + d.dy)); });
 
-    d3.select("#sunburst-chart svg").remove();
+    d3.select('#sunburst-chart svg').remove();
     svg = d3.select('#sunburst-chart')
         .append('svg')
           .attr('width', width)
@@ -117,7 +117,7 @@ var SunburstChartD3 = {
         });
       }
 
-      return path
+      return path;
     }
 
     return false;

@@ -9,7 +9,7 @@ var Logo = React.createClass({
       <a href="/landing" className="navbar-brand pointer">
         <img src="/static/img/logo.png" alt="CPDB Logo"/>
       </a>
-    )
+    );
   },
 
   _onClick: function(e) {

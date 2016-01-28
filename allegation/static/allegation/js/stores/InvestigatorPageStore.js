@@ -10,7 +10,7 @@ var _state = {
     allegations: [],
     hasMap: false
   }
-}
+};
 
 var InvestigatorPageStore = _.assign(Base(_state), {
 });

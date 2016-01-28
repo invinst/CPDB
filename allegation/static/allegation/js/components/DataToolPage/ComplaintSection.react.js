@@ -46,7 +46,7 @@ var ComplaintSection = React.createClass({
       var complaint = complaints[i];
       var officer_allegation = complaint.officer_allegation;
       var key = 'allegation' + officer_allegation.id;
-      rows.push(<ComplaintListRow key={key} complaint={complaint} officer={officer} finding={officer_allegation.final_finding}/>)
+      rows.push(<ComplaintListRow key={ key } complaint={ complaint } officer={ officer } finding={ officer_allegation.final_finding }/>);
     }
 
     return rows;
@@ -74,37 +74,37 @@ var ComplaintSection = React.createClass({
       );
     } else {
       complaintList = (
-        <Infinite elementHeight={80}
-            preloadBatchSize={Infinite.containerHeightScaleFactor(2)}
-            preloadAdditionalHeight={2500}
-            infiniteLoadBeginEdgeOffset={100}
-            onInfiniteLoad={this.handleInfiniteLoad}
-            loadingSpinnerDelegate={this.elementInfiniteLoad()}
-            isInfiniteLoading={this.state.isInfiniteLoading}
-            useWindowAsScrollContainer>
-        {items}
+        <Infinite elementHeight={ 80 }
+            preloadBatchSize={ Infinite.containerHeightScaleFactor(2) }
+            preloadAdditionalHeight={ 2500 }
+            infiniteLoadBeginEdgeOffset={ 100 }
+            onInfiniteLoad={ this.handleInfiniteLoad }
+            loadingSpinnerDelegate={ this.elementInfiniteLoad() }
+            isInfiniteLoading={ this.state.isInfiniteLoading }
+            useWindowAsScrollContainer={ true }>
+        { items }
       </Infinite>
-      )
-    };
+      );
+    }
 
     return (
-      <div className={className}>
+      <div className={ className }>
         <div className='row'>
           <div className='col-md-3 complaint-count'>
-            <h3 className="margin-top-0">Complaints <Counter to={analytics.All} /></h3>
+            <h3 className="margin-top-0">Complaints <Counter to={ analytics.All } /></h3>
           </div>
           <div className='col-md-9 text-right'>
             <OutcomeFilter
-              loading={loading}
-              activeFilter={activeFilter}
-              analytics={analytics}
-              callAPI={true}/>
+              loading={ loading }
+              activeFilter={ activeFilter }
+              analytics={ analytics }
+              callAPI={ true }/>
           </div>
         </div>
-        {complaintList}
+        { complaintList }
         <RequestModal />
       </div>
-    )
+    );
   },
 
   _onChange: function () {

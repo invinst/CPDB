@@ -29,13 +29,13 @@ var FilterTags = React.createClass(_.assign(Base(FilterTagStore), {
         });
 
         return (
-          <span className={tagClassName}>
-            <a href='javascript:void(0);' className="action remove" onClick={that.removeTag.bind(that, category, item)}><i className="fa fa-times"></i></a>
+          <span className={ tagClassName }>
+            <a href='javascript:void(0);' className="action remove" onClick={ that.removeTag.bind(that, category, item) }><i className="fa fa-times"></i></a>
             <span className="filter">
-              <span className='filter-name'>{item.value}</span>
-              <span className='filter-category-name'>{category}</span>
+              <span className='filter-name'>{ item.value }</span>
+              <span className='filter-category-name'>{ category }</span>
             </span>
-            <span className='action pin' onClick={that.pinTag.bind(that, category, item.value)}><i className="fa fa-thumb-tack"></i></span>
+            <span className='action pin' onClick={ that.pinTag.bind(that, category, item.value) }><i className="fa fa-thumb-tack"></i></span>
           </span>
         );
       });

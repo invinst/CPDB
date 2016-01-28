@@ -42,7 +42,7 @@ var FilterActions = {
   saveSession: function() {
     AppDispatcher.dispatch({
       actionType: AppConstants.SAVE_SESSION
-    })
+    });
   }
 };
 

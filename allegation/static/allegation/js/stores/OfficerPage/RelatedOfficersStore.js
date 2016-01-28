@@ -29,23 +29,23 @@ var RelatedOfficersStore = assign({}, EventEmitter.prototype, {
 
 RelatedOfficersStore.dispatchEvents = AppDispatcher.register(function(action) {
   switch (action.actionType) {
-  case AppConstants.SET_ACTIVE_OFFICER_IN_OFFICER_PAGE:
-    var index = _state.activeOfficers.indexOf(action.officer.id);
+    case AppConstants.SET_ACTIVE_OFFICER_IN_OFFICER_PAGE:
+      var index = _state.activeOfficers.indexOf(action.officer.id);
 
-    if (index == -1) {
-      _state['activeOfficers'].push(action.officer.id);
+      if (index == -1) {
+        _state['activeOfficers'].push(action.officer.id);
 
-    }
+      }
     else {
-      _state['activeOfficers'].splice(index, 1);
-    }
-    RelatedOfficersStore.emitChange();
-    break;
-  case AppConstants.OFFICER_COMPLAINT_LIST_RECEIVED_DATA:
-    _state['activeOfficers'] = [];
-    RelatedOfficersStore.emitChange();
-    break;
-  default:
+        _state['activeOfficers'].splice(index, 1);
+      }
+      RelatedOfficersStore.emitChange();
+      break;
+    case AppConstants.OFFICER_COMPLAINT_LIST_RECEIVED_DATA:
+      _state['activeOfficers'] = [];
+      RelatedOfficersStore.emitChange();
+      break;
+    default:
       break;
   }
 });

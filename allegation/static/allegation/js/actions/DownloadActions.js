@@ -5,7 +5,7 @@ var DownloadActions = {
   process: function() {
     AppDispatcher.dispatch({
       actionType: AppConstants.DOWNLOAD_PROCESS
-    })
+    });
   },
 };
 

@@ -22,10 +22,10 @@ var MapAPI = {
     _queryString = queryString;
 
     if (ajax) {
-      ajax.abort()
+      ajax.abort();
     }
 
-    ajax = $.getJSON("/api/officer-allegations/cluster/?" + queryString, function (data) {
+    ajax = $.getJSON('/api/officer-allegations/cluster/?' + queryString, function (data) {
       MapActions.changeMarkers(data);
     });
   }

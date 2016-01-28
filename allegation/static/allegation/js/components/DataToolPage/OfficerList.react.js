@@ -3,10 +3,10 @@ var ReactDOM = require('react-dom');
 var classnames = require('classnames');
 
 var OfficerActions = require('actions/OfficerActions');
-var Officer = require("components/DataToolPage/Officer.react");
-var Counter = require("components/DataToolPage/Counter.react");
+var Officer = require('components/DataToolPage/Officer.react');
+var Counter = require('components/DataToolPage/Counter.react');
 
-var OfficerListStore = require("stores/OfficerListStore");
+var OfficerListStore = require('stores/OfficerListStore');
 
 var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
 var OfficerMixin = require('components/DataToolPage/Officer/OfficerMixin.react');
@@ -41,7 +41,7 @@ var OfficerList = React.createClass({
     var node = ReactDOM.findDOMNode(this);
     var width = $(node).width();
     var height = $(node).height();
-    var src = "/embed/?page=officers&query=" + encodeURIComponent(AllegationFilterTagsQueryBuilder.buildQuery());
+    var src = '/embed/?page=officers&query=' + encodeURIComponent(AllegationFilterTagsQueryBuilder.buildQuery());
     return '<iframe width="' + width + 'px" height="' + height + 'px" frameborder="0" src="' + this.absoluteUri(src)
        + '"></iframe>';
   },
@@ -50,7 +50,7 @@ var OfficerList = React.createClass({
     this.embedNode.append('<i class="fa fa-code"></i>');
     this.embedNode.append('<input type="text" value="" readonly="readonly" />');
 
-    this.embedNode.find("input").on("click", function (e) {
+    this.embedNode.find('input').on('click', function (e) {
       e.preventDefault();
       $(this).select();
     }).val(this.getEmbedCode());
@@ -83,13 +83,13 @@ var OfficerList = React.createClass({
     if (e) {
       e.preventDefault();
     }
-    var slider = $("#overview-slider");
-    var value = slider.slider("value");
+    var slider = $('#overview-slider');
+    var value = slider.slider('value');
     value = value + 1;
-    if (value > slider.slider("option", "max")) {
+    if (value > slider.slider('option', 'max')) {
       return;
     }
-    slider.slider("value", value);
+    slider.slider('value', value);
     this.display(value);
   },
 
@@ -98,15 +98,15 @@ var OfficerList = React.createClass({
       e.preventDefault();
     }
 
-    var slider = $("#overview-slider");
-    var value = slider.slider("value");
+    var slider = $('#overview-slider');
+    var value = slider.slider('value');
     value = value - 1;
 
     if (value < 0) {
       return;
     }
 
-    slider.slider("value", value);
+    slider.slider('value', value);
     this.display(value);
   },
 
@@ -141,7 +141,7 @@ var OfficerList = React.createClass({
       end = this.state.officers.length;
     }
 
-    return [start, end]
+    return [start, end];
   },
 
   isDisplaying: function (value) {
@@ -161,11 +161,11 @@ var OfficerList = React.createClass({
   },
 
   renderNewDisplay: function (value) {
-    $(".officers-container").addClass("off");
+    $('.officers-container').addClass('off');
     this.setState({
       current_view: value * OFFICER_PER_COL
     });
-    this.slideToDisplay(value)
+    this.slideToDisplay(value);
   },
 
   pecent: function (a, b) {
@@ -180,20 +180,20 @@ var OfficerList = React.createClass({
       overview[this.getAvgLevel(this.state.officers[i])]++;
     }
     var total = overview.reduce(function (a, b) {
-      return a + b
+      return a + b;
     });
-    var summary = "";
+    var summary = '';
     for (i = 0; i < overview.length; i++) {
-      summary += "<div class=\"overview overview-" + i + "\" style=\"width: " + this.pecent(overview[i], total) +
-        "%\"></div>";
+      summary += '<div class="overview overview-' + i + '" style="width: ' + this.pecent(overview[i], total) +
+        '%"></div>';
     }
-    $("#overview-slider .ui-slider-handle").html(summary);
+    $('#overview-slider .ui-slider-handle').html(summary);
   },
 
   slideToDisplay: function (value) {
     var start = value * OFFICER_PER_COL;
     var left = this.getInitDisplay(start);
-    $(".officers-container").css('left', left + 'px');
+    $('.officers-container').css('left', left + 'px');
     this.updateQuickView(start);
   },
 
@@ -202,7 +202,7 @@ var OfficerList = React.createClass({
       <div id="officer_list">
         <div className='row'>
           <div className='col-md-12 officer-count'>
-            <h3>Officers (<Counter to={this.state.officers.length} />)</h3>
+            <h3>Officers (<Counter to={ this.state.officers.length } />)</h3>
           </div>
         </div>
         { this.renderOfficerSection() }
@@ -222,7 +222,7 @@ var OfficerList = React.createClass({
     return (
       <div>
         <div className="row">
-          <div className={sliderClassName}>
+          <div className={ sliderClassName }>
             <div className="overview-box">
               { this.renderOverview() }
               <div className="clearfix"></div>
@@ -232,7 +232,7 @@ var OfficerList = React.createClass({
         </div>
         <div className="row">
           <div className="col-md-12">
-            <div className="officer-control officer-control-left" onClick={this.slideToRight} onDbClick={this.prevent}>
+            <div className="officer-control officer-control-left" onClick={ this.slideToRight } onDbClick={ this.prevent }>
               <i className="fa fa-angle-left" />
             </div>
             <div className="officer-vertical-scroll">
@@ -241,13 +241,13 @@ var OfficerList = React.createClass({
                 <div className="clearfix"></div>
               </div>
             </div>
-            <div className="officer-control officer-control-right" onClick={this.slideToLeft} onDbClick={this.prevent}>
+            <div className="officer-control officer-control-right" onClick={ this.slideToLeft } onDbClick={ this.prevent }>
               <i className="fa fa-angle-right" />
             </div>
           </div>
           <div className="col-md-12 officer-horizontal-scroll-control">
-            <button className="btn btn-officer-horizontal-scroll pull-left" onClick={this.slideToRight} onDbClick={this.prevent}><i className="fa fa-angle-left" /></button>
-            <button className="btn btn-officer-horizontal-scroll pull-right" onClick={this.slideToLeft} onDbClick={this.prevent}><i className="fa fa-angle-right" /></button>
+            <button className="btn btn-officer-horizontal-scroll pull-left" onClick={ this.slideToRight } onDbClick={ this.prevent }><i className="fa fa-angle-left" /></button>
+            <button className="btn btn-officer-horizontal-scroll pull-right" onClick={ this.slideToLeft } onDbClick={ this.prevent }><i className="fa fa-angle-right" /></button>
           </div>
         </div>
       </div>
@@ -261,12 +261,12 @@ var OfficerList = React.createClass({
       total += this.state.overview[i];
     }
     for (i = 0; i < this.state.overview.length; i++) {
-      var className = "overview overview-" + i;
+      var className = 'overview overview-' + i;
       var style = {
         width: this.state.overview[i] * 100 / total + '%'
       };
       overview.push(
-        <div className={className} key={i} style={style} />
+        <div className={ className } key={ i } style={ style } />
       );
     }
     return overview;
@@ -289,8 +289,8 @@ var OfficerList = React.createClass({
       count += 1;
 
       officers.push(
-        <Officer officer={officer} key={i} index={count} active={active} selected={selected}
-                 noClick={noClick} embed={this.state.embedding} filtered={this.state.filtered}/>
+        <Officer officer={ officer } key={ i } index={ count } active={ active } selected={ selected }
+                 noClick={ noClick } embed={ this.state.embedding } filtered={ this.state.filtered }/>
       );
 
       if (count >= displayCount - 1) {
@@ -311,8 +311,8 @@ var OfficerList = React.createClass({
       if (colOfficerCount == OFFICER_PER_COL) {
         colOfficerCount = 0;
         officerCols.push(
-          <div className="officer-block" key={i}>
-            {officerCol}
+          <div className="officer-block" key={ i }>
+            { officerCol }
             <div className="clearfix"></div>
           </div>
         );
@@ -321,11 +321,11 @@ var OfficerList = React.createClass({
     }
     if (officerCol) {
       officerCols.push(
-        <div className="officer-block" key={i}>
-          {officerCol}
+        <div className="officer-block" key={ i }>
+          { officerCol }
           <div className="clearfix"></div>
         </div>
-      )
+      );
     }
 
     return officerCols;
@@ -333,18 +333,18 @@ var OfficerList = React.createClass({
 
   componentDidUpdate: function(){
 
-    $(".officer-control").disableSelection();
+    $('.officer-control').disableSelection();
 
-    var officersDiv = $(".officer-vertical-scroll");
+    var officersDiv = $('.officer-vertical-scroll');
     officersDiv
       .off('swipeleft', this.slideToLeft)
       .off('swiperight', this.slideToRight)
       .swipeleft(this.slideToLeft)
       .swiperight(this.slideToRight);
 
-    var container = $(".officers-container");
+    var container = $('.officers-container');
 
-    var officerBlock = $(".officer-block").slice(1, 2);
+    var officerBlock = $('.officer-block').slice(1, 2);
     OFFICER_WIDTH = officerBlock.width() + parseFloat(officerBlock.css('margin-left')) +
                     parseFloat(officerBlock.css('padding-left')) + parseFloat(officerBlock.css('padding-right'));
 
@@ -362,14 +362,14 @@ var OfficerList = React.createClass({
     OLD_DISPLAY = this.state.current_view;
     setTimeout(function(){
       container
-        .removeClass("off")
+        .removeClass('off')
         .css('left', left + 'px');
     }, 10);
   },
 
   display: function(value) {
     if (this.isDisplaying(value)) {
-      this.slideToDisplay(value)
+      this.slideToDisplay(value);
     } else {
       this.renderNewDisplay(value);
     }
@@ -381,7 +381,7 @@ var OfficerList = React.createClass({
   },
 
   initSlider: function () {
-    var container = $(".officers-container");
+    var container = $('.officers-container');
     var max = this.state.officers.length - OFFICER_PER_PAGE;
     if (max % OFFICER_PER_COL){
       max = parseInt(max / OFFICER_PER_COL) + 1;
@@ -389,15 +389,15 @@ var OfficerList = React.createClass({
       max = max / OFFICER_PER_COL;
     }
 
-    var overview = $(".overview-container");
-    var controller = $(".officer-control, .officer-horizontal-scroll-control");
+    var overview = $('.overview-container');
+    var controller = $('.officer-control, .officer-horizontal-scroll-control');
     if (max <= 0) {
       overview.hide();
       controller.addClass('off');
     } else {
       controller.removeClass('off');
       overview.show();
-      $("#overview-slider").slider({
+      $('#overview-slider').slider({
         min: 0,
         max: max,
         value: 0,
@@ -408,7 +408,7 @@ var OfficerList = React.createClass({
   },
 
   calculateConstants: function () {
-    var width = $("#officer-cards").width();
+    var width = $('#officer-cards').width();
     if (width <= 320) {
       VIEW_PORT_COUNT = 2;
     } else {
@@ -433,8 +433,8 @@ var OfficerList = React.createClass({
   },
 
   updateSliderSize: function () {
-    var slider = $("#overview-slider");
-    var handler = slider.find(".ui-slider-handle");
+    var slider = $('#overview-slider');
+    var handler = slider.find('.ui-slider-handle');
     var fullWidth = slider.parent().width();
     var handlerWidth = OFFICER_PER_PAGE * fullWidth / this.state.officers.length;
 

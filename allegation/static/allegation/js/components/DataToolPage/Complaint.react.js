@@ -4,7 +4,7 @@ var OfficerList = require('components/DataToolPage/Complaint/OfficerList.react')
 var TimelineAndLocation = require('components/DataToolPage/Complaint/TimelineAndLocation.react');
 var PoliceWitness = require('components/DataToolPage/Complaint/PoliceWitness.react');
 var RequestButton = require('components/DataToolPage/Complaint/RequestButton.react');
-var ComplaintListActions = require("actions/ComplaintList/ComplaintListActions");
+var ComplaintListActions = require('actions/ComplaintList/ComplaintListActions');
 var SessionAPI = require('utils/SessionAPI');
 
 
@@ -22,33 +22,33 @@ var Complaint = React.createClass({
   },
   render: function () {
     var complaint = this.props.complaint;
-    var infor = [<Summary key="summary" complaint={complaint} />];
+    var infor = [<Summary key="summary" complaint={ complaint } />];
 
-    infor.push(<OfficerList key="officer-list" complaint={complaint} />);
-    infor.push(<TimelineAndLocation key="timeline" complaint={complaint} />);
+    infor.push(<OfficerList key="officer-list" complaint={ complaint } />);
+    infor.push(<TimelineAndLocation key="timeline" complaint={ complaint } />);
 
     if (this.state.police_witness && this.state.police_witness.length) {
-      infor.push(<PoliceWitness key="police-witness" complaint={complaint} witnesses={this.state.police_witness} />)
+      infor.push(<PoliceWitness key="police-witness" complaint={ complaint } witnesses={ this.state.police_witness } />);
     }
 
-    var cssClasses = "row-fluid complaint_detail clearfix slide-down" + (this.props.hide ? ' closed' : '');
+    var cssClasses = 'row-fluid complaint_detail clearfix slide-down' + (this.props.hide ? ' closed' : '');
     var buttons = '';
     if (!this.props.noButton) {
       buttons = (
         <div className="col-md-10 col-md-offset-1 button-list">
-          <RequestButton complaint={complaint} />
-          <button type="button" className="btn btn-close" onClick={this.toggleComplaint}>
+          <RequestButton complaint={ complaint } />
+          <button type="button" className="btn btn-close" onClick={ this.toggleComplaint }>
             <i className="fa fa-times" /> Close
           </button>
         </div>
       );
     }
     return (
-      <div className={cssClasses}>
+      <div className={ cssClasses }>
         <div className="col-md-12">
-          {infor}
+          { infor }
         </div>
-        {buttons}
+        { buttons }
       </div>
     );
   },

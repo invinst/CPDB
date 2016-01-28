@@ -22,15 +22,15 @@ var RelatedOfficers = React.createClass({
     var activeOfficers = this.state['activeOfficers'];
 
     return this.props.relatedOfficers.map(function(officer) {
-      var selected = _(activeOfficers).contains(officer.officer.id)
+      var selected = _(activeOfficers).contains(officer.officer.id);
 
       return (
-        <div className='col-lg-2 col-md-3 col-sm-4 col-sm-offset-0 col-xs-6' key={officer.officer.id}>
-          <Officer officer={officer.officer}
-                   intersection={officer.num_allegations}
-                   witness={officer.witness}
-                   active={true}
-                   page='officer-details' selected={selected}/>
+        <div className='col-lg-2 col-md-3 col-sm-4 col-sm-offset-0 col-xs-6' key={ officer.officer.id }>
+          <Officer officer={ officer.officer }
+                   intersection={ officer.num_allegations }
+                   witness={ officer.witness }
+                   active={ true }
+                   page='officer-details' selected={ selected }/>
         </div>
       );
     });
@@ -40,7 +40,7 @@ var RelatedOfficers = React.createClass({
     var title = this.props.relatedOfficers.length ? 'Co-accused Officers' : '';
     return (
       <div className='row'>
-        <h3 className='col-md-12'>{title}</h3>
+        <h3 className='col-md-12'>{ title }</h3>
       </div>
     );
   },
@@ -48,9 +48,9 @@ var RelatedOfficers = React.createClass({
   render: function () {
     return (
       <div className="related-officers">
-        {this.renderTitle() }
+        { this.renderTitle() }
         <div className='row'>
-          {this.renderRelatedOfficerList()}
+          { this.renderRelatedOfficerList() }
         </div>
       </div>
     );

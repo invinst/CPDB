@@ -6,7 +6,7 @@ var DownloadServerActions = {
     AppDispatcher.dispatch({
       actionType: AppConstants.GENERATED_DOWNLOAD,
       href: href
-    })
+    });
   },
 };
 

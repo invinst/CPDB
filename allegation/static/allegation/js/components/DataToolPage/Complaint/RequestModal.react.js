@@ -20,14 +20,14 @@ var RequestModal = (function () {
       };
     },
     show: function () {
-      jQuery(ReactDOM.findDOMNode(this)).modal("show");
-      var emailInput = jQuery(ReactDOM.findDOMNode(this)).find("input[name='email']");
+      jQuery(ReactDOM.findDOMNode(this)).modal('show');
+      var emailInput = jQuery(ReactDOM.findDOMNode(this)).find('input[name=\'email\']');
       setTimeout(function () {
         emailInput.focus();
       }, 500);
     },
     hide: function () {
-      jQuery(ReactDOM.findDOMNode(this)).modal("hide");
+      jQuery(ReactDOM.findDOMNode(this)).modal('hide');
     },
     componentDidMount: function () {
       mountedInstant = this;
@@ -44,7 +44,7 @@ var RequestModal = (function () {
       });
       return (
         <div className="modal fade" id="request_modal" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div className={formClassName} role="document" style={style}>
+          <div className={ formClassName } role="document" style={ style }>
             <div className="modal-content">
               <div className="modal-header">
                 <button type="button" className="close" data-dismiss="modal" aria-label="Close">
@@ -54,15 +54,15 @@ var RequestModal = (function () {
               <div className="modal-body">
                 <h3>We'll notify you when the document is made available.</h3>
                 <input type="email" name="email" className="form-control"
-                       placeholder="Please enter email address" onKeyDown={this.onKeyDown} />
+                       placeholder="Please enter email address" onKeyDown={ this.onKeyDown } />
               </div>
               <div className="modal-footer">
                 <button type="button" className="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" className="btn btn-primary" onClick={this.onClick}>Submit</button>
+                <button type="button" className="btn btn-primary" onClick={ this.onClick }>Submit</button>
               </div>
             </div>
           </div>
-          <div className={thankClassName} role="document" style={style}>
+          <div className={ thankClassName } role="document" style={ style }>
             <div className="modal-content">
               <div className="modal-header">
                 <button type="button" className="close" data-dismiss="modal" aria-label="Close">
@@ -81,7 +81,7 @@ var RequestModal = (function () {
       );
     },
     email: function () {
-      return jQuery(ReactDOM.findDOMNode(this)).find("input[name='email']").val();
+      return jQuery(ReactDOM.findDOMNode(this)).find('input[name=\'email\']').val();
     },
     register: function () {
       RequestDocumentActions.registerEmail(allegation.crid, this.email());

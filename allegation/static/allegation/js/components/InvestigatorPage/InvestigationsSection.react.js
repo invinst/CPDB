@@ -31,16 +31,16 @@ var InvestigationsSection = React.createClass(_.assign(Base(ComplaintSectionStor
       <div className="complaint-list">
         <div className='row'>
           <div className='col-md-3'>
-            <h3 className="margin-top-0">Investigations (<Counter to={this.state.complaints.length} />)</h3>
+            <h3 className="margin-top-0">Investigations (<Counter to={ this.state.complaints.length } />)</h3>
           </div>
           <div className='col-md-9 text-right'>
             <OutcomeFilter
-              activeFilter={this.state.activeFilter}
-              analytics={this.state.analytics}
+              activeFilter={ this.state.activeFilter }
+              analytics={ this.state.analytics }
               />
           </div>
         </div>
-        <InvestigationList complaints={this.state.complaints} />
+        <InvestigationList complaints={ this.state.complaints } />
         <RequestModal />
       </div>
     );

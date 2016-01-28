@@ -11,7 +11,7 @@ var DownloadAPI = require('utils/DownloadAPI');
 
 global.redirect = function (href) {
   location.href = href;
-}
+};
 
 
 var Download = React.createClass(_.assign(Base(DownloadStore), {
@@ -58,19 +58,19 @@ var Download = React.createClass(_.assign(Base(DownloadStore), {
       );
     } else {
       content = (
-        <a onClick={this.onClick} href={this.state.href}>
+        <a onClick={ this.onClick } href={ this.state.href }>
           <i className="fa fa-download"></i> Download Table
         </a>
-      )
+      );
     }
 
     var downloadClassName = classnames('download-wrapper', {
       'invisible': !this.state.query
-    })
+    });
 
     return (
-      <div className={downloadClassName}>
-        {content}
+      <div className={ downloadClassName }>
+        { content }
       </div>
     );
   }

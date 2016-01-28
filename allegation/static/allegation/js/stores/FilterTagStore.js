@@ -58,7 +58,7 @@ var FilterTagStore = _.assign(Base(_state), {
     if (_state['filters'][category]) {
       _.remove(_state['filters'][category], matchValue(value));
 
-      this.removeCategory(category)
+      this.removeCategory(category);
     }
   },
 
@@ -191,7 +191,7 @@ AppDispatcher.register(function (action) {
     case AppConstants.ADD_TAG:
       FilterTagStore.addFilter(action.category, action.value, action.filter);
       FilterTagStore.emitChange();
-    break;
+      break;
 
     case AppConstants.TOGGLE_TAGS:
       // var values = _(action.filters).chain().pluck('value');
@@ -207,7 +207,7 @@ AppDispatcher.register(function (action) {
       });
 
       FilterTagStore.emitChange();
-    break;
+      break;
 
     case AppConstants.REMOVE_TAG:
       FilterTagStore.removeFilter(action.category, action.value);

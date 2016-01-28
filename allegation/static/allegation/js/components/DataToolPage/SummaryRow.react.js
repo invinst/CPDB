@@ -13,7 +13,7 @@ var numeral = require('numeral');
 function getSummaryRowState() {
   return {
     'rows': []
-  }
+  };
 }
 
 
@@ -33,7 +33,7 @@ var SummaryRow = React.createClass({
     var category = this.props.category;
 
     for (var i = 0; i < category.subcategories.length; i++) {
-      childCategoryName = category.subcategories[i].name
+      childCategoryName = category.subcategories[i].name;
       if (FilterTagStore.getFilter('Allegation type', childCategoryName)) {
         return true;
       }
@@ -53,48 +53,48 @@ var SummaryRow = React.createClass({
   render: function () {
     var category = this.props.category;
     var style = {
-      width: (category.count / category.total * 100) + "%"
+      width: (category.count / category.total * 100) + '%'
     };
     var progressStyle = {
-      width: category.percentToMax + "%"
+      width: category.percentToMax + '%'
     };
-    var className = classnames("category-name", {
+    var className = classnames('category-name', {
       'active': this.isActive(category) || this.hasActiveChildren()
     });
     var mainCategoryClassName = classnames('col-md-7 col-xs-7 main-category-name-wrapper', {
       'active': this.props.isCurrentActive
     });
-    var arrow = "";
+    var arrow = '';
 
     if (this.props.isCurrentActive) {
       arrow = (
         <div className='arrow-container'>
           <i className='fa fa-caret-left fa-28px'></i>
         </div>
-      )
+      );
     }
 
     return (
-      <div className="row category main-category" onClickCapture={this.onClick}>
+      <div className="row category main-category" onClickCapture={ this.onClick }>
         <div className='col-md-5 col-xs-5'>
-          <div className="progress complaint" style={progressStyle}>
+          <div className="progress complaint" style={ progressStyle }>
             <div className="progress-bar discipline" role="progressbar" aria-valuenow="60" aria-valuemin="0"
-                 aria-valuemax="100" style={style}>
+                 aria-valuemax="100" style={ style }>
               <span className="sr-only"></span>
             </div>
           </div>
         </div>
-        <div className={mainCategoryClassName}>
+        <div className={ mainCategoryClassName }>
           <div className="row">
             <div className='col-md-2 col-xs-2 category-anlytics'>
-              <span className='count'>{numeral(category.count).format(AppConstants.NUMERAL_FORMAT)}</span>
+              <span className='count'>{ numeral(category.count).format(AppConstants.NUMERAL_FORMAT) }</span>
             </div>
             <div className='col-md-2 col-xs-2 category-anlytics'>
-              <span className='total'>{numeral(category.total).format(AppConstants.NUMERAL_FORMAT)}</span>
+              <span className='total'>{ numeral(category.total).format(AppConstants.NUMERAL_FORMAT) }</span>
             </div>
             <div className='col-md-8 col-xs-8 relative category-name-wrapper'>
-              {arrow}
-              <a href='javascript:void()' className={className}>{category.name}</a>
+              { arrow }
+              <a href='javascript:void()' className={ className }>{ category.name }</a>
             </div>
           </div>
         </div>
@@ -119,8 +119,8 @@ var SummaryRow = React.createClass({
 
     SummaryStore.setCurrentActive(current.name);
 
-    $(".child-rows.active").removeClass('active');
-    $("#child-rows-" + current.id).addClass('active');
+    $('.child-rows.active').removeClass('active');
+    $('#child-rows-' + current.id).addClass('active');
   }
 });
 

@@ -17,12 +17,12 @@ var InvestigatorInformation = React.createClass({
     return ['unitWithName', 'rank'].map(function(x) {
       if (!_.isEmpty(presenter[x])) {
         return (
-          <span key={x} className='information-entry'>
-            <span className='desc'>{AppConstants.OFFICER_INFORMATION_TITLES[x]}</span>
-            <span className='val'>{presenter[x]}</span>
+          <span key={ x } className='information-entry'>
+            <span className='desc'>{ AppConstants.OFFICER_INFORMATION_TITLES[x] }</span>
+            <span className='val'>{ presenter[x] }</span>
             <span className='splitter'></span>
           </span>
-        )
+        );
       }
     });
   },
@@ -31,10 +31,10 @@ var InvestigatorInformation = React.createClass({
     return (
       <div className='row information'>
         <div className='col-md-12'>
-          {this.renderInvestigatorInformation()}
+          { this.renderInvestigatorInformation() }
         </div>
       </div>
-    )
+    );
   }
 });
 

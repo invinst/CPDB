@@ -24,13 +24,13 @@ var Counter = React.createClass({
         return numeral(value).format(AppConstants.NUMERAL_FORMAT);
       }
     });
-    this.from = this.props.to
+    this.from = this.props.to;
   },
 
   render: function() {
     return (
       <span></span>
-    )
+    );
   }
 
 });

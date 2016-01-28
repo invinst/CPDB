@@ -17,7 +17,7 @@ var _state = {
 
 var ComplaintSectionStore = _.assign(Base(_state), {
   intersectedWith: function (activeOfficers) {
-    return function(complaint)  {
+    return function(complaint) {
       var involvedOfficers = _.pluck(complaint.officers, 'id');
       var witnessOfficers = _.pluck(complaint.police_witness, 'officer.pk');
       var officers = _.union(involvedOfficers, witnessOfficers);
@@ -99,7 +99,7 @@ AppDispatcher.register(function(action) {
       break;
 
     default:
-        break;
+      break;
   }
 });
 

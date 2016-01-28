@@ -7,7 +7,7 @@ var ComplaintSection = require('components/OfficerPage/ComplaintSection.react');
 var StoryListAPI = require('utils/StoryListAPI');
 var TimelineAPI = require('utils/TimelineAPI');
 var TimelineStore = require('stores/OfficerPage/TimelineStore');
-var FilterActions = require("actions/FilterActions");
+var FilterActions = require('actions/FilterActions');
 var Nav = require('components/OfficerPage/Nav.react');
 var OfficerDetail = require('components/DataToolPage/OfficerDetail.react');
 var OfficerPageServerActions = require('actions/OfficerPage/OfficerPageServerActions');
@@ -28,7 +28,7 @@ var OfficerPage = React.createClass({
         hasMap: false
       },
       timelineData: {}
-    }
+    };
   },
 
   componentDidMount: function() {
@@ -82,14 +82,14 @@ var OfficerPage = React.createClass({
 
   renderRelatedOfficers: function (relatedOfficers) {
     if (relatedOfficers.length) {
-      return <RelatedOfficers relatedOfficers={relatedOfficers} />;
+      return <RelatedOfficers relatedOfficers={ relatedOfficers } />;
     }
     return null;
   },
 
   renderComplaintSection: function (officer) {
     if (officer.discipline_count !== undefined){
-      return <ComplaintSection officer={officer}/>;
+      return <ComplaintSection officer={ officer }/>;
     }
     return <div className="complaint-list-placeholder"/>;
   },
@@ -104,25 +104,25 @@ var OfficerPage = React.createClass({
       <div id='officer-profile'>
         <div className="map-row">
           <div className="container">
-            <OfficerDetail timelineData={this.state.timelineData} officer={officer} hasMap={hasMap}/>
+            <OfficerDetail timelineData={ this.state.timelineData } officer={ officer } hasMap={ hasMap }/>
           </div>
         </div>
         <div className="white-background">
           <div className="container">
             <ReactCSSTransitionGroup
                 transitionName="related-officers"
-                transitionEnterTimeout={500}
-                transitionLeaveTimeout={500}>
+                transitionEnterTimeout={ 500 }
+                transitionLeaveTimeout={ 500 }>
               { this.renderRelatedOfficers(relatedOfficers) }
             </ReactCSSTransitionGroup>
-            <StoryList officer={officer} />
+            <StoryList officer={ officer } />
           </div>
         </div>
         <div className="container">
           <ReactCSSTransitionGroup
               transitionName="complaint-list"
-              transitionEnterTimeout={500}
-              transitionLeaveTimeout={500}>
+              transitionEnterTimeout={ 500 }
+              transitionLeaveTimeout={ 500 }>
             { this.renderComplaintSection(officer) }
           </ReactCSSTransitionGroup>
         </div>

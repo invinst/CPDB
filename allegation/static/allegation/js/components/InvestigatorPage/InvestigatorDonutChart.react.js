@@ -16,7 +16,7 @@ var DonutChart = React.createClass({
     return {
       chartColors: {},
       defaultColor: '#a5b4be'
-    }
+    };
   },
 
   componentWillReceiveProps: function(newProps) {
@@ -38,25 +38,25 @@ var DonutChart = React.createClass({
       <div className='donut-chart'>
         <div id='donut-chart'></div>
         <div id="addText">
-          {this.middleTextRender()}
+          { this.middleTextRender() }
         </div>
       </div>
-    )
+    );
   },
 
   getHighChart: function (browserData) {
     return this.chart || new Highcharts.Chart({
-        chart: {
-          type: 'pie',
-          backgroundColor: 'transparent',
-          renderTo: 'donut-chart'
-        },
-        credits: false,
-        title: {
-          text: ''
-        },
-        plotOptions: {
-          pie: {
+      chart: {
+        type: 'pie',
+        backgroundColor: 'transparent',
+        renderTo: 'donut-chart'
+      },
+      credits: false,
+      title: {
+        text: ''
+      },
+      plotOptions: {
+        pie: {
             shadow: false,
             center: ['50%', '50%'],
             states: {
@@ -66,20 +66,20 @@ var DonutChart = React.createClass({
             }
           }
 
-        },
-        tooltip: false,
-        series: [{
-          name: 'Category',
-          size: '100%',
-          innerSize: '70%',
-          data: browserData,
-          dataLabels: {
+      },
+      tooltip: false,
+      series: [{
+        name: 'Category',
+        size: '100%',
+        innerSize: '70%',
+        data: browserData,
+        dataLabels: {
             enabled: false
           }
-        }]
-      }
+      }]
+    }
     );
   }
-})
+});
 
 module.exports = DonutChart;

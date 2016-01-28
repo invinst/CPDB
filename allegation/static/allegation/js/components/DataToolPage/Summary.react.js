@@ -5,8 +5,8 @@ var ReactDOM = require('react-dom');
 var SummaryActions = require('actions/SummaryActions');
 
 var ExtraInformation = require('components/DataToolPage/SummarySection/ExtraInformation.react');
-var SummaryRow = require("components/DataToolPage/SummaryRow.react");
-var SummaryChildRow = require("components/DataToolPage/SummaryChildRow.react");
+var SummaryRow = require('components/DataToolPage/SummaryRow.react');
+var SummaryChildRow = require('components/DataToolPage/SummaryChildRow.react');
 
 var SummaryStore = require('stores/SummaryStore');
 var FilterTagStore = require('stores/FilterTagStore');
@@ -30,7 +30,7 @@ var Summary = React.createClass({
     var node = ReactDOM.findDOMNode(this);
     var width = $(node).width();
     var height = $(node).height();
-    var src = "/embed/?page=summary&query=" + encodeURIComponent(
+    var src = '/embed/?page=summary&query=' + encodeURIComponent(
       AllegationFilterTagsQueryBuilder.buildQuery(EMBED_QUERY_IGNORE_FILTERS)
     );
 
@@ -54,7 +54,7 @@ var Summary = React.createClass({
     var that = $(ReactDOM.findDOMNode(this));
     var height = that.parent().height();
     setTimeout(function () {
-      that.find(".child-rows").css('max-height', height);
+      that.find('.child-rows').css('max-height', height);
     }, 1000);
 
     if (this.props.tabs) {
@@ -93,7 +93,7 @@ var Summary = React.createClass({
       var isCurrentActive = (
         category.name == SummaryStore.getCurrentActive()
       );
-      rows.push(<SummaryRow key={i} category={category} isCurrentActive={isCurrentActive} summary={this}/>);
+      rows.push(<SummaryRow key={ i } category={ category } isCurrentActive={ isCurrentActive } summary={ this }/>);
     }
 
     var childRowGroup = [];
@@ -105,25 +105,25 @@ var Summary = React.createClass({
           text: subcategory.name,
           value: ['cat__cat_id', subcategory.cat_id]
         };
-        childRows.push(<SummaryChildRow category={category} key={subcategory.id}
-                                        subcategory={subcategory} summary={this}/>);
+        childRows.push(<SummaryChildRow category={ category } key={ subcategory.id }
+                                        subcategory={ subcategory } summary={ this }/>);
       }
-      var id = "child-rows-" + category.id;
+      var id = 'child-rows-' + category.id;
       childRowGroup.push(
-        <div className="child-rows" id={id} key={id}>
-          {childRows}
+        <div className="child-rows" id={ id } key={ id }>
+          { childRows }
         </div>
       );
       childRows = [];
     }
     var className = this.props.currentActive ? 'selected' : '';
     return (
-      <div id="summary-container" onClick={this.containerClick}>
-        <div id='summary' className={className}>
+      <div id="summary-container" onClick={ this.containerClick }>
+        <div id='summary' className={ className }>
           <div className='row'>
-            <div className='col-md-8 col-xs-8'>{rows}</div>
+            <div className='col-md-8 col-xs-8'>{ rows }</div>
             <div className='col-md-4 col-xs-4 child-row-wrapper'>
-              <div className='child-row-container'>{childRowGroup}</div>
+              <div className='child-row-container'>{ childRowGroup }</div>
             </div>
             <ExtraInformation />
           </div>
@@ -137,13 +137,13 @@ var Summary = React.createClass({
 
   },
   containerClick: function (e) {
-    $("#summary").addClass("selected");
+    $('#summary').addClass('selected');
   },
   _onChange: function () {
-    this.setState(SummaryStore.getAll())
+    this.setState(SummaryStore.getAll());
   },
   _changeView: function () {
-    this.setState(SummaryStore.getAll())
+    this.setState(SummaryStore.getAll());
   }
 });
 

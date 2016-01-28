@@ -2,7 +2,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var _map = null;
 var AppConstants = require('constants/AppConstants');
-var ComplaintListActions = require("actions/ComplaintList/ComplaintListActions");
+var ComplaintListActions = require('actions/ComplaintList/ComplaintListActions');
 
 var Map = React.createClass({
   getInitialState: function () {
@@ -22,17 +22,17 @@ var Map = React.createClass({
     }).setMaxBounds(maxBounds);
   },
   drawHeatMap: function (query_string) {
-    $.getJSON("/api/officer-allegations/gis/?" + query_string, function (markers) {
+    $.getJSON('/api/officer-allegations/gis/?' + query_string, function (markers) {
 
-        function iconCreateFunction (cluster) {
+      function iconCreateFunction (cluster) {
         var childCount = cluster.getChildCount();
 
         var className = ' marker-cluster-';
         var size = 40;
         if (childCount < 10) {
-          className += 'small';
-          size = 20;
-        } else if (childCount < 30) {
+            className += 'small';
+            size = 20;
+          } else if (childCount < 30) {
           className += 'medium';
         } else {
           className += 'large';
@@ -40,10 +40,10 @@ var Map = React.createClass({
         }
 
         return new L.DivIcon({
-          html: '<div style="width:'+(size - 10)+'px;height:'+(size - 10)+'px;border-radius:'+(size/2)+'px;"><span></span></div>',
-          className: 'marker-cluster' + className,
-          iconSize: new L.Point(size, size)
-        });
+            html: '<div style="width:'+(size - 10)+'px;height:'+(size - 10)+'px;border-radius:'+(size/2)+'px;"><span></span></div>',
+            className: 'marker-cluster' + className,
+            iconSize: new L.Point(size, size)
+          });
       }
 
       var _markers = L.markerClusterGroup({spiderfyOnMaxZoom: true, iconCreateFunction: iconCreateFunction, singleMarkerMode: true});
@@ -66,13 +66,13 @@ var Map = React.createClass({
 
         });
         featuresMarkers.on('click', function (e) {
-          var target = $("#allegation-" + e.layer.feature.properties.id);
+          var target = $('#allegation-' + e.layer.feature.properties.id);
           target.click();
-          $("html, body").animate({
+          $('html, body').animate({
             'scrollTop': target.offset().top
           }, 2000);
 
-        })
+        });
         _markers.addLayer(featuresMarkers);
         _map.fitBounds(_markers.getBounds());
 
@@ -93,7 +93,7 @@ var Map = React.createClass({
     this.drawHeatMap('officer=' + this.props.officer.id);
   },
   render: function () {
-    return <div style={this.props.style}></div>
+    return <div style={ this.props.style }></div>;
   }
 });
 

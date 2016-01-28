@@ -16,13 +16,13 @@ var OutcomeFilter = React.createClass({
       if (quantity) {
         outcomeFilters.push(
           <OutcomeFilterItem
-            type={type}
-            key={type}
-            active={type==activeFilter}
-            name={name}
-            quantity={quantity}
-            callAPI={this.props.callAPI}/>
-          )
+            type={ type }
+            key={ type }
+            active={ type==activeFilter }
+            name={ name }
+            quantity={ quantity }
+            callAPI={ this.props.callAPI }/>
+          );
       }
     }
 

@@ -6,8 +6,8 @@ var AppConstants = require('constants/AppConstants');
 var Base = require('components/Base.react');
 var SessionAPI = require('utils/SessionAPI');
 var SessionActions = require('actions/SessionActions');
-var SessionStore = require("stores/SessionStore");
-var AppStore = require("stores/AppStore");
+var SessionStore = require('stores/SessionStore');
+var AppStore = require('stores/AppStore');
 var StringUtil = require('utils/StringUtil');
 
 var _timeout = false;
@@ -19,7 +19,7 @@ var SiteTitle = React.createClass(_.assign(Base(SessionStore), {
   },
 
   componentDidUpdate: function () {
-    document.title = this.state.siteTitle
+    document.title = this.state.siteTitle;
   },
 
   componentWillUnmount: function () {
@@ -29,8 +29,8 @@ var SiteTitle = React.createClass(_.assign(Base(SessionStore), {
   render: function() {
     var disabled = !this.props.changable;
     return (
-      <input className='site-title-input' type='text' value={this.state.siteTitle} disabled={disabled} onChange={this._onTitleChange} />
-    )
+      <input className='site-title-input' type='text' value={ this.state.siteTitle } disabled={ disabled } onChange={ this._onTitleChange } />
+    );
   },
 
   _onTitleChange: function (e) {
@@ -39,7 +39,7 @@ var SiteTitle = React.createClass(_.assign(Base(SessionStore), {
       clearTimeout(_timeout);
     }
 
-    this.setState({'siteTitle': newTitle})
+    this.setState({'siteTitle': newTitle});
 
     _timeout = setTimeout(function () {
       SessionAPI.updateSessionInfo({'title': newTitle});

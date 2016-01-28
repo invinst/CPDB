@@ -36,7 +36,7 @@ function update(id, updates) {
 function create(id, complaint) {
   _complaints[id] = {
     'items': filter,
-    'value': "Select a " + id
+    'value': 'Select a ' + id
   };
 }
 
@@ -50,7 +50,7 @@ var SummaryStore = assign({}, EventEmitter.prototype, {
     ajax = $.getJSON('/api/officer-allegations/summary/?' + queryString, function (data) {
       _state['rows'] = data.summary;
       SummaryStore.emitChange();
-    })
+    });
   },
   set: function (key, value) {
     _state[key] = value;

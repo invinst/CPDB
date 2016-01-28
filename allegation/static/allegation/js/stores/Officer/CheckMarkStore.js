@@ -42,8 +42,8 @@ AppDispatcher.register(function (action) {
       CheckMarkStore.emitChange();
       break;
 
-  default:
-    break;
+    default:
+      break;
   }
 });
 

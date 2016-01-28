@@ -20,7 +20,7 @@ var SummaryChildRow = React.createClass({
   onClick: function (e) {
     e.preventDefault();
 
-    var parent = this.props.category
+    var parent = this.props.category;
     FilterTagsActions.removeTag('Category', parent.name);
 
     var child = this.props.subcategory;
@@ -45,19 +45,19 @@ var SummaryChildRow = React.createClass({
   },
 
   render: function () {
-    var className = "category-name";
+    var className = 'category-name';
 
     if (this.isActive()) {
-      className += " active";
+      className += ' active';
     }
 
     return (
       <div className="row summary-child-row">
         <div className="col-md-2 col-xs-2 count">
-          {numeral(this.props.subcategory.count).format(AppConstants.NUMERAL_FORMAT)}
+          { numeral(this.props.subcategory.count).format(AppConstants.NUMERAL_FORMAT) }
         </div>
         <div className="col-md-10 col-xs-10 category-name-wrapper">
-          <a href="javascript:void()" className={className} onClick={this.onClick}>{this.props.subcategory.name}</a>
+          <a href="javascript:void()" className={ className } onClick={ this.onClick }>{ this.props.subcategory.name }</a>
         </div>
       </div>
     );

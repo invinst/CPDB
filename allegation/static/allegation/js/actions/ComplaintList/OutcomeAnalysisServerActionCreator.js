@@ -6,7 +6,7 @@ var OutcomeAnalysisServerActionCreator = {
     AppDispatcher.dispatch({
       actionType: AppConstants.RECEIVED_OUTCOME_FILTER_ANALYSIS,
       data: data
-    })
+    });
   },
 };
 

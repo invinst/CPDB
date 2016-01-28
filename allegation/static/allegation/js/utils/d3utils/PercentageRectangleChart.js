@@ -50,13 +50,13 @@ var PercentageRectangleChart = {
       .attr('height', function(data, i) {
         return heightScale(data.value) + minHeight;
       })
-      .on("click", clickHandler);
+      .on('click', clickHandler);
 
     blocks.append('svg:text')
       .attr('font-size', 12)
       .attr('fill', 'white')
       .attr('x', 20)
-      .attr('y', function(d) { return heightScale(d.value) / 2 + minHeight - 5})
+      .attr('y', function(d) { return heightScale(d.value) / 2 + minHeight - 5;})
       .text(function(d, i) {
         var percent = d.value * 100 / sum;
         if (percent < 1) {
@@ -64,7 +64,7 @@ var PercentageRectangleChart = {
         }
         return d.label + ' ' + (Math.floor(percent)) + '%';
       })
-      .on("click", clickHandler);
+      .on('click', clickHandler);
   }
 };
 

@@ -5,10 +5,10 @@ require('mapbox.js');
 require('leaflet.heat');
 
 var AppStore = require('stores/AppStore');
-var MapStore = require("stores/MapStore");
+var MapStore = require('stores/MapStore');
 var FilterTagStore = require('stores/FilterTagStore');
-var FilterActions = require("actions/FilterActions");
-var FilterTagsActions = require("actions/FilterTagsActions");
+var FilterActions = require('actions/FilterActions');
+var FilterTagsActions = require('actions/FilterTagsActions');
 var AppConstants = require('constants/AppConstants');
 var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
 var MapAPI = require('utils/MapAPI');
@@ -33,7 +33,7 @@ var _controls = {};
 var _layers = {};
 var _baseLayers = {};
 var _controlDiv = null;
-var _normalStyle = {"fillColor": "#eeffee", "fillOpacity": 0.0, 'weight': 2};
+var _normalStyle = {'fillColor': '#eeffee', 'fillOpacity': 0.0, 'weight': 2};
 var _types = ['police-districts', 'wards', 'police-beats', 'neighborhoods'];
 
 var selectedLayers = {};
@@ -91,14 +91,14 @@ var Map = React.createClass({
     var width = $(node).width() + 2;
     var height = $(node).height() + 2;
     var filters = FilterTagStore.getAll();
-    var src = "/embed/?page=map&query="
+    var src = '/embed/?page=map&query='
       + encodeURIComponent(AllegationFilterTagsQueryBuilder.buildQuery());
     var state = MapStore.getState();
     state = {
       center: state.center,
       defaultZoom: state.defaultZoom
-    }
-    src += "&state=" + encodeURIComponent(JSON.stringify(state));
+    };
+    src += '&state=' + encodeURIComponent(JSON.stringify(state));
     return '<iframe width="' + width + 'px" height="' + height + 'px" frameborder="0" src="' + this.absoluteUri(src)
        + '"></iframe>';
   },
@@ -108,7 +108,7 @@ var Map = React.createClass({
     this.embedNode.append('<i class="fa fa-code"></i>');
     this.embedNode.append('<input type="text" value="" readonly="readonly" />');
 
-    this.embedNode.find("input").on("click", function (e) {
+    this.embedNode.find('input').on('click', function (e) {
       e.preventDefault();
       $(this).select();
     }).val(this.getEmbedCode());
@@ -123,7 +123,7 @@ var Map = React.createClass({
   enterEmbedMode: function () {
     var node = ReactDOM.findDOMNode(this);
     var parent = $(node).parent();
-    $(parent).prepend(this.getEmbedNode())
+    $(parent).prepend(this.getEmbedNode());
   },
 
   leaveEmbedMode: function () {
@@ -140,14 +140,14 @@ var Map = React.createClass({
   mapIntensity: function(markersLength) {
     var intensity = 1;
     if (markersLength < 15000 ) {
-       intensity = markersLength / 15000;
+      intensity = markersLength / 15000;
     }
     return intensity;
   },
 
   create: function (dom_id, opts) {
     this.first_layer_added = false;
-    _layers = {}
+    _layers = {};
     dom_id = dom_id ? dom_id : ReactDOM.findDOMNode(this);
     opts = opts ? opts : this.state;
     var defaultZoom = opts.defaultZoom ? opts['defaultZoom'] : 11;
@@ -157,7 +157,7 @@ var Map = React.createClass({
     var northEast = L.latLng(42.474122772511485, -85.39947509765625);
     _maxBounds = L.latLngBounds(southWest, northEast);
     _map = L.mapbox.map(dom_id, AppConstants.MAP_TYPE, opts).setView(center, defaultZoom);
-    _defaultBounds = _map.getBounds()
+    _defaultBounds = _map.getBounds();
     _map.setMaxBounds(_maxBounds);
 
     _map.on('move', function () {
@@ -169,7 +169,7 @@ var Map = React.createClass({
       });
       try{
         FilterActions.saveSession();
-      }catch(e){};
+      }catch(e){}
     });
   },
 
@@ -188,23 +188,23 @@ var Map = React.createClass({
 
     L.Control.Command = L.Control.extend({
       options: {
-          position: 'topright'
+        position: 'topright'
       },
 
       onAdd: function (map) {
-          var controlDiv = L.DomUtil.create('div', 'leaflet-control-command');
-          L.DomEvent
+        var controlDiv = L.DomUtil.create('div', 'leaflet-control-command');
+        L.DomEvent
               .addListener(controlDiv, 'click', L.DomEvent.stopPropagation)
               .addListener(controlDiv, 'click', L.DomEvent.preventDefault)
           .addListener(controlDiv, 'click', function () { MapShowCommand(); });
 
-          var controlUI = L.DomUtil.create('div', 'leaflet-control-command-interior', controlDiv);
-          controlUI.title = '';
-          return controlDiv;
+        var controlUI = L.DomUtil.create('div', 'leaflet-control-command-interior', controlDiv);
+        controlUI.title = '';
+        return controlDiv;
       }
     });
     L.control.command = function (options) {
-        return new L.Control.Command(options);
+      return new L.Control.Command(options);
     };
     var areaHover = new L.Control.Command();
     _map.addControl(areaHover);
@@ -225,18 +225,18 @@ var Map = React.createClass({
 
     var area_type = feature.properties.type;
     layer.on('mouseover', function () {
-      $(".leaflet-control-command-interior").show().text(feature.properties.name);
+      $('.leaflet-control-command-interior').show().text(feature.properties.name);
       layer.setStyle(highlightStyle);
     });
 
     layer.on('mouseout', function () {
-      $(".leaflet-control-command-interior").hide().text("");
+      $('.leaflet-control-command-interior').hide().text('');
       if (!layer.selected) {
         layer.setStyle(_normalStyle);
       }
     });
 
-    var tagValue = {label: area_type + ": " + feature.properties.name, value: feature.properties.id};
+    var tagValue = {label: area_type + ': ' + feature.properties.name, value: feature.properties.id};
 
     layer.on('click', function () {
       selectedLayers[feature.properties.id] = layer;
@@ -263,26 +263,26 @@ var Map = React.createClass({
 
   getAreaBoundaries: function (type) {
     var that = this;
-    $.get("/api/areas/?type=" + type, function (data) {
+    $.get('/api/areas/?type=' + type, function (data) {
       that.first_layer_added = false;
       _geo_json_layer = L.geoJson(data, {
         pointToLayer: L.mapbox.marker.style,
         style: function (feature) {
-          return _normalStyle
+          return _normalStyle;
         },
         onEachFeature: that.onEachFeature
       });
       var nextTypeIndex = _types.indexOf(type) + 1;
       if (_types[nextTypeIndex]) {
-        that.getAreaBoundaries(_types[nextTypeIndex])
+        that.getAreaBoundaries(_types[nextTypeIndex]);
       }
       else {
         L.control.layers(_baseLayers,{}, {collapsed: false}).addTo(_map);
         that._onChange();
       }
     }, 'json').fail(function(jqxhr, textStatus, error) {
-      var err = textStatus + ", " + error;
-    })
+      var err = textStatus + ', ' + error;
+    });
   },
 
   beforeChangeMarker: function () {
@@ -317,7 +317,7 @@ var Map = React.createClass({
       },
       onEachFeature: function (feature, layer) {
         if (feature.geometry.coordinates && feature.geometry.coordinates[0]) {
-          latLngs.push([feature.geometry.coordinates[1], feature.geometry.coordinates[0]])
+          latLngs.push([feature.geometry.coordinates[1], feature.geometry.coordinates[0]]);
         }
       }
     });
@@ -354,7 +354,7 @@ var Map = React.createClass({
     var hasOneSelected = false;
     for(var k in selectedLayers) {
       hasOneSelected = true;
-      bounds.extend(selectedLayers[k].getBounds())
+      bounds.extend(selectedLayers[k].getBounds());
     }
     if (hasOneSelected) {
       _map.fitBounds(bounds);
@@ -366,7 +366,7 @@ var Map = React.createClass({
   },
 
   render: function () {
-    return <div id='map' className='pin-top pin-bottom'></div>
+    return <div id='map' className='pin-top pin-bottom'></div>;
   }
 });
 

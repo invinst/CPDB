@@ -23,9 +23,9 @@ var PageAnimator = React.createClass({
   },
 
   render: function () {
-    return <div className={this.props.className}>
-      {this.renderChildren()}
-    </div>;
+    return (<div className={ this.props.className }>
+      { this.renderChildren() }
+    </div>);
   },
 });
 

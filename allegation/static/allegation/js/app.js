@@ -19,8 +19,8 @@ global.initReact = function () {
   var embed = document.getElementById('embed');
   if (embed) {
     ReactDOM.render(
-      <Embed page={PAGE} pk={PK} query={QUERY} state={STATE} />,
+      <Embed page={ PAGE } pk={ PK } query={ QUERY } state={ STATE } />,
       embed
     );
   }
-}
+};

@@ -2,7 +2,7 @@ var _ = require('lodash');
 
 var FilterTagStore = require('stores/FilterTagStore');
 
-isHispanic = function (x, y) { return _(y.toLowerCase()).contains('hispanic') };
+var isHispanic = function (x, y) { return _(y.toLowerCase()).contains('hispanic'); };
 
 
 var RaceGenderAPITransform = {
@@ -26,12 +26,28 @@ var RaceGenderAPITransform = {
     var filterCategory = isOfficer ? 'Officer Race' : 'Complainant Race';
     var hasActiveFilter = FilterTagStore.getAll(filterCategory).length > 0;
 
-    raceData = _([
-      { label: this.raceLabel('White', isOfficer), value: white, filters: [{ value: 'White', label: this.raceLabel('White', isOfficer) }] },
-      { label: this.raceLabel('Black', isOfficer), value: black, filters: [{ value: 'Black', label: this.raceLabel('Black', isOfficer) }] },
-      { label: this.raceLabel('Hispanic', isOfficer), value: hispanic, filters: hispanicFilters },
-      { label: 'Others', value: others, filters: otherFilters }
-    ]).chain().reject(function(x) { return x.value == 0 }).value();
+    var raceData = _([
+      {
+        label: this.raceLabel('White', isOfficer),
+        value: white,
+        filters: [{ value: 'White', label: this.raceLabel('White', isOfficer) }]
+      },
+      {
+        label: this.raceLabel('Black', isOfficer),
+        value: black,
+        filters: [{ value: 'Black', label: this.raceLabel('Black', isOfficer) }]
+      },
+      {
+        label: this.raceLabel('Hispanic', isOfficer),
+        value: hispanic,
+        filters: hispanicFilters
+      },
+      {
+        label: 'Others',
+        value: others,
+        filters: otherFilters
+      }
+    ]).chain().reject(function(x) { return x.value == 0; }).value();
 
     raceData = _.each(raceData, function (item) {
       var isActive = false;
@@ -61,7 +77,7 @@ var RaceGenderAPITransform = {
     var hasActiveFilter = FilterTagStore.getAll(filterCategory).length > 0;
 
     return _(genders).map(function(x, y) {
-      var genderLabel = that.genderPresenter(y)
+      var genderLabel = that.genderPresenter(y);
 
       return {
         'label': genderLabel,
@@ -77,7 +93,7 @@ var RaceGenderAPITransform = {
     if (gender.toLowerCase() == 'm') return 'Male';
     if (gender.toLowerCase() == 'x') return 'Trans';
     return 'N/A';
-  },
+  }
 };
 
 module.exports = RaceGenderAPITransform;

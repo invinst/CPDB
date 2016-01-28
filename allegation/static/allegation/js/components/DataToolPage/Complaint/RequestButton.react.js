@@ -37,8 +37,8 @@ var RequestButton = React.createClass({
     }
 
     return (
-      <a className={linkClassName} href={link} target={target} onClick={this.onClick}>
-        <i className={iconClassName}></i> {documentLabel}
+      <a className={ linkClassName } href={ link } target={ target } onClick={ this.onClick }>
+        <i className={ iconClassName }></i> { documentLabel }
       </a>
     );
   },

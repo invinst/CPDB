@@ -20,7 +20,7 @@ var SiteLinks = React.createClass({
           </li>
         </ul>
       </div>
-    )
+    );
   }
 });
 

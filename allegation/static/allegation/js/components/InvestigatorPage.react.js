@@ -46,12 +46,12 @@ var InvestigatorPage = React.createClass(_.assign(Base(InvestigatorPageStore), {
       <div id='officer-profile'>
         <div className="map-row">
           <div className="container">
-            <InvestigatorDetail data={this.state.data} />
+            <InvestigatorDetail data={ this.state.data } />
           </div>
         </div>
         <div className="white-background">
           <div className="container">
-            <InvestigationsSection investigator={investigator} />
+            <InvestigationsSection investigator={ investigator } />
           </div>
         </div>
       </div>

@@ -17,7 +17,7 @@ var Embed = React.createClass({
   getInitialState: function () {
     return {
       embed: <div></div>
-    }
+    };
   },
 
   setContent: function (content) {
@@ -27,11 +27,11 @@ var Embed = React.createClass({
   },
 
   renderOfficer: function (officer) {
-    this.setContent(<Officer officer={officer} noClick={true} />);
+    this.setContent(<Officer officer={ officer } noClick={ true } />);
   },
 
   renderAllegation: function (data) {
-    this.setContent(<Complaint complaint={data.allegations[0]} noButton={true} />);
+    this.setContent(<Complaint complaint={ data.allegations[0] } noButton={ true } />);
   },
 
   embedOfficerCard: function () {
@@ -39,17 +39,17 @@ var Embed = React.createClass({
   },
 
   embedOfficers: function () {
-    this.setContent(<OfficerList query={this.props.query} noClick={true} />);
+    this.setContent(<OfficerList query={ this.props.query } noClick={ true } />);
   },
 
   embedSunburst: function () {
-    this.setContent(<Sunburst selected={this.props.state.name} />);
+    this.setContent(<Sunburst selected={ this.props.state.name } />);
     SunburstAPI.getData(this.props.query);
   },
 
   embedMap: function () {
-    this.setContent(<Map query={this.props.query} center={this.props.state.center}
-                         defaultZoom={this.props.state.defaultZoom} />);
+    this.setContent(<Map query={ this.props.query } center={ this.props.state.center }
+                         defaultZoom={ this.props.state.defaultZoom } />);
   },
 
   embedAllegation: function () {
@@ -57,8 +57,8 @@ var Embed = React.createClass({
   },
 
   embedSummary: function () {
-    this.setContent(<Summary query={this.props.query} selectedCategories={this.props.state.selectedCategories}
-                             currentActive={this.props.state.currentActive} />);
+    this.setContent(<Summary query={ this.props.query } selectedCategories={ this.props.state.selectedCategories }
+                             currentActive={ this.props.state.currentActive } />);
   },
 
   embedRaceGender: function () {

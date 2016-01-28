@@ -2,7 +2,7 @@ var React = require('react');
 var pluralize = require('pluralize');
 var Link = require('react-router').Link;
 
-var OfficerMixin = require("components/DataToolPage/Officer/OfficerMixin.react");
+var OfficerMixin = require('components/DataToolPage/Officer/OfficerMixin.react');
 var StringUtil = require('utils/StringUtil');
 
 
@@ -22,24 +22,24 @@ var Investigator = React.createClass({
 
     if (investigator.complaint_count > 1) {
       var description = (
-        <div>{investigator.complaint_count} {pluralize('case', investigator.complaint_count)}</div>
+        <div>{ investigator.complaint_count } { pluralize('case', investigator.complaint_count) }</div>
       );
       if (investigator.discipline_count) {
         description = (
           <div>
             <strong className="red">
-              {investigator.discipline_count} disciplined
+              { investigator.discipline_count } disciplined
             </strong>
-            &nbsp;out of {investigator.complaint_count} {pluralize('case', investigator.complaint_count)}
+            &nbsp;out of { investigator.complaint_count } { pluralize('case', investigator.complaint_count) }
           </div>
         );
       }
       more = (
         <div>
-          {description}
-          <div className="progress complaint" style={progressStyle}>
+          { description }
+          <div className="progress complaint" style={ progressStyle }>
             <div className="progress-bar discipline" role="progressbar" aria-valuenow="60" aria-valuemin="0"
-                 aria-valuemax="100" style={style}>
+                 aria-valuemax="100" style={ style }>
               <span className="sr-only"></span>
             </div>
           </div>
@@ -48,15 +48,15 @@ var Investigator = React.createClass({
     }
 
     return (
-      <Link to={this.investigatorLink(investigator)}>
+      <Link to={ this.investigatorLink(investigator) }>
         <div className='investigation'>
           <div className='row-fluid'>
             <div>
               <div className='results'>
                 <div className='investigator-name'>
-                  {investigator.name}
+                  { investigator.name }
                 </div>
-                {more}
+                { more }
               </div>
             </div>
           </div>

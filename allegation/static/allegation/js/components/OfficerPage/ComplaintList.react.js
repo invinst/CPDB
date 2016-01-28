@@ -15,7 +15,7 @@ var ComplaintList = React.createClass({
       var complaint = this.props.complaints[i];
       var allegation = complaint.allegation;
 
-      rows.push(<ComplaintListRow key={i} complaint={complaint} officer={officer} finding={allegation.final_finding}/>)
+      rows.push(<ComplaintListRow key={ i } complaint={ complaint } officer={ officer } finding={ allegation.final_finding }/>);
     }
 
     return rows;
@@ -26,9 +26,9 @@ var ComplaintList = React.createClass({
 
     return (
       <div>
-        {this.renderComplaints(officer)}
+        { this.renderComplaints(officer) }
       </div>
-    )
+    );
   }
 });
 

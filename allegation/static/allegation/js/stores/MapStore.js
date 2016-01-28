@@ -8,8 +8,8 @@
  *
  * MapStore
  */
-var L = require("leaflet");
-var LeafletClusters = require("leaflet.markercluster");
+var L = require('leaflet');
+var LeafletClusters = require('leaflet.markercluster');
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var AppConstants = require('../constants/AppConstants');
@@ -31,7 +31,7 @@ var MapStore = assign({}, EventEmitter.prototype, {
   getSession: function () {
     return {
       'map': _state
-    }
+    };
   },
   setSession: function (opts) {
     if ('map' in opts) {

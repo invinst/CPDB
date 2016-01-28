@@ -11,14 +11,14 @@ var InvestigatorDetail = React.createClass({
     return {
       'Disciplined': this.props.data['num_disciplined'],
       'Complaints': this.props.data['num_allegations']
-    }
+    };
   },
 
   getChartColors: function () {
     return {
       'Disciplined':'#a5b4be',
       'Complaints':'#013270'
-    }
+    };
   },
 
   render: function () {
@@ -30,22 +30,22 @@ var InvestigatorDetail = React.createClass({
       <div>
         <div className='row'>
           <div className="col-sm-9 h3">
-            {investigator.name}
+            { investigator.name }
           </div>
         </div>
 
-        <InvestigatorInformation investigator={investigator} />
+        <InvestigatorInformation investigator={ investigator } />
 
         <div className="row visualization-information">
           <div className='col-xs-6'>
-            <Timeline isInvestigator={true}/>
+            <Timeline isInvestigator={ true }/>
           </div>
           <div className='col-xs-6'>
-            <InvestigatorDonutChart chartColors={chartColors} chartData={chartData} />
+            <InvestigatorDonutChart chartColors={ chartColors } chartData={ chartData } />
           </div>
         </div>
       </div>
-    )
+    );
   }
 });
 

@@ -19,7 +19,7 @@ var AllegationOutcomeFilterQueryBuilder = {
 
     if (activeFilter == 'other') {
       return AppConstants.FILTER_CODES[activeFilter].map(function (x) {
-        return 'final_finding=' + x
+        return 'final_finding=' + x;
       }).join('&');
     }
 

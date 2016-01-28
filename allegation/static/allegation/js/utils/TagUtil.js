@@ -16,8 +16,6 @@ var TagUtil = {
   },
 
   isATagIn: function(tags) {
-    var that = this;
-
     return function(category, value) {
       return _(tags).chain().get(category, []).get('value', []).contains(value).value();
     };

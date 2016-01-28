@@ -31,7 +31,7 @@ var SunburstStore = _.assign(Base(_state), {
 
   isSelected: function (category, value) {
     var selected = _state.selected;
-    return selected && selected.tagValue && selected.tagValue.category == category && selected.tagValue.label == value
+    return selected && selected.tagValue && selected.tagValue.category == category && selected.tagValue.label == value;
   },
 
   updateSelected: function () {
@@ -156,7 +156,7 @@ AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.SUNBURST_SELECT_ARC:
-      var selected  = _state['selected'];
+      var selected = _state['selected'];
       _state['selected'] = action.arc;
       SunburstStore.emitChange();
 

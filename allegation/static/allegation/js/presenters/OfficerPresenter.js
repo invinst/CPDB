@@ -4,10 +4,10 @@ var _ = require('lodash');
 
 var OfficerPresenter = function(officer) {
   var displayName = function() {
-    var displayName = officer.officer_first + " " + officer.officer_last;
+    var displayName = officer.officer_first + ' ' + officer.officer_last;
 
     if (displayName.length > AppConstants.MAX_OFFICER_NAME_LENGTH) {
-      displayName = officer.officer_first.substr(0, 1) + ". " + officer.officer_last;
+      displayName = officer.officer_first.substr(0, 1) + '. ' + officer.officer_last;
     }
 
     return displayName;

@@ -9,7 +9,7 @@ var StoryPage = React.createClass({
         <div className="row section single-img" id="stateway">
           <div className="container">
             <div className="col-sm-12">
-              <img src="/static/allegation/img/story-main-3.png" alt />
+              <img src="/static/allegation/img/story-main-3.png" alt={ true } />
               <h2 className="title">
                 Stateway Gardens Litigation
               </h2>
@@ -31,8 +31,8 @@ var StoryPage = React.createClass({
         <div className="row section">
           <div className="container">
             <div className="col-sm-6">
-              <img src="/static/allegation/img/story-main-1.png" alt />
-              <img src="/static/allegation/img/dianebond2.jpg" alt />
+              <img src="/static/allegation/img/story-main-1.png" alt={ true } />
+              <img src="/static/allegation/img/dianebond2.jpg" alt={ true } />
             </div>
             <div className="col-sm-6">
               <p>
@@ -53,7 +53,7 @@ var StoryPage = React.createClass({
         <div className="row section" id="invisible-institute">
           <div className="container">
             <div className="col-sm-12">
-              <img src="/static/allegation/img/UCPD-1.jpg" alt />
+              <img src="/static/allegation/img/UCPD-1.jpg" alt={ true } />
               <h2 className="title">
                 The Invisible Institute
               </h2>
@@ -88,12 +88,12 @@ var StoryPage = React.createClass({
         <div className="row section font-size-19">
           <div className="container">
             <div className="col-sm-6">
-              <Link className="pointer tab-navigate" data-target="findings" to="/findings" onClick={this.navigate}><img src="/static/allegation/img/finding-ad.png" alt /></Link>
-              <Link className="tab-navigate btn full-width" data-target="findings" to="/findings" onClick={this.navigate}>Findings</Link>
+              <Link className="pointer tab-navigate" data-target="findings" to="/findings" onClick={ this.navigate }><img src="/static/allegation/img/finding-ad.png" alt={ true } /></Link>
+              <Link className="tab-navigate btn full-width" data-target="findings" to="/findings" onClick={ this.navigate }>Findings</Link>
             </div>
             <div className="col-sm-6">
-              <Link data-target="data" to="/data" onClick={this.navigate}><img src="/static/allegation/img/data-ad.png" alt /></Link>
-              <Link className="btn full-width" data-target="data" to="/data" onClick={this.navigate}>Data</Link>
+              <Link data-target="data" to="/data" onClick={ this.navigate }><img src="/static/allegation/img/data-ad.png" alt={ true } /></Link>
+              <Link className="btn full-width" data-target="data" to="/data" onClick={ this.navigate }>Data</Link>
             </div>
           </div>
         </div>

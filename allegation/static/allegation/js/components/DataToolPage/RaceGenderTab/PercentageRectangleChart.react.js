@@ -1,8 +1,8 @@
 var cx = require('classnames');
 var d3 = require('d3');
 var React = require('react');
-var FilterTagsActions = require("actions/FilterTagsActions");
-var D3PercentageRectangleChart = require("utils/d3utils/PercentageRectangleChart");
+var FilterTagsActions = require('actions/FilterTagsActions');
+var D3PercentageRectangleChart = require('utils/d3utils/PercentageRectangleChart');
 
 var PercentageRectangleChart = React.createClass({
   getInitialState: function() {
@@ -35,7 +35,7 @@ var PercentageRectangleChart = React.createClass({
     var className = cx(uniqueId, 'percentage-rectangle-chart', 'pointer');
 
     return (
-        <div className={className}></div>
+        <div className={ className }></div>
     );
   },
 

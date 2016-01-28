@@ -5,7 +5,7 @@ var DateTimeUtil = {
     momentDate = moment(date);
 
     if (momentDate.isValid()) {
-      return momentDate.format(format)
+      return momentDate.format(format);
     } else {
       return '';
     }

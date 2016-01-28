@@ -36,15 +36,15 @@ var SessionAPI = {
       if (session == '') {
         SessionActions.createdSession();
       }
-      ComplaintListAPI.getData()
+      ComplaintListAPI.getData();
     });
   },
 
   updateSessionInfo: function(data) {
     var currentData = SessionStore.getState()['data'];
-    var data = _.extend(currentData, data);
+    data = _.extend(currentData, data);
     var requestData = {
-      'request_data': JSON.stringify(data),
+      'request_data': JSON.stringify(data)
     };
 
     if (ajax) {

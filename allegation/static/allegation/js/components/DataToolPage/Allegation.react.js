@@ -16,13 +16,13 @@ var Allegation = React.createClass({
     });
 
     return (
-      <div className={cssClasses}>
+      <div className={ cssClasses }>
         <div>
           <div className='col-xs-3'>
-            <AllegationSummary allegation={allegation} toggleComplaint={toggleAllegation} />
+            <AllegationSummary allegation={ allegation } toggleComplaint={ toggleAllegation } />
           </div>
           <div className='col-xs-9'>
-            <AllegationDetails allegation={allegation} />
+            <AllegationDetails allegation={ allegation } />
           </div>
         </div>
       </div>

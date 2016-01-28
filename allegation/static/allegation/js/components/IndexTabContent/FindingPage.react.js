@@ -27,7 +27,7 @@ var FindingPage = React.createClass({
         <div className="row section map-section">
           <div className="container">
             <div className="col-sm-6 static-map">
-              <Link data-target="data" to="data" onClick={this.navigate}><div className="map-image" /></Link>
+              <Link data-target="data" to="data" onClick={ this.navigate }><div className="map-image" /></Link>
             </div>
             <div className="col-sm-6 map-explain">
               <p>
@@ -45,7 +45,7 @@ var FindingPage = React.createClass({
         <div className="row section">
           <div className="container">
             <div className="col-sm-6">
-              <img src="/static/allegation/img/graph-1.svg" alt />
+              <img src="/static/allegation/img/graph-1.svg" alt={ true } />
               <p>
                 28,567 allegations of misconduct were filed against Chicago Police Department officers between March 2011 and September 2015.
               </p>
@@ -54,7 +54,7 @@ var FindingPage = React.createClass({
               </p>
             </div>
             <div className="col-sm-6">
-              <img src="/static/allegation/img/graph-2.svg" alt />
+              <img src="/static/allegation/img/graph-2.svg" alt={ true } />
               <p>
                 Of those cases in which discipline is imposed, the vast majority result in a reprimand or a suspension of less than one week.
               </p>
@@ -64,7 +64,7 @@ var FindingPage = React.createClass({
         <div className="row section">
           <div className="container">
             <div className="col-sm-12">
-              <img src="/static/allegation/img/data-chart.png" alt />
+              <img src="/static/allegation/img/data-chart.png" alt={ true } />
               <p>
                 Complaints are disproportionately filed against a small subset of the Chicago Police Department.
               </p>
@@ -77,7 +77,7 @@ var FindingPage = React.createClass({
         <div className="row section">
           <div className="container">
             <div className="col-sm-6">
-              <img src="/static/allegation/img/graph-3.svg" alt />
+              <img src="/static/allegation/img/graph-3.svg" alt={ true } />
             </div>
             <div className="col-sm-6">
               <p>
@@ -92,12 +92,12 @@ var FindingPage = React.createClass({
         <div className="row section font-size-19">
           <div className="container">
             <div className="col-sm-6">
-              <Link data-target="story" className="pointer tab-navigate" to="story" onClick={this.navigate}><img src="/static/allegation/img/story-ad.png" alt /></Link>
-              <Link data-target="story" className="tab-navigate btn full-width" to="story" onClick={this.navigate}>Stories</Link>
+              <Link data-target="story" className="pointer tab-navigate" to="story" onClick={ this.navigate }><img src="/static/allegation/img/story-ad.png" alt={ true } /></Link>
+              <Link data-target="story" className="tab-navigate btn full-width" to="story" onClick={ this.navigate }>Stories</Link>
             </div>
             <div className="col-sm-6">
-              <Link data-target="data" to="/data" onClick={this.navigate}><img src="/static/allegation/img/data-ad.png" alt /></Link>
-              <Link className="btn full-width" data-target="data" to="/data" onClick={this.navigate}>Data</Link>
+              <Link data-target="data" to="/data" onClick={ this.navigate }><img src="/static/allegation/img/data-ad.png" alt={ true } /></Link>
+              <Link className="btn full-width" data-target="data" to="/data" onClick={ this.navigate }>Data</Link>
             </div>
           </div>
         </div>

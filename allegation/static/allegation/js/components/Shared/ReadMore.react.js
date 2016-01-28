@@ -1,4 +1,4 @@
-var _ =  require('lodash');
+var _ = require('lodash');
 var classnames = require('classnames');
 var React = require('react');
 
@@ -29,14 +29,14 @@ var ReadMore = React.createClass({
       this.setState({
         expanded: false,
         maxHeight: (limit * lineHeight) + 'px'
-      })
+      });
     }
   },
 
   renderShowMoreLink: function () {
     if (!this.state.expanded) {
       return (
-        <a href='javascript:void(0)' onClick={this.toggleContent}>Read more...</a>
+        <a href='javascript:void(0)' onClick={ this.toggleContent }>Read more...</a>
       );
     }
     return '';
@@ -54,7 +54,7 @@ var ReadMore = React.createClass({
 
     return (
       <div>
-        <p ref='contentParagraph' className={paragraphClass} style={contentStyle}>
+        <p ref='contentParagraph' className={ paragraphClass } style={ contentStyle }>
           { this.props.content }
         </p>
         { this.renderShowMoreLink() }
@@ -65,7 +65,7 @@ var ReadMore = React.createClass({
   toggleContent: function (event) {
     this.setState({
       expanded: !this.state.expanded
-    })
+    });
   }
 });
 

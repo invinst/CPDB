@@ -211,7 +211,7 @@ module.exports = {
     '393': 'Gang Enforcement Division',
     '441': 'Special Activities Section',
     '442': 'Bomb Unit',
-    '443': "Bomb Unit - O'Hare Airport'",
+    '443': 'Bomb Unit - O\'Hare Airport\'',
     '541': 'FOP Detail',
     '542': 'Detached Services - Governmental Security Detail',
     '543': 'Detached Services-Miscellaneous Detail',
@@ -328,10 +328,10 @@ module.exports = {
   DATE_FORMAT: 'D MMM, YYYY',
 
   HAPPYFOX_CONF: {
-    EMBED_TOKEN: "31ec3e10-7a4b-11e5-bf4e-83a9062f6735",
-    ACCESS_TOKEN: "0caab5f9fe694a1b8a094b6b0f48619e",
-    HOST_URL: "https://happyfoxchat.com",
-    ASSETS_URL: "https://d1l7z5ofrj6ab8.cloudfront.net/visitor"
+    EMBED_TOKEN: '31ec3e10-7a4b-11e5-bf4e-83a9062f6735',
+    ACCESS_TOKEN: '0caab5f9fe694a1b8a094b6b0f48619e',
+    HOST_URL: 'https://happyfoxchat.com',
+    ASSETS_URL: 'https://d1l7z5ofrj6ab8.cloudfront.net/visitor'
   },
 
   TABS: {

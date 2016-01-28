@@ -25,7 +25,7 @@ var MethodPage = React.createClass({
         <div className="row section">
           <div className="container">
             <div className="col-sm-6">
-              <img src="/static/allegation/img/methodology.png" alt />
+              <img src="/static/allegation/img/methodology.png" alt={ true } />
             </div>
             <div className="col-sm-6">
               <h2 className="title">
@@ -121,12 +121,12 @@ var MethodPage = React.createClass({
         <div className="row section font-size-19">
           <div className="container">
             <div className="col-sm-6">
-              <img src="/static/allegation/img/finding-ad.png" alt />
-              <Link className="tab-navigate btn full-width" data-target="findings" to="/findings" onClick={this.navigate}>Findings</Link>
+              <img src="/static/allegation/img/finding-ad.png" alt={ true } />
+              <Link className="tab-navigate btn full-width" data-target="findings" to="/findings" onClick={ this.navigate }>Findings</Link>
             </div>
             <div className="col-sm-6">
-              <img src="/static/allegation/img/data-ad.png" alt />
-              <Link className="btn full-width" data-target="data" to="/data" onClick={this.navigate}>Data</Link>
+              <img src="/static/allegation/img/data-ad.png" alt={ true } />
+              <Link className="btn full-width" data-target="data" to="/data" onClick={ this.navigate }>Data</Link>
             </div>
           </div>
         </div>

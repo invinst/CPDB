@@ -25,7 +25,7 @@ AppDispatcher.register(function(action) {
       break;
 
     default:
-        break;
+      break;
   }
 });
 

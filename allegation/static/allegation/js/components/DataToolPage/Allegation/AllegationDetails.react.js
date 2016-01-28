@@ -27,7 +27,7 @@ var AllegationDetails = React.createClass(_.assign(Base(AllegationDetailsStore),
   renderOfficersInvolved: function (allegation) {
     return (
       <div className='row officers'>
-        <OfficerList allegation={allegation} />
+        <OfficerList allegation={ allegation } />
       </div>
     );
   },
@@ -43,7 +43,7 @@ var AllegationDetails = React.createClass(_.assign(Base(AllegationDetailsStore),
               Case Summary <HelpText identifier='summary-help-text' />
             </div>
             <div className='section-summary'>
-              <ReadMore limit={5} content={summary} />
+              <ReadMore limit={ 5 } content={ summary } />
             </div>
           </div>
         </div>
@@ -58,7 +58,7 @@ var AllegationDetails = React.createClass(_.assign(Base(AllegationDetailsStore),
     if (_allegation['start_date'] || _allegation['incident_date'] || _allegation['end_date']) {
       return (
         <div className='row'>
-          <Timeline complaint={allegation} />
+          <Timeline complaint={ allegation } />
         </div>
       );
     }
@@ -69,7 +69,7 @@ var AllegationDetails = React.createClass(_.assign(Base(AllegationDetailsStore),
     if (allegation.allegation.point.lat) {
       return (
         <div className='row'>
-          <Location complaint={allegation} />
+          <Location complaint={ allegation } />
         </div>
       );
     }
@@ -79,7 +79,7 @@ var AllegationDetails = React.createClass(_.assign(Base(AllegationDetailsStore),
   renderPoliceWitness: function (allegation) {
     if (_.get(this.state, 'police_witness.length', 0)) {
       return (
-        <PoliceWitness complaint={allegation} witnesses={this.state['police_witness']} />
+        <PoliceWitness complaint={ allegation } witnesses={ this.state['police_witness'] } />
       );
     }
     return '';

@@ -7,11 +7,11 @@ var RequestDocumentConstants = require('../../constants/RequestDocumentConstants
 var EventEmitter = require('events').EventEmitter;
 
 function setRequestedCrid(crid){
-  $.cookie("requested_document_" + crid, "1", {path: '/'})
+  $.cookie('requested_document_' + crid, '1', {path: '/'});
 }
 
 function isCridRequested(crid){
-  return $.cookie("requested_document_" + crid);
+  return $.cookie('requested_document_' + crid);
 }
 
 
@@ -35,7 +35,7 @@ var RequestButtonStore = assign({}, EventEmitter.prototype, {
   },
 
   unregisterButton: function(obj) {
-    AppDispatcher.unregister(obj.token)
+    AppDispatcher.unregister(obj.token);
   }
 });
 

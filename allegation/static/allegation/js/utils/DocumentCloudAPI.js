@@ -1,5 +1,5 @@
 var jQuery = require('utils/jQuery');
-var StoryActions = require('actions/OfficerPage/StoryActions')
+var StoryActions = require('actions/OfficerPage/StoryActions');
 
 
 var DocumentCloudAPI = {

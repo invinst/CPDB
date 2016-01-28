@@ -13,7 +13,7 @@ var DonutChartMixin = {
         name: chartDataKey,
         y: chartData[chartDataKey],
         color: chartColors[chartDataKey] || defaultColor
-      }
+      };
     });
   },
 
@@ -27,9 +27,9 @@ var DonutChartMixin = {
     var renderCategories = function () {
       return categories.map(function (category, i) {
         return (
-          <div key={i}>
-            <span style={{color: chartColors[category]}}>
-              {category}
+          <div key={ i }>
+            <span style={ {color: chartColors[category]} }>
+              { category }
             </span>
           </div>
         );
@@ -38,13 +38,13 @@ var DonutChartMixin = {
 
     return (
       <span id="pieChartInfoText">
-        <span style={{fontSize: '28px'}}>
-          <strong>{fragtionText}</strong>
+        <span style={ {fontSize: '28px'} }>
+          <strong>{ fragtionText }</strong>
           <br/>
         </span>
-        <span style={{fontSize: '16px'}}>
+        <span style={ {fontSize: '16px'} }>
           <span>
-            {renderCategories()}
+            { renderCategories() }
           </span>
         </span>
       </span>

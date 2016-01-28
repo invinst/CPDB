@@ -96,7 +96,7 @@ SessionStore.dispatcherToken = AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.SAVE_SESSION:
     // SessionStore.updateSession(action.data);
-    SessionStore.emitChange();
+      SessionStore.emitChange();
       break;
 
     case AppConstants.RECEIVED_SESSION_DATA:

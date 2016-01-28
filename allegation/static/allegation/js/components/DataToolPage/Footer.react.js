@@ -13,9 +13,9 @@ var jQuery = require('utils/jQuery');
 var Footer = React.createClass(_.assign(Base(EmbedStore), {
   componentDidUpdate: function () {
     if (this.state.embedMode) {
-      jQuery("body").addClass("embedding");
+      jQuery('body').addClass('embedding');
     } else {
-      jQuery("body").removeClass("embedding");
+      jQuery('body').removeClass('embedding');
     }
   },
 
@@ -39,7 +39,7 @@ var Footer = React.createClass(_.assign(Base(EmbedStore), {
   smoothScroll: function (event) {
     var target = $(event.currentTarget).data('target');
     var top = $(target).offset().top - 100;
-    $("html, body").animate({scrollTop: top}, 500);
+    $('html, body').animate({scrollTop: top}, 500);
   },
 
   render: function () {
@@ -55,25 +55,25 @@ var Footer = React.createClass(_.assign(Base(EmbedStore), {
 
     return (
       <footer>
-        <div className={footerClassName}>
+        <div className={ footerClassName }>
           <div className="col-lg-12">
             <div className="container">
               <ul className="list-unstyled pull-right" id="EmbedBar">
                 <li className="embed-button">
                   <Download />
                 </li>
-                <li className={embedClassName}>
-                  <a href="javascript: void()" onClick={this.toggleEmbedMode}>
+                <li className={ embedClassName }>
+                  <a href="javascript: void()" onClick={ this.toggleEmbedMode }>
                     <i className="fa fa-code"></i> Embed Mode
                   </a>
                 </li>
                 <li className="embed-button">
-                  <div className='smooth-scroll pointer' data-target='body' onClick={this.smoothScroll}>
+                  <div className='smooth-scroll pointer' data-target='body' onClick={ this.smoothScroll }>
                     <i className='fa fa-chevron-up' ></i> Back to top
                   </div>
                 </li>
                 <li>
-                  <a className='btn btn-transparent disclaimer-btn' onClick={this.showDisclaimer}>
+                  <a className='btn btn-transparent disclaimer-btn' onClick={ this.showDisclaimer }>
                     <i className='fa fa-warning'></i> About the data
                   </a>
                 </li>
@@ -85,7 +85,7 @@ var Footer = React.createClass(_.assign(Base(EmbedStore), {
                   </a>
                 </li>
                 <li className="embed-button">
-                  <a href="javascript: void()" onClick={this.toggleEmbedMode} className={exitClassName}>
+                  <a href="javascript: void()" onClick={ this.toggleEmbedMode } className={ exitClassName }>
                     <i className="fa fa-times"></i> Exit mode
                   </a>
                 </li>

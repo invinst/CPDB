@@ -31,14 +31,14 @@ var PoliceWitness = React.createClass({
       };
 
       return (
-        <div key={i}>
+        <div key={ i }>
           <div>
-            {officer.officer.officer_first} {officer.officer.officer_last}
+            { officer.officer.officer_first } { officer.officer.officer_last }
             &nbsp;
-            ({officer.num_complaints} { pluralize('case', officer.num_complaints) })
+            ({ officer.num_complaints } { pluralize('case', officer.num_complaints) })
           </div>
           <div className='progress complaint'>
-            <div className='progress-bar not-discipline' role='progressbar' style={style}>
+            <div className='progress-bar not-discipline' role='progressbar' style={ style }>
               <span className='sr-only'></span>
             </div>
           </div>
@@ -53,13 +53,13 @@ var PoliceWitness = React.createClass({
 
     return witnesses.map(function (witness, i) {
       return (
-        <div className='col-xs-6' key={i}>
+        <div className='col-xs-6' key={ i }>
           <div className='results witness'>
             <div className='investigator-name'>
-              {witness.witness_officer.officer_first} {witness.witness_officer.officer_last}
+              { witness.witness_officer.officer_first } { witness.witness_officer.officer_last }
             </div>
             <div className="legend">
-              { genderPresenter(witness['witness_officer']['gender']) } {witness.witness_officer.race}
+              { genderPresenter(witness['witness_officer']['gender']) } { witness.witness_officer.race }
             </div>
             { renderOfficers(witness) }
           </div>

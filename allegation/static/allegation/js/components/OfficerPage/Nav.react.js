@@ -19,11 +19,11 @@ var Nav = React.createClass({
     return (
       <nav className="landing-nav">
         <div className="items clearfix">
-          <Link to={dataToolUrl}><img className="pull-left cpdp-logo" src="/static/img/cpdp-logo.svg" /></Link>
+          <Link to={ dataToolUrl }><img className="pull-left cpdp-logo" src="/static/img/cpdp-logo.svg" /></Link>
           <Back />
         </div>
       </nav>
-    )
+    );
   }
 });
 

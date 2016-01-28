@@ -5,13 +5,13 @@ var EmbedAction = {
   enterEmbedMode: function() {
     AppDispatcher.dispatch({
       actionType: AppConstants.ENTER_EMBED_MODE
-    })
+    });
   },
 
   leaveEmbedMode: function() {
     AppDispatcher.dispatch({
       actionType: AppConstants.LEAVE_EMBED_MODE
-    })
+    });
   }
 };
 

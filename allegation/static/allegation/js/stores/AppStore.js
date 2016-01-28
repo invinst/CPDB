@@ -63,7 +63,7 @@ var AppStore = _.assign(Base(_state), {
   getDataToolUrl: function () {
     if (_state.session_hash) {
       if (_state.session_title) {
-        return '/data/' + _state.session_hash + '/' + StringUtil.slugify(_state.session_title);;
+        return '/data/' + _state.session_hash + '/' + StringUtil.slugify(_state.session_title);
       }
       return '/data/' + _state.session_hash + '/';
     }

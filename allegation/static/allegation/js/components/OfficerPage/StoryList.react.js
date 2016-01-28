@@ -26,13 +26,13 @@ var StoryList = React.createClass(_.assign(Base(StoryListStore), {
 
   renderStoryGroup: function (stories, story_type) {
     stories = stories.map(function (story) {
-      return <Story key={story.id} story={story} />
+      return <Story key={ story.id } story={ story } />;
     });
 
     return (
       <div>
-        <div className='row'><h3 className='col-md-12'>{story_type}</h3></div>
-        <div className="row">{stories}</div>
+        <div className='row'><h3 className='col-md-12'>{ story_type }</h3></div>
+        <div className="row">{ stories }</div>
       </div>
     );
   },
@@ -55,7 +55,7 @@ var StoryList = React.createClass(_.assign(Base(StoryListStore), {
     var that = this;
 
     return _.map(this.storyTypesOrder(), function (story_type) {
-      stories = groupStories[story_type]
+      stories = groupStories[story_type];
 
       if (!stories || !stories.length) {
         return '';

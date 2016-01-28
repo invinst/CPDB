@@ -82,7 +82,7 @@ var IndexPage = React.createClass({
     return (
       <div className='container-fluid'>
         <div className='sticky-footer'>
-          <Footer withEmbedBar={this.context.router.isActive('data')}/>
+          <Footer withEmbedBar={ this.context.router.isActive('data') }/>
         </div>
       </div>
     );
@@ -116,7 +116,7 @@ var IndexPage = React.createClass({
     return (
       <div className="main">
         <div className="tab-content">
-          <div role="tabpanel" className={tabPanelClass}>
+          <div role="tabpanel" className={ tabPanelClass }>
             { this.props.children }
           </div>
         </div>
@@ -135,11 +135,11 @@ var IndexPage = React.createClass({
       <div className='page-wrapper'>
         <StatePropagateCSSTransitionGroup
           transitionName="page"
-          transitionEnterTimeout={500}
-          transitionLeaveTimeout={500}>
-            <PageAnimator className='page' key={this.props.location.pathname}>
-              <div id='landing-page' className={pageClassName}>
-                <Nav isActive={this.context.router.isActive}/>
+          transitionEnterTimeout={ 500 }
+          transitionLeaveTimeout={ 500 }>
+            <PageAnimator className='page' key={ this.props.location.pathname }>
+              <div id='landing-page' className={ pageClassName }>
+                <Nav isActive={ this.context.router.isActive }/>
                 { this.renderContent() }
                 { this.renderFooterWrapper() }
               </div>

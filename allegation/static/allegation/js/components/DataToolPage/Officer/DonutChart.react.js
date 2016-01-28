@@ -21,11 +21,11 @@ var DonutChart = React.createClass({
       dataLen;
 
     var data = [{
-      name: "Disciplined",
+      name: 'Disciplined',
       y: officer.discipline_count,
       color: chartColors['disciplined']
     }, {
-      name: "Not disciplined",
+      name: 'Not disciplined',
       y: nonDisciplines,
       color: chartColors['undisciplined']
     }];
@@ -48,22 +48,22 @@ var DonutChart = React.createClass({
     officer = officer || this.props.officer;
 
     if (officer.discipline_count !== undefined) {
-      $("#addText").html("");
+      $('#addText').html('');
       var span = '<span id="pieChartInfoText">';
       span += '<span style="font-size: 28px"><strong>' + officer.discipline_count +
-              " / " + officer.allegations_count + '</strong><br /></span>';
+              ' / ' + officer.allegations_count + '</strong><br /></span>';
       span += '<span style="font-size: 16px;">' +
         '<span style="color: ' + chartColors['undisciplined'] + '">allegations disciplined</span>' +
         '</span>';
       span += '</span>';
 
-      $("#addText").append(span);
+      $('#addText').append(span);
       span = $('#pieChartInfoText');
     }
   },
 
   componentWillReceiveProps: function(newProps) {
-    var officer = newProps.officer
+    var officer = newProps.officer;
     var browserData = this.buildBrowserData(officer);
 
     this.chart.series[0].setData(browserData, true);
@@ -89,17 +89,17 @@ var DonutChart = React.createClass({
     browserData = this.buildBrowserData(this.props.officer);
     // Create the chart
     this.chart = new Highcharts.Chart({
-        chart: {
-          type: 'pie',
-          backgroundColor: 'transparent',
-          renderTo: 'donut-chart'
-        },
-        credits: false,
-        title: {
-          text: ''
-        },
-        plotOptions: {
-          pie: {
+      chart: {
+        type: 'pie',
+        backgroundColor: 'transparent',
+        renderTo: 'donut-chart'
+      },
+      credits: false,
+      title: {
+        text: ''
+      },
+      plotOptions: {
+        pie: {
             shadow: false,
             center: ['50%', '50%'],
             states: {
@@ -109,18 +109,18 @@ var DonutChart = React.createClass({
             }
           }
 
-        },
-        tooltip: false,
-        series: [{
-          name: 'Category',
-          size: '100%',
-          innerSize: '70%',
-          data: browserData,
-          dataLabels: {
+      },
+      tooltip: false,
+      series: [{
+        name: 'Category',
+        size: '100%',
+        innerSize: '70%',
+        data: browserData,
+        dataLabels: {
             enabled: false
           }
-        }]
-      },
+      }]
+    },
       this.updateTextInsideDonutChart
     );
     //http://stackoverflow.com/questions/9732205/place-text-in-center-of-pie-chart-highcharts
@@ -129,10 +129,10 @@ var DonutChart = React.createClass({
     });
   },
   render: function () {
-    return <div className='donut-chart'>
+    return (<div className='donut-chart'>
         <div id='donut-chart'></div>
         <div id="addText"></div>
-      </div>
+      </div>);
   }
 });
 
