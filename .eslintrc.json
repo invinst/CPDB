@@ -21,9 +21,7 @@
             2,
             {
                 "args": "none",
-                "ignore": [
-                    "React"
-                ]
+                "varsIgnorePattern": "^React$"
             }
         ],
         "no-multi-spaces": [
