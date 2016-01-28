@@ -60,9 +60,9 @@ class QuerySetManagerTestCase(SimpleTestCase):
         OfficerAllegationFactory(start_date=None)
 
         [o.start_date for o in
-         OfficerAllegation.objects.all().null_last_order_by('-start_date')].index(None).should.equal(1)
+         OfficerAllegation.objects.all().order_by('-start_date')].index(None).should.equal(1)
         [o.start_date for o in
-         OfficerAllegation.objects.all().null_last_order_by('start_date')].index(None).should.equal(0)
+         OfficerAllegation.objects.all().order_by('start_date')].index(None).should.equal(0)
 
         OfficerAllegation.objects.all().delete()
 
@@ -70,6 +70,6 @@ class QuerySetManagerTestCase(SimpleTestCase):
         OfficerAllegationFactory(allegation=AllegationFactory(incident_date=None))
 
         [o.allegation.incident_date for o in
-         OfficerAllegation.objects.all().null_last_order_by('-allegation__incident_date')].index(None).should.equal(1)
+         OfficerAllegation.objects.all().order_by('-allegation__incident_date')].index(None).should.equal(1)
         [o.allegation.incident_date for o in
-         OfficerAllegation.objects.all().null_last_order_by('allegation__incident_date')].index(None).should.equal(0)
+         OfficerAllegation.objects.all().order_by('allegation__incident_date')].index(None).should.equal(0)
