@@ -71,9 +71,10 @@ AppDispatcher.register(function(action) {
       } else {
         _state['handleInfiniteLoad'] = false;
         _state['stopHandleInfiniteLoad'] = true;
-        _state['loading'] = false;
+
         ComplaintListStore.emitChange();
       }
+      _state['loading'] = false;
       break;
 
     case AppConstants.COMPLAINT_LIST_GET_DATA:
@@ -101,8 +102,9 @@ AppDispatcher.register(function(action) {
       }
       else{
         _state['activeComplaints'].push(action.id);
+
       }
-      _state['loading'] = true;
+
       ComplaintListStore.emitChange();
       break;
 
