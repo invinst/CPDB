@@ -13,7 +13,8 @@ var _state = {
   'pageNumber': 1,
   'handleInfiniteLoad': false,
   'stopHandleInfiniteLoad': false,
-  'noQuery': true
+  'noQuery': true,
+  'loading': true,
 };
 
 var ComplaintListStore = assign({}, EventEmitter.prototype, {
@@ -50,6 +51,7 @@ var ComplaintListStore = assign({}, EventEmitter.prototype, {
 
 
 AppDispatcher.register(function(action) {
+
   switch (action.actionType) {
     case AppConstants.SET_ACTIVE_COMPLAINT_LIST_FILTER:
       ComplaintListStore.setActiveFilter(action.filter);
@@ -69,12 +71,14 @@ AppDispatcher.register(function(action) {
       } else {
         _state['handleInfiniteLoad'] = false;
         _state['stopHandleInfiniteLoad'] = true;
+        _state['loading'] = false;
         ComplaintListStore.emitChange();
       }
       break;
 
     case AppConstants.COMPLAINT_LIST_GET_DATA:
       _state['handleInfiniteLoad'] = false;
+      _state['loading'] = true;
       ComplaintListStore.emitChange();
       break;
 
@@ -84,6 +88,7 @@ AppDispatcher.register(function(action) {
         ComplaintListStore.setAnalysisInformation(action.data['analytics']);
       }
       _state.noQuery = action.data.noQuery;
+      _state['loading'] = false;
       _state['pageNumber'] = 1;
       _state['handleInfiniteLoad'] = false;
       _state['stopHandleInfiniteLoad'] = false;
@@ -97,6 +102,7 @@ AppDispatcher.register(function(action) {
       else{
         _state['activeComplaints'].push(action.id);
       }
+      _state['loading'] = true;
       ComplaintListStore.emitChange();
       break;
 
