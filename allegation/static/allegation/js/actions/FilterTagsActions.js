@@ -30,16 +30,13 @@ function updateSiteData(dontUpdateSession) {
 
 
 var FilterTagsActions = {
-  addTag: function (category, value, filter, text) {
+  addTag: function (tagValue) {
     if (EmbedStore.isEmbedMode()) {
       return;
     }
     AppDispatcher.dispatch({
       actionType: AppConstants.ADD_TAG,
-      category: category,
-      value: value,
-      filter: filter,
-      text: text
+      tagValue: tagValue
     });
     updateSiteData();
   },

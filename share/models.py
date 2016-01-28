@@ -82,8 +82,8 @@ class Session(models.Model):
     def query_string(self):
         filters = self.query.get('filters', {})
         query = []
-        for category in filters:
-            items = filters[category]
-            query.append('&'.join(item['filter'] for item in items))
+        for category, items in filters.items():
+            query.append('&'.join(
+                '{category}={value}'.format(category=item['category'], value=item['value']) for item in items)
+            )
         return '&'.join(query)
-

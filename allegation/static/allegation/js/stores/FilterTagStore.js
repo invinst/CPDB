@@ -37,14 +37,16 @@ var FilterTagStore = _.assign(Base(_state), {
     return _.contains(_.pluck(_state['filters'][category], 'value'), value);
   },
 
-  addFilter: function (category, value, filter) {
-    this.removeFiltersInCategory(category);
+  addFilter: function (tagValue) {
+    this.removeFiltersInCategory(tagValue.category);
 
-    _state['filters'][category] = _state['filters'][category] || [];
+    _state['filters'][tagValue.category] = _state['filters'][tagValue.category] || [];
 
-    _state['filters'][category].push({
-      value: value,
-      filter: filter,
+    _state['filters'][tagValue.category].push({
+      value: tagValue.value,
+      category: tagValue.category,
+      displayValue: tagValue.displayValue,
+      displayCategory: tagValue.displayCategory,
       pinned: false
     });
   },
@@ -189,7 +191,7 @@ AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.ADD_TAG:
-      FilterTagStore.addFilter(action.category, action.value, action.filter);
+      FilterTagStore.addFilter(action.tagValue);
       FilterTagStore.emitChange();
     break;
 

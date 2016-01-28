@@ -16,9 +16,13 @@ class SuggestAllegationCity(SuggestBase):
 
         results = [
             cls.entry_format(
-                label=get_zipcode_from_city(entry),
-                value=entry,
-                filter=cls.build_filter(category='allegation__city', value=entry)
+                suggest_value=get_zipcode_from_city(entry),
+                tag_value=cls.build_tag_value(
+                    category='allegation__city',
+                    value=entry,
+                    display_category='Zip Code',
+                    display_value=entry
+                )
             ) for entry in raw_results
         ]
 
@@ -36,9 +40,13 @@ class SuggestAllegationCrid(SuggestBase):
         raw_results = sqs.filter(allegation_crid=term).order_by('allegation_crid_sort').values_list('allegation_crid', flat=True)[:5]
         results = [
             cls.entry_format(
-                label=entry,
-                value=entry,
-                filter=cls.build_filter(category='allegation__crid', value=entry)
+                suggest_value=entry,
+                tag_value=cls.build_tag_value(
+                    category='allegation__crid',
+                    value=entry,
+                    display_category='Allegation ID',
+                    display_value=entry
+                ),
             ) for entry in raw_results
         ]
 

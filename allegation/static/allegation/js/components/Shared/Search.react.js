@@ -18,8 +18,8 @@ var Search = React.createClass({
     $("#autocomplete").catcomplete({
       autoFocus: true,
       source: function (request, response) {
-        var that = this
-        this.displayMessage('Searching...')
+        var that = this;
+        this.displayMessage('Searching...');
 
         $.ajax({
           url: "/search/suggest/",
@@ -35,7 +35,7 @@ var Search = React.createClass({
             if (newData.length > 0) {
               response(newData);
             } else {
-              that.displayMessage('No matches found')
+              that.displayMessage('No matches found');
             }
           }
         });
@@ -54,9 +54,9 @@ var Search = React.createClass({
     event.preventDefault();
 
     if (ui.item.category == 'Session') {
-      SessionAPI.getSessionInfo(ui.item.value);
+      SessionAPI.getSessionInfo(ui.item.tagValue.displayValue);
     } else {
-      FilterTagsActions.addTag(ui.item.category, ui.item.value, ui.item.filter, ui.item.label);
+      FilterTagsActions.addTag(ui.item.tagValue);
       $("#autocomplete").val('');
     }
   },

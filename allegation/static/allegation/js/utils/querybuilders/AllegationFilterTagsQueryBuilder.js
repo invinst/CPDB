@@ -16,7 +16,10 @@ var AllegationFilterTagsQueryBuilder = {
     });
 
     var query = _.map(filters, function (values, category) {
-      return _.pluck(values, 'filter').join('&');
+      var filterValues = _.map(values, function (item) {
+        return item.category + '=' + item.value;
+      });
+      return filterValues.join('&');
     }).join('&');
 
     return query;
