@@ -130,7 +130,9 @@
         "PAGE": false,
         "PK": false,
         "QUERY": false,
-        "STATE": false
+        "STATE": false,
+        "vis": false,
+        "Highcharts": false
     },
     "plugins": [
         "react"
