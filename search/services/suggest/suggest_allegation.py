@@ -4,7 +4,6 @@ from haystack.query import SearchQuerySet
 
 from search.services.suggest import SuggestBase
 from search.utils.zip_code import get_zipcode_from_city
-from search.utils.list import flatten_list, remove_duplicates
 
 
 class SuggestAllegationCity(SuggestBase):
@@ -57,18 +56,21 @@ class SuggestAllegationSummary(SuggestBase):
     def find_suggestion(cls, term, summary):
         pattern = '(?=(^| )(?P<term>(?P<word>{term}\w*)( \w+)?))'.format(term=term)
         matched = [m.groupdict() for m in re.finditer(pattern=pattern, string=summary, flags=re.IGNORECASE)]
-        suggestion_entries = [(m['word'].lower(), m['term'].lower()) for m in matched]
 
-        results = flatten_list(suggestion_entries)
+        suggestion_entries = set()
+        for m in matched:
+            suggestion_entries.add(m['word'].lower())
+            suggestion_entries.add(m['term'].lower())
 
-        return remove_duplicates(results)
+        return list(suggestion_entries)
 
     @classmethod
     def process_raw_results(cls, term, raw_results):
-        raw_suggestions = [cls.find_suggestion(term, summary) for summary in raw_results]
+        suggestions = set()
+        for summary in raw_results:
+            suggestions.update(cls.find_suggestion(term, summary))
 
-        suggestions = remove_duplicates(flatten_list(raw_suggestions))
-
+        suggestions = list(suggestions)
         sorted_suggestions = sorted(suggestions, key=lambda s: (s.count(' '), s))
 
         return sorted_suggestions
