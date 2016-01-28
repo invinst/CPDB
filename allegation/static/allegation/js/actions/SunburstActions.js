@@ -11,6 +11,7 @@ var SunburstActions = {
   },
 
   selectArc: function (path, selected) {
+    ga('send', 'event', 'filter', 'sunburst', path.name);
     AppDispatcher.dispatch({
       actionType: AppConstants.SUNBURST_SELECT_ARC,
       arc: path,
