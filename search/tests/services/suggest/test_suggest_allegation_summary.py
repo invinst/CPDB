@@ -14,7 +14,7 @@ class SuggestAllegationTestCase(SuggestBaseTestCase):
         search_term = 'so'
         expected_terms = ['some', 'sorry', 'some really', 'some some']
 
-        results = SuggestAllegationSummary.query('keyword:'+search_term)['Allegation Summary']
+        results = SuggestAllegationSummary.query(search_term)['Allegation Summary']
         suggested_terms = [x['value'] for x in results]
 
         suggested_terms.should.equal(expected_terms)
@@ -29,7 +29,7 @@ class SuggestAllegationTestCase(SuggestBaseTestCase):
         search_term = 'some some'
         expected_terms = ['some some', 'some some really']
 
-        results = SuggestAllegationSummary.query('keyword:'+search_term)['Allegation Summary']
+        results = SuggestAllegationSummary.query(search_term)['Allegation Summary']
         suggested_terms = [x['value'] for x in results]
 
         suggested_terms.should.equal(expected_terms)
@@ -44,7 +44,7 @@ class SuggestAllegationTestCase(SuggestBaseTestCase):
         search_term = 'so'
         expected_terms = ['some', 'sorry', 'some some', 'some really']
 
-        results = SuggestAllegationSummary.query('keyword:'+search_term)['Allegation Summary']
+        results = SuggestAllegationSummary.query(search_term)['Allegation Summary']
         suggested_terms = [x['value'] for x in results]
         len(suggested_terms).should.equal(5)
 
@@ -59,6 +59,6 @@ class SuggestAllegationTestCase(SuggestBaseTestCase):
 
         search_term = 'so'
 
-        results = SuggestAllegationSummary.query('keyword:'+search_term)['Allegation Summary']
+        results = SuggestAllegationSummary.query(search_term)['Allegation Summary']
         suggested_terms = [x['value'] for x in results]
         len(suggested_terms).should.equal(4)

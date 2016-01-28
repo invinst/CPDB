@@ -49,10 +49,6 @@ class SuggestAllegationCrid(SuggestBase):
 
 class SuggestAllegationSummary(SuggestBase):
     @classmethod
-    def active_condition(cls, term):
-        return term.startswith('keyword:') and len(term) > 9
-
-    @classmethod
     def find_suggestion(cls, term, summary):
         pattern = '(?=(^| )(?P<term>(?P<word>{term}\w*)( \w+)?))'.format(term=term)
         matched = [m.groupdict() for m in re.finditer(pattern=pattern, string=summary, flags=re.IGNORECASE)]
@@ -79,7 +75,6 @@ class SuggestAllegationSummary(SuggestBase):
     def _query(cls, term):
         sqs = SearchQuerySet()
 
-        term = term[8:]
         raw_results = sqs.filter(
             allegation_summary=term
         ).values_list('allegation_summary', flat=True)
