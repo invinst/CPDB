@@ -11,13 +11,13 @@ var _state = {
 var SessionSearchStore = _.assign(Base(_state), {
 });
 
-AppDispatcher.register(function(action) {
+AppDispatcher.register(function (action) {
   switch (action.actionType) {
-  case AppConstants.SEARCH_FOR_SESSION:
-    _state['query'] = action.data;
-    break;
-  default:
-    break;
+    case AppConstants.SEARCH_FOR_SESSION:
+      _state['query'] = action.data;
+      break;
+    default:
+      break;
   }
 });
 

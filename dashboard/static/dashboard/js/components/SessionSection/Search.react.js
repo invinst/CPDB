@@ -1,7 +1,5 @@
-var _ = require('lodash');
 var React = require('react');
 
-var Base = require('../Base.react');
 var SessionsAPI = require('utils/SessionsAPI');
 var SessionsActions = require('actions/SessionSection/SessionsActions');
 
@@ -12,9 +10,10 @@ var Search = React.createClass({
     SessionsAPI.get(query);
   },
 
-  render: function() {
+  render: function () {
     return (
-      <input className="form-control" type="text" id="search_input" placeholder="Search..." onChange={this.onChange} />
+      <input className='form-control' type='text' id='search_input' placeholder='Search...'
+        onChange={ this.onChange } />
     );
   }
 });
