@@ -1,14 +1,3 @@
-NO_CAP_CATEGORIES = [
-  'has:',
-  'Category ID',
-  'Officer',
-  'Investigator'
-];
-
-UPPER_CATEGORIES = [
-  'Category ID'
-];
-
 function suggestionExists(term, suggestions) {
   for (var i = 0; i < suggestions.length; i++) {
     if (suggestions[i].label == term) {

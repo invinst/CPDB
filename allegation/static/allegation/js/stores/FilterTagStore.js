@@ -253,7 +253,7 @@ AppDispatcher.register(function (action) {
         current = selected;
         while (current != arc) {
           FilterTagStore.removeFilter(
-            current.tagValue.category, current.tagValue.label);
+            current.tagValue.category, current.tagValue.value);
           current = current.parent;
         }
       }
@@ -261,11 +261,9 @@ AppDispatcher.register(function (action) {
       if (arc.tagValue) {
         if (arc.tagValue.removeParent) {
           FilterTagStore.removeFilter(
-              arc.parent.tagValue.category, arc.parent.tagValue.label);
+              arc.parent.tagValue.category, arc.parent.tagValue.value);
         }
-        FilterTagStore.addFilter(
-            arc.tagValue.category, arc.tagValue.label,
-            arc.tagValue.filter + '=' + arc.tagValue.value);
+        FilterTagStore.addFilter(arc.tagValue);
       }
       FilterTagStore.emitChange();
       break;

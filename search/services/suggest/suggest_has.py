@@ -17,9 +17,13 @@ class SuggestHas(SuggestBase):
 
         results = [
             cls.entry_format(
-                label=entry,
-                value=entry,
-                filter=cls.build_filter(category='has_filters', value=entry)
+                suggest_value=entry,
+                tag_value=cls.build_tag_value(
+                    category='has_filters',
+                    value=entry,
+                    display_category='has:',
+                    display_value=entry,
+                )
             ) for entry in results
         ]
 

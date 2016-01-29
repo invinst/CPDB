@@ -11,9 +11,14 @@ class SuggestInvestigator(SuggestBase):
 
         results = [
             cls.entry_format(
-                label='{name} ({count})'.format(name=entry.investigator_name, count=entry.investigator_complaint_count),
-                value=entry.investigator_name,
-                filter=cls.build_filter(category='allegation__investigator', value=entry.investigator_id)
+                suggest_value='{name} ({count})'.format(
+                        name=entry.investigator_name, count=entry.investigator_complaint_count),
+                tag_value=cls.build_tag_value(
+                    category='allegation__investigator',
+                    value=entry.investigator_id,
+                    display_category='Investigator',
+                    display_value=entry.investigator_name,
+                )
             ) for entry in raw_results
         ]
 
