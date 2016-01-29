@@ -53,8 +53,8 @@ DOMAIN = 'http://localhost:8000'
 
 # This should be override in corresponding settings
 SITE_INFO = {
-    'domain': 'cpdb.dev:8000',
-    'mobile_host': 'm.cpdb.dev:8000',
+    'domain': 'lvh.me:8000',
+    'mobile_host': 'm.lvh.me:8000',
 }
 
 USE_TZ = False

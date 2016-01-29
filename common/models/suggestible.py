@@ -12,7 +12,7 @@ class MobileSuggestible(object):
 class MobileSuggestibleOfficer(MobileSuggestible):
     def get_mobile_url(self):
         slugified_display_name = slugify(self.display_name)
-        return '/mobile/officer/{display_name}/{id}'.format(
+        return '/officer/{display_name}/{id}'.format(
             display_name=slugified_display_name, id=self.id)
 
     def as_suggestion_entry(self):
@@ -31,8 +31,8 @@ class MobileSuggestibleOfficer(MobileSuggestible):
 
 
 class MobileSuggestibleAllegation(MobileSuggestible):
-    def get_mobile_url(self):
-        return '/mobile/complaint/{crid}'.format(crid=self.crid)
+    def get_mobile_url(self):   
+        return '/complaint/{crid}'.format(crid=self.crid)
 
     def as_suggestion_entry(self):
         cat = self.officerallegation_set.first().cat
