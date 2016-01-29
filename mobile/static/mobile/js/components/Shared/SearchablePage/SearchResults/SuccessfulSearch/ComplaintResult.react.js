@@ -9,6 +9,7 @@ var ComplaintResult = React.createClass({
   _onClick: function () {
     var officer = this.props.suggestions[0];
     var presenter = SuggestionPresenter(officer);
+    ga('send', 'event', 'filter', presenter.resource, presenter.text);
     AppHistory.pushState(null, presenter.url);
   },
 

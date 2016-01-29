@@ -37,6 +37,7 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
   },
 
   componentDidMount: function () {
+    ga('send', 'event', 'officer', 'view_detail', location.pathname);
     var id = this.props.params.id || '';
     OfficerResourceUtil.get(id);
     OfficerPageStore.addChangeListener(this._onChange);

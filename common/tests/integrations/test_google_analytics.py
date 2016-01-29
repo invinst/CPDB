@@ -5,11 +5,10 @@ from allegation.factories import OfficerAllegationFactory
 
 class GoogleAnalyticsTest(AutocompleteTestHelperMixin, BaseLiveTestCase):
     def test_send_google_analytics_when_search(self):
-        self.visit_home()
         officer_allegation = OfficerAllegationFactory()
         self.visit_home()
         self.search_officer(officer_allegation.officer)
-        self.get_ga_call_variable().should.equal(1)
+        self.should_track_ga_event()
 
     def test_filter_with_sunburst(self):
         # FIXME: add test for this

@@ -22,12 +22,12 @@
     <link rel="stylesheet" type="text/sass" href="{% static 'sass/test.sass' %}"/>
     {% endcompress %}
     {% endif %}
+    {% include "google_analytics.html" %}
 </head>
 <body>
     {% csrf_token %}
     <div id="router"></div>
     <link href="https://api.mapbox.com/mapbox.js/v2.2.3/mapbox.css" rel="stylesheet"/>
     <script async src="{% static 'mobile/js/bundle.js' %}"></script>
-    {% include "google_analytics.html" %}
 </body>
 </html>
