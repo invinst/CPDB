@@ -9,8 +9,10 @@ var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
 var Link = ReactRouter.Link;
 
-var Base = require('components/Base.react');
+var AppConstants = require('../../constants/AppConstants');
 var AppStore = require('stores/AppStore');
+var Back = require('components/Shared/Back.react');
+var Base = require('components/Base.react');
 var NavActions = require('actions/NavActions');
 var SessionAPI = require('utils/SessionAPI');
 var SiteTitle = require('components/Shared/SiteTitle.react');
@@ -18,117 +20,174 @@ var ShareButton = require('components/DataToolPage/Share/ShareButton.react');
 
 
 var Nav = React.createClass(_.assign(Base(AppStore), {
-  goToPage: function (page) {
-    NavActions.goToPage(page);
+  getDefaultProps: function () {
+    return {
+      page: 'data',
+      navTabs: AppConstants.DEFAULT_NAV_TABS
+    };
   },
 
-  goToDataTool: function () {
-    this.goToPage('data');
+  getDisplayComponent: function () {
+    var isActive = this.props.isActive;
+
+    return {
+      navTabSection: !(isActive('officer') || isActive('investigator')),
+      titleBox: isActive('data'),
+      subNav: isActive('story'),
+      backLink: isActive('officer') || isActive('investigator'),
+      welcomeMessage: isActive('findings')
+    };
   },
 
-  goToStoryPage: function () {
-    this.goToPage('story');
-  },
-
-  goToFindingPage: function () {
-    this.goToPage('findings');
-  },
-
-  goToMethodPage: function () {
-    this.goToPage('method');
+  goToPage: function (page, event) {
+    if (!this.props.isActive(page)) {
+      NavActions.goToPage(page);
+    } else {
+      event.preventDefault();
+    }
   },
 
   getNavClass: function (tab) {
     return classnames('nav-link', {
-      'active': tab == this.state.page,
+      'active': this.props.isActive(tab)
     });
+  },
+
+  getIndexLink: function () {
+    var isActive = this.props.isActive;
+
+    if(isActive('officer') || isActive('investigator')) {
+      return AppStore.getDataToolUrl();
+    }
+    return '/';
+  },
+
+  componentDidMount: function () {
+    this.moveArrow();
   },
 
   componentDidUpdate: function () {
     this.moveArrow();
   },
 
-  componentDidMount: function () {
-    this.moveArrow();
-    this.attachWindowScroll();
-  },
-
-  attachWindowScroll: function () {
-    var $body = $('body');
-    var navBarHeight = 90;
-
-
-    $(document).on('click', '.story-nav a', function() {
-      $element = $($(this).data('target'));
-      $body.animate({
-          scrollTop: $element.offset().top - navBarHeight
-      }, 1000);
-      return false;
-    });
+  startNewSession: function (e) {
+    var isActive = this.props.isActive;
+    if (isActive('data')){
+      e.preventDefault();
+      SessionAPI.getSessionInfo('');
+    }
   },
 
   moveArrow: function () {
     $target = jQuery('.nav-link.active');
-    jQuery(".moving-arrow").css({
-      left: $target.offset().left - 5,
-      width: $target.width() + 10,
-    }, 500);
+    $arrow = jQuery(".moving-arrow");
+
+    if ($target.length && $arrow.length) {
+      jQuery(".moving-arrow").css({
+        left: $target.offset().left - 5,
+        width: $target.width() + 10,
+      }, 500);
+    }
   },
 
-  startNewSession: function (e) {
-    e.preventDefault();
-    SessionAPI.getSessionInfo('');
+  navigateSub: function (event) {
+    event.preventDefault();
+    var $body = $('body');
+    var navBarHeight = 90;
+
+    $element = $($(event.currentTarget).data('target'));
+    $body.animate({
+      scrollTop: $element.offset().top - navBarHeight
+    }, 1000);
+  },
+
+  renderTitleBox: function () {
+    return (
+      <div className='site-title pull-left'>
+        <SiteTitle changable={true} />
+      </div>
+    );
+  },
+
+  renderSubNav: function () {
+    return (
+      <div>
+        <nav className='sub-nav story-nav'>
+          <a href="#" className="pull-right" data-target="#next-steps" onClick={this.navigateSub}>
+            Next Steps
+          </a>
+          <a href="#" className="pull-right" data-target="#invisible-institute" onClick={this.navigateSub}>
+            The Invisible Institute
+          </a>
+          <a href="#" className="pull-right active" data-target="#stateway" onClick={this.navigateSub}>
+            Stateway Gardens Litigation
+          </a>
+        </nav>
+      </div>
+    );
+  },
+
+  renderNavTabItems: function () {
+    var self = this;
+
+    return this.props.navTabs.map(function (navTab, index) {
+      return (
+        <li key={index} className={ self.getNavClass(navTab.name) }>
+          <Link
+            onClick={self.goToPage.bind(self, navTab.name)}
+            to={AppStore.getNavTabUrl(navTab.name)}
+            aria-controls={navTab.name}>{navTab.display}</Link>
+        </li>
+      );
+    });
+  },
+
+  renderNavTabSection: function () {
+    return (
+      <ul className="pull-right" role="tablist">
+        <span className="moving-arrow" />
+        { this.renderNavTabItems() }
+      </ul>
+    );
+  },
+
+  renderWelcome: function () {
+    return (
+      <div className="welcome">
+        <div className="page-logo">
+        </div>
+        <div className="page-banner">
+          <p>Until recently, records of police misconduct in Chicago have been kept secret.</p>
+          <p>In 2014, the court decision <i>Kalven v. Chicago</i> opened those files to the public.</p>
+          <p>
+            <Link data-target="data" to="/data">
+              Explore the data.
+            </Link>
+          </p>
+        </div>
+      </div>
+    );
   },
 
   render: function () {
-    var mobileExpanded = isMobile.any && this.state.searchExpanded;
-
-    var subNavClass = classnames('sub-nav', {
-      'hidden': !AppStore.isStoryPage()
-    });
-
-    var navClass = classnames('landing-nav', {
-      'fixed-nav': !AppStore.isFindingPage()
-    });
-
-    var navbarClass = classnames(
-      'navbar-collapse',
-      {
-        'hidden': mobileExpanded
-      }
-    );
-
-    var dataToolUrl = AppStore.getDataToolUrl();
-    var siteTitleClass = classnames('site-title pull-left', {
-      hidden: !AppStore.isDataToolPage()
-    });
+    var display = this.getDisplayComponent();
 
     return (
-      <nav className="landing-nav">
-        <div className="items clearfix">
-          <a href="/" onClick={this.startNewSession} id="logo_link">
-            <img className="pull-left cpdp-logo" src="/static/img/cpdp-logo.svg" />
-          </a>
-          <div className={siteTitleClass}>
-            <SiteTitle changable={true} />
+      <div className="landing-page fixed-nav">
+        { display.welcomeMessage ? this.renderWelcome() : '' }
+        <nav className="landing-nav">
+          <div className="items clearfix">
+            <Link to={this.getIndexLink()} onClick={this.startNewSession} id='logo_link'>
+              <img className="pull-left cpdp-logo" src="/static/img/cpdp-logo.svg" />
+            </Link>
+            { display.backLink ? <Back /> : '' }
+            { display.titleBox ? this.renderTitleBox() : '' }
+            <ShareButton/>
+            { display.navTabSection ? this.renderNavTabSection() : '' }
           </div>
-          <ShareButton />
-          <ul className="pull-right" role="tablist">
-            <span className="moving-arrow" />
-            <li className={this.getNavClass("data")}><Link onClick={this.goToDataTool} to={dataToolUrl} aria-controls="data">Data</Link></li>
-            <li className={this.getNavClass("method")}><Link onClick={this.goToMethodPage} to="/method" aria-controls="method">Collaboration</Link></li>
-            <li className={this.getNavClass("story")}><Link onClick={this.goToStoryPage} to="/story" aria-controls="story">Backstory</Link></li>
-            <li className={this.getNavClass("findings")}><Link onClick={this.goToFindingPage} to="/findings" aria-controls="findings">Findings</Link></li>
-          </ul>
-        </div>
-        <div className={subNavClass}>
-          <nav className='story-nav'>
-            <a href="#" className="pull-right" data-target="#next-steps">Next Steps</a>
-            <a href="#" className="pull-right" data-target="#invisible-institute">The Invisible Institute</a>
-            <a href="#" className="pull-right active" data-target="#stateway">Stateway Gardens Litigation</a>
-          </nav>
-        </div>
-      </nav>
+          { display.subNav ? this.renderSubNav() : '' }
+        </nav>
+      </div>
     );
   }
 }));

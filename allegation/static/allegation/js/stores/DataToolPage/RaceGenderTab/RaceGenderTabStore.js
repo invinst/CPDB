@@ -17,13 +17,8 @@ AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.RACE_GENDER_TAB_RECEIVED_DATA:
       RaceGenderTabStore.updateState('data', action.data);
-      if (AppStore.isDataToolInit()) {
-        RaceGenderTabStore.emitChange();
-      }
-      break;
-
-    case AppConstants.INIT_DATA_TOOL:
       RaceGenderTabStore.emitChange();
+
       break;
 
     default:

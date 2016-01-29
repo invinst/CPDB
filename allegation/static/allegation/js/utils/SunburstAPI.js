@@ -7,21 +7,18 @@ var _ = require('lodash');
 
 var AppConstants = require('constants/AppConstants');
 var SunburstActions = require('actions/SunburstActions');
-var FilterStore = require('stores/FilterStore');
+
+var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFilterTagsQueryBuilder');
 
 var ajax = null;
-var _queryString = null;
+
+var SUNBURST_IGNORE_FILTERS = ['Final Outcome', 'Final Finding', 'Outcome'];
+
 
 var SunburstAPI = {
-
   getData: function(query) {
-    var filter = FilterStore.getQueryString(['final_outcome', 'final_finding', 'outcome_text', 'final_finding_text']);
+    var filter = AllegationFilterTagsQueryBuilder.buildQuery(SUNBURST_IGNORE_FILTERS);
     var queryString = query || filter;
-
-    if (_queryString == queryString) {
-      return;
-    }
-    _queryString = queryString;
 
     if (ajax) {
       ajax.abort();

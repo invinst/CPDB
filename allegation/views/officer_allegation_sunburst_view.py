@@ -2,14 +2,14 @@ from django.db.models.query_utils import Q
 
 from allegation.views.officer_allegation_api_view import (
     OfficerAllegationAPIView)
-from common.models import DISCIPLINE_CODES
+from common.constants import DISCIPLINE_CODES
 from document.response import JsonResponse
 
 
 class OfficerAllegationSunburstView(OfficerAllegationAPIView):
     def get(self, request):
         officer_allegations = self.get_officer_allegations(
-            ignore_filters=['final_outcome', 'final_finding'])
+            ignore_filters=['final_outcome', 'final_finding', 'final_finding_text'])
         output = self.fetch_output(self.levels, officer_allegations)
 
         return JsonResponse({
@@ -41,7 +41,8 @@ class OfficerAllegationSunburstView(OfficerAllegationAPIView):
         'condition': ~Q(final_finding='SU'),
         'tagValue': {
             'label': 'Unsustained',
-            'category': 'final_finding_text',
+            'category': 'Final Finding',
+            'filter': 'final_finding_text',
             'value': 'unsustained'
         },
         'children': [{
@@ -49,7 +50,8 @@ class OfficerAllegationSunburstView(OfficerAllegationAPIView):
             'name': 'Discharged',
             'tagValue': {
                 'label': 'Discharged',
-                'category': 'final_finding',
+                'category': 'Final Finding',
+                'filter': 'final_finding',
                 'value': 'DS',
                 'removeParent': True
             },
@@ -58,7 +60,8 @@ class OfficerAllegationSunburstView(OfficerAllegationAPIView):
             'name': 'Exonerated',
             'tagValue': {
                 'label': 'Exonerated',
-                'category': 'final_finding',
+                'category': 'Final Finding',
+                'filter': 'final_finding',
                 'value': 'EX',
                 'removeParent': True
             },
@@ -67,7 +70,8 @@ class OfficerAllegationSunburstView(OfficerAllegationAPIView):
             'name': 'No Affidavit',
             'tagValue': {
                 'label': 'No Affidavit',
-                'category': 'final_finding',
+                'category': 'Final Finding',
+                'filter': 'final_finding',
                 'value': 'NA',
                 'removeParent': True
             },
@@ -76,7 +80,8 @@ class OfficerAllegationSunburstView(OfficerAllegationAPIView):
             'name': 'No Cooperation',
             'tagValue': {
                 'label': 'No Cooperation',
-                'category': 'final_finding',
+                'category': 'Final Finding',
+                'filter': 'final_finding',
                 'value': 'NC',
                 'removeParent': True
             },
@@ -85,7 +90,8 @@ class OfficerAllegationSunburstView(OfficerAllegationAPIView):
             'name': 'Not Sustained',
             'tagValue': {
                 'label': 'Not Sustained',
-                'category': 'final_finding',
+                'category': 'Final Finding',
+                'filter': 'final_finding',
                 'value': 'NS',
                 'removeParent': True
             },
@@ -94,7 +100,8 @@ class OfficerAllegationSunburstView(OfficerAllegationAPIView):
             'name': 'Unfounded',
             'tagValue': {
                 'label': 'Unfounded',
-                'category': 'final_finding',
+                'category': 'Final Finding',
+                'filter': 'final_finding',
                 'value': 'UN',
                 'removeParent': True
             },
@@ -103,7 +110,8 @@ class OfficerAllegationSunburstView(OfficerAllegationAPIView):
             'name': 'Unknown',
             'tagValue': {
                 'label': 'Unknown',
-                'category': 'final_finding',
+                'category': 'Final Finding',
+                'filter': 'final_finding',
                 'value': 'ZZ',
                 'removeParent': True
             },
@@ -113,7 +121,8 @@ class OfficerAllegationSunburstView(OfficerAllegationAPIView):
         'condition': Q(final_finding='SU'),
         'tagValue': {
             'label': 'Sustained',
-            'category': 'final_finding',
+            'category': 'Final Finding',
+            'filter': 'final_finding',
             'value': 'SU',
         },
         'children': [{
@@ -123,7 +132,8 @@ class OfficerAllegationSunburstView(OfficerAllegationAPIView):
                 Q(final_outcome__isnull=True),
             'tagValue': {
                 'label': 'Any Disciplined',
-                'category': 'outcome_text',
+                'category': 'Outcome',
+                'filter': 'outcome_text',
                 'value': 'any discipline',
             },
             'children': [{
@@ -131,7 +141,8 @@ class OfficerAllegationSunburstView(OfficerAllegationAPIView):
                 'name': 'Reprimand',
                 'tagValue': {
                     'label': 'Reprimand',
-                    'category': 'final_outcome',
+                    'category': 'Final Outcome',
+                    'filter': 'final_outcome',
                     'value': '100',
                     'removeParent': True
                 },
@@ -142,7 +153,8 @@ class OfficerAllegationSunburstView(OfficerAllegationAPIView):
                 'name': '1-9 days',
                 'tagValue': {
                     'label': '1-9 days',
-                    'category': 'outcome_text',
+                    'category': 'Outcome',
+                    'filter': 'outcome_text',
                     'value': '1-9 days',
                     'removeParent': True
                 }
@@ -153,7 +165,8 @@ class OfficerAllegationSunburstView(OfficerAllegationAPIView):
                 'name': '10-30 days',
                 'tagValue': {
                     'label': '10-30 days',
-                    'category': 'outcome_text',
+                    'category': 'Outcome',
+                    'filter': 'outcome_text',
                     'value': '10-30 days',
                     'removeParent': True
                 }
@@ -163,7 +176,8 @@ class OfficerAllegationSunburstView(OfficerAllegationAPIView):
                 'name': '30+ days',
                 'tagValue': {
                     'label': '30+ days',
-                    'category': 'outcome_text',
+                    'category': 'Outcome',
+                    'filter': 'outcome_text',
                     'value': '30 more days',
                     'removeParent': True
                 },
@@ -172,7 +186,8 @@ class OfficerAllegationSunburstView(OfficerAllegationAPIView):
                 'name': 'Termination',
                 'tagValue': {
                     'label': 'Termination',
-                    'category': 'final_outcome',
+                    'category': 'Final Outcome',
+                    'filter': 'final_outcome',
                     'value': '300',
                     'removeParent': True
                 },
@@ -181,7 +196,8 @@ class OfficerAllegationSunburstView(OfficerAllegationAPIView):
                 'name': 'Separation',
                 'tagValue': {
                     'label': 'Separation',
-                    'category': 'final_outcome',
+                    'category': 'Final Outcome',
+                    'filter': 'final_outcome',
                     'value': '400',
                     'removeParent': True
                 },
@@ -191,7 +207,8 @@ class OfficerAllegationSunburstView(OfficerAllegationAPIView):
             'condition': ~Q(final_outcome__in=DISCIPLINE_CODES),
             'tagValue': {
                 'label': 'No discipline',
-                'category': 'outcome_text',
+                'category': 'Outcome',
+                'filter': 'outcome_text',
                 'value': 'no discipline',
             },
             'children': [{
@@ -199,7 +216,8 @@ class OfficerAllegationSunburstView(OfficerAllegationAPIView):
                 'name': 'Unknown',
                 'tagValue': {
                     'label': 'Unknown',
-                    'category': 'final_outcome',
+                    'category': 'Final Outcome',
+                    'filter': 'final_outcome',
                     'value': None,
                     'removeParent': True
                 },
@@ -208,7 +226,8 @@ class OfficerAllegationSunburstView(OfficerAllegationAPIView):
                 'name': 'Noted',
                 'tagValue': {
                     'label': 'Noted',
-                    'category': 'final_outcome',
+                    'category': 'Final Outcome',
+                    'filter': 'final_outcome',
                     'value': '000',
                     'removeParent': True
                 },
@@ -218,7 +237,8 @@ class OfficerAllegationSunburstView(OfficerAllegationAPIView):
                 'name': 'Reinstated by Police Board',
                 'tagValue': {
                     'label': 'Reinstated by Police Board',
-                    'category': 'final_outcome',
+                    'category': 'Final Outcome',
+                    'filter': 'final_outcome',
                     'value': '500',
                     'removeParent': True
                 },
@@ -228,7 +248,8 @@ class OfficerAllegationSunburstView(OfficerAllegationAPIView):
                 'name': 'No action taken',
                 'tagValue': {
                     'label': 'No action taken',
-                    'category': 'final_outcome',
+                    'category': 'Final Outcome',
+                    'filter': 'final_outcome',
                     'value': '600',
                     'removeParent': True
                 },
@@ -238,7 +259,8 @@ class OfficerAllegationSunburstView(OfficerAllegationAPIView):
                 'name': 'Reinstated by Court Action',
                 'tagValue': {
                     'label': 'Reinstated by Court Action',
-                    'category': 'final_outcome',
+                    'category': 'Final Outcome',
+                    'filter': 'final_outcome',
                     'value': '700',
                     'removeParent': True
                 },
@@ -247,8 +269,9 @@ class OfficerAllegationSunburstView(OfficerAllegationAPIView):
                 'condition': Q(final_outcome='800'),
                 'name': 'Not served (resigned)',
                 'tagValue': {
-                    'label': 'ot served (resigned)',
-                    'category': 'final_outcome',
+                    'label': 'Not served (resigned)',
+                    'category': 'Final Outcome',
+                    'filter': 'final_outcome',
                     'value': '800',
                     'removeParent': True
                 },
@@ -258,7 +281,8 @@ class OfficerAllegationSunburstView(OfficerAllegationAPIView):
                 'name': 'Not served (inactive)',
                 'tagValue': {
                     'label': 'Not served (inactive)',
-                    'category': 'final_outcome',
+                    'category': 'Final Outcome',
+                    'filter': 'final_outcome',
                     'value': '900',
                     'removeParent': True
                 },

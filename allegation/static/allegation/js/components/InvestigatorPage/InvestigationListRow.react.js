@@ -19,17 +19,17 @@ var InvestigationListRow = React.createClass(_.assign(Base(ComplaintListStore), 
   },
 
   componentDidUpdate: function(e) {
-    var id = this.props.complaint.allegation.id
+    var id = this.props.complaint.allegation.id;
     var kindOfUserInteraction = this.state.show ? 'open' : 'close';
     ga('send', 'event', 'allegation', kindOfUserInteraction, id);
   },
 
   detailRendered: function() {
-     return this.state.hasShown || this.detailIsCurrentlyShown();
+    return this.state.hasShown || this.detailIsCurrentlyShown();
   },
 
   detailIsCurrentlyShown: function() {
-     return this.state.activeComplaints.indexOf(this.props.complaint.allegation.id) > -1
+    return this.state.activeComplaints.indexOf(this.props.complaint['officer_allegation']['id']) > -1;
   },
 
   renderShowMore: function () {
@@ -37,8 +37,8 @@ var InvestigationListRow = React.createClass(_.assign(Base(ComplaintListStore), 
     var detailIsShown = this.detailIsCurrentlyShown();
 
     return this.detailRendered() ? (
-      <Allegation allegation={complaint} hide={!detailIsShown} />
-    ) : '';
+      <Allegation allegation={complaint} hide={!detailIsShown} toggleAllegation={this.toggleComplaint} />
+    ) : null;
   },
 
   render: function () {
@@ -46,7 +46,7 @@ var InvestigationListRow = React.createClass(_.assign(Base(ComplaintListStore), 
     var presenter = ComplaintPresenter(complaint);
     var detailIsShown = this.detailIsCurrentlyShown();
 
-    var allegation = complaint.allegation;
+    var allegation = complaint['officer_allegation'];
 
     var finding = this.props.finding ? this.props.finding.replace(/ /,"-").toLowerCase() : 'other';
 
@@ -91,7 +91,7 @@ var InvestigationListRow = React.createClass(_.assign(Base(ComplaintListStore), 
 
   toggleComplaint: function (e) {
     this.setState({hasShown: true});
-    ComplaintListActions.toggleComplaint(this.props.complaint.allegation.id);
+    ComplaintListActions.toggleComplaint(this.props.complaint['officer_allegation']['id']);
     SessionAPI.updateSessionInfo({ query: { activeComplaints: this.state.activeComplaints }});
   }
 }));

@@ -13,11 +13,11 @@ from django.db.models.query_utils import Q
 from allegation.views.officer_allegation_api_view import (
     OfficerAllegationAPIView)
 from api.models import Setting, InterfaceText
+from common.constants import NO_DISCIPLINE_CODES
 from common.json_serializer import JSONSerializer
 from common.models import (
     Allegation, Area, AllegationCategory, Officer, OfficerAllegation)
-from common.models import (
-    ComplainingWitness, NO_DISCIPLINE_CODES, PoliceWitness)
+from common.models import ComplainingWitness, PoliceWitness
 
 
 OFFICER_COMPLAINT_COUNT_RANGE = [
@@ -87,7 +87,7 @@ class OfficerAllegationGISApiView(OfficerAllegationAPIView):
     def get(self, request):
         seen_crids = {}
         officer_allegations = self.get_officer_allegations(
-            ignore_filters=['areas__id'])
+            ignore_filters=['allegation__areas__id'])
         allegation_dict = {
             "type": "FeatureCollection",
             "features": [],

@@ -3,6 +3,7 @@ from selenium.webdriver.common.keys import Keys
 from allegation.factories import OfficerFactory
 from common.models import Officer
 from common.tests.core import BaseLiveTestCase
+from common.utils.haystack import rebuild_index
 
 
 class SearchUITestCase(BaseLiveTestCase):
@@ -17,6 +18,8 @@ class SearchUITestCase(BaseLiveTestCase):
     def test_display_suggestions_upon_typing(self):
         officer = OfficerFactory(officer_first='Jerry')
         OfficerFactory(officer_first='Jee')
+
+        rebuild_index()
 
         self.visit('/?no_disclaimer=1#!/data-tools')
         search_text = 'Je'

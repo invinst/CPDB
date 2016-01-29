@@ -127,9 +127,11 @@ class AllegationSessionApiView(SimpleTestCase):
         update_params = self.update_params.copy()
         update_params['query'] = {
             'filters': {
-                'officer': {
-                    'value': [123]
-                }
+                'Officer': [{
+                    'value': 123,
+                    'filter': 'officer=123',
+                    'pinned': False
+                }]
             }
         }
         response, data = self.call_post_session_api(update_params)

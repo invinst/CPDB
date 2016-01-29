@@ -1,13 +1,21 @@
+var _ = require('lodash');
 var React = require('react');
 var ReactDOM = require('react-dom');
-var Filters = require('components/DataToolPage/Filters.react');
+
 var SummaryActions = require('actions/SummaryActions');
+
+var ExtraInformation = require('components/DataToolPage/SummarySection/ExtraInformation.react');
 var SummaryRow = require("components/DataToolPage/SummaryRow.react");
 var SummaryChildRow = require("components/DataToolPage/SummaryChildRow.react");
+
+var SummaryStore = require('stores/SummaryStore');
+var FilterTagStore = require('stores/FilterTagStore');
+
 var EmbedMixin = require('./Embed/Mixin.react');
-var SummaryStore = require("stores/SummaryStore");
-var FilterStore = require("stores/FilterStore");
-var ExtraInformation = require('components/DataToolPage/SummarySection/ExtraInformation.react');
+
+var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFilterTagsQueryBuilder');
+
+var EMBED_QUERY_IGNORE_FILTERS = ['Allegation type', 'Category'];
 
 
 var Summary = React.createClass({
@@ -22,16 +30,12 @@ var Summary = React.createClass({
     var node = ReactDOM.findDOMNode(this);
     var width = $(node).width();
     var height = $(node).height();
-    var src = "/embed/?page=summary&query=" + encodeURIComponent(FilterStore.getQueryString(['cat', 'cat__category']));
+    var src = "/embed/?page=summary&query=" + encodeURIComponent(
+      AllegationFilterTagsQueryBuilder.buildQuery(EMBED_QUERY_IGNORE_FILTERS)
+    );
 
-    var selectedCategories = [];
-    var cats = [FilterStore.getAll('cat__cat_id'), FilterStore.getAll('cat__category')];
-    for (var i = 0; i < cats.length; i++) {
-      var cat = cats[i];
-      if (cat) {
-        selectedCategories = selectedCategories.concat(cat.value);
-      }
-    }
+    var cats = _.union([], FilterTagStore.getAll('Allegation type'), FilterTagStore.getAll('Category'));
+    var selectedCategories = _.pluck(cats, 'value');
 
     var state = {
       selectedCategories: selectedCategories,

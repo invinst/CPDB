@@ -49,7 +49,7 @@ class AdminAllegationRequestViewSet(viewsets.ModelViewSet):
         obj = super(AdminAllegationRequestViewSet, self).get_object()
         requests = RequestEmail.objects.filter(crid=obj.crid)
         queries = [
-            {'query': x.session.readable_query, 'email': x.email}
+            {'query': x.session.query.get('filters', {}), 'email': x.email}
             for x in requests]
         obj.queries = queries
         return obj

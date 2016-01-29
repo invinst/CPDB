@@ -9,11 +9,14 @@
  * MapStore
  */
 
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var EventEmitter = require('events').EventEmitter;
-var AppConstants = require('../constants/AppConstants');
 var assign = require('object-assign');
-var FilterStore = require('./FilterStore');
+var EventEmitter = require('events').EventEmitter;
+
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+var AppConstants = require('../constants/AppConstants');
+
+var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFilterTagsQueryBuilder');
+
 var CHANGE_EVENT = 'change';
 var SUMMARY_CHANGE = 'summary-change';
 var ajax = false;
@@ -40,7 +43,7 @@ function create(id, complaint) {
 
 var SummaryStore = assign({}, EventEmitter.prototype, {
   update: function (query) {
-    var queryString = query || FilterStore.getQueryString();
+    var queryString = query || AllegationFilterTagsQueryBuilder.buildQuery();
     if (ajax) {
       ajax.abort();
     }
@@ -103,7 +106,9 @@ AppDispatcher.register(function (action) {
     case AppConstants.MAP_ADD_FILTER:
     case AppConstants.ADD_TAG:
     case AppConstants.REMOVE_TAG:
+    case AppConstants.SAVE_TAGS:
     case AppConstants.RECEIVED_SESSION_DATA:
+    case AppConstants.SUNBURST_SELECT_ARC:
       SummaryStore.update();
       break;
 

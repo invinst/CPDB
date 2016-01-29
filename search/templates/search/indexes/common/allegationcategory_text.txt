@@ -1,0 +1,3 @@
+{{ object.allegation_name }}
+{{ object.cat_id }}
+{{ object.category }}

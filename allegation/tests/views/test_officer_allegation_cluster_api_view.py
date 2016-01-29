@@ -7,7 +7,7 @@ class OfficerAllegationClusterAPIViewTestCase(SimpleTestCase):
         officer_allegation = OfficerAllegationFactory()
 
         response = self.client.get('/api/officer-allegations/cluster/', {
-            'areas__id': officer_allegation.allegation.areas.all()[0].id
+            'allegation__areas__id': officer_allegation.allegation.areas.all()[0].id
         })
         data = self.json(response)
 
