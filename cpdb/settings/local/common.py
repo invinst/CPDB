@@ -1,10 +1,6 @@
-from cpdb.settings.base import *
+from cpdb.settings.base import *  # NOQA
 
-
-MAP_BOX_API_KEY = 'sk.eyJ1Ijoic3RlZmFuZ2VvcmciLCJhIjoiMTNLSkhyTSJ9.b6k_KvDsuacf72UgbStcGQ'
-
-# FIXME: This should be move to constants.py instead
-ALLEGATION_LIST_ITEM_COUNT = 25
+DJANGO_ENV = 'dev'
 
 CACHES = {
     'default': {
@@ -36,11 +32,10 @@ LOGGING = {
 
 DEBUG_TOOLBAR_ENABLE = False
 
-
 if DEBUG_TOOLBAR_ENABLE:
     INSTALLED_APPS += ('debug_toolbar',)
     MIDDLEWARE_CLASSES = ('debug_toolbar.middleware.DebugToolbarMiddleware',
-                          'common.middleware.json_as_html.JsonAsHTML', ) + MIDDLEWARE_CLASSES
+                          'common.middleware.json_as_html.JsonAsHTML',) + MIDDLEWARE_CLASSES
     DEBUG_TOOLBAR_PATCH_SETTINGS = True
 
 DOMAIN = 'http://localhost:8000'
@@ -52,3 +47,7 @@ SITE_INFO = {
 }
 
 USE_TZ = False
+
+SHELL_PLUS = 'ipython'
+
+DEBUG = True

@@ -16,7 +16,9 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
-DJANGO_LIVE_TEST_SERVER_ADDRESS = 'lvh.me:8081'
+DOMAIN = 'http://lvh.me:8081'
+
+DJANGO_LIVE_TEST_SERVER_ADDRESS = 'http://lvh.me:8081'
 
 SITE_INFO = {
     'domain': 'lvh.me:8081',
