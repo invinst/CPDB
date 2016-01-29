@@ -64,7 +64,7 @@ var StoryList = React.createClass(_.assign(Base(StoryListStore), {
   },
 
   groupStories: function () {
-    return _.groupBy(this.state.stories, 'storyType');
+    return _.groupBy(this.state.stories, 'story_type');
   }
 }));
 
