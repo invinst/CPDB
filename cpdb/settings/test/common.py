@@ -16,8 +16,12 @@ HAYSTACK_CONNECTIONS = {
     },
 }
 
+DJANGO_LIVE_TEST_SERVER_ADDRESS = 'lvh.me:8081'
+
 SITE_INFO = {
     'domain': 'lvh.me:8081',
     'mobile_host': 'm.lvh.me:8081',  # We use it in test env to make sure that we will never have any
                                     # domain that match it
 }
+
+DJANGO_ENV = 'test'

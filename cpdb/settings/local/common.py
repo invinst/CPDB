@@ -45,7 +45,6 @@ if DEBUG_TOOLBAR_ENABLE:
 
 DOMAIN = 'http://localhost:8000'
 
-
 # This should be override in corresponding settings
 SITE_INFO = {
     'domain': 'lvh.me:8000',

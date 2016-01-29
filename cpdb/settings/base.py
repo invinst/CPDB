@@ -270,3 +270,5 @@ ELASTICSEARCH_SETTINGS = {
         }
     }
 }
+
+DJANGO_ENV = 'dev'
