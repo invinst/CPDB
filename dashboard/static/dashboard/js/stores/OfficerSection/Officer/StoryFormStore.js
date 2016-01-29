@@ -18,6 +18,11 @@ AppDispatcher.register(function (action) {
     case AppConstants.SET_ACTIVE_OFFICER:
     case AppConstants.RECEIVE_OFFICER:
       _state.officer = action.data;
+      _state.story = {
+        officer: _state.officer.url,
+        'story_type': 'news'
+      };
+      StoryFormStore.emitChange();
       break;
 
     case AppConstants.CLEAR_STORY_FORM:
