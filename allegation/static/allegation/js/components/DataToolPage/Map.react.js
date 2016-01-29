@@ -90,7 +90,6 @@ var Map = React.createClass({
     var node = ReactDOM.findDOMNode(this);
     var width = $(node).width() + 2;
     var height = $(node).height() + 2;
-    var filters = FilterTagStore.getAll();
     var src = "/embed/?page=map&query="
       + encodeURIComponent(AllegationFilterTagsQueryBuilder.buildQuery());
     var state = MapStore.getState();
@@ -211,7 +210,7 @@ var Map = React.createClass({
   },
 
   onEachFeature: function (feature, layer) {
-    var filter = FilterTagStore.getFilter('Area', feature.properties.id);
+    var filter = FilterTagStore.getFilter('allegation__areas__id', feature.properties.id);
     layer.selected = false;
 
     if (filter) {
@@ -236,16 +235,22 @@ var Map = React.createClass({
       }
     });
 
-    var tagValue = {label: area_type + ": " + feature.properties.name, value: feature.properties.id};
+    // Generate tagValue on server instead
+    var tagValue = {
+      category: 'allegation__areas__id',
+      value: feature.properties.id,
+      displayCategory: 'Area',
+      displayValue: area_type + ': ' + feature.properties.name
+    };
 
     layer.on('click', function () {
       selectedLayers[feature.properties.id] = layer;
       layer.selected = !layer.selected;
       if (layer.selected) {
-        FilterTagsActions.addTag('Area', tagValue.label, 'allegation__areas__id=' + tagValue.value);
+        FilterTagsActions.addTag(tagValue);
       }
       else {
-        FilterTagsActions.removeTag('Area', tagValue.label);
+        FilterTagsActions.removeTag(tagValue.category, tagValue.value);
       }
     });
     if (!(area_type in _layers)) {
@@ -328,16 +333,14 @@ var Map = React.createClass({
 
   _onChange: function () {
     var filters = FilterTagStore.getFilters();
-    if (!filters['Area'] || filters['Area'].length == 0) {
+    if (!filters['allegation__areas__id'] || filters['allegation__areas__id'].length == 0) {
       _map.fitBounds(_defaultBounds);
       return;
     }
 
-    var values = filters['Area'];
     for (var k in allLayersIndex) {
       var layer = allLayersIndex[k];
-      var value = layer.feature.properties.type + ': ' + layer.feature.properties.name;
-      if (!FilterTagStore.getFilter('Area', value)) {
+      if (!FilterTagStore.getFilter('allegation__areas__id', layer.feature.properties.id)) {
         layer.selected = false;
         layer.setStyle(_normalStyle);
         if (k in selectedLayers) {

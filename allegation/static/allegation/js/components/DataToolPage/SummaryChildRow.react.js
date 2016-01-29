@@ -20,26 +20,34 @@ var SummaryChildRow = React.createClass({
   onClick: function (e) {
     e.preventDefault();
 
-    var parent = this.props.category
-    FilterTagsActions.removeTag('Category', parent.name);
+    var parent = this.props.category;
+    FilterTagsActions.removeTag('cat__category', parent.name);
 
     var child = this.props.subcategory;
+    // Generate tagValue on server instead
+    var tagValue = {
+      category: 'cat',
+      value: child.id,
+      displayCategory: 'Allegation type',
+      displayValue: child.name
+    };
+
     if (this.state.selected) {
-      FilterTagsActions.removeTag('Allegation type', child.id);
+      FilterTagsActions.removeTag(tagValue.category, tagValue.value);
     } else {
-      FilterTagsActions.addTag('Allegation type', child.name, 'cat=' + child.id);
+      FilterTagsActions.addTag(tagValue);
     }
 
     this.state.selected = !this.state.selected;
   },
 
   isActive: function () {
-    var catName = this.props.subcategory.name;
+    var catId = this.props.subcategory.id;
     var selectedCategories = this.props.summary.props.selectedCategories;
 
     return (
-      !!FilterTagStore.getFilter('Allegation type', catName)
-      || !!FilterTagStore.getFilter('Category', this.props.category.name)
+      !!FilterTagStore.getFilter('cat', catId)
+      || !!FilterTagStore.getFilter('cat__category', this.props.category.name)
       || (selectedCategories && selectedCategories.indexOf(catId) > -1)
     );
   },
