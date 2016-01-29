@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 
 from common.constants import FINDINGS, OUTCOMES, ACTIVE_CHOICES, CITIZEN_DEPTS, LOCATION_CHOICES
 from common.models.time_stamp import TimeStampedModel
-from allegation.models.allegation_manager import AllegationManager, DisciplinedManager
+from allegation.models.managers import AllegationManager, OfficerAllegationManager, DisciplinedManager
 from common.models.suggestible import (
     MobileSuggestibleOfficer, MobileSuggestibleAllegation)
 
@@ -165,7 +165,7 @@ class OfficerAllegation(models.Model):
         max_length=20, null=True, blank=True)
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
-    objects = models.GeoManager()
+    objects = OfficerAllegationManager()
     disciplined = DisciplinedManager()
 
 

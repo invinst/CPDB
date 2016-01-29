@@ -1,12 +1,18 @@
 from django.contrib.gis.db.models import GeoManager, Manager
+from django.db import models
 
-from allegation.models.allegation_query_set import AllegationQuerySet
+from allegation.models.query_sets import AllegationQuerySet, OfficerAllegationQuerySet
 from common.constants import DISCIPLINE_CODES
 
 
 class AllegationManager(GeoManager):
     def get_queryset(self):
         return AllegationQuerySet(self.model, using=self._db)
+
+
+class OfficerAllegationManager(models.Manager):
+    def get_queryset(self):
+        return OfficerAllegationQuerySet(self.model, using=self._db)
 
 
 class DisciplinedManager(Manager):
