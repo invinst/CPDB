@@ -41,7 +41,9 @@ class SuggestBase(object):
 
     @classmethod
     def build_filter(cls, category, value):
-        processed_value = value or 'null'
+        processed_value = value
+        if processed_value is not False and not processed_value:
+            processed_value = 'null'
         return '{category}={value}'.format(category=category, value=processed_value)
 
     @classmethod

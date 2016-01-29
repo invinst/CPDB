@@ -1,5 +1,7 @@
-from allegation.factories import AllegationFactory, OfficerFactory
-from search.services.suggest.suggest_officer import SuggestOfficerName, SuggestOfficerUnit, SuggestOfficerStar, SuggestOfficerRank
+from allegation.factories import OfficerFactory
+from search.services.suggest.suggest_officer import (
+    SuggestOfficerName, SuggestOfficerUnit, SuggestOfficerStar, SuggestOfficerRank,
+    SuggestOfficerActive)
 from search.tests.services.suggest.test_suggest_base import SuggestBaseTestCase
 
 
@@ -29,10 +31,16 @@ class SuggestOfficerTestCase(SuggestBaseTestCase):
         SuggestOfficerStar.query('notdigit').should.be.equal(None)
 
     def test_suggest_officer_unit(self):
-        SuggestOfficerUnit.query('independent')['Officer Unit'][0]['label'].should.be.equal('Independent Police Review Authority (IPRA)')
-        SuggestOfficerUnit.query('113')['Officer Unit'][0]['label'].should.be.equal('Independent Police Review Authority (IPRA)')
+        SuggestOfficerUnit.query('independent')['Officer Unit'][0]['label']\
+            .should.be.equal('Independent Police Review Authority (IPRA)')
+        SuggestOfficerUnit.query('113')['Officer Unit'][0]['label']\
+            .should.be.equal('Independent Police Review Authority (IPRA)')
         SuggestOfficerUnit.query('not in suggest')['Officer Unit'].should.be.equal([])
 
     def test_suggest_officer_rank(self):
         SuggestOfficerRank.query('training')['Officer Rank'][0]['label'].should.be.equal('Field Training Officer')
         SuggestOfficerRank.query('FTO')['Officer Rank'].should.be.equal([])
+
+    def test_suggest_officer_active(self):
+        SuggestOfficerActive.query('Active')['Officer Employment Status'][0]['label'].should.be.equal('Active')
+        SuggestOfficerActive.query('Inactive')['Officer Employment Status'][0]['label'].should.be.equal('Inactive')

@@ -66,6 +66,8 @@ class OfficerAllegationQueryBuilder(object):
             'allegation__investigator',
             'cat__category',
             'allegation__city',
+            'officer__active',
+            'cat__on_duty'
         ]
 
         for key in query_params.keys():
@@ -73,9 +75,14 @@ class OfficerAllegationQueryBuilder(object):
                 val_list = query_params.getlist(key)
                 sub_queries = Q()
                 for val in val_list:
-                    if val.lower() in ('none', 'null'):
+                    val_lower = val.lower()
+                    if val_lower in ('none', 'null'):
                         val = True
                         key = "%s__isnull" % key
+                    elif val_lower == 'true':
+                        val = True
+                    elif val_lower == 'false':
+                        val = False
                     sub_queries |= Q(**{key: val})
                 queries &= sub_queries
 
