@@ -1,6 +1,5 @@
 from import_export import resources, fields
 
-
 from common.models import Allegation
 
 

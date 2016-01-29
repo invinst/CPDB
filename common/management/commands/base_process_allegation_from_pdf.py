@@ -13,8 +13,9 @@ class ProcessAllegationFromPdfBaseCommand(BaseCommand):
         'Log No. / C.R. ', 'Log/C.R. ', 'Log/ C.R. ', 'LOG/C.R. ',
         'LOG/C.R ', 'Log/CR ']]))
     CONTENT_PATTERN = r'((No|NO)\. ?)?(?P<crid>\d+) (?P<content>.*)'
-    FIELDS_PATTERN = r'\s*Notification Date: (?P<notification_date>.+) Location: (?P<location>.+) Complaint: (?P<complai\
-        nt>.+) Summary: (?P<summary>.+) Findings?: (?P<finding>.+)'
+    FIELDS_PATTERN = (
+        r'\s*Notification Date: (?P<notification_date>.+) Location: (?P<location>.+) '
+        r'Complaint: (?P<complaint>.+) Summary: (?P<summary>.+) Findings?: (?P<finding>.+)')
     FINDING_PATTERN = r'\"[^\"]+\"'
 
     def add_arguments(self, parser):
@@ -25,8 +26,9 @@ class ProcessAllegationFromPdfBaseCommand(BaseCommand):
         result_text = re.sub(r'\uFB01|\uFB02', '"', text)
         result_text = re.sub(r'\u2122', '\'', result_text)
         result_text = re.sub(
-            r'Created by INDEPENDENT POLICE REVIEW AUTHORITY|Page \d+ of \d+|\n|Abstracts of Sustained Cases\s+[A-Z]+\s+\
-            \d+',
+            r'Created by INDEPENDENT POLICE REVIEW AUTHORITY|'
+            r'Page \d+ of \d+|\n|'
+            r'Abstracts of Sustained Cases\s+[A-Z]+\s+\\d+',
             '', result_text)
         result_text = re.sub(r'\s+', ' ', result_text)
 
