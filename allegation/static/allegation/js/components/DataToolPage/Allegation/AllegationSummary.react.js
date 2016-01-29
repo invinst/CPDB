@@ -1,17 +1,27 @@
 var _ = require('lodash');
-var classnames = require('classnames');
 var React = require('react');
 var PropTypes = React.PropTypes;
 
 var AllegationPresenter = require('presenters/AllegationPresenter');
 var Investigator = require('components/DataToolPage/Complaint/Investigator.react');
 var RequestButton = require('components/DataToolPage/Complaint/RequestButton.react');
-var ComplaintListActions = require('actions/ComplaintList/ComplaintListActions');
-var SessionAPI = require('utils/SessionAPI');
+
 
 var AllegationSummary = React.createClass({
   propTypes: {
-    allegation: PropTypes.object.isRequired
+    allegation: PropTypes.object.isRequired,
+    noButton: PropTypes.bool,
+    toggleComplaint: PropTypes.func
+  },
+
+  renderComplainingWitness: function (allegation) {
+    return allegation.complainingWitness.map(function (item, i) {
+      return (
+        <li key={ i }>
+          { item }
+        </li>
+      );
+    });
   },
 
   renderComplainingWitnessSection: function (allegation) {
@@ -31,14 +41,18 @@ var AllegationSummary = React.createClass({
     );
   },
 
-  renderComplainingWitness: function (allegation) {
-    return allegation.complainingWitness.map(function (item, i) {
+  renderDocumentRequestButton: function (allegation) {
+    if (!this.props.noButton) {
       return (
-        <li key={ i }>
-          { item }
-        </li>
+        <div className='allegation-function'>
+          <RequestButton complaint={ allegation } />
+          <button type='button' className='btn btn-close' onClick={ this.props.toggleComplaint }>
+            <i className='fa fa-times' /> Close
+          </button>
+        </div>
       );
-    });
+    }
+    return '';
   },
 
   renderInvestigator: function (allegation) {
@@ -47,24 +61,6 @@ var AllegationSummary = React.createClass({
         <div className='col-xs-12'>
           <div className='title'>Investigator</div>
           <Investigator complaint={ allegation }/>
-        </div>
-      );
-    }
-    return '';
-  },
-
-  renderDocumentRequestButton: function (allegation) {
-    var cssClasses = classnames('row-fluid complaint_detail clearfix slide-down', {
-      'closed': this.props.hide
-    });
-
-    if (!this.props.noButton) {
-      return (
-        <div className='allegation-function'>
-          <RequestButton complaint={ allegation } />
-          <button type='button' className='btn btn-close' onClick={ this.props.toggleComplaint }>
-            <i className='fa fa-times' /> Close
-          </button>
         </div>
       );
     }

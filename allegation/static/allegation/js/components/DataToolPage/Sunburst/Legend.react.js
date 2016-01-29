@@ -5,8 +5,6 @@ var React = require('react');
 var AppConstants = require('../../../constants/AppConstants.js');
 var Base = require('components/Base.react');
 var SunburstStore = require('stores/SunburstStore');
-var SunburstActions = require('actions/SunburstActions');
-var FilterTagsActions = require('actions/FilterTagsActions');
 
 
 var Legend = React.createClass(_.assign(Base(SunburstStore), {
@@ -70,7 +68,6 @@ var Legend = React.createClass(_.assign(Base(SunburstStore), {
 
     // Get max children
     if (arc.children) {
-      var childrenLength = arc.children.length;
       var max = 0;
       var maxChildren;
 

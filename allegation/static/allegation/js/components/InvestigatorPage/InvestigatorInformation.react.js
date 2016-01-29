@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var React = require('react');
 var PropTypes = React.PropTypes;
 
@@ -14,7 +15,7 @@ var InvestigatorInformation = React.createClass({
     var investigator = this.props.investigator;
     var presenter = InvestigatorPresenter(investigator);
 
-    return ['unitWithName', 'rank'].map(function(x) {
+    return ['unitWithName', 'rank'].map(function (x) {
       if (!_.isEmpty(presenter[x])) {
         return (
           <span key={ x } className='information-entry'>
@@ -27,7 +28,7 @@ var InvestigatorInformation = React.createClass({
     });
   },
 
-  render: function() {
+  render: function () {
     return (
       <div className='row information'>
         <div className='col-md-12'>

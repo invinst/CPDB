@@ -2,7 +2,7 @@ var d3 = require('d3');
 var _ = require('lodash');
 
 var PercentageRectangleChart = {
-  draw: function(data, options, domCSSPath, clickHandler) {
+  draw: function (data, options, domCSSPath, clickHandler) {
     // TODO: defaultOptions
     var colors = options.colors;
     var width = options.width;
@@ -20,7 +20,7 @@ var PercentageRectangleChart = {
                         .range([0, heightWithoutMinHeight]);
 
     var ys = [];
-    for (i = 0; i < values.length; i++) {
+    for (var i = 0; i < values.length; i++) {
       ys.push(currentY);
       currentY += heightScale(values[i]) + minHeight;
     }
@@ -38,16 +38,16 @@ var PercentageRectangleChart = {
         var inactiveClass = data['active'] ? '' : ' inactive';
         return data.label.toLowerCase() + inactiveClass;
       })
-      .attr('transform', function(data, i) {
+      .attr('transform', function (data, i) {
         return 'translate(0,' + ys[i] + ')';
       });
 
     blocks.append('rect')
-      .style('fill', function(data, i) {
+      .style('fill', function (data, i) {
         return colors[i];
       })
       .attr('width', width)
-      .attr('height', function(data, i) {
+      .attr('height', function (data, i) {
         return heightScale(data.value) + minHeight;
       })
       .on('click', clickHandler);
@@ -56,8 +56,8 @@ var PercentageRectangleChart = {
       .attr('font-size', 12)
       .attr('fill', 'white')
       .attr('x', 20)
-      .attr('y', function(d) { return heightScale(d.value) / 2 + minHeight - 5;})
-      .text(function(d, i) {
+      .attr('y', function (d) { return heightScale(d.value) / 2 + minHeight - 5;})
+      .text(function (d, i) {
         var percent = d.value * 100 / sum;
         if (percent < 1) {
           percent = 1;

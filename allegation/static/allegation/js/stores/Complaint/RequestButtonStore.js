@@ -6,11 +6,11 @@ var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var RequestDocumentConstants = require('../../constants/RequestDocumentConstants');
 var EventEmitter = require('events').EventEmitter;
 
-function setRequestedCrid(crid){
+function setRequestedCrid(crid) {
   $.cookie('requested_document_' + crid, '1', {path: '/'});
 }
 
-function isCridRequested(crid){
+function isCridRequested(crid) {
   return $.cookie('requested_document_' + crid);
 }
 
@@ -22,7 +22,7 @@ var RequestButtonStore = assign({}, EventEmitter.prototype, {
     };
   },
 
-  registerButton: function(obj) {
+  registerButton: function (obj) {
     obj.token = AppDispatcher.register(function (action) {
       if (action.actionType == RequestDocumentConstants.DOCUMENT_REQUESTED) {
         if (obj.props.complaint.allegation.crid == action.value) {
@@ -34,7 +34,7 @@ var RequestButtonStore = assign({}, EventEmitter.prototype, {
     });
   },
 
-  unregisterButton: function(obj) {
+  unregisterButton: function (obj) {
     AppDispatcher.unregister(obj.token);
   }
 });

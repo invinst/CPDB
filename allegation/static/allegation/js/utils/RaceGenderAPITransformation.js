@@ -6,7 +6,7 @@ var isHispanic = function (x, y) { return _(y.toLowerCase()).contains('hispanic'
 
 
 var RaceGenderAPITransform = {
-  transformRaces: function(complaintRaces, isOfficer) {
+  transformRaces: function (complaintRaces, isOfficer) {
     var all = _(complaintRaces).sum();
     var white = _(complaintRaces).get('White', 0);
     var black = _(complaintRaces).get('Black', 0);
@@ -47,7 +47,7 @@ var RaceGenderAPITransform = {
         value: others,
         filters: otherFilters
       }
-    ]).chain().reject(function(x) { return x.value == 0; }).value();
+    ]).chain().reject(function (x) { return x.value == 0; }).value();
 
     raceData = _.each(raceData, function (item) {
       var isActive = false;
@@ -70,13 +70,13 @@ var RaceGenderAPITransform = {
     return isOfficer ? race + ' officers' : race;
   },
 
-  transformGenders: function(genders, isOfficer) {
+  transformGenders: function (genders, isOfficer) {
     var that = this;
 
     var filterCategory = isOfficer ? 'Officer Gender' : 'Complainant Gender';
     var hasActiveFilter = FilterTagStore.getAll(filterCategory).length > 0;
 
-    return _(genders).map(function(x, y) {
+    return _(genders).map(function (x, y) {
       var genderLabel = that.genderPresenter(y);
 
       return {
@@ -88,7 +88,7 @@ var RaceGenderAPITransform = {
     }).sortBy('label').value();
   },
 
-  genderPresenter: function(gender) {
+  genderPresenter: function (gender) {
     if (gender.toLowerCase() == 'f') return 'Female';
     if (gender.toLowerCase() == 'm') return 'Male';
     if (gender.toLowerCase() == 'x') return 'Trans';

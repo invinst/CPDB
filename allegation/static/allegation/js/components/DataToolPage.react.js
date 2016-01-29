@@ -3,14 +3,11 @@ var React = require('react');
 var isMobile = require('ismobilejs');
 var classnames = require('classnames');
 
-var AppConstants = require('constants/AppConstants');
 var Base = require('components/Base.react');
 var ComplaintSection = require('components/DataToolPage/ComplaintSection.react');
-var Footer = require('components/DataToolPage/Footer.react');
 var FilterTags = require('components/DataToolPage/FilterTags.react');
 var Map = require('components/DataToolPage/Map.react');
 var OfficerList = require('components/DataToolPage/OfficerList.react');
-var SessionAPI = require('utils/SessionAPI');
 var SessionStore = require('stores/SessionStore');
 var Tabs = require('components/DataToolPage/Tabs.react');
 var Search = require('components/Shared/Search.react');
@@ -48,7 +45,7 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
 
   setStickyFooter: function () {
     var isSetStickyFooter = this.isPassAllegationSection();
-    if(isSetStickyFooter) {
+    if (isSetStickyFooter) {
       $('body').addClass('stick-footer-bottom');
       $(window).off('scroll', this.setStickyFooter);
       $(window).on('scroll', this.unsetStickyFooter);
@@ -91,18 +88,18 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
       'hidden': SessionStore.isNoQuery()
     });
     return (
-      <div id="data-tool">
+      <div id='data-tool'>
         <div className='container-fluid'>
-            <div className="row" id='filter-row'>
-               <div className="col-md-10">
-                  <FilterTags />
-               </div>
+          <div className='row' id='filter-row'>
+            <div className='col-md-10'>
+              <FilterTags />
             </div>
+          </div>
         </div>
         <div className='container-fluid'>
           { this.renderTabs() }
         </div>
-        <div className="white-background">
+        <div className='white-background'>
           <div className='container-fluid content'>
             <div id='officer-cards'><OfficerList /></div>
           </div>

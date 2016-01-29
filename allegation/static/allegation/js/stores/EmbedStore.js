@@ -8,7 +8,7 @@ var ENTER_EVENT = 'ENTER_EVENT';
 var LEAVE_EVENT = 'LEAVE_EVENT';
 
 var _state = {
-  embedMode: false,
+  embedMode: false
 };
 
 

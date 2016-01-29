@@ -18,17 +18,17 @@ var InvestigationListRow = React.createClass(_.assign(Base(ComplaintListStore), 
     complaint: PropTypes.object.isRequired
   },
 
-  componentDidUpdate: function(e) {
+  componentDidUpdate: function (e) {
     var id = this.props.complaint.allegation.id;
     var kindOfUserInteraction = this.state.show ? 'open' : 'close';
     ga('send', 'event', 'allegation', kindOfUserInteraction, id);
   },
 
-  detailRendered: function() {
+  detailRendered: function () {
     return this.state.hasShown || this.detailIsCurrentlyShown();
   },
 
-  detailIsCurrentlyShown: function() {
+  detailIsCurrentlyShown: function () {
     return this.state.activeComplaints.indexOf(this.props.complaint['officer_allegation']['id']) > -1;
   },
 
@@ -57,10 +57,10 @@ var InvestigationListRow = React.createClass(_.assign(Base(ComplaintListStore), 
 
     var rowClassName = classnames('complaint-row', finding, allegation.final_outcome_class);
 
-    var dom_id = 'allegation-' + allegation.id;
+    var domId = 'allegation-' + allegation.id;
     return (
       <div className={ rowClassName }>
-        <div className='row cursor' id={ dom_id } onClick={ this.toggleComplaint }>
+        <div className='row cursor' id={ domId } onClick={ this.toggleComplaint }>
           <div className='col-md-1 col-xs-1 text-center'>
             <i className={ caretClasses }></i>
           </div>

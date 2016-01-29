@@ -7,7 +7,7 @@ var OutcomeAnalysisServerActionCreator = {
       actionType: AppConstants.RECEIVED_OUTCOME_FILTER_ANALYSIS,
       data: data
     });
-  },
+  }
 };
 
 module.exports = OutcomeAnalysisServerActionCreator;

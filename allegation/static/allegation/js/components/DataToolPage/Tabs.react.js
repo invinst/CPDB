@@ -99,7 +99,7 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
 
   renderNavTab: function (label) {
     var target = slugify(label.toLowerCase().replace('&', ''));
-    var data_target = '#' + target;
+    var dataTarget = '#' + target;
     var tab = target;
 
     if (tab == 'map' && !isMobile.any) {
@@ -111,13 +111,13 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
     });
 
     return (
-      <li role="presentation" className={ tabClass }>
-          <a href={ data_target } aria-controls='profile' aria-control={ target } role='tab' className='pointer' data-toggle='tab'
+      <li role='presentation' className={ tabClass }>
+        <a href={ dataTarget } aria-control={ target } role='tab' className='pointer' data-toggle='tab'
           onClick={ this.activeTab.bind(this, AppConstants.TABS[tab], target) }>
-            { label }
-          </a>
-        </li>
-      );
+          { label }
+        </a>
+      </li>
+    );
   },
 
   renderTabContent: function (id, Component) {
@@ -130,7 +130,7 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
     });
 
     return (
-      <div role="tabpanel" className={ tabClass } id={ id }>
+      <div role='tabpanel' className={ tabClass } id={ id }>
         <Component tabs={ this } />
       </div>
     );
@@ -138,15 +138,15 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
 
   render: function () {
     return (
-      <div className="chart-row">
-        <ul className="nav nav-tabs" role="tablist">
+      <div className='chart-row'>
+        <ul className='nav nav-tabs' role='tablist'>
           { this.renderNavTab('Map') }
           { this.renderNavTab('Outcomes') }
           { this.renderNavTab('Categories') }
           { this.renderNavTab('Race & Gender') }
         </ul>
 
-        <div className="tab-content">
+        <div className='tab-content'>
           { this.renderTabContent('map', Map) }
           { this.renderTabContent('outcomes', Sunburst) }
           { this.renderTabContent('categories', Summary) }

@@ -3,7 +3,7 @@ var SessionStore = require('stores/SessionStore');
 var RequestDocumentConstants = require('../constants/RequestDocumentConstants');
 
 var RequestDocumentActions = {
-  request: function(value) {
+  request: function (value) {
     AppDispatcher.dispatch({
       actionType: RequestDocumentConstants.REQUEST_DOCUMENT,
       value: value
@@ -23,18 +23,18 @@ var RequestDocumentActions = {
       success: function () {
         RequestDocumentActions.setRequested(crid);
       },
-      error: function(xhr) {
+      error: function (xhr) {
         for (var key in xhr.responseJSON) {
-            var errors = xhr.responseJSON[key];
-            for (var i = 0; i < errors.length; i++) {
-              toastr.error(errors[i]);
-            }
+          var errors = xhr.responseJSON[key];
+          for (var i = 0; i < errors.length; i++) {
+            toastr.error(errors[i]);
           }
+        }
       }
     });
   },
 
-  setRequested: function(value) {
+  setRequested: function (value) {
     AppDispatcher.dispatch({
       actionType: RequestDocumentConstants.DOCUMENT_REQUESTED,
       value: value

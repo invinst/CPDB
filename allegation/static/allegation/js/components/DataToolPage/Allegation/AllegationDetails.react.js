@@ -2,7 +2,6 @@ var _ = require('lodash');
 var React = require('react');
 var PropTypes = React.PropTypes;
 
-var AllegationPresenter = require('presenters/AllegationPresenter');
 var Base = require('components/Base.react');
 var Location = require('components/DataToolPage/Complaint/Location.react');
 var OfficerList = require('components/DataToolPage/Complaint/OfficerList.react');

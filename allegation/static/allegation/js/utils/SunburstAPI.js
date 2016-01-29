@@ -14,7 +14,7 @@ var SUNBURST_IGNORE_FILTERS = ['Final Outcome', 'Final Finding', 'Outcome'];
 
 
 var SunburstAPI = {
-  getData: function(query) {
+  getData: function (query) {
     var filter = AllegationFilterTagsQueryBuilder.buildQuery(SUNBURST_IGNORE_FILTERS);
     var queryString = query || filter;
 

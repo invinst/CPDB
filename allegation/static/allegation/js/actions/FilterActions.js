@@ -39,7 +39,7 @@ var FilterActions = {
     OutcomeAnalysisAPI.getAnalysisInformation();
   },
 
-  saveSession: function() {
+  saveSession: function () {
     AppDispatcher.dispatch({
       actionType: AppConstants.SAVE_SESSION
     });

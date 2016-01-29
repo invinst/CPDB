@@ -1,9 +1,14 @@
 var React = require('react');
+var PropTypes = React.PropTypes;
 
 var InvestigationListRow = require('components/InvestigatorPage/InvestigationListRow.react');
 
 
 var InvestigationList = React.createClass({
+  propTypes: {
+    complaints: PropTypes.array
+  },
+
   renderInvestigations: function () {
     var rows = [];
 
@@ -18,8 +23,6 @@ var InvestigationList = React.createClass({
   },
 
   render: function () {
-    var officer = this.props.officer;
-
     return (
       <div>
         { this.renderInvestigations() }

@@ -5,12 +5,12 @@ var DonutChartMixin = require('./DonutChartMixin');
 
 
 var DonutChart = React.createClass({
-  mixins: [DonutChartMixin],
-
   propTypes: {
     chartData: PropTypes.object.isRequired,
     chartColors: PropTypes.object.isRequired
   },
+
+  mixins: [DonutChartMixin],
 
   getDefaultProps: function () {
     return {
@@ -19,29 +19,18 @@ var DonutChart = React.createClass({
     };
   },
 
-  componentWillReceiveProps: function(newProps) {
+  componentDidMount: function () {
+    var browserData = this.buildBrowserData(this.props);
+    this.chart = this.getHighChart(browserData);
+  },
+
+  componentWillReceiveProps: function (newProps) {
     var browserData = this.buildBrowserData(newProps);
     this.chart.series[0].setData(browserData, true);
   },
 
   componentDidUpdate: function () {
     this.chart.reflow();
-  },
-
-  componentDidMount: function () {
-    var browserData = this.buildBrowserData(this.props);
-    this.chart = this.getHighChart(browserData);
-  },
-
-  render: function () {
-    return (
-      <div className='donut-chart'>
-        <div id='donut-chart'></div>
-        <div id="addText">
-          { this.middleTextRender() }
-        </div>
-      </div>
-    );
   },
 
   getHighChart: function (browserData) {
@@ -57,14 +46,14 @@ var DonutChart = React.createClass({
       },
       plotOptions: {
         pie: {
-            shadow: false,
-            center: ['50%', '50%'],
-            states: {
-              hover: {
-                enabled: false
-              }
+          shadow: false,
+          center: ['50%', '50%'],
+          states: {
+            hover: {
+              enabled: false
             }
           }
+        }
 
       },
       tooltip: false,
@@ -74,10 +63,21 @@ var DonutChart = React.createClass({
         innerSize: '70%',
         data: browserData,
         dataLabels: {
-            enabled: false
-          }
+          enabled: false
+        }
       }]
     }
+    );
+  },
+
+  render: function () {
+    return (
+      <div className='donut-chart'>
+        <div id='donut-chart'></div>
+        <div id='addText'>
+          { this.middleTextRender() }
+        </div>
+      </div>
     );
   }
 });

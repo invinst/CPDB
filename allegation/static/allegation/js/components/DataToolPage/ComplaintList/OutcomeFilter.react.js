@@ -1,11 +1,18 @@
 var React = require('react');
+var PropTypes = React.PropTypes;
 
 var AppConstants = require('constants/AppConstants');
 var OutcomeFilterItem = require('components/DataToolPage/ComplaintList/OutcomeFilterItem.react');
 
 
 var OutcomeFilter = React.createClass({
-  renderOutcomeFilterItems: function() {
+  propTypes: {
+    activeFilter: PropTypes.string,
+    callAPI: PropTypes.bool,
+    analytics: PropTypes.object
+  },
+
+  renderOutcomeFilterItems: function () {
     var activeFilter = this.props.activeFilter;
     var analytics = this.props.analytics;
     var outcomeFilters = [];
@@ -29,7 +36,7 @@ var OutcomeFilter = React.createClass({
     return outcomeFilters;
   },
 
-  render: function() {
+  render: function () {
     return (
       <div className='filters'>
         { this.renderOutcomeFilterItems() }

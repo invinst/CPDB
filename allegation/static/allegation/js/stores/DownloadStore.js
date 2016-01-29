@@ -18,15 +18,15 @@ var HREF_CHANGE_EVENT = 'HREF_CHANGE_EVENT';
 
 
 var DownloadStore = _.assign(Base(_state), {
-  addHrefChangeListener: function(callback) {
+  addHrefChangeListener: function (callback) {
     this.on(HREF_CHANGE_EVENT, callback);
   },
 
-  removeHrefChangeListener: function(callback) {
+  removeHrefChangeListener: function (callback) {
     this.removeListener(HREF_CHANGE_EVENT, callback);
   },
 
-  emitHrefChange: function() {
+  emitHrefChange: function () {
     this.emit(HREF_CHANGE_EVENT);
   }
 });

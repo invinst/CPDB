@@ -2,8 +2,8 @@ var AppConstants = require('../constants/AppConstants');
 var moment = require('moment');
 var _ = require('lodash');
 
-var OfficerPresenter = function(officer) {
-  var displayName = function() {
+var OfficerPresenter = function (officer) {
+  var displayName = function () {
     var displayName = officer.officer_first + ' ' + officer.officer_last;
 
     if (displayName.length > AppConstants.MAX_OFFICER_NAME_LENGTH) {
@@ -13,22 +13,22 @@ var OfficerPresenter = function(officer) {
     return displayName;
   };
 
-  var gender = function() {
+  var gender = function () {
     var gender = officer.gender || '';
     gender = gender.replace('M', 'Male').replace('F', 'Female');
 
     return gender;
   };
 
-  var race = function() {
+  var race = function () {
     return officer.race || '';
   };
 
-  var unitName = function() {
+  var unitName = function () {
     return AppConstants.UNITS[officer.unit] || 'Unknown unit';
   };
 
-  var joinedDate = function() {
+  var joinedDate = function () {
     return officer.appt_date ? moment(officer.appt_date, 'YYYY-MM-DD').format('MMM DD, YYYY') : '';
   };
 

@@ -15,8 +15,8 @@ var TagUtil = {
     return false;
   },
 
-  isATagIn: function(tags) {
-    return function(category, value) {
+  isATagIn: function (tags) {
+    return function (category, value) {
       return _(tags).chain().get(category, []).get('value', []).contains(value).value();
     };
   }

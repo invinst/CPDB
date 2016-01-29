@@ -9,7 +9,7 @@ var Base = require('stores/Base');
 
 var _state = {
   stories: [],
-  story_groups: {}
+  storyGroups: {}
 };
 
 var StoryListStore = _.assign(Base(_state), {

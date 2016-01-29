@@ -1,10 +1,14 @@
 var React = require('react');
-var RequestModal = require('components/DataToolPage/Complaint/RequestModal.react');
+var PropTypes = React.PropTypes;
 var RequestDocumentActions = require('actions/RequestDocumentActions');
 var RequestButtonStore = require('stores/Complaint/RequestButtonStore');
 
 
 var RequestButton = React.createClass({
+  propTypes: {
+    complaint: PropTypes.object
+  },
+
   getInitialState: function () {
     return RequestButtonStore.init(this.props.complaint.allegation);
   },
@@ -17,6 +21,12 @@ var RequestButton = React.createClass({
     RequestButtonStore.unregisterButton(this);
   },
 
+  onClick: function (e) {
+    if (!this.props.complaint.allegation.document_id) {
+      e.preventDefault();
+      RequestDocumentActions.request(this.props.complaint);
+    }
+  },
   render: function () {
     var allegation = this.props.complaint.allegation;
     var documentLabel = 'Request';
@@ -41,12 +51,6 @@ var RequestButton = React.createClass({
         <i className={ iconClassName }></i> { documentLabel }
       </a>
     );
-  },
-  onClick: function (e) {
-    if (!this.props.complaint.allegation.document_id) {
-      e.preventDefault();
-      RequestDocumentActions.request(this.props.complaint);
-    }
   }
 });
 

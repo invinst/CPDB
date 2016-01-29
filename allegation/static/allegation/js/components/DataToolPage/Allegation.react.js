@@ -1,12 +1,18 @@
 var classnames = require('classnames');
 var React = require('react');
+var PropTypes = React.PropTypes;
 
-var Base = require('components/Base.react');
 var AllegationDetails = require('components/DataToolPage/Allegation/AllegationDetails.react');
 var AllegationSummary = require('components/DataToolPage/Allegation/AllegationSummary.react');
 
 
 var Allegation = React.createClass({
+  propTypes: {
+    allegation: PropTypes.object.isRequired,
+    toggleAllegation: PropTypes.func.isRequired,
+    hide: PropTypes.bool
+  },
+
   render: function () {
     var allegation = this.props.allegation;
     var toggleAllegation = this.props.toggleAllegation;

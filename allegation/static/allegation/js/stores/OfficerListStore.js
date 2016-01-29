@@ -22,21 +22,21 @@ var SUMMARY_CHANGE = 'summary-change';
 var firstCall = true;
 var ajax = null;
 var _state = {
-  active_officers: []
+  activeOfficers: []
 };
 
 
 var OfficerListStore = assign({}, EventEmitter.prototype, {
   getSession: function () {
-    return {'active_officers': _.clone(_state['active_officers'])};
+    return {'activeOfficers': _.clone(_state['activeOfficers'])};
   },
 
   setSession: function (data) {
-    this.set('active_officers', data.active_officers || []);
+    this.set('activeOfficers', data.activeOfficers || []);
   },
 
-  getActiveOfficers: function() {
-    return _state.active_officers;
+  getActiveOfficers: function () {
+    return _state.activeOfficers;
   },
 
   update: function (query) {
@@ -80,7 +80,7 @@ var OfficerListStore = assign({}, EventEmitter.prototype, {
     this.on(CHANGE_EVENT, callback);
   },
 
-  removeChangeListener: function(callback) {
+  removeChangeListener: function (callback) {
     this.removeListener(CHANGE_EVENT, callback);
   },
 
@@ -103,7 +103,7 @@ OfficerListStore.dispatchEvent = AppDispatcher.register(function (action) {
     case AppConstants.TOGGLE_TAGS:
     case AppConstants.SUNBURST_SELECT_ARC:
       if (!firstCall) {
-        OfficerListStore.set('active_officers', []);
+        OfficerListStore.set('activeOfficers', []);
       }
       firstCall = false;
       OfficerListStore.update();
@@ -114,25 +114,25 @@ OfficerListStore.dispatchEvent = AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.SET_OFFICER_LIST_FILTER:
-      _state.complaints_count_start = action.start;
-      _state.complaints_count_end = action.end;
+      _state.complaintsCountStart = action.start;
+      _state.complaintsCountEnd = action.end;
       OfficerListStore.update();
       break;
 
     case AppConstants.SET_ACTIVE_OFFICER:
-      var index = _state.active_officers.indexOf(action.officer.id);
+      var index = _state.activeOfficers.indexOf(action.officer.id);
       if (index == -1) {
-        _state.active_officers.push(action.officer.id);
+        _state.activeOfficers.push(action.officer.id);
       }
       else {
-        _state.active_officers.splice(index, 1);
+        _state.activeOfficers.splice(index, 1);
       }
       OfficerListStore.emitChange();
       break;
 
     case AppConstants.RECEIVED_SESSION_DATA:
       var data = action.data.data;
-      _state['active_officers'] = data['query']['active_officers'] || [];
+      _state['activeOfficers'] = data['query']['activeOfficers'] || [];
       OfficerListStore.update();
       OfficerListStore.emitChange();
       break;
@@ -140,7 +140,7 @@ OfficerListStore.dispatchEvent = AppDispatcher.register(function (action) {
     default:
       break;
   }
-  if (firstCall){
+  if (firstCall) {
     OfficerListStore.update();
     firstCall = false;
   }

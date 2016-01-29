@@ -2,13 +2,13 @@ var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var AppConstants = require('../../constants/AppConstants');
 
 var ComplaintListServerActions = {
-  getData: function() {
+  getData: function () {
     AppDispatcher.dispatch({
       actionType: AppConstants.COMPLAINT_LIST_GET_DATA
     });
   },
 
-  receivedData: function(data, fromFilter) {
+  receivedData: function (data, fromFilter) {
     AppDispatcher.dispatch({
       actionType: AppConstants.COMPLAINT_LIST_RECEIVED_DATA,
       data: data,
@@ -23,7 +23,7 @@ var ComplaintListServerActions = {
     });
   },
 
-  receivedFullComplaints: function(data) {
+  receivedFullComplaints: function (data) {
     AppDispatcher.dispatch({
       actionType: AppConstants.OFFICER_COMPLAINT_LIST_RECEIVED_DATA,
       data: data

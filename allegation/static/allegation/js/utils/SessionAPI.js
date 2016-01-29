@@ -22,7 +22,7 @@ var SessionAPI = {
     });
   },
 
-  getSessionInfo: function(session) {
+  getSessionInfo: function (session) {
     var params = {
       'hash_id': session
     };
@@ -31,7 +31,7 @@ var SessionAPI = {
       ajax.abort();
     }
 
-    ajax = $.getJSON(AppConstants.SESSION_API_ENDPOINT, params, function(data) {
+    ajax = $.getJSON(AppConstants.SESSION_API_ENDPOINT, params, function (data) {
       SessionActions.receivedSessionInfoData(data);
       if (session == '') {
         SessionActions.createdSession();
@@ -40,7 +40,7 @@ var SessionAPI = {
     });
   },
 
-  updateSessionInfo: function(data) {
+  updateSessionInfo: function (data) {
     var currentData = SessionStore.getState()['data'];
     data = _.extend(currentData, data);
     var requestData = {

@@ -37,7 +37,7 @@ var DonutChartMixin = {
     };
 
     return (
-      <span id="pieChartInfoText">
+      <span id='pieChartInfoText'>
         <span style={ {fontSize: '28px'} }>
           <strong>{ fragtionText }</strong>
           <br/>

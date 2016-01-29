@@ -5,7 +5,6 @@ var AppConstants = require('constants/AppConstants');
 
 var Base = require('stores/Base');
 var FilterTagStore = require('stores/FilterTagStore');
-var SessionStore = require('stores/SessionStore');
 
 var SunburstChartD3 = require('utils/d3utils/SunburstChartD3');
 

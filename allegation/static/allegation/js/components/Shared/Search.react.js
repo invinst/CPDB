@@ -1,7 +1,6 @@
-var _ = require('lodash');
 var classnames = require('classnames');
-var navigate = require('react-mini-router').navigate;
 var React = require('react');
+var PropTypes = React.PropTypes;
 
 var AppConstants = require('constants/AppConstants');
 var FilterTagsActions = require('actions/FilterTagsActions');
@@ -10,8 +9,20 @@ var SessionAPI = require('utils/SessionAPI');
 
 
 var Search = React.createClass({
+  propTypes: {
+    mobileExpanded: PropTypes.bool
+  },
+
   componentDidMount: function () {
     this.initAutocomplete();
+  },
+
+  onSearchClick: function () {
+    if (!this.props.mobileExpanded) {
+      NavActions.mobileSearchClick();
+    } else {
+      NavActions.mobileSearchCollapse();
+    }
   },
 
   initAutocomplete: function () {
@@ -61,15 +72,7 @@ var Search = React.createClass({
     }
   },
 
-  onSearchClick: function () {
-    if (!this.props.mobileExpanded) {
-      NavActions.mobileSearchClick();
-    } else {
-      NavActions.mobileSearchCollapse();
-    }
-  },
-
-  render: function() {
+  render: function () {
     var searchIconClass = classnames(
       {
         'glyphicon glyphicon-search': !this.props.mobileExpanded,
@@ -78,14 +81,18 @@ var Search = React.createClass({
     );
 
     return (
-      <div className="row search-row">
-        <div className="col-md-12">
-          <form role="search">
-            <div className="input-group">
-              <input type="text" id="autocomplete" placeholder="Search by a name/place/category, or click inside the graphs below"
-                   className="ui-autocomplete-input form-control" autoComplete="off"/>
-              <span className="input-group-btn">
-                <button className="btn btn-primary" id="btn-search" type="button" onClick={ this.onSearchClick }><i className={ searchIconClass }></i></button>
+      <div className='row search-row'>
+        <div className='col-md-12'>
+          <form role='search'>
+            <div className='input-group'>
+              <input type='text' id='autocomplete'
+                placeholder='Search by a name/place/category, or click inside the graphs below'
+                className='ui-autocomplete-input form-control' autoComplete='off'/>
+              <span className='input-group-btn'>
+                <button className='btn btn-primary' id='btn-search' type='button'
+                  onClick={ this.onSearchClick }>
+                  <i className={ searchIconClass }></i>
+                </button>
               </span>
             </div>
           </form>

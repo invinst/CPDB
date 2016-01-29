@@ -1,7 +1,6 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
 var ComplaintListAPI = require('../utils/ComplaintListAPI');
-var OutcomeAnalysisAPI = require('../utils/OutcomeAnalysisAPI');
 var OfficerListStore = require('stores/OfficerListStore');
 var SessionAPI = require('utils/SessionAPI');
 

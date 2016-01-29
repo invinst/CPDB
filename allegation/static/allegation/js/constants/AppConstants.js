@@ -338,7 +338,7 @@ module.exports = {
     'outcomes': 0,
     'categories': 1,
     'race-gender': 2,
-    'map': 3,
+    'map': 3
   },
 
   SUNBURST_ARC_COLORS: {

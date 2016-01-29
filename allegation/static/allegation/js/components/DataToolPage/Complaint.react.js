@@ -1,4 +1,6 @@
 var React = require('react');
+var PropTypes = React.PropTypes;
+
 var Summary = require('components/DataToolPage/Complaint/Summary.react');
 var OfficerList = require('components/DataToolPage/Complaint/OfficerList.react');
 var TimelineAndLocation = require('components/DataToolPage/Complaint/TimelineAndLocation.react');
@@ -9,53 +11,59 @@ var SessionAPI = require('utils/SessionAPI');
 
 
 var Complaint = React.createClass({
-  getInitialState: function () {
-    return {police_witness: 0};
+  propTypes: {
+    complaint: PropTypes.object,
+    hide: PropTypes.bool,
+    noButton: PropTypes.bool
   },
-  setInvestigation: function(data) {
-    this.setState(data);
+
+  getInitialState: function () {
+    return {policeWitness: 0};
   },
   componentDidMount: function () {
-    if (this.state.police_witness == 0) {
+    if (this.state.policeWitness == 0) {
       $.getJSON('/api/police-witness/', {'crid': this.props.complaint.allegation.crid}, this.setInvestigation);
     }
   },
+  setInvestigation: function (data) {
+    this.setState(data);
+  },
+  toggleComplaint: function (e) {
+    ComplaintListActions.toggleComplaint(this.props.complaint.allegation.id);
+    SessionAPI.updateSessionInfo({'query': { activeComplaints: this.state.activeComplaints}});
+  },
+
   render: function () {
     var complaint = this.props.complaint;
-    var infor = [<Summary key="summary" complaint={ complaint } />];
+    var infor = [<Summary key='summary' complaint={ complaint } />];
 
-    infor.push(<OfficerList key="officer-list" complaint={ complaint } />);
-    infor.push(<TimelineAndLocation key="timeline" complaint={ complaint } />);
+    infor.push(<OfficerList key='officer-list' complaint={ complaint } />);
+    infor.push(<TimelineAndLocation key='timeline' complaint={ complaint } />);
 
-    if (this.state.police_witness && this.state.police_witness.length) {
-      infor.push(<PoliceWitness key="police-witness" complaint={ complaint } witnesses={ this.state.police_witness } />);
+    if (this.state.policeWitness && this.state.policeWitness.length) {
+      infor.push(<PoliceWitness key='police-witness' complaint={ complaint } witnesses={ this.state.policeWitness } />);
     }
 
     var cssClasses = 'row-fluid complaint_detail clearfix slide-down' + (this.props.hide ? ' closed' : '');
     var buttons = '';
     if (!this.props.noButton) {
       buttons = (
-        <div className="col-md-10 col-md-offset-1 button-list">
+        <div className='col-md-10 col-md-offset-1 button-list'>
           <RequestButton complaint={ complaint } />
-          <button type="button" className="btn btn-close" onClick={ this.toggleComplaint }>
-            <i className="fa fa-times" /> Close
+          <button type='button' className='btn btn-close' onClick={ this.toggleComplaint }>
+            <i className='fa fa-times' /> Close
           </button>
         </div>
       );
     }
     return (
       <div className={ cssClasses }>
-        <div className="col-md-12">
+        <div className='col-md-12'>
           { infor }
         </div>
         { buttons }
       </div>
     );
-  },
-
-  toggleComplaint: function (e) {
-    ComplaintListActions.toggleComplaint(this.props.complaint.allegation.id);
-    SessionAPI.updateSessionInfo({'query': { activeComplaints: this.state.activeComplaints}});
   }
 });
 

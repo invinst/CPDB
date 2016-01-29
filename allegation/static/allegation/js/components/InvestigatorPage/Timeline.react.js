@@ -1,6 +1,7 @@
 var _ = require('lodash');
-var ReactDOM = require('react-dom');
+var moment = require('moment');
 var React = require('react');
+var ReactDOM = require('react-dom');
 
 var Base = require('components/Base.react');
 var TimelineStore = require('stores/OfficerPage/TimelineStore');
@@ -35,14 +36,12 @@ var Timeline = React.createClass(_.assign(Base(TimelineStore), {
       }
       var style = 'display: none';
       var start = moment(items[i]);
-      if(start == 'Invalid date'){
+      if (start == 'Invalid date') {
         continue;
       }
 
-      var content = '';
       if (i == 0 && !isInvestigator) {
         style = '';
-        content = 'Joined force<br /><span>' + start.format('MMM DD, YYYY'); + '</span>';
       }
 
       var timeLineItem = {
@@ -55,7 +54,7 @@ var Timeline = React.createClass(_.assign(Base(TimelineStore), {
         timeLineItem.style = '';
         timeLineItem.content = 'Joined force<br /><span>' + start.format('MMM DD, YYYY') + '</span>';
         timeLineItems.push(timeLineItem);
-        if(items.length >= 1) {
+        if (items.length >= 1) {
           var rangeItem = {
             id: 'range-1',
             content: 'data withheld for this period',
@@ -75,7 +74,7 @@ var Timeline = React.createClass(_.assign(Base(TimelineStore), {
 
     if (!timeLineItems.length) {
 
-      var rangeItem = {
+      var emptyRangeItem = {
         id: 'range-1',
         content: 'no data for this officer',
         start: moment('2000-01-01'),
@@ -83,7 +82,7 @@ var Timeline = React.createClass(_.assign(Base(TimelineStore), {
         type: 'background',
         className: 'missing-data'
       };
-      timeLineItems.push(rangeItem);
+      timeLineItems.push(emptyRangeItem);
 
     }
     else {

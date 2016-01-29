@@ -15,7 +15,7 @@ var _state = {
 var InvestigatorPageStore = _.assign(Base(_state), {
 });
 
-AppDispatcher.register(function(action) {
+AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.RECEIVED_INVESTIGATOR_DATA:
       InvestigatorPageStore.updateState('data', action.data);

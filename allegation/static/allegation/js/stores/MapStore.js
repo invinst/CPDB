@@ -8,22 +8,16 @@
  *
  * MapStore
  */
-var L = require('leaflet');
-var LeafletClusters = require('leaflet.markercluster');
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var AppConstants = require('../constants/AppConstants');
-var AppStore = require('stores/AppStore');
-var FilterActions = require('../actions/FilterActions');
 var assign = require('object-assign');
 
-var CHANGE_EVENT = 'change';
 var CHANGE_MARKER_EVENT = 'change_marker';
 var BEFORE_CHANGE_MARKER_EVENT = 'beofer_change_marker';
 
-var _queryString = null;
-var _ajax_req = null;
 var _markers = null;
+var _polygons = null;
 var _state = {};
 
 
@@ -38,10 +32,10 @@ var MapStore = assign({}, EventEmitter.prototype, {
       _state = opts['map'];
     }
   },
-  setState: function(state) {
+  setState: function (state) {
     $.extend(_state, state);
   },
-  getState: function() {
+  getState: function () {
     return _state;
   },
 
@@ -53,7 +47,7 @@ var MapStore = assign({}, EventEmitter.prototype, {
     return _polygons;
   },
 
-  removeChangeMarkerListener: function(callback) {
+  removeChangeMarkerListener: function (callback) {
     this.removeListener(CHANGE_MARKER_EVENT, callback);
   },
 
@@ -65,7 +59,7 @@ var MapStore = assign({}, EventEmitter.prototype, {
     this.emit(CHANGE_MARKER_EVENT);
   },
 
-  removeBeforeChangeMarkerListener: function(callback) {
+  removeBeforeChangeMarkerListener: function (callback) {
     this.removeListener(BEFORE_CHANGE_MARKER_EVENT, callback);
   },
 

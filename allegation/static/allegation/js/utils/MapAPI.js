@@ -1,8 +1,4 @@
-var AppConstants = require('constants/AppConstants');
-
 var MapActions = require('actions/MapActions');
-var OfficerPageActions = require('actions/OfficerPage/OfficerPageActions');
-
 var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFilterTagsQueryBuilder');
 
 var ajax = null;

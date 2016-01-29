@@ -1,7 +1,5 @@
 var _ = require('lodash');
 
-var AppConstants = require('../../constants/AppConstants');
-
 var FilterTagStore = require('stores/FilterTagStore');
 var OfficerListStore = require('stores/OfficerListStore');
 
@@ -29,7 +27,7 @@ var AllegationFetcherQueryBuilder = {
   buildAnalysisOutcomeQuery: function () {
     return _.compact([
       AllegationFilterTagsQueryBuilder.buildQuery(),
-      AllegationOfficerQueryBuilder.buildQuery(),
+      AllegationOfficerQueryBuilder.buildQuery()
     ]).join('&');
   }
 };

@@ -4,14 +4,9 @@ global.jQuery = require('jquery');
 var AppConstants = require('constants/AppConstants');
 
 var HappyFox = React.createClass({
-  render: function() {
-    return (<div></div>);
-  },
-
   componentDidMount: function () {
     this.initialize();
   },
-
 
   initialize: function () {
     if (global.DJANGO_ENV == 'test') {
@@ -31,6 +26,11 @@ var HappyFox = React.createClass({
 
     var s = document.getElementsByTagName('script')[0];
     s.parentNode.insertBefore(scriptTag, s);
+  },
+
+
+  render: function () {
+    return (<div></div>);
   }
 });
 

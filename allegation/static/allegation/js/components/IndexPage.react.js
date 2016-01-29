@@ -1,17 +1,8 @@
-var _ = require('lodash');
 var classnames = require('classnames');
-var navigate = require('react-mini-router').navigate;
 var React = require('react');
-var ReactRouter = require('react-router');
+var PropTypes = React.PropTypes;
 var PureRenderMixin = require('react-addons-pure-render-mixin');
 
-var Router = ReactRouter.Router;
-var Route = ReactRouter.Route;
-var Link = ReactRouter.Link;
-
-var AppConstants = require('constants/AppConstants');
-var Base = require('components/Base.react');
-var NavActions = require('actions/NavActions');
 var PageAnimator = require('components/PageAnimator.react');
 var StatePropagateCSSTransitionGroup = require(
   'components/Shared/StatePropagateCSSTransitionGroup.react');
@@ -24,6 +15,11 @@ var HappyFox = require('components/Shared/HappyFox.react');
 
 
 var IndexPage = React.createClass({
+  propTypes: {
+    children: PropTypes.node,
+    location: PropTypes.object
+  },
+
   contextTypes: {
     router: React.PropTypes.object.isRequired
   },
@@ -36,6 +32,11 @@ var IndexPage = React.createClass({
 
   componentWillUnmount: function () {
     $(window).off('scroll', this.scrollToggleShow);
+  },
+
+  isLandingPage: function () {
+    var isActive = this.context.router.isActive;
+    return !(isActive('investigator') || isActive('officer') || isActive('data'));
   },
 
   scrollToggleShow: function () {
@@ -61,7 +62,7 @@ var IndexPage = React.createClass({
     var navItems = $('.landing-nav .sub-nav a');
     var currentPos = $(window).scrollTop() + navBarHeight;
 
-    for(var index = 0; index < navItems.length; index++) {
+    for (var index = 0; index < navItems.length; index++) {
       var item = $(navItems[index]);
       var $control = $(item.data('target'));
 
@@ -73,9 +74,22 @@ var IndexPage = React.createClass({
     }
   },
 
-  isLandingPage: function () {
+  renderContent: function () {
     var isActive = this.context.router.isActive;
-    return !(isActive('investigator') || isActive('officer') || isActive('data'));
+
+    var tabPanelClass = classnames('tab-pane active',{
+      'landing-page': !(isActive('data') || isActive('officer') || isActive('investigator'))
+    });
+
+    return (
+      <div className='main'>
+        <div className='tab-content'>
+          <div role='tabpanel' className={ tabPanelClass }>
+            { this.props.children }
+          </div>
+        </div>
+      </div>
+    );
   },
 
   renderFooter: function () {
@@ -90,7 +104,7 @@ var IndexPage = React.createClass({
 
   renderFooterLandingPage: function () {
     return (
-      <div className="landing-page">
+      <div className='landing-page'>
         <LandingFooter />
       </div>
     );
@@ -106,25 +120,7 @@ var IndexPage = React.createClass({
     );
   },
 
-  renderContent: function () {
-    var isActive = this.context.router.isActive;
-
-    var tabPanelClass = classnames('tab-pane active',{
-      'landing-page': !(isActive('data') || isActive('officer') || isActive('investigator'))
-    });
-
-    return (
-      <div className="main">
-        <div className="tab-content">
-          <div role="tabpanel" className={ tabPanelClass }>
-            { this.props.children }
-          </div>
-        </div>
-      </div>
-    );
-  },
-
-  render: function() {
+  render: function () {
     var isActive = this.context.router.isActive;
 
     var pageClassName = classnames({
@@ -134,16 +130,16 @@ var IndexPage = React.createClass({
     return (
       <div className='page-wrapper'>
         <StatePropagateCSSTransitionGroup
-          transitionName="page"
+          transitionName='page'
           transitionEnterTimeout={ 500 }
           transitionLeaveTimeout={ 500 }>
-            <PageAnimator className='page' key={ this.props.location.pathname }>
-              <div id='landing-page' className={ pageClassName }>
-                <Nav isActive={ this.context.router.isActive }/>
-                { this.renderContent() }
-                { this.renderFooterWrapper() }
-              </div>
-            </PageAnimator>
+          <PageAnimator className='page' key={ this.props.location.pathname }>
+            <div id='landing-page' className={ pageClassName }>
+              <Nav isActive={ this.context.router.isActive }/>
+              { this.renderContent() }
+              { this.renderFooterWrapper() }
+            </div>
+          </PageAnimator>
         </StatePropagateCSSTransitionGroup>
       </div>
     );

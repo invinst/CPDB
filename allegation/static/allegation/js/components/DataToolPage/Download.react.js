@@ -3,13 +3,12 @@ var React = require('react');
 var classnames = require('classnames');
 
 var Base = require('components/Base.react');
-var AppConstants = require('constants/AppConstants');
 var DownloadActions = require('actions/DownloadActions');
 var DownloadStore = require('stores/DownloadStore');
 var DownloadAPI = require('utils/DownloadAPI');
 
 
-global.redirect = function (href) {
+var redirect = function (href) {
   location.href = href;
 };
 
@@ -52,14 +51,14 @@ var Download = React.createClass(_.assign(Base(DownloadStore), {
     var content = '';
     if (this.state.processing) {
       content = (
-        <div className="progress progress-striped active">
-          <div className="progress-bar text-center">Processing</div>
+        <div className='progress progress-striped active'>
+          <div className='progress-bar text-center'>Processing</div>
         </div>
       );
     } else {
       content = (
         <a onClick={ this.onClick } href={ this.state.href }>
-          <i className="fa fa-download"></i> Download Table
+          <i className='fa fa-download'></i> Download Table
         </a>
       );
     }

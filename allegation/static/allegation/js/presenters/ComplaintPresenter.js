@@ -1,8 +1,6 @@
 var _ = require('lodash');
 var moment = require('moment');
 
-var AppConstants = require('../constants/AppConstants');
-
 
 var ComplaintPresenter = function (complaint) {
   var allegation = complaint.allegation || {};

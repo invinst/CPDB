@@ -1,10 +1,8 @@
 var classnames = require('classnames');
 var React = require('react');
+var PropTypes = React.PropTypes;
 var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
-var AppConstants = require('constants/AppConstants');
-var MapStore = require('stores/MapStore');
-var FilterActions = require('actions/FilterActions');
 var Timeline = require('components/DataToolPage/Officer/Timeline.react');
 var Map = require('components/DataToolPage/Officer/Map.react');
 var DonutChart = require('components/DataToolPage/Officer/DonutChart.react');
@@ -12,12 +10,16 @@ var OfficerMixin = require('components/DataToolPage/Officer/OfficerMixin.react')
 var OfficerInformation = require('components/DataToolPage/OfficerDetail/OfficerInformation.react');
 
 var OfficerDetail = React.createClass({
-  mixins: [OfficerMixin],
-  getInitialState: function () {
-    return {};
+  propTypes: {
+    officer: PropTypes.object,
+    hasMap: PropTypes.bool,
+    timelineData: PropTypes.object
   },
 
-  componentDidMount: function () {
+  mixins: [OfficerMixin],
+
+  getInitialState: function () {
+    return {};
   },
 
   render: function () {
@@ -35,7 +37,7 @@ var OfficerDetail = React.createClass({
     });
     var mapDiv = '';
     var radius = 8;
-    if(hasMap){
+    if (hasMap) {
       var options = {
         defaultZoom: 10,
         maxZoom: 15,
@@ -51,27 +53,27 @@ var OfficerDetail = React.createClass({
     return (
       <div id='OfficerDetail' className={ complaintRate }>
         <div className='row'>
-          <div className="col-sm-9 h3">
-            <span className="star">{ officer.star }</span>
+          <div className='col-sm-9 h3'>
+            <span className='star'>{ officer.star }</span>
             { officer.officer_first } { officer.officer_last }
           </div>
         </div>
         <ReactCSSTransitionGroup
-            transitionName="information"
-            transitionEnterTimeout={ 500 }
-            transitionLeaveTimeout={ 500 }>
+          transitionName='information'
+          transitionEnterTimeout={ 500 }
+          transitionLeaveTimeout={ 500 }>
           { officer.discipline_count !== undefined
             ? <OfficerInformation officer={ officer } />
             : <div className='information-placeholder'/>
           }
         </ReactCSSTransitionGroup>
-        <div className="row visualization-information">
+        <div className='row visualization-information'>
           { mapDiv }
           <div className={ columnClass }>
             <ReactCSSTransitionGroup
-                transitionName="timeline"
-                transitionEnterTimeout={ 500 }
-                transitionLeaveTimeout={ 500 }>
+              transitionName='timeline'
+              transitionEnterTimeout={ 500 }
+              transitionLeaveTimeout={ 500 }>
               { this.props.timelineData.items
                 ? <Timeline data={ this.props.timelineData } officer={ officer }/>
                 : null
@@ -80,9 +82,9 @@ var OfficerDetail = React.createClass({
           </div>
           <div className={ columnClass }>
             <ReactCSSTransitionGroup
-                transitionName="donut-chart"
-                transitionEnterTimeout={ 500 }
-                transitionLeaveTimeout={ 500 }>
+              transitionName='donut-chart'
+              transitionEnterTimeout={ 500 }
+              transitionLeaveTimeout={ 500 }>
               { officer.discipline_count !== undefined
                 ? <DonutChart officer={ officer }/>
                 : null

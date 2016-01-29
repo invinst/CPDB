@@ -9,7 +9,7 @@ require('keyboardShortcuts');
 global.initReact = function () {
   var element = document.getElementById('router');
 
-  if(element) {
+  if (element) {
     ReactDOM.render(
       <Router />,
       element

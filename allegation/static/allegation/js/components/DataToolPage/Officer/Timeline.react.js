@@ -1,9 +1,22 @@
-var _ = require('lodash');
-var ReactDOM = require('react-dom');
 var React = require('react');
+var PropTypes = React.PropTypes;
+var ReactDOM = require('react-dom');
+var moment = require('moment');
 
 
 var Timeline = React.createClass({
+  propTypes: {
+    data: PropTypes.object
+  },
+
+  componentDidMount: function () {
+    this.drawTimeline(this.props.data);
+  },
+
+  componentDidUpdate: function () {
+    this.drawTimeline(this.props.data);
+  },
+
   drawTimeline: function (data) {
     var container = ReactDOM.findDOMNode(this);
     $(container).html('');
@@ -20,14 +33,12 @@ var Timeline = React.createClass({
       }
       var style = 'display: none';
       var start = moment(items[i]);
-      if(start == 'Invalid date'){
+      if (start == 'Invalid date') {
         continue;
       }
 
-      var content = '';
       if (i == 0) {
         style = '';
-        content = 'Joined force<br /><span>' + start.format('MMM DD, YYYY'); + '</span>';
       }
 
       var timeLineItem = {
@@ -40,7 +51,7 @@ var Timeline = React.createClass({
         timeLineItem.style = '';
         timeLineItem.content = 'Joined force<br /><span>' + start.format('MMM DD, YYYY') + '</span>';
         timeLineItems.push(timeLineItem);
-        if(items.length >= 1) {
+        if (items.length >= 1) {
           var rangeItem = {
             id: 'range-1',
             content: 'data withheld for this period',
@@ -60,7 +71,7 @@ var Timeline = React.createClass({
 
     if (!timeLineItems.length) {
 
-      var rangeItem = {
+      var emptyRangeItem = {
         id: 'range-1',
         content: 'no data for this officer',
         start: moment('2000-01-01'),
@@ -68,7 +79,7 @@ var Timeline = React.createClass({
         type: 'background',
         className: 'missing-data'
       };
-      timeLineItems.push(rangeItem);
+      timeLineItems.push(emptyRangeItem);
 
     }
     else {
@@ -89,20 +100,12 @@ var Timeline = React.createClass({
     new vis.Timeline(container, timeLineItems, options);
   },
 
-  componentDidUpdate: function () {
-    this.drawTimeline(this.props.data);
-  },
-
-  componentDidMount: function () {
-    this.drawTimeline(this.props.data);
-  },
-
   render: function () {
     var wait = '';
     if (this.props.data) {
       wait = (<i className='fa fa-spin fa-spinner'/>);
     }
-    return (<div className="timeline">{ wait }</div>);
+    return (<div className='timeline'>{ wait }</div>);
   }
 });
 

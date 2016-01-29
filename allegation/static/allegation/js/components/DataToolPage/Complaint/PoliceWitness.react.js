@@ -1,4 +1,3 @@
-var _ = require('lodash');
 var pluralize = require('pluralize');
 var React = require('react');
 var PropTypes = React.PropTypes;
@@ -58,7 +57,7 @@ var PoliceWitness = React.createClass({
             <div className='investigator-name'>
               { witness.witness_officer.officer_first } { witness.witness_officer.officer_last }
             </div>
-            <div className="legend">
+            <div className='legend'>
               { genderPresenter(witness['witness_officer']['gender']) } { witness.witness_officer.race }
             </div>
             { renderOfficers(witness) }

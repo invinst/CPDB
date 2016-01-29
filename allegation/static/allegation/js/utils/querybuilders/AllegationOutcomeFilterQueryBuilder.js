@@ -1,12 +1,10 @@
-var _ = require('lodash');
-
 var AppConstants = require('../../constants/AppConstants');
 
 var ComplaintListStore = require('stores/ComplaintListStore');
 
 
 var AllegationOutcomeFilterQueryBuilder = {
-  buildQuery: function(activeFilter) {
+  buildQuery: function (activeFilter) {
     activeFilter = activeFilter || ComplaintListStore.getActiveFilter();
 
     if (activeFilter == 'all') {
@@ -24,7 +22,7 @@ var AllegationOutcomeFilterQueryBuilder = {
     }
 
     return ['final_finding', AppConstants.FILTER_CODES[activeFilter]].join('=');
-  },
+  }
 };
 
 module.exports = AllegationOutcomeFilterQueryBuilder;

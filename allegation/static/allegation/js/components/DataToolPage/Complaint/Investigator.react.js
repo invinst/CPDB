@@ -1,4 +1,5 @@
 var React = require('react');
+var PropTypes = React.PropTypes;
 var pluralize = require('pluralize');
 var Link = require('react-router').Link;
 
@@ -7,7 +8,16 @@ var StringUtil = require('utils/StringUtil');
 
 
 var Investigator = React.createClass({
+  propTypes: {
+    complaint: PropTypes.object
+  },
+
   mixins: [OfficerMixin],
+
+  investigatorLink: function (investigator) {
+    return '/investigator/' + StringUtil.slugify(investigator.name) + '/' + investigator.id;
+  },
+
   render: function () {
     var investigator = this.props.complaint.investigator;
     var more = '';
@@ -27,7 +37,7 @@ var Investigator = React.createClass({
       if (investigator.discipline_count) {
         description = (
           <div>
-            <strong className="red">
+            <strong className='red'>
               { investigator.discipline_count } disciplined
             </strong>
             &nbsp;out of { investigator.complaint_count } { pluralize('case', investigator.complaint_count) }
@@ -37,10 +47,10 @@ var Investigator = React.createClass({
       more = (
         <div>
           { description }
-          <div className="progress complaint" style={ progressStyle }>
-            <div className="progress-bar discipline" role="progressbar" aria-valuenow="60" aria-valuemin="0"
-                 aria-valuemax="100" style={ style }>
-              <span className="sr-only"></span>
+          <div className='progress complaint' style={ progressStyle }>
+            <div className='progress-bar discipline' role='progressbar' aria-valuenow='60' aria-valuemin='0'
+              aria-valuemax='100' style={ style }>
+              <span className='sr-only'></span>
             </div>
           </div>
         </div>
@@ -63,10 +73,6 @@ var Investigator = React.createClass({
         </div>
       </Link>
     );
-  },
-
-  investigatorLink: function (investigator) {
-    return '/investigator/' + StringUtil.slugify(investigator.name) + '/' + investigator.id;
   }
 });
 

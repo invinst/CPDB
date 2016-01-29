@@ -13,7 +13,7 @@ var CheckMarkStore = assign({}, EventEmitter.prototype, {
     return _state;
   },
 
-  getCheckMarkStatus: function(officerId) {
+  getCheckMarkStatus: function (officerId) {
     return _state['justChange'][officerId];
   },
 

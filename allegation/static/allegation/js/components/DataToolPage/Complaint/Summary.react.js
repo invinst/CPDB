@@ -1,23 +1,37 @@
 var React = require('react');
+var PropTypes = React.PropTypes;
 
 
 var Summary = React.createClass({
+  propTypes: {
+    complaint: PropTypes.object
+  },
+
   getInitialState: function () {
     return {};
+  },
+  getAction: function () {
+    var allegation = this.props.complaint.allegation;
+    return (
+      <div className='col'>
+        <div className='title'>Final Outcome</div>
+        { allegation.final_outcome || 'Unknown' }
+      </div>
+    );
   },
   getCategory: function () {
     var category = this.props.complaint.category;
     if (category) {
       return (
-        <div className="col">
-          <div className="title">{ category.category }</div>
+        <div className='col'>
+          <div className='title'>{ category.category }</div>
           { category.allegation_name }
         </div>
       );
     } else {
       return (
-        <div className="col">
-          <div className="title">Category</div>
+        <div className='col'>
+          <div className='title'>Category</div>
           Unknown
         </div>
       );
@@ -26,18 +40,9 @@ var Summary = React.createClass({
   getFinalFinding: function () {
     var allegation = this.props.complaint.allegation;
     return (
-      <div className="col">
-        <div className="title">Final Finding</div>
+      <div className='col'>
+        <div className='title'>Final Finding</div>
         { allegation.final_finding || 'Unknown' }
-      </div>
-    );
-  },
-  getAction: function () {
-    var allegation = this.props.complaint.allegation;
-    return (
-      <div className="col">
-        <div className="title">Final Outcome</div>
-        { allegation.final_outcome || 'Unknown' }
       </div>
     );
   },
@@ -55,15 +60,15 @@ var Summary = React.createClass({
       witnesses.push(person);
     }
     return (
-      <div className="col">
-        <div className="title">Complaining Witness</div>
+      <div className='col'>
+        <div className='title'>Complaining Witness</div>
         { witnesses.length ? witnesses : 'Unknown' }
       </div>
     );
   },
   render: function () {
     return (
-      <div className="row summary">
+      <div className='row summary'>
         { this.getCategory() }
         { this.getFinalFinding() }
         { this.getAction() }

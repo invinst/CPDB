@@ -10,24 +10,24 @@ var _state = {
 };
 
 var RelatedOfficersStore = assign({}, EventEmitter.prototype, {
-  getState: function() {
+  getState: function () {
     return _state;
   },
 
-  addChangeListener: function(callback) {
+  addChangeListener: function (callback) {
     this.on(AppConstants.CHANGE_EVENT, callback);
   },
 
-  removeChangeListener: function(callback) {
+  removeChangeListener: function (callback) {
     this.removeListener(AppConstants.CHANGE_EVENT, callback);
   },
 
-  emitChange: function() {
+  emitChange: function () {
     this.emit(AppConstants.CHANGE_EVENT);
   }
 });
 
-RelatedOfficersStore.dispatchEvents = AppDispatcher.register(function(action) {
+RelatedOfficersStore.dispatchEvents = AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.SET_ACTIVE_OFFICER_IN_OFFICER_PAGE:
       var index = _state.activeOfficers.indexOf(action.officer.id);
