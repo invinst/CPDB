@@ -1,6 +1,5 @@
 from allegation.factories import AllegationCategoryFactory
 from common.tests.core import BaseLiveTestCase
-from share.models import Session
 from share.factories import SessionFactory
 
 
@@ -30,7 +29,7 @@ class ShareSessionTestCase(BaseLiveTestCase):
         ])
 
         category = AllegationCategoryFactory()
-        empty_title_session = SessionFactory(query={
+        SessionFactory(query={
             'filters': {
                 'cat__category': {
                     'value': [category.category]

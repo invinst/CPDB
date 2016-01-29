@@ -18,6 +18,7 @@ class Setting(models.Model):
 
     DEFAULT_SITE_TITLE = DEFAULT_SITE_TITLE
 
+
 class InterfaceText(models.Model):
     key = models.SlugField()
     text = models.TextField()

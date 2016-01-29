@@ -9,7 +9,7 @@ class SessionAnalyticSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Session
-        fields  = (
+        fields = (
             'created_date',
             'count'
         )

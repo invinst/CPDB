@@ -11,7 +11,7 @@ from common.models import (
     AllegationCategory, Officer, Area, Allegation, Investigator,
     ComplainingWitness,  PoliceWitness, OfficerAllegation)
 from common.constants import (
-    RACES, OUTCOMES, GENDER_DICT,RACES_DICT, FINDINGS)
+    RACES, OUTCOMES, GENDER_DICT, RACES_DICT, FINDINGS)
 
 fake = Faker()
 
