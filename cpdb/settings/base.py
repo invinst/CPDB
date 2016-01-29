@@ -10,10 +10,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '***REMOVED***'
+SECRET_KEY = os.environ.get('SECRET_KEY', '***REMOVED***')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -189,8 +189,6 @@ MAP_POINT_THRESHOLD = 3
 SHELL_PLUS ='ipython'
 DJANGO_ENV = 'dev'
 
-if len(sys.argv) > 1 and sys.argv[1] == 'test':
-    DJANGO_ENV = 'test'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.mailgun.org'
@@ -272,6 +270,3 @@ ELASTICSEARCH_SETTINGS = {
         }
     }
 }
-
-if 'test' in sys.argv:
-    from cpdb.settings.test import *

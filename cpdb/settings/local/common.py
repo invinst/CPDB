@@ -2,7 +2,10 @@ from cpdb.settings.base import *
 
 
 MAP_BOX_API_KEY = 'sk.eyJ1Ijoic3RlZmFuZ2VvcmciLCJhIjoiMTNLSkhyTSJ9.b6k_KvDsuacf72UgbStcGQ'
+
+# FIXME: This should be move to constants.py instead
 ALLEGATION_LIST_ITEM_COUNT = 25
+
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
@@ -13,14 +16,7 @@ CACHES = {
     },
 }
 
-if len(sys.argv) > 1 and sys.argv[1] == 'test':
-    CACHES = {
-        'default': {
-            'BACKEND': 'django.core.cache.backends.dummy.DummyCache',
-        }
-    }
 COMPRESS_ENABLED = False
-
 
 LOGGING = {
     'version': 1,
@@ -45,7 +41,6 @@ if DEBUG_TOOLBAR_ENABLE:
     INSTALLED_APPS += ('debug_toolbar',)
     MIDDLEWARE_CLASSES = ('debug_toolbar.middleware.DebugToolbarMiddleware',
                           'common.middleware.json_as_html.JsonAsHTML', ) + MIDDLEWARE_CLASSES
-
     DEBUG_TOOLBAR_PATCH_SETTINGS = True
 
 DOMAIN = 'http://localhost:8000'
@@ -53,8 +48,8 @@ DOMAIN = 'http://localhost:8000'
 
 # This should be override in corresponding settings
 SITE_INFO = {
-    'domain': 'cpdb.dev:8000',
-    'mobile_host': 'm.cpdb.dev:8000',
+    'domain': 'lvh.me:8000',
+    'mobile_host': 'm.lvh.me:8000',
 }
 
 USE_TZ = False
