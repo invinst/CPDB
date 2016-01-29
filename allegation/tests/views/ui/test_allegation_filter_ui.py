@@ -105,21 +105,18 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         self.fill_in('#autocomplete', 'search query that return nothing')
         self.until(lambda: self.should_see_text('No matches found'))
 
-    def test_sugggest_has_document(self):
+    def test_has_filters_stackable(self):
         self.fill_in('#autocomplete', 'has:doc')
-        self.until(
-            lambda: self.element_by_classname_and_text(
-                'ui-autocomplete-category', 'has:').should.be.ok)
-        self.until(
-            lambda: self.element_by_classname_and_text(
-                'autocomplete-has', 'has:document').should.be.ok)
-
-    def test_has_document_filter(self):
-        self.fill_in('#autocomplete', 'has:document')
         self.until(lambda: self.find('.autocomplete-has').click())
+        self.fill_in('#autocomplete', 'has:summ')
+        self.until(lambda: self.find('.autocomplete-has').click())
+
         self.until(
             lambda: self.element_by_classname_and_text(
                 'filter-name', 'has:document').should.be.ok)
+        self.until(
+            lambda: self.element_by_classname_and_text(
+                'filter-name', 'has:summary').should.be.ok)
 
     def test_sticky_tag_shortcut(self):
         # select 2 tags

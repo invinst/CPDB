@@ -19,7 +19,7 @@ class SuggestHas(SuggestBase):
             cls.entry_format(
                 suggest_value=entry,
                 tag_value=cls.build_tag_value(
-                    category='has_filters',
+                    category=entry.replace(':', '_'),
                     value=entry,
                     display_category='has:',
                     display_value=entry,
