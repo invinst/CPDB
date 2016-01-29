@@ -1,6 +1,6 @@
 import dj_database_url
 
-from cpdb.settings.base import *
+from cpdb.settings.prod.common import *
 
 
 ALLOWED_HOSTS = ['*']
