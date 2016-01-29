@@ -6,9 +6,6 @@ from common.tests.core import BaseLivePhoneTestCase
 
 
 class MobileOfficerPageTest(BaseLivePhoneTestCase):
-    def go_to_officer_page(self, slug='', pk=''):
-        self.visit('/mobile/officer/{slug}/{pk}'.format(slug=slug, pk=pk))
-
     def test_all_good_data(self):
         officer_rank = 'PO'
         officer_rank_display = 'Police Officer'
@@ -49,7 +46,7 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
             officer=other_officer, final_finding=allegation_final_finding,
             cat=officer_allegation.cat, allegation=allegation)
 
-        self.go_to_officer_page(slug=officer.officer_first, pk=officer.pk)
+        self.visit_officer_page(officer)
 
         self.find('.name').text.should.equal(officer.display_name)
         self.find('.badge-value').text.should.equal(str(officer.star))
@@ -84,15 +81,14 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
         bad_officer_pk = 1234
         officer_slug = 'xxxx'
         not_match_text = 'The id {officer_id} is not recorded in out database.'.format(officer_id=bad_officer_pk)
-        self.go_to_officer_page(slug=officer_slug, pk=bad_officer_pk)
-
+        self.visit('/mobile/officer/{slug}/{pk}'.format(slug=officer_slug, pk=bad_officer_pk))
         self.until(lambda: self.should_see_text(not_match_text))
 
     def test_no_related_officer(self):
         officer = OfficerFactory()
         OfficerAllegationFactory(officer=officer)
 
-        self.go_to_officer_page(slug=officer.officer_first, pk=officer.pk)
+        self.visit_officer_page(officer)
         self.find('.tab-navs .tab-co-accused').click()
 
         self.until(lambda: self.find('.no-related-officer'))
@@ -110,7 +106,7 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
         officer_unit_display = 'Unit Unknown'
         officer_race_display = 'Race unknown'
 
-        self.go_to_officer_page(slug=officer.officer_first, pk=officer.pk)
+        self.visit_officer_page(officer)
         self.find('.tab-navs .tab-summary').click()
         self.until(lambda: self.find('.officer-summary-section'))
 

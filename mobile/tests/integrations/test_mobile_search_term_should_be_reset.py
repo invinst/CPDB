@@ -18,11 +18,10 @@ class MobileSearchTermShouldBeResetTest(BaseLivePhoneTestCase):
     def setUp(self):
         self.officer = OfficerFactory()
         self.officer_allegation = OfficerAllegationFactory()
-        self.officer_page = '/mobile/officer/{slug}/{id}'.format(slug=self.officer.display_name, id=self.officer.id)
         self.query = self.officer_allegation.allegation.crid
 
     def test_search_term_should_be_reset(self):
-        self.visit(self.officer_page)
+        self.visit_officer_page(self.officer)
         self.search_for(self.query)
         self.wait_for_suggestion_list()
         self.click_on_first_result()

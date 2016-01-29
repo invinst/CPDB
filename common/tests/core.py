@@ -19,6 +19,7 @@ import sure
 
 from api.models import Setting
 from common.factories import UserFactory
+from mobile.tests.mixins.mobile_url_mixins import MobileUrlMixins
 from share.factories import SettingFactory
 
 
@@ -328,6 +329,12 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     def click_by_js(self, element):
         self.browser.execute_script('return arguments[0].click();', element)
 
+    def should_track_ga_event(self):
+        self.get_ga_call_variable().should.greater_than(0)
+
+    def get_ga_call_variable(self):
+        return self.browser.execute_script("return window.gaCall")
+
 
 class BaseAdminTestCase(BaseLiveTestCase):
     def setUp(self):
@@ -356,7 +363,7 @@ class BaseMobileLiveTestCase(BaseLiveTestCase):
         return world.mobile_browser
 
 
-class BaseLivePhoneTestCase(BaseLiveTestCase):
+class BaseLivePhoneTestCase(MobileUrlMixins, BaseLiveTestCase):
     IPHONE6_BROWSER_SIZE = {'width': 375, 'height': 627}
     IPHONE6_USER_AGENT = (
         'Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.3 (KHTML, '
@@ -388,7 +395,7 @@ class BaseLivePhoneTestCase(BaseLiveTestCase):
         return world.phone_browser
 
 
-class BaseLiveAndroidPhoneTestCase(BaseLiveTestCase):
+class BaseLiveAndroidPhoneTestCase(MobileUrlMixins, BaseLiveTestCase):
     GALAXY_S6_BROWSER_SIZE = {'width': 375, 'height': 627}
     GALAXY_S6_USER_AGENT = 'Mozilla/5.0 (Linux; Android 5.1.1; SM-G920F Build/LMY47X) AppleWebKit/537.36 ' \
                            '(KHTML, like Gecko) Chrome/46.0.2490.43 Mobile'

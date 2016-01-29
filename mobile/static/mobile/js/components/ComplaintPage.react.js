@@ -29,6 +29,7 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
   },
 
   componentDidMount: function () {
+    ga('send', 'event', 'allegation', 'view_detail', location.pathname);
     var crid = this.props.params.crid || '';
     AllegationResourceUtil.get(crid);
     ComplaintPageStore.addChangeListener(this._onChange);

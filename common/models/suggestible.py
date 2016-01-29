@@ -31,7 +31,7 @@ class MobileSuggestibleOfficer(MobileSuggestible):
 
 
 class MobileSuggestibleAllegation(MobileSuggestible):
-    def get_mobile_url(self):   
+    def get_mobile_url(self):
         return '/complaint/{crid}'.format(crid=self.crid)
 
     def as_suggestion_entry(self):

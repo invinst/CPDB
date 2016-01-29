@@ -4,12 +4,7 @@ from allegation.factories import (
 from common.tests.core import BaseLivePhoneTestCase
 
 
-class MobileComplaintPageTestMixin(BaseLivePhoneTestCase):
-    def go_to_allegation_detail_page(self, crid=''):
-        self.visit('/mobile/complaint/{crid}'.format(crid=crid))
-
-
-class MobileComplaintPageTest(MobileComplaintPageTestMixin):
+class MobileComplaintPageTest(BaseLivePhoneTestCase):
     def test_allegation_with_full_information(self):
         document_id = 123
         document_normalized_title = 'abcd'
@@ -45,7 +40,7 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
             allegation=allegation,
             race=complaint_witness_race, age=complaint_witness_age)
 
-        self.go_to_allegation_detail_page(crid=allegation.crid)
+        self.visit_complaint_page(allegation)
         self.until(lambda: self.find('.crid-number'))
 
         self.find('.final-finding').text.should.be.equal(final_finding_text)
@@ -86,7 +81,7 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
             officers[circle_class] = officer
             OfficerAllegationFactory(allegation=allegation, officer=officer)
 
-        self.go_to_allegation_detail_page(crid=crid)
+        self.visit_complaint_page(allegation)
 
         for circle_class, allegations_count in \
                 allegations_count_color_map.items():

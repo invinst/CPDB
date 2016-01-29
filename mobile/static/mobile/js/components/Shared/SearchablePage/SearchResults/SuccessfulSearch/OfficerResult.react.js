@@ -10,6 +10,7 @@ var AppHistory = require('utils/History');
 
 var OfficerNameResult = React.createClass({
   _onClick: function (presenter) {
+    ga('send', 'event', 'filter', presenter.resource, presenter.text);
     AppHistory.pushState(null, presenter.url);
   },
 
