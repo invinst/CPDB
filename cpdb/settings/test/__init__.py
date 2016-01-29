@@ -1,3 +1,8 @@
+SITE_INFO = {
+    'domain': 'lvh.me:8081',
+    'mobile_host': 'm.lvh.me:8081',
+}
+
 CELERY_ALWAYS_EAGER = True
 
 HAYSTACK_CONNECTIONS = {
