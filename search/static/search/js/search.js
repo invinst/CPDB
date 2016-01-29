@@ -6,7 +6,8 @@ NO_CAP_CATEGORIES = [
 ];
 
 UPPER_CATEGORIES = [
-  'Category ID'
+  'Category ID',
+  'Investigation Agency'
 ];
 
 function suggestionExists(term, suggestions) {
