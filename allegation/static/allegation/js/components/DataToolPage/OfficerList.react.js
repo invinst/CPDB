@@ -324,7 +324,7 @@ var OfficerList = React.createClass({
     var officers = [];
     var count = 0, i;
 
-    var active = this.state.activeOfficers.length == 0;
+    var active = this.state['active_officers'].length == 0;
     var display = this.getDisplaying();
     var start = display[0];
     var end = display[1];
@@ -332,7 +332,7 @@ var OfficerList = React.createClass({
     var noClick = this.props.noClick || this.state.embedding;
     for (i = start; i < end; i++) {
       var officer = this.state.officers[i];
-      var selected = this.state.activeOfficers.indexOf(officer.id) > -1;
+      var selected = this.state['active_officers'].indexOf(officer.id) > -1;
       count += 1;
 
       officers.push(

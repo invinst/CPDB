@@ -9,7 +9,7 @@ var OutcomeFilter = React.createClass({
   propTypes: {
     activeFilter: PropTypes.string,
     callAPI: PropTypes.bool,
-    analytics: PropTypes.object
+    analytics: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
   },
 
   renderOutcomeFilterItems: function () {

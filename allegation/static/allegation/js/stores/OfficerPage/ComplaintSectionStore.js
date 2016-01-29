@@ -64,7 +64,7 @@ var ComplaintSectionStore = _.assign(Base(_state), {
 
 
   updateComplaints: function (activeFilter) {
-    var activeOfficers = RelatedOfficersStore.getState()['activeOfficers'];
+    var activeOfficers = RelatedOfficersStore.getState()['active_officers'];
     activeFilter = _state['activeFilter'] = activeFilter || 'all';
     var rawComplaints = _state['rawComplaints'];
 

@@ -57,10 +57,9 @@ var ComplaintSection = React.createClass({
     for (var i = 0; i < complaints.length; i++) {
       var complaint = complaints[i];
       var officerAllegation = complaint['officer_allegation'];
-      var key = 'allegation' + officerAllegation.id;
       rows.push(
         <ComplaintListRow
-          key={ key }
+          key={ i }
           complaint={ complaint }
           officer={ officer }
           finding={ officerAllegation.final_finding }/>

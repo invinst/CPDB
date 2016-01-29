@@ -28,7 +28,7 @@ var RelatedOfficers = React.createClass({
   },
 
   renderRelatedOfficerList: function () {
-    var activeOfficers = this.state['activeOfficers'];
+    var activeOfficers = this.state['active_officers'];
 
     return this.props.relatedOfficers.map(function (officer) {
       var selected = _(activeOfficers).contains(officer.officer.id);
