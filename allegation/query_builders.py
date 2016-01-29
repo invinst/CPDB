@@ -269,7 +269,7 @@ class OfficerAllegationQueryBuilder(object):
 
     def _q_allegation_summary(self, query_params):
         terms = query_params.getlist('allegation_summary', [])
-        if terms == []:
+        if len(terms) == 0:
             return Q()
 
         sqs = SearchQuerySet()
