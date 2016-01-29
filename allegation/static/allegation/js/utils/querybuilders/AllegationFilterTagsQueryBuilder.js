@@ -1,4 +1,5 @@
 var _ = require('lodash');
+require('utils/jQuery');
 
 var AppConstants = require('../../constants/AppConstants');
 
@@ -7,23 +8,21 @@ var FilterTagStore = require('stores/FilterTagStore');
 
 var AllegationFilterTagsQueryBuilder = {
   buildQuery: function (ignoreFilters) {
-    var filters = FilterTagStore.getAll();
+    return jQuery.param(AllegationFilterTagsQueryBuilder.buildQueryParams(ignoreFilters), true);
+  },
 
+  buildQueryParams: function (ignoreFilters) {
+    var filters = FilterTagStore.getAll();
     ignoreFilters = ignoreFilters || [];
 
-    filters = _.filter(filters, function (entries, category) {
-      return ignoreFilters.indexOf(category) == -1 && entries.length > 0;
+    filters = _.pick(filters, function (entries, category) {
+      return !_.has(ignoreFilters, category) && entries.length > 0;
     });
 
-    var query = _.map(filters, function (values, category) {
-      var filterValues = _.map(values, function (item) {
-        return item.category + '=' + item.value;
-      });
-      return filterValues.join('&');
-    }).join('&');
-
-    return query;
-  },
+    return _.mapValues(filters, function (entries) {
+      return _.pluck(entries, 'value');
+    });
+  }
 };
 
 module.exports = AllegationFilterTagsQueryBuilder;

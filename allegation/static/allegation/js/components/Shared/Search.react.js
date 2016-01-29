@@ -1,6 +1,5 @@
 var _ = require('lodash');
 var classnames = require('classnames');
-var navigate = require('react-mini-router').navigate;
 var React = require('react');
 
 var AppConstants = require('constants/AppConstants');
