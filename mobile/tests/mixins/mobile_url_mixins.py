@@ -1,9 +1,12 @@
 class MobileUrlMixins(object):
-    def visit_officer_page(self, officer):
-        self.visit('/mobile/officer/{slug}/{pk}'.format(slug=officer.officer_first, pk=officer.pk))
-
-    def visit_complaint_page(self, allegation):
-        self.visit('/mobile/complaint/{crid}'.format(crid=allegation.crid))
-
     def visit_mobile_home(self):
-        self.visit('/mobile')
+        self.visit('/')
+
+    def visit_complaint_page(self, crid):
+        self.visit('/complaint/{crid}'.format(crid=crid))
+
+    def visit_officer_page(self, officer_id):
+        self.visit('/officer/any-slug/{officer_id}'.format(officer_id=officer_id))
+
+    def visit_search_page(self, query):
+        self.visit('/search/{query}'.format(query=query))

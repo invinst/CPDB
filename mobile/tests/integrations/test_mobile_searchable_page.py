@@ -17,18 +17,20 @@ class MobileSearchablePageTest(BaseLivePhoneTestCase):
     def setUp(self):
         self.officer = OfficerFactory()
         self.allegation = AllegationFactory()
-        OfficerAllegationFactory(officer=self.officer, allegation=self.allegation)
+        self.officer_allegation = OfficerAllegationFactory(officer=self.officer, allegation=self.allegation)
 
     def test_good_data(self):
-        self.visit_officer_page(self.officer)
+        self.visit_officer_page(self.officer.id)
         self.search_for(self.officer.officer_first)
         self.until(lambda: self.should_see_text(self.officer.display_name))
-        self.visit_complaint_page(self.allegation)
+
+        self.visit_complaint_page(self.allegation.crid)
         self.search_for(self.allegation.crid)
-        self.until(lambda: self.should_see_text(self.allegation.category))
+        self.until(lambda: self.should_see_text(self.officer_allegation.cat.category))
 
     def test_bad_data(self):
-        self.visit_officer_page(self.officer)
+        self.visit_officer_page(self.officer.id)
         self.show_error_when_search_bad_query()
-        self.visit_complaint_page(self.allegation)
+
+        self.visit_complaint_page(self.allegation.crid)
         self.show_error_when_search_bad_query()

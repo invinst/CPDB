@@ -21,7 +21,7 @@ class MobileSearchTermShouldBeResetTest(BaseLivePhoneTestCase):
         self.query = self.officer_allegation.allegation.crid
 
     def test_search_term_should_be_reset(self):
-        self.visit_officer_page(self.officer)
+        self.visit_officer_page(self.officer.id)
         self.search_for(self.query)
         self.wait_for_suggestion_list()
         self.click_on_first_result()
