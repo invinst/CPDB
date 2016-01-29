@@ -56,8 +56,8 @@ var SessionStore = _.assign(Base(_state), {
 SessionStore.dispatcherToken = AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.SAVE_SESSION:
-    // SessionStore.updateSession(action.data);
-    SessionStore.emitChange();
+      // SessionStore.updateSession(action.data);
+      SessionStore.emitChange();
       break;
 
     case AppConstants.RECEIVED_SESSION_DATA:

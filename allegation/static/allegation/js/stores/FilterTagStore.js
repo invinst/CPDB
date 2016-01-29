@@ -85,12 +85,12 @@ var FilterTagStore = _.assign(Base(_state), {
     return _.get(this.getFilter(category, value), 'pinned');
   },
 
-  toggleFilter: function (category, value, filter) {
-    if (this.getFilter(category, value)) {
-      this.removeFilter(category, value);
+  toggleFilter: function (tagValue) {
+    if (this.getFilter(tagValue.category, tagValue.value)) {
+      this.removeFilter(tagValue.category, tagValue.value);
     } else {
-      this.addFilter(category, value, filter);
-      this.pinFilter(category, value);
+      this.addFilter(tagValue);
+      this.pinFilter(tagValue.category, tagValue.value);
     }
   },
 
@@ -201,11 +201,11 @@ AppDispatcher.register(function (action) {
       // When adding completely, we pin one more time to `unpin` it
       // This will help us for not adding a new exception to API
       _.each(action.tags, function (tag) {
-        FilterTagStore.toggleFilter(action.category, tag.value, tag.filter);
+        FilterTagStore.toggleFilter(tag);
       });
 
       _.each(action.tags, function (tag) {
-        FilterTagStore.pinFilter(action.category, tag.value);
+        FilterTagStore.pinFilter(tag.category, tag.value);
       });
 
       FilterTagStore.emitChange();

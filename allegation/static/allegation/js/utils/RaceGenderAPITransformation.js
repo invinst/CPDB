@@ -23,14 +23,18 @@ var RaceGenderAPITransform = {
     var otherFilters = _.map(otherFilterValues, function (x) {
       return { value: x, label: x };
     });
-    var filterCategory = isOfficer ? 'Officer Race' : 'Complainant Race';
+    var filterCategory = isOfficer ? 'officer__race' : 'complainant_race';
     var hasActiveFilter = FilterTagStore.getAll(filterCategory).length > 0;
 
     raceData = _([
-      { label: this.raceLabel('White', isOfficer), value: white, filters: [{ value: 'White', label: this.raceLabel('White', isOfficer) }] },
-      { label: this.raceLabel('Black', isOfficer), value: black, filters: [{ value: 'Black', label: this.raceLabel('Black', isOfficer) }] },
-      { label: this.raceLabel('Hispanic', isOfficer), value: hispanic, filters: hispanicFilters },
-      { label: 'Others', value: others, filters: otherFilters }
+      { label: this.raceLabel('White', isOfficer), value: white,
+        filters: [{ value: 'White', label: this.raceLabel('White', isOfficer) }] },
+      { label: this.raceLabel('Black', isOfficer), value: black,
+        filters: [{ value: 'Black', label: this.raceLabel('Black', isOfficer) }] },
+      { label: this.raceLabel('Hispanic', isOfficer),
+        value: hispanic, filters: hispanicFilters },
+      { label: 'Others', value: others,
+        filters: otherFilters }
     ]).chain().reject(function(x) { return x.value == 0 }).value();
 
     raceData = _.each(raceData, function (item) {
@@ -40,7 +44,7 @@ var RaceGenderAPITransform = {
         isActive = true;
       } else {
         isActive = _(item.filters).reduce(function (active, filter) {
-          return active && FilterTagStore.isInFilter(filterCategory, filter.label);
+          return active && FilterTagStore.isInFilter(filterCategory, filter.value);
         }, true);
       }
 
@@ -57,11 +61,11 @@ var RaceGenderAPITransform = {
   transformGenders: function(genders, isOfficer) {
     var that = this;
 
-    var filterCategory = isOfficer ? 'Officer Gender' : 'Complainant Gender';
+    var filterCategory = isOfficer ? 'officer__gender' : 'complainant_gender';
     var hasActiveFilter = FilterTagStore.getAll(filterCategory).length > 0;
 
     return _(genders).map(function(x, y) {
-      var genderLabel = that.genderPresenter(y)
+      var genderLabel = that.genderPresenter(y);
 
       return {
         'label': genderLabel,

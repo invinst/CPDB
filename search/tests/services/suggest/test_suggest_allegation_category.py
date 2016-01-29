@@ -9,7 +9,7 @@ class SuggestAllegationCategoryTestCase(SuggestBaseTestCase):
 
         self.rebuild_index()
 
-        SuggestAllegationCategoryCategory.query('ecess')['Category'][0]['value'].should.be.equal(allegation_category.category)
+        SuggestAllegationCategoryCategory.query('ecess')['Category'][0]['suggest_value'].should.be.equal(allegation_category.category)
         SuggestAllegationCategoryCategory.query('not in suggest')['Category'].should.be.equal([])
 
     def test_suggest_allegation_category_cat(self):
@@ -20,7 +20,7 @@ class SuggestAllegationCategoryTestCase(SuggestBaseTestCase):
         ret1 = SuggestAllegationCategoryCat.query('123')
         ret2 = SuggestAllegationCategoryCat.query('some thing wrong')
 
-        ret1['Category ID'][0]['value'].should.be.equal(allegation_category.cat_id)
-        ret1['Allegation type'][0]['value'].should.be.equal('Twisted Extremities (Wrist/Arm/Leg)')
+        ret1['Category ID'][0]['suggest_value'].should.be.equal(allegation_category.cat_id)
+        ret1['Allegation type'][0]['suggest_value'].should.be.equal('Twisted Extremities (Wrist/Arm/Leg)')
         ret2['Category ID'].should.be.equal([])
         ret2['Allegation type'].should.be.equal([])

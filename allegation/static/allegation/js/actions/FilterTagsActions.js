@@ -41,13 +41,12 @@ var FilterTagsActions = {
     updateSiteData();
   },
 
-  toggleTags: function (category, tags) {
+  toggleTags: function (tags) {
     if (EmbedStore.isEmbedMode()) {
       return;
     }
     AppDispatcher.dispatch({
       actionType: AppConstants.TOGGLE_TAGS,
-      category: category,
       tags: tags
     });
 
@@ -113,7 +112,7 @@ var FilterTagsActions = {
 
   toggleAllTags: function () {
     AppDispatcher.dispatch({
-      actionType: AppConstants.TOGGLE_ALL_TAGS,
+      actionType: AppConstants.TOGGLE_ALL_TAGS
     });
   }
 };

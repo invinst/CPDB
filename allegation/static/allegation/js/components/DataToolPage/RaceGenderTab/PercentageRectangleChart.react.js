@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var cx = require('classnames');
 var d3 = require('d3');
 var React = require('react');
@@ -35,7 +36,7 @@ var PercentageRectangleChart = React.createClass({
     var className = cx(uniqueId, 'percentage-rectangle-chart', 'pointer');
 
     return (
-        <div className={className}></div>
+      <div className={className}></div>
     );
   },
 
@@ -45,10 +46,15 @@ var PercentageRectangleChart = React.createClass({
     var filters = blockData['filters'];
 
     var tags = filters.map(function (obj) {
-      return { 'value': obj.label, 'filter': filter + '=' + obj.value };
+      return {
+        category: filter,
+        value: obj.value,
+        displayCategory: category,
+        displayValue: obj.label
+      };
     });
 
-    FilterTagsActions.toggleTags(category, tags);
+    FilterTagsActions.toggleTags(tags);
     return false;
   }
 

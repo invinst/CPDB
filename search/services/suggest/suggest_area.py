@@ -22,7 +22,7 @@ class SuggestArea(SuggestBase):
                     display_category='Area',
                     display_value=cls.display_area(entry[2], entry[0]),
                 )
-            ) for entry in raw_results
+            ) for entry in results
         ]
 
         return {'Area': results}

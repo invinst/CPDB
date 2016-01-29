@@ -52,7 +52,7 @@ var Search = React.createClass({
   select: function (event, ui) {
     event.preventDefault();
 
-    if (ui.item.category == 'Session') {
+    if (ui.item.tagValue.category == 'session') {
       SessionAPI.getSessionInfo(ui.item.tagValue.displayValue);
     } else {
       FilterTagsActions.addTag(ui.item.tagValue);
