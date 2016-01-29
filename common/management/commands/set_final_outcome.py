@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 
-from common.models import (
-    OfficerAllegation, NO_DISCIPLINE_CODES, DISCIPLINE_CODES)
+from common.constants import DISCIPLINE_CODES, NO_DISCIPLINE_CODES
+from common.models import OfficerAllegation
 
 
 class Command(BaseCommand):

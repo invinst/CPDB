@@ -1,6 +1,6 @@
 from haystack.query import SearchQuerySet
 
-from common.models import RANKS, UNITS
+from common.constants import RANKS, UNITS
 from search.services.suggest import SuggestBase
 
 

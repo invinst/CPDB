@@ -36,6 +36,12 @@ var Footer = React.createClass(_.assign(Base(EmbedStore), {
     DisclaimerActions.show();
   },
 
+  smoothScroll: function (event) {
+    var target = $(event.currentTarget).data('target');
+    var top = $(target).offset().top - 100;
+    $("html, body").animate({scrollTop: top}, 500);
+  },
+
   render: function () {
     var exitClassName = classnames({
       'hidden': !this.state.embedMode
@@ -62,7 +68,7 @@ var Footer = React.createClass(_.assign(Base(EmbedStore), {
                   </a>
                 </li>
                 <li className="embed-button">
-                  <div className='smooth-scroll pointer' data-target='body'>
+                  <div className='smooth-scroll pointer' data-target='body' onClick={this.smoothScroll}>
                     <i className='fa fa-chevron-up' ></i> Back to top
                   </div>
                 </li>

@@ -4,7 +4,7 @@ from django.template.defaultfilters import slugify
 from django_extensions.db.fields.json import JSONField
 
 from common.models import Officer, AllegationCategory, Investigator, Area
-from common.models import (
+from common.constants import (
     GENDER_DICT, FINDINGS_DICT, OUTCOMES_DICT, CUSTOM_FILTER_DICT,
     HAS_FILTERS_DICT)
 from common.utils.hashid import hash_obj

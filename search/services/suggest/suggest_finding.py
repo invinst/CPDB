@@ -1,4 +1,4 @@
-from common.models import FINDINGS
+from common.constants import FINDINGS
 from search.services.suggest import SuggestBase
 
 

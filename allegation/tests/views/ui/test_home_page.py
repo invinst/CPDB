@@ -240,6 +240,7 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
         self.should_not_see_text(officer_allegation.officer.display_name)
         self.should_not_see_text(self.officer_allegation.officer.display_name)
 
+
     def test_default_site_title_from_settings(self):
         setting = self.get_admin_settings()
         setting.default_site_title = 'New title'

@@ -1,5 +1,6 @@
 from operator import attrgetter
 
+from django.db.models.aggregates import Count
 from django.views.generic import View
 from django.conf import settings
 from django.http.response import HttpResponse
@@ -7,7 +8,7 @@ from django.http.response import HttpResponse
 from allegation.query_builders import OfficerAllegationQueryBuilder
 from allegation.services.outcome_analytics import OutcomeAnalytics
 from common.models import (
-    OfficerAllegation, ComplainingWitness, PoliceWitness, Allegation, Officer)
+    OfficerAllegation, ComplainingWitness, PoliceWitness)
 from common.json_serializer import JSONSerializer
 
 
@@ -55,17 +56,30 @@ class OfficerAllegationAPIView(View):
         return sorted(
             officers, key=attrgetter('allegations_count'), reverse=True)
 
+    def create_investigator_allegation_count_map(self, officer_allegations):
+        investigators = officer_allegations.values_list('allegation__investigator_id', flat=True)
+        investigator_complaint_counts = OfficerAllegation.objects.filter(allegation__investigator__in=investigators)\
+            .values('allegation__investigator_id').annotate(count=Count('allegation_id'))
+        investigator_discipline_counts = OfficerAllegation.disciplined.filter(allegation__investigator__in=investigators)\
+            .values('allegation__investigator_id').annotate(count=Count('allegation_id'))
+
+        complaints = {x['allegation__investigator_id']: x['count'] for x in investigator_complaint_counts}
+        disciplined = {x['allegation__investigator_id']: x['count'] for x in investigator_discipline_counts}
+        investigator_map = {'complaints': complaints, 'disciplined': disciplined}
+
+        return investigator_map
+
     def serialize_officer_allegations(self, officer_allegations):
         results = []
         officer_allegations = officer_allegations.select_related(
             'allegation__beat', 'allegation__investigator', 'allegation',
             'officer')
-        allegation_pks = officer_allegations\
-            .values_list('allegation__pk', flat=True)
         complaining_witnesses = ComplainingWitness.objects.filter(
-            allegation__pk__in=allegation_pks)
+            allegation__officerallegation__in=officer_allegations)
         police_witnesses = PoliceWitness.objects.filter(
-            allegation__pk__in=allegation_pks)
+            allegation__officerallegation__in=officer_allegations)
+
+        investigator_allegation_count_map = self.create_investigator_allegation_count_map(officer_allegations)
 
         for officer_allegation in officer_allegations:
             allegation = officer_allegation.allegation
@@ -83,6 +97,12 @@ class OfficerAllegationAPIView(View):
                 id=allegation.location,
                 name=allegation.get_location_display()
             )
+
+            if allegation.investigator:
+                allegation.investigator.complaint_count = investigator_allegation_count_map['complaints']\
+                    .get(allegation.investigator_id, 0)
+                allegation.investigator.discipline_count = investigator_allegation_count_map['disciplined']\
+                    .get(allegation.investigator_id, 0)
 
             ret = {
                 'officer_allegation': officer_allegation,
@@ -106,6 +126,8 @@ class OfficerAllegationAPIView(View):
 
     def get(self, request):
         officer_allegations = self.get_officer_allegations()
+        officer_allegations = officer_allegations.order_by(
+            '-allegation__incident_date', '-start_date', 'allegation__crid')
         officer_allegations = officer_allegations.select_related('cat')
         start, end = self.get_fetch_range(request, officer_allegations)
 
@@ -114,4 +136,4 @@ class OfficerAllegationAPIView(View):
                 officer_allegations[start:end]),
             'analytics': OutcomeAnalytics.get_analytics(officer_allegations)
         })
-        return HttpResponse(content)
+        return HttpResponse(content, content_type='application/json')
