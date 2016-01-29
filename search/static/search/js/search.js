@@ -1,6 +1,8 @@
 NO_CAP_CATEGORIES = [
   'has:',
-  'Category ID'
+  'Category ID',
+  'Officer',
+  'Investigator'
 ];
 
 UPPER_CATEGORIES = [
@@ -25,11 +27,11 @@ function slugify (title) {
 }
 
 function prettyLabels(label, term) {
-  label = String(label).toLowerCase();
-  term = String(term).toLowerCase();
-  var re = new RegExp(term, 'i');
+  label = label.toString();
+
+  var re = new RegExp("("+term+")", 'i');
   var result = label.replace(/-/g, " ");
-  result = result.replace(re, "<span class='term'>" + term + "</span>");
+  result = result.replace(re, "<span class='term'>$1</span>");
   return result;
 }
 
