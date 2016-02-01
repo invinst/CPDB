@@ -1,7 +1,7 @@
 import csv
+import sys
 from datetime import datetime
 
-from django.core.exceptions import ObjectDoesNotExist
 from django.core.management.base import BaseCommand
 
 from common.models import Allegation, Area, Investigator
@@ -17,12 +17,13 @@ COLS = {
     'start_date': 24,
     'end_date': 26,
     'investigator_name': 21,
-    'END_OF_RECORD':16,
+    'END_OF_RECORD': 16,
 }
 
 END_DATE_FORMAT = "%d-%b-%Y"
 START_DATE_FORMAT = "%d %b %Y"
 INCIDENT_DATE_TIME_FORMAT = "%d-%b-%Y  %H:%M "
+
 
 class Command(BaseCommand):
     help = 'Import csv data'
@@ -50,7 +51,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
 
-        if not options.get('start_row',"").isnumeric():
+        if not options.get('start_row', "").isnumeric():
             print("Please enter a numerical --start-row options")
             sys.exit()
 

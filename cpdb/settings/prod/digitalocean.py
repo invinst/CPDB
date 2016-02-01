@@ -1,6 +1,6 @@
-import dj_database_url
+import dj_database_url  # NOQA
 
-from cpdb.settings.base import *
+from cpdb.settings.base import *  # NOQA
 
 
 DEBUG = os.environ.get('DEBUG') == 'True'

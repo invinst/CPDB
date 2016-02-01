@@ -33,7 +33,7 @@ class SubdomainTestMixin(object):
         super(SubdomainTestMixin, self).run(*args, **kwargs)
 
 
-class SubdomainMiddlewareTest(SubdomainTestMixin,TestCase):
+class SubdomainMiddlewareTest(SubdomainTestMixin, TestCase):
     def setUp(self):
         self.middleware = SubdomainMiddleware()
 
@@ -55,7 +55,7 @@ class SubdomainMiddlewareTest(SubdomainTestMixin,TestCase):
         self.get_subdomain_after_middleware_process(subdomain).should.equal(None)
 
 
-class SubdomainURLRoutingMiddlewareTest(SubdomainTestMixin,TestCase):
+class SubdomainURLRoutingMiddlewareTest(SubdomainTestMixin, TestCase):
     def setUp(self):
         self.middleware = SubdomainURLRoutingMiddleware()
 
@@ -66,7 +66,7 @@ class SubdomainURLRoutingMiddlewareTest(SubdomainTestMixin,TestCase):
         request.urlconf.should.be.equal('api')
 
 
-class SubdomainUtilityTest(SubdomainTestMixin,TestCase):
+class SubdomainUtilityTest(SubdomainTestMixin, TestCase):
     @override_settings(
         SITE_INFO={
             'domain': 'domain'

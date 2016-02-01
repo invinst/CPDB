@@ -1,6 +1,4 @@
-from datetime import date
 from django.db import models
-from django.utils import timezone
 
 
 class Story(models.Model):

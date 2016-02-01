@@ -1,4 +1,3 @@
-from allegation.factories import InvestigatorFactory
 from common.tests.core import SimpleTestCase
 from search.services.suggest.suggest_has import SuggestHas
 

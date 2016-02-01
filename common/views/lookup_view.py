@@ -1,6 +1,6 @@
 from django.views.generic import RedirectView
 
-from mobile.services.mobile_suggestion_service import *
+from mobile.services.mobile_suggestion_service import suggest
 
 
 class LookupView(RedirectView):

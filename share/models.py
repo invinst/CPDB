@@ -3,13 +3,11 @@ from django.db import models
 from django.template.defaultfilters import slugify
 from django_extensions.db.fields.json import JSONField
 
-from common.models import Officer, AllegationCategory, Investigator, Area
+from common.models import Officer, AllegationCategory, Investigator
 from common.constants import (
-    GENDER_DICT, FINDINGS_DICT, OUTCOMES_DICT, CUSTOM_FILTER_DICT,
-    HAS_FILTERS_DICT)
+    GENDER_DICT, FINDINGS_DICT, OUTCOMES_DICT, HAS_FILTERS_DICT)
 from common.utils.hashid import hash_obj
 from search.models import SuggestionLog, FilterLog
-from search.services import REPEATER_DESC
 
 
 KEYS = {
@@ -35,7 +33,7 @@ class Session(models.Model):
     share_from = models.ForeignKey('share.Session', null=True, default=None, blank=True)
     share_count = models.IntegerField(default=0, blank=True)
     created_at = models.DateTimeField(default=timezone.now, null=True, blank=True)
-    ip = models.CharField(default='', max_length=40, null=True, blank=True) # we could handle IPv6 as well
+    ip = models.CharField(default='', max_length=40, null=True, blank=True)  # we could handle IPv6 as well
     user_agent = models.CharField(max_length=255, null=True, blank=True)
 
     @property
