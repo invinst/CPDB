@@ -16,4 +16,4 @@ class OfficerQuery(object):
 
     @staticmethod
     def condition_by_count(count, field, prefix='', direction='gt'):
-        return Q(**{'{prefix}{field}__{direction}'.format(field=field, direction=direction, prefix=prefix):count})
+        return Q(**{'{prefix}{field}__{direction}'.format(field=field, direction=direction, prefix=prefix): count})

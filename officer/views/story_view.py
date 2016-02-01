@@ -1,10 +1,9 @@
-from django.http.response import HttpResponseBadRequest, HttpResponse
+from django.http.response import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.generic.base import View
 
 from common.json_serializer import JSONSerializer
 from common.models import Officer
-from api.models import Setting
 
 
 class StoryView(View):

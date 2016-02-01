@@ -1,5 +1,3 @@
-from django.forms.models import model_to_dict
-
 from allegation.factories import OfficerFactory
 from common.models import Officer
 from common.tests.core import SimpleTestCase

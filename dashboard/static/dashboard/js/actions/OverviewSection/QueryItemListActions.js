@@ -6,7 +6,7 @@ var QueryItemListActions = {
     AppDispatcher.dispatch({
       actionType: AppConstants.SET_ACTIVE_QUERY_ITEM,
       activeQueryItem: activeQueryItem
-    })
+    });
   }
 };
 

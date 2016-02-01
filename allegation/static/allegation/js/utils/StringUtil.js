@@ -10,7 +10,7 @@ var StringUtil = {
   slugify: function (title) {
     var asciiTitle = this.removeNonAlphaNumeric(title);
     var singleSpaceTitle = this.removeMultipleSpace(asciiTitle).trim();
-    var lowerCaseTitle  = singleSpaceTitle.toLowerCase();
+    var lowerCaseTitle = singleSpaceTitle.toLowerCase();
 
     return lowerCaseTitle.replace(/\s/g, '-').trim();
   }

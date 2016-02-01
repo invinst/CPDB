@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 
-from allegation.models import hooks  # NOQA
+from allegation.models import hooks  # NOQA. Needed for Django signals
 from allegation.views import AreaAPIView
 from allegation.views import (
     OfficerAllegationGISApiView, OfficerAllegationClusterApiView)

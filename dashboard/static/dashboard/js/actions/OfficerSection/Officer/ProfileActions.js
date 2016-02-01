@@ -13,7 +13,7 @@ var OfficerAction = {
   },
 
   officerProfileUpdated: function (officer, origin) {
-    toastr.success("Officer profile has been updated.");
+    toastr.success('Officer profile has been updated.');
     AppDispatcher.dispatch({
       actionType: AppConstants.UPDATED_OFFICER_DATA,
       officer: officer,

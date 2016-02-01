@@ -11,7 +11,7 @@ var _state = {
 var QueryListFilterStore = _.assign(Base(_state), {
 });
 
-QueryListFilterStore.dispatchEvent = AppDispatcher.register(function(action) {
+QueryListFilterStore.dispatchEvent = AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.SET_QUERY_LIST_ACTIVE_ITEM:
       QueryListFilterStore.updateState('activeItem', action.data);

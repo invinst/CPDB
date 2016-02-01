@@ -8,8 +8,8 @@ var ENTER_EVENT = 'ENTER_EVENT';
 var LEAVE_EVENT = 'LEAVE_EVENT';
 
 var _state = {
-  embedMode: false,
-}
+  embedMode: false
+};
 
 
 var EmbedStore = _.assign(Base(_state), {
@@ -46,20 +46,20 @@ var EmbedStore = _.assign(Base(_state), {
 // Register callback to handle all updates
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
-  case AppConstants.ENTER_EMBED_MODE:
-    _state.embedMode = true;
-    EmbedStore.emitEnter();
-    EmbedStore.emitChange();
-    break;
+    case AppConstants.ENTER_EMBED_MODE:
+      _state.embedMode = true;
+      EmbedStore.emitEnter();
+      EmbedStore.emitChange();
+      break;
 
-  case AppConstants.LEAVE_EMBED_MODE:
-    _state.embedMode = false;
-    EmbedStore.emitLeave();
-    EmbedStore.emitChange();
-    break;
+    case AppConstants.LEAVE_EMBED_MODE:
+      _state.embedMode = false;
+      EmbedStore.emitLeave();
+      EmbedStore.emitChange();
+      break;
 
-  default:
-    break;
+    default:
+      break;
   }
 });
 

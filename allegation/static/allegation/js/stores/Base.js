@@ -1,30 +1,29 @@
-var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
 var EventEmitter = require('events').EventEmitter;
 var _ = require('lodash');
 
 
-var Base = function(state) {
+var Base = function (state) {
   return _.assign({}, EventEmitter.prototype, {
     _state: state,
 
-    getState: function() {
+    getState: function () {
       return this._state;
     },
 
-    updateState: function(key, value) {
+    updateState: function (key, value) {
       this._state[key] = value;
     },
 
-    addChangeListener: function(callback) {
+    addChangeListener: function (callback) {
       this.on(AppConstants.CHANGE_EVENT, callback);
     },
 
-    removeChangeListener: function(callback) {
+    removeChangeListener: function (callback) {
       this.removeListener(AppConstants.CHANGE_EVENT, callback);
     },
 
-    emitChange: function() {
+    emitChange: function () {
       this.emit(AppConstants.CHANGE_EVENT);
     }
   });
