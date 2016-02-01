@@ -92,7 +92,7 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
                 allegation=AllegationFactory(document_id=1))]
         OfficerAllegationFactory()
 
-        query_string = 'has_filters=has:document'
+        query_string = 'has_document=true'
         expected_ids = [allegation.id for allegation in expected_allegations]
 
         self.check_built_query(query_string, expected_ids)
@@ -104,7 +104,7 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
         allegation.point = None
         allegation.save()
 
-        query_string = 'has_filters=has:map'
+        query_string = 'has_map=true'
         expected_ids = [o.id for o in expected_allegations]
 
         self.check_built_query(query_string, expected_ids)
@@ -115,7 +115,7 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
             OfficerAllegationFactory(allegation=AllegationFactory(add2='100'))]
         OfficerAllegationFactory()
 
-        query_string = 'has_filters=has:address'
+        query_string = 'has_address=true'
         expected_ids = [allegation.id for allegation in expected_allegations]
 
         self.check_built_query(query_string, expected_ids)
@@ -126,7 +126,7 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
                 allegation=AllegationFactory(location='4 Privet Drive'))]
         OfficerAllegationFactory()
 
-        query_string = 'has_filters=has:location'
+        query_string = 'has_location=true'
         expected_ids = [allegation.id for allegation in expected_allegations]
 
         self.check_built_query(query_string, expected_ids)
@@ -137,7 +137,7 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
         OfficerAllegationFactory(
             allegation=AllegationFactory(investigator=None))
 
-        query_string = 'has_filters=has:investigator'
+        query_string = 'has_investigator=true'
         expected_ids = [allegation.id for allegation in expected_allegations]
 
         self.check_built_query(query_string, expected_ids)
@@ -148,7 +148,7 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
         OfficerAllegationFactory(
             officer=None)
 
-        query_string = 'has_filters=has:identified'
+        query_string = 'has_identified=true'
         expected_ids = [allegation.id for allegation in expected_allegations]
 
         self.check_built_query(query_string, expected_ids)
@@ -159,7 +159,7 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
                 allegation=AllegationFactory(summary='Some summary'))]
         OfficerAllegationFactory()
 
-        query_string = 'has_filters=has:summary'
+        query_string = 'has_summary=true'
         expected_ids = [allegation.id for allegation in expected_allegations]
 
         self.check_built_query(query_string, expected_ids)

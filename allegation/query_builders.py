@@ -123,38 +123,38 @@ class OfficerAllegationQueryBuilder(object):
         return Q()
 
     def _q_has_document(self, query_params):
-        if 'has:document' in query_params.getlist('has_filters', []):
+        if 'true' in query_params.getlist('has_document', []):
             return Q(allegation__document_id__gt=0)
         return Q()
 
     def _q_has_map(self, query_params):
-        if 'has:map' in query_params.getlist('has_filters', []):
+        if 'true' in query_params.getlist('has_map', []):
             return Q(allegation__point__isnull=False)
         return Q()
 
     def _q_has_address(self, query_params):
-        if 'has:address' in query_params.getlist('has_filters', []):
+        if 'true' in query_params.getlist('has_address', []):
             return Q(allegation__add1__isnull=False) | \
                 Q(allegation__add2__isnull=False)
         return Q()
 
     def _q_has_location(self, query_params):
-        if 'has:location' in query_params.getlist('has_filters', []):
+        if 'true' in query_params.getlist('has_location', []):
             return Q(allegation__location__isnull=False)
         return Q()
 
     def _q_has_investigator(self, query_params):
-        if 'has:investigator' in query_params.getlist('has_filters', []):
+        if 'true' in query_params.getlist('has_investigator', []):
             return Q(allegation__investigator__isnull=False)
         return Q()
 
     def _q_has_identified(self, query_params):
-        if 'has:identified' in query_params.getlist('has_filters', []):
+        if 'true' in query_params.getlist('has_identified', []):
             return Q(officer__isnull=False)
         return Q()
 
     def _q_has_summary(self, query_params):
-        if 'has:summary' in query_params.getlist('has_filters', []):
+        if 'true' in query_params.getlist('has_summary', []):
             return Q(allegation__summary__isnull=False)
         return Q()
 

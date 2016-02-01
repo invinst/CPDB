@@ -20,7 +20,7 @@ class SuggestHas(SuggestBase):
                 suggest_value=entry,
                 tag_value=cls.build_tag_value(
                     category=entry.replace(':', '_'),
-                    value=entry,
+                    value=True,
                     display_category='has:',
                     display_value=entry,
                 )
