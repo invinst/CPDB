@@ -87,9 +87,7 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
   },
 
   render: function () {
-    var complaintListContainerClassName = classnames('container-fluid content', {
-      '': SessionStore.isNoQuery()
-    });
+    var complaintListContainerClassName = classnames('container-fluid content');
     return (
       <div id="data-tool">
         <div className='container-fluid'>
