@@ -3,7 +3,6 @@ var _ = require('lodash');
 var AppDispatcher = require('../../../dispatcher/AppDispatcher');
 var AppConstants = require('../../../constants/AppConstants');
 var Base = require('../../Base');
-var AppStore = require('stores/AppStore');
 
 var _state = {
   'data': {

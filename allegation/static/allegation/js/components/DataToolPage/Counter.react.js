@@ -1,11 +1,14 @@
 var React = require('react');
+var PropTypes = React.PropTypes;
 var ReactDOM = require('react-dom');
 var numeral = require('numeral');
 var AppConstants = require('constants/AppConstants');
 
 
 var Counter = React.createClass({
-  from: 0,
+  propTypes: {
+    to: PropTypes.number
+  },
 
   componentDidMount: function () {
     this.runCounter();
@@ -14,6 +17,8 @@ var Counter = React.createClass({
   componentDidUpdate: function () {
     this.runCounter();
   },
+
+  from: 0,
 
   runCounter: function () {
     $(ReactDOM.findDOMNode(this)).countTo({
@@ -24,13 +29,13 @@ var Counter = React.createClass({
         return numeral(value).format(AppConstants.NUMERAL_FORMAT);
       }
     });
-    this.from = this.props.to
+    this.from = this.props.to;
   },
 
-  render: function() {
+  render: function () {
     return (
       <span></span>
-    )
+    );
   }
 
 });
