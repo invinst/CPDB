@@ -21,7 +21,7 @@ class SendDocumentNotificationTestCase(SimpleTestCase):
     def test_send_notification_on_new_document(self):
         allegation = AllegationFactory(document_title='UNSET')
 
-        with mock.patch(self.notification_path) as send_notification:
+        with mock.patch(self.notification_path):
             with mock.patch(self.document_cloud_path) as document_cloud:
                 title = fake.name()
 
@@ -40,5 +40,5 @@ class SendDocumentNotificationTestCase(SimpleTestCase):
                 second_allegation = Allegation.objects.get(id=allegation.id)
                 second_allegation.document_title.should.equal('UNSET')
 
-                #it is being called, I've checked with pdb, but not being set
+                # it is being called, I've checked with pdb, but not being set
                 send_document_notification_by_crid_and_link.called.should.be.true

@@ -135,7 +135,7 @@ class OfficerAllegationSunburstView(OfficerAllegationAPIView):
                 'category': 'Outcome',
                 'filter': 'outcome_text',
                 'value': 'any discipline',
-            },
+                },
             'children': [{
                 'condition': Q(final_outcome='100'),
                 'name': 'Reprimand',

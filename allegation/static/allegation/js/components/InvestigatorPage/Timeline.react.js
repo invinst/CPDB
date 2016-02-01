@@ -85,7 +85,7 @@ var Timeline = React.createClass(_.assign(Base(TimelineStore), {
       timeLineItems.push(emptyRangeItem);
 
     }
-    else {
+    else if (!isInvestigator) {
       timeLineItems.push({
         id: 'range-2',
         content: 'data withheld for this period',

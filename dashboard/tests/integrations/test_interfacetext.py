@@ -1,12 +1,12 @@
 from common.tests.core import BaseAdminTestCase
-from api.models import Setting, InterfaceText
-from officer.factories import StoryFactory
+from api.models import InterfaceText
 
 
 class InterfaceTextEditTestCase(BaseAdminTestCase):
     def setUp(self):
         super(InterfaceTextEditTestCase, self).setUp()
-        InterfaceText.objects.create(key='summary-help-text', text='This is summary text as provided by the Chicago Police Department')
+        InterfaceText.objects.create(
+            key='summary-help-text', text='This is summary text as provided by the Chicago Police Department')
 
     def test_update_interface_text(self):
         self.go_to_section('Interface Texts')
@@ -26,4 +26,3 @@ class InterfaceTextEditTestCase(BaseAdminTestCase):
         self.should_see_text("Updating the summary text field")
 
         InterfaceText.objects.filter(text__contains=add_text).count().should.equal(1)
-

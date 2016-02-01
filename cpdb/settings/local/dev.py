@@ -1,4 +1,4 @@
-from cpdb.settings.base import *
+from cpdb.settings.base import *  # NOQA
 
 
 MAP_BOX_API_KEY = 'sk.eyJ1Ijoic3RlZmFuZ2VvcmciLCJhIjoiMTNLSkhyTSJ9.b6k_KvDsuacf72UgbStcGQ'
