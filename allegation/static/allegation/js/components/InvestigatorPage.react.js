@@ -32,7 +32,7 @@ var InvestigatorPage = React.createClass(_.assign(Base(InvestigatorPageStore), {
 
   componentDidUpdate: function () {
     var investigatorName = _.get(this.state.data, 'investigator.name', '');
-    document.title = investigatorName.toUpperCase();
+    document.title = investigatorName;
   },
 
   render: function () {

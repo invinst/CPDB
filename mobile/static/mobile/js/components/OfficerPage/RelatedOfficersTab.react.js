@@ -9,7 +9,7 @@ var RelatedOfficersTab = React.createClass({
   renderRelatedOfficers: function (type) {
     return function (officer) {
       return (
-        <RelatedOfficerItem type={type} officer={officer} />
+        <RelatedOfficerItem type={type} officer={officer} key={officer.id}/>
       );
     };
   },

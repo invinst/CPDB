@@ -9,13 +9,13 @@ def to_jquery_ui_autocomplete_format(data):
             {
                 'category': category,
                 'value': entry['value'],
-                'label': entry['label'], # for displaying autocomplete row
+                'label': entry['label'],  # for displaying autocomplete row
                 'filter': entry['filter']
             } for entry in data[category]
         ]
 
     return formatted_data
 
+
 def format_suggest(data):
     return to_jquery_ui_autocomplete_format(data)
-

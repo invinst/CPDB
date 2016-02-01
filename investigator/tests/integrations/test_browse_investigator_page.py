@@ -10,3 +10,11 @@ class BrowseInvestigatorTestCase(BaseLiveTestCase):
 
         self.visit('/investigator/slugify/{id}'.format(id=investigator.id))
         self.until(lambda: len(self.find_all('.complaint-row')).should.equal(1))
+
+    def test_title_should_not_capitalized(self):
+        investigator = InvestigatorFactory()
+        allegation = AllegationFactory(investigator=investigator)
+        OfficerAllegationFactory(allegation=allegation)
+
+        self.visit('/investigator/slugify/{id}'.format(id=investigator.id))
+        self.browser.title.should.equal(investigator.name)

@@ -1,6 +1,4 @@
-import dj_database_url
-
-from cpdb.settings.prod.common import *
+from cpdb.settings.prod.common import *  # NOQA
 
 
 ALLOWED_HOSTS = ['*']
