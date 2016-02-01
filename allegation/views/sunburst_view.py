@@ -18,10 +18,16 @@ class SunburstView(TemplateView):
             Session, pk=Session.id_from_hash(hash_id)[0])
         query_str = '&'.join([
             '&'.join([o['filter'] for o in objs])
-            for objs in session.query['filters'].values()])
+            for objs in session.query.get('filters', {}).values()])
         query_dict = QueryDict(query_str)
         query_set = OfficerAllegationQueryBuilder().build(query_dict)
         officer_allegations = OfficerAllegation.objects.filter(query_set)
-        context['sunburst_data'] = SunburstSerializer(officer_allegations).data
+        context['sunburst_data'] = {
+            'sunburst': {
+                'name': 'Allegations',
+                'children': SunburstSerializer(officer_allegations).data,
+            }
+        }
+        context['sunburst_arc'] = session.sunburst_arc
 
         return context

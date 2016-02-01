@@ -64,9 +64,11 @@
     "start": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js watchify -o allegation/static/allegation/js/bundle.js -v -d allegation/static/allegation/js/app.js",
     "start_admin": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js watchify -o dashboard/static/dashboard/js/bundle.js -v -d dashboard/static/dashboard/js/app.js",
     "start_mobile": "NODE_PATH=mobile/static/mobile/js watchify -o mobile/static/mobile/js/bundle.js -v -d mobile/static/mobile/js/app.js",
+    "start_sunburst": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js watchify -o allegation/static/allegation/js/sunburst-bundle.js -v -d allegation/static/allegation/js/sunburst-app.js",
     "build": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > allegation/static/allegation/js/bundle.min.js",
     "build_admin": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js browserify dashboard/static/dashboard/js/app.js -t [envify --NODE_ENV production] | uglifyjs -cm > dashboard/static/dashboard/js/bundle.min.js",
     "build_mobile": "NODE_PATH=mobile/static/mobile/js browserify mobile/static/mobile/js/app.js -t [envify --NODE_ENV production] | uglifyjs -cm > mobile/static/mobile/js/bundle.min.js",
+    "build_sunburst": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > allegation/static/allegation/js/sunburst-bundle.min.js",
     "circleci": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js browserify allegation/static/allegation/js/app.js > allegation/static/allegation/js/bundle.js",
     "circleci_admin": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js browserify dashboard/static/dashboard/js/app.js > dashboard/static/dashboard/js/bundle.js",
     "circleci_mobile": "NODE_PATH=mobile/static/mobile/js browserify mobile/static/mobile/js/app.js > mobile/static/mobile/js/bundle.js"
