@@ -107,9 +107,12 @@ class AllegationFilterTestCase(BaseLiveTestCase):
 
     def test_has_filters_stackable(self):
         self.fill_in('#autocomplete', 'has:doc')
-        self.until(lambda: self.find('.autocomplete-has').click())
+        self.until(lambda: self.should_see_text('has:document'))
+        self.find('.autocomplete-has').click()
+
         self.fill_in('#autocomplete', 'has:summ')
-        self.until(lambda: self.find('.autocomplete-has').click())
+        self.until(lambda: self.should_see_text('has:summary'))
+        self.find('.autocomplete-has').click()
 
         self.until(
             lambda: self.element_by_classname_and_text(

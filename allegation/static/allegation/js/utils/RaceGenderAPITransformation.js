@@ -71,7 +71,7 @@ var RaceGenderAPITransform = {
         'label': genderLabel,
         'filters': [{ value: y, label: genderLabel}],
         'value': x,
-        'active': !hasActiveFilter || FilterTagStore.isInFilter(filterCategory, genderLabel)
+        'active': !hasActiveFilter || FilterTagStore.isInFilter(filterCategory, y)
       };
     }).sortBy('label').value();
   },
