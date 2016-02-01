@@ -2,7 +2,6 @@ var React = require('react');
 
 var AppStore = require('stores/AppStore');
 var DataToolPage = require('components/DataToolPage.react');
-var NavActions = require('actions/NavActions');
 
 
 var DataPage = React.createClass({

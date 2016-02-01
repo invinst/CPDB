@@ -1,7 +1,5 @@
-/**
- * Created by eastagile on 8/18/15.
- */
 var React = require('react');
+var PropTypes = React.PropTypes;
 
 var Officer = require('components/DataToolPage/Officer.react');
 var OfficerList = require('components/DataToolPage/OfficerList.react');
@@ -14,56 +12,17 @@ var Summary = require('components/DataToolPage/Summary.react');
 var SunburstAPI = require('utils/SunburstAPI');
 
 var Embed = React.createClass({
+  propTypes: {
+    page: PropTypes.string,
+    pk: PropTypes.string,
+    query: PropTypes.string,
+    state: PropTypes.string
+  },
+
   getInitialState: function () {
     return {
       embed: <div></div>
-    }
-  },
-
-  setContent: function (content) {
-    this.setState({
-      embed: content
-    });
-  },
-
-  renderOfficer: function (officer) {
-    this.setContent(<Officer officer={officer} noClick={true} />);
-  },
-
-  renderAllegation: function (data) {
-    this.setContent(<Complaint complaint={data.allegations[0]} noButton={true} />);
-  },
-
-  embedOfficerCard: function () {
-    $.getJSON('/api/officers/' + this.props.pk + '/', this.renderOfficer);
-  },
-
-  embedOfficers: function () {
-    this.setContent(<OfficerList query={this.props.query} noClick={true} />);
-  },
-
-  embedSunburst: function () {
-    this.setContent(<Sunburst selected={this.props.state.name} />);
-    SunburstAPI.getData(this.props.query);
-  },
-
-  embedMap: function () {
-    this.setContent(<Map query={this.props.query} center={this.props.state.center}
-                         defaultZoom={this.props.state.defaultZoom} />);
-  },
-
-  embedAllegation: function () {
-    $.getJSON('/api/officer-allegations/?id=' + this.props.pk, this.renderAllegation);
-  },
-
-  embedSummary: function () {
-    this.setContent(<Summary query={this.props.query} selectedCategories={this.props.state.selectedCategories}
-                             currentActive={this.props.state.currentActive} />);
-  },
-
-  embedRaceGender: function () {
-    this.setContent(<RaceGenderTab />);
-    RaceGenderAPI.getData(this.props.query);
+    };
   },
 
   componentWillMount: function () {
@@ -78,6 +37,56 @@ var Embed = React.createClass({
     };
 
     listener[this.props.page]();
+  },
+
+  setContent: function (content) {
+    this.setState({
+      embed: content
+    });
+  },
+
+  embedAllegation: function () {
+    $.getJSON('/api/officer-allegations/?id=' + this.props.pk, this.renderAllegation);
+  },
+
+  embedMap: function () {
+    this.setContent(
+      <Map query={ this.props.query } center={ this.props.state.center }
+        defaultZoom={ this.props.state.defaultZoom } />
+    );
+  },
+
+  embedOfficerCard: function () {
+    $.getJSON('/api/officers/' + this.props.pk + '/', this.renderOfficer);
+  },
+
+  embedOfficers: function () {
+    this.setContent(<OfficerList query={ this.props.query } noClick={ true } />);
+  },
+
+  embedRaceGender: function () {
+    this.setContent(<RaceGenderTab />);
+    RaceGenderAPI.getData(this.props.query);
+  },
+
+  embedSummary: function () {
+    this.setContent(
+      <Summary query={ this.props.query } selectedCategories={ this.props.state.selectedCategories }
+        currentActive={ this.props.state.currentActive } />
+    );
+  },
+
+  embedSunburst: function () {
+    this.setContent(<Sunburst selected={ this.props.state.name } />);
+    SunburstAPI.getData(this.props.query);
+  },
+
+  renderAllegation: function (data) {
+    this.setContent(<Complaint complaint={ data.allegations[0] } noButton={ true } />);
+  },
+
+  renderOfficer: function (officer) {
+    this.setContent(<Officer officer={ officer } noClick={ true } />);
   },
 
   render: function () {

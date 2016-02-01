@@ -2,8 +2,6 @@ var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 var AppConstants = require('../../constants/AppConstants');
 var AppDispatcher = require('../../dispatcher/AppDispatcher');
-var _ = require('lodash');
-
 
 var _state = {
   'period': 'day'
@@ -11,7 +9,7 @@ var _state = {
 
 
 var PeriodPickerStore = assign({}, EventEmitter.prototype, {
-  getState: function() {
+  getState: function () {
     return _state;
   },
 
@@ -19,7 +17,7 @@ var PeriodPickerStore = assign({}, EventEmitter.prototype, {
     this.on(AppConstants.CHANGE_EVENT, callback);
   },
 
-  removeChangeListener: function(callback) {
+  removeChangeListener: function (callback) {
     this.removeListener(AppConstants.CHANGE_EVENT, callback);
   },
 

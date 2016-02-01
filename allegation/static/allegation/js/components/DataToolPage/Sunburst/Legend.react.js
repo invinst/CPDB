@@ -5,8 +5,6 @@ var React = require('react');
 var AppConstants = require('../../../constants/AppConstants.js');
 var Base = require('components/Base.react');
 var SunburstStore = require('stores/SunburstStore');
-var SunburstActions = require('actions/SunburstActions');
-var FilterTagsActions = require('actions/FilterTagsActions');
 
 
 var Legend = React.createClass(_.assign(Base(SunburstStore), {
@@ -20,15 +18,15 @@ var Legend = React.createClass(_.assign(Base(SunburstStore), {
     return (
       <div id='sunburst-legend'>
         <div className='root'>
-          {this.renderRootContent(arc)}
+          { this.renderRootContent(arc) }
         </div>
         <div className='percent'>
-          {this.renderPercentStatement(arc)}
+          { this.renderPercentStatement(arc) }
         </div>
         <div className='list'>
           <table>
             <tbody>
-              {this.renderLegends()}
+              { this.renderLegends() }
             </tbody>
           </table>
         </div>
@@ -60,7 +58,7 @@ var Legend = React.createClass(_.assign(Base(SunburstStore), {
 
     return (
       <div>
-        {formattedTotal} {arc.name}
+        { formattedTotal } { arc.name }
       </div>
     );
   },
@@ -70,7 +68,6 @@ var Legend = React.createClass(_.assign(Base(SunburstStore), {
 
     // Get max children
     if (arc.children) {
-      var childrenLength = arc.children.length;
       var max = 0;
       var maxChildren;
 
@@ -90,7 +87,7 @@ var Legend = React.createClass(_.assign(Base(SunburstStore), {
 
       return (
         <div>
-          <strong>{percent}%</strong> of "{arc.name}" {connectString} "{maxChildren.name}"
+          <strong>{ percent }%</strong> of "{ arc.name }" { connectString } "{ maxChildren.name }"
         </div>
       );
     }
@@ -126,7 +123,7 @@ var Legend = React.createClass(_.assign(Base(SunburstStore), {
       return _.map(legends, function (item, key) {
         var total = SunburstStore.getArcSize(item);
         if (!total) {
-          return <tr key={key}></tr>;
+          return <tr key={ key }></tr>;
         }
 
         var formattedTotal = numeral(total).format(AppConstants.NUMERAL_FORMAT);
@@ -135,10 +132,10 @@ var Legend = React.createClass(_.assign(Base(SunburstStore), {
         };
 
         return (
-          <tr key={key} className='sunburst-legend' onClick={that.clickHandler.bind(that, item)}>
-            <td className='color'><i className='fa fa-stop' style={style}></i></td>
-            <td className='size'>{formattedTotal}</td>
-            <td className='name'>{item.name}</td>
+          <tr key={ key } className='sunburst-legend' onClick={ that.clickHandler.bind(that, item) }>
+            <td className='color'><i className='fa fa-stop' style={ style }></i></td>
+            <td className='size'>{ formattedTotal }</td>
+            <td className='name'>{ item.name }</td>
           </tr>
         );
       });

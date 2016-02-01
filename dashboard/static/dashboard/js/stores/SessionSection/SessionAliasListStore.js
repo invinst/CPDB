@@ -13,7 +13,7 @@ var _state = {
 var SessionListStore = _.assign(Base(_state), {
 });
 
-AppDispatcher.register(function(action) {
+AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.RECEIVED_SESSIONS_ALIAS_DATA:
       _state['data'] = action.data['results'];
@@ -38,7 +38,7 @@ AppDispatcher.register(function(action) {
 
     case AppConstants.DELETED_SESSION_ALIAS:
       var alias = action.data;
-      toastr.error("Delete alias successfully.");
+      toastr.error('Delete alias successfully.');
       _state.data.splice(_state.data.indexOf(alias), 1);
       SessionListStore.emitChange();
       break;

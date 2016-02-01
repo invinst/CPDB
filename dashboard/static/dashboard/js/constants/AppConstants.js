@@ -149,12 +149,12 @@ module.exports = {
   },
 
   LINE_CHART_COLOR_OPTIONS: {
-    fillColor: "rgba(220,220,220,0.2)",
-    strokeColor: "rgba(220,220,220,1)",
-    pointColor: "rgba(220,220,220,1)",
-    pointStrokeColor: "#fff",
-    pointHighlightFill: "#fff",
-    pointHighlightStroke: "rgba(220,220,220,1)",
+    fillColor: 'rgba(220,220,220,0.2)',
+    strokeColor: 'rgba(220,220,220,1)',
+    pointColor: 'rgba(220,220,220,1)',
+    pointStrokeColor: '#fff',
+    pointHighlightFill: '#fff',
+    pointHighlightStroke: 'rgba(220,220,220,1)'
   },
 
   LINE_CHART_OPTIONS: { responsive: true, aspectRatio: true },
@@ -190,5 +190,5 @@ module.exports = {
   SETTINGS_API_ENDPOINT: '/api/dashboard/settings/',
   NEW_SESSION_ANALYTICS_API_ENDPOINT: '/api/dashboard/new-sessions-analytics/',
   DOCUMENT_EXPORT_END_POINT: '/api/dashboard/documents_export/',
-  INTERFACE_TEXT_API_ENDPOINT: '/api/dashboard/interface-texts/',
+  INTERFACE_TEXT_API_ENDPOINT: '/api/dashboard/interface-texts/'
 };

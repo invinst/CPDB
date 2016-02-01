@@ -13,14 +13,14 @@ var SearchResultsAPI = require('../../utils/SearchResultsAPI');
 
 global.jQuery = require('jquery');
 var QueryList = React.createClass(_.assign(Base(QueryListStore), {
-  _onClick: function(alias, e) {
+  _onClick: function (alias, e) {
     e.preventDefault();
     AddAliasModalActions.show({
       alias: alias
     });
   },
 
-  _onScroll: function(e) {
+  _onScroll: function (e) {
     var windowHeight = window.innerHeight;
     var toBottom = jQuery(document).height() - windowHeight - jQuery(window).scrollTop();
 
@@ -30,7 +30,7 @@ var QueryList = React.createClass(_.assign(Base(QueryListStore), {
     }
   },
 
-  _onHeaderClick: function(sortBy) {
+  _onHeaderClick: function (sortBy) {
     QueryListActions.sortBy(sortBy);
     SearchResultsAPI.get();
   },
@@ -40,26 +40,26 @@ var QueryList = React.createClass(_.assign(Base(QueryListStore), {
     jQuery(window).on('scroll', this._onScroll);
   },
 
-  renderQueryList: function() {
+  renderQueryList: function () {
     var that = this;
-    return this.state.data.map(function(x) {
+    return this.state.data.map(function (x, i) {
       return (
-        <tr className='query'>
-          <td>{x.search_query}</td>
-          <td>{x.num_suggestions}</td>
-          <td>{x.num_usage}</td>
-          <td>{moment(x.updated_at).format(AppConstants.HUMAN_READABLE_FORMAT)}</td>
+        <tr key={ i } className='query'>
+          <td>{ x.search_query }</td>
+          <td>{ x.num_suggestions }</td>
+          <td>{ x.num_usage }</td>
+          <td>{ moment(x.updated_at).format(AppConstants.HUMAN_READABLE_FORMAT) }</td>
           <td>
-            <a className="add-alias" onClick={that._onClick.bind(that, x.search_query)} href="#">
+            <a className='add-alias' onClick={ that._onClick.bind(that, x.search_query) } href='#'>
               <i className='fa fa-plus'/>
             </a>
           </td>
         </tr>
-      )
+      );
     });
   },
 
-  renderSortIcon: function(sortName) {
+  renderSortIcon: function (sortName) {
     var sortBy = this.state.sortBy;
     var isSorting = _(sortBy).contains(sortName);
     var isDesc = this.state.order < 0;
@@ -72,10 +72,10 @@ var QueryList = React.createClass(_.assign(Base(QueryListStore), {
       'fa-sort-asc': isSorting && !isDesc
     });
 
-    return (<i className={cx}></i>)
+    return (<i className={ cx }></i>);
   },
 
-  render: function() {
+  render: function () {
     return (
       <div className='table-responsive'>
         <table className='table table-striped'>
@@ -83,8 +83,12 @@ var QueryList = React.createClass(_.assign(Base(QueryListStore), {
             <tr>
               <th>Query</th>
               <th>No. of suggestions</th>
-              <th onClick={this._onHeaderClick.bind(this, 'num_usage')}>No. of usage {this.renderSortIcon('num_usage')}</th>
-              <th onClick={this._onHeaderClick.bind(this, 'updated_at')}>Last entered at {this.renderSortIcon('updated_at')}</th>
+              <th onClick={ this._onHeaderClick.bind(this, 'num_usage') }>
+                No. of usage { this.renderSortIcon('num_usage') }
+              </th>
+              <th onClick={ this._onHeaderClick.bind(this, 'updated_at') }>
+                Last entered at { this.renderSortIcon('updated_at') }
+              </th>
               <th></th>
             </tr>
           </thead>

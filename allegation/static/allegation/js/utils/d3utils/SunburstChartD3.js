@@ -1,9 +1,8 @@
-var _ = require('lodash');
 var d3 = require('d3');
 
 var AppConstants = require('../../constants/AppConstants');
 
-function sum(d){
+function sum(d) {
   var s = 0;
   if (d.children) {
     for (var i = 0; i < d.children.length; i++) {
@@ -43,12 +42,12 @@ var SunburstChartD3 = {
     });
 
     arc = d3.svg.arc()
-        .startAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x))); })
-        .endAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x + d.dx))); })
-        .innerRadius(function(d) { return Math.max(0, y(d.y)); })
-        .outerRadius(function(d) { return Math.max(0, y(d.y + d.dy)); });
+        .startAngle(function (d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x))); })
+        .endAngle(function (d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x + d.dx))); })
+        .innerRadius(function (d) { return Math.max(0, y(d.y)); })
+        .outerRadius(function (d) { return Math.max(0, y(d.y + d.dy)); });
 
-    d3.select("#sunburst-chart svg").remove();
+    d3.select('#sunburst-chart svg').remove();
     svg = d3.select('#sunburst-chart')
         .append('svg')
           .attr('width', width)
@@ -117,11 +116,11 @@ var SunburstChartD3 = {
         });
       }
 
-      return path
+      return path;
     }
 
     return false;
-  },
+  }
 };
 
 module.exports = SunburstChartD3;

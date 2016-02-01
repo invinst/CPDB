@@ -1,7 +1,5 @@
 var _ = require('lodash');
 
-var AppConstants = require('../../constants/AppConstants');
-
 var OfficerListStore = require('stores/OfficerListStore');
 
 
@@ -12,7 +10,7 @@ var AllegationOfficerQueryBuilder = {
     return _.map(activeOfficers, function (activeOfficer) {
       return 'officer=' + activeOfficer;
     }).join('&');
-  },
+  }
 };
 
 module.exports = AllegationOfficerQueryBuilder;

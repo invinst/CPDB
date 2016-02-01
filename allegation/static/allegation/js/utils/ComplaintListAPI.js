@@ -2,15 +2,13 @@ require('utils/jQuery');
 
 var AllegationFetcherQueryBuilder = require('utils/querybuilders/AllegationFetcherQueryBuilder');
 var AppConstants = require('../constants/AppConstants');
-var ComplaintListStore = require('stores/ComplaintListStore');
 var ComplaintListServerActions = require('../actions/ComplaintList/ComplaintListServerActions');
-var RaceGenderTabActions = require('actions/DataToolPage/RaceGenderTabActions');
 
 var ajax = null;
 
 var ComplaintListAPI = {
   preloadDataForOtherTab: function () {
-    for (filter in AppConstants.FILTERS) {
+    for (var filter in AppConstants.FILTERS) {
       var queryString = AllegationFetcherQueryBuilder.buildQuery(filter);
       ajax = jQuery.getJSON('/api/officer-allegations/?' + queryString, function (data) {
       });
@@ -40,7 +38,7 @@ var ComplaintListAPI = {
     }
   },
 
-  getAllForOfficer: function(officer) {
+  getAllForOfficer: function (officer) {
     var params = {
       officer: officer,
       length: -1
@@ -55,9 +53,9 @@ var ComplaintListAPI = {
     });
   },
 
-  getAllForInvestigator: function(investigator) {
+  getAllForInvestigator: function (investigator) {
     var params = {
-      allegation__investigator: investigator,
+      'allegation__investigator': investigator,
       length: -1
     };
 
@@ -79,7 +77,7 @@ var ComplaintListAPI = {
         ComplaintListServerActions.receivedMoreData(data);
       });
     }
-  },
+  }
 };
 
 module.exports = ComplaintListAPI;

@@ -1,5 +1,3 @@
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var AppConstants = require('../constants/AppConstants');
 var OfficerAPI = require('../utils/OfficerAPI');
 
 var OfficerSectionActions = {
