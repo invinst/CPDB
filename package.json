@@ -71,7 +71,8 @@
     "build_sunburst": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > allegation/static/allegation/js/sunburst-bundle.min.js",
     "circleci": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js browserify allegation/static/allegation/js/app.js > allegation/static/allegation/js/bundle.js",
     "circleci_admin": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js browserify dashboard/static/dashboard/js/app.js > dashboard/static/dashboard/js/bundle.js",
-    "circleci_mobile": "NODE_PATH=mobile/static/mobile/js browserify mobile/static/mobile/js/app.js > mobile/static/mobile/js/bundle.js"
+    "circleci_mobile": "NODE_PATH=mobile/static/mobile/js browserify mobile/static/mobile/js/app.js > mobile/static/mobile/js/bundle.js",
+    "circleci_sunburst": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js browserify allegation/static/allegation/js/sunburst-app.js > allegation/static/allegation/js/sunburst-bundle.js"
   },
   "author": "Stefan Georg",
   "browserify": {
