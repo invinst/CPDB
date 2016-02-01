@@ -25,7 +25,7 @@ class MobileSuggestibleOfficerTest(TestCase):
         slugified_display_name = slugify(self.display_name)
         self.officer = OfficerFactory(officer_first=first_name, officer_last=last_name)
         self.officer_id = self.officer.id
-        self.expected_url = '/mobile/officer/{name}/{id}'.format(name=slugified_display_name, id=self.officer_id)
+        self.expected_url = '/officer/{name}/{id}'.format(name=slugified_display_name, id=self.officer_id)
 
     def test_get_url(self):
         self.officer.get_mobile_url().should.equal(self.expected_url)
@@ -51,7 +51,7 @@ class MobileSuggestibleAllegationTest(TestCase):
         self.crid = '1011111'
         self.allegation = AllegationFactory(crid=self.crid)
         OfficerAllegationFactory(allegation=self.allegation)
-        self.expected_url = '/mobile/complaint/{crid}'.format(crid=self.crid)
+        self.expected_url = '/complaint/{crid}'.format(crid=self.crid)
 
     def test_get_url(self):
         self.allegation.get_mobile_url().should.equal(self.expected_url)
