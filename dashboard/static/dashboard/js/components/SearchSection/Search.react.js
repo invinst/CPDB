@@ -12,10 +12,10 @@ var Search = React.createClass(_.assign(Base(SearchStore), {
     SearchResultsAPI.get();
   },
 
-  render: function() {
+  render: function () {
     return (
-      <div id='search' className="col-xs-6 text-right">
-        <input className="form-control" type="text" placeholder="Search..." onChange={this.onChange} />
+      <div id='search' className='col-xs-6 text-right'>
+        <input className='form-control' type='text' placeholder='Search...' onChange={ this.onChange } />
       </div>
     );
   }

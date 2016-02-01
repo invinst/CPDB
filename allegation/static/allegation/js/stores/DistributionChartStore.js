@@ -18,7 +18,6 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFilterTagsQueryBuilder');
 
 var CHANGE_EVENT = 'change';
-var SUMMARY_CHANGE = 'summary-change';
 
 var _state = {};
 var ajax = null;
@@ -94,7 +93,7 @@ function drawChart(col, rotated) {
         return {
           top: -15,
           left: 300
-        }
+        };
       },
       contents: function (d, defaultTitleFormat, defaultValueFormat, color) {
         var point = d[0];

@@ -12,4 +12,3 @@ class SessionViewSet(viewsets.ReadOnlyModelViewSet):
         if 'pk' in self.kwargs:
             self.kwargs['pk'] = Session.id_from_hash(self.kwargs['pk'])[0]
         return super(SessionViewSet, self).get_object()
-

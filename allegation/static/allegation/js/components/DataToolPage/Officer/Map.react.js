@@ -1,30 +1,31 @@
+require('mapbox.js');
+require('leaflet.markercluster');
 var React = require('react');
+var PropTypes = React.PropTypes;
 var ReactDOM = require('react-dom');
+
 var _map = null;
 var AppConstants = require('constants/AppConstants');
-var ComplaintListActions = require("actions/ComplaintList/ComplaintListActions");
+
 
 var Map = React.createClass({
+  propTypes: {
+    options: PropTypes.object,
+    officer: PropTypes.object,
+    style: PropTypes.object
+  },
+
   getInitialState: function () {
     return {};
   },
-  initMap: function (opts) {
-    var element = ReactDOM.findDOMNode(this);
-    opts = opts || {'maxZoom': 17, 'minZoom': 10, 'scrollWheelZoom': false};
-    var defaultZoom = 'defaultZoom' in opts ? opts['defaultZoom'] : 12;
-
-    var southWest = L.latLng(41.143501411390766, -88.53057861328125);
-    var northEast = L.latLng(42.474122772511485, -85.39947509765625);
-    var maxBounds = L.LatLngBounds(southWest, northEast);
-
-    _map = L.mapbox.map(element, AppConstants.MAP_TYPE, opts).setView([41.870839118528714, -87.6272964477539], defaultZoom);
-    _map.on('click', function (event) {
-    }).setMaxBounds(maxBounds);
+  componentDidMount: function () {
+    this.initMap(this.props.options);
+    this.drawHeatMap('officer=' + this.props.officer.id);
   },
-  drawHeatMap: function (query_string) {
-    $.getJSON("/api/officer-allegations/gis/?" + query_string, function (markers) {
+  drawHeatMap: function (queryString) {
+    $.getJSON('/api/officer-allegations/gis/?' + queryString, function (markers) {
 
-        function iconCreateFunction (cluster) {
+      function iconCreateFunction(cluster) {
         var childCount = cluster.getChildCount();
 
         var className = ' marker-cluster-';
@@ -40,18 +41,23 @@ var Map = React.createClass({
         }
 
         return new L.DivIcon({
-          html: '<div style="width:'+(size - 10)+'px;height:'+(size - 10)+'px;border-radius:'+(size/2)+'px;"><span></span></div>',
+          html: '<div style="width:' + (size - 10) + 'px;height:' + (size - 10) + 'px;border-radius:' +
+            (size/2) + 'px;"><span></span></div>',
           className: 'marker-cluster' + className,
           iconSize: new L.Point(size, size)
         });
       }
 
-      var _markers = L.markerClusterGroup({spiderfyOnMaxZoom: true, iconCreateFunction: iconCreateFunction, singleMarkerMode: true});
+      var _markers = L.markerClusterGroup({
+        spiderfyOnMaxZoom: true,
+        iconCreateFunction: iconCreateFunction,
+        singleMarkerMode: true
+      });
       var _controls = {};
       _controls['markers'] = _markers;
       _map.addLayer(_markers);
 
-      var marker_length = markers.features.length;
+      var markerLength = markers.features.length;
       var start = 0;
       var count = 3000;
 
@@ -66,17 +72,17 @@ var Map = React.createClass({
 
         });
         featuresMarkers.on('click', function (e) {
-          var target = $("#allegation-" + e.layer.feature.properties.id);
+          var target = $('#allegation-' + e.layer.feature.properties.id);
           target.click();
-          $("html, body").animate({
+          $('html, body').animate({
             'scrollTop': target.offset().top
           }, 2000);
 
-        })
+        });
         _markers.addLayer(featuresMarkers);
         _map.fitBounds(_markers.getBounds());
 
-        if (start > marker_length) {
+        if (start > markerLength) {
           return;
         }
 
@@ -88,12 +94,22 @@ var Map = React.createClass({
       addMarkers();
     });
   },
-  componentDidMount: function () {
-    this.initMap(this.props.options);
-    this.drawHeatMap('officer=' + this.props.officer.id);
+  initMap: function (opts) {
+    var element = ReactDOM.findDOMNode(this);
+    opts = opts || {'maxZoom': 17, 'minZoom': 10, 'scrollWheelZoom': false};
+    var defaultZoom = 'defaultZoom' in opts ? opts['defaultZoom'] : 12;
+
+    var southWest = L.latLng(41.143501411390766, -88.53057861328125);
+    var northEast = L.latLng(42.474122772511485, -85.39947509765625);
+    var maxBounds = L.LatLngBounds(southWest, northEast);
+
+    _map = L.mapbox.map(element, AppConstants.MAP_TYPE, opts)
+      .setView([41.870839118528714, -87.6272964477539], defaultZoom);
+    _map.on('click', function (event) {
+    }).setMaxBounds(maxBounds);
   },
   render: function () {
-    return <div style={this.props.style}></div>
+    return <div style={ this.props.style }></div>;
   }
 });
 

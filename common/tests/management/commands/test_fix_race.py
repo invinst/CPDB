@@ -9,8 +9,8 @@ class TestFixRaces(SimpleTestCase):
     def setUp(self):
         Officer.objects.all().delete()
         ComplainingWitness.objects.all().delete()
-        self.good_races = [x[1] for x in RACES] # pardon the variable name
-        self.bad_races = [x[0] for x in RACES] # again, see ^
+        self.good_races = [x[1] for x in RACES]  # pardon the variable name
+        self.bad_races = [x[0] for x in RACES]  # again, see ^
         for race in RACES:
             ComplainingWitnessFactory(race=race[0])
             OfficerFactory(race=race[0])

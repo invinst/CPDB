@@ -24,27 +24,27 @@ var Tabs = React.createClass(_.assign(Base(SessionSectionStore), {
     }
   },
 
-  renderTabs: function() {
+  renderTabs: function () {
     var that = this;
     return jQuery.map(AppConstants.SESSION_TABS, function (text, code) {
       var className = cx('tab-' + code, {
         active: code == that.state.active
       });
       return (
-        <li key={text} className={className} onClick={that.onClick.bind(that, code)}>
-          {text}
+        <li key={ text } className={ className } onClick={ that.onClick.bind(that, code) }>
+          { text }
         </li>
       );
     });
   },
 
-  render: function() {
+  render: function () {
     return (
-      <ul className="filter">
-        {this.renderTabs()}
+      <ul className='filter'>
+        { this.renderTabs() }
       </ul>
     );
-  },
+  }
 }));
 
 module.exports = Tabs;

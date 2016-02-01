@@ -3,7 +3,7 @@ var AppConstants = require('../constants/AppConstants');
 
 var InvestigatorPresenter = function (investigator) {
 
-  var unitName = function() {
+  var unitName = function () {
     return AppConstants.UNITS[investigator.unit] || 'Unknown unit';
   };
 

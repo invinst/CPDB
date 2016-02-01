@@ -3,7 +3,7 @@ var AppConstants = require('../../constants/AppConstants');
 var SessionAPI = require('utils/SessionAPI');
 
 var TabActions = {
-  setActiveTab: function(tab) {
+  setActiveTab: function (tab) {
     AppDispatcher.dispatch({
       actionType: AppConstants.SET_ACTIVE_TAB,
       data: tab

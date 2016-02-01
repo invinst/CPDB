@@ -8,7 +8,7 @@ from common.tests.core import SimpleTestCase
 
 class MobileOfficerViewTest(SimpleTestCase):
     def call_related_officer_api(self, params={}):
-        response = self.client.get(reverse('mobile:officer'), params)
+        response = self.client.get(reverse('mobile:mobile-officer'), params)
         data = self.json(response)
 
         return response, data

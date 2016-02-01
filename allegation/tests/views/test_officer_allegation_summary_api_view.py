@@ -1,5 +1,3 @@
-import json
-
 from allegation.tests.views.base import OfficerAllegationApiTestBase
 from allegation.factories import (
     OfficerAllegationFactory, AllegationCategoryFactory)
