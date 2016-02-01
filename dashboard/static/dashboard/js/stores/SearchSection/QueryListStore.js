@@ -12,7 +12,7 @@ var _state = {
 };
 
 var QueryListStore = _.assign(Base(_state), {
-  getSortOrder: function() {
+  getSortOrder: function () {
     if (_state['sortBy']) {
       return (_state['order'] > 0 ? '' : '-') + _state['sortBy'];
     }
@@ -20,46 +20,46 @@ var QueryListStore = _.assign(Base(_state), {
   }
 });
 
-AppDispatcher.register(function(action) {
+AppDispatcher.register(function (action) {
   switch (action.actionType) {
-  case AppConstants.RECEIVED_SEARCH_RESULTS_DATA:
-    QueryListStore.updateState('page', 1);
-    QueryListStore.updateState('data', action.data);
-    QueryListStore.emitChange();
-    break;
-
-  case AppConstants.LOAD_MORE_SEARCH_RESULTS_DATA:
-    if (!_.isEmpty(action.data)) {
-      var data = QueryListStore.getState()['data'].concat(action.data);
-      var page = QueryListStore.getState()['page'];
-      QueryListStore.updateState('data', data);
-      QueryListStore.updateState('locked', false);
-      QueryListStore.updateState('page', page + 1);
+    case AppConstants.RECEIVED_SEARCH_RESULTS_DATA:
+      QueryListStore.updateState('page', 1);
+      QueryListStore.updateState('data', action.data);
       QueryListStore.emitChange();
-    }
-    break;
+      break;
 
-  case AppConstants.LOCK_SCROLL:
-    QueryListStore.updateState('locked', true);
-    QueryListStore.emitChange();
-    break;
+    case AppConstants.LOAD_MORE_SEARCH_RESULTS_DATA:
+      if (!_.isEmpty(action.data)) {
+        var data = QueryListStore.getState()['data'].concat(action.data);
+        var page = QueryListStore.getState()['page'];
+        QueryListStore.updateState('data', data);
+        QueryListStore.updateState('locked', false);
+        QueryListStore.updateState('page', page + 1);
+        QueryListStore.emitChange();
+      }
+      break;
 
-  case AppConstants.SORT_QUERY_LIST:
-    var currentSortBy = QueryListStore.getState()['sortBy'];
-    var order = QueryListStore.getState()['order'];
-    var sortBy = action.data;
+    case AppConstants.LOCK_SCROLL:
+      QueryListStore.updateState('locked', true);
+      QueryListStore.emitChange();
+      break;
 
-    if (currentSortBy == sortBy) {
-      order = -order;
-    }
+    case AppConstants.SORT_QUERY_LIST:
+      var currentSortBy = QueryListStore.getState()['sortBy'];
+      var order = QueryListStore.getState()['order'];
+      var sortBy = action.data;
 
-    QueryListStore.updateState('sortBy', action.data);
-    QueryListStore.updateState('order', order);
-    QueryListStore.emitChange();
-    break;
+      if (currentSortBy == sortBy) {
+        order = -order;
+      }
 
-  default:
-    break;
+      QueryListStore.updateState('sortBy', action.data);
+      QueryListStore.updateState('order', order);
+      QueryListStore.emitChange();
+      break;
+
+    default:
+      break;
   }
 });
 

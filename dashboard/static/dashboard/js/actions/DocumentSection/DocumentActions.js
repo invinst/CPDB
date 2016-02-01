@@ -19,7 +19,7 @@ var DocumentActions = {
   },
 
   requestCancel: function (allegation) {
-    toastr.success(allegation.crid + " document requests have been canceled.");
+    toastr.success(allegation.crid + ' document requests have been canceled.');
     AppDispatcher.dispatch({
       actionType: AppConstants.DOCUMENT_REQUEST_CANCEL,
       data: allegation
@@ -27,7 +27,7 @@ var DocumentActions = {
   },
 
   requestPutToPending: function (allegation) {
-    toastr.success(allegation.crid + " document has been requested.");
+    toastr.success(allegation.crid + ' document has been requested.');
     AppDispatcher.dispatch({
       actionType: AppConstants.DOCUMENT_PUT_TO_PENDING,
       data: allegation
@@ -35,7 +35,7 @@ var DocumentActions = {
   },
 
   requestPendingCancelled: function (allegation) {
-    toastr.success(allegation.crid + " document pending has been cancelled.");
+    toastr.success(allegation.crid + ' document pending has been cancelled.');
     AppDispatcher.dispatch({
       actionType: AppConstants.DOCUMENT_PUT_TO_REQUESTING,
       data: allegation

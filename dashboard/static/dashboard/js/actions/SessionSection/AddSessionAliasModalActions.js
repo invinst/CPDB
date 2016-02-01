@@ -16,11 +16,11 @@ var AddSessionAliasModalActions = {
     });
   },
 
-  createAlias: function(alias, target, title) {
+  createAlias: function (alias, target, title) {
     SessionAliasAPI.create(alias, target, title);
   },
 
-  formDataChange: function(stateName, stateValue) {
+  formDataChange: function (stateName, stateValue) {
     AppDispatcher.dispatch({
       actionType: AppConstants.SESSION_ALIAS_MODAL_FORM_DATA_CHANGED,
       stateName: stateName,

@@ -1,30 +1,31 @@
+/*eslint react/no-is-mounted:0 */
 var _ = require('lodash');
 
-var Base = function(Store) {
+var Base = function (Store) {
   return {
     init: function (params) {
-      _.extend(_state, params);
+      _.extend(Store.getState(), params);
       return this.getState();
     },
 
-    getInitialState: function() {
+    getInitialState: function () {
       return Store.getState();
     },
 
-    componentDidMount: function() {
+    componentDidMount: function () {
       Store.addChangeListener(this._onChange);
     },
 
-    componentWillUnmount: function() {
+    componentWillUnmount: function () {
       Store.removeChangeListener(this._onChange);
     },
 
-    _onChange: function() {
+    _onChange: function () {
       if (this.isMounted()) {
         this.setState(Store.getState());
       }
     }
-  }
+  };
 };
 
 module.exports = Base;
