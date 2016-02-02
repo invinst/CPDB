@@ -35,7 +35,7 @@ class SuggestAllegationCategoryTestCase(SuggestBaseTestCase):
         AllegationCategoryFactory(on_duty=False)
 
         ret1 = SuggestAllegationCategoryOnDuty.query('On D')
-        ret1['Category On Duty'][0]['value'].should.be.equal(True)
+        ret1['Category On Duty'][0]['tag_value']['value'].should.be.equal(True)
 
         ret2 = SuggestAllegationCategoryOnDuty.query('Off D')
-        ret2['Category On Duty'][0]['value'].should.be.equal(False)
+        ret2['Category On Duty'][0]['tag_value']['value'].should.be.equal(False)

@@ -71,9 +71,13 @@ class SuggestAllegationCategoryOnDuty(SuggestBase):
 
         results = [
             cls.entry_format(
-                label=entry[0],
-                value=entry[1],
-                filter=cls.build_filter(category='cat__on_duty', value=entry[1])
+                suggest_value=entry[0],
+                tag_value=cls.build_tag_value(
+                    category='cat__on_duty',
+                    value=entry[1],
+                    display_category='Category On Duty',
+                    display_value=entry[1]
+                ),
             ) for entry in raw_results
         ]
         return {'Category On Duty': results}

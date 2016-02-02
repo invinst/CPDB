@@ -83,9 +83,13 @@ class SuggestOfficerActive(SuggestBase):
 
         results = [
             cls.entry_format(
-                label=entry[0],
-                value=entry[0],
-                filter=cls.build_filter(category='officer__active', value=entry[1])
+                suggest_value=entry[0],
+                tag_value=cls.build_tag_value(
+                    category='officer__active',
+                    value=entry[1],
+                    display_category='Officer Employment Status',
+                    display_value=entry[0]
+                ),
             ) for entry in raw_results
         ]
 

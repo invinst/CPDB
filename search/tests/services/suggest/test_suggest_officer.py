@@ -43,5 +43,7 @@ class SuggestOfficerTestCase(SuggestBaseTestCase):
         SuggestOfficerRank.query('FTO')['Officer Rank'].should.be.equal([])
 
     def test_suggest_officer_active(self):
-        SuggestOfficerActive.query('Active')['Officer Employment Status'][0]['label'].should.be.equal('Active')
-        SuggestOfficerActive.query('Inactive')['Officer Employment Status'][0]['label'].should.be.equal('Inactive')
+        SuggestOfficerActive.query('Active')['Officer Employment Status'][0]['suggest_value']\
+            .should.be.equal('Active')
+        SuggestOfficerActive.query('Inactive')['Officer Employment Status'][0]['suggest_value']\
+            .should.be.equal('Inactive')

@@ -12,7 +12,7 @@ class SuggestInvestigator(SuggestBase):
         results = [
             cls.entry_format(
                 suggest_value='{name} ({count})'.format(
-                        name=entry.investigator_name, count=entry.investigator_complaint_count),
+                    name=entry.investigator_name, count=entry.investigator_complaint_count),
                 tag_value=cls.build_tag_value(
                     category='allegation__investigator',
                     value=entry.investigator_id,

@@ -92,9 +92,13 @@ class SuggestAllegationSummary(SuggestBase):
 
         results = [
             cls.entry_format(
-                label=entry,
-                value=entry,
-                filter=cls.build_filter(category='allegation_summary', value=entry)
+                suggest_value=entry,
+                tag_value=cls.build_tag_value(
+                    category='allegation_summary',
+                    value=entry,
+                    display_category='Allegation Summary',
+                    display_value=entry
+                ),
             ) for entry in processed_results[:5]
         ]
 
