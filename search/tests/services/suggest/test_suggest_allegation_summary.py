@@ -15,7 +15,7 @@ class SuggestAllegationTestCase(SuggestBaseTestCase):
         expected_terms = ['some', 'sorry', 'some really', 'some some']
 
         results = SuggestAllegationSummary.query(search_term)['Allegation Summary']
-        suggested_terms = [x['value'] for x in results]
+        suggested_terms = [x['suggest_value'] for x in results]
 
         suggested_terms.should.equal(expected_terms)
 
@@ -30,7 +30,7 @@ class SuggestAllegationTestCase(SuggestBaseTestCase):
         expected_terms = ['some some', 'some some really']
 
         results = SuggestAllegationSummary.query(search_term)['Allegation Summary']
-        suggested_terms = [x['value'] for x in results]
+        suggested_terms = [x['suggest_value'] for x in results]
 
         suggested_terms.should.equal(expected_terms)
 
@@ -44,7 +44,7 @@ class SuggestAllegationTestCase(SuggestBaseTestCase):
         search_term = 'so'
 
         results = SuggestAllegationSummary.query(search_term)['Allegation Summary']
-        suggested_terms = [x['value'] for x in results]
+        suggested_terms = [x['suggest_value'] for x in results]
         len(suggested_terms).should.equal(5)
 
     def test_suggest_allegation_summary_distinct(self):
@@ -59,5 +59,5 @@ class SuggestAllegationTestCase(SuggestBaseTestCase):
         search_term = 'so'
 
         results = SuggestAllegationSummary.query(search_term)['Allegation Summary']
-        suggested_terms = [x['value'] for x in results]
+        suggested_terms = [x['suggest_value'] for x in results]
         len(suggested_terms).should.equal(4)
