@@ -1,6 +1,6 @@
 from haystack.query import SearchQuerySet
 
-from common.constants import RANKS, UNITS
+from common.constants import RANKS, UNITS, ACTIVE_CHOICES
 from search.services.suggest import SuggestBase
 
 
@@ -74,6 +74,22 @@ class SuggestOfficerUnit(SuggestBase):
         ]
 
         return {'Officer Unit': results}
+
+
+class SuggestOfficerActive(SuggestBase):
+    @classmethod
+    def _query(cls, term):
+        raw_results = cls.suggest_in(term, ACTIVE_CHOICES)
+
+        results = [
+            cls.entry_format(
+                label=entry[0],
+                value=entry[0],
+                filter=cls.build_filter(category='officer__active', value=entry[1])
+            ) for entry in raw_results
+        ]
+
+        return {'Officer Employment Status': results}
 
 
 class SuggestOfficerRank(SuggestBase):

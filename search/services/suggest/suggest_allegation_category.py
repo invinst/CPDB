@@ -62,3 +62,18 @@ class SuggestAllegationCategoryCategory(SuggestBase):
         ]
 
         return {'Category': results}
+
+
+class SuggestAllegationCategoryOnDuty(SuggestBase):
+    @classmethod
+    def _query(cls, term):
+        raw_results = cls.suggest_in(term, [[True, 'On Duty'], [False, 'Off Duty']])
+
+        results = [
+            cls.entry_format(
+                label=entry[0],
+                value=entry[1],
+                filter=cls.build_filter(category='cat__on_duty', value=entry[1])
+            ) for entry in raw_results
+        ]
+        return {'Category On Duty': results}

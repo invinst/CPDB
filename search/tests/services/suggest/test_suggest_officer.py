@@ -1,6 +1,7 @@
 from allegation.factories import OfficerFactory
 from search.services.suggest.suggest_officer import (
-    SuggestOfficerName, SuggestOfficerUnit, SuggestOfficerStar, SuggestOfficerRank)
+    SuggestOfficerName, SuggestOfficerUnit, SuggestOfficerStar, SuggestOfficerRank,
+    SuggestOfficerActive)
 from search.tests.services.suggest.test_suggest_base import SuggestBaseTestCase
 
 
@@ -40,3 +41,7 @@ class SuggestOfficerTestCase(SuggestBaseTestCase):
         SuggestOfficerRank.query('training')['Officer Rank'][0]['suggest_value']\
             .should.be.equal('Field Training Officer')
         SuggestOfficerRank.query('FTO')['Officer Rank'].should.be.equal([])
+
+    def test_suggest_officer_active(self):
+        SuggestOfficerActive.query('Active')['Officer Employment Status'][0]['label'].should.be.equal('Active')
+        SuggestOfficerActive.query('Inactive')['Officer Employment Status'][0]['label'].should.be.equal('Inactive')
