@@ -35,6 +35,7 @@ test:
     - python manage.py collectstatic --noinput
   override:
     - coverage run --parallel-mode manage.py test  --noinput --nologcapture --with-timer -s -v 2
+    - flake8
   post:
     - coverage combine
     - coveralls

@@ -3,7 +3,7 @@ var AppConstants = require('constants/AppConstants');
 
 
 var SunburstActions = {
-  receivedData: function(data) {
+  receivedData: function (data) {
     AppDispatcher.dispatch({
       actionType: AppConstants.RECEIVED_SUNBURST_DATA,
       data: data

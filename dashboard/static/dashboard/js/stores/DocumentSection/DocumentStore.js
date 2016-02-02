@@ -11,7 +11,7 @@ var DocumentStore = _.assign(Base(_state), {
 
 });
 
-AppDispatcher.register(function(action) {
+AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.RECEIVED_DOCUMENT:
     case AppConstants.SET_ACTIVE_ALLEGATION:
@@ -20,12 +20,12 @@ AppDispatcher.register(function(action) {
       break;
 
     case AppConstants.DOCUMENT_REQUEST_CANCEL:
-      action.data.document_requested = false;
+      action.data['document_requested'] = false;
       DocumentStore.emitChange();
       break;
 
     case AppConstants.DOCUMENT_PUT_TO_PENDING:
-      action.data.document_pending = true;
+      action.data['document_pending'] = true;
       DocumentStore.emitChange();
       break;
 

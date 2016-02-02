@@ -3,10 +3,6 @@ var _ = require('lodash');
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
 var Base = require('stores/Base');
-var FilterTagStore = require('../stores/FilterTagStore');
-var MapStore = require('../stores/MapStore');
-var OfficerListStore = require('../stores/OfficerListStore');
-var OfficerPresenter = require('presenters/OfficerPresenter');
 var AppStore = require('stores/AppStore');
 
 var _state = {
@@ -22,12 +18,12 @@ var _state = {
 
 var SESSION_CREATED_EVENT = 'SESSION_CREATED_EVENT';
 var SessionStore = _.assign(Base(_state), {
-  updateSession: function(data) {
+  updateSession: function (data) {
     _state['data'] = _.assign(_state['data'], data);
     this.emitChange();
   },
 
-  getHash: function() {
+  getHash: function () {
     return _state['data']['hash'];
   },
 
@@ -78,7 +74,7 @@ var SessionStore = _.assign(Base(_state), {
     return _.isEmpty(_state.data.query.active_officers) && _.isEmpty(_state.data.query.filters);
   },
 
-  removeSessionCreatedListener: function(callback) {
+  removeSessionCreatedListener: function (callback) {
     this.removeListener(SESSION_CREATED_EVENT, callback);
   },
 
@@ -88,7 +84,7 @@ var SessionStore = _.assign(Base(_state), {
 
   emitSessionCreated: function () {
     this.emit(SESSION_CREATED_EVENT);
-  },
+  }
 });
 
 // Register callback to handle all updates
@@ -96,7 +92,7 @@ SessionStore.dispatcherToken = AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.SAVE_SESSION:
     // SessionStore.updateSession(action.data);
-    SessionStore.emitChange();
+      SessionStore.emitChange();
       break;
 
     case AppConstants.RECEIVED_SESSION_DATA:

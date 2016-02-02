@@ -56,33 +56,33 @@ class AliasTestCase(SimpleTestCase):
         AliasFactory(alias=alias)
         AliasFactory(alias=other_alias)
 
-        response, data = self.get_aliases({ 'q' : q})
+        response, data = self.get_aliases({'q': q})
 
         len(data['data']).should.equal(1)
         data['data'][0]['alias'].should.contain(q)
 
     def test_pagination(self):
-        aliases = [AliasFactory() for i in range(16)]
+        AliasFactory.create_batch(16)
 
-        response, data  = self.get_aliases()
+        response, data = self.get_aliases()
         len(data['data']).should.equal(15)
 
-        response, data  = self.get_aliases({ 'page': 1 })
+        response, data = self.get_aliases({'page': 1})
         len(data['data']).should.equal(1)
 
     def test_sort_order(self):
-        alias1 = AliasFactory(alias='alias1', num_usage=1)
-        alias3 = AliasFactory(alias='alias2', num_usage=3)
-        alias2 = AliasFactory(alias='alias3', num_usage=2)
+        AliasFactory(alias='alias1', num_usage=1)
+        AliasFactory(alias='alias2', num_usage=3)
+        AliasFactory(alias='alias3', num_usage=2)
 
-        response, data = self.get_aliases({ 'order_by': '-num_usage'})
+        response, data = self.get_aliases({'order_by': '-num_usage'})
         data = data['data']
         data[0]['alias'].should.equal('alias2')
         data[1]['alias'].should.equal('alias3')
         data[2]['alias'].should.equal('alias1')
 
     def test_bad_sort_order(self):
-        response, data = self.get_aliases({ 'order_by': 'abcxyz'})
+        response, data = self.get_aliases({'order_by': 'abcxyz'})
         response.status_code.should.equal(200)
         data.should.contain('error')
 

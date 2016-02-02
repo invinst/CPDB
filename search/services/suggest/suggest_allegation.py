@@ -35,7 +35,8 @@ class SuggestAllegationCrid(SuggestBase):
     @classmethod
     def _query(cls, term):
         sqs = SearchQuerySet()
-        raw_results = sqs.filter(allegation_crid=term).order_by('allegation_crid_sort').values_list('allegation_crid', flat=True)[:5]
+        raw_results = sqs.filter(allegation_crid=term).order_by('allegation_crid_sort')\
+            .values_list('allegation_crid', flat=True)[:5]
         results = [
             cls.entry_format(
                 label=entry,

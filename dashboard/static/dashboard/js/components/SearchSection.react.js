@@ -7,7 +7,7 @@ var SearchResultsAPI = require('../utils/SearchResultsAPI');
 var AddAliasModalActions = require('../actions/SearchSection/AddAliasModalActions');
 
 var SearchSection = React.createClass({
-  componentDidMount: function() {
+  componentDidMount: function () {
     SearchResultsAPI.get();
   },
 
@@ -15,7 +15,7 @@ var SearchSection = React.createClass({
     AddAliasModalActions.show();
   },
 
-  render: function() {
+  render: function () {
     return (
       <div>
         <div className='row top-nav'>
@@ -25,7 +25,7 @@ var SearchSection = React.createClass({
             </h1>
           </div>
           <div id='add-alias' className='col-md-3 col-xs-3 text-right'>
-            <button className='btn btn-primary' onClick={this.showAliasModal}>
+            <button className='btn btn-primary' onClick={ this.showAliasModal }>
               <i className='fa fa-plus' />
               <span>Add Alias</span>
             </button>
@@ -44,7 +44,7 @@ var SearchSection = React.createClass({
         </div>
         <AddAliasModal />
       </div>
-    )
+    );
   }
 });
 

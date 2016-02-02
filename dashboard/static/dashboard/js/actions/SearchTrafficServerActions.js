@@ -6,7 +6,7 @@ var SearchTrafficServerActions = {
     AppDispatcher.dispatch({
       actionType: AppConstants.RECEIVED_SEARCH_TRAFFIC_DATA,
       data: data
-    })
+    });
   }
 };
 

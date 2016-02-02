@@ -55,7 +55,7 @@ class SessionManagementTestCase(BaseAdminTestCase):
         category = 'category'
         session = SessionFactory()
         suggestion = SuggestionLogFactory(session_id=session.hash_id)
-        filter_log = FilterLogFactory(session_id=session.hash_id, tag_name='cat__category=category')
+        FilterLogFactory(session_id=session.hash_id, tag_name='cat__category=category')
 
         self.go_to_sessions()
         self.find('tr.session-row').click()
@@ -109,7 +109,6 @@ class SessionManagementTestCase(BaseAdminTestCase):
 
         SessionAlias.objects.get(alias=second_alias, title=custom_title).session.id.should.equal(session.id)
 
-
     def number_of_sessions(self):
         return len(self.find_all("#sessions .session-row"))
 
@@ -141,7 +140,7 @@ class SessionManagementTestCase(BaseAdminTestCase):
         self.until_ajax_complete()
 
         self.until(lambda: self.should_not_see_text(alias))
-        self.should_see_text('Delete alias successfully');
+        self.should_see_text('Delete alias successfully')
         SessionAlias.objects.filter(alias=alias).exists().should.be.false
 
     def test_add_session_alias_full_form(self):

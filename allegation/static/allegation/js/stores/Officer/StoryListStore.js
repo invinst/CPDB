@@ -5,12 +5,12 @@ var _ = require('lodash');
 
 var AppConstants = require('../../constants/AppConstants');
 var AppDispatcher = require('../../dispatcher/AppDispatcher');
-var Base = require('stores/Base')
+var Base = require('stores/Base');
 
 var _state = {
   stories: [],
-  story_groups: {}
-}
+  storyGroups: {}
+};
 
 var StoryListStore = _.assign(Base(_state), {
 

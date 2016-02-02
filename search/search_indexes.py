@@ -1,4 +1,3 @@
-from django.db.models.aggregates import Count
 from haystack import indexes
 
 from common.models import Officer, AllegationCategory, Allegation, Investigator, Area, OfficerAllegation
@@ -97,7 +96,7 @@ class InvestigatorIndex(SuggestionBaseIndex, indexes.Indexable):
 
     def prepare_investigator_complaint_count(self, obj):
         return OfficerAllegation.objects.filter(allegation__investigator=obj).count()
-        
+
 
 class AreaIndex(SuggestionBaseIndex, indexes.Indexable):
     DEFAULT_MODEL = Area

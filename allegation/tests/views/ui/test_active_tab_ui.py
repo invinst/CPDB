@@ -1,6 +1,3 @@
-import os
-from unittest import skipIf, skipUnless
-
 from selenium import webdriver
 
 from common.tests.core import BaseLiveTestCase, BaseMobileLiveTestCase
