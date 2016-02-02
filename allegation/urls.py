@@ -61,6 +61,6 @@ urlpatterns = [
         csrf_exempt(ensure_csrf_cookie(SessionAPIView.as_view())),
         name='allegation-api-session'),
 
-    url(r'^sunburst-image/(?P<hash_id>\w{6})/$', SunburstImageView.as_view(), name='sunburst-image'),
-    url(r'^sunburst/(?P<hash_id>\w{6})/$', SunburstView.as_view(), name='sunburst')
+    url(r'^sunburst-image/(?P<hash_id>\w{6})/$', cache_view(SunburstImageView.as_view()), name='sunburst-image'),
+    url(r'^sunburst/(?P<hash_id>\w{6})/$', cache_view(SunburstView.as_view()), name='sunburst')
 ]

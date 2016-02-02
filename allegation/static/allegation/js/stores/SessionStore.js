@@ -31,6 +31,10 @@ var SessionStore = _.assign(Base(_state), {
     return _state['data']['active_tab'];
   },
 
+  getTitle: function () {
+    return _state['data']['title'];
+  },
+
   removeTagInCategory: function (category) {
     // if (!_state.data.readable_query[category]) {
     //   return;
