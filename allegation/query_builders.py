@@ -1,6 +1,7 @@
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import D
 from django.db.models.query_utils import Q
+from haystack.query import SearchQuerySet
 
 import inspect
 
@@ -272,3 +273,17 @@ class OfficerAllegationQueryBuilder(object):
         elif 'iad' in ranks:
             return Q(allegation__investigator__agency__icontains='iad')
         return Q()
+
+    def _q_allegation_summary(self, query_params):
+        terms = query_params.getlist('allegation_summary', [])
+        if len(terms) == 0:
+            return Q()
+
+        sqs = SearchQuerySet()
+        matched_allegation_ids = []
+        for term in terms:
+            raw_results = sqs.filter(allegation_summary__exact=term).values_list('pk', flat=True)
+            casted_results = [int(x) for x in raw_results]
+            matched_allegation_ids += casted_results
+
+        return Q(allegation__pk__in=matched_allegation_ids)

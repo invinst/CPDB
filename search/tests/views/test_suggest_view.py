@@ -36,17 +36,8 @@ class SuggestViewTestCase(SimpleTestCase):
 
         rebuild_index()
 
-        data = self.get_suggestion('je')
-        data.should.contain('Officer')
-
-        data = self.get_suggestion('je da')
-        data.should.contain('Officer')
-
-        data = self.get_suggestion('genie')
-        data.shouldnt.contain('Officer')
-
-        data = self.get_suggestion('je e')
-        data.shouldnt.contain('Officer')
+        [self.get_suggestion(term).should.contain('Officer') for term in ['je', 'je da']]
+        [self.get_suggestion(term).shouldnt.contain('Officer') for term in ['genie', 'je e']]
 
     def test_detect_suggest_type_officer_badge_number(self):
         OfficerFactory(star=123456)

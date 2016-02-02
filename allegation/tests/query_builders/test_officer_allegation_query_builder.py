@@ -10,6 +10,7 @@ from allegation.query_builders import (
     OfficerAllegationQueryBuilder, DISCIPLINE_CODES, NO_DISCIPLINE_CODES)
 from common.models import OfficerAllegation, Allegation, OUTCOMES
 from common.tests.core import SimpleTestCase
+from common.utils.haystack import rebuild_index
 
 from allegation.factories import InvestigatorFactory
 
@@ -386,6 +387,35 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
                 '2011-01-01', '%Y-%m-%d')))
 
         query_string = 'data_source=pre-FOIA'
+        expected_ids = [allegation.id for allegation in expected_allegations]
+
+        self.check_built_query(query_string, expected_ids)
+
+    def test_allegation_summary(self):
+        expected_allegations = [
+            OfficerAllegationFactory(allegation=AllegationFactory(
+                summary='some some really long summary')),
+            OfficerAllegationFactory(allegation=AllegationFactory(
+                summary='I am so sorry'))]
+        OfficerAllegationFactory()
+
+        rebuild_index()
+
+        query_string = 'allegation_summary=so'
+        expected_ids = [allegation.id for allegation in expected_allegations]
+
+        self.check_built_query(query_string, expected_ids)
+
+    def test_allegation_summary_multiple_word_term(self):
+        expected_allegations = [
+            OfficerAllegationFactory(allegation=AllegationFactory(
+                summary='some some really long summary'))]
+        OfficerAllegationFactory(
+            allegation=AllegationFactory(summary='I am so sorry some'))
+
+        rebuild_index()
+
+        query_string = 'allegation_summary=some some'
         expected_ids = [allegation.id for allegation in expected_allegations]
 
         self.check_built_query(query_string, expected_ids)
