@@ -40,7 +40,11 @@ class SuggestBase(object):
 
     @classmethod
     def build_tag_value(cls, category, value, display_category, display_value):
-        processed_value = value or 'null'
+        if value is None:
+            processed_value = 'null'
+        else:
+            processed_value = value
+
         tag_value = {
             'category': category,
             'value': processed_value,
