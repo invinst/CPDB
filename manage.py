@@ -3,7 +3,12 @@ import os
 import sys
 
 if __name__ == "__main__":
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "cpdb.settings.local.dev")
+    if 'test' in sys.argv:
+        default_settings_module = 'cpdb.settings.test.common'
+    else:
+        default_settings_module = "cpdb.settings.local.common"
+
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", default_settings_module)
 
     from django.core.management import execute_from_command_line
 
