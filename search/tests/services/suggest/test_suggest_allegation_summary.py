@@ -42,7 +42,6 @@ class SuggestAllegationTestCase(SuggestBaseTestCase):
         self.rebuild_index()
 
         search_term = 'so'
-        expected_terms = ['some', 'sorry', 'some some', 'some really']
 
         results = SuggestAllegationSummary.query(search_term)['Allegation Summary']
         suggested_terms = [x['value'] for x in results]

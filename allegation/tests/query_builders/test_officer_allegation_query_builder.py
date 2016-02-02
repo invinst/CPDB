@@ -411,7 +411,7 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
             OfficerAllegationFactory(allegation=AllegationFactory(
                 summary='some some really long summary'))]
         OfficerAllegationFactory(
-                allegation=AllegationFactory(summary='I am so sorry some'))
+            allegation=AllegationFactory(summary='I am so sorry some'))
 
         rebuild_index()
 
