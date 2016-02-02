@@ -1,9 +1,9 @@
 -   repo: git://github.com/pre-commit/mirrors-eslint
-    sha: 'v1.9.0'
+    sha: aaa8651ac4833f38c66a6b1b475856f4b1e01c57
     hooks:
     -   id: eslint
-
+        additional_dependencies: ["eslint@1.10.3", "eslint-plugin-react@3.16.1"]
 -   repo: git://github.com/pre-commit/pre-commit-hooks
-    sha: v0.4.2
+    sha: 64943e86417774b9d6ba63c74e00f8cc3e2119e0
     hooks:
     -   id: flake8
