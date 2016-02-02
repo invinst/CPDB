@@ -16,13 +16,13 @@ var SessionsActions = {
     });
   },
 
-  lockScroll: function() {
+  lockScroll: function () {
     AppDispatcher.dispatch({
-      actionType: AppConstants.LOCK_SESSION_ALIAS_PAGE_SCROLL,
+      actionType: AppConstants.LOCK_SESSION_ALIAS_PAGE_SCROLL
     });
   },
 
-  searchFor: function(query) {
+  searchFor: function (query) {
     AppDispatcher.dispatch({
       actionType: AppConstants.SEARCH_FOR_SESSION_ALIAS,
       data: query

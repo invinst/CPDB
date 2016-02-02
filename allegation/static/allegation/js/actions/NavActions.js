@@ -1,7 +1,6 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
 
-var first = true;
 
 var NavActions = {
   mobileSearchClick: function () {
@@ -19,7 +18,7 @@ var NavActions = {
   goToPage: function (page, params) {
     AppDispatcher.dispatch({
       actionType: AppConstants.NAV_GO_TO_PAGE,
-      page: page,
+      page: page
     });
   }
 };

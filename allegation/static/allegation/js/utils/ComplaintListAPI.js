@@ -3,9 +3,7 @@ require('utils/jQuery');
 
 var AllegationFetcherQueryBuilder = require('utils/querybuilders/AllegationFetcherQueryBuilder');
 var AppConstants = require('../constants/AppConstants');
-var ComplaintListStore = require('stores/ComplaintListStore');
 var ComplaintListServerActions = require('../actions/ComplaintList/ComplaintListServerActions');
-var RaceGenderTabActions = require('actions/DataToolPage/RaceGenderTabActions');
 var APIUtil = require('utils/api/APIUtil');
 
 var ajax = null;
@@ -13,7 +11,7 @@ var ajax = null;
 
 var ComplaintListAPI = {
   preloadDataForOtherTab: function () {
-    for (filter in AppConstants.FILTERS) {
+    for (var filter in AppConstants.FILTERS) {
       var params = AllegationFetcherQueryBuilder.buildQueryParams(filter);
       ajax = APIUtil.getJSON(AppConstants.ALLEGATIONS_API_ENDPOINT, params, function (data) {
       });
@@ -43,7 +41,7 @@ var ComplaintListAPI = {
     }
   },
 
-  getAllForOfficer: function(officer) {
+  getAllForOfficer: function (officer) {
     var params = {
       officer: officer,
       length: -1
@@ -58,9 +56,9 @@ var ComplaintListAPI = {
     });
   },
 
-  getAllForInvestigator: function(investigator) {
+  getAllForInvestigator: function (investigator) {
     var params = {
-      allegation__investigator: investigator,
+      'allegation__investigator': investigator,
       length: -1
     };
 

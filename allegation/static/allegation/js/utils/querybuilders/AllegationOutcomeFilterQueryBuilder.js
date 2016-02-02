@@ -1,8 +1,6 @@
-var _ = require('lodash');
 require('utils/jQuery');
 
 var AppConstants = require('../../constants/AppConstants');
-
 var ComplaintListStore = require('stores/ComplaintListStore');
 
 

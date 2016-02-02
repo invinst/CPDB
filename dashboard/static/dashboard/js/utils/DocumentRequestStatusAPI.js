@@ -11,18 +11,20 @@ var DocumentRequestStatusAPI = {
       ajax.abort();
     }
 
-    jQuery.post(AppConstants.DOCUMENT_REQUEST_STATUS_END_POINT, {crid: allegation.crid, status: status}, function (data) {
-      switch (status) {
-        case 'pending':
-          DocumentActions.requestPutToPending(allegation);
-          break;
-        case 'requesting':
-          DocumentActions.requestPendingCancelled(allegation);
-          break;
-        default:
-          break;
+    jQuery.post(AppConstants.DOCUMENT_REQUEST_STATUS_END_POINT, {crid: allegation.crid, status: status},
+      function (data) {
+        switch (status) {
+          case 'pending':
+            DocumentActions.requestPutToPending(allegation);
+            break;
+          case 'requesting':
+            DocumentActions.requestPendingCancelled(allegation);
+            break;
+          default:
+            break;
+        }
       }
-    })
+    );
   }
 };
 

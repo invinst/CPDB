@@ -4,9 +4,6 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
 var Base = require('stores/Base');
 
-var TagUtil = require('utils/TagUtil');
-
-var CHANGE_EVENT = 'CHANGE_EVENT';
 var ENABLE_EVENT = 'ENABLE_EVENT';
 var DISABLE_EVENT = 'DISABLE_EVENT';
 
@@ -60,7 +57,7 @@ var FilterTagStore = _.assign(Base(_state), {
     if (_state['filters'][category]) {
       _.remove(_state['filters'][category], matchValue(value));
 
-      this.removeCategory(category)
+      this.removeCategory(category);
     }
   },
 
@@ -75,7 +72,7 @@ var FilterTagStore = _.assign(Base(_state), {
   },
 
   pinFilter: function (category, value) {
-    filter = this.getFilter(category, value);
+    var filter = this.getFilter(category, value);
     if (filter) {
       filter.pinned = !filter.pinned;
     }
@@ -97,10 +94,10 @@ var FilterTagStore = _.assign(Base(_state), {
   isAllTagsPinned: function () {
     var allTagsPinned = true;
     _.forOwn(_state['filters'], function (list, category) {
-      var pinned_tags = _.reduce(list, function (sum, obj) {
+      var pinnedTags = _.reduce(list, function (sum, obj) {
         return sum + (obj.pinned ? 1 : 0);
       }, 0);
-      if (list.length != pinned_tags) {
+      if (list.length != pinnedTags) {
         allTagsPinned = false;
         return false;
       }
@@ -130,11 +127,11 @@ var FilterTagStore = _.assign(Base(_state), {
   },
 
   // Old interface
-  isInitialized: function() {
+  isInitialized: function () {
     return _state['initialized'];
   },
 
-  setInitialized: function(val) {
+  setInitialized: function (val) {
     _state['initialized'] = val;
   },
 
@@ -156,7 +153,7 @@ var FilterTagStore = _.assign(Base(_state), {
     this.on(DISABLE_EVENT, callback);
   },
 
-  removeDisableListener: function(callback) {
+  removeDisableListener: function (callback) {
     this.removeListener(DISABLE_EVENT, callback);
   },
 
@@ -168,7 +165,7 @@ var FilterTagStore = _.assign(Base(_state), {
     this.on(ENABLE_EVENT, callback);
   },
 
-  removeEnableListener: function(callback) {
+  removeEnableListener: function (callback) {
     this.removeListener(ENABLE_EVENT, callback);
   },
 
@@ -193,7 +190,7 @@ AppDispatcher.register(function (action) {
     case AppConstants.ADD_TAG:
       FilterTagStore.addFilter(action.tagValue);
       FilterTagStore.emitChange();
-    break;
+      break;
 
     case AppConstants.TOGGLE_TAGS:
       // var values = _(action.filters).chain().pluck('value');
@@ -209,7 +206,7 @@ AppDispatcher.register(function (action) {
       });
 
       FilterTagStore.emitChange();
-    break;
+      break;
 
     case AppConstants.REMOVE_TAG:
       FilterTagStore.removeFilter(action.category, action.value);
@@ -232,9 +229,9 @@ AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.RECEIVED_SESSION_DATA:
-      session_query = _.get(action.data, 'data.query', {});
-      FilterTagStore.setSession(session_query);
-      _state['initialized'] = session_query['filters'] || {};
+      var sessionQuery = _.get(action.data, 'data.query', {});
+      FilterTagStore.setSession(sessionQuery);
+      _state['initialized'] = sessionQuery['filters'] || {};
       FilterTagStore.emitChange();
       break;
 

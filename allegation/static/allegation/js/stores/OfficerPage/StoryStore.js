@@ -16,7 +16,7 @@ var StoryStore = _.assign(Base(_state), {
     this.emit(CHANGE_THUMB_URL_EVENT);
   },
 
-  removeChangeThumbUrlListener: function(callback) {
+  removeChangeThumbUrlListener: function (callback) {
     this.removeListener(CHANGE_THUMB_URL_EVENT, callback);
   },
 
