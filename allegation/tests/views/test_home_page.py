@@ -24,6 +24,6 @@ class HomePageTestCase(SimpleTestCase):
         self.find('meta[property="og:title"]').attrs['content'].should.be.equal(session.title)
         (reverse('datatool', args=[hash_id, slug]) in self.find('meta[property="og:url"]').attrs['content'])\
             .should.be.true
-        (reverse('allegation:sunburst-image', args=[hash_id]) in self.find('meta[property="og:image"]').attrs['content'])\
-            .should.be.true
+        (reverse('allegation:sunburst-image', args=[hash_id]) in
+         self.find('meta[property="og:image"]').attrs['content']).should.be.true
         self.find('meta[property="og:image:type"]').attrs['content'].should.be.equal('image/png')
