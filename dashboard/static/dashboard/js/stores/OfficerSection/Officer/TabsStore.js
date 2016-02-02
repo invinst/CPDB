@@ -15,7 +15,7 @@ var _state = {
 var TabsStore = _.assign(Base(_state), {
 });
 
-AppDispatcher.register(function(action) {
+AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.SET_OFFICER_TAB_ACTIVE:
       TabsStore.updateState('active', action.data);

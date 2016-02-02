@@ -1,6 +1,3 @@
-import time
-from unittest import mock
-
 import requests
 
 from allegation.factories import AllegationFactory, PoliceWitnessFactory,\
@@ -17,7 +14,7 @@ class DownloadAllegationTestCase(BaseLiveTestCase):
         ComplainingWitnessFactory(crid=allegation.crid)
 
         self.visit_home()
-        self.browser.execute_script("window.redirect = function () {};")  # disable redirect to download excel file on testing
+        self.browser.execute_script("window.redirect = function () {};")  # disable excel redirect on testing
 
         self.click_first_officer()
         self.until(lambda: self.download_link.is_displayed())
@@ -51,5 +48,5 @@ class DownloadAllegationTestCase(BaseLiveTestCase):
 
         self.download_link.click()
         self.find('.download-wrapper').text.should.equal('Processing')
-        self.until(lambda: self.browser.execute_script("clearInterval(window.downloadListener);") and self.ajax_complete())
-
+        self.until(
+            lambda: self.browser.execute_script("clearInterval(window.downloadListener);") and self.ajax_complete())

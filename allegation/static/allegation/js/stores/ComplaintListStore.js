@@ -1,7 +1,6 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var AppConstants = require('../constants/AppConstants');
-var ajax = null;
 var assign = require('object-assign');
 var _ = require('lodash');
 
@@ -17,17 +16,17 @@ var _state = {
 };
 
 var ComplaintListStore = assign({}, EventEmitter.prototype, {
-  setAnalysisInformation: function(data) {
+  setAnalysisInformation: function (data) {
     _state.analytics = data;
     _state.activeFilter = 'all';
     this.emitChange();
   },
 
-  getActiveFilter: function() {
+  getActiveFilter: function () {
     return _state['activeFilter'];
   },
 
-  setActiveFilter: function(activeFilter) {
+  setActiveFilter: function (activeFilter) {
     _state['activeFilter'] = activeFilter;
   },
 
@@ -39,7 +38,7 @@ var ComplaintListStore = assign({}, EventEmitter.prototype, {
     this.on(AppConstants.CHANGE_EVENT, callback);
   },
 
-  removeChangeListener: function(callback) {
+  removeChangeListener: function (callback) {
     this.removeListener(AppConstants.CHANGE_EVENT, callback);
   },
 
@@ -49,7 +48,7 @@ var ComplaintListStore = assign({}, EventEmitter.prototype, {
 });
 
 
-AppDispatcher.register(function(action) {
+AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.SET_ACTIVE_COMPLAINT_LIST_FILTER:
       ComplaintListStore.setActiveFilter(action.filter);
@@ -94,7 +93,7 @@ AppDispatcher.register(function(action) {
       if (_state['activeComplaints'].indexOf(action.id) > -1) {
         _state['activeComplaints'].splice(_state['activeComplaints'].indexOf(action.id), 1);
       }
-      else{
+      else {
         _state['activeComplaints'].push(action.id);
       }
       ComplaintListStore.emitChange();

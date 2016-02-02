@@ -13,7 +13,7 @@ var OutcomeFilterActions = {
       filter: val
     });
 
-    if (callAPI){
+    if (callAPI) {
       ComplaintListAPI.getData(true);
     }
   }

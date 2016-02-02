@@ -8,7 +8,7 @@ var CheckMarkActions = {
       actionType: AppConstants.OFFICER_MOUSE_OUT,
       officer: officer
     });
-  },
+  }
 };
 
 module.exports = CheckMarkActions;

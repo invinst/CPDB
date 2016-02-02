@@ -8,20 +8,27 @@ var _state = {
   officer: {}
 };
 
+
 var StoryFormStore = _.assign(Base(_state), {
 
 });
 
-AppDispatcher.register(function(action) {
+AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.SET_ACTIVE_OFFICER:
     case AppConstants.RECEIVE_OFFICER:
       _state.officer = action.data;
+      _state.story = {
+        officer: _state.officer.url,
+        'story_type': 'news'
+      };
+      StoryFormStore.emitChange();
+      break;
 
     case AppConstants.CLEAR_STORY_FORM:
       _state.story = {
         officer: _state.officer.url,
-        story_type: 'news'
+        'story_type': 'news'
       };
       StoryFormStore.emitChange();
       break;

@@ -4,7 +4,6 @@ var Base = require('../../stores/Base');
 var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var AppConstants = require('../../constants/AppConstants');
 var RelatedOfficersStore = require('./RelatedOfficersStore');
-var EventEmitter = require('events').EventEmitter;
 
 
 var _state = {
@@ -17,7 +16,7 @@ var _state = {
 
 var ComplaintSectionStore = _.assign(Base(_state), {
   intersectedWith: function (activeOfficers) {
-    return function(complaint)  {
+    return function (complaint) {
       var involvedOfficers = _.pluck(complaint.officers, 'id');
       var witnessOfficers = _.pluck(complaint.police_witness, 'officer.pk');
       var officers = _.union(involvedOfficers, witnessOfficers);
@@ -27,9 +26,9 @@ var ComplaintSectionStore = _.assign(Base(_state), {
   },
 
   hasOutcome: function (outcome) {
-    return function(complaint) {
+    return function (complaint) {
       if (outcome == 'all') return true;
-      if (outcome == 'disciplined') return (complaint.officer_allegation.final_outcome_class == 'disciplined');
+      if (outcome == 'disciplined') return (complaint['officer_allegation']['final_outcome_class'] == 'disciplined');
       return ComplaintSectionStore.finalOutcome(complaint) == AppConstants.FILTERS[outcome];
     };
   },
@@ -43,17 +42,17 @@ var ComplaintSectionStore = _.assign(Base(_state), {
   },
 
   finalOutcome: function (complaint) {
-    var final_finding = complaint.officer_allegation.final_finding;
+    var finalFinding = complaint['officer_allegation']['final_finding'];
 
-    if (_(AppConstants.FILTERS).values().contains(final_finding)) {
-      return final_finding;
+    if (_(AppConstants.FILTERS).values().contains(finalFinding)) {
+      return finalFinding;
     }
 
     return 'Other';
   },
 
   isDisciplined: function (complaint) {
-    return complaint.officer_allegation.final_outcome_class == 'disciplined';
+    return complaint['officer_allegation']['final_outcome_class'] == 'disciplined';
   },
 
   analyzeComplaints: function (complaints) {
@@ -65,18 +64,18 @@ var ComplaintSectionStore = _.assign(Base(_state), {
 
 
   updateComplaints: function (activeFilter) {
-    var activeOfficers = RelatedOfficersStore.getState()['activeOfficers'];
-    var activeFilter = _state['activeFilter'] = activeFilter || 'all';
+    var activeOfficers = RelatedOfficersStore.getState()['active_officers'];
+    activeFilter = _state['activeFilter'] = activeFilter || 'all';
     var rawComplaints = _state['rawComplaints'];
 
     _state['complaints'] = ComplaintSectionStore.getComplaints(rawComplaints, activeOfficers, activeFilter);
   }
 });
 
-AppDispatcher.register(function(action) {
+AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.OFFICER_COMPLAINT_LIST_RECEIVED_DATA:
-      _state['complaints'] = _state['rawComplaints'] = action.data.officer_allegations;
+      _state['complaints'] = _state['rawComplaints'] = action.data['officer_allegations'];
       _state['analytics'] = action.data.analytics;
       _state['activeFilter'] = 'all';
       ComplaintSectionStore.emitChange();
@@ -99,7 +98,7 @@ AppDispatcher.register(function(action) {
       break;
 
     default:
-        break;
+      break;
   }
 });
 

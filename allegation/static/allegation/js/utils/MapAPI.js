@@ -1,8 +1,4 @@
-var AppConstants = require('constants/AppConstants');
-
 var MapActions = require('actions/MapActions');
-var OfficerPageActions = require('actions/OfficerPage/OfficerPageActions');
-
 var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFilterTagsQueryBuilder');
 
 var ajax = null;
@@ -22,10 +18,10 @@ var MapAPI = {
     _queryString = queryString;
 
     if (ajax) {
-      ajax.abort()
+      ajax.abort();
     }
 
-    ajax = $.getJSON("/api/officer-allegations/cluster/?" + queryString, function (data) {
+    ajax = $.getJSON('/api/officer-allegations/cluster/?' + queryString, function (data) {
       MapActions.changeMarkers(data);
     });
   }

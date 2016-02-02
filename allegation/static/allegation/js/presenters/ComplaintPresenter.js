@@ -1,8 +1,6 @@
 var _ = require('lodash');
 var moment = require('moment');
 
-var AppConstants = require('../constants/AppConstants');
-
 
 var ComplaintPresenter = function (complaint) {
   var allegation = complaint.allegation || {};
@@ -30,10 +28,10 @@ var ComplaintPresenter = function (complaint) {
 
   var getComplainingWitness = function () {
     var age = complainingWitness.age ? 'Age ' + complainingWitness.age : '';
-    var genderReadable = gender(complainingWitness.gender)
+    var genderReadable = gender(complainingWitness.gender);
     var race = complainingWitness.race || '';
 
-    return _([race, genderReadable, age]).compact().join(', ')
+    return _([race, genderReadable, age]).compact().join(', ');
   };
 
   return {
@@ -41,7 +39,7 @@ var ComplaintPresenter = function (complaint) {
     crid: crid(),
     incidentDate: incidentDate(),
     complainingWitness: getComplainingWitness()
-  }
-}
+  };
+};
 
 module.exports = ComplaintPresenter;

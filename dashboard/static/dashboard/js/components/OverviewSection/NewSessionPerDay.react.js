@@ -1,11 +1,10 @@
-var _ = require('lodash');
 var React = require('react');
 
-var Base = require('../Base.react');
 var NewSessionPerDayChart = require('components/OverviewSection/NewSessionPerDay/NewSessionPerDayChart.react');
 
+
 var NewSessionPerDay = React.createClass({
-  render: function() {
+  render: function () {
     return (
       <div className='row'>
         <div className='col-sm-12'>

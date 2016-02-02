@@ -1,7 +1,5 @@
 var _ = require('lodash');
 
-var AppConstants = require('../../constants/AppConstants');
-
 var FilterTagStore = require('stores/FilterTagStore');
 
 
@@ -20,7 +18,7 @@ var AllegationFilterTagsQueryBuilder = {
     }).join('&');
 
     return query;
-  },
+  }
 };
 
 module.exports = AllegationFilterTagsQueryBuilder;

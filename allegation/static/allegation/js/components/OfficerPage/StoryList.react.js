@@ -5,34 +5,33 @@ var AppConstants = require('../../constants/AppConstants');
 var StoryListStore = require('stores/Officer/StoryListStore');
 var Story = require('components/OfficerPage/Story.react');
 var Base = require('components/Base.react');
-var StoryListAPI = require('utils/StoryListAPI');
 
 
 var StoryList = React.createClass(_.assign(Base(StoryListStore), {
   storyTypesOrder: function () {
-    return AppConstants.STORY_TYPES_ORDER.split(',').map(function(type) {
+    return AppConstants.STORY_TYPES_ORDER.split(',').map(function (type) {
       return type.trim();
     });
   },
 
   render: function () {
     return (
-      <div id="story_list">
+      <div id='story_list'>
         { this.renderStoryInGroup() }
         { this.renderStoryNotInGroup() }
       </div>
     );
   },
 
-  renderStoryGroup: function (stories, story_type) {
+  renderStoryGroup: function (stories, storyType) {
     stories = stories.map(function (story) {
-      return <Story key={story.id} story={story} />
+      return <Story key={ story.id } story={ story } />;
     });
 
     return (
       <div>
-        <div className='row'><h3 className='col-md-12'>{story_type}</h3></div>
-        <div className="row">{stories}</div>
+        <div className='row'><h3 className='col-md-12'>{ storyType }</h3></div>
+        <div className='row'>{ stories }</div>
       </div>
     );
   },
@@ -41,11 +40,11 @@ var StoryList = React.createClass(_.assign(Base(StoryListStore), {
     var that = this;
 
     var storyTypesOrders = this.storyTypesOrder();
-    return _.map(this.groupStories(), function (stories, story_type) {
-      if (storyTypesOrders.indexOf(story_type) != -1) {
+    return _.map(this.groupStories(), function (stories, storyType) {
+      if (storyTypesOrders.indexOf(storyType) != -1) {
         return '';
       }
-      return that.renderStoryGroup(stories, story_type);
+      return that.renderStoryGroup(stories, storyType);
     });
   },
 
@@ -54,13 +53,13 @@ var StoryList = React.createClass(_.assign(Base(StoryListStore), {
     var stories;
     var that = this;
 
-    return _.map(this.storyTypesOrder(), function (story_type) {
-      stories = groupStories[story_type]
+    return _.map(this.storyTypesOrder(), function (storyType) {
+      stories = groupStories[storyType];
 
       if (!stories || !stories.length) {
         return '';
       }
-      return that.renderStoryGroup(stories, story_type);
+      return that.renderStoryGroup(stories, storyType);
     });
   },
 
