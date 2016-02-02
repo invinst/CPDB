@@ -1,6 +1,6 @@
 from allegation.factories import (
     OfficerAllegationFactory, AllegationCategoryFactory)
-from common.tests.core import BaseLiveTestCase, random_fail_test
+from common.tests.core import BaseLiveTestCase, retry_random_fail
 from common.utils.haystack import rebuild_index
 from share.models import Session
 
@@ -190,7 +190,7 @@ class HomePageTestCase(BaseLiveTestCase):
         self.should_see_text(self.officer_allegation.officer.display_name)
         self.should_not_see_text(officer_allegation.officer.display_name)
 
-    @random_fail_test
+    @retry_random_fail
     def test_pin_tag(self):
         officer_allegation = OfficerAllegationFactory()
         another = OfficerAllegationFactory()

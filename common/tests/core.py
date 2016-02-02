@@ -96,7 +96,7 @@ class OpenNewBrowser(object):
         world.browser = self.browser
 
 
-def random_fail_test(f, num_retries=3):
+def retry_random_fail(f, num_retries=3):
     @wraps(f)
     def decorated(*args):
         test_case = args[0]

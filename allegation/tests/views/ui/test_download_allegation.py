@@ -2,7 +2,7 @@ import requests
 
 from allegation.factories import AllegationFactory, PoliceWitnessFactory,\
     ComplainingWitnessFactory, OfficerAllegationFactory
-from common.tests.core import BaseLiveTestCase, random_fail_test
+from common.tests.core import BaseLiveTestCase, retry_random_fail
 
 
 class DownloadAllegationTestCase(BaseLiveTestCase):
@@ -23,7 +23,7 @@ class DownloadAllegationTestCase(BaseLiveTestCase):
     def download_link(self):
         return self.find(".download-wrapper a")
 
-    @random_fail_test
+    @retry_random_fail
     def test_show_processing(self):
         self.download_link.click()
         self.until(lambda: self.find('.download-wrapper').text.should.equal('Processing'))
