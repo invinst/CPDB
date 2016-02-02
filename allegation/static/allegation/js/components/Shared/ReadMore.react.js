@@ -7,7 +7,14 @@ var PropTypes = React.PropTypes;
 var ReadMore = React.createClass({
   propTypes: {
     limit: PropTypes.number.isRequired,
-    content: PropTypes.string.isRequired
+    content: PropTypes.string.isRequired,
+    over: PropTypes.number
+  },
+
+  getDefaultProps: function () {
+    return {
+      over: 1
+    };
   },
 
   getInitialState: function () {
