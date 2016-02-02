@@ -7,7 +7,6 @@ NAME_COL = 0
 YEAR_COL = 1
 
 
-
 class Command(BaseCommand):
     help = 'Import csv data from CSV where data is:' \
            ' last name, first name, current report, current rank'

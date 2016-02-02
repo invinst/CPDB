@@ -25,42 +25,43 @@ var AddSessionAliasModal = React.createClass(_.assign(Base(AddSessionAliasModalS
     return (
       <div className='form-group'>
         <input type='text' className='form-control target-input' name='target' placeholder='Session URL'
-               required="required" onKeyUp={this.checkForm} value={this.state.target}
-               onChange={this.updateValue.bind(this, 'target')} />
+          required='required' onKeyUp={ this.checkForm } value={ this.state.target }
+          onChange={ this.updateValue.bind(this, 'target') } />
       </div>
     );
   },
 
-  render: function() {
+  render: function () {
     var disabled = this.state.formValid ? '' : 'disabled';
     return (
-      <div className="modal fade" id="request_modal" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div className="modal-dialog" role="document">
-          <div className="modal-content">
-            <div className="modal-header">
+      <div className='modal fade' id='request_modal' tabIndex='-1' role='dialog' aria-labelledby='myModalLabel'>
+        <div className='modal-dialog' role='document'>
+          <div className='modal-content'>
+            <div className='modal-header'>
               <h3>Add Session Alias</h3>
             </div>
-            <div className="modal-body">
-              <form className="horizontal-form">
+            <div className='modal-body'>
+              <form className='horizontal-form'>
                 <div className='form-group'>
                   <input type='text' className='form-control alias-input' name='alias' placeholder='Enter alias'
-                         required="required" onKeyUp={this.checkForm} value={this.state.alias}
-                         onChange={this.updateValue.bind(this, 'alias')} />
+                    required='required' onKeyUp={ this.checkForm } value={ this.state.alias }
+                    onChange={ this.updateValue.bind(this, 'alias') } />
                 </div>
                 <div className='form-group'>
                   <input type='text' className='form-control title-input' name='title' placeholder='Enter title'
-                         required="required" onKeyUp={this.checkForm} value={this.state.title}
-                         onChange={this.updateValue.bind(this, 'title')} />
+                    required='required' onKeyUp={ this.checkForm } value={ this.state.title }
+                    onChange={ this.updateValue.bind(this, 'title') } />
                 </div>
-                {this.renderLinkInput()}
+                { this.renderLinkInput() }
               </form>
             </div>
-            <div className="modal-footer">
-              <div className="Text-left">
-                <button type="button" className="btn btn-cancel btn-submit" disabled={disabled} onClick={this.createAlias}>
+            <div className='modal-footer'>
+              <div className='Text-left'>
+                <button type='button' className='btn btn-cancel btn-submit' disabled={ disabled }
+                  onClick={ this.createAlias }>
                   SUBMIT
                 </button>
-                <button type="button" className="btn btn-cancel" onClick={this.hideModal}>Cancel</button>
+                <button type='button' className='btn btn-cancel' onClick={ this.hideModal }>Cancel</button>
               </div>
             </div>
           </div>
@@ -82,7 +83,7 @@ var AddSessionAliasModal = React.createClass(_.assign(Base(AddSessionAliasModalS
     return jQuery(this.getDOMNode()).hasClass('in');
   },
 
-  componentDidUpdate: function() {
+  componentDidUpdate: function () {
     var isOpen = this.isOpen();
     if (isOpen != this.state.isOpen) {
       this.toggleModal();

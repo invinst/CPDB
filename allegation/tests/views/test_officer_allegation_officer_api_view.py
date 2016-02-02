@@ -3,7 +3,7 @@ from django.core import management
 
 from allegation.tests.views.base import OfficerAllegationApiTestBase
 from allegation.factories import (
-    AllegationFactory, OfficerFactory, OfficerAllegationFactory)
+    OfficerFactory, OfficerAllegationFactory)
 
 
 class OfficerAllegationOfficerApiTestCase(OfficerAllegationApiTestBase):

@@ -18,12 +18,12 @@ var OfficerSection = React.createClass(_.assign(Base(OfficerSectionStore), {
 
   content: function () {
     if (this.props.params.id) {
-      return <Officer />
+      return <Officer />;
     }
-    return <OfficerList />
+    return <OfficerList />;
   },
 
-  render: function() {
+  render: function () {
     return (
       <div>
         <div className='row top-nav'>
@@ -44,7 +44,7 @@ var OfficerSection = React.createClass(_.assign(Base(OfficerSectionStore), {
           </div>
         </div>
       </div>
-    )
+    );
   }
 }));
 

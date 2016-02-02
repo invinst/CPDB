@@ -1,3 +1,5 @@
+import re
+
 from allegation.factories import (
     OfficerAllegationFactory, OfficerFactory, ComplainingWitnessFactory,
     AllegationCategoryFactory)
@@ -210,6 +212,16 @@ class RaceGenderTabTest(BaseLiveTestCase):
             chart.find_element_by_css_selector('g.%s' % segment_class).click()
             self.until_ajax_complete()
 
+    def test_race_gender_percentage_add_up_to_100(self):
+        self.create_allegation_with_races()
+        self.create_allegation_with_genders()
+
+        self.go_to_race_gender_tab()
+        self.until_ajax_complete()
+
+        for chart in self.find_all('.percentage-rectangle-chart'):
+            sum([int(re.findall(r'\d+', el.text)[0]) for el in chart.find_all('g text')]).should.equal(100)
+
     def complainant_gender_chart_block(self, block_class):
         block_css_class = '.complaint-gender-chart {block_class}'\
             .format(block_class=block_class)
@@ -230,10 +242,8 @@ class RaceGenderTabTest(BaseLiveTestCase):
         officer_gender_chart = self.find('.officer-gender-chart').text
 
         for gender in self.DISPLAY_GENDERS:
-            complaint_gender_chart.should.contain(
-                self.percent_text(gender, ratio))
-            officer_gender_chart.should.contain(
-                self.percent_text(gender, ratio))
+            self.ensure_correct_percent_text_show(complaint_gender_chart, gender, ratio)
+            self.ensure_correct_percent_text_show(officer_gender_chart, gender, ratio)
 
     def ensure_the_correct_race_data_is_shown(
             self, analysis_for_complainants, analysis_for_officer, total):
@@ -242,13 +252,16 @@ class RaceGenderTabTest(BaseLiveTestCase):
 
         for race in self.DISPLAY_RACES_FOR_COMPLAINANTS:
             ratio = analysis_for_complainants[race] / total
-            complaint_race_chart.should.contain(self.percent_text(race, ratio))
+            self.ensure_correct_percent_text_show(complaint_race_chart, race, ratio)
 
         for race in self.DISPLAY_RACES_FOR_OFFICERS:
             ratio = analysis_for_officer[race] / total
-            officer_race_chart.should.contain(self.percent_text(race, ratio))
+            self.ensure_correct_percent_text_show(officer_race_chart, race, ratio)
 
-    def percent_text(self, label, ratio):
+    def ensure_correct_percent_text_show(self, chart, label, ratio):
+        """This test allow percentage to increase by 1 and still pass."""
         percent = int(ratio * 100)
-        text = "%d" % percent
-        return "{label} {percent}".format(label=label, percent=text)
+        try:
+            chart.should.contain("{label} {percent}".format(label=label, percent=percent))
+        except:
+            chart.should.contain("{label} {percent}".format(label=label, percent=percent + 1))

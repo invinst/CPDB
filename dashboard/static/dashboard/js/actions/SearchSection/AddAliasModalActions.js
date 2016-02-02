@@ -16,11 +16,11 @@ var AddAliasModalActions = {
     });
   },
 
-  createAlias: function(alias, target) {
+  createAlias: function (alias, target) {
     AliasAPI.create(alias, target);
   },
 
-  formDataChange: function(stateName, stateValue) {
+  formDataChange: function (stateName, stateValue) {
     AppDispatcher.dispatch({
       actionType: AppConstants.ALIAS_MODAL_FORM_DATA_CHANGED,
       stateName: stateName,

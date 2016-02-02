@@ -9,7 +9,7 @@ require('keyboardShortcuts');
 global.initReact = function () {
   var element = document.getElementById('router');
 
-  if(element) {
+  if (element) {
     ReactDOM.render(
       <Router />,
       element
@@ -19,8 +19,8 @@ global.initReact = function () {
   var embed = document.getElementById('embed');
   if (embed) {
     ReactDOM.render(
-      <Embed page={PAGE} pk={PK} query={QUERY} state={STATE} />,
+      <Embed page={ PAGE } pk={ PK } query={ QUERY } state={ STATE } />,
       embed
     );
   }
-}
+};

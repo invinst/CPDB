@@ -29,7 +29,8 @@ class SuggestOfficerStar(SuggestBase):
     @classmethod
     def _query(cls, term):
         sqs = SearchQuerySet()
-        raw_results = sqs.filter(officer_star=term).order_by('officer_star_sort').values_list('officer_star', flat=True)[:5]
+        raw_results = sqs.filter(officer_star=term).order_by('officer_star_sort')\
+            .values_list('officer_star', flat=True)[:5]
 
         results = [
             cls.entry_format(

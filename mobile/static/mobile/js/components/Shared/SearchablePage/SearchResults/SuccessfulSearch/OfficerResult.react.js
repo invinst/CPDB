@@ -8,7 +8,7 @@ var OfficerUtil = require('utils/OfficerUtil');
 var AppHistory = require('utils/History');
 
 
-var OfficerNameResult = React.createClass({
+var OfficerResult = React.createClass({
   _onClick: function (presenter) {
     AppHistory.pushState(null, presenter.url);
   },
@@ -19,7 +19,7 @@ var OfficerNameResult = React.createClass({
     var badgeClassName = cx('badge-value', {'highlight': this.props.term == presenter.meta.badge});
 
     return (
-      <li className='officer-name-results outer-glow'>
+      <li className='officer-name-results outer-glow' key={presenter.uniqueKey}>
         <div className='link officer officer-name-result-item' onClick={this._onClick.bind(this, presenter)}>
           <div className='officer-header pad'>
             <span className='officer-label'> Officer<span className='dot-bullet'>&#8226;</span></span>
@@ -45,4 +45,4 @@ var OfficerNameResult = React.createClass({
   }
 });
 
-module.exports = OfficerNameResult;
+module.exports = OfficerResult;

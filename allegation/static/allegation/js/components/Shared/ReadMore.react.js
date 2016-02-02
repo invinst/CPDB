@@ -1,4 +1,3 @@
-var _ =  require('lodash');
 var classnames = require('classnames');
 var React = require('react');
 
@@ -8,18 +7,12 @@ var PropTypes = React.PropTypes;
 var ReadMore = React.createClass({
   propTypes: {
     limit: PropTypes.number.isRequired,
-    content: PropTypes.string.isRequired,
-  },
-
-  getDefaultProps: function () {
-    return {
-      over: 1
-    };
+    content: PropTypes.string.isRequired
   },
 
   getInitialState: function () {
     return {
-      expanded: true,
+      expanded: true
     };
   },
 
@@ -31,24 +24,34 @@ var ReadMore = React.createClass({
     var line = Math.floor(height / lineHeight);
 
     if (line > limit + this.props.over) {
-      this.setState({
-        expanded: false,
-        maxHeight: (limit * lineHeight) + 'px'
-      });
+      this.collapseContent(limit * lineHeight);
     }
+  },
+
+  // TODO: Move this to store for more flux
+  collapseContent: function (maxHeight) {
+    this.setState({
+      expanded: false,
+      maxHeight: maxHeight
+    });
+  },
+
+  toggleContent: function (event) {
+    this.setState({
+      expanded: !this.state.expanded
+    });
   },
 
   renderShowMoreLink: function () {
     if (!this.state.expanded) {
       return (
-        <a href='javascript:void(0)' onClick={this.toggleContent}>Read more...</a>
+        <a href='javascript:void(0)' onClick={ this.toggleContent }>Read more...</a>
       );
     }
     return '';
   },
 
   render: function () {
-    var maxHeight = this.props.limit;
     var contentStyle = {};
     if (!this.state.expanded) {
       contentStyle['max-height'] = this.state.maxHeight;
@@ -59,18 +62,12 @@ var ReadMore = React.createClass({
 
     return (
       <div>
-        <p ref='contentParagraph' className={paragraphClass} style={contentStyle}>
+        <p ref='contentParagraph' className={ paragraphClass } style={ contentStyle }>
           { this.props.content }
         </p>
         { this.renderShowMoreLink() }
       </div>
     );
-  },
-
-  toggleContent: function (event) {
-    this.setState({
-      expanded: !this.state.expanded
-    });
   }
 });
 

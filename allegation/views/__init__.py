@@ -17,7 +17,7 @@ from common.constants import NO_DISCIPLINE_CODES
 from common.json_serializer import JSONSerializer
 from common.models import (
     Allegation, Area, AllegationCategory, Officer, OfficerAllegation)
-from common.models import ComplainingWitness, PoliceWitness
+from common.models import PoliceWitness
 
 
 OFFICER_COMPLAINT_COUNT_RANGE = [
