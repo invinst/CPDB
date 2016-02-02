@@ -452,7 +452,7 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
     def test_allegation_category_on_duty(self):
         expected_allegations = [
             OfficerAllegationFactory(cat=AllegationCategoryFactory(
-                on_duty=False))]
+                on_duty=True))]
         OfficerAllegationFactory()
 
         query_string = 'cat__on_duty=true'
