@@ -24,6 +24,10 @@ var ReadMore = React.createClass({
   },
 
   componentDidMount: function () {
+    setTimeout(this.computeComponentState, 0);
+  },
+
+  computeComponentState: function () {
     var limit = this.props.limit;
     var contentParagraph = $(this.refs.contentParagraph);
     var lineHeight = parseInt(contentParagraph.css('line-height'));
@@ -35,7 +39,6 @@ var ReadMore = React.createClass({
     }
   },
 
-  // TODO: Move this to store for more flux
   collapseContent: function (maxHeight) {
     this.setState({
       expanded: false,
@@ -61,7 +64,7 @@ var ReadMore = React.createClass({
   render: function () {
     var contentStyle = {};
     if (!this.state.expanded) {
-      contentStyle['max-height'] = this.state.maxHeight;
+      contentStyle.maxHeight = this.state.maxHeight;
     }
     var paragraphClass = classnames({
       'has-ellipsis': !this.state.expanded
