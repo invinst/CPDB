@@ -67,8 +67,7 @@ class OfficerAllegationQueryBuilder(object):
             'allegation__investigator',
             'cat__category',
             'allegation__city',
-            'officer__active',
-            'cat__on_duty'
+            'officer__active'
         ]
 
         for key in query_params.keys():
@@ -80,10 +79,6 @@ class OfficerAllegationQueryBuilder(object):
                     if val_lower in ('none', 'null'):
                         val = True
                         key = "%s__isnull" % key
-                    elif val_lower == 'true':
-                        val = True
-                    elif val_lower == 'false':
-                        val = False
                     sub_queries |= Q(**{key: val})
                 queries &= sub_queries
 
@@ -287,3 +282,11 @@ class OfficerAllegationQueryBuilder(object):
             matched_allegation_ids += casted_results
 
         return Q(allegation__pk__in=matched_allegation_ids)
+
+    def _q_category_on_duty(self, query_params):
+        duties = query_params.getlist('cat__on_duty', [])
+        if len(duties) == 0:
+            return Q()
+
+        duties = [duty == 'true' for duty in duties]
+        return Q(cat__on_duty__in=duties)

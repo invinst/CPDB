@@ -4,7 +4,7 @@ from django.contrib.gis.geos.point import Point
 from django.http.request import QueryDict
 from allegation.factories import (
     OfficerAllegationFactory, AllegationFactory, OfficerFactory,
-    ComplainingWitnessFactory)
+    ComplainingWitnessFactory, AllegationCategoryFactory)
 
 from allegation.query_builders import (
     OfficerAllegationQueryBuilder, DISCIPLINE_CODES, NO_DISCIPLINE_CODES)
@@ -445,6 +445,17 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
             investigator=InvestigatorFactory(agency='IPRA')))
 
         query_string = 'allegation__investigator__agency=IAD'
+        expected_ids = [allegation.id for allegation in expected_allegations]
+
+        self.check_built_query(query_string, expected_ids)
+
+    def test_allegation_category_on_duty(self):
+        expected_allegations = [
+            OfficerAllegationFactory(cat=AllegationCategoryFactory(
+                on_duty=False))]
+        OfficerAllegationFactory()
+
+        query_string = 'cat__on_duty=true'
         expected_ids = [allegation.id for allegation in expected_allegations]
 
         self.check_built_query(query_string, expected_ids)
