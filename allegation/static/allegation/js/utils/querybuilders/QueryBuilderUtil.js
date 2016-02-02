@@ -1,7 +1,7 @@
 var _ = require('lodash');
 
 
-function mergeArray (objValue, srcValue) {
+function mergeArray(objValue, srcValue) {
   if (_.isArray(objValue)) {
     return _.union(objValue, srcValue);
   }

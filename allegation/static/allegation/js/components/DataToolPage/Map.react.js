@@ -124,7 +124,7 @@ var Map = React.createClass({
       category: 'allegation__areas__id',
       value: feature.properties.id,
       displayCategory: 'Area',
-      displayValue: area_type + ': ' + feature.properties.name
+      displayValue: areaType + ': ' + feature.properties.name
     };
 
     layer.on('click', function () {

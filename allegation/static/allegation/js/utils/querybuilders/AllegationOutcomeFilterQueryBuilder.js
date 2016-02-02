@@ -10,6 +10,7 @@ var AllegationOutcomeFilterQueryBuilder = {
   },
 
   buildQueryParams: function (activeFilter) {
+    var params;
     activeFilter = activeFilter || ComplaintListStore.getActiveFilter();
 
     switch (activeFilter) {
@@ -19,13 +20,13 @@ var AllegationOutcomeFilterQueryBuilder = {
 
       case 'disciplined':
         params = {
-          final_outcome_class: activeFilter
+          'final_outcome_class': activeFilter
         };
         break;
 
       default:
         params = {
-          final_finding: AppConstants.FILTER_CODES[activeFilter]
+          'final_finding': AppConstants.FILTER_CODES[activeFilter]
         };
         break;
     }
