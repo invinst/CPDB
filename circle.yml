@@ -19,6 +19,7 @@ dependencies:
     - PYTHON=python2 npm install -g npm@3.5.1
     - PYTHON=python2 npm install -g bower@1.7.0
     - PYTHON=python2 npm install -g eslint@1.10.3
+    - PYTHON=python2 npm install -g eslint-plugin-react@3.16.1
     - python manage.py bower_install
     - PYTHON=python2 npm install
     - PYTHON=python2 npm run circleci
