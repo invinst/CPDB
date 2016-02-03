@@ -42,7 +42,7 @@ class SessionAPIView(View):
                 self.prepare_return_data(True, session)
             ))
 
-    def post(self, request):
+    def put(self, request):
         data = json.loads(request.POST.get('request_data', {}))
         ints = Session.id_from_hash(data['hash'])
         owned_sessions = request.session.get('owned_sessions', [])
@@ -64,6 +64,19 @@ class SessionAPIView(View):
         return HttpResponse(JSONSerializer().serialize(
             self.prepare_return_data(False, session)
         ), content_type='application/json')
+
+    def post(self, request):
+        """Clone an existing session, marking the new session as "shared"."""
+        try:
+            session = get_object_or_404(Session, pk=Session.id_from_hash(request.POST['hash_id'])[0])
+        except (KeyError, IndexError):
+            return self.error_response('Bad parameters.')
+        new_session = session.clone()
+        new_session.shared = True
+        new_session.save()
+        return HttpResponse(JSONSerializer().serialize(
+            self.prepare_return_data(False, new_session)
+        ))
 
     def create_new_session(self, request):
         session = Session()

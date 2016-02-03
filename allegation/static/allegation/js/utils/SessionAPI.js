@@ -47,21 +47,28 @@ var SessionAPI = {
       'request_data': JSON.stringify(data)
     };
 
-    if (ajax) {
-      ajax.abort();
-    }
-
     if (!_.isEmpty(data.hash)) {
-      ajax = jQuery.ajax({
+      jQuery.ajax({
         url: AppConstants.SESSION_API_ENDPOINT,
         data: requestData,
         dataType: 'json',
-        type: 'POST',
+        type: 'PUT',
         success: function (data) {
           SessionActions.receivedUpdatedSessionInfoData(data);
         }
       });
     }
+  },
+
+  createSharedSession: function (hashId) {
+    $.ajax({
+      url: AppConstants.SESSION_API_ENDPOINT,
+      data: {'hash_id': hashId},
+      type: 'POST',
+      success: function (data) {
+        SessionActions.receivedSharedSession(data);
+      }
+    });
   }
 };
 
