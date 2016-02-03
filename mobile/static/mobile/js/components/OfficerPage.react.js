@@ -74,7 +74,7 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
                 <div>
                   <div className='tab-summary'>Summary</div>
                   <div className='tab-complaints'>Complaints</div>
-                  <div className='tab-co-accused'>Co-accused officer</div>
+                  <div className='tab-co-accused'>Co-accused</div>
                 </div>
                 <div className='officer-page-content'>
                   <div>

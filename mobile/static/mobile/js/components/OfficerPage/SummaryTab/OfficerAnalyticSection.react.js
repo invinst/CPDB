@@ -1,5 +1,7 @@
 var React = require('react');
 
+var DistributionCurve = require('components/OfficerPage/SummaryTab/DistributionCurve.react');
+
 
 var OfficerAnalyticSection = React.createClass({
   render: function () {
@@ -10,9 +12,9 @@ var OfficerAnalyticSection = React.createClass({
             <span className='section-title bold'>Officer analytics</span>
           </span>
         </div>
-        <div className='distribution-curve center'>
-          <div>
-            (Complaint distribution curve)
+        <div className='distribution-curve'>
+          <div className='distribution-curve-wrapper'>
+            <DistributionCurve />
           </div>
         </div>
       </div>
