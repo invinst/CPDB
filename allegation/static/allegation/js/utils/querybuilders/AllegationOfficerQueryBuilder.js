@@ -1,15 +1,23 @@
-var _ = require('lodash');
+require('utils/jQuery');
 
 var OfficerListStore = require('stores/OfficerListStore');
 
 
 var AllegationOfficerQueryBuilder = {
   buildQuery: function () {
-    var activeOfficers = OfficerListStore.getActiveOfficers();
+    return jQuery.param(AllegationOfficerQueryBuilder.buildQueryParams(), true);
+  },
 
-    return _.map(activeOfficers, function (activeOfficer) {
-      return 'officer=' + activeOfficer;
-    }).join('&');
+  buildQueryParams: function () {
+    var activeOfficers = OfficerListStore.getActiveOfficers() || [];
+
+    if (activeOfficers.length == 0) {
+      return {};
+    }
+
+    return {
+      officer: activeOfficers
+    };
   }
 };
 

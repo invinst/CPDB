@@ -1,6 +1,6 @@
 from haystack.query import SearchQuerySet
 
-from common.constants import RANKS, UNITS
+from common.constants import RANKS, UNITS, ACTIVE_CHOICES
 from search.services.suggest import SuggestBase
 
 
@@ -12,9 +12,13 @@ class SuggestOfficerName(SuggestBase):
 
         results = [
             cls.entry_format(
-                label='{name} ({count})'.format(name=entry.officer_name, count=entry.officer_allegations_count),
-                value=entry.officer_name,
-                filter=cls.build_filter(category='officer', value=entry.officer_id)
+                suggest_value='{name} ({count})'.format(name=entry.officer_name, count=entry.officer_allegations_count),
+                tag_value=cls.build_tag_value(
+                    category='officer',
+                    value=entry.officer_id,
+                    display_category='Officer',
+                    display_value=entry.officer_name,
+                )
             ) for entry in raw_results
         ]
 
@@ -34,9 +38,13 @@ class SuggestOfficerStar(SuggestBase):
 
         results = [
             cls.entry_format(
-                label=entry,
-                value=entry,
-                filter=cls.build_filter(category='officer__star', value=entry)
+                suggest_value=entry,
+                tag_value=cls.build_tag_value(
+                    category='officer__star',
+                    value=entry,
+                    display_category='Badge number',
+                    display_value=entry,
+                )
             ) for entry in raw_results
         ]
 
@@ -55,13 +63,37 @@ class SuggestOfficerUnit(SuggestBase):
 
         results = [
             cls.entry_format(
-                label=entry[0],
-                value=entry[0],
-                filter=cls.build_filter(category='officer__unit', value=entry[1])
+                suggest_value=entry[0],
+                tag_value=cls.build_tag_value(
+                    category='officer__unit',
+                    value=entry[1],
+                    display_category='Officer Unit',
+                    display_value=entry[0],
+                )
             ) for entry in raw_results
         ]
 
         return {'Officer Unit': results}
+
+
+class SuggestOfficerActive(SuggestBase):
+    @classmethod
+    def _query(cls, term):
+        raw_results = cls.suggest_in(term, ACTIVE_CHOICES)
+
+        results = [
+            cls.entry_format(
+                suggest_value=entry[0],
+                tag_value=cls.build_tag_value(
+                    category='officer__active',
+                    value=entry[1],
+                    display_category='Officer Employment Status',
+                    display_value=entry[0]
+                ),
+            ) for entry in raw_results
+        ]
+
+        return {'Officer Employment Status': results}
 
 
 class SuggestOfficerRank(SuggestBase):
@@ -71,9 +103,13 @@ class SuggestOfficerRank(SuggestBase):
 
         results = [
             cls.entry_format(
-                label=entry[0],
-                value=entry[0],
-                filter=cls.build_filter(category='officer__rank', value=entry[1])
+                suggest_value=entry[0],
+                tag_value=cls.build_tag_value(
+                    category='officer__rank',
+                    value=entry[1],
+                    display_category='Officer Rank',
+                    display_value=entry[0],
+                )
             ) for entry in raw_results
         ]
 

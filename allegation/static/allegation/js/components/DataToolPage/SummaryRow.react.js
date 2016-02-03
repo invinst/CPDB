@@ -39,12 +39,14 @@ var SummaryRow = React.createClass({
 
     var current = this.props.category;
 
-    FilterTagsActions.removeCategory('Allegation type');
+    FilterTagsActions.removeCategory('cat');
+    // Generate tagValue on server instead
+    var tagValue = FilterTagStore.generateTagValue('cat__category', current.name, 'Category', current.name);
 
     if (this.isActive(current)) {
-      FilterTagsActions.removeTag('Category', current.name);
+      FilterTagsActions.removeTag(tagValue.category, tagValue.value);
     } else {
-      FilterTagsActions.addTag('Category', current.name, 'cat__category=' + current.name, current.name);
+      FilterTagsActions.addTag(tagValue);
     }
 
     SummaryStore.setCurrentActive(current.name);
@@ -54,11 +56,11 @@ var SummaryRow = React.createClass({
   },
 
   hasActiveChildren: function () {
-    var category = this.props.category, childCategoryName;
+    var category = this.props.category, childCategoryId;
 
     for (var i = 0; i < category.subcategories.length; i++) {
-      childCategoryName = category.subcategories[i].name;
-      if (FilterTagStore.getFilter('Allegation type', childCategoryName)) {
+      childCategoryId = category.subcategories[i].id;
+      if (FilterTagStore.getFilter('cat', childCategoryId)) {
         return true;
       }
     }
@@ -70,8 +72,10 @@ var SummaryRow = React.createClass({
     if (selectedCategories) {
       return selectedCategories.indexOf(category.name) > -1;
     }
-    return !!FilterTagStore.getFilter('Category', category.name);
+
+    return !!FilterTagStore.getFilter('cat__category', category.name);
   },
+
   render: function () {
     var category = this.props.category;
     var style = {

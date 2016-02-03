@@ -34,8 +34,8 @@ var FilterTags = React.createClass(_.assign(Base(FilterTagStore), {
               <i className='fa fa-times'></i>
             </a>
             <span className='filter'>
-              <span className='filter-name'>{ item.value }</span>
-              <span className='filter-category-name'>{ category }</span>
+              <span className='filter-name'>{ item.displayValue }</span>
+              <span className='filter-category-name'>{ item.displayCategory }</span>
             </span>
             <span className='action pin' onClick={ that.pinTag.bind(that, category, item.value) }>
               <i className='fa fa-thumb-tack'></i>
