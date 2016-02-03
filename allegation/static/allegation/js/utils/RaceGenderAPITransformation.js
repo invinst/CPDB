@@ -23,7 +23,7 @@ var RaceGenderAPITransform = {
     var otherFilters = _.map(otherFilterValues, function (x) {
       return { value: x, label: x };
     });
-    var filterCategory = isOfficer ? 'Officer Race' : 'Complainant Race';
+    var filterCategory = isOfficer ? 'officer__race' : 'complainant_race';
     var hasActiveFilter = FilterTagStore.getAll(filterCategory).length > 0;
 
     var raceData = _([
@@ -56,7 +56,7 @@ var RaceGenderAPITransform = {
         isActive = true;
       } else {
         isActive = _(item.filters).reduce(function (active, filter) {
-          return active && FilterTagStore.isInFilter(filterCategory, filter.label);
+          return active && FilterTagStore.isInFilter(filterCategory, filter.value);
         }, true);
       }
 
@@ -73,7 +73,7 @@ var RaceGenderAPITransform = {
   transformGenders: function (genders, isOfficer) {
     var that = this;
 
-    var filterCategory = isOfficer ? 'Officer Gender' : 'Complainant Gender';
+    var filterCategory = isOfficer ? 'officer__gender' : 'complainant_gender';
     var hasActiveFilter = FilterTagStore.getAll(filterCategory).length > 0;
 
     return _(genders).map(function (x, y) {
@@ -83,7 +83,7 @@ var RaceGenderAPITransform = {
         'label': genderLabel,
         'filters': [{ value: y, label: genderLabel}],
         'value': x,
-        'active': !hasActiveFilter || FilterTagStore.isInFilter(filterCategory, genderLabel)
+        'active': !hasActiveFilter || FilterTagStore.isInFilter(filterCategory, y)
       };
     }).sortBy('label').value();
   },

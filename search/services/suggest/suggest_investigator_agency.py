@@ -13,10 +13,14 @@ class SuggestInvestigatorAgency(SuggestBase):
             if agency.lower().startswith(term):
                 ret.append(
                     cls.entry_format(
-                        label=agency,
-                        value=agency,
-                        filter=cls.build_filter(category='allegation__investigator__agency', value=agency)
+                        suggest_value=agency,
+                        tag_value=cls.build_tag_value(
+                            category='allegation__investigator__agency',
+                            value=agency,
+                            display_category='Investigation Agency',
+                            display_value=agency,
+                        )
                     )
                 )
-        return {
-            'Investigation Agency': ret}
+
+        return {'Investigation Agency': ret}

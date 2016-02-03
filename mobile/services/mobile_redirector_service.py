@@ -3,15 +3,11 @@ import inspect
 from common.models import Officer, Allegation
 
 
-def get_filter_value(filter):
-    return filter.split('=')[1]
-
-
 def active_for(type):
     def active_for_decorator(func):
         def func_wrapper(self):
             if type in self.filters:
-                values = [get_filter_value(filter_object['filter']) for filter_object in self.filters[type]]
+                values = [filter_object['value'] for filter_object in self.filters[type]]
                 return func(self, values)
             return []
 
@@ -33,19 +29,19 @@ class DesktopToMobileRedirectorMixin(object):
 
 
 class OfficerSessionDesktopToMobileRedirector(DesktopToMobileRedirectorMixin):
-    @active_for('Officer')
+    @active_for('officer')
     def _redirect_officer_id_only_session(self, values):
         officers = Officer.objects.filter(id__in=values)
         return [officer.get_mobile_url() for officer in officers]
 
-    @active_for('Badge number')
+    @active_for('officer__star')
     def _redirect_officer_badge_only_session(self, values):
         officers = Officer.objects.filter(star__in=values)
         return [officer.get_mobile_url() for officer in officers]
 
 
 class AllegationSessionDesktopToMobileRedirector(DesktopToMobileRedirectorMixin):
-    @active_for('Allegation ID')
+    @active_for('allegation__crid')
     def _redirect_allegation_crid_only_session(self, values):
         allegations = Allegation.objects.filter(crid__in=values)
         return [allegation.get_mobile_url() for allegation in allegations]
