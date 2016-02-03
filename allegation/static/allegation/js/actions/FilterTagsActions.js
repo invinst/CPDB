@@ -29,28 +29,24 @@ function updateSiteData(dontUpdateSession) {
 
 
 var FilterTagsActions = {
-  addTag: function (category, value, filter, text) {
-    ga('send', 'event', 'filter', category, value);
+  addTag: function (tagValue) {
+    ga('send', 'event', 'filter', tagValue.category, tagValue.value);
     if (EmbedStore.isEmbedMode()) {
       return;
     }
     AppDispatcher.dispatch({
       actionType: AppConstants.ADD_TAG,
-      category: category,
-      value: value,
-      filter: filter,
-      text: text
+      tagValue: tagValue
     });
     updateSiteData();
   },
 
-  toggleTags: function (category, tags) {
+  toggleTags: function (tags) {
     if (EmbedStore.isEmbedMode()) {
       return;
     }
     AppDispatcher.dispatch({
       actionType: AppConstants.TOGGLE_TAGS,
-      category: category,
       tags: tags
     });
 

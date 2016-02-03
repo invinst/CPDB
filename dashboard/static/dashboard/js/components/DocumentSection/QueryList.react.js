@@ -10,7 +10,7 @@ var QueryList = React.createClass({
 
   buildQuery: function (query) {
     var result = _.map(query, function (values) {
-      return _.pluck(values, 'value');
+      return _.pluck(values, 'displayValue');
     });
     return _.flatten(result);
   },

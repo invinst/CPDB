@@ -13,16 +13,25 @@ class SuggestAllegationCategoryCat(SuggestBase):
 
         cat_id_results = [
             cls.entry_format(
-                label=entry[0],
-                value=entry[0],
-                filter=cls.build_filter(category='cat__cat_id', value=entry[0])
-            ) for entry in raw_results]
+                suggest_value=entry[0],
+                tag_value=cls.build_tag_value(
+                    category='cat__cat_id',
+                    value=entry[0],
+                    display_category='Category ID',
+                    display_value=entry[0],
+                )
+            ) for entry in raw_results
+        ]
 
         cat_results = [
             cls.entry_format(
-                label=entry[1],
-                value=entry[1],
-                filter=cls.build_filter(category='cat', value=entry[2])
+                suggest_value=entry[1],
+                tag_value=cls.build_tag_value(
+                    category='cat',
+                    value=entry[2],
+                    display_category='Allegation type',
+                    display_value=entry[1],
+                )
             ) for entry in raw_results
         ]
 
@@ -42,10 +51,33 @@ class SuggestAllegationCategoryCategory(SuggestBase):
 
         results = [
             cls.entry_format(
-                label=entry,
-                value=entry,
-                filter=cls.build_filter(category='cat__category', value=entry)
+                suggest_value=entry,
+                tag_value=cls.build_tag_value(
+                    category='cat__category',
+                    value=entry,
+                    display_category='Category',
+                    display_value=entry,
+                )
             ) for entry in raw_results
         ]
 
         return {'Category': results}
+
+
+class SuggestAllegationCategoryOnDuty(SuggestBase):
+    @classmethod
+    def _query(cls, term):
+        raw_results = cls.suggest_in(term, [[True, 'On Duty'], [False, 'Off Duty']])
+
+        results = [
+            cls.entry_format(
+                suggest_value=entry[0],
+                tag_value=cls.build_tag_value(
+                    category='cat__on_duty',
+                    value=entry[1],
+                    display_category='Category On Duty',
+                    display_value=entry[1]
+                ),
+            ) for entry in raw_results
+        ]
+        return {'Category On Duty': results}

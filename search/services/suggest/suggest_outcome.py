@@ -9,17 +9,25 @@ class SuggestOutcome(SuggestBase):
 
         final_outcome_results = [
             cls.entry_format(
-                label=entry[0],
-                value=entry[0],
-                filter=cls.build_filter(category='final_outcome', value=entry[1])
+                suggest_value=entry[0],
+                tag_value=cls.build_tag_value(
+                    category='final_outcome',
+                    value=entry[1],
+                    display_category='Final Outcome',
+                    display_value=entry[0],
+                )
             ) for entry in raw_results
         ]
 
         recc_outcome_results = [
             cls.entry_format(
-                label=entry[0],
-                value=entry[0],
-                filter=cls.build_filter(category='recc_outcome', value=entry[1])
+                suggest_value=entry[0],
+                tag_value=cls.build_tag_value(
+                    category='recc_outcome',
+                    value=entry[1],
+                    display_category='Recommended Outcome',
+                    display_value=entry[0],
+                )
             ) for entry in raw_results
         ]
 
@@ -36,9 +44,13 @@ class SuggestOutcomeText(SuggestBase):
 
         results = [
             cls.entry_format(
-                label=entry[0],
-                value=entry[0],
-                filter=cls.build_filter(category='outcome_text', value=entry[1])
+                suggest_value=entry[0],
+                tag_value=cls.build_tag_value(
+                    category='outcome_text',
+                    value=entry[1],
+                    display_category='Outcome',
+                    display_value=entry[0],
+                )
             ) for entry in raw_results
         ]
 
