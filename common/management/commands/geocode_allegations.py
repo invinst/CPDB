@@ -1,10 +1,6 @@
-import urllib
-import json
-
 from django.core.management.base import BaseCommand
-from common.models import Allegation, Area
 
-
+from common.models import Allegation
 from common.utils.geocode import geocode_address, get_address, set_areas
 
 
@@ -18,7 +14,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         counter = 0
         kwargs = {}
-        verbose = options.get('verbose') != False
+        verbose = options.get('verbose') is not False
 
         if options.get('crid'):
             kwargs['crid__in'] = options['crid']
