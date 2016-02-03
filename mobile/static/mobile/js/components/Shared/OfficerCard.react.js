@@ -6,6 +6,13 @@ var OfficerUtil = require('utils/OfficerUtil');
 
 
 var OfficerCard = React.createClass({
+  propTypes: {
+    officerId: React.PropTypes.number,
+    allegationsCount: React.PropTypes.number,
+    displayName: React.PropTypes.string,
+    description: React.PropTypes.string
+  },
+
   render: function () {
     var officerClassname = HelperUtil.format('officer-{id}', {'id': this.props.officerId});
     var classNames = cx('officer-card pad', officerClassname);

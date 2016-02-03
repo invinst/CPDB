@@ -4,6 +4,10 @@ var DataTypeUtil = require('utils/DataTypeUtil');
 
 
 var FailedSearch = React.createClass({
+  propTypes: {
+    term: React.PropTypes.string
+  },
+
   render: function () {
     var term = this.props.term;
     var textMessage = 'No matches yet.';

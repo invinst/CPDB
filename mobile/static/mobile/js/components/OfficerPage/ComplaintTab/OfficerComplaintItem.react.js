@@ -10,6 +10,11 @@ var HelperUtil = require('utils/HelperUtil');
 
 
 var OfficerComplaintItem = React.createClass({
+  propTypes: {
+    complaint: React.PropTypes.object,
+    officer: React.PropTypes.object
+  },
+
   renderCircles: function (allegationCounts) {
     var circles = [];
     var officerUtil = OfficerUtil();

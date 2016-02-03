@@ -2,6 +2,12 @@ var React = require('react');
 
 
 var Wrapper = React.createClass({
+  propTypes: {
+    wrapperClass: React.PropTypes.string,
+    visible: React.PropTypes.bool,
+    children: React.PropTypes.element
+  },
+
   render: function () {
     if (this.props.visible) {
       return (

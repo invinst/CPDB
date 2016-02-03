@@ -24,7 +24,8 @@ module.exports = {
   MAIN_PAGE_FAILED_TO_RECEIVED_DATA: c++,
 
   // Tokens
-  MAPBOX_TOKEN: '***REMOVED***',
+  MAPBOX_TOKEN:
+    '***REMOVED***',
 
   // Other constants
   FINAL_FINDINGS: {

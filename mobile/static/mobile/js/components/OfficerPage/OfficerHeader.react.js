@@ -4,6 +4,10 @@ var OfficerPresenter = require('presenters/OfficerPresenter');
 
 
 var OfficerHeader = React.createClass({
+  propTypes: {
+    officer: React.PropTypes.object
+  },
+
   render: function () {
     var officerPresenter = OfficerPresenter(this.props.officer);
 

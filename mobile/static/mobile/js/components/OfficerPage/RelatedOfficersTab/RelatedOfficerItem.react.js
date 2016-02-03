@@ -9,6 +9,10 @@ var HelperUtil = require('utils/HelperUtil');
 
 
 var RelatedOfficerItem = React.createClass({
+  propTypes: {
+    officer: React.PropTypes.object,
+    type: React.PropTypes.string
+  },
 
   _onClick: function () {
     var officer = this.props.officer;
@@ -24,7 +28,9 @@ var RelatedOfficerItem = React.createClass({
     var numberOfAllegations = officer['num_allegations'];
     var presenter = OfficerPresenter(officer);
     var officerUtil = OfficerUtil();
-    var relatedOfficerClassName = cx('related-officer-item', 'pad', HelperUtil.format('officer-{index}', {'index': presenter.id}));
+    var relatedOfficerClassName = cx('related-officer-item', 'pad',
+      HelperUtil.format('officer-{index}', {'index': presenter.id})
+    );
 
     return (
       <div className={ relatedOfficerClassName } onClick={ this._onClick }>

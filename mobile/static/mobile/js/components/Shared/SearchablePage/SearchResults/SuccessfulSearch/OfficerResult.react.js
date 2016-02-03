@@ -8,13 +8,18 @@ var AppHistory = require('utils/History');
 
 
 var OfficerResult = React.createClass({
+  propTypes: {
+    term: React.PropTypes.string,
+    suggestions: React.PropTypes.array
+  },
+
   _onClick: function (presenter) {
     AppHistory.pushState(null, presenter.url);
   },
 
   renderOfficerCard: function (suggestion) {
     var presenter = SuggestionPresenter(suggestion);
-    var displayName = (<HighlightText fullText={ presenter.text } textToFind={ this.props.term }></HighlightText>);
+    var displayName = (<HighlightText fullText={ presenter.text } textToFind={ this.props.term } />);
     var badgeClassName = cx('badge-value', {'highlight': this.props.term == presenter.meta.badge});
 
     return (
@@ -27,8 +32,8 @@ var OfficerResult = React.createClass({
             <span className='complaint-count'>{ presenter.meta.allegationsCount } complaints</span>
           </div>
           <OfficerCard officerId={ presenter.resourceKey } allegationsCount={ presenter.meta.allegationsCount }
-                       displayName={ displayName }
-                       description={ presenter.meta.description }
+            displayName={ displayName }
+            description={ presenter.meta.description }
           />
         </div>
       </li>

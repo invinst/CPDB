@@ -5,6 +5,10 @@ var Wrapper = require('components/Shared/Wrapper.react');
 
 
 var ComplainingWitness = React.createClass({
+  propTypes: {
+    complainingWitness: React.PropTypes.array
+  },
+
   renderComplaintWitnessRow: function (complainingWitness) {
     var complainingWitnessPresenter = ComplainingWitnessPresenter(complainingWitness);
 
@@ -32,10 +36,10 @@ var ComplainingWitness = React.createClass({
     return (
       <Wrapper visible={ numberOfComplainingWitness > 0 } wrapperClass='complaining-witness'>
         <div className='section-header'>
-            <span className='pad'>
-              <span className='section-title bold'>Complaining Witness&nbsp;</span>
-              <span className='title-count normal-weight'>({ numberOfComplainingWitness })</span>
-            </span>
+          <span className='pad'>
+            <span className='section-title bold'>Complaining Witness&nbsp;</span>
+            <span className='title-count normal-weight'>({ numberOfComplainingWitness })</span>
+          </span>
         </div>
         <div className='complaining-witness-list pad'>
           { this.renderComplainingWitnessList(complainingWitnesses) }

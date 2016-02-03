@@ -5,6 +5,10 @@ var ComplaintService = require('services/ComplaintService');
 
 
 var ThreeNodesTimeline = React.createClass({
+  propTypes: {
+    info: React.PropTypes.object
+  },
+
   render: function () {
     var dashLine = {
       'vectorEffect': 'non-scaling-stroke',

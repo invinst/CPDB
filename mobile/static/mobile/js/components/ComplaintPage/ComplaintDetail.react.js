@@ -5,6 +5,10 @@ var DocumentLink = require('components/ComplaintPage/DocumentLink.react');
 
 
 var ComplaintDetail = React.createClass({
+  propTypes: {
+    info: React.PropTypes.object
+  },
+
   render: function () {
     var info = this.props.info || {};
     var complaintPresenter = ComplaintPresenter(info);
@@ -27,7 +31,7 @@ var ComplaintDetail = React.createClass({
           { complaintPresenter.allegationName }
         </div>
         <DocumentLink documentId={ complaintPresenter.documentId }
-                      documentNormalizedTitle={ complaintPresenter.documentNormalizedTitle } />
+          documentNormalizedTitle={ complaintPresenter.documentNormalizedTitle } />
       </div>
     );
   }

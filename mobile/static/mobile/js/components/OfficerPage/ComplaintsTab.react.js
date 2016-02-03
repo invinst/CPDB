@@ -4,6 +4,11 @@ var OfficerComplaintItem = require('components/OfficerPage/ComplaintTab/OfficerC
 
 
 var ComplaintsTab = React.createClass({
+  propTypes: {
+    officer: React.PropTypes.object,
+    complaints: React.PropTypes.array
+  },
+
   renderComplaintItem: function (complaint) {
     return (
       <div key={ complaint['data']['crid'] }>

@@ -6,6 +6,10 @@ var NoRelatedOfficer = require('components/OfficerPage/RelatedOfficersTab/NoRela
 
 //FIXME : Should refactor this component since we removed witness officers from the related officers
 var RelatedOfficersTab = React.createClass({
+  propTypes: {
+    coAccused: React.PropTypes.array
+  },
+
   renderRelatedOfficers: function (type) {
     return function (officer) {
       return (

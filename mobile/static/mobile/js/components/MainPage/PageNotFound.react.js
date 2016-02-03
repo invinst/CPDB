@@ -3,6 +3,10 @@ var React = require('react');
 
 
 var PageNotFound = React.createClass({
+  propTypes: {
+    topLeft: React.PropTypes.bool
+  },
+
   render: function () {
     var classNames = cx('animation', 'pad', {'top-left': this.props.topLeft});
 
@@ -13,7 +17,8 @@ var PageNotFound = React.createClass({
         </div>
         <div className='page-not-found-description'>
           <div>
-            The link you entered isn’t recorded in our database. Please start a new search by entering in keywords below.
+            The link you entered isn’t recorded in our database. Please start a new search by entering in keywords
+            below.
           </div>
         </div>
       </div>

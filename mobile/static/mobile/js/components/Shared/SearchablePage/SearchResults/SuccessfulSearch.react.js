@@ -7,6 +7,11 @@ var SuggestionPresenter = require('presenters/SuggestionPresenter');
 
 
 var SuccessfulSearch = React.createClass({
+  propTypes: {
+    term: React.PropTypes.string,
+    suggestions: React.PropTypes.array
+  },
+
   getSubComponentFor: function (type) {
     var subComponentMapper = {
       'officer': OfficerResult,
@@ -23,7 +28,7 @@ var SuccessfulSearch = React.createClass({
     var SubComponent = this.getSubComponentFor(suggestionType);
 
     return (
-      <SubComponent term={ term } suggestions={ suggestions } />
+      <SubComponent term={ term } suggestions={ suggestions }/>
     );
   },
 

@@ -6,6 +6,11 @@ var Wrapper = require('components/Shared/Wrapper.react');
 
 
 var SimpleTab = React.createClass({
+  propTypes: {
+    children: React.PropTypes.element,
+    navigation: React.PropTypes.bool
+  },
+
   getInitialState: function () {
     return {
       'activeIndex': 0,

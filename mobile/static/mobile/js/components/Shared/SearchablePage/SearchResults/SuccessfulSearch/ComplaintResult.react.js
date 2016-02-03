@@ -6,6 +6,10 @@ var SuggestionPresenter = require('presenters/SuggestionPresenter');
 
 
 var ComplaintResult = React.createClass({
+  propTypes: {
+    suggestions: React.PropTypes.array
+  },
+
   _onClick: function () {
     var officer = this.props.suggestions[0];
     var presenter = SuggestionPresenter(officer);
@@ -24,7 +28,9 @@ var ComplaintResult = React.createClass({
               <span className='complaint-label'> Complaint<span className='dot-bullet'>&#8226;</span></span>
               <span className='crid-title'>&nbsp; CRID&nbsp;</span>
               <span className='crid-value highlight'>{ presenter.resourceKey }</span>
-              <span className='incident-date'>{ presenter.meta.getIncidentDate(AppConstants.SEARCH_INCIDENT_DATE_FORMAT) }</span>
+              <span className='incident-date'>
+                { presenter.meta.getIncidentDate(AppConstants.SEARCH_INCIDENT_DATE_FORMAT) }
+              </span>
             </div>
             <div className='complaint-category pad'>
               <div className='sub-category bold'>

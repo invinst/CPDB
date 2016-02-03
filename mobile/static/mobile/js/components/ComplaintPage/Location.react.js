@@ -3,18 +3,22 @@ var React = require('react');
 
 var Map = require('components/ComplaintPage/Location/Map.react');
 var ComplaintService = require('services/ComplaintService');
-var ComplaintPresenter= require('presenters/ComplaintPresenter');
+var ComplaintPresenter = require('presenters/ComplaintPresenter');
 var Wrapper = require('components/Shared/Wrapper.react');
 
 
 var Location = React.createClass({
+  propTypes: {
+    info: React.PropTypes.object
+  },
+
   renderLocationInfoItem: function (label, data) {
     return (
-        <Wrapper visible={ !!data }>
-          <label>{ label } </label>
-          <span>{ data }</span>
-        </Wrapper>
-      );
+      <Wrapper visible={ !!data }>
+        <label>{ label } </label>
+        <span>{ data }</span>
+      </Wrapper>
+    );
   },
 
   render: function () {

@@ -5,6 +5,10 @@ var OfficerPresenter = require('presenters/OfficerPresenter');
 
 
 var OfficerSummarySection = React.createClass({
+  propTypes: {
+    officer: React.PropTypes.object
+  },
+
   renderSummaryInfoItem: function (label, data) {
     return (
       <Wrapper visible={ !!data }>

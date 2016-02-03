@@ -7,6 +7,10 @@ var Wrapper = require('components/Shared/Wrapper.react');
 
 
 var InvestigationTimeline = React.createClass({
+  propTypes: {
+    info: React.PropTypes.object
+  },
+
   renderTimeline: function (info, service) {
     if (service.startInvestigatingAtIncidentDate) {
       return (

@@ -39,7 +39,8 @@ var ComplaintService = function (complaint) {
   };
 
   var hasLocation = function () {
-    return complaint.beat || complaint.location || complaint.add1 || complaint.add2 || complaint.city || complaint.point;
+    return complaint.beat || complaint.location || complaint.add1 || complaint.add2 || complaint.city
+      || complaint.point;
   };
 
   var hasFullAddress = function () {

@@ -2,6 +2,10 @@ var React = require('react');
 
 
 var NotMatchedPage = React.createClass({
+  propTypes: {
+    crid: React.PropTypes.number
+  },
+
   render: function () {
     var crid = this.props.crid;
 

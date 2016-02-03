@@ -1,3 +1,4 @@
+/*eslint react/no-is-mounted:0 */
 var Base = function (Store) {
   return {
     getInitialState: function () {

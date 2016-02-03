@@ -10,6 +10,9 @@ var AppHistory = require('utils/History');
 
 
 var OfficerInvolved = React.createClass({
+  propTypes: {
+    involvedOfficers: React.PropTypes.array
+  },
   _onClick: function (officerPresenter) {
     var officerUrl = HelperUtil.format('/officer/{name}/{id}', {
       'name': officerPresenter.displayName,

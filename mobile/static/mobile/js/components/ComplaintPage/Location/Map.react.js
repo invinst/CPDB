@@ -10,6 +10,10 @@ var Wrapper = require('components/Shared/Wrapper.react');
 
 
 var Map = React.createClass({
+  propTypes: {
+    info: React.PropTypes.object
+  },
+
   componentDidMount: function () {
     var complaintService = ComplaintService(this.props.info);
     var point = this.props.info.point;
@@ -37,9 +41,8 @@ var Map = React.createClass({
 
   render: function () {
     return(
-        <Wrapper wrapperClass='map' visible={ !!this.props.info.point }>
-        </Wrapper>
-      );
+      <Wrapper wrapperClass='map' visible={ !!this.props.info.point } />
+    );
   }
 });
 

@@ -59,10 +59,10 @@ var SearchBar = React.createClass(objectAssign(Base(SearchBarStore), {
     return (
       <div className='search-bar animation'>
         <input className='input-text' placeholder='Search officers or complaints'
-               onChange={ this._onInputChange }
-               onFocus={ this._onFocus }
-               value={ this.state.term }
-               onBlur={ this._onBlur }/>
+          onChange={ this._onInputChange }
+          onFocus={ this._onFocus }
+          value={ this.state.term }
+          onBlur={ this._onBlur }/>
         <span className={ iconClassName } onClick={ this._onSearchIconClick }></span>
       </div>
     );

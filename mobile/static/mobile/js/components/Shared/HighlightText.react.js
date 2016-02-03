@@ -2,6 +2,11 @@ var React = require('react');
 
 
 var HighlightText = React.createClass({
+  propTypes: {
+    fullText: React.PropTypes.string,
+    textToFind: React.PropTypes.string
+  },
+
   render: function () {
     var fullText = this.props.fullText.toString();
     var textToFind = this.props.textToFind.toString();

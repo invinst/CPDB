@@ -5,6 +5,11 @@ var DocumentLinkPresenter = require('presenters/DocumentLinkPresenter');
 
 
 var DocumentLink = React.createClass({
+  propTypes: {
+    documentId: React.PropTypes.number,
+    documentNormalizedTitle: React.PropTypes.string
+  },
+
   getDocumentLink: function (documentId, documentNormalizedTitle) {
     var presenter = DocumentLinkPresenter(documentId, documentNormalizedTitle);
     var deviceUtil = DeviceUtil();

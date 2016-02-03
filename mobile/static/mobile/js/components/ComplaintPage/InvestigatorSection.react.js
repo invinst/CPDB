@@ -4,6 +4,10 @@ var Wrapper = require('components/Shared/Wrapper.react');
 var HelperUtil = require('utils/HelperUtil');
 
 var InvestigatorSection = React.createClass({
+  propTypes: {
+    info: React.PropTypes.object
+  },
+
   renderInvestigator: function (investigator) {
     var currentRank = HelperUtil.fetch(investigator, 'current_rank', 'Rank unknown');
 
