@@ -13,9 +13,9 @@ var MainPageContent = React.createClass({
     var projectSummaryClassNames = cx('main-page-content', {'top-left': topLeft});
 
     return (
-      <div className={projectSummaryClassNames}>
-        <ProjectSummary topLeft={topLeft} />
-        <div className={searchBarWrapperClassNames}>
+      <div className={ projectSummaryClassNames }>
+        <ProjectSummary topLeft={ topLeft } />
+        <div className={ searchBarWrapperClassNames }>
           <SearchBar />
         </div>
         <SearchResults />

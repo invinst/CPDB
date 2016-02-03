@@ -6,8 +6,8 @@ var OfficerComplaintItem = require('components/OfficerPage/ComplaintTab/OfficerC
 var ComplaintsTab = React.createClass({
   renderComplaintItem: function (complaint) {
     return (
-      <div key={complaint['data']['crid']}>
-        <OfficerComplaintItem officer={this.props.officer} complaint={complaint}/>
+      <div key={ complaint['data']['crid'] }>
+        <OfficerComplaintItem officer={ this.props.officer } complaint={ complaint }/>
       </div>
     );
   },
@@ -17,7 +17,7 @@ var ComplaintsTab = React.createClass({
 
     return (
       <div className='complaints-tab'>
-        {complaints.map(this.renderComplaintItem)}
+        { complaints.map(this.renderComplaintItem) }
       </div>
     );
   }

@@ -10,22 +10,22 @@ var InvestigationTimeline = React.createClass({
   renderTimeline: function (info, service) {
     if (service.startInvestigatingAtIncidentDate) {
       return (
-        <TwoNodesTimeline info={info} />
+        <TwoNodesTimeline info={ info } />
       );
     }
 
     return (
-      <ThreeNodesTimeline  info={info} />
+      <ThreeNodesTimeline info={ info } />
     );
   },
 
-  render: function() {
+  render: function () {
     var info = this.props.info;
     var complaintService = ComplaintService(info);
 
     return (
-      <Wrapper visible={!complaintService.haveNoData} wrapperClass='investigation-timeline'>
-        {this.renderTimeline(info, complaintService)}
+      <Wrapper visible={ !complaintService.haveNoData } wrapperClass='investigation-timeline'>
+        { this.renderTimeline(info, complaintService) }
       </Wrapper>
     );
   }

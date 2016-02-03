@@ -7,7 +7,7 @@ var ProjectSummary = React.createClass({
     var topLeft = this.props.topLeft;
 
     return (
-      <div className={cx('project-summary animation', {'top-left': topLeft})}>
+      <div className={ cx('project-summary animation', {'top-left': topLeft}) }>
           <div className='cpdb-logo'>CPDP</div>
           <div className='cpdb-description'>
             <div className='paragraph'>Allegations of police misconduct are public information.</div>

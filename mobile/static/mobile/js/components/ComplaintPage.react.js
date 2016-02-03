@@ -50,7 +50,7 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
 
     if (!found) {
       return (
-        <NotMatchedPage crid={this.state.crid} />
+        <NotMatchedPage crid={ this.state.crid } />
       );
     }
 
@@ -59,12 +59,12 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
         <div className='complaint-page'>
           <div className='container content'>
             <div className='main-content'>
-              <ComplaintDetail info={info} />
-              <InvestigationTimeline info={info} />
-              <ComplainingWitness complainingWitness={complainingWitness} />
-              <OfficerInvolved involvedOfficers={involvedOfficers} />
-              <InvestigatorSection info={info} />
-              <Location info={info} />
+              <ComplaintDetail info={ info } />
+              <InvestigationTimeline info={ info } />
+              <ComplainingWitness complainingWitness={ complainingWitness } />
+              <OfficerInvolved involvedOfficers={ involvedOfficers } />
+              <InvestigatorSection info={ info } />
+              <Location info={ info } />
             </div>
           </div>
         </div>

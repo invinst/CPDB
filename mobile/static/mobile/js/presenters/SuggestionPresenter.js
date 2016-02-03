@@ -22,7 +22,7 @@ var SuggestionPresenter = function (suggestion) {
   };
 
   var getMetaPresenter = function () {
-    var meta  = HelperUtil.fetch(suggestion, 'meta', '');
+    var meta = HelperUtil.fetch(suggestion, 'meta', '');
 
     var RESOURCE_PRESENTER_MAP = {
       'officer': OfficerPresenter,

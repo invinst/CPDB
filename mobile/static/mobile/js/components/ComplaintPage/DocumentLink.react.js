@@ -26,7 +26,7 @@ var DocumentLink = React.createClass({
 
     var documentLink = this.getDocumentLink(documentId, documentNormalizedTitle);
     return (
-      <a href={documentLink} className='document-link'>
+      <a href={ documentLink } className='document-link'>
         View documents
       </a>
     );

@@ -15,8 +15,8 @@ var InvestigatorSection = React.createClass({
           </div>
           <div className='eleven columns'>
             <div className='investigator'>
-              <div className='name bold'>{investigator['name']}</div>
-              <div className='rank'>{currentRank}</div>
+              <div className='name bold'>{ investigator['name'] }</div>
+              <div className='rank'>{ currentRank }</div>
             </div>
           </div>
         </div>
@@ -27,11 +27,11 @@ var InvestigatorSection = React.createClass({
   render: function () {
     var investigator = HelperUtil.fetch(this.props.info, 'investigator', false);
     return (
-      <Wrapper wrapperClass='investigator-section' visible={!!investigator}>
+      <Wrapper wrapperClass='investigator-section' visible={ !!investigator }>
         <div className='row section-header'>
           <span className='section-title bold pad'>Investigator</span>
         </div>
-        {this.renderInvestigator(investigator)}
+        { this.renderInvestigator(investigator) }
       </Wrapper>
     );
   }

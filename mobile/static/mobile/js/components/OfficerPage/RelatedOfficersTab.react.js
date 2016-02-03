@@ -9,7 +9,7 @@ var RelatedOfficersTab = React.createClass({
   renderRelatedOfficers: function (type) {
     return function (officer) {
       return (
-        <RelatedOfficerItem type={type} officer={officer} key={officer.id}/>
+        <RelatedOfficerItem type={ type } officer={ officer } key={ officer.id }/>
       );
     };
   },
@@ -32,7 +32,7 @@ var RelatedOfficersTab = React.createClass({
     return (
       <div className='related-officers-tab'>
         <div className='co-accused-list'>
-          {coAccused.map(this.renderRelatedOfficers('Co-accused'))}
+          { coAccused.map(this.renderRelatedOfficers('Co-accused')) }
         </div>
       </div>
     );

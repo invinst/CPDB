@@ -14,20 +14,20 @@ var ComplaintDetail = React.createClass({
         <div className='headline'>
           <span className='crid-info inline-block half-width align-left'>
             <span className='crid-title'>CRID</span>
-            <span className='crid-number'>{info['crid']}</span>
+            <span className='crid-number'>{ info['crid'] }</span>
           </span>
           <span className='final-finding inline-block half-width align-right'>
-            {complaintPresenter.finalFinding}
+            { complaintPresenter.finalFinding }
           </span>
         </div>
         <div className='complaint-category bold'>
-          {complaintPresenter.category}
+          { complaintPresenter.category }
         </div>
         <div className='complaint-sub-category'>
-          {complaintPresenter.allegationName}
+          { complaintPresenter.allegationName }
         </div>
-        <DocumentLink documentId={complaintPresenter.documentId}
-                      documentNormalizedTitle={complaintPresenter.documentNormalizedTitle} />
+        <DocumentLink documentId={ complaintPresenter.documentId }
+                      documentNormalizedTitle={ complaintPresenter.documentNormalizedTitle } />
       </div>
     );
   }

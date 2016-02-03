@@ -33,8 +33,8 @@ var MainPage = React.createClass(objectAssign(Base(MainPageStore), {
 
     return (
       <div className='main-page content'>
-        <MainPageContent topLeft={isSearchFocused} />
-        <About topLeft={isSearchFocused}/>
+        <MainPageContent topLeft={ isSearchFocused } />
+        <About topLeft={ isSearchFocused }/>
       </div>
     );
   }

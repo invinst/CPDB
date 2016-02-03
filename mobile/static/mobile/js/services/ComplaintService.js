@@ -38,15 +38,15 @@ var ComplaintService = function (complaint) {
     return !startInvestigationDate() || startInvestigationDate().isSame(incidentDate(), 'day');
   };
 
-  var hasLocation = function() {
+  var hasLocation = function () {
     return complaint.beat || complaint.location || complaint.add1 || complaint.add2 || complaint.city || complaint.point;
   };
 
-  var hasFullAddress = function() {
+  var hasFullAddress = function () {
     return complaint.add1 && complaint.add2;
   };
 
-  var hasNoData = function() {
+  var hasNoData = function () {
     return !complaint.locationType && !hasLocation();
   };
 

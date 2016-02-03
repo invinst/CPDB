@@ -23,14 +23,14 @@ var SuccessfulSearch = React.createClass({
     var SubComponent = this.getSubComponentFor(suggestionType);
 
     return (
-      <SubComponent term={term} suggestions={suggestions} />
+      <SubComponent term={ term } suggestions={ suggestions } />
     );
   },
 
   render: function () {
     return (
       <div className='success-search'>
-        {this.renderSuggestionItem()}
+        { this.renderSuggestionItem() }
       </div>
     );
   }

@@ -7,9 +7,9 @@ var OfficerPresenter = require('presenters/OfficerPresenter');
 var OfficerSummarySection = React.createClass({
   renderSummaryInfoItem: function (label, data) {
     return (
-      <Wrapper visible={!!data}>
-        <span className='label'>{label} </span>
-        <span className='value'>{data}</span>
+      <Wrapper visible={ !!data }>
+        <span className='label'>{ label } </span>
+        <span className='value'>{ data }</span>
       </Wrapper>
     );
   },
@@ -20,11 +20,11 @@ var OfficerSummarySection = React.createClass({
     return (
       <div className='officer-summary-section'>
         <div className='pad'>
-          {this.renderSummaryInfoItem('Rank', officerPresenter.rank)}
-          {this.renderSummaryInfoItem('Unit', officerPresenter.unit)}
-          {this.renderSummaryInfoItem('Joined', officerPresenter.joinedDate)}
-          {this.renderSummaryInfoItem('Sex', officerPresenter.gender)}
-          {this.renderSummaryInfoItem('Race', officerPresenter.race)}
+          { this.renderSummaryInfoItem('Rank', officerPresenter.rank) }
+          { this.renderSummaryInfoItem('Unit', officerPresenter.unit) }
+          { this.renderSummaryInfoItem('Joined', officerPresenter.joinedDate) }
+          { this.renderSummaryInfoItem('Sex', officerPresenter.gender) }
+          { this.renderSummaryInfoItem('Race', officerPresenter.race) }
         </div>
       </div>
     );

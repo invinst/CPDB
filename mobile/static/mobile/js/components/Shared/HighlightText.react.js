@@ -13,11 +13,11 @@ var HighlightText = React.createClass({
       var textAfter = fullText.substring(highlightFrom + textToFind.length);
       var textToHighlight = fullText.substring(highlightFrom, highlightFrom + textToFind.length);
       return (
-        <div className='inline'> {textBefore}<span className='highlight'>{textToHighlight}</span>{textAfter}</div>
+        <div className='inline'> { textBefore }<span className='highlight'>{ textToHighlight }</span>{ textAfter }</div>
       );
     }
     return (
-      <span>{fullText}</span>
+      <span>{ fullText }</span>
     );
   }
 });

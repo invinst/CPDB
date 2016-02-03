@@ -10,8 +10,8 @@ var SummaryTab = React.createClass({
 
     return (
       <div className='summary-tab'>
-        <OfficerSummarySection officer={officer}/>
-        <OfficerAnalyticSection officer={officer}/>
+        <OfficerSummarySection officer={ officer }/>
+        <OfficerAnalyticSection officer={ officer }/>
       </div>
     );
   }

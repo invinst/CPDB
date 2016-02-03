@@ -81,14 +81,14 @@ var SimpleTab = React.createClass({
     var next = tabs[nextIndex].props.children;
 
     return (
-      <Wrapper visible={!!this.props.navigation} wrapperClass='tab-navigations'>
+      <Wrapper visible={ !!this.props.navigation } wrapperClass='tab-navigations'>
         <div className='row'>
-          <div className='six columns' onClick={this.setActiveTab.bind(this, prevIndex)}>
+          <div className='six columns' onClick={ this.setActiveTab.bind(this, prevIndex) }>
             <span className='icon icon-left'/>
-            {prev}
+            { prev }
           </div>
-          <div className='six columns align-right' onClick={this.setActiveTab.bind(this, nextIndex)}>
-            {next}
+          <div className='six columns align-right' onClick={ this.setActiveTab.bind(this, nextIndex) }>
+            { next }
             <span className='icon icon-right'/>
           </div>
         </div>
@@ -99,13 +99,13 @@ var SimpleTab = React.createClass({
   render: function () {
     return (
       <div>
-        <div className='tab-navs' onClick={this.onTabItemClick}>
-          {this.renderTabNav()}
+        <div className='tab-navs' onClick={ this.onTabItemClick }>
+          { this.renderTabNav() }
         </div>
         <div className='tab-contents'>
-          {this.renderTabContent()}
+          { this.renderTabContent() }
         </div>
-        {this.renderNavigation()}
+        { this.renderNavigation() }
       </div>
     );
   }

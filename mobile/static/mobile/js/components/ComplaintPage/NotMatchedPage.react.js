@@ -11,7 +11,7 @@ var NotMatchedPage = React.createClass({
           Invalid page!
         </h3>
         <div className='message-content'>
-          The CRID <span className='crid-number'>{crid}</span> is not recorded in out database. Please use
+          The CRID <span className='crid-number'>{ crid }</span> is not recorded in out database. Please use
           search box for new search session.
         </div>
       </div>

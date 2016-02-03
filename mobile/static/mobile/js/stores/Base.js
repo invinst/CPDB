@@ -18,28 +18,28 @@ function cloneObject(obj) {
   return temp;
 }
 
-var Base = function(state) {
+var Base = function (state) {
   return objectAssign({}, EventEmitter.prototype, {
     _originalState: cloneObject(state),
     _state: state,
 
-    getState: function() {
+    getState: function () {
       return this._state;
     },
 
-    updateState: function(key, value) {
+    updateState: function (key, value) {
       this._state[key] = value;
     },
 
-    addChangeListener: function(callback) {
+    addChangeListener: function (callback) {
       this.on(AppConstants.CHANGE_EVENT, callback);
     },
 
-    removeChangeListener: function(callback) {
+    removeChangeListener: function (callback) {
       this.removeListener(AppConstants.CHANGE_EVENT, callback);
     },
 
-    emitChange: function() {
+    emitChange: function () {
       this.emit(AppConstants.CHANGE_EVENT);
     },
 

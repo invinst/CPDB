@@ -27,15 +27,15 @@ var RelatedOfficerItem = React.createClass({
     var relatedOfficerClassName = cx('related-officer-item', 'pad', HelperUtil.format('officer-{index}', {'index': presenter.id}));
 
     return (
-      <div className={relatedOfficerClassName} onClick={this._onClick}>
+      <div className={ relatedOfficerClassName } onClick={ this._onClick }>
         <div className='row'>
           <div className='one column circle-wrapper center'>
-            <span className={cx('circle', officerUtil.getStarClass(presenter.allegationsCount))}></span>
+            <span className={ cx('circle', officerUtil.getStarClass(presenter.allegationsCount)) }></span>
           </div>
           <div className='eleven columns'>
-            <div className='name bold'>{presenter.displayName}</div>
-            <div className='gender'>{presenter.description}</div>
-            <div className='description'>{type} in {pluralize('case', numberOfAllegations, true)}</div>
+            <div className='name bold'>{ presenter.displayName }</div>
+            <div className='gender'>{ presenter.description }</div>
+            <div className='description'>{ type } in { pluralize('case', numberOfAllegations, true) }</div>
           </div>
         </div>
       </div>
