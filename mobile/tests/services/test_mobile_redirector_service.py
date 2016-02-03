@@ -9,11 +9,6 @@ from mobile.services.mobile_redirector_service import (DesktopToMobileRedirector
                                                        DesktopToMobileRedirectorService)
 
 
-def test_get_filter_value():
-    filter = 'allegation__crid=1000004'
-    get_filter_value(filter).should.equal('1000004')
-
-
 class ActiveForDecoratorTest(SimpleTestCase):
     def test_method_is_activated_in_decorator(self):
         filter_key = 'officer'
