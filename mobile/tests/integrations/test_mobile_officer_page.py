@@ -84,6 +84,7 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
         bad_officer_pk = 1234
         officer_slug = 'xxxx'
         not_match_text = 'The id {officer_id} is not recorded in out database.'.format(officer_id=bad_officer_pk)
+
         self.go_to_officer_page(slug=officer_slug, pk=bad_officer_pk)
 
         self.until(lambda: self.should_see_text(not_match_text))

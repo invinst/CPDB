@@ -19,18 +19,33 @@ var RequestModal = (function () {
         thank: false
       };
     },
+    componentDidMount: function () {
+      mountedInstant = this;
+    },
+    hide: function () {
+      jQuery(ReactDOM.findDOMNode(this)).modal('hide');
+    },
     show: function () {
-      jQuery(ReactDOM.findDOMNode(this)).modal("show");
-      var emailInput = jQuery(ReactDOM.findDOMNode(this)).find("input[name='email']");
+      jQuery(ReactDOM.findDOMNode(this)).modal('show');
+      var emailInput = jQuery(ReactDOM.findDOMNode(this)).find('input[name=\'email\']');
       setTimeout(function () {
         emailInput.focus();
       }, 500);
     },
-    hide: function () {
-      jQuery(ReactDOM.findDOMNode(this)).modal("hide");
+    email: function () {
+      return jQuery(ReactDOM.findDOMNode(this)).find('input[name=\'email\']').val();
     },
-    componentDidMount: function () {
-      mountedInstant = this;
+    register: function () {
+      RequestDocumentActions.registerEmail(allegation.crid, this.email());
+    },
+    onClick: function () {
+      this.register();
+    },
+    onKeyDown: function (e) {
+      if (e.keyCode == 13) {
+        e.preventDefault();
+        this.register();
+      }
     },
     render: function () {
       var style = {
@@ -43,57 +58,45 @@ var RequestModal = (function () {
         'hidden': !this.state.thank
       });
       return (
-        <div className="modal fade" id="request_modal" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel">
-          <div className={formClassName} role="document" style={style}>
-            <div className="modal-content">
-              <div className="modal-header">
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
+        <div className='modal fade' id='request_modal' tabIndex='-1' role='dialog' aria-labelledby='myModalLabel'>
+          <div className={ formClassName } role='document' style={ style }>
+            <div className='modal-content'>
+              <div className='modal-header'>
+                <button type='button' className='close' data-dismiss='modal' aria-label='Close'>
+                  <span aria-hidden='true'>&times;</span>
                 </button>
               </div>
-              <div className="modal-body">
-                <h3>We'll notify you when the document is made available.</h3>
-                <input type="email" name="email" className="form-control"
-                       placeholder="Please enter email address" onKeyDown={this.onKeyDown} />
+              <div className='modal-body'>
+                <h3>We&apos;ll notify you when the document is made available.</h3>
+                <input type='email' name='email' className='form-control'
+                  placeholder='Please enter email address' onKeyDown={ this.onKeyDown } />
               </div>
-              <div className="modal-footer">
-                <button type="button" className="btn btn-default" data-dismiss="modal">Cancel</button>
-                <button type="button" className="btn btn-primary" onClick={this.onClick}>Submit</button>
+              <div className='modal-footer'>
+                <button type='button' className='btn btn-default' data-dismiss='modal'>Cancel</button>
+                <button type='button' className='btn btn-primary' onClick={ this.onClick }>Submit</button>
               </div>
             </div>
           </div>
-          <div className={thankClassName} role="document" style={style}>
-            <div className="modal-content">
-              <div className="modal-header">
-                <button type="button" className="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
+          <div className={ thankClassName } role='document' style={ style }>
+            <div className='modal-content'>
+              <div className='modal-header'>
+                <button type='button' className='close' data-dismiss='modal' aria-label='Close'>
+                  <span aria-hidden='true'>&times;</span>
                 </button>
               </div>
-              <div className="modal-body">
-                <h3 className="text-center">Thank you!</h3>
-                <p>Someone from our team will write a Freedom of Information Act Request for this document, and e-mail FOIA@chicagopolice.org. We will wait to hear back.</p>
+              <div className='modal-body'>
+                <h3 className='text-center'>Thank you!</h3>
+                <p>
+                  Someone from our team will write a Freedom of Information Act Request for this document,
+                  and e-mail FOIA@chicagopolice.org. We will wait to hear back.
+                </p>
                 <p>If we receive a responsive document, we will update this database. Check back in a few weeks!</p>
-                <div className="success-icon"><i className="fa fa-check-circle"></i></div>
+                <div className='success-icon'><i className='fa fa-check-circle'></i></div>
               </div>
             </div>
           </div>
         </div>
       );
-    },
-    email: function () {
-      return jQuery(ReactDOM.findDOMNode(this)).find("input[name='email']").val();
-    },
-    register: function () {
-      RequestDocumentActions.registerEmail(allegation.crid, this.email());
-    },
-    onClick: function () {
-      this.register();
-    },
-    onKeyDown: function (e) {
-      if(e.keyCode == 13) {
-        e.preventDefault();
-        this.register();
-      }
     }
   });
 

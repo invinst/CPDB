@@ -15,7 +15,7 @@ var _state = {
 var OfficerPageStore = _.assign(Base(_state), {
 });
 
-AppDispatcher.register(function(action) {
+AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.RECEIVED_OFFICER_DATA:
       OfficerPageStore.updateState('data', action.data);

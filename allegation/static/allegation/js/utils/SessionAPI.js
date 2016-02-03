@@ -22,7 +22,7 @@ var SessionAPI = {
     });
   },
 
-  getSessionInfo: function(session) {
+  getSessionInfo: function (session) {
     var params = {
       'hash_id': session
     };
@@ -31,20 +31,20 @@ var SessionAPI = {
       ajax.abort();
     }
 
-    ajax = $.getJSON(AppConstants.SESSION_API_ENDPOINT, params, function(data) {
+    ajax = $.getJSON(AppConstants.SESSION_API_ENDPOINT, params, function (data) {
       SessionActions.receivedSessionInfoData(data);
       if (session == '') {
         SessionActions.createdSession();
       }
-      ComplaintListAPI.getData()
+      ComplaintListAPI.getData();
     });
   },
 
-  updateSessionInfo: function(data) {
+  updateSessionInfo: function (data) {
     var currentData = SessionStore.getState()['data'];
-    var data = _.extend(currentData, data);
+    data = _.extend(currentData, data);
     var requestData = {
-      'request_data': JSON.stringify(data),
+      'request_data': JSON.stringify(data)
     };
 
     if (ajax) {

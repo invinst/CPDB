@@ -1,5 +1,6 @@
 /*global L*/
 var React = require('react');
+var ReactDOM = require('react-dom');
 require('mapbox.js');
 
 var AppConstants = require('constants/AppConstants');
@@ -20,7 +21,7 @@ var Map = React.createClass({
 
       mapbox.accessToken = AppConstants.MAPBOX_TOKEN;
 
-      var map = mapbox.map(this.getDOMNode(), 'mapbox.streets').setView(center, defaultZoom);
+      var map = mapbox.map(ReactDOM.findDOMNode(this), 'mapbox.streets').setView(center, defaultZoom);
       map.doubleClickZoom.disable();
       map.scrollWheelZoom.disable();
 

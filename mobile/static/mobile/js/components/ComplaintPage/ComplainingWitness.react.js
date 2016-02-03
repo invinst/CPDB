@@ -10,7 +10,7 @@ var ComplainingWitness = React.createClass({
 
     // TODO: Adding id to complainingWitness
     return (
-      <div className='complaining-witness-row row' key={complainingWitness.id}>
+      <div className='complaining-witness-row row' key={complainingWitness['cwit_id']}>
         <div className='one column circle-wrapper center'>
           <div className='small-circle background-black circle'></div>
         </div>

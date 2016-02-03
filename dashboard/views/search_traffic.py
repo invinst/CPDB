@@ -21,7 +21,7 @@ class AdminSearchTrafficApi(View):
         top_queries = self.get_top_queries(start_day, start, end)
         ret = {}
         periods = {
-            'day': {'num_periods': 7, 'increment': 1, 'date_format':'%Y-%m-%d'},
+            'day': {'num_periods': 7, 'increment': 1, 'date_format': '%Y-%m-%d'},
             'week': {'num_periods': 8, 'increment': 7, 'date_format': "'%y Week %W"},
             'month': {'num_periods': 6, 'increment': 30, 'date_format': '%Y-%m'}
         }
@@ -55,8 +55,7 @@ class AdminSearchTrafficApi(View):
         return ret
 
     def get(self, request):
-
-        #fetch the most used search term over the last day, week, and month
+        # fetch the most used search term over the last day, week, and month
         now = datetime.datetime.now()
         periods = {
             'day': now + datetime.timedelta(days=-7),

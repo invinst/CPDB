@@ -1,5 +1,6 @@
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import os, sys
+import os
+import sys
 
 from django.core.urlresolvers import reverse_lazy
 
@@ -10,17 +11,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # See https://docs.djangoproject.com/en/1.8/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '***REMOVED***'
+SECRET_KEY = os.environ.get('SECRET_KEY', '***REMOVED***')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
-
 # Application definition
-
-INSTALLED_APPS = (
+DJANGO_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -29,7 +28,9 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.gis',
     'django.contrib.sites',
+)
 
+THIRD_PARTY_APPS = (
     'django_extensions',
     'djangobower',
     'django_tables2',
@@ -39,7 +40,9 @@ INSTALLED_APPS = (
     'django_nose',
     'django_user_agents',
     'haystack',
+)
 
+CPDB_APPS = (
     'common',
     'allegation',
     'officer',
@@ -51,8 +54,10 @@ INSTALLED_APPS = (
     'embed',
     'dashboard',
     'api',
-    'mobile'
+    'mobile',
 )
+
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + CPDB_APPS
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -97,7 +102,6 @@ WSGI_APPLICATION = 'cpdb.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.8/ref/settings/#databases
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
@@ -112,7 +116,6 @@ DATABASES = {
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.8/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -171,7 +174,15 @@ MEDIA_ROOT = BASE_DIR + '/media/'
 CORS_ORIGIN_ALLOW_ALL = True
 
 MAP_BOX_API_KEY = os.environ.get('MAP_BOX_API_KEY')
+
+# FIXME: This should be move to constants.py instead
 OFFICER_LIST_SEND_LENGTH = os.environ.get('OFFICER_LIST_SEND_LENGTH', 150)
+
+# FIXME: This should be move to constants.py instead
+ALLEGATION_LIST_ITEM_COUNT = 25
+
+# FIXME: This should be move to constants.py instead
+MAP_POINT_THRESHOLD = 3
 
 CACHES = {
     'default': {
@@ -182,15 +193,6 @@ CACHES = {
         }
     },
 }
-
-GRAPH_DISTCURVE_NUM_X_TICKS = 6
-GRAPH_DISTCURVE_NUM_Y_TICKS = 4
-MAP_POINT_THRESHOLD = 3
-SHELL_PLUS ='ipython'
-DJANGO_ENV = 'dev'
-
-if len(sys.argv) > 1 and sys.argv[1] == 'test':
-    DJANGO_ENV = 'test'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.mailgun.org'
@@ -273,5 +275,4 @@ ELASTICSEARCH_SETTINGS = {
     }
 }
 
-if 'test' in sys.argv:
-    from cpdb.settings.test import *
+DJANGO_ENV = 'prod'

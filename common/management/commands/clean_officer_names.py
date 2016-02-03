@@ -40,6 +40,3 @@ class Command(BaseCommand):
             for officer in Officer.objects.filter(officer_last__endswith=clean[0]):
                 officer.officer_last = officer.officer_last.replace(clean[0], clean[1])
                 officer.save()
-
-
-

@@ -6,12 +6,12 @@ var ajax = null;
 
 
 var SearchTrafficAPI = {
-  getTopQueries: function() {
+  getTopQueries: function () {
     if (ajax) {
       ajax.abort();
     }
 
-    ajax = jQuery.getJSON(AppConstants.SEARCH_TRAFFIC_API_ENDPOINT, function(data) {
+    ajax = jQuery.getJSON(AppConstants.SEARCH_TRAFFIC_API_ENDPOINT, function (data) {
       SearchTrafficServerActions.receivedSearchTrafficData(data);
     });
   }

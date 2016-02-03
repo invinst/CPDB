@@ -1,6 +1,7 @@
 from common.tests.core import BaseLiveTestCase
 from search.factories import SuggestionLogFactory
 
+
 class SuggestionAdminTestCase(BaseLiveTestCase):
     def test_suggestion_admin(self):
         self.login_user()

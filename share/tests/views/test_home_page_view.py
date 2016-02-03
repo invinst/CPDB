@@ -1,5 +1,5 @@
 from django.template.defaultfilters import slugify
-from common.tests.core import SimpleTestCase, BaseLiveTestCase
+from common.tests.core import BaseLiveTestCase
 from share.factories import SessionFactory
 from share.models import Session
 

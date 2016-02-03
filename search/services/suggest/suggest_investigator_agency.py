@@ -1,5 +1,3 @@
-from haystack.query import SearchQuerySet
-
 from search.services.suggest import SuggestBase
 
 
