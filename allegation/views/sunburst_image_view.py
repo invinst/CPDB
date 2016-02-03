@@ -7,7 +7,7 @@ from selenium import webdriver
 
 class SunburstImageView(View):
     def get(self, request, hash_id=None):
-        driver = webdriver.Firefox()
+        driver = webdriver.PhantomJS()
         driver.implicitly_wait(10)
         driver.set_window_size(width=690, height=395)
         try:
