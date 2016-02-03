@@ -1,6 +1,5 @@
 from cpdb.settings.test.common import *  # NOQA
 
-
 DEBUG = True
 
 DATABASES = {
