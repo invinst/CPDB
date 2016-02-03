@@ -34,6 +34,7 @@ AppDispatcher.register(function (action) {
     case AppConstants.OFFICER_PAGE_RELOAD:
       _state['loading'] = true;
       OfficerPageStore.emitChange();
+      break;
 
     default:
       break;
