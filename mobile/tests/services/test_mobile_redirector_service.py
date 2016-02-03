@@ -6,7 +6,7 @@ from mobile.constants import DEFAULT_REDIRECTORS
 from mobile.services.mobile_redirector_service import (DesktopToMobileRedirectorMixin,
                                                        OfficerSessionDesktopToMobileRedirector,
                                                        AllegationSessionDesktopToMobileRedirector, active_for,
-                                                       DesktopToMobileRedirectorService, get_filter_value)
+                                                       DesktopToMobileRedirectorService)
 
 
 def test_get_filter_value():
@@ -17,7 +17,7 @@ def test_get_filter_value():
 class ActiveForDecoratorTest(SimpleTestCase):
     def test_method_is_activated_in_decorator(self):
         filter_key = 'officer'
-        mock = MagicMock(filters={filter_key: [{'filter': 'abc=xyz'}]})
+        mock = MagicMock(filters={filter_key: [{'value': 'xyz', 'category': filter_key}]})
         method = MagicMock(return_value='return_value')
         decoratored_mock = active_for(filter_key)(method)
 
@@ -57,7 +57,7 @@ class OfficerSessionDesktopToMobileRedirectorTest(SimpleTestCase):
 
     def test_redirect_officer_id_only_session_should_return_url_if_officer_exists(self):
         officer = OfficerFactory()
-        filters = {'Officer': [{'filter': 'officer={officer_id}'.format(officer_id=officer.id)}]}
+        filters = {'officer': [{'value': officer.id, 'category': 'officer'}]}
 
         urls = self.redirect_officer_id_only_session_with_filter(filters)
 
@@ -65,7 +65,7 @@ class OfficerSessionDesktopToMobileRedirectorTest(SimpleTestCase):
 
     def test_redirect_officer_id_only_session_should_return_url_if_officer_not_exists(self):
         bad_officer_pk = -1
-        filters = {'Officer': [{'filter': 'officer={officer_id}'.format(officer_id=bad_officer_pk)}]}
+        filters = {'officer': [{'value': bad_officer_pk, 'category': 'officer'}]}
 
         urls = self.redirect_officer_id_only_session_with_filter(filters)
 
@@ -73,7 +73,7 @@ class OfficerSessionDesktopToMobileRedirectorTest(SimpleTestCase):
 
     def test_redirect_officer_badge_only_session_should_return_url_if_officer_exists(self):
         officer = OfficerFactory()
-        filters = {'Badge number': [{'filter': 'officer__star={badge}'.format(badge=officer.star)}]}
+        filters = {'officer__star': [{'value': officer.star, 'category': 'officer__star'}]}
 
         urls = self.redirect_officer_badge_only_session_with_filter(filters)
 
@@ -81,7 +81,7 @@ class OfficerSessionDesktopToMobileRedirectorTest(SimpleTestCase):
 
     def test_redirect_officer_badge_only_session_should_return_url_if_officer_not_exists(self):
         bad_officer_badge = -1
-        filters = {'Badge number': [{'filter': 'officer__star={badge}'.format(badge=bad_officer_badge)}]}
+        filters = {'officer__star': [{'value': bad_officer_badge, 'category': 'officer__star'}]}
 
         urls = self.redirect_officer_badge_only_session_with_filter(filters)
 
@@ -95,7 +95,7 @@ class AllegationSessionDesktopToMobileRdirectorTest(SimpleTestCase):
 
     def test_redirect_allegation_crid_only_session_with_invalid_allegation(self):
         bad_allegation_crid = -1
-        filters = {'Allegation ID': [{'filter': 'allegation__crid={crid}'.format(crid=bad_allegation_crid)}]}
+        filters = {'allegation__crid': [{'value': bad_allegation_crid, 'category': 'allegation__crid'}]}
 
         urls = self.redirect_allegation_id_only_session(filters)
 
@@ -103,7 +103,7 @@ class AllegationSessionDesktopToMobileRdirectorTest(SimpleTestCase):
 
     def test_redirect_allegation_crid_only_session(self):
         allegation = AllegationFactory()
-        filters = {'Allegation ID': [{'filter': 'allegation__crid={crid}'.format(crid=allegation.crid)}]}
+        filters = {'allegation__crid': [{'value': allegation.crid, 'category': 'allegation__crid'}]}
 
         urls = self.redirect_allegation_id_only_session(filters)
 
@@ -126,8 +126,8 @@ class DesktopToMobileRedirectorServiceTest(SimpleTestCase):
         officer = OfficerFactory()
 
         filters = {
-            'Allegation ID': [{'filter': 'allegation__crid={crid}'.format(crid=allegation.crid)}],
-            'Officer': [{'filter': 'officer={officer_id}'.format(officer_id=officer.id)}]
+            'allegation__crid': [{'value': allegation.crid, 'category': 'allegation__crid'}],
+            'officer': [{'value': officer.id, 'category': 'officer'}]
         }
 
         redirect_service = DesktopToMobileRedirectorService(DEFAULT_REDIRECTORS)

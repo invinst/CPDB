@@ -30,7 +30,7 @@ function updateSiteData(dontUpdateSession) {
 
 var FilterTagsActions = {
   addTag: function (tagValue) {
-    ga('send', 'event', 'filter', category, value);
+    ga('send', 'event', 'filter', tagValue.category, tagValue.value);
     if (EmbedStore.isEmbedMode()) {
       return;
     }
