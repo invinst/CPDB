@@ -4,10 +4,14 @@ var OfficerResult = require('components/Shared/SearchablePage/SearchResults/Succ
 var ComplaintResult = require('components/Shared/SearchablePage/SearchResults/SuccessfulSearch/ComplaintResult.react');
 
 var SuggestionPresenter = require('presenters/SuggestionPresenter');
-var DataTypeUtil = require('utils/DataTypeUtil');
 
 
 var SuccessfulSearch = React.createClass({
+  propTypes: {
+    term: React.PropTypes.string,
+    suggestions: React.PropTypes.array
+  },
+
   getSubComponentFor: function (type) {
     var subComponentMapper = {
       'officer': OfficerResult,
@@ -24,14 +28,14 @@ var SuccessfulSearch = React.createClass({
     var SubComponent = this.getSubComponentFor(suggestionType);
 
     return (
-      <SubComponent term={term} suggestions={suggestions} />
+      <SubComponent term={ term } suggestions={ suggestions }/>
     );
   },
 
   render: function () {
     return (
       <div className='success-search'>
-        {this.renderSuggestionItem()}
+        { this.renderSuggestionItem() }
       </div>
     );
   }

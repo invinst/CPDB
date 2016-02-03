@@ -3,11 +3,10 @@ from datetime import datetime
 from django.utils import timezone
 
 from allegation.factories import AllegationFactory, OfficerAllegationFactory
-from mobile.tests.integrations.test_mobile_complaint_page import \
-    MobileComplaintPageTestMixin
+from common.tests.core import BaseLivePhoneTestCase
 
 
-class MobileComplaintTimelineTest(MobileComplaintPageTestMixin):
+class MobileComplaintTimelineTest(BaseLivePhoneTestCase):
     def assert_timeline_have_three_nodes(self):
         nodes = self.find_all('.drawing line')
         len(nodes).should.equal(2)
@@ -44,7 +43,7 @@ class MobileComplaintTimelineTest(MobileComplaintPageTestMixin):
             allegation=allegation, final_finding=final_finding,
             start_date=start_date, end_date=end_date)
 
-        self.go_to_allegation_detail_page(allegation.crid)
+        self.visit_complaint_page(allegation)
         self.assert_timeline_have_three_nodes()
         self.assert_timeline_should_contains_text(incident_date_text)
         self.assert_timeline_should_contains_text(start_date_text)
@@ -61,14 +60,14 @@ class MobileComplaintTimelineTest(MobileComplaintPageTestMixin):
         allegation = AllegationFactory(incident_date=timezone.now())
         OfficerAllegationFactory(
             allegation=allegation, start_date=datetime.now())
-        self.go_to_allegation_detail_page(allegation.crid)
+        self.visit_complaint_page(allegation)
         self.assert_timeline_have_two_nodes()
 
     def test_no_time_line(self):
         allegation = AllegationFactory(incident_date=None)
         OfficerAllegationFactory(
             allegation=allegation, start_date=None, end_date=None)
-        self.go_to_allegation_detail_page(allegation.crid)
+        self.visit_complaint_page(allegation)
         self.assert_no_timeline()
 
     def test_no_incident_date(self):
@@ -78,7 +77,7 @@ class MobileComplaintTimelineTest(MobileComplaintPageTestMixin):
         OfficerAllegationFactory(
             allegation=allegation, start_date=start_date, end_date=end_date)
 
-        self.go_to_allegation_detail_page(allegation.crid)
+        self.visit_complaint_page(allegation)
         first_line = self.find('.investigation-timeline line')
         self.assert_line_is_dash_line(first_line)
         self.find_all('.event-date')[0].text.should.contain('Unknown date')
@@ -91,7 +90,7 @@ class MobileComplaintTimelineTest(MobileComplaintPageTestMixin):
             allegation=allegation, start_date=start_date, end_date=None,
             final_outcome_class='open-investigation')
 
-        self.go_to_allegation_detail_page(allegation.crid)
+        self.visit_complaint_page(allegation)
 
         second_line = self.find_all('.investigation-timeline line')[1]
         self.assert_line_is_dash_line(second_line)
