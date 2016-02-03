@@ -10,6 +10,9 @@ from django.contrib.gis.geos import Point
 class Command(BaseCommand):
     help = 'GeoCode Allegations'
 
+    def add_arguments(self, parser):
+        parser.add_argument('--crid', nargs='+', type=str)
+
     def geocode_address(self, address, beat=False):
         proximity = ""
         if beat and beat.polygon:
@@ -33,9 +36,12 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         counter = 0
-        Allegation.objects.update(point=None)
+        kwargs = {}
 
-        for allegation in Allegation.objects.filter(point=None):
+        if options.get('crid'):
+            kwargs['crid__in'] = options['crid']
+
+        for allegation in Allegation.objects.filter(**kwargs):
             for area in allegation.areas.all():
                 allegation.areas.remove(area)
             point = None
