@@ -4,8 +4,9 @@ from allegation.factories import OfficerFactory, AllegationFactory
 from common.tests.core import SimpleTestCase
 from mobile.constants import DEFAULT_REDIRECTORS
 from mobile.services.mobile_redirector_service import (DesktopToMobileRedirectorMixin,
-    OfficerSessionDesktopToMobileRedirector, AllegationSessionDesktopToMobileRedirector, active_for,
-    DesktopToMobileRedirectorService, get_filter_value)
+                                                       OfficerSessionDesktopToMobileRedirector,
+                                                       AllegationSessionDesktopToMobileRedirector, active_for,
+                                                       DesktopToMobileRedirectorService, get_filter_value)
 
 
 def test_get_filter_value():

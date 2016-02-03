@@ -103,7 +103,7 @@ var ComplaintListRow = React.createClass(_.assign(Base(ComplaintListStore), {
   toggleComplaint: function (e) {
     var id = this.props.complaint.allegation.id;
     var kindOfUserInteraction = this.detailIsCurrentlyShown() ? 'close' : 'open';
-    
+
     ga('send', 'event', 'allegation', kindOfUserInteraction, id);
 
     this.setState({hasShown: true});
