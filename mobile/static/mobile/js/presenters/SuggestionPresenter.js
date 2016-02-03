@@ -1,7 +1,4 @@
-var ComplaintService = require('services/ComplaintService');
-var AppConstants = require('constants/AppConstants');
 var HelperUtil = require('utils/HelperUtil');
-var GenderPresenter = require('presenters/GenderPresenter');
 var OfficerPresenter = require('presenters/OfficerPresenter');
 var ComplaintPresenter = require('presenters/ComplaintPresenter');
 
@@ -25,14 +22,14 @@ var SuggestionPresenter = function (suggestion) {
   };
 
   var getMetaPresenter = function () {
-    var meta  = HelperUtil.fetch(suggestion, 'meta', '');
+    var meta = HelperUtil.fetch(suggestion, 'meta', '');
 
     var RESOURCE_PRESENTER_MAP = {
       'officer': OfficerPresenter,
       'allegation': ComplaintPresenter
     };
 
-    return RESOURCE_PRESENTER_MAP[resource()](meta)
+    return RESOURCE_PRESENTER_MAP[resource()](meta);
   };
 
   var uniqueKey = function () {
