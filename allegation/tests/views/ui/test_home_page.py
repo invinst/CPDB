@@ -1,11 +1,12 @@
 from allegation.factories import (
     OfficerAllegationFactory, AllegationCategoryFactory)
+from allegation.tests.utils.autocomplete_test_helper_mixin import AutocompleteTestHelperMixin
 from common.tests.core import BaseLiveTestCase
 from common.utils.haystack import rebuild_index
 from share.models import Session
 
 
-class HomePageTestCase(BaseLiveTestCase):
+class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
     def setUp(self):
         self.allegation_category = AllegationCategoryFactory()
         self.officer_allegation = OfficerAllegationFactory(
@@ -238,25 +239,6 @@ class HomePageTestCase(BaseLiveTestCase):
         self.should_see_text(another.officer.display_name)
         self.should_not_see_text(officer_allegation.officer.display_name)
         self.should_not_see_text(self.officer_allegation.officer.display_name)
-
-    def autocomplete_available(self, text):
-        items = self.find_all(".ui-autocomplete .ui-menu-item")
-        items = [x.text for x in items]
-        return any(text in x for x in items)
-
-    def autocomplete_select(self, text):
-        items = self.find_all(".ui-autocomplete .ui-menu-item")
-        for item in items:
-            if text in item.text:
-                item.click()
-
-    def search_officer(self, officer):
-        self.fill_in("#autocomplete", officer.officer_first)
-        self.until_ajax_complete()
-        self.find(".ui-autocomplete").is_displayed()
-        self.until(lambda: self.autocomplete_available(officer.display_name))
-        self.autocomplete_select(officer.display_name)
-        self.until_ajax_complete()
 
     def test_default_site_title_from_settings(self):
         setting = self.get_admin_settings()

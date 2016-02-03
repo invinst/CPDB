@@ -12,12 +12,12 @@ var OfficerPage = require('components/OfficerPage.react');
 var App = React.createClass({
   render: function () {
     return (
-      <Router history={history}>
-        <Route path='/complaint/:crid' component={ComplaintPage} />
-        <Route path='/officer/:slug/:id' component={OfficerPage} />
-        <Route path='/search/:query' component={MainPage} />
-        <Route path='/' component={MainPage} />
-        <Route path='*' component={NoMatch} />
+      <Router history={ history }>
+        <Route path='/complaint/:crid' component={ ComplaintPage } />
+        <Route path='/officer/:slug/:id' component={ OfficerPage } />
+        <Route path='/search/:query' component={ MainPage } />
+        <Route path='/' component={ MainPage } />
+        <Route path='*' component={ NoMatch } />
       </Router>
     );
   }

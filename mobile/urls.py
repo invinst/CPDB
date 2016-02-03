@@ -1,6 +1,7 @@
 from django.conf.urls import url, include
 
 from common.middleware.cache import orderless_cache_page
+from mobile.views.mobile_data_tool_view import MobileDataToolView
 from mobile.views.mobile_allegation_view import MobileAllegationView
 from mobile.views.mobile_officer_view import MobileOfficerView
 from mobile.views.mobile_site_view import MobileSiteView
@@ -23,7 +24,10 @@ urlpatterns = [
     url(r'^mobile/api/allegation/$', cache_view(MobileAllegationView.as_view()), name='mobile-allegation'),
     url(r'^mobile/api/officer/$', cache_view(MobileOfficerView.as_view()), name='mobile-officer'),
 
-    # overriding for client-side routing
+    # for interpret from desktop version
+    url(r'^data/(?P<hash_id>\w+)/(?P<slug>.*)$', MobileDataToolView.as_view(), name='data-tool'),
+    url(r'^mobile/data/(?P<hash_id>\w+)/(?P<slug>.*)$', MobileDataToolView.as_view(), name='mobile-data-tool'),
+
     url(r'^(officer/[^/]+/\d+|complaint/\d+|search/.*)?$', cache_view(MobileSiteView.as_view()), name='home'),
     url(r'^mobile/(officer/[^/]+/\d+|complaint/\d+|search/.*)?$', cache_view(MobileSiteView.as_view()), name='home')
 ]

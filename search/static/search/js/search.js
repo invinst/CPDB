@@ -10,7 +10,7 @@ function suggestionExists(term, suggestions) {
 function slugify (title) {
   var asciiTitle = title.replace(/\s{2,}/g, ' ');
   var singleSpaceTitle = asciiTitle.replace(/[^\w\s]/gi, '').trim();
-  var lowerCaseTitle  = singleSpaceTitle.toLowerCase();
+  var lowerCaseTitle = singleSpaceTitle.toLowerCase();
 
   return lowerCaseTitle.replace(/\s/g, '-').trim();
 }
@@ -18,9 +18,9 @@ function slugify (title) {
 function prettyLabels(label, term) {
   label = label.toString();
 
-  var re = new RegExp("("+term+")", 'i');
-  var result = label.replace(/-/g, " ");
-  result = result.replace(re, "<span class='term'>$1</span>");
+  var re = new RegExp('('+term+')', 'i');
+  var result = label.replace(/-/g, ' ');
+  result = result.replace(re, '<span class=\'term\'>$1</span>');
   return result;
 }
 
@@ -29,10 +29,10 @@ function prettyLabels(label, term) {
   var AUTOCOMPLETE_CAT_CLASS = 'ui-autocomplete-category';
 
   function renderCategoryElement(categoryName) {
-    return "<li class='" + AUTOCOMPLETE_CAT_CLASS + "'>" + categoryName + "</li>"
+    return '<li class=\'' + AUTOCOMPLETE_CAT_CLASS + '\'>' + categoryName + '</li>';
   }
 
-  $.widget("custom.catcomplete", $.ui.autocomplete, {
+  $.widget('custom.catcomplete', $.ui.autocomplete, {
     tagLabel: function (category, label) {
       if (this.options.categoriesDisplayInTag.indexOf(category) == -1) {
         return label;
@@ -42,12 +42,12 @@ function prettyLabels(label, term) {
 
     _create: function () {
       this._super();
-      this.widget().menu("option", "items", "> :not(." + AUTOCOMPLETE_CAT_CLASS + ")");
+      this.widget().menu('option', 'items', '> :not(.' + AUTOCOMPLETE_CAT_CLASS + ')');
     },
 
     _renderMenu: function (ul, items) {
       var widget = this;
-      var currentCategory = "";
+      var currentCategory = '';
       $.each(items, function (index, item) {
         var displayCategory = item.tagValue.displayCategory;
         if (displayCategory != currentCategory) {

@@ -100,13 +100,12 @@ var ComplaintListRow = React.createClass(_.assign(Base(ComplaintListStore), {
     );
   },
 
-  componentDidUpdate: function (e) {
-    var id = this.props.complaint.allegation.id;
-    var kindOfUserInteraction = this.state.show ? 'open' : 'close';
-    ga('send', 'event', 'allegation', kindOfUserInteraction, id);
-  },
-
   toggleComplaint: function (e) {
+    var id = this.props.complaint.allegation.id;
+    var kindOfUserInteraction = this.detailIsCurrentlyShown() ? 'close' : 'open';
+
+    ga('send', 'event', 'allegation', kindOfUserInteraction, id);
+
     this.setState({hasShown: true});
     ComplaintListActions.toggleComplaint(this.props.complaint['officer_allegation'].id);
     SessionAPI.updateSessionInfo({'query': { activeComplaints: this.state.activeComplaints}});

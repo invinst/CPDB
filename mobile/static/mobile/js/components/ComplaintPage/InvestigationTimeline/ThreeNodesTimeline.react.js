@@ -5,6 +5,10 @@ var ComplaintService = require('services/ComplaintService');
 
 
 var ThreeNodesTimeline = React.createClass({
+  propTypes: {
+    info: React.PropTypes.object
+  },
+
   render: function () {
     var dashLine = {
       'vectorEffect': 'non-scaling-stroke',
@@ -27,24 +31,24 @@ var ThreeNodesTimeline = React.createClass({
             <ellipse className='fill' ry='4' rx='4' cy='114' cx='8' strokeWidth='1.5'/>
           </g>
           <g className='drawing'>
-            <line y1='13' x1='8' y2='54' x2='8' style={firstLineStyle}/>
-            <line y1='64' x1='8' y2='107' x2='8' style={secondLineStyle}/>
+            <line y1='13' x1='8' y2='54' x2='8' style={ firstLineStyle }/>
+            <line y1='64' x1='8' y2='107' x2='8' style={ secondLineStyle }/>
           </g>
           <g>
             <text className='event-title' x='30' y='12'>Incident Date</text>
-            <text className='event-date' x='30' y='27'>{presenter.incidentDate}</text>
+            <text className='event-date' x='30' y='27'>{ presenter.incidentDate }</text>
           </g>
           <g>
             <text className='event-title' x='30' y='64'>Investigation Begins</text>
-            <text className='event-date' x='30' y='79'>{presenter.startInvestigationDate}</text>
+            <text className='event-date' x='30' y='79'>{ presenter.startInvestigationDate }</text>
           </g>
           <g>
-            <text className='event-title' x='30' y='119'>{presenter.finalStatus}</text>
-            <text className='event-date' x='30' y='134'>{presenter.endInvestigationDate}</text>
+            <text className='event-title' x='30' y='119'>{ presenter.finalStatus }</text>
+            <text className='event-date' x='30' y='134'>{ presenter.endInvestigationDate }</text>
           </g>
         </g>
       </svg>
-    )
+    );
   }
 });
 
