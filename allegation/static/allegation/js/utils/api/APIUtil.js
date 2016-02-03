@@ -1,9 +1,10 @@
 require('utils/jQuery');
 
 
-var APIUil = {
+var APIUtil = {
   getJSON: function (url, data, callback) {
     // Shift arguments if data argument was omitted
+    // This is jQuery logic, I put it here to keep getJSON works like jQuery getJSON
     if (jQuery.isFunction(data)) {
       callback = data;
       data = undefined;
@@ -20,4 +21,4 @@ var APIUil = {
   }
 };
 
-module.exports = APIUil;
+module.exports = APIUtil;

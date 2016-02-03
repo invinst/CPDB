@@ -118,6 +118,15 @@ var FilterTagStore = _.assign(Base(_state), {
     });
   },
 
+  generateTagValue: function (category, value, displayCategory, displayValue) {
+    return {
+      category: category,
+      value: value,
+      displayCategory: displayCategory,
+      displayValue: displayValue
+    };
+  },
+
   getAll: function (category) {
     if (category) {
       return _.get(_state['filters'], category, []);

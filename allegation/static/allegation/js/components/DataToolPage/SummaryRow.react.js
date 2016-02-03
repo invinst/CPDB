@@ -41,12 +41,7 @@ var SummaryRow = React.createClass({
 
     FilterTagsActions.removeCategory('cat');
     // Generate tagValue on server instead
-    var tagValue = {
-      category: 'cat__category',
-      value: current.name,
-      displayCategory: 'Category',
-      displayValue: current.name
-    };
+    var tagValue = FilterTagStore.generateTagValue('cat__category', current.name, 'Category', current.name);
 
     if (this.isActive(current)) {
       FilterTagsActions.removeTag(tagValue.category, tagValue.value);

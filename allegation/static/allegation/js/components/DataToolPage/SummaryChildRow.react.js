@@ -32,12 +32,7 @@ var SummaryChildRow = React.createClass({
 
     var child = this.props.subcategory;
     // Generate tagValue on server instead
-    var tagValue = {
-      category: 'cat',
-      value: child.id,
-      displayCategory: 'Allegation type',
-      displayValue: child.name
-    };
+    var tagValue = FilterTagStore.generateTagValue('cat', child.id, 'Allegation type', child.name);
 
     if (this.state.selected) {
       FilterTagsActions.removeTag(tagValue.category, tagValue.value);

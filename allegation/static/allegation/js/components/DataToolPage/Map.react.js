@@ -120,12 +120,10 @@ var Map = React.createClass({
     });
 
     // Generate tagValue on server instead
-    var tagValue = {
-      category: 'allegation__areas__id',
-      value: feature.properties.id,
-      displayCategory: 'Area',
-      displayValue: areaType + ': ' + feature.properties.name
-    };
+    var tagValue = FilterTagStore.generateTagValue(
+      'allegation__areas__id', feature.properties.id,
+      'Area', areaType + ': ' + feature.properties.name
+    );
 
     layer.on('click', function () {
       selectedLayers[feature.properties.id] = layer;
