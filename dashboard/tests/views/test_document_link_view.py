@@ -21,9 +21,9 @@ class DocumentLinkViewTestCase(SimpleTestCase):
         normalized_title = 'cr-{crid}'.format(crid=crid)
         title = 'CR {crid}'.format(crid=crid)
         Setting.objects.create(
-            default_site_title='CPDB', 
-            story_types_order='', 
-            requested_document_email_subject='{crid}', 
+            default_site_title='CPDB',
+            story_types_order='',
+            requested_document_email_subject='{crid}',
             requested_document_email_text='{crid} {link}'
         )
 

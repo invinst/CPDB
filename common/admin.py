@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
 from common.actions import make_export_action
-from common.models import User, Officer, OfficerHistory, Allegation
+from common.models import User, Officer, OfficerHistory
 from common.models import ComplainingWitness, PoliceWitness, AllegationCategory
 from common.models import Investigator, OfficerAllegation, PendingPdfAllegation
 

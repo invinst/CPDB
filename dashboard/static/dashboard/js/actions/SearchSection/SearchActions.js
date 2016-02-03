@@ -6,7 +6,7 @@ var SearchActions = {
     AppDispatcher.dispatch({
       actionType: AppConstants.SEARCH_FOR_SUGGESTIONS,
       data: query
-    })
+    });
   }
 };
 

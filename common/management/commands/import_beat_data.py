@@ -1,5 +1,4 @@
 import csv
-from django.contrib.gis.utils.layermapping import LayerMapping
 
 from django.core.management.base import BaseCommand
 from common.models import Area, Allegation
@@ -56,4 +55,3 @@ class Command(BaseCommand):
                     print("multiple", beat_name)
                     fail += 1
             print("success: %s fails: %s" % (success, fail))
-

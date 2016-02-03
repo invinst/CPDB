@@ -35,12 +35,17 @@ var SuggestionPresenter = function (suggestion) {
     return RESOURCE_PRESENTER_MAP[resource()](meta)
   };
 
+  var uniqueKey = function () {
+    return HelperUtil.format('{resource}-{resourceKey}', {'resource': resource(), 'resourceKey': resourceKey() });
+  };
+
   return {
     text: text(),
     url: url(),
     resource: resource(),
     resourceKey: resourceKey(),
-    meta: getMetaPresenter()
+    meta: getMetaPresenter(),
+    uniqueKey: uniqueKey()
   };
 };
 

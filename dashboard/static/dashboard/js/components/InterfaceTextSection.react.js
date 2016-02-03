@@ -1,53 +1,52 @@
 var React = require('react');
 var _ = require('lodash');
-var Select = require('react-select');
-var ReactTags = require('react-tag-input').WithContext;
 
 var Base = require('./Base.react');
 var InterfaceTextSectionStore = require('../stores/InterfaceTextSectionStore');
 var InterfaceTextAPI = require('utils/InterfaceTextAPI');
-var InterfaceTextActions = require('actions/InterfaceTextActions');
 
 
 var InterfaceTextSection = React.createClass(_.assign(Base(InterfaceTextSectionStore), {
 
   renderActive: function () {
     return (
-      <div className='row' key={this.state.activeText.key}>
-          <div className='col-md-3'>
-            <input className='form-control' id="id_key" type='text' value={this.state.activeText.key} onChange={this.changeText.bind(this, 'key')} />
-          </div>
-          <div className='col-md-7'>
-            <textarea id="id_text" className='form-control' onChange={this.changeText.bind(this, 'text')} value={this.state.activeText.text}></textarea>
-          </div>
-          <div className='col-md-2'>
-            <button onClick={this.save.bind(this, this.state.activeText)} className='btn btn-info'>
-              <i className='fa fa-floppy-o'/>
-            </button>
-            <button onClick={this.editText.bind(this, null)} className='btn btn-danger'>
-              <i className='fa fa-remove'/>
-            </button>
-          </div>
+      <div className='row' key={ this.state.activeText.key }>
+        <div className='col-md-3'>
+          <input className='form-control' id='id_key' type='text' value={ this.state.activeText.key }
+            onChange={ this.changeText.bind(this, 'key') } />
+        </div>
+        <div className='col-md-7'>
+          <textarea id='id_text' className='form-control' onChange={ this.changeText.bind(this, 'text') }
+            value={ this.state.activeText.text }></textarea>
+        </div>
+        <div className='col-md-2'>
+          <button onClick={ this.save.bind(this, this.state.activeText) } className='btn btn-info'>
+            <i className='fa fa-floppy-o'/>
+          </button>
+          <button onClick={ this.editText.bind(this, null) } className='btn btn-danger'>
+            <i className='fa fa-remove'/>
+          </button>
+        </div>
       </div>
-    )
+    );
   },
 
   renderRow: function (text) {
     return (
-      <div className='row' key={text.id}>
+      <div className='row' key={ text.id }>
         <div className='col-md-3'>
-          {text.key}
+          { text.key }
         </div>
         <div className='col-md-7'>
-          {text.text}
+          { text.text }
         </div>
         <div className='col-md-2'>
-          <button onClick={this.editText.bind(this, text)} className='btn btn-danger'>
+          <button onClick={ this.editText.bind(this, text) } className='btn btn-danger'>
             <i className='fa fa-pencil'/>
           </button>
         </div>
       </div>
-    )
+    );
   },
 
   renderContent: function () {
@@ -56,15 +55,15 @@ var InterfaceTextSection = React.createClass(_.assign(Base(InterfaceTextSectionS
       for (var i = 0; i < this.state.texts.length; i++) {
         var text = this.state.texts[i];
         if (this.state.activeText && text.id == this.state.activeText.id) {
-          children.push(this.renderActive())
+          children.push(this.renderActive());
         }
         else {
-          children.push(this.renderRow(text))
+          children.push(this.renderRow(text));
         }
       }
     }
     else {
-      children.push(<span><i className='fa fa-spin fa-spinner'/></span>);
+      children.push(<span key={ 0 }><i className='fa fa-spin fa-spinner'/></span>);
     }
     return children;
   },
@@ -73,7 +72,7 @@ var InterfaceTextSection = React.createClass(_.assign(Base(InterfaceTextSectionS
     var activeText = this.state.activeText;
     activeText[key] = e.target.value;
 
-    this.setState({'activeText': activeText})
+    this.setState({'activeText': activeText});
   },
 
   editText: function (text) {
@@ -109,7 +108,7 @@ var InterfaceTextSection = React.createClass(_.assign(Base(InterfaceTextSectionS
           </div>
         </div>
       </div>
-    )
+    );
   }
 }));
 

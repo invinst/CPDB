@@ -13,7 +13,7 @@ var OfficerAction = {
   },
 
   createdStory: function (story) {
-    toastr.success("New story has been created.");
+    toastr.success('New story has been created.');
     AppDispatcher.dispatch({
       actionType: AppConstants.STORY_CREATED,
       data: story
@@ -21,7 +21,7 @@ var OfficerAction = {
   },
 
   updatedStory: function (story) {
-    toastr.success("Story has been updated.");
+    toastr.success('Story has been updated.');
     AppDispatcher.dispatch({
       actionType: AppConstants.STORY_UPDATED,
       data: story

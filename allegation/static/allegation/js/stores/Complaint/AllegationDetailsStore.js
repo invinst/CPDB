@@ -6,7 +6,7 @@ var AppConstants = require('../../constants/AppConstants');
 
 
 var _state = {
-  police_witness: []
+  policeWitness: []
 };
 
 var AllegationStore = _.assign(Base(_state), {
@@ -15,7 +15,7 @@ var AllegationStore = _.assign(Base(_state), {
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.ALLEGATION_DETAILS_DATA_RECEIVED:
-      _state['police_witness'] = action.data['police_witness'];
+      _state.policeWitness = action.data.policeWitness;
       AllegationStore.emitChange();
       break;
 

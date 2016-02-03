@@ -1,4 +1,4 @@
-from allegation.factories import OfficerFactory, AllegationFactory, OfficerAllegationFactory
+from allegation.factories import OfficerFactory, OfficerAllegationFactory
 from common.tests.core import BaseLivePhoneTestCase
 
 

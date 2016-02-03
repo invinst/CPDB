@@ -6,7 +6,7 @@ var isMobile = require('ismobilejs');
 var Base = require('../Base');
 
 function defaultTab() {
-  return isMobile.any ? 'map' : 'outcomes'
+  return isMobile.any ? 'map' : 'outcomes';
 }
 
 function ifNotMobileChangeMapToOutcome(tab) {
@@ -33,7 +33,7 @@ AppDispatcher.register(function (action) {
       TabsStore.emitChange();
       break;
     case AppConstants.SESSION_CREATED:
-      _state.activeTab = defaultTab()
+      _state.activeTab = defaultTab();
       TabsStore.emitChange();
       break;
     case AppConstants.SET_ACTIVE_TAB:

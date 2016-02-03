@@ -4,34 +4,34 @@ var QueryItemListStore = require('../../stores/OverviewSection/QueryListItemStor
 var _ = require('lodash');
 
 var QueryItemList = React.createClass({
-  getInitialState: function() {
+  getInitialState: function () {
     return QueryItemListStore.getState();
   },
 
-  componentDidMount: function() {
+  componentDidMount: function () {
     QueryItemListStore.addChangeListener(this._onChange);
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount: function () {
     QueryItemListStore.removeChangeListener(this._onChange);
   },
 
-  renderQueryItems: function() {
+  _onChange: function () {
+    this.setState(QueryItemListStore.getState());
+  },
+
+  renderQueryItems: function () {
     var activeQueryItem = this.state.activeQueryItem;
 
-    return _.map(this.state.queries, function(query, i) {
-      return <QueryItem query={query} key={i} active={query==activeQueryItem}/>
+    return _.map(this.state.queries, function (query, i) {
+      return <QueryItem query={ query } key={ i } active={ query==activeQueryItem }/>;
     });
   },
 
-  render: function() {
+  render: function () {
     return (
-      <ul id='query-list-item' className='list-unstyled'>{this.renderQueryItems()}</ul>
+      <ul id='query-list-item' className='list-unstyled'>{ this.renderQueryItems() }</ul>
     );
-  },
-
-  _onChange: function() {
-    this.setState(QueryItemListStore.getState());
   }
 });
 

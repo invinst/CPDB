@@ -9,7 +9,7 @@ var _state = {
 
 
 var ContentStore = assign({}, EventEmitter.prototype, {
-  getState: function() {
+  getState: function () {
     return _state;
   },
 
@@ -17,7 +17,7 @@ var ContentStore = assign({}, EventEmitter.prototype, {
     this.on(AppConstants.CHANGE_EVENT, callback);
   },
 
-  removeChangeListener: function(callback) {
+  removeChangeListener: function (callback) {
     this.removeListener(AppConstants.CHANGE_EVENT, callback);
   },
 
@@ -34,12 +34,12 @@ var ContentStore = assign({}, EventEmitter.prototype, {
 
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
-  case AppConstants.SET_ACTIVE_NAV_ITEM:
-    ContentStore.changePageContent(action.activeItem);
-    break;
+    case AppConstants.SET_ACTIVE_NAV_ITEM:
+      ContentStore.changePageContent(action.activeItem);
+      break;
 
-  default:
-    break;
+    default:
+      break;
   }
 });
 
