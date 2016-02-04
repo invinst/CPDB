@@ -94,7 +94,7 @@ var Map = React.createClass({
   },
 
   onEachFeature: function (feature, layer) {
-    var filter = FilterTagStore.getFilter('Area', feature.properties.id);
+    var filter = FilterTagStore.getFilter('allegation__areas__id', feature.properties.id);
     layer.selected = false;
 
     if (filter) {
@@ -119,16 +119,20 @@ var Map = React.createClass({
       }
     });
 
-    var tagValue = {label: areaType + ': ' + feature.properties.name, value: feature.properties.id};
+    // Generate tagValue on server instead
+    var tagValue = FilterTagStore.generateTagValue(
+      'allegation__areas__id', feature.properties.id,
+      'Area', areaType + ': ' + feature.properties.name
+    );
 
     layer.on('click', function () {
       selectedLayers[feature.properties.id] = layer;
       layer.selected = !layer.selected;
       if (layer.selected) {
-        FilterTagsActions.addTag('Area', tagValue.label, 'allegation__areas__id=' + tagValue.value);
+        FilterTagsActions.addTag(tagValue);
       }
       else {
-        FilterTagsActions.removeTag('Area', tagValue.label);
+        FilterTagsActions.removeTag(tagValue.category, tagValue.value);
       }
     });
     if (!(areaType in _layers)) {
@@ -195,6 +199,7 @@ var Map = React.createClass({
     }).val(this.getEmbedCode());
     return this.embedNode;
   },
+
   setMarkers: function (markers) {
     if (!markers) {
       return;
@@ -228,7 +233,7 @@ var Map = React.createClass({
 
   _onChange: function () {
     var filters = FilterTagStore.getFilters();
-    if (!filters['Area'] || filters['Area'].length == 0) {
+    if (!filters['allegation__areas__id'] || filters['allegation__areas__id'].length == 0) {
       _map.fitBounds(_defaultBounds);
       return;
     }
@@ -237,8 +242,7 @@ var Map = React.createClass({
 
     for (k in allLayersIndex) {
       var layer = allLayersIndex[k];
-      var value = layer.feature.properties.type + ': ' + layer.feature.properties.name;
-      if (!FilterTagStore.getFilter('Area', value)) {
+      if (!FilterTagStore.getFilter('allegation__areas__id', layer.feature.properties.id)) {
         layer.selected = false;
         layer.setStyle(_normalStyle);
         if (k in selectedLayers) {

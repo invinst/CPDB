@@ -128,6 +128,7 @@ class AllegationSessionApiView(SimpleTestCase):
         update_params['query'] = {
             'filters': {
                 'Officer': [{
+                    'category': 'officer',
                     'value': 123,
                     'filter': 'officer=123',
                     'pinned': False

@@ -15,10 +15,18 @@ class SuggestArea(SuggestBase):
 
         results = [
             cls.entry_format(
-                label='{type}: {id}'.format(type=entry[2], id=entry[0]),
-                value='{type}: {id}'.format(type=entry[2], id=entry[0]),
-                filter=cls.build_filter(category='allegation__areas__id', value=entry[1])
+                suggest_value=cls.display_area(entry[2], entry[0]),
+                tag_value=cls.build_tag_value(
+                    category='allegation__areas__id',
+                    value=entry[1],
+                    display_category='Area',
+                    display_value=cls.display_area(entry[2], entry[0]),
+                )
             ) for entry in results
         ]
 
         return {'Area': results}
+
+    @classmethod
+    def display_area(cls, type, id):
+        return '{type}: {id}'.format(type=type, id=id)

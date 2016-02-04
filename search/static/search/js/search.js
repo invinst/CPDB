@@ -1,14 +1,3 @@
-var NO_CAP_CATEGORIES = [
-  'has:',
-  'Category ID',
-  'Officer',
-  'Investigator'
-];
-
-var UPPER_CATEGORIES = [
-  'Category ID'
-];
-
 function slugify(title) {
   var asciiTitle = title.replace(/\s{2,}/g, ' ');
   var singleSpaceTitle = asciiTitle.replace(/[^\w\s]/gi, '').trim();
@@ -51,27 +40,21 @@ function prettyLabels(label, term) {
       var widget = this;
       var currentCategory = '';
       $.each(items, function (index, item) {
-        if (item.category != currentCategory) {
-          ul.append(renderCategoryElement(item['category']));
-          currentCategory = item.category;
+        var displayCategory = item.tagValue.displayCategory;
+        if (displayCategory != currentCategory) {
+          ul.append(renderCategoryElement(displayCategory));
+          currentCategory = displayCategory;
         }
         widget._renderItemData(ul, item);
       });
     },
 
     _renderItem: function (ul, item) {
-      var label = item.type ? item.type + ': ' + item.label : item.label;
       var element = $('<li>');
 
-      if (NO_CAP_CATEGORIES.indexOf(item.category) == -1) {
-        element.addClass('capitalize');
-      }
-      if (UPPER_CATEGORIES.indexOf(item.category) != -1) {
-        element.addClass('uppercase');
-      }
-
-      return element.addClass('autocomplete-' + slugify(item.category))
-        .html(prettyLabels(label, $(this.element).val())).appendTo(ul);
+      return element.addClass('autocomplete-' + slugify(item.tagValue.displayCategory))
+                    .html(prettyLabels(item.suggestValue, $(this.element).val()))
+                    .appendTo(ul);
     },
 
     displayMessage: function (value) {

@@ -34,14 +34,16 @@ var FilterTagStore = _.assign(Base(_state), {
     return _.contains(_.pluck(_state['filters'][category], 'value'), value);
   },
 
-  addFilter: function (category, value, filter) {
-    this.removeFiltersInCategory(category);
+  addFilter: function (tagValue) {
+    this.removeFiltersInCategory(tagValue.category);
 
-    _state['filters'][category] = _state['filters'][category] || [];
+    _state['filters'][tagValue.category] = _state['filters'][tagValue.category] || [];
 
-    _state['filters'][category].push({
-      value: value,
-      filter: filter,
+    _state['filters'][tagValue.category].push({
+      value: tagValue.value,
+      category: tagValue.category,
+      displayValue: tagValue.displayValue,
+      displayCategory: tagValue.displayCategory,
       pinned: false
     });
   },
@@ -80,12 +82,12 @@ var FilterTagStore = _.assign(Base(_state), {
     return _.get(this.getFilter(category, value), 'pinned');
   },
 
-  toggleFilter: function (category, value, filter) {
-    if (this.getFilter(category, value)) {
-      this.removeFilter(category, value);
+  toggleFilter: function (tagValue) {
+    if (this.getFilter(tagValue.category, tagValue.value)) {
+      this.removeFilter(tagValue.category, tagValue.value);
     } else {
-      this.addFilter(category, value, filter);
-      this.pinFilter(category, value);
+      this.addFilter(tagValue);
+      this.pinFilter(tagValue.category, tagValue.value);
     }
   },
 
@@ -114,6 +116,15 @@ var FilterTagStore = _.assign(Base(_state), {
         }
       });
     });
+  },
+
+  generateTagValue: function (category, value, displayCategory, displayValue) {
+    return {
+      category: category,
+      value: value,
+      displayCategory: displayCategory,
+      displayValue: displayValue
+    };
   },
 
   getAll: function (category) {
@@ -186,7 +197,7 @@ AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.ADD_TAG:
-      FilterTagStore.addFilter(action.category, action.value, action.filter);
+      FilterTagStore.addFilter(action.tagValue);
       FilterTagStore.emitChange();
       break;
 
@@ -196,11 +207,11 @@ AppDispatcher.register(function (action) {
       // When adding completely, we pin one more time to `unpin` it
       // This will help us for not adding a new exception to API
       _.each(action.tags, function (tag) {
-        FilterTagStore.toggleFilter(action.category, tag.value, tag.filter);
+        FilterTagStore.toggleFilter(tag);
       });
 
       _.each(action.tags, function (tag) {
-        FilterTagStore.pinFilter(action.category, tag.value);
+        FilterTagStore.pinFilter(tag.category, tag.value);
       });
 
       FilterTagStore.emitChange();
@@ -248,7 +259,7 @@ AppDispatcher.register(function (action) {
         current = selected;
         while (current != arc) {
           FilterTagStore.removeFilter(
-            current.tagValue.category, current.tagValue.label);
+            current.tagValue.category, current.tagValue.value);
           current = current.parent;
         }
       }
@@ -256,11 +267,9 @@ AppDispatcher.register(function (action) {
       if (arc.tagValue) {
         if (arc.tagValue.removeParent) {
           FilterTagStore.removeFilter(
-              arc.parent.tagValue.category, arc.parent.tagValue.label);
+              arc.parent.tagValue.category, arc.parent.tagValue.value);
         }
-        FilterTagStore.addFilter(
-            arc.tagValue.category, arc.tagValue.label,
-            arc.tagValue.filter + '=' + arc.tagValue.value);
+        FilterTagStore.addFilter(arc.tagValue);
       }
       FilterTagStore.emitChange();
       break;

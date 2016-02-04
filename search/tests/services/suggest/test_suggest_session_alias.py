@@ -12,7 +12,7 @@ class SuggestSessionAliasTestCase(SuggestBaseTestCase):
 
             expect_suggestion = session_alias.title
 
-            SuggestSessionAlias.query('skull')['Session'][0]['label'].should.be.equal(expect_suggestion)
+            SuggestSessionAlias.query('skull')['Session'][0]['suggest_value'].should.be.equal(expect_suggestion)
             SuggestSessionAlias.query('something wrong')['Session'].should.be.equal([])
 
     def test_suggest_session_alias_with_realtime_signal_processor(self):
@@ -21,5 +21,5 @@ class SuggestSessionAliasTestCase(SuggestBaseTestCase):
 
             expect_suggestion = session_alias.title
 
-            SuggestSessionAlias.query('skull')['Session'][0]['label'].should.be.equal(expect_suggestion)
+            SuggestSessionAlias.query('skull')['Session'][0]['suggest_value'].should.be.equal(expect_suggestion)
             SuggestSessionAlias.query('something wrong')['Session'].should.be.equal([])

@@ -7,10 +7,13 @@ def to_jquery_ui_autocomplete_format(data):
     for category in data:
         formatted_data[category] = [
             {
-                'category': category,
-                'value': entry['value'],
-                'label': entry['label'],  # for displaying autocomplete row
-                'filter': entry['filter']
+                'suggestValue': entry['suggest_value'],
+                'tagValue': {
+                    'category': entry['tag_value']['category'],
+                    'value': entry['tag_value']['value'],
+                    'displayCategory': entry['tag_value']['display_category'],
+                    'displayValue': entry['tag_value']['display_value']
+                }
             } for entry in data[category]
         ]
 

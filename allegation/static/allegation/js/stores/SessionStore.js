@@ -31,45 +31,6 @@ var SessionStore = _.assign(Base(_state), {
     return _state['data']['active_tab'];
   },
 
-  removeTagInCategory: function (category) {
-    // if (!_state.data.readable_query[category]) {
-    //   return;
-    // }
-    // var filters = _state.data.readable_query[category];
-    // var newValue = [];
-    // for (var i in filters) {
-    //   if (FilterTagStore.isPinned(category, filters[i].value)) {
-    //     newValue.push(filters[i]);
-    //   }
-    // }
-    // _state.data.readable_query[category] = newValue;
-  },
-
-  addTag: function (category, value, filter) {
-    // this.removeTagInCategory(category);
-
-    // var filterObject = this.formatFilter(filter);
-
-    // var tags = _state.data.readable_query[category];
-    // if (tags) {
-    //   tags.push(filterObject);
-    // } else {
-    //   _state.data.readable_query[category] = [filterObject];
-    // }
-  },
-
-  removeTag: function (category, filter) {
-    // var tags = _state.data.readable_query[category]
-    // if (tags) {
-    //   for (i in tags) {
-    //     if (tags[i].value == filter.value) {
-    //       tags.splice(i, 1);
-    //       break;
-    //     }
-    //   }
-    // }
-  },
-
   isNoQuery: function () {
     return _.isEmpty(_state.data.query.active_officers) && _.isEmpty(_state.data.query.filters);
   },
@@ -91,7 +52,7 @@ var SessionStore = _.assign(Base(_state), {
 SessionStore.dispatcherToken = AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.SAVE_SESSION:
-    // SessionStore.updateSession(action.data);
+      // SessionStore.updateSession(action.data);
       SessionStore.emitChange();
       break;
 
@@ -118,12 +79,10 @@ SessionStore.dispatcherToken = AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.ADD_TAG:
-      SessionStore.addTag(action.category, action.value, action.filter);
       SessionStore.emitChange();
       break;
 
     case AppConstants.REMOVE_TAG:
-      SessionStore.removeTag(action.category, action.filter);
       SessionStore.emitChange();
       break;
 

@@ -3,6 +3,7 @@ var cx = require('classnames');
 var React = require('react');
 var PropTypes = React.PropTypes;
 var FilterTagsActions = require('actions/FilterTagsActions');
+var FilterTagStore = require('stores/FilterTagStore');
 var D3PercentageRectangleChart = require('utils/d3utils/PercentageRectangleChart');
 
 var PercentageRectangleChart = React.createClass({
@@ -33,10 +34,10 @@ var PercentageRectangleChart = React.createClass({
     var filters = blockData['filters'];
 
     var tags = filters.map(function (obj) {
-      return { 'value': obj.label, 'filter': filter + '=' + obj.value };
+      return FilterTagStore.generateTagValue(filter, obj.value, category, obj.label);
     });
 
-    FilterTagsActions.toggleTags(category, tags);
+    FilterTagsActions.toggleTags(tags);
     return false;
   },
 
