@@ -2,7 +2,6 @@ var AppDispatcher = require('dispatcher/AppDispatcher');
 var AppConstants = require('constants/AppConstants');
 var RaceGenderAPI = require('utils/RaceGenderAPI');
 var SunburstAPI = require('utils/SunburstAPI');
-var SessionAPI = require('utils/SessionAPI');
 
 var SessionActions = {
   receivedSessionInfoData: function (data) {
@@ -46,10 +45,6 @@ var SessionActions = {
       actionType: AppConstants.RECEIVED_SHARED_SESSION,
       data: data
     });
-  },
-
-  createSharedSession: function (hashId) {
-    SessionAPI.createSharedSession(hashId);
   }
 };
 

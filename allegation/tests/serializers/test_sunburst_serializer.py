@@ -1,9 +1,8 @@
-import copy
-
-from common.tests.core import SimpleTestCase
 from allegation.factories import OfficerAllegationFactory
 from allegation.serializers import SunburstSerializer
 from common.models import OfficerAllegation
+from common.tests.utils import sum_count, get_category_obj
+from common.tests.core import SimpleTestCase
 
 
 class SunburstSerializerTestCase(SimpleTestCase):
@@ -16,33 +15,7 @@ class SunburstSerializerTestCase(SimpleTestCase):
 
         serializer = SunburstSerializer(OfficerAllegation.objects.all())
         len(serializer.data).should.equal(2)
-        self.sum_count(serializer.data, 'Unsustained').should.equal(7)
-        self.sum_count(serializer.data, 'Sustained').should.equal(13)
-        self.sum_count(serializer.data, 'Not Disciplined').should.equal(7)
-        self.sum_count(serializer.data, 'Disciplined').should.equal(6)
-
-    def sum_count(self, data, category_name):
-        category = self.get_category_obj(data, category_name)
-
-        if 'size' in category:
-            return category['size']
-        else:
-            count = 0
-            subcats = copy.copy(category['children'])
-            while(subcats):
-                subcat = subcats.pop()
-                if 'size' in subcat:
-                    count += subcat['size']
-                else:
-                    subcats.extend(subcat['children'])
-            return count
-
-    def get_category_obj(self, data, category_name):
-        cats = copy.copy(data)
-        while(cats):
-            cat = cats.pop()
-            if cat['name'] == category_name:
-                return cat
-            if 'children' in cat:
-                cats.extend(cat['children'])
-        return None
+        sum_count(get_category_obj(serializer.data, 'Unsustained')).should.equal(7)
+        sum_count(get_category_obj(serializer.data, 'Sustained')).should.equal(13)
+        sum_count(get_category_obj(serializer.data, 'Not Disciplined')).should.equal(7)
+        sum_count(get_category_obj(serializer.data, 'Disciplined')).should.equal(6)

@@ -14,8 +14,6 @@ class SunburstImageView(View):
             driver.get(request.build_absolute_uri(reverse('allegation:sunburst', args=[hash_id])))
             driver.find_element_by_css_selector('svg g path')
             img = driver.get_screenshot_as_png()
-        except Exception as e:
-            raise e
         finally:
             driver.quit()
         return HttpResponse(img, content_type="image/png")

@@ -1,7 +1,7 @@
 var _ = require('lodash');
 
-var AppDispatcher = require('../../dispatcher/AppDispatcher');
-var AppConstants = require('../../constants/AppConstants');
+var AppDispatcher = require('dispatcher/AppDispatcher');
+var AppConstants = require('constants/AppConstants');
 var Base = require('../Base');
 
 var _state = {
@@ -9,6 +9,9 @@ var _state = {
 };
 
 var ShareBarStore = _.assign(Base(_state), {
+  getSharedSessionHashId: function () {
+    return _state['sharedSessionHashId'];
+  }
 });
 
 AppDispatcher.register(function (action) {

@@ -4,6 +4,10 @@ var SessionStore = require('stores/SessionStore');
 
 
 var ShareBar = React.createClass({
+  propTypes: {
+    sharedSessionHashId: React.PropTypes.string
+  },
+
   getInitialState: function () {
     return {
       'siteTitle': SessionStore.getTitle()
@@ -18,6 +22,10 @@ var ShareBar = React.createClass({
     SessionStore.removeChangeListener(this._onSessionChange);
   },
 
+  sharedUrl: function () {
+    return window.location.href.replace(/data\/\w+/, 'data/' + this.props.sharedSessionHashId);
+  },
+
   _onSessionChange: function () {
     this.setState({'siteTitle': SessionStore.getTitle()});
   },
@@ -30,13 +38,13 @@ var ShareBar = React.createClass({
     return [
       'https://twitter.com/intent/tweet',
       '?text=' + encodeURIComponent(this.state.siteTitle),
-      '&url=' + encodeURIComponent(window.location.href)
+      '&url=' + encodeURIComponent(this.sharedUrl())
     ].join('');
   },
 
   showFBPopup: function () {
     window.open(
-      'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href),
+      'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(this.sharedUrl()),
       'pop', 'width=600, height=400, scrollbars=no'
     );
   },
@@ -51,7 +59,7 @@ var ShareBar = React.createClass({
           <a href={ this.getTweetIntentUrl() }>
             <i className='fa fa-twitter-square'></i>
           </a>
-          <input type='text' value={ window.location.href }
+          <input type='text' value={ this.sharedUrl() }
             readOnly={ true } onClick={ this.inputClicked } ref='urlText'/>
         </div>
       </div>

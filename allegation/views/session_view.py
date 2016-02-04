@@ -43,7 +43,8 @@ class SessionAPIView(View):
             ))
 
     def put(self, request):
-        data = json.loads(request.POST.get('request_data', {}))
+        put = QueryDict(request.body)
+        data = json.loads(put.get('request_data', {}))
         ints = Session.id_from_hash(data['hash'])
         owned_sessions = request.session.get('owned_sessions', [])
 
@@ -75,7 +76,7 @@ class SessionAPIView(View):
         new_session.shared = True
         new_session.save()
         return HttpResponse(JSONSerializer().serialize(
-            self.prepare_return_data(False, new_session)
+            self.prepare_return_data(True, new_session)
         ))
 
     def create_new_session(self, request):

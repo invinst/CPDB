@@ -64,6 +64,7 @@ var SessionAPI = {
     $.ajax({
       url: AppConstants.SESSION_API_ENDPOINT,
       data: {'hash_id': hashId},
+      dataType: 'json',
       type: 'POST',
       success: function (data) {
         SessionActions.receivedSharedSession(data);
