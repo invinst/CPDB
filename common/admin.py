@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from common.actions import make_export_action
-from common.models import User, Officer, OfficerHistory
+from common.actions import make_export_action, geocode_allegation
+from common.models import User, Officer, OfficerHistory, Allegation
 from common.models import ComplainingWitness, PoliceWitness, AllegationCategory
 from common.models import Investigator, OfficerAllegation, PendingPdfAllegation
 
@@ -19,6 +19,12 @@ class ComplainingWitnessAdmin(admin.ModelAdmin):
     list_display = ['allegation', 'race', 'gender']
     list_filter = ['race', 'gender']
     actions = make_export_action("Export Complaining Witnesses to CSV")
+
+
+class AllegationAdmin(admin.ModelAdmin):
+    search_fields = ['crid', 'city']
+    list_display = ['id', 'crid', 'add1', 'add2', 'city']
+    actions = [geocode_allegation]
 
 
 class OfficerAllegationAdmin(admin.ModelAdmin):
@@ -58,6 +64,7 @@ class PendingPdfAllegationAdmin(admin.ModelAdmin):
     list_display = ['id', 'crid', 'raw_content', 'errors']
 
 
+admin.site.register(Allegation, AllegationAdmin)
 admin.site.register(Investigator, InvestigatorAdmin)
 admin.site.register(AllegationCategory, admin.ModelAdmin)
 admin.site.register(PoliceWitness, PoliceWitnessAdmin)
