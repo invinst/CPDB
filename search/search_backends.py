@@ -11,8 +11,7 @@ from django.conf import settings
 class CustomElasticBackend(ElasticsearchSearchBackend):
 
     def __init__(self, connection_alias, **connection_options):
-        super(CustomElasticBackend, self).__init__(
-                                connection_alias, **connection_options)
+        super(CustomElasticBackend, self).__init__(connection_alias, **connection_options)
 
         CUSTOM_SETTING = getattr(settings, 'ELASTICSEARCH_SETTINGS', None)
 
@@ -20,8 +19,7 @@ class CustomElasticBackend(ElasticsearchSearchBackend):
             setattr(self, 'DEFAULT_SETTINGS', CUSTOM_SETTING)
 
     def build_schema(self, fields):
-        content_field_name, mapping = super(CustomElasticBackend,
-                                              self).build_schema(fields)
+        content_field_name, mapping = super(CustomElasticBackend, self).build_schema(fields)
 
         for field_name, field_class in fields.items():
             field_mapping = mapping[field_class.index_fieldname]
@@ -98,4 +96,3 @@ class CustomIntegerNgramField(CustomNgramField):
         if value is None:
             return None
         return int(value)
-

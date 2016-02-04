@@ -1,3 +1,5 @@
+/*eslint react/no-is-mounted: 0*/
+
 /**
  * is almost the same as ReactCSSTransitionGroupChild
  * but set transitioning state and propagate that down to it's children
@@ -23,6 +25,7 @@ var StatePropagateCSSTransitionGroupChild = React.createClass({
   displayName: 'StatePropagateCSSTransitionGroupChild',
 
   propTypes: {
+    children: React.PropTypes.node,
     name: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.shape({
       enter: React.PropTypes.string,
       leave: React.PropTypes.string,
@@ -45,6 +48,69 @@ var StatePropagateCSSTransitionGroupChild = React.createClass({
     appearTimeout: React.PropTypes.number,
     enterTimeout: React.PropTypes.number,
     leaveTimeout: React.PropTypes.number
+  },
+
+  getInitialState: function () {
+    return {transitioning: false};
+  },
+
+  componentWillMount: function () {
+    this.classNameQueue = [];
+    this.transitionTimeouts = [];
+  },
+
+  componentWillUnmount: function () {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+    this.transitionTimeouts.forEach(function (timeout) {
+      clearTimeout(timeout);
+    });
+  },
+
+  componentDidEnter: function () {
+    this.setState({transitioning: false});
+  },
+
+  componentWillAppear: function (done) {
+    if (this.props.appear) {
+      this.transition('appear', done, this.props.appearTimeout);
+    } else {
+      done();
+    }
+  },
+
+  componentWillEnter: function (done) {
+    this.setState({transitioning: true});
+    if (this.props.enter) {
+      this.transition('enter', done, this.props.enterTimeout);
+    } else {
+      done();
+    }
+  },
+
+  componentWillLeave: function (done) {
+    if (this.props.leave) {
+      this.transition('leave', done, this.props.leaveTimeout);
+    } else {
+      done();
+    }
+  },
+
+  flushClassNameQueue: function () {
+    if (this.isMounted()) {
+      this.classNameQueue.forEach(CSSCore.addClass.bind(CSSCore, ReactDOM.findDOMNode(this)));
+    }
+    this.classNameQueue.length = 0;
+    this.timeout = null;
+  },
+
+  queueClass: function (className) {
+    this.classNameQueue.push(className);
+
+    if (!this.timeout) {
+      this.timeout = setTimeout(this.flushClassNameQueue, TICK);
+    }
   },
 
   transition: function (animationType, finishCallback, userSpecifiedDelay) {
@@ -96,72 +162,9 @@ var StatePropagateCSSTransitionGroupChild = React.createClass({
     }
   },
 
-  queueClass: function (className) {
-    this.classNameQueue.push(className);
-
-    if (!this.timeout) {
-      this.timeout = setTimeout(this.flushClassNameQueue, TICK);
-    }
-  },
-
-  flushClassNameQueue: function () {
-    if (this.isMounted()) {
-      this.classNameQueue.forEach(CSSCore.addClass.bind(CSSCore, ReactDOM.findDOMNode(this)));
-    }
-    this.classNameQueue.length = 0;
-    this.timeout = null;
-  },
-
-  componentWillMount: function () {
-    this.classNameQueue = [];
-    this.transitionTimeouts = [];
-  },
-
-  componentWillUnmount: function () {
-    if (this.timeout) {
-      clearTimeout(this.timeout);
-    }
-    this.transitionTimeouts.forEach(function (timeout) {
-      clearTimeout(timeout);
-    });
-  },
-
-  componentWillAppear: function (done) {
-    if (this.props.appear) {
-      this.transition('appear', done, this.props.appearTimeout);
-    } else {
-      done();
-    }
-  },
-
-  componentWillEnter: function (done) {
-    this.setState({transitioning: true});
-    if (this.props.enter) {
-      this.transition('enter', done, this.props.enterTimeout);
-    } else {
-      done();
-    }
-  },
-
-  componentDidEnter: function() {
-    this.setState({transitioning: false});
-  },
-
-  componentWillLeave: function (done) {
-    if (this.props.leave) {
-      this.transition('leave', done, this.props.leaveTimeout);
-    } else {
-      done();
-    }
-  },
-
-  getInitialState: function () {
-    return {transitioning: false};
-  },
-
   renderChildren: function () {
     return React.cloneElement(this.props.children, {
-      transitioning: this.state.transitioning,
+      transitioning: this.state.transitioning
     });
   },
 

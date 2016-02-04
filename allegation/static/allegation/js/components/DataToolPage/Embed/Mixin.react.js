@@ -11,7 +11,7 @@ var Mixin = {
     EmbedStore.addLeaveListener(this.leaveEmbedMode);
   },
 
-  removeEmbedListener: function() {
+  removeEmbedListener: function () {
     EmbedStore.removeEnterListener(this.enterEmbedMode);
     EmbedStore.removeLeaveListener(this.leaveEmbedMode);
   },

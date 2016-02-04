@@ -2,11 +2,8 @@ var Base = require('../Base.react');
 var React = require('react');
 var _ = require('lodash');
 var DocumentStore = require('../../stores/DocumentSection/DocumentStore');
-var DocumentActions = require('../../actions/DocumentSection/DocumentActions');
 var DocumentMixin = require('./DocumentMixin');
 var QueryList = require('./QueryList.react');
-var AppConstants = require('../../constants/AppConstants');
-var DocumentRequestAPI = require('../../utils/DocumentRequestAPI');
 var cx = require('classnames');
 
 var Document = React.createClass(_.assign(Base(DocumentStore), {
@@ -26,7 +23,7 @@ var Document = React.createClass(_.assign(Base(DocumentStore), {
       return '';
     }
     return (
-      <span> | {document.number_of_request} requests </span>
+      <span> | { document.number_of_request } requests </span>
     );
   },
 
@@ -40,26 +37,26 @@ var Document = React.createClass(_.assign(Base(DocumentStore), {
     var statusObj = this.getStatusObject(status);
 
     var statusClass = cx('status', status);
-    var className = cx('fa', "fa-" + statusObj.icon);
+    var className = cx('fa', 'fa-' + statusObj.icon);
 
     return (
       <div>
-        <div className="row allegation">
-          <div className="col-md-12">
-            <a href="#" onClick={this.goBack}>
-              <i className="fa fa-angle-double-left"></i> Back
+        <div className='row allegation'>
+          <div className='col-md-12'>
+            <a href='#' onClick={ this.goBack }>
+              <i className='fa fa-angle-double-left'></i> Back
             </a>
           </div>
-          <div className="col-md-9">
-            <h4 className="inline-block">{document.crid} information</h4>
-            &nbsp;<span className={statusClass}><i className={className}></i> {statusObj.text}</span>
+          <div className='col-md-9'>
+            <h4 className='inline-block'>{ document.crid } information</h4>
+            &nbsp;<span className={ statusClass }><i className={ className }></i> { statusObj.text }</span>
             { this.getRequestCount() }
           </div>
-          <div className="col-md-3">
+          <div className='col-md-3'>
             { this.renderDocumentActions(status, document) }
           </div>
         </div>
-        <QueryList document={document} />
+        <QueryList document={ document } />
       </div>
     );
   }

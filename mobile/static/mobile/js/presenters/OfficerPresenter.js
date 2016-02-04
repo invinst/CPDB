@@ -61,8 +61,11 @@ var OfficerPresenter = function (officer) {
 
     var coAccusedInformation = numberOfCoAccusedOfficers ? withSomeOfficers : withNoOfficer;
 
-    return HelperUtil.format('{officerName} {coAccusedInformation}', {'officerName': displayName(),
-                                                                      'coAccusedInformation': coAccusedInformation}).trim();
+    return HelperUtil.format('{officerName} {coAccusedInformation}',
+      {
+        'officerName': displayName(),
+        'coAccusedInformation': coAccusedInformation
+      }).trim();
   };
 
   return {

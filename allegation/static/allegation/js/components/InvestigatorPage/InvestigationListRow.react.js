@@ -4,9 +4,9 @@ var classnames = require('classnames');
 var PropTypes = React.PropTypes;
 
 var Base = require('components/Base.react');
-var Allegation = require("components/DataToolPage/Allegation.react");
-var ComplaintListActions = require("actions/ComplaintList/ComplaintListActions");
-var ComplaintListStore = require("stores/ComplaintListStore");
+var Allegation = require('components/DataToolPage/Allegation.react');
+var ComplaintListActions = require('actions/ComplaintList/ComplaintListActions');
+var ComplaintListStore = require('stores/ComplaintListStore');
 var RequestButton = require('components/DataToolPage/Complaint/RequestButton.react');
 var SessionAPI = require('utils/SessionAPI');
 
@@ -18,17 +18,17 @@ var InvestigationListRow = React.createClass(_.assign(Base(ComplaintListStore), 
     complaint: PropTypes.object.isRequired
   },
 
-  componentDidUpdate: function(e) {
+  componentDidUpdate: function (e) {
     var id = this.props.complaint.allegation.id;
     var kindOfUserInteraction = this.state.show ? 'open' : 'close';
     ga('send', 'event', 'allegation', kindOfUserInteraction, id);
   },
 
-  detailRendered: function() {
+  detailRendered: function () {
     return this.state.hasShown || this.detailIsCurrentlyShown();
   },
 
-  detailIsCurrentlyShown: function() {
+  detailIsCurrentlyShown: function () {
     return this.state.activeComplaints.indexOf(this.props.complaint['officer_allegation']['id']) > -1;
   },
 
@@ -37,7 +37,7 @@ var InvestigationListRow = React.createClass(_.assign(Base(ComplaintListStore), 
     var detailIsShown = this.detailIsCurrentlyShown();
 
     return this.detailRendered() ? (
-      <Allegation allegation={complaint} hide={!detailIsShown} toggleAllegation={this.toggleComplaint} />
+      <Allegation allegation={ complaint } hide={ !detailIsShown } toggleAllegation={ this.toggleComplaint } />
     ) : null;
   },
 
@@ -48,7 +48,7 @@ var InvestigationListRow = React.createClass(_.assign(Base(ComplaintListStore), 
 
     var allegation = complaint['officer_allegation'];
 
-    var finding = this.props.finding ? this.props.finding.replace(/ /,"-").toLowerCase() : 'other';
+    var finding = this.props.finding ? this.props.finding.replace(/ /,'-').toLowerCase() : 'other';
 
     var caretClasses = classnames('fa complaint-row-outcome', finding, {
       'fa-chevron-right': !detailIsShown,
@@ -57,34 +57,34 @@ var InvestigationListRow = React.createClass(_.assign(Base(ComplaintListStore), 
 
     var rowClassName = classnames('complaint-row', finding, allegation.final_outcome_class);
 
-    var dom_id = "allegation-" + allegation.id;
+    var domId = 'allegation-' + allegation.id;
     return (
-      <div className={rowClassName}>
-        <div className='row cursor' id={dom_id} onClick={this.toggleComplaint}>
+      <div className={ rowClassName }>
+        <div className='row cursor' id={ domId } onClick={ this.toggleComplaint }>
           <div className='col-md-1 col-xs-1 text-center'>
-            <i className={caretClasses}></i>
+            <i className={ caretClasses }></i>
           </div>
           <div className='col-md-3 col-xs-3'>
             <div className='title'>Complaints</div>
-            {presenter.complaintSubCategory}
+            { presenter.complaintSubCategory }
           </div>
           <div className='col-md-1 col-xs-1'>
             <div className='title'>CRID</div>
-            {presenter.crid}
+            { presenter.crid }
           </div>
           <div className='col-md-2 col-xs-2'>
             <div className='title'>Incident Date</div>
-            {presenter.incidentDate}
+            { presenter.incidentDate }
           </div>
           <div className='col-md-3 col-xs-2'>
             <div className='title'>Complaining Witness</div>
-            {presenter.complainingWitness}
+            { presenter.complainingWitness }
           </div>
           <div className='col-md-2 col-xs-3'>
-            <RequestButton complaint={complaint} />
+            <RequestButton complaint={ complaint } />
           </div>
         </div>
-        {this.renderShowMore()}
+        { this.renderShowMore() }
       </div>
     );
   },

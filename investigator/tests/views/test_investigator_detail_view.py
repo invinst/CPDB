@@ -1,5 +1,4 @@
 import json
-import mock
 
 from django.core.urlresolvers import reverse
 

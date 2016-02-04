@@ -1,17 +1,33 @@
 from collections import OrderedDict
 
 from search.models.alias import Alias
-from search.services.suggest.suggest_incident_date import SuggestIncidentDateOnlyYearMonth, SuggestIncidentDateOnly, SuggestIncidentDateOnlyYear
-from search.services.suggest.suggest_allegation import SuggestAllegationCity, SuggestAllegationCrid
-from search.services.suggest.suggest_allegation_category import SuggestAllegationCategoryCategory, SuggestAllegationCategoryCat
+from search.services.suggest.suggest_incident_date import (
+    SuggestIncidentDateOnlyYearMonth,
+    SuggestIncidentDateOnly,
+    SuggestIncidentDateOnlyYear)
+from search.services.suggest.suggest_allegation import (
+    SuggestAllegationCity,
+    SuggestAllegationCrid,
+    SuggestAllegationSummary)
+from search.services.suggest.suggest_allegation_category import (
+    SuggestAllegationCategoryCategory,
+    SuggestAllegationCategoryCat,
+    SuggestAllegationCategoryOnDuty)
 from search.services.suggest.suggest_area import SuggestArea
 from search.services.suggest.suggest_has import SuggestHas
 from search.services.suggest.suggest_investigator import SuggestInvestigator
 from search.services.suggest.suggest_investigator_agency import SuggestInvestigatorAgency
-from search.services.suggest.suggest_officer import SuggestOfficerName, SuggestOfficerStar, SuggestOfficerUnit, SuggestOfficerRank
+from search.services.suggest.suggest_officer import (
+    SuggestOfficerName,
+    SuggestOfficerStar,
+    SuggestOfficerUnit,
+    SuggestOfficerRank,
+    SuggestOfficerActive)
 from search.services.suggest.suggest_session_alias import SuggestSessionAlias
 from search.services.suggest.suggest_data_source import SuggestDataSource
-from search.services.suggest.suggest_outcome import SuggestOutcome, SuggestOutcomeText
+from search.services.suggest.suggest_outcome import (
+    SuggestOutcome,
+    SuggestOutcomeText)
 from search.services.suggest.suggest_race_gender import SuggestRaceGender
 from search.services.suggest.suggest_repeat_offenders import SuggestRepeatOffenders
 from search.services.suggest.suggest_finding import SuggestFinding
@@ -25,12 +41,15 @@ class SuggestionService(object):
             SuggestOfficerStar,
             SuggestAllegationCity,
             SuggestAllegationCrid,
+            SuggestAllegationSummary,
             SuggestIncidentDateOnly,
             SuggestIncidentDateOnlyYear,
             SuggestOfficerName,
             SuggestOfficerUnit,
+            SuggestOfficerActive,
             SuggestAllegationCategoryCategory,
             SuggestAllegationCategoryCat,
+            SuggestAllegationCategoryOnDuty,
             SuggestInvestigator,
             SuggestOutcome,
             SuggestFinding,

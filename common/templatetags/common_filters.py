@@ -1,4 +1,3 @@
-__author__ = 'antipro'
 from django.template import Library
 
 register = Library()
