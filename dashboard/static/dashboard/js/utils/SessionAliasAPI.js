@@ -14,20 +14,20 @@ var SessionAliasAPI = {
       ajax.abort();
     }
 
-    var alias_data = {
+    var aliasData = {
       alias: alias,
       target: target,
       title: title
     };
 
-    ajax = jQuery.post(AppConstants.SESSION_ALIAS_API_ENDPOINT, alias_data).done(function (data) {
-        AddSessionAliasModalServerActions.receivedAliasCreationResult(data);
-      }).fail(function (error) {
-        AddSessionAliasModalServerActions.failedToCreateAlias(error.responseJSON);
-      });
+    ajax = jQuery.post(AppConstants.SESSION_ALIAS_API_ENDPOINT, aliasData).done(function (data) {
+      AddSessionAliasModalServerActions.receivedAliasCreationResult(data);
+    }).fail(function (error) {
+      AddSessionAliasModalServerActions.failedToCreateAlias(error.responseJSON);
+    });
   },
 
-  get: function(query) {
+  get: function (query) {
     if (ajax) {
       ajax.abort();
     }
@@ -37,12 +37,12 @@ var SessionAliasAPI = {
       q: SessionSearchStore.getState()['query']
     };
 
-    ajax = jQuery.getJSON(AppConstants.SESSION_ALIAS2_API_ENDPOINT, params, function(data) {
+    ajax = jQuery.getJSON(AppConstants.SESSION_ALIAS2_API_ENDPOINT, params, function (data) {
       SessionsAliasActions.receivedData(data);
     });
   },
 
-  getMore: function() {
+  getMore: function () {
     limit += count;
 
     var params = {
@@ -51,7 +51,7 @@ var SessionAliasAPI = {
       q: SessionSearchStore.getState()['query']
     };
 
-    ajax = jQuery.getJSON(AppConstants.SESSION_ALIAS2_API_ENDPOINT, params, function(data) {
+    ajax = jQuery.getJSON(AppConstants.SESSION_ALIAS2_API_ENDPOINT, params, function (data) {
       SessionsAliasActions.receivedMore(data.results);
     });
   },

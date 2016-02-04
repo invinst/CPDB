@@ -15,9 +15,9 @@ var Search = React.createClass(_.assign(Base(SearchStore), {
     OfficerAPI.get();
   },
 
-  render: function() {
+  render: function () {
     return (
-      <input className="form-control search" type="text" placeholder="Search officer" onChange={this.onChange} />
+      <input className='form-control search' type='text' placeholder='Search officer' onChange={ this.onChange } />
     );
   }
 

@@ -17,7 +17,7 @@ var DocumentListActions = {
     });
   },
 
-  lockScroll: function() {
+  lockScroll: function () {
     AppDispatcher.dispatch({
       actionType: AppConstants.LOCK_SCROLL_DOCUMENT_LIST
     });
@@ -30,7 +30,7 @@ var DocumentListActions = {
     });
   },
 
-  requestNotFound: function() {
+  requestNotFound: function () {
     toastr.error('CRID not found');
   },
 

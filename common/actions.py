@@ -6,6 +6,7 @@ from django.http import HttpResponse
 def make_export_action(label, **kwargs):
     return [export_as_csv_action(description=label, **kwargs)]
 
+
 def export_as_csv_action(description="Export selected objects as CSV file",
                          fields=None, exclude=None, header=True):
     """
@@ -15,6 +16,7 @@ def export_as_csv_action(description="Export selected objects as CSV file",
     """
     fields = fields or []
     exclude = exclude or []
+
     def export_as_csv(modeladmin, request, queryset):
         """
         Generic csv export admin action.

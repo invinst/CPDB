@@ -2,7 +2,7 @@ var React = require('react');
 
 
 var SiteLinks = React.createClass({
-  render: function() {
+  render: function () {
     return (
       <div>
         <ul className='nav nav-tabs site-links pull-right'>
@@ -20,7 +20,7 @@ var SiteLinks = React.createClass({
           </li>
         </ul>
       </div>
-    )
+    );
   }
 });
 

@@ -10,15 +10,19 @@ var HelperUtil = require('utils/HelperUtil');
 
 
 var OfficerComplaintItem = React.createClass({
+  propTypes: {
+    complaint: React.PropTypes.object,
+    officer: React.PropTypes.object
+  },
+
   renderCircles: function (allegationCounts) {
     var circles = [];
     var officerUtil = OfficerUtil();
 
     for (var i = 0; i < allegationCounts.length; i++) {
-
       circles.push(
-        <div className={cx('circle-wrapper', HelperUtil.format('officer-{index}', {'index': i}))} >
-          <span className={cx('circle', officerUtil.getStarClass(allegationCounts[i]))} ></span>
+        <div className={ cx('circle-wrapper', HelperUtil.format('officer-{index}', {'index': i})) } key={ i }>
+          <span className={ cx('circle', officerUtil.getStarClass(allegationCounts[i])) } ></span>
         </div>
       );
     }
@@ -34,7 +38,7 @@ var OfficerComplaintItem = React.createClass({
 
   render: function () {
     var complaint = this.props.complaint.data;
-    var numberOfInvolvedOfficers = this.props.complaint['allegation_counts'].length  - 1; // exclude himself
+    var numberOfInvolvedOfficers = this.props.complaint['allegation_counts'].length - 1; // exclude himself
     var allegationCounts = this.props.complaint['allegation_counts'];
     var officer = this.props.officer;
 
@@ -42,35 +46,35 @@ var OfficerComplaintItem = React.createClass({
     var complaintPresenter = ComplaintPresenter(complaint);
 
     return (
-      <div className='officer-complaint-item' onClick={this._onClicked}>
+      <div className='officer-complaint-item' onClick={ this._onClicked }>
         <div className='crid-info pad'>
           <div className='inline-block half-width align-left'>
             <span className='crid-title'>CRID &nbsp;</span>
-            <span className='crid-number'>{complaintPresenter.crid}</span>
+            <span className='crid-number'>{ complaintPresenter.crid }</span>
           </div>
           <div className='inline-block half-width align-right'>
-            <span className='final-finding'>{complaintPresenter.finalFinding}</span>
+            <span className='final-finding'>{ complaintPresenter.finalFinding }</span>
           </div>
         </div>
         <div className='complaint-category'>
           <div className='pad'>
-            <div className='category'>{complaintPresenter.category}</div>
-            <div className='sub-category'>{complaintPresenter.allegationName}</div>
+            <div className='category'>{ complaintPresenter.category }</div>
+            <div className='sub-category'>{ complaintPresenter.allegationName }</div>
           </div>
         </div>
         <div className='related-info pad'>
           <div className='row'>
             <span className='label'>Incident</span>
-            <span className='value'>{complaintPresenter.incidentDate}</span>
+            <span className='value'>{ complaintPresenter.incidentDate }</span>
           </div>
           <div className='row'>
             <span className='label'>Officers</span>
             <span className='value'>
-              {officerPresenter.coAccusedWith(numberOfInvolvedOfficers)}
+              { officerPresenter.coAccusedWith(numberOfInvolvedOfficers) }
             </span>
           </div>
           <div className='circles row'>
-            {this.renderCircles(allegationCounts)}
+            { this.renderCircles(allegationCounts) }
           </div>
         </div>
       </div>

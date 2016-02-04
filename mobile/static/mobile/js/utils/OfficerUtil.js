@@ -15,7 +15,7 @@ var OfficerUtil = function () {
 
   return {
     getStarClass: getStarClass
-  }
+  };
 };
 
 module.exports = OfficerUtil;

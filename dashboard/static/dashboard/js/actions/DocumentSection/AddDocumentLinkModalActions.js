@@ -16,7 +16,7 @@ var AddDocumentLinkModalActions = {
   },
 
 
-  formDataChange: function(stateName, stateValue) {
+  formDataChange: function (stateName, stateValue) {
     AppDispatcher.dispatch({
       actionType: AppConstants.DOCUMENT_LINK_MODAL_FORM_DATA_CHANGED,
       stateName: stateName,
@@ -24,16 +24,16 @@ var AddDocumentLinkModalActions = {
     });
   },
 
-  documentLinkAdded: function(crid) {
+  documentLinkAdded: function (crid) {
     AppDispatcher.dispatch({
       actionType: AppConstants.DOCUMENT_LINK_ADDED,
       crid: crid
     });
   },
 
-  failedToAddDocumentLink: function() {
+  failedToAddDocumentLink: function () {
     AppDispatcher.dispatch({
-      actionType: AppConstants.FAILED_ADD_DOCUMENT_LINK,
+      actionType: AppConstants.FAILED_ADD_DOCUMENT_LINK
     });
   }
 };

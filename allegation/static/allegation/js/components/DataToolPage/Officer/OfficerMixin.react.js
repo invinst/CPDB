@@ -9,7 +9,7 @@ var OFFICER_COMPLAINT_COUNT_RANGE = [
 ];
 
 var OfficerMixin = {
-  getAvgClass: function() {
+  getAvgClass: function () {
     return 'avg-' + this.getAvgLevel(this.props.officer);
   },
 

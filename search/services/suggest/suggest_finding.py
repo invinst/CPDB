@@ -9,17 +9,25 @@ class SuggestFinding(SuggestBase):
 
         final_finding_results = [
             cls.entry_format(
-                label=entry[0],
-                value=entry[0],
-                filter=cls.build_filter(category='final_finding', value=entry[1])
+                suggest_value=entry[0],
+                tag_value=cls.build_tag_value(
+                    category='final_finding',
+                    value=entry[1],
+                    display_category='Final Finding',
+                    display_value=entry[0],
+                )
             ) for entry in raw_results
         ]
 
         recc_finding_results = [
             cls.entry_format(
-                label=entry[0],
-                value=entry[0],
-                filter=cls.build_filter(category='recc_finding', value=entry[1])
+                suggest_value=entry[0],
+                tag_value=cls.build_tag_value(
+                    category='recc_finding',
+                    value=entry[1],
+                    display_category='Recommended Finding',
+                    display_value=entry[0]
+                )
             ) for entry in raw_results
         ]
 

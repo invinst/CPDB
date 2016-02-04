@@ -24,21 +24,7 @@ var _state = {
   'rows': [],
   'current': false
 };
-var _complaints = {};
 var _currentActive = false;
-
-
-function update(id, updates) {
-  _complaints[id] = assign({}, _complaints[id], updates);
-}
-
-
-function create(id, complaint) {
-  _complaints[id] = {
-    'items': filter,
-    'value': "Select a " + id
-  };
-}
 
 
 var SummaryStore = assign({}, EventEmitter.prototype, {
@@ -50,16 +36,16 @@ var SummaryStore = assign({}, EventEmitter.prototype, {
     ajax = $.getJSON('/api/officer-allegations/summary/?' + queryString, function (data) {
       _state['rows'] = data.summary;
       SummaryStore.emitChange();
-    })
+    });
   },
   set: function (key, value) {
     _state[key] = value;
   },
-  setCurrentActive: function(val){
+  setCurrentActive: function (val) {
     _currentActive = val;
     SummaryStore.emitChange();
   },
-  getCurrentActive: function(){
+  getCurrentActive: function () {
     return _currentActive;
   },
   init: function (query) {

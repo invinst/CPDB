@@ -5,7 +5,7 @@ from django.core.urlresolvers import reverse
 
 from common.constants import FINDINGS, OUTCOMES, ACTIVE_CHOICES, CITIZEN_DEPTS, LOCATION_CHOICES
 from common.models.time_stamp import TimeStampedModel
-from allegation.models.allegation_manager import AllegationManager, DisciplinedManager
+from allegation.models.managers import AllegationManager, OfficerAllegationManager, DisciplinedManager
 from common.models.suggestible import (
     MobileSuggestibleOfficer, MobileSuggestibleAllegation)
 
@@ -165,7 +165,7 @@ class OfficerAllegation(models.Model):
         max_length=20, null=True, blank=True)
     start_date = models.DateField(null=True, blank=True)
     end_date = models.DateField(null=True, blank=True)
-    objects = models.GeoManager()
+    objects = OfficerAllegationManager()
     disciplined = DisciplinedManager()
 
 
@@ -177,7 +177,7 @@ class Investigator(TimeStampedModel):
     current_rank = models.CharField(max_length=50, null=True)
     current_report = models.CharField(max_length=4, null=True)
     unit = models.CharField(max_length=50, null=True)
-    agency = models.CharField(choices=[['IPRA','IPRA'], ['IAD', 'IAD']], max_length=10)
+    agency = models.CharField(choices=[['IPRA', 'IPRA'], ['IAD', 'IAD']], max_length=10)
 
     @property
     def tag_value(self):

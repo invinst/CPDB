@@ -77,6 +77,9 @@ class DjangoNoseTestSuiteRunner(django_nose.NoseTestSuiteRunner):
         if world.mobile_browser:
             world.mobile_browser.quit()
 
+        if world.android_browser:
+            world.android_browser.quit()
+
     def run_suite(self, nose_argv):
         """Run the test suite."""
         result_plugin = ResultPlugin()
@@ -101,4 +104,4 @@ class DjangoNoseTestSuiteRunner(django_nose.NoseTestSuiteRunner):
         if BaseLiveTestCase.source_dir:
             output_file = os.path.join(BaseLiveTestCase.source_dir, 'coverage_{time}.txt'.format(time=time.time()))
             with codecs.open(output_file, 'w', 'utf-8') as f:
-                json.dump(world.js_coverages, f, indent =2)
+                json.dump(world.js_coverages, f, indent=2)
