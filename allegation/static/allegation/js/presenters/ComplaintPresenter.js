@@ -22,7 +22,7 @@ var ComplaintPresenter = function (complaint) {
   var gender = function (abbr) {
     if (abbr == 'M') return 'Male';
     if (abbr == 'F') return 'Female';
-    if (abbr == 'X') return 'Trans';
+    if (abbr == 'X') return 'X';
     return '';
   };
 

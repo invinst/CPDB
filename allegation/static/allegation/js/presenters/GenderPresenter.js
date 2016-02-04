@@ -1,7 +1,7 @@
 var GenderMap = {
   'F':'Female',
   'M':'Male',
-  'X':'Trans'
+  'X':'X'
 };
 
 var GenderPresenter = function (gender) {
