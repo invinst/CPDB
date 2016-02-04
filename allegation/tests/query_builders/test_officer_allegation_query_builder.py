@@ -368,9 +368,13 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
             OfficerAllegationFactory(allegation=AllegationFactory(
                 incident_date=datetime.datetime.strptime(
                     '2011-01-01', '%Y-%m-%d')))]
-        OfficerAllegationFactory(allegation=AllegationFactory(
-            incident_date=datetime.datetime.strptime(
-                '2010-12-31', '%Y-%m-%d')))
+        OfficerAllegationFactory(
+            allegation=AllegationFactory(
+                incident_date=datetime.datetime.strptime(
+                    '2010-12-31', '%Y-%m-%d')),
+            start_date=datetime.datetime.strptime(
+                    '2010-12-31', '%Y-%m-%d')
+        )
 
         query_string = 'data_source=FOIA'
         expected_ids = [allegation.id for allegation in expected_allegations]
