@@ -91,7 +91,7 @@ var RaceGenderAPITransform = {
   genderPresenter: function (gender) {
     if (gender.toLowerCase() == 'f') return 'Female';
     if (gender.toLowerCase() == 'm') return 'Male';
-    if (gender.toLowerCase() == 'x') return 'Trans';
+    if (gender.toLowerCase() == 'x') return 'X';
     return 'N/A';
   }
 };
