@@ -65,10 +65,10 @@ function prettyLabels(label, term) {
     _renderItem: function (ul, item) {
       var element = $('<li>');
 
-      if (NO_CAP_CATEGORIES.indexOf(item.category) == -1) {
+      if (NO_CAP_CATEGORIES.indexOf(item.tagValue.displayCategory) == -1) {
         element.addClass('capitalize');
       }
-      if (UPPER_CATEGORIES.indexOf(item.category) != -1) {
+      if (UPPER_CATEGORIES.indexOf(item.tagValue.displayCategory) != -1) {
         element.addClass('uppercase');
       }
 
