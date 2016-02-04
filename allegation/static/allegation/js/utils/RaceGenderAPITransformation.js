@@ -1,6 +1,6 @@
 var _ = require('lodash');
 
-var GenderPresenter = require('presenter/GenderPresenter');
+var GenderPresenter = require('presenters/GenderPresenter');
 var FilterTagStore = require('stores/FilterTagStore');
 
 var isHispanic = function (x, y) { return _(y.toLowerCase()).contains('hispanic'); };
