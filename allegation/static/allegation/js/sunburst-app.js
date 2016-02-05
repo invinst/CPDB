@@ -12,15 +12,15 @@ global.initReact = function () {
   AppDispatcher.dispatch({
     actionType: AppConstants.RECEIVED_SESSION_DATA,
     data: { data: {
-      sunburst_arc: SUNBURST_ARC,
+      'sunburst_arc': window.SUNBURST_ARC,
       query: {}
     }}
   });
 
   ReactDOM.render(
-    <SunburstChartLegend data={SUNBURST_DATA.sunburst} />,
+    <SunburstChartLegend data={ window.SUNBURST_DATA.sunburst } />,
     element
   );
 
-  SunburstActions.receivedData(SUNBURST_DATA);
-}
+  SunburstActions.receivedData(window.SUNBURST_DATA);
+};
