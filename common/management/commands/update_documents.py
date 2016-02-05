@@ -56,3 +56,5 @@ class Command(BaseCommand):
                 allegation.document_title = title
 
                 allegation.save()
+
+        DocumentCrawler.objects.create(num_documents=Allegation.objects.filter(document_id__gt=0).count())
