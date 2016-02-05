@@ -1,6 +1,6 @@
 var React = require('react');
 
-var DistributionCurve = require('components/OfficerPage/SummaryTab/DistributionCurve.react');
+var DistributionCurve = require('components/OfficerPage/SummaryTab/OfficerAnalyticSection/DistributionCurve.react');
 
 
 var OfficerAnalyticSection = React.createClass({
@@ -14,7 +14,7 @@ var OfficerAnalyticSection = React.createClass({
         </div>
         <div className='distribution-curve'>
           <div className='distribution-curve-wrapper'>
-            <DistributionCurve />
+            <DistributionCurve officer={ this.props.officer } distribution={ this.props.distribution } />
           </div>
         </div>
       </div>

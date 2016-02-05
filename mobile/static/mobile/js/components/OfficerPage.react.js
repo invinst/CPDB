@@ -2,6 +2,7 @@ var React = require('react');
 var objectAssign = require('object-assign');
 
 var Base = require('components/Base.react');
+var HelperUtil = require('utils/HelperUtil');
 
 var SimpleTab = require('components/Shared/SimpleTab.react');
 var ComplaintsTab = require('components/OfficerPage/ComplaintsTab.react');
@@ -32,15 +33,14 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
 
   componentWillReceiveProps: function (nextProps) {
     var id = nextProps.params.id || '';
-    OfficerPageServerActions.reload();
     OfficerResourceUtil.get(id);
   },
 
   componentDidMount: function () {
     ga('send', 'event', 'officer', 'view_detail', location.pathname);
     var id = this.props.params.id || '';
-    OfficerResourceUtil.get(id);
     OfficerPageStore.addChangeListener(this._onChange);
+    OfficerResourceUtil.get(id);
   },
 
   render: function () {
@@ -60,9 +60,10 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
     }
 
     var officer = this.state.officer;
-    var officerDetail = officer['detail'];
-    var complaints = officer['complaints'];
-    var coAccused = officer['co_accused'];
+    var officerDetail = HelperUtil.fetch(officer, 'detail', {});
+    var complaints = HelperUtil.fetch(officer, 'complaints', {});
+    var coAccused = HelperUtil.fetch(officer, 'co_accused', {});
+    var distribution = HelperUtil.fetch(officer, 'distribution', {});
 
     return (
       <SearchablePage>
@@ -78,7 +79,7 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
                 </div>
                 <div className='officer-page-content'>
                   <div>
-                    <SummaryTab officer={ officerDetail } />
+                    <SummaryTab officer={ officerDetail } distribution={ distribution } />
                   </div>
                   <div>
                     <ComplaintsTab officer={ officerDetail } complaints={ complaints } />

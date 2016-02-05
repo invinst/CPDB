@@ -6,16 +6,18 @@ var OfficerAnalyticSection = require('components/OfficerPage/SummaryTab/OfficerA
 
 var SummaryTab = React.createClass({
   propTypes: {
-    officer: React.PropTypes.object
+    officer: React.PropTypes.object,
+    distribution: React.PropTypes.distribution
   },
 
   render: function () {
     var officer = this.props.officer;
+    var distribution = this.props.distribution;
 
     return (
       <div className='summary-tab'>
-        <OfficerSummarySection officer={ officer }/>
-        <OfficerAnalyticSection officer={ officer }/>
+        <OfficerSummarySection officer={ officer } />
+        <OfficerAnalyticSection officer={ officer } distribution={ distribution } />
       </div>
     );
   }
