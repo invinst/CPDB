@@ -7,7 +7,7 @@ var Wrapper = require('components/Shared/Wrapper.react');
 
 var SimpleTab = React.createClass({
   propTypes: {
-    children: React.PropTypes.element,
+    children: React.PropTypes.node,
     navigation: React.PropTypes.bool
   },
 

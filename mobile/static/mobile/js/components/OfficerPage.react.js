@@ -46,6 +46,11 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
   render: function () {
     var loading = this.state.loading;
     var found = this.state.found;
+    var officer = this.state.officer;
+    var officerDetail = HelperUtil.fetch(officer, 'detail', {});
+    var complaints = HelperUtil.fetch(officer, 'complaints', {});
+    var coAccused = HelperUtil.fetch(officer, 'co_accused', {});
+    var distribution = HelperUtil.fetch(officer, 'distribution', {});
 
     if (loading) {
       return (
@@ -58,12 +63,6 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
         <NotMatchedPage id={ this.state.pk } />
       );
     }
-
-    var officer = this.state.officer;
-    var officerDetail = HelperUtil.fetch(officer, 'detail', {});
-    var complaints = HelperUtil.fetch(officer, 'complaints', {});
-    var coAccused = HelperUtil.fetch(officer, 'co_accused', {});
-    var distribution = HelperUtil.fetch(officer, 'distribution', {});
 
     return (
       <SearchablePage>

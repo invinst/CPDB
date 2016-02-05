@@ -7,7 +7,7 @@ var OfficerAnalyticSection = require('components/OfficerPage/SummaryTab/OfficerA
 var SummaryTab = React.createClass({
   propTypes: {
     officer: React.PropTypes.object,
-    distribution: React.PropTypes.distribution
+    distribution: React.PropTypes.array
   },
 
   render: function () {

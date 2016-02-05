@@ -7,7 +7,7 @@ var OfficerUtil = require('utils/OfficerUtil');
 
 var OfficerCard = React.createClass({
   propTypes: {
-    officerId: React.PropTypes.number,
+    officerId: React.PropTypes.string,
     allegationsCount: React.PropTypes.number,
     displayName: React.PropTypes.string,
     description: React.PropTypes.string

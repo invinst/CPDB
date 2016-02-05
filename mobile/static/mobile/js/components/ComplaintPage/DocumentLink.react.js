@@ -6,7 +6,7 @@ var DocumentLinkPresenter = require('presenters/DocumentLinkPresenter');
 
 var DocumentLink = React.createClass({
   propTypes: {
-    documentId: React.PropTypes.number,
+    documentId: React.PropTypes.string,
     documentNormalizedTitle: React.PropTypes.string
   },
 

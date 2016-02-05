@@ -1,4 +1,4 @@
-var HelperUtil = require('utils/HelpUtil');
+var HelperUtil = require('utils/HelperUtil');
 
 
 var SvgUtil = {

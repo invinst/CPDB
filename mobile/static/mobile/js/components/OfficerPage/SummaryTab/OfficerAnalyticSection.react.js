@@ -4,6 +4,11 @@ var DistributionCurve = require('components/OfficerPage/SummaryTab/OfficerAnalyt
 
 
 var OfficerAnalyticSection = React.createClass({
+  propsType: {
+    officer: React.PropTypes.object,
+    distribution: React.PropTypes.array
+  },
+
   render: function () {
     return (
       <div className='officer-analytic-section'>
