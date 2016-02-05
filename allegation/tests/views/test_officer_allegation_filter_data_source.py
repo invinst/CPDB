@@ -23,7 +23,7 @@ class OfficerAllegationFilterDataSource(
                 START_UNIX_TIME_DATE, FOIA_START_DATE))
         OfficerAllegationFactory(
             allegation=self.pre_foia,
-             start_date=generate_random_date(
+            start_date=generate_random_date(
                 START_UNIX_TIME_DATE, FOIA_START_DATE))
 
     def test_filter_by_data_source(self):
