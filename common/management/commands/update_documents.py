@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from documentcloud import DocumentCloud
 
-from common.models import Allegation
+from common.models import Allegation, DocumentCrawler
 
 
 class Command(BaseCommand):
