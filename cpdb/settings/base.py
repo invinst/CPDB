@@ -54,6 +54,7 @@ CPDB_APPS = (
     'dashboard',
     'api',
     'mobile',
+    'twitterbot',
 )
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + CPDB_APPS
@@ -273,5 +274,10 @@ ELASTICSEARCH_SETTINGS = {
         }
     }
 }
+
+TWITTER_CONSUMER_KEY = os.environ.get('TWITTER_CONSUMER_KEY', '')
+TWITTER_CONSUMER_SECRET = os.environ.get('TWITTER_CONSUMER_SECRET', '')
+TWITTER_APP_TOKEN_KEY = os.environ.get('TWITTER_APP_TOKEN_KEY', '')
+TWITTER_APP_TOKEN_SECRET = os.environ.get('TWITTER_APP_TOKEN_SECRET', '')
 
 DJANGO_ENV = 'prod'

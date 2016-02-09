@@ -179,6 +179,9 @@ class Investigator(TimeStampedModel):
     unit = models.CharField(max_length=50, null=True)
     agency = models.CharField(choices=[['IPRA', 'IPRA'], ['IAD', 'IAD']], max_length=10)
 
+    def __str__(self):
+        return self.name
+
     @property
     def tag_value(self):
         return {
