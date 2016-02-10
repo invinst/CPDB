@@ -15,34 +15,47 @@ var DistributionCurve = React.createClass({
     return HelperUtil.format('{x},{y}', {'x': numberOfComplaints * scaleX / 70, 'y': scaleY});
   },
 
+  getAreaPoints: function (data, scaleX, scaleY) {
+    // Area chart is drawn as a polygon with first point is 0,0
+    var maxOfXAxis = data.length; // number of complaints
+    var firstPoint = '0,0'; // first point of poly line should be 0, 0
+    var lastPoint = HelperUtil.format('{x},{y}',{'x': maxOfXAxis * scaleX, 'y':0});
+    var points = [firstPoint, SvgUtil.arrayToPoints(data, scaleX, scaleY), lastPoint].join(' ');
+
+    return points;
+  },
+
   render: function () {
     var data = this.props.distribution;
+    var defaultPadding = 36;
+    var defaultWidth = 320;
+    var defaultChartHeight = 122;
+    var redLineDifferentToMaxOfData = 30;
 
     // we keep distribution chart the same even we switch the portrait
     var screenWidthSize = Math.min(document.body.clientHeight, document.body.clientWidth);
     var wrapperWidthSize = screenWidthSize;
-    var scaleTo320 = screenWidthSize / 320; // 320 is design-specific
+    var scaleTo320 = screenWidthSize / defaultWidth;
 
     // Caculating max number of x and y axis
     var maxOfXAxis = data.length; // number of complaints
     var maxOfYAxis = CollectionUtil.getMax(data); // number of officers
 
     // by design, we have 36px padding in left and right
-    var availableWidthForDistributionChart = screenWidthSize - 36 - 36;
-    var availableHeightForDistributionChart = 122 * scaleTo320; // fixed by design
-    var wrapperHeightSize = availableHeightForDistributionChart + 36 + 36;
+    var availableWidthForDistributionChart = screenWidthSize - defaultPadding - defaultPadding;
+    var availableHeightForDistributionChart = defaultChartHeight * scaleTo320; // fixed by design
+    var wrapperHeightSize = availableHeightForDistributionChart + defaultPadding + defaultPadding;
 
+    // calculating the scale between data and drawing panel size
     var scaleX = availableWidthForDistributionChart / maxOfXAxis;
     var scaleY = availableHeightForDistributionChart / maxOfYAxis;
 
-    // Area chart is drawn as a polygon with first point is 0,0
-    var firstPoint = '0,0'; // first point of poly line should be a
-    var lastPoint = HelperUtil.format('{x},{y}',{'x': maxOfXAxis * scaleX, 'y':0});
-    var points = [firstPoint, SvgUtil.arrayToPoints(data, scaleX, scaleY), lastPoint].join(' ');
-
     var x = HelperUtil.fetch(this.props.officer, 'allegations_count', 0);
     var lineX = x * scaleX;
-    var lineY = (maxOfYAxis - 300) * scaleY; // it should be smaller than the max on of y a-xis a bit
+    // it should be smaller than the max on of y a-xis a bit
+    var lineY = maxOfYAxis * scaleY - redLineDifferentToMaxOfData;
+
+    var areaChartPoints = this.getAreaPoints(data, scaleX, scaleY);
     var style = {
       'paddingTop': wrapperHeightSize,
       'width': wrapperWidthSize
@@ -59,14 +72,10 @@ var DistributionCurve = React.createClass({
             <g transform={ translate }>
               <g transform='scale(1, -1)'>
                 <polygon
-                  fill='#eaeaea'
-                  stroke='#eaeaea'
-                  strokeWidth='1'
-                  points={ points }/>
-                <line x1={ lineX } y1='0' x2={ lineX } y2={ lineY }
-                  stroke='red'
-                  strokeWidth='1' />
-                <ellipse className='fill' fill='red' ry='5' rx='5' cy={ lineY } cx={ lineX }/>
+                  className='distribution-chart'
+                  points={ areaChartPoints }/>
+                <line className='red-line' x1={ lineX } y1='0' x2={ lineX } y2={ lineY } />
+                <ellipse className='eclipse-of-red-line' ry='5' rx='5' cy={ lineY } cx={ lineX }/>
               </g>
             </g>
 
