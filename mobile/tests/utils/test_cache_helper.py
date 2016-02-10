@@ -18,9 +18,9 @@ class CacheHelperTest(SimpleTestCase):
     def tearDown(self):
         cache.clear()
 
-    def test_get_or_set_when_already_set(self):
+    def test_get_or_set_when_already_have_value(self):
         cache.set('cache_key', 'other_value')
-        CacheHelper.get_or_set('key', 'value')
+        CacheHelper.get_or_set('cache_key', 'value')
         cache.get('cache_key').should.be.equal('other_value')
 
     def test_get_or_set_when_not_set_yet(self):
