@@ -34,6 +34,9 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
   componentWillReceiveProps: function (nextProps) {
     var id = nextProps.params.id || '';
     OfficerResourceUtil.get(id);
+    // TODO: The way react-router handle the same resource url (same React Page-component) leads to the issue that this
+    // React component is not remount again, so we need to put this action here. It's not a cool solution anyway.
+    OfficerPageServerActions.reload();
   },
 
   componentDidMount: function () {

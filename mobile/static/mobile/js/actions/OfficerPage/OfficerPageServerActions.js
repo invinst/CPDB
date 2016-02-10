@@ -16,6 +16,12 @@ var OfficerPageServerActions = {
       data: id
     });
   },
+
+  reload: function () {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.OFFICER_PAGE_RELOAD
+    });
+  }
 };
 
 module.exports = OfficerPageServerActions;

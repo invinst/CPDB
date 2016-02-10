@@ -7,6 +7,7 @@ var SvgUtil = require('utils/SvgUtil');
 
 var DistributionCurve = React.createClass({
   propTypes: {
+    officer: React.PropTypes.object,
     distribution: React.PropTypes.array
   },
 
