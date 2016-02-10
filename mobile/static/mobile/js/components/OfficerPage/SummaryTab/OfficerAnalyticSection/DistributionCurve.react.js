@@ -19,8 +19,8 @@ var DistributionCurve = React.createClass({
     var data = this.props.distribution;
 
     var maxDataValue = CollectionUtil.getMax(data);
-    var scaleX = 300 / 70;
-    var scaleY = 200 / maxDataValue;
+    var scaleX = 244 / 70;
+    var scaleY = 122 / maxDataValue;
     var dataAsPoints = SvgUtil.arrayToPoints(data, scaleX, scaleY);
     var endPoint = HelperUtil.format('{dataEnd},{end}',{'dataEnd':data.length * scaleX, 'end':0});
     var polyfillDataPoints = ['0,0', dataAsPoints, endPoint].join(' ');
@@ -31,8 +31,8 @@ var DistributionCurve = React.createClass({
 
     return (
       <div className='distribution-curve'>
-        <svg x='0px' y='0px' viewBox='0 0 320 200'>
-          <g transform='translate(10,200)'>
+        <svg x='0px' y='0px' viewBox='0 0 320 194'>
+          <g transform='translate(36, 148)'>
             <g transform='scale(1, -1)'>
               <polygon
                 fill='#eaeaea'
@@ -46,6 +46,10 @@ var DistributionCurve = React.createClass({
             </g>
           </g>
 
+          <g transform='rotate(-90)'>
+            <text className='legend' x='-140' y='18'>Number of Officers</text>
+          </g>
+          <text className='event-date' x='80' y='176'>Number of Complaints</text>
         </svg>
       </div>
     );
