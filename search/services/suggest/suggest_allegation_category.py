@@ -76,7 +76,7 @@ class SuggestAllegationCategoryOnDuty(SuggestBase):
                     category='cat__on_duty',
                     value=entry[1],
                     display_category='Category On Duty',
-                    display_value=entry[1]
+                    display_value=entry[0]
                 ),
             ) for entry in raw_results
         ]
