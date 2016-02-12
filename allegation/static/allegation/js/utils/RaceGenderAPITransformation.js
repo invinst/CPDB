@@ -1,5 +1,6 @@
 var _ = require('lodash');
 
+var GenderPresenter = require('presenters/GenderPresenter');
 var FilterTagStore = require('stores/FilterTagStore');
 
 var isHispanic = function (x, y) { return _(y.toLowerCase()).contains('hispanic'); };
@@ -71,13 +72,11 @@ var RaceGenderAPITransform = {
   },
 
   transformGenders: function (genders, isOfficer) {
-    var that = this;
-
     var filterCategory = isOfficer ? 'officer__gender' : 'complainant_gender';
     var hasActiveFilter = FilterTagStore.getAll(filterCategory).length > 0;
 
     return _(genders).map(function (x, y) {
-      var genderLabel = that.genderPresenter(y);
+      var genderLabel = GenderPresenter(y);
 
       return {
         'label': genderLabel,
@@ -86,13 +85,6 @@ var RaceGenderAPITransform = {
         'active': !hasActiveFilter || FilterTagStore.isInFilter(filterCategory, y)
       };
     }).sortBy('label').value();
-  },
-
-  genderPresenter: function (gender) {
-    if (gender.toLowerCase() == 'f') return 'Female';
-    if (gender.toLowerCase() == 'm') return 'Male';
-    if (gender.toLowerCase() == 'x') return 'Trans';
-    return 'N/A';
   }
 };
 
