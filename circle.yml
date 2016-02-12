@@ -12,6 +12,11 @@ database:
   post:
     - psql -c "CREATE EXTENSION postgis;" -d circle_test
 dependencies:
+  pre:
+    - sudo apt-get update; sudo apt-get install libicu52
+    - curl --output /home/ubuntu/bin/phantomjs-2.1.1-linux-x86_64-dynamic https://s3.amazonaws.com/circle-support-bucket/phantomjs/phantomjs-2.1.1-linux-x86_64-dynamic
+    - chmod a+x /home/ubuntu/bin/phantomjs-2.1.1-linux-x86_64-dynamic
+    - sudo ln -sf /home/ubuntu/bin/phantomjs-2.1.1-linux-x86_64-dynamic /usr/local/bin/phantomjs
   override:
     - gem install sass
     - pip install -r requirements.txt
