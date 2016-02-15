@@ -11,22 +11,35 @@ class SuggestOfficerTestCase(SuggestBaseTestCase):
 
         self.rebuild_index()
 
-        expect_suggest = '{first_name} {last_name}\n ({allegations_count})'.format(
+        expect_suggest = '{first_name} {last_name} ({allegations_count})'.format(
             first_name=officer.officer_first,
             last_name=officer.officer_last,
             allegations_count=officer.allegations_count
         )
 
-        SuggestOfficerName.query('Mich')['Officer'][0]['suggest_value'].should.be.equal(expect_suggest)
-        SuggestOfficerName.query('olford')['Officer'][0]['suggest_value'].should.be.equal(expect_suggest)
+        SuggestOfficerName.query('Mich')['Officer'][0]['suggest_value']\
+            .should.be.equal(expect_suggest)
+        SuggestOfficerName.query('olford')['Officer'][0]['suggest_value']\
+            .should.be.equal(expect_suggest)
         SuggestOfficerName.query('Bad')['Officer'].should.be.equal([])
+
+    def test_suggest_special_officer_name(self):
+        OfficerFactory(officer_first='Timothy', officer_last='O\'brien')
+        self.rebuild_index()
+
+        query = 'O\'bri'
+        expect_suggest = 'Timothy O\'brien'
+
+        SuggestOfficerName.query(query)['Officer'][0]['tag_value']['display_value']\
+            .should.be.equal(expect_suggest)
 
     def test_suggest_officer_star(self):
         officer = OfficerFactory(star=110910)
 
         self.rebuild_index()
 
-        SuggestOfficerStar.query('1109')['Badge number'][0]['tag_value']['display_value'].should.be.equal(officer.star)
+        SuggestOfficerStar.query('1109')['Badge number'][0]['tag_value']['display_value']\
+            .should.be.equal(officer.star)
         SuggestOfficerStar.query('1090')['Badge number'].should.be.equal([])
         SuggestOfficerStar.query('notdigit').should.be.equal(None)
 
