@@ -2,6 +2,7 @@ var React = require('react');
 
 var HelperUtil = require('utils/HelperUtil');
 var CollectionUtil = require('utils/CollectionUtil');
+var OfficerUtil = require('utils/OfficerUtil');
 var SvgUtil = require('utils/SvgUtil');
 
 
@@ -50,7 +51,8 @@ var DistributionCurve = React.createClass({
     var scaleX = availableWidthForDistributionChart / maxOfXAxis;
     var scaleY = availableHeightForDistributionChart / maxOfYAxis;
 
-    var x = HelperUtil.fetch(this.props.officer, 'allegations_count', 0);
+    var allegationsCount = HelperUtil.fetch(this.props.officer, 'allegations_count', 0);
+    var x = allegationsCount;
     var lineX = x * scaleX;
     // it should be smaller than the max on of y a-xis a bit
     var lineY = maxOfYAxis * scaleY - redLineDifferentToMaxOfData;
@@ -64,6 +66,8 @@ var DistributionCurve = React.createClass({
     var viewBox = HelperUtil.format('0 0 {width} {height}', {'width': wrapperWidthSize, 'height': wrapperHeightSize});
     var translate = HelperUtil.format('translate(36, {y})', {'y': availableHeightForDistributionChart + 36});
     var numberOfOfficerTextX = -wrapperHeightSize / 2;
+    var fillClass = OfficerUtil.getColorLevelClass('fill', allegationsCount);
+    var strokeClass = OfficerUtil.getColorLevelClass('stroke', allegationsCount);
 
     return (
       <div className='distribution-curve'>
@@ -74,8 +78,8 @@ var DistributionCurve = React.createClass({
                 <polygon
                   className='distribution-chart'
                   points={ areaChartPoints }/>
-                <line className='red-line' x1={ lineX } y1='0' x2={ lineX } y2={ lineY } />
-                <ellipse className='eclipse-of-red-line' ry='5' rx='5' cy={ lineY } cx={ lineX }/>
+                <line className={ strokeClass } x1={ lineX } y1='0' x2={ lineX } y2={ lineY } />
+                <ellipse className={ fillClass } ry='5' rx='5' cy={ lineY } cx={ lineX }/>
               </g>
             </g>
 

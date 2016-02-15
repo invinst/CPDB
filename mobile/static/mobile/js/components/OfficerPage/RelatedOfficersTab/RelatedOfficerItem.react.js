@@ -35,7 +35,7 @@ var RelatedOfficerItem = React.createClass({
       <div className={ relatedOfficerClassName } onClick={ this._onClick }>
         <div className='row'>
           <div className='one column circle-wrapper center'>
-            <span className={ cx('circle', OfficerUtil.getStarClass(presenter.allegationsCount)) }></span>
+            <span className={ cx('circle', OfficerUtil.getColorLevelClass('circle', presenter.allegationsCount)) } />
           </div>
           <div className='eleven columns'>
             <div className='name bold'>{ presenter.displayName }</div>
