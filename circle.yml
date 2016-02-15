@@ -40,6 +40,7 @@ test:
     - python manage.py collectstatic --noinput
   override:
     - coverage run --parallel-mode manage.py test  --noinput --nologcapture --with-timer -s -v 2
+    - PYTHON=python2 npm run test
     - flake8
     - eslint .
   post:
