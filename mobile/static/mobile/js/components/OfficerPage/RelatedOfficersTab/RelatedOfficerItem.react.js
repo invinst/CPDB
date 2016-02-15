@@ -27,7 +27,6 @@ var RelatedOfficerItem = React.createClass({
 
     var numberOfAllegations = officer['num_allegations'];
     var presenter = OfficerPresenter(officer);
-    var officerUtil = OfficerUtil();
     var relatedOfficerClassName = cx('related-officer-item', 'pad',
       HelperUtil.format('officer-{index}', {'index': presenter.id})
     );
@@ -36,7 +35,7 @@ var RelatedOfficerItem = React.createClass({
       <div className={ relatedOfficerClassName } onClick={ this._onClick }>
         <div className='row'>
           <div className='one column circle-wrapper center'>
-            <span className={ cx('circle', officerUtil.getStarClass(presenter.allegationsCount)) }></span>
+            <span className={ cx('circle', OfficerUtil.getStarClass(presenter.allegationsCount)) }></span>
           </div>
           <div className='eleven columns'>
             <div className='name bold'>{ presenter.displayName }</div>
