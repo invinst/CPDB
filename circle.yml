@@ -12,6 +12,8 @@ database:
   post:
     - psql -c "CREATE EXTENSION postgis;" -d circle_test
 dependencies:
+  pre:
+    - bash ./install_phantomjs.sh
   override:
     - gem install sass
     - pip install -r requirements.txt
@@ -25,6 +27,7 @@ dependencies:
     - PYTHON=python2 npm run circleci
     - PYTHON=python2 npm run circleci_admin
     - PYTHON=python2 npm run circleci_mobile
+    - PYTHON=python2 npm run circleci_sunburst
     - pyenv local 3.4.2
   cache_directories:
     - "bower_components"

@@ -12,6 +12,7 @@ var Base = require('components/Base.react');
 var NavActions = require('actions/NavActions');
 var SessionAPI = require('utils/SessionAPI');
 var SiteTitle = require('components/Shared/SiteTitle.react');
+var ShareButton = require('components/DataToolPage/Share/ShareButton.react');
 
 
 var Nav = React.createClass(_.assign(Base(AppStore), {
@@ -177,6 +178,7 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
             </Link>
             { display.backLink ? <Back /> : '' }
             { display.titleBox ? this.renderTitleBox() : '' }
+            <ShareButton/>
             { display.navTabSection ? this.renderNavTabSection() : '' }
           </div>
           { display.subNav ? this.renderSubNav() : '' }
