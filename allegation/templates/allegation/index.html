@@ -16,6 +16,13 @@
     <meta name="description" content="{% block meta-description %}The Citizens Police Data Project stores a searchable database of police disciplinary information obtained from the City of Chicago.{% endblock %}" />
     <meta name="keywords" content="{% block meta-keywords %}Chicago Police Department, Citizens Police Data Project, Invisible Institute, Police, Allegations, Disciplines{% endblock %}" />
     <title>{{ admin_settings.default_site_title }}</title>
+    {% if og_image %}
+      <meta property="og:title" content="{{ site_title }}" />
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content="{{ request.build_absolute_uri }}" />
+      <meta property="og:image" content="{{ og_image }}" />
+      <meta property="og:image:type" content="image/png" />
+    {% endif %}
     {% endblock %}
       <link rel="shortcut icon" type='image/png' href="{% static 'img/favicon.ico' %}" />
       <link rel="home" href="/" />
@@ -126,5 +133,6 @@
     <script>
         var INTERFACE_TEXTS = {{interface_texts|safe}};
     </script>
+    <script type="text/javascript" async src="https://platform.twitter.com/widgets.js"></script>
   </body>
 </html>

@@ -1,4 +1,4 @@
-from cpdb.settings.prod.base import *  # NOQA
+from cpdb.settings.base import *  # NOQA
 
 
 ADMINS = (('Hieu', 'hieu.hoang@eastagile.com'), ('Giang', 'giang.nguyen@eastagile.com'),
