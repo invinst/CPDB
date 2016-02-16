@@ -16,7 +16,7 @@ class RaceGenderTabTest(BaseLiveTestCase):
     NON_DISPLAY_RACES = ['Indigenous', 'Asian', 'Unknown', 'White/Hispanic',
                          'Black/Hispanic']
     GENDERS = ['M', 'F', 'X']
-    DISPLAY_GENDERS = ['Male', 'Female', 'Trans']
+    DISPLAY_GENDERS = ['Male', 'Female', 'X']
 
     def setUp(self):
         Allegation.objects.all().delete()

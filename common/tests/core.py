@@ -329,6 +329,10 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     def click_by_js(self, element):
         self.browser.execute_script('return arguments[0].click();', element)
 
+    # TODO: These methods should belong to a mixin instead
+    def reset_ga_call(self):
+        return self.browser.execute_script("window.gaCall=0")
+
     def should_track_ga_event(self):
         self.get_ga_call_variable().should.greater_than(0)
 

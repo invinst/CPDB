@@ -66,6 +66,7 @@ class SuggestionService(object):
 
     def _make_suggestion(self, q):
         suggestions = {}
+        q = q.strip()
         for suggest in self.suggests:
             group = suggest.query(q)
             if group:

@@ -11,7 +11,7 @@ class MobileComplaintPageTest(BaseLivePhoneTestCase):
         view_document_text = 'View documents'
 
         officer_gender = 'X'
-        officer_gender_display = 'Trans'
+        officer_gender_display = 'X'
 
         final_finding_code = 'UN'
         final_finding_text = 'Unfounded'

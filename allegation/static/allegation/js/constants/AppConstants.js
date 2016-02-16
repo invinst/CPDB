@@ -31,6 +31,7 @@ module.exports = {
   INIT: c++,
   SAVE_SESSION: c++,
   SESSION_CREATED: c++,
+  RECEIVED_SHARED_SESSION: c++,
 
   ENTER_EMBED_MODE: c++,
   LEAVE_EMBED_MODE: c++,

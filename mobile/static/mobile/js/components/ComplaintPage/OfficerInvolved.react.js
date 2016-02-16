@@ -13,6 +13,7 @@ var OfficerInvolved = React.createClass({
   propTypes: {
     involvedOfficers: React.PropTypes.array
   },
+
   _onClick: function (officerPresenter) {
     var officerUrl = HelperUtil.format('/officer/{name}/{id}', {
       'name': officerPresenter.displayName,
@@ -27,7 +28,7 @@ var OfficerInvolved = React.createClass({
     return (
       <div onClick={ this._onClick.bind(this, officerPresenter) } key={ officer.id }>
         <OfficerCard
-          officerId={ officer.id }
+          officerId={ officerPresenter.id }
           allegationsCount={ officerPresenter.allegationsCount }
           displayName={ officerPresenter.displayName }
           description={ officerPresenter.description }

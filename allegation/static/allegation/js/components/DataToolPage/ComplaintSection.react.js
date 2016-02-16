@@ -10,6 +10,7 @@ var RequestModal = require('components/DataToolPage/Complaint/RequestModal.react
 var ComplaintListStore = require('stores/ComplaintListStore');
 var ComplaintListAPI = require('utils/ComplaintListAPI');
 var ComplaintListRow = require('components/DataToolPage/ComplaintListRow.react');
+var LoadingPage = require('components/Shared/LoadingPage.react');
 
 
 var ComplaintSection = React.createClass({
@@ -70,15 +71,18 @@ var ComplaintSection = React.createClass({
   },
 
   render: function () {
+    var loading = this.state.loading;
     var activeFilter = this.state.activeFilter;
     var analytics = this.state.analytics;
-    var loading = this.state.loading;
     var items = this.renderComplaints(this.state.complaints, this.props.officer);
     var className = classnames('complaint-list', {
       'hidden': this.state.noQuery
     });
-
     var complaintList = '';
+
+    if (loading) {
+      return <LoadingPage />;
+    }
 
     if (items.length == 0) {
       complaintList = (

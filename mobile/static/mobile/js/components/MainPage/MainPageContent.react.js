@@ -8,7 +8,7 @@ var ProjectSummary = require('components/MainPage/ProjectSummary.react');
 
 var MainPageContent = React.createClass({
   propTypes: {
-    topLeft: React.PropTypes.bool
+    topLeft: React.PropTypes.number
   },
 
   render: function () {
