@@ -1,3 +1,16 @@
+var NO_CAP_CATEGORIES = [
+  'has:',
+  'Category ID',
+  'Officer',
+  'Investigator'
+];
+
+var UPPER_CATEGORIES = [
+  'Category ID',
+  'Investigation Agency'
+];
+
+
 function slugify(title) {
   var asciiTitle = title.replace(/\s{2,}/g, ' ');
   var singleSpaceTitle = asciiTitle.replace(/[^\w\s]/gi, '').trim();
@@ -51,6 +64,13 @@ function prettyLabels(label, term) {
 
     _renderItem: function (ul, item) {
       var element = $('<li>');
+
+      if (NO_CAP_CATEGORIES.indexOf(item.tagValue.displayCategory) == -1) {
+        element.addClass('capitalize');
+      }
+      if (UPPER_CATEGORIES.indexOf(item.tagValue.displayCategory) != -1) {
+        element.addClass('uppercase');
+      }
 
       return element.addClass('autocomplete-' + slugify(item.tagValue.displayCategory))
                     .html(prettyLabels(item.suggestValue, $(this.element).val()))
