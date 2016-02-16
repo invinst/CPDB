@@ -1,5 +1,5 @@
 var DeviceUtil = function () {
-  var isiOSDevice = function() {
+  var isiOSDevice = function () {
     return /iPhone|iPad|iPod/i.test(navigator.userAgent);
   };
 

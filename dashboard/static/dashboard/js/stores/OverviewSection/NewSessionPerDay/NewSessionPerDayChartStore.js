@@ -9,7 +9,7 @@ var _state = {
     labels: [],
     datasets: [
       _.assign(AppConstants.LINE_CHART_COLOR_OPTIONS, {
-      data: []
+        data: []
       })
     ]
   },

@@ -9,22 +9,22 @@ var limit = 0;
 var count = 20;
 
 var SessionsAPI = {
-  get: function(query) {
+  get: function (query) {
     if (ajax) {
       ajax.abort();
     }
 
     limit = 0;
-    params = {
+    var params = {
       q: SessionSearchStore.getState()['query']
     };
 
-    ajax = jQuery.getJSON(AppConstants.SESSIONS_API_ENDPOINT, params, function(data) {
+    ajax = jQuery.getJSON(AppConstants.SESSIONS_API_ENDPOINT, params, function (data) {
       SessionsActions.receivedData(data);
     });
   },
 
-  getMore: function() {
+  getMore: function () {
     if (ajax) {
       ajax.abort();
     }
@@ -37,7 +37,7 @@ var SessionsAPI = {
       q: SessionSearchStore.getState()['query']
     };
 
-    ajax = jQuery.getJSON(AppConstants.SESSIONS_API_ENDPOINT, params, function(data) {
+    ajax = jQuery.getJSON(AppConstants.SESSIONS_API_ENDPOINT, params, function (data) {
       SessionsActions.receivedMore(data.results);
     });
   }

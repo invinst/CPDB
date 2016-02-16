@@ -37,6 +37,7 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
   },
 
   componentDidMount: function () {
+    ga('send', 'event', 'officer', 'view_detail', location.pathname);
     var id = this.props.params.id || '';
     OfficerResourceUtil.get(id);
     OfficerPageStore.addChangeListener(this._onChange);
@@ -54,7 +55,7 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
 
     if (!found) {
       return (
-        <NotMatchedPage id={this.state.pk} />
+        <NotMatchedPage id={ this.state.pk } />
       );
     }
 
@@ -67,9 +68,9 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
       <SearchablePage>
         <div className='officer-page'>
           <div className='content'>
-            <OfficerHeader officer={officerDetail} />
+            <OfficerHeader officer={ officerDetail } />
             <div className='tabs'>
-              <SimpleTab navigation={true}>
+              <SimpleTab navigation={ true }>
                 <div>
                   <div className='tab-summary'>Summary</div>
                   <div className='tab-complaints'>Complaints</div>
@@ -77,13 +78,13 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
                 </div>
                 <div className='officer-page-content'>
                   <div>
-                    <SummaryTab officer={officerDetail} />
+                    <SummaryTab officer={ officerDetail } />
                   </div>
                   <div>
-                    <ComplaintsTab officer={officerDetail} complaints={complaints} />
+                    <ComplaintsTab officer={ officerDetail } complaints={ complaints } />
                   </div>
                   <div>
-                    <RelatedOfficersTab coAccused={coAccused}/>
+                    <RelatedOfficersTab coAccused={ coAccused }/>
                   </div>
                 </div>
               </SimpleTab>

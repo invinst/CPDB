@@ -1,6 +1,6 @@
 from selenium.webdriver.common.keys import Keys
 
-from allegation.factories import OfficerFactory
+from allegation.factories import OfficerFactory, InvestigatorFactory
 from common.models import Officer
 from common.tests.core import BaseLiveTestCase
 from common.utils.haystack import rebuild_index
@@ -29,3 +29,15 @@ class SearchUITestCase(BaseLiveTestCase):
 
         self.find('.ui-autocomplete-input').send_keys(Keys.ARROW_DOWN)
         self.find('.ui-autocomplete-input').get_attribute('value').should.equal(search_text)
+
+    def test_officer_and_investigator_name_displayed_as_in_database(self):
+        officer = OfficerFactory(officer_last='III')
+        investigator = InvestigatorFactory(name='IIII')
+
+        rebuild_index()
+
+        search_text = 'ii'
+        self.until(lambda: self.fill_in('.ui-autocomplete-input', search_text))
+        self.until(lambda: self.find('.ui-autocomplete-input').get_attribute('value').should.equal(search_text))
+        self.until(lambda: self.should_see_text(officer.officer_last))
+        self.until(lambda: self.should_see_text(investigator.name))

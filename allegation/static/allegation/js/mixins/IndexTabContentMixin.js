@@ -12,7 +12,7 @@ var IndexTabContentMixin = {
     return classnames('tab-pane active', {
       'landing-page': tab != 'data'
     });
-  },
+  }
 };
 
 module.exports = IndexTabContentMixin;

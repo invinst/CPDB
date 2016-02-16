@@ -11,7 +11,7 @@ var _state = {
     labels: [],
     datasets: [
       _.assign(AppConstants.LINE_CHART_COLOR_OPTIONS, {
-      data: []
+        data: []
       })
     ]
   },
@@ -21,11 +21,11 @@ var _state = {
 
 
 var SearchTrafficChartStore = assign({}, EventEmitter.prototype, {
-  getState: function() {
+  getState: function () {
     return _state;
   },
 
-  updateChartData: function() {
+  updateChartData: function () {
     var activeQueryItem = QueryListItemStore.getState()['activeQueryItem'];
     var period = PeriodPickerStore.getState()['period'];
     var data = _state['rawData'];
@@ -33,7 +33,7 @@ var SearchTrafficChartStore = assign({}, EventEmitter.prototype, {
     data = data[period][activeQueryItem];
     if (data) {
       _state.chartData.datasets[0].data = data.data;
-      _state.chartData.labels =  data.labels;
+      _state.chartData.labels = data.labels;
     }
 
     SearchTrafficChartStore.emitChange();
@@ -43,7 +43,7 @@ var SearchTrafficChartStore = assign({}, EventEmitter.prototype, {
     this.on(AppConstants.CHANGE_EVENT, callback);
   },
 
-  removeChangeListener: function(callback) {
+  removeChangeListener: function (callback) {
     this.removeListener(AppConstants.CHANGE_EVENT, callback);
   },
 

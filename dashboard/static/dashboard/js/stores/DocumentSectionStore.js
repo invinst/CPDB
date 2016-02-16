@@ -14,7 +14,7 @@ var DocumentSectionStore = _.assign(Base(_state), {
   }
 });
 
-AppDispatcher.register(function(action) {
+AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.RECEIVED_DOCUMENT_LIST:
       _state.documents = action.data;

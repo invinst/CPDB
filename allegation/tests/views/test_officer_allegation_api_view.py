@@ -266,13 +266,13 @@ class OfficerAllegationApiViewTestCase(
         allegation = AllegationFactory(document_id=1)
         OfficerAllegationFactory(allegation=allegation)
 
-        data = self.fetch_officer_allegations(has_filters='has:document')
+        data = self.fetch_officer_allegations(has_document='true')
 
         len(data).should.equal(1)
         data[0]['allegation']['id'].should.equal(allegation.id)
 
     def test_filter_by_has_map(self):
-        data = self.fetch_officer_allegations(has_filters='has:map')
+        data = self.fetch_officer_allegations(has_map='true')
         len(data).should.equal(3)
 
         allegation = AllegationFactory()
@@ -280,13 +280,13 @@ class OfficerAllegationApiViewTestCase(
         allegation.save()
         OfficerAllegationFactory(allegation=allegation)
 
-        data = self.fetch_officer_allegations(has_filters='has:map')
+        data = self.fetch_officer_allegations(has_map='true')
         len(data).should.equal(3)
         for i in range(3):
             data[i]['allegation']['id'].shouldnt.equal(allegation.id)
 
     def test_filter_by_has_address(self):
-        data = self.fetch_officer_allegations(has_filters='has:address')
+        data = self.fetch_officer_allegations(has_address='true')
         len(data).should.equal(0)
 
         allegation1 = AllegationFactory(add1=123)
@@ -297,7 +297,7 @@ class OfficerAllegationApiViewTestCase(
         OfficerAllegationFactory(allegation=allegation3)
         result_count = 3
 
-        data = self.fetch_officer_allegations(has_filters='has:address')
+        data = self.fetch_officer_allegations(has_address='true')
         len(data).should.equal(result_count)
         any([
             data[i]['allegation']['id'] == allegation1.id
@@ -310,18 +310,18 @@ class OfficerAllegationApiViewTestCase(
             for i in range(result_count)]).should.be.true
 
     def test_filter_by_has_location(self):
-        data = self.fetch_officer_allegations(has_filters='has:location')
+        data = self.fetch_officer_allegations(has_location='true')
         len(data).should.equal(0)
 
         allegation = AllegationFactory(location='somewhere')
         OfficerAllegationFactory(allegation=allegation)
 
-        data = self.fetch_officer_allegations(has_filters='has:location')
+        data = self.fetch_officer_allegations(has_location='true')
         len(data).should.equal(1)
         data[0]['allegation']['id'].should.equal(allegation.id)
 
     def test_filter_by_has_investigator(self):
-        data = self.fetch_officer_allegations(has_filters='has:investigator')
+        data = self.fetch_officer_allegations(has_investigator='true')
         allegations_num = len(data)
 
         allegation = AllegationFactory()
@@ -329,18 +329,18 @@ class OfficerAllegationApiViewTestCase(
         OfficerAllegationFactory(
             allegation=AllegationFactory(investigator=None))
 
-        data = self.fetch_officer_allegations(has_filters='has:investigator')
+        data = self.fetch_officer_allegations(has_investigator='true')
         len(data).should.equal(allegations_num + 1)
         [obj['allegation']['id'] for obj in data].should.contain(allegation.id)
 
     def test_filter_by_has_identified(self):
-        data = self.fetch_officer_allegations(has_filters='has:identified')
+        data = self.fetch_officer_allegations(has_identified='true')
         len(data).should.equal(3)
 
         allegation = AllegationFactory()
         OfficerAllegationFactory(allegation=allegation, officer=None)
 
-        data = self.fetch_officer_allegations(has_filters='has:identified')
+        data = self.fetch_officer_allegations(has_identified='true')
         len(data).should.equal(3)
         [obj['allegation']['id'] for obj in data]\
             .shouldnt.contain(allegation.id)
@@ -357,4 +357,26 @@ class OfficerAllegationApiViewTestCase(
         data[0]['investigator']['complaint_count'].should.equal(2)
         data[0]['investigator']['discipline_count'].should.equal(1)
 
+    def test_allegation_order(self):
+        OfficerAllegation.objects.all().delete()
 
+        oa3 = OfficerAllegationFactory(
+            allegation=AllegationFactory(crid='0123', incident_date=datetime.datetime(2011, 8, 1)),
+            start_date=datetime.datetime(2012, 12, 1))
+        oa4 = OfficerAllegationFactory(
+            allegation=AllegationFactory(crid='0123', incident_date=datetime.datetime(2011, 8, 1)),
+            start_date=datetime.datetime(2012, 11, 1))
+        oa5 = OfficerAllegationFactory(
+            allegation=AllegationFactory(crid='0124', incident_date=datetime.datetime(2011, 8, 1)),
+            start_date=datetime.datetime(2012, 10, 1))
+        oa6 = OfficerAllegationFactory(
+            allegation=AllegationFactory(crid='0125', incident_date=datetime.datetime(2011, 8, 1)),
+            start_date=datetime.datetime(2012, 10, 1))
+        oa1 = OfficerAllegationFactory(allegation=AllegationFactory(incident_date=datetime.datetime(2011, 10, 1)))
+        oa2 = OfficerAllegationFactory(allegation=AllegationFactory(incident_date=datetime.datetime(2011, 9, 1)))
+        oa7 = OfficerAllegationFactory(allegation=AllegationFactory(incident_date=None))
+
+        data = self.fetch_officer_allegations()
+        len(data).should.equal(7)
+        [obj['officer_allegation']['id'] for obj in data].should.equal([
+            oa1.id, oa2.id, oa3.id, oa4.id, oa5.id, oa6.id, oa7.id])
