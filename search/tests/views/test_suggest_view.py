@@ -159,7 +159,6 @@ class SuggestViewTestCase(SimpleTestCase):
 
         rebuild_index()
 
-        self.get_suggestion('616')
         self.get_suggestion('616').should.contain('Zip Code')
         self.get_suggestion('123').shouldnt.contain('Zip Code')
         self.get_suggestion('Chi').shouldnt.contain('Zip Code')

@@ -17,9 +17,7 @@ class OfficerSuggestTestCase(BaseSuggestTestCase):
             allegations_count=officer.allegations_count
         )
 
-        SuggestOfficerName.query('Mich')['Officer'][0]['suggest_value']\
-            .should.be.equal(expect_suggest)
-        SuggestOfficerName.query('olford')['Officer'][0]['suggest_value']\
+        SuggestOfficerName.query('Molf')['Officer'][0]['suggest_value']\
             .should.be.equal(expect_suggest)
         SuggestOfficerName.query('Bad')['Officer'].should.be.equal([])
 

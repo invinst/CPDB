@@ -3,7 +3,8 @@ from haystack import indexes
 from common.models import Officer, AllegationCategory, Allegation, Investigator, Area, OfficerAllegation
 from search.models.session_alias import SessionAlias
 from search.models.proxy_models import AllegationCategoryProxy, AllegationProxy
-from search.search_backends import CustomEdgeNgramField, CustomIntegerNgramField
+from search.search_backends import CustomEdgeNgramField, CustomIntegerNgramField, CustomNgramField
+from search.utils.zip_code import get_zipcode_from_city
 
 
 class SuggestionBaseIndex(indexes.SearchIndex):
@@ -49,7 +50,14 @@ class AllegationIndex(SuggestionBaseIndex, indexes.Indexable):
 class AllegationDistinctCityIndex(SuggestionBaseIndex, indexes.Indexable):
     DEFAULT_MODEL = AllegationProxy
 
-    allegation_distinct_city = CustomEdgeNgramField(model_attr='city', null=True)
+    allegation_distinct_zip_code = CustomNgramField(null=True)
+
+    allegation_distinct_city = indexes.CharField(model_attr='city', null=True)
+
+    def prepare_allegation_distinct_zip_code(self, obj):
+        if obj.city:
+            return get_zipcode_from_city(obj.city)
+        return None
 
     def index_queryset(self, using=None):
         # This is for PostgreSQL only
