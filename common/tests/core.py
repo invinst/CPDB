@@ -329,6 +329,19 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     def click_by_js(self, element):
         self.browser.execute_script('return arguments[0].click();', element)
 
+    def click_on_sunburst(self, location):
+        self.browser.execute_script(
+            '''
+                var path = d3
+                    .select('g#sunburstd3-chart-container')
+                    .select('path:nth-child({location})');
+
+                path.on('click').call(path.node(), path.datum());
+            '''
+            .format(location=location)
+            )
+        self.until_ajax_complete()
+
     # TODO: These methods should belong to a mixin instead
     def reset_ga_call(self):
         return self.browser.execute_script("window.gaCall=0")

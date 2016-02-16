@@ -37,3 +37,24 @@ class ShareSessionTestCase(BaseLiveTestCase):
         self.until(
             lambda: self.find("#filter-tags").text
             .should.contain(officer_allegation.officer.display_name))
+
+    def test_display_dotted_underlining(self):
+        OfficerAllegationFactory()
+
+        rebuild_index()
+
+        self.visit_home()
+        self.element_exist(".site-title-input.dashed-border").should.be.false
+
+        # Select a filter
+        self.click_on_sunburst(2)
+        # Toggle share bar
+        self.find('button .fa.fa-share').click()
+        self.until_ajax_complete()
+
+        self.element_exist(".site-title-input.dashed-border").should.be.true
+
+        # Remove Filter
+        self.click_on_sunburst(1)
+
+        self.element_exist(".site-title-input.dashed-borde").should.be.false

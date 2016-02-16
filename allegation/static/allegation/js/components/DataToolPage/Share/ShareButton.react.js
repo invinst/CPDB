@@ -5,7 +5,7 @@ var classnames = require('classnames');
 var ShareBar = require('components/DataToolPage/Share/ShareBar.react');
 var SessionStore = require('stores/SessionStore');
 var ShareBarStore = require('stores/DataToolPage/ShareBarStore');
-var SessionAPI = require('utils/SessionAPI');
+var ShareBarActions = require('actions/ShareBarActions');
 
 
 var ShareButton = React.createClass({
@@ -25,17 +25,14 @@ var ShareButton = React.createClass({
   },
 
   _onReceivedSharedSession: function () {
-    this.setState({
-      active: true,
-      sharedSessionHashId: ShareBarStore.getSharedSessionHashId()
-    });
+    this.setState(ShareBarStore.getState());
   },
 
-  createSharedSession: function () {
-    if (this.state.active) {
-      this.setState({'active': false});
+  toggleShareBar: function () {
+    if (!this.state.active) {
+      ShareBarActions.openShareBar(SessionStore.getHash());
     } else {
-      SessionAPI.createSharedSession(SessionStore.getHash());
+      ShareBarActions.closeShareBar();
     }
   },
 
@@ -51,7 +48,7 @@ var ShareButton = React.createClass({
 
     return (
       <div className={ shareButtonClassNames }>
-        <button onClick={ this.createSharedSession }>
+        <button onClick={ this.toggleShareBar }>
           <i className={ buttonIconClassNames }></i>
           <span> Share</span>
         </button>
