@@ -2,10 +2,10 @@ from allegation.factories import OfficerFactory
 from search.services.suggest.suggest_officer import (
     SuggestOfficerName, SuggestOfficerUnit, SuggestOfficerStar, SuggestOfficerRank,
     SuggestOfficerActive)
-from search.tests.services.suggest.test_suggest_base import SuggestBaseTestCase
+from search.tests.services.suggest.base_test_suggest import BaseSuggestTestCase
 
 
-class SuggestOfficerTestCase(SuggestBaseTestCase):
+class OfficerSuggestTestCase(BaseSuggestTestCase):
     def test_suggest_officer_name(self):
         officer = OfficerFactory(officer_first='Michael', officer_last='Molford')
 
