@@ -9,6 +9,6 @@ var AllegationActions = {
       data: data
     });
   }
-}
+};
 
 module.exports = AllegationActions;

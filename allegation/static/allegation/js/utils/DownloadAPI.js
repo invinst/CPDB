@@ -1,5 +1,4 @@
 require('utils/jQuery');
-var _ = require('lodash');
 
 
 var AppConstants = require('constants/AppConstants');
@@ -9,7 +8,7 @@ var listener = null;
 
 
 var DownloadAPI = {
-  process: function(query) {
+  process: function (query) {
     if (listener) {
       clearInterval(listener);
       listener = null;

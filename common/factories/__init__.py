@@ -28,4 +28,3 @@ class UserFactory(factory.django.DjangoModelFactory):
             if create:
                 user.save()
         return user
-

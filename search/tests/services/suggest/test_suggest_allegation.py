@@ -15,8 +15,8 @@ class SuggestAllegationTestCase(SuggestBaseTestCase):
         self.rebuild_index()
 
         suggest_entry = SuggestAllegationCity.query(available_zip_code)['Zip Code'][0]
-        suggest_entry['value'].should.be.equal(city)
-        suggest_entry['label'].should.be.equal('60616')
+        suggest_entry['suggest_value'].should.be.equal(available_zip_code)
+        suggest_entry['tag_value']['display_value'].should.be.equal(city)
         SuggestAllegationCity.query(unavailable_zip_code)['Zip Code'].should.be.equal([])
         SuggestAllegationCity.query(not_digit_term).should.be.equal(None)
 
@@ -38,7 +38,6 @@ class SuggestAllegationTestCase(SuggestBaseTestCase):
         AllegationFactory(crid=crid)
 
         self.rebuild_index()
-
-        SuggestAllegationCrid.query('1002')['Allegation ID'][0]['value'].should.be.equal(crid)
+        SuggestAllegationCrid.query('1002')['Allegation ID'][0]['suggest_value'].should.be.equal(crid)
         SuggestAllegationCrid.query(unavailable_crid)['Allegation ID'].should.be.equal([])
         SuggestAllegationCrid.query(not_numeric).should.be.equal(None)

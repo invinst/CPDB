@@ -11,9 +11,9 @@ class RedirectMobileTestMixin(object):
             'mobile_host': 'm.cpdb.local'
         },
         MIDDLEWARE_CLASSES=(
-                'django.middleware.common.CommonMiddleware',
-                'common.middleware.subdomain.SubdomainURLRoutingMiddleware',
-                'common.middleware.mobile_redirect.MobileRedirectMiddleware',
+            'django.middleware.common.CommonMiddleware',
+            'common.middleware.subdomain.SubdomainURLRoutingMiddleware',
+            'common.middleware.mobile_redirect.MobileRedirectMiddleware',
         )
     )
     def run(self, *args, **kwargs):

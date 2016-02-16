@@ -12,7 +12,7 @@ var TimelineStore = _.assign(Base(_state), {
 
 });
 
-AppDispatcher.register(function(action) {
+AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.RECEIVED_TIMELINE_DATA:
       _state.data = action.data;
@@ -25,7 +25,7 @@ AppDispatcher.register(function(action) {
       break;
 
     default:
-        break;
+      break;
   }
 });
 

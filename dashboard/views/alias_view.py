@@ -8,7 +8,6 @@ from document.response import JsonResponse, HttpResponseBadRequest
 from search.models.alias import Alias
 
 
-
 class AdminAliasApi(View):
     PER_PAGE = 15
     SUPPORTED_SORT_ORDER = ['alias', 'num_usage', 'updated_at']

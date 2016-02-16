@@ -6,7 +6,7 @@ var PeriodPickerActions = {
     AppDispatcher.dispatch({
       actionType: AppConstants.SET_PERIOD,
       period: period
-    })
+    });
   }
 };
 

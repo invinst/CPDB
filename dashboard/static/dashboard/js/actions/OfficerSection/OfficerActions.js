@@ -1,6 +1,5 @@
 var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var AppConstants = require('../../constants/AppConstants');
-var toastr = require('toastr');
 
 var OfficerAction = {
   setOfficer: function (officer) {
@@ -14,7 +13,7 @@ var OfficerAction = {
       actionType: AppConstants.RECEIVE_OFFICER,
       data: officer
     });
-  },
+  }
 };
 
 module.exports = OfficerAction;

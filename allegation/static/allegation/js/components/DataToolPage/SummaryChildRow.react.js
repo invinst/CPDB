@@ -1,7 +1,6 @@
-var HOST = 'http://localhost:8000';
 var React = require('react');
-var MapStore = require('stores/MapStore');
-var SummaryActions = require('actions/SummaryActions');
+var PropTypes = React.PropTypes;
+
 var FilterTagsActions = require('actions/FilterTagsActions');
 var FilterTagStore = require('stores/FilterTagStore');
 var AppConstants = require('constants/AppConstants');
@@ -13,51 +12,67 @@ function getChildRowState() {
   };
 }
 
+
 var SummaryChildRow = React.createClass({
+  propTypes: {
+    category: PropTypes.object,
+    subcategory: PropTypes.object,
+    summary: PropTypes.object
+  },
+
   getInitialState: function () {
     return getChildRowState();
   },
+
   onClick: function (e) {
     e.preventDefault();
 
-    var parent = this.props.category
-    FilterTagsActions.removeTag('Category', parent.name);
+    var parent = this.props.category;
+    FilterTagsActions.removeTag('cat__category', parent.name);
 
     var child = this.props.subcategory;
+    // Generate tagValue on server instead
+    var tagValue = FilterTagStore.generateTagValue('cat', child.id, 'Allegation type', child.name);
+
     if (this.state.selected) {
-      FilterTagsActions.removeTag('Allegation type', child.id);
+      FilterTagsActions.removeTag(tagValue.category, tagValue.value);
     } else {
-      FilterTagsActions.addTag('Allegation type', child.name, 'cat=' + child.id);
+      FilterTagsActions.addTag(tagValue);
     }
 
-    this.state.selected = !this.state.selected;
+    this.setState({
+      selected : !this.state.selected
+    });
   },
 
   isActive: function () {
-    var catName = this.props.subcategory.name;
+    var catId = this.props.subcategory.id;
     var selectedCategories = this.props.summary.props.selectedCategories;
 
     return (
-      !!FilterTagStore.getFilter('Allegation type', catName)
-      || !!FilterTagStore.getFilter('Category', this.props.category.name)
+      !!FilterTagStore.getFilter('cat', catId)
+      || !!FilterTagStore.getFilter('cat__category', this.props.category.name)
       || (selectedCategories && selectedCategories.indexOf(catId) > -1)
     );
   },
 
   render: function () {
-    var className = "category-name";
+    var className = 'category-name';
 
     if (this.isActive()) {
-      className += " active";
+      className += ' active';
     }
 
     return (
-      <div className="row summary-child-row">
-        <div className="col-md-2 col-xs-2 count">
-          {numeral(this.props.subcategory.count).format(AppConstants.NUMERAL_FORMAT)}
+      <div className='row summary-child-row'>
+        <div className='col-md-2 col-xs-2 count'>
+          { numeral(this.props.subcategory.count).format(AppConstants.NUMERAL_FORMAT) }
         </div>
-        <div className="col-md-10 col-xs-10 category-name-wrapper">
-          <a href="javascript:void()" className={className} onClick={this.onClick}>{this.props.subcategory.name}</a>
+        <div className='col-md-10 col-xs-10 category-name-wrapper'>
+          <a href='javascript:void()'
+            className={ className } onClick={ this.onClick }>
+            { this.props.subcategory.name }
+          </a>
         </div>
       </div>
     );

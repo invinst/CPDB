@@ -1,7 +1,7 @@
 from django.conf.urls import url
 from django.views.decorators.csrf import csrf_exempt, ensure_csrf_cookie
 
-from allegation.models import hooks
+from allegation.models import hooks  # NOQA. Needed for Django signals
 from allegation.views import AreaAPIView
 from allegation.views import (
     OfficerAllegationGISApiView, OfficerAllegationClusterApiView)
@@ -18,6 +18,8 @@ from allegation.views.officer_allegation_sunburst_view import (
 from allegation.views.session_view import SessionAPIView
 from allegation.views.officer_allegation_api_view import (
     OfficerAllegationAPIView)
+from allegation.views.sunburst_view import SunburstView
+from allegation.views.sunburst_image_view import SunburstImageView
 from common.middleware.cache import orderless_cache_page
 
 cache_view = orderless_cache_page(86400 * 90)
@@ -58,4 +60,7 @@ urlpatterns = [
     url(r'^api/allegations/session/$',
         csrf_exempt(ensure_csrf_cookie(SessionAPIView.as_view())),
         name='allegation-api-session'),
+
+    url(r'^sunburst-image/(?P<hash_id>\w{6})/$', cache_view(SunburstImageView.as_view()), name='sunburst-image'),
+    url(r'^sunburst/(?P<hash_id>\w{6})/$', cache_view(SunburstView.as_view()), name='sunburst')
 ]

@@ -1,3 +1,4 @@
+/*eslint react/no-is-mounted:0 */
 var Base = function (Store) {
   return {
     getInitialState: function () {
@@ -17,7 +18,7 @@ var Base = function (Store) {
         this.setState(Store.getState());
       }
     }
-  }
+  };
 };
 
 module.exports = Base;

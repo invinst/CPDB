@@ -1,11 +1,11 @@
 var GenderMap = {
-    'F':'Female',
-    'M':'Male',
-    'X':'Trans'
+  'F':'Female',
+  'M':'Male',
+  'X':'X'
 };
 
 var GenderPresenter = function (gender) {
-  return GenderMap[gender] || '';
+  return gender && GenderMap[gender.toUpperCase()] || 'N/A';
 };
 
 module.exports = GenderPresenter;

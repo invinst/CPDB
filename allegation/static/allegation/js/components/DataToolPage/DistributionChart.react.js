@@ -1,10 +1,9 @@
-var HOST = 'http://localhost:8000';
 var React = require('react');
 var DistributionChartStore = require('stores/DistributionChartStore');
 
 var DistributionChart = React.createClass({
   getInitialState: function () {
-    return {'selected': false}
+    return {'selected': false};
   },
   componentDidMount: function () {
     DistributionChartStore.listen(this);
@@ -13,11 +12,11 @@ var DistributionChart = React.createClass({
     DistributionChartStore.rotateChart();
   },
   render: function () {
-    return <div id="complained-officers">
+    return (<div id='complained-officers'>
       <h3>Complaints per Officer</h3>
 
-      <div className="graph"></div>
-    </div>
+      <div className='graph'></div>
+    </div>);
 
   }
 

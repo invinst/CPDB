@@ -1,10 +1,7 @@
-var pluralize = require('pluralize');
-
 var AppConstants = require('constants/AppConstants');
 
 var ComplaintService = require('services/ComplaintService');
 var HelperUtil = require('utils/HelperUtil');
-var GenderPresenter = require('presenters/GenderPresenter');
 
 
 var ComplaintPresenter = function (complaint) {
@@ -24,17 +21,17 @@ var ComplaintPresenter = function (complaint) {
 
   var incidentDate = function (format) {
     var incidentDate = complaintService.incidentDate;
-    return !!incidentDate ? incidentDate.format(format) : 'Unknown date';
+    return incidentDate ? incidentDate.format(format) : 'Unknown date';
   };
 
   var startInvestigationDate = function () {
     var startInvestigationDate = complaintService.startInvestigationDate;
-    return !!startInvestigationDate ? startInvestigationDate.format(AppConstants.SIMPLE_DATE_FORMAT) : '';
+    return startInvestigationDate ? startInvestigationDate.format(AppConstants.SIMPLE_DATE_FORMAT) : '';
   };
 
   var endInvestigationDate = function () {
     var endInvestigationDate = complaintService.endInvestigationDate;
-    return !!endInvestigationDate ? endInvestigationDate.format(AppConstants.SIMPLE_DATE_FORMAT) : '';
+    return endInvestigationDate ? endInvestigationDate.format(AppConstants.SIMPLE_DATE_FORMAT) : '';
   };
 
   var address = function () {
@@ -42,7 +39,7 @@ var ComplaintPresenter = function (complaint) {
   };
 
   var documentId = function () {
-    return HelperUtil.fetch(complaint, 'document_id', '');
+    return HelperUtil.fetch(complaint, 'document_id', '').toString();
   };
 
   var documentNormalizedTitle = function () {
@@ -50,11 +47,11 @@ var ComplaintPresenter = function (complaint) {
   };
 
   var crid = function () {
-      return HelperUtil.fetch(complaint, 'crid', 'Unknown');
+    return HelperUtil.fetch(complaint, 'crid', 'Unknown');
   };
 
   var url = function () {
-    return HelperUtil.format('/complaint/{crid}', {'crid': crid()})
+    return HelperUtil.format('/complaint/{crid}', {'crid': crid()});
   };
 
   return {
@@ -74,7 +71,7 @@ var ComplaintPresenter = function (complaint) {
     documentNormalizedTitle: documentNormalizedTitle(),
     getIncidentDate: incidentDate,
     url: url()
-  }
+  };
 };
 
 module.exports = ComplaintPresenter;

@@ -11,7 +11,7 @@ var LoadingPage = React.createClass({
           </svg>
         </div>
       </div>
-    )
+    );
   }
 });
 

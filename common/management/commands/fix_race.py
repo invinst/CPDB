@@ -1,5 +1,4 @@
 from django.core.management.base import BaseCommand
-from django.db.models.aggregates import Count
 from common.models import Officer, ComplainingWitness
 
 
@@ -13,6 +12,7 @@ RACES = [
     ['BLACK HISPANIC', 'Black/Hispanic'],
     ['HISPANIC', 'Hispanic']
 ]
+
 
 class Command(BaseCommand):
     def clean_races(self, queryset):
