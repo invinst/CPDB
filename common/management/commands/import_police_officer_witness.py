@@ -1,9 +1,9 @@
 import csv
 
-from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from django.core.exceptions import MultipleObjectsReturned
 from django.core.management.base import BaseCommand
 
-from common.models import ComplainingWitness, PoliceWitness, Officer
+from common.models import PoliceWitness, Officer
 
 CRID_COL = 4
 NAME_COL = 2
@@ -39,11 +39,11 @@ class Command(BaseCommand):
             return None
 
     def handle(self, *args, **options):
-        if not options.get('start_row',"").isnumeric():
+        if not options.get('start_row', "").isnumeric():
             print("You must supply a start row, ex: --start-row 15")
             return
 
-        start_row = int(options['start_row']) -1
+        start_row = int(options['start_row']) - 1
 
         with open(options['file']) as f:
             reader = csv.reader(f)
@@ -69,8 +69,6 @@ class Command(BaseCommand):
                     splitted = name.split(",")
                     officer = None
                     if len(splitted) > 1:
-
-
                         officer = self.get_officer(
                             officer_first__iexact=splitted[1].strip(),
                             officer_last__iexact=splitted[0].strip(),

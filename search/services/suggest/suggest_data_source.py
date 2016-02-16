@@ -12,9 +12,13 @@ class SuggestDataSource(SuggestBase):
 
         results = [
             cls.entry_format(
-                label=entry,
-                value=entry,
-                filter=cls.build_filter(category='data_source', value=entry)
+                suggest_value=entry,
+                tag_value=cls.build_tag_value(
+                    category='data_source',
+                    value=entry,
+                    display_category='Data Source',
+                    display_value=entry,
+                )
             ) for entry in raw_results
         ]
 

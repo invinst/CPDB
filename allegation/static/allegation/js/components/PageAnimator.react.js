@@ -1,7 +1,14 @@
 var React = require('react');
+var PropTypes = React.PropTypes;
 
 
 var PageAnimator = React.createClass({
+  propTypes: {
+    transitioning: PropTypes.bool,
+    children: PropTypes.node,
+    className: PropTypes.string
+  },
+
   componentWillReceiveProps: function (nextProps) {
     if (nextProps.transitioning && !this.props.transitioning) {
       this.animatePageScrollToTop();
@@ -15,18 +22,16 @@ var PageAnimator = React.createClass({
   },
 
   renderChildren: function () {
-    var animator = this;
-
     return React.cloneElement(this.props.children, {
-      transitioning: this.props.transitioning,
+      transitioning: this.props.transitioning
     });
   },
 
   render: function () {
-    return <div className={this.props.className}>
-      {this.renderChildren()}
-    </div>;
-  },
+    return (<div className={ this.props.className }>
+      { this.renderChildren() }
+    </div>);
+  }
 });
 
 module.exports = PageAnimator;

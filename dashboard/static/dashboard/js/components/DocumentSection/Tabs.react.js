@@ -21,28 +21,28 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
     DocumentRequestAPI.get();
   },
 
-  renderTabs: function() {
+  renderTabs: function () {
     var that = this;
     return jQuery.map(AppConstants.DOCUMENT_STATUS, function (x) {
-      text = x['text'];
+      var text = x['text'];
       var className = cx('tab-' + text.toLowerCase(), {
         active: text == that.state.active
       });
       return (
-        <li key={text} className={className} onClick={that.onClick.bind(that, text)}>
-          {text} <span className="analysis">({that.state.analysis[text]})</span>
+        <li key={ text } className={ className } onClick={ that.onClick.bind(that, text) }>
+          { text } <span className='analysis'>({ that.state.analysis[text] })</span>
         </li>
       );
     });
   },
 
-  render: function() {
+  render: function () {
     return (
-      <ul className="filter">
-        {this.renderTabs()}
+      <ul className='filter'>
+        { this.renderTabs() }
       </ul>
     );
-  },
+  }
 }));
 
 module.exports = Tabs;

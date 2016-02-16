@@ -1,22 +1,22 @@
 var React = require('react');
 
 var Period = React.createClass({
-  getInitialState: function() {
+  getInitialState: function () {
     return {};
   },
 
-  componentDidMount: function() {
+  componentDidMount: function () {
 
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount: function () {
 
   },
 
-  render: function() {
+  render: function () {
     return (
       <div></div>
-    )
+    );
   }
 });
 

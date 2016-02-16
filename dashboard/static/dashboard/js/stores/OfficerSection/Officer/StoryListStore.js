@@ -7,19 +7,19 @@ var Base = require('../../Base');
 
 var _state = {
   stories: [],
-  do_update_list: false,
+  'do_update_list': false
 };
 
 var StoryListStore = _.assign(Base(_state), {
   selectAll: function (selected) {
-    for(var i = 0; i < _state.stories.length; i++) {
+    for (var i = 0; i < _state.stories.length; i++) {
       _state.stories[i].selected = selected;
     }
     this.emitChange();
   },
 
   getSelectedStories: function () {
-    return _.filter(_state.stories, function (x) { return x.selected });
+    return _.filter(_state.stories, function (x) { return x.selected; });
   },
 
   hasSelectedStories: function () {
@@ -27,7 +27,7 @@ var StoryListStore = _.assign(Base(_state), {
   }
 });
 
-AppDispatcher.register(function(action) {
+AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.STORY_UPDATED:
     case AppConstants.STORY_CREATED:
@@ -35,13 +35,13 @@ AppDispatcher.register(function(action) {
     case AppConstants.DELETE_BULK_STORY:
     case AppConstants.SET_ACTIVE_OFFICER:
     case AppConstants.RECEIVE_OFFICER:
-      _state.do_update_list = true;
+      _state['do_update_list'] = true;
       StoryListStore.emitChange();
       break;
 
     case AppConstants.RECEIVED_STORY_LIST:
       _state.stories = action.data;
-      _state.do_update_list = false;
+      _state['do_update_list'] = false;
       StoryListStore.emitChange();
       break;
 

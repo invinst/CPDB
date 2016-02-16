@@ -15,7 +15,7 @@ var OfficerPresenter = function (officer) {
   };
 
   var id = function () {
-    return HelperUtil.fetch(officer, 'id', 'Unknown');
+    return HelperUtil.fetch(officer, 'id', '').toString();
   };
 
   var race = function () {
@@ -61,8 +61,11 @@ var OfficerPresenter = function (officer) {
 
     var coAccusedInformation = numberOfCoAccusedOfficers ? withSomeOfficers : withNoOfficer;
 
-    return HelperUtil.format('{officerName} {coAccusedInformation}', {'officerName': displayName(),
-                                                                      'coAccusedInformation': coAccusedInformation}).trim();
+    return HelperUtil.format('{officerName} {coAccusedInformation}',
+      {
+        'officerName': displayName(),
+        'coAccusedInformation': coAccusedInformation
+      }).trim();
   };
 
   return {

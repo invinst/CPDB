@@ -1,7 +1,7 @@
 var History = require('history');
 
 var history = History.useBasename(History.createHistory)({
-  basename: '/mobile'
+  basename: '/'
 });
 
 module.exports = history;

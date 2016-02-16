@@ -1,7 +1,7 @@
 var _ = require('lodash');
 var moment = require('moment');
 
-var AppConstants = require('../constants/AppConstants');
+var GenderPresenter = require('presenters/GenderPresenter');
 
 
 var ComplaintPresenter = function (complaint) {
@@ -21,19 +21,12 @@ var ComplaintPresenter = function (complaint) {
     return (allegation.incident_date && result.year() > 1970) ? result.format('YYYY-MM-DD') : '';
   };
 
-  var gender = function (abbr) {
-    if (abbr == 'M') return 'Male';
-    if (abbr == 'F') return 'Female';
-    if (abbr == 'X') return 'Trans';
-    return '';
-  };
-
   var getComplainingWitness = function () {
     var age = complainingWitness.age ? 'Age ' + complainingWitness.age : '';
-    var genderReadable = gender(complainingWitness.gender)
+    var genderReadable = GenderPresenter(complainingWitness.gender);
     var race = complainingWitness.race || '';
 
-    return _([race, genderReadable, age]).compact().join(', ')
+    return _([race, genderReadable, age]).compact().join(', ');
   };
 
   return {
@@ -41,7 +34,7 @@ var ComplaintPresenter = function (complaint) {
     crid: crid(),
     incidentDate: incidentDate(),
     complainingWitness: getComplainingWitness()
-  }
-}
+  };
+};
 
 module.exports = ComplaintPresenter;

@@ -15,8 +15,8 @@ class SuggestInvestigatorTestCase(SuggestBaseTestCase):
         expect_investigator_label = '{name} ({count})'.format(name=investigator.name, count=num_allegations)
 
         suggest_entry = SuggestInvestigator.query('neu')['Investigator'][0]
-        suggest_entry['label'].should.be.equal(expect_investigator_label)
-        suggest_entry['value'].should.be.equal(investigator.name)
+        suggest_entry['tag_value']['display_value'].should.be.equal(investigator.name)
+        suggest_entry['suggest_value'].should.be.equal(expect_investigator_label)
         SuggestInvestigator.query('something wrong')['Investigator'].should.be.equal([])
 
     def test_suggest_investigator_order(self):
@@ -25,14 +25,9 @@ class SuggestInvestigatorTestCase(SuggestBaseTestCase):
 
         self.rebuild_index()
 
-        num_allegations1 = OfficerAllegation.objects.filter(allegation__investigator=investigator1).count()
-        num_allegations2 = OfficerAllegation.objects.filter(allegation__investigator=investigator2).count()
-        expect_investigator1 = '{name} ({count})'.format(name=investigator1.name, count=num_allegations1)
-        expect_investigator2 = '{name} ({count})'.format(name=investigator2.name, count=num_allegations2)
-
         suggest_entries = SuggestInvestigator.query('neu')['Investigator']
-        suggest_entries[0]['label'].should.be.equal(expect_investigator1)
-        suggest_entries[1]['label'].should.be.equal(expect_investigator2)
+        suggest_entries[0]['tag_value']['display_value'].should.be.equal(investigator1.name)
+        suggest_entries[1]['tag_value']['display_value'].should.be.equal(investigator2.name)
 
     def test_suggest_investigator_agency_all(self):
         suggest_entries = SuggestInvestigatorAgency.query('i')['Investigation Agency']

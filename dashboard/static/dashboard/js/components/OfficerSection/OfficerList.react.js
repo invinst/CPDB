@@ -3,7 +3,6 @@ var _ = require('lodash');
 var Base = require('../Base.react');
 var OfficerActions = require('../../actions/OfficerSection/OfficerActions');
 var OfficerListStore = require('../../stores/OfficerSection/OfficerListStore');
-var OfficerStore = require('../../stores/OfficerSection/OfficerStore');
 var SearchStore = require('../../stores/OfficerSection/SearchStore');
 
 global.jQuery = require('jquery');
@@ -13,18 +12,18 @@ var OfficerList = React.createClass(_.assign(Base(OfficerListStore), {
     OfficerActions.setOfficer(officer);
   },
 
-  renderOfficerList: function() {
+  renderOfficerList: function () {
     var that = this;
-    return this.state.officers.map(function(x) {
+    return this.state.officers.map(function (x, i) {
       return (
-        <tr className='officer pointer' onClick={that.clickOfficer.bind(that, x)}>
-          <td>{x.id}</td>
-          <td>{x.officer_first}</td>
-          <td>{x.officer_last}</td>
-          <td>{x.gender}</td>
-          <td>{x.race}</td>
+        <tr key={ i } className='officer pointer' onClick={ that.clickOfficer.bind(that, x) }>
+          <td>{ x.id }</td>
+          <td>{ x.officer_first }</td>
+          <td>{ x.officer_last }</td>
+          <td>{ x.gender }</td>
+          <td>{ x.race }</td>
         </tr>
-      )
+      );
     });
   },
 
@@ -32,11 +31,11 @@ var OfficerList = React.createClass(_.assign(Base(OfficerListStore), {
     var query = SearchStore.getState().query;
     var count = this.state.officers.length;
     return (
-      <div className="summary">{count} result(s) for "{query}"</div>
+      <div className='summary'>{ count } result(s) for '{ query }'</div>
     );
   },
 
-  render: function() {
+  render: function () {
     if (!this.state.officers) {
       return (
         <div>Please search officer to start adding stories</div>

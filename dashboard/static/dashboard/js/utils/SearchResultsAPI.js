@@ -9,7 +9,7 @@ var QueryListStore = require('../stores/SearchSection/QueryListStore');
 var ajax = null;
 
 var SearchResultsAPI = {
-  getAPIEndpoint: function(activeItem) {
+  getAPIEndpoint: function (activeItem) {
     if (activeItem != 'alias') {
       return AppConstants.SEARCH_RESULTS_API_ENDPOINT;
     } else {
@@ -17,17 +17,17 @@ var SearchResultsAPI = {
     }
   },
 
-  transformAlias: function(data) {
-    return _.map(data.data, function (obj){
-      obj.search_query = obj.alias;
+  transformAlias: function (data) {
+    return _.map(data.data, function (obj) {
+      obj['search_query'] = obj.alias;
       return obj;
     });
   },
 
-  buildParams: function(query, activeItem, sortBy) {
+  buildParams: function (query, activeItem, sortBy) {
     var params = {
       q: query,
-      order_by: sortBy
+      'order_by': sortBy
     };
 
     if (activeItem == 'fail-attempts') {
@@ -37,14 +37,14 @@ var SearchResultsAPI = {
     return params;
   },
 
-  transform: function(data, activeItem) {
+  transform: function (data, activeItem) {
     if (activeItem == 'alias') {
       return this.transformAlias(data);
     }
     return data.data;
   },
 
-  get: function() {
+  get: function () {
     if (ajax) {
       ajax.abort();
     }
@@ -56,12 +56,12 @@ var SearchResultsAPI = {
     var params = this.buildParams(query, activeItem, sortBy);
     var endpoint = this.getAPIEndpoint(activeItem);
 
-    ajax = jQuery.getJSON(endpoint, params, function(data) {
+    ajax = jQuery.getJSON(endpoint, params, function (data) {
       SearchResultsActions.receivedSearchResultsData(that.transform(data, activeItem));
     });
   },
 
-  loadMore: function() {
+  loadMore: function () {
     if (ajax) {
       ajax.abort();
     }
@@ -77,7 +77,7 @@ var SearchResultsAPI = {
 
     var endpoint = this.getAPIEndpoint(activeItem);
 
-    ajax = jQuery.getJSON(endpoint, params, function(data) {
+    ajax = jQuery.getJSON(endpoint, params, function (data) {
       SearchResultsActions.receivedMore(that.transform(data, activeItem));
     });
   }

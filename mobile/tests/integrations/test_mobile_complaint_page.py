@@ -4,19 +4,14 @@ from allegation.factories import (
 from common.tests.core import BaseLivePhoneTestCase
 
 
-class MobileComplaintPageTestMixin(BaseLivePhoneTestCase):
-    def go_to_allegation_detail_page(self, crid=''):
-        self.visit('/mobile/complaint/{crid}'.format(crid=crid))
-
-
-class MobileComplaintPageTest(MobileComplaintPageTestMixin):
+class MobileComplaintPageTest(BaseLivePhoneTestCase):
     def test_allegation_with_full_information(self):
         document_id = 123
         document_normalized_title = 'abcd'
         view_document_text = 'View documents'
 
         officer_gender = 'X'
-        officer_gender_display = 'Trans'
+        officer_gender_display = 'X'
 
         final_finding_code = 'UN'
         final_finding_text = 'Unfounded'
@@ -45,7 +40,7 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
             allegation=allegation,
             race=complaint_witness_race, age=complaint_witness_age)
 
-        self.go_to_allegation_detail_page(crid=allegation.crid)
+        self.visit_complaint_page(allegation.crid)
         self.until(lambda: self.find('.crid-number'))
 
         self.find('.final-finding').text.should.be.equal(final_finding_text)
@@ -86,7 +81,7 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
             officers[circle_class] = officer
             OfficerAllegationFactory(allegation=allegation, officer=officer)
 
-        self.go_to_allegation_detail_page(crid=crid)
+        self.visit_complaint_page(allegation.crid)
 
         for circle_class, allegations_count in \
                 allegations_count_color_map.items():
@@ -98,25 +93,24 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
 
     def test_allegation_with_bad_crid(self):
         bad_crid = 0
-        self.visit('/mobile/complaint/{crid}'.format(crid=bad_crid))
+        self.visit_complaint_page(bad_crid)
         self.until(lambda: self.find('.message-title'))
         self.should_see_text('Invalid page!')
         self.should_see_text('The CRID {crid} is not'.format(crid=bad_crid))
 
     def test_allegation_with_no_category(self):
         officer_allegation = OfficerAllegationFactory(cat=None)
-        self.visit('/mobile/complaint/{crid}'.format(
-            crid=officer_allegation.allegation.crid))
+
+        self.visit_complaint_page(officer_allegation.allegation.crid)
         self.until(lambda: self.find('.crid-number'))
 
         self.find('.complaint-category').text.should.be.equal('Unknown')
         self.find('.complaint-sub-category').text.should.be.equal('Unknown')
 
     def test_allegation_with_no_complaint_witness(self):
-        allegation = AllegationFactory()
-        OfficerAllegationFactory(allegation=allegation)
+        officer_allegation = OfficerAllegationFactory()
 
-        self.visit('/mobile/complaint/{crid}'.format(crid=allegation.crid))
+        self.visit_complaint_page(officer_allegation.allegation.crid)
         self.until(lambda: self.find('.crid-title'))
 
         self.should_not_see_text('Complaining Witness')
@@ -124,8 +118,7 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
     def test_allegation_with_no_officers_involved(self):
         officer_allegation = OfficerAllegationFactory(officer=None)
 
-        self.visit('/mobile/complaint/{crid}'.format(
-            crid=officer_allegation.allegation.crid))
+        self.visit_complaint_page(officer_allegation.allegation.crid)
         self.until(lambda: self.find('.crid-title'))
 
         self.should_not_see_text('Officers involved')
@@ -133,18 +126,17 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
     def test_allegation_without_document(self):
         officer_allegation = OfficerAllegationFactory(officer=None)
 
-        self.visit('/mobile/complaint/{crid}'.format(
-            crid=officer_allegation.allegation.crid))
+        self.visit_complaint_page(officer_allegation.allegation.crid)
         self.until(lambda: self.find('.crid-title'))
 
         self.should_not_see_text('View documents')
 
     def test_allegation_with_no_investigator(self):
         allegation = AllegationFactory(investigator=None)
-        OfficerAllegationFactory(
+        officer_allegation = OfficerAllegationFactory(
             officer=None, allegation=allegation)
 
-        self.visit('/mobile/complaint/{crid}'.format(crid=allegation.crid))
+        self.visit_complaint_page(officer_allegation.allegation.crid)
         self.until(lambda: self.find('.crid-title'))
 
         self.should_not_see_text('Investigator')
@@ -155,7 +147,7 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
         OfficerAllegationFactory(
             officer=None, allegation=allegation)
 
-        self.visit('/mobile/complaint/{crid}'.format(crid=allegation.crid))
+        self.visit_complaint_page(allegation.crid)
         self.until(lambda: self.find('.crid-title'))
 
         self.should_see_text('Rank unknown')
@@ -163,8 +155,8 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
     def test_officer_with_unknown_race(self):
         officer = OfficerFactory(race='Unknown')
         officer_allegation = OfficerAllegationFactory(officer=officer)
-        self.visit('/mobile/complaint/{crid}'.format(
-            crid=officer_allegation.allegation.crid))
+
+        self.visit_complaint_page(officer_allegation.allegation.crid)
         self.until(lambda: self.find('.crid-title'))
 
         self.should_see_text('Race unknown')
@@ -176,7 +168,7 @@ class MobileComplaintPageTest(MobileComplaintPageTestMixin):
             gender=None, age=None, race=None, crid=allegation.crid,
             allegation=allegation)
 
-        self.visit('/mobile/complaint/{crid}'.format(crid=allegation.crid))
+        self.visit_complaint_page(allegation.crid)
         self.until(lambda: self.find('.crid-title'))
 
         self.should_see_text('Gender unknown')

@@ -32,7 +32,7 @@ class SuggestionLogFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = SuggestionLog
 
-    search_query= factory.Sequence(lambda n: fake.name())
+    search_query = factory.Sequence(lambda n: fake.name())
     num_suggestions = factory.Sequence(lambda n: abs(fake.pyint()))
     session_id = factory.Sequence(lambda n: fake.name())
 

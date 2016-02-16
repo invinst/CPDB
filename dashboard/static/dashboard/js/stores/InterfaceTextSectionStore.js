@@ -2,17 +2,16 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
 var _ = require('lodash');
 var Base = require('./Base');
-var navigate = require('react-mini-router').navigate;
 
 var _state = {
   texts: [],
-  activeText: null,
+  activeText: null
 };
 
 var InterfaceTextSectionStore = _.assign(Base(_state), {
 });
 
-AppDispatcher.register(function(action) {
+AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.RECEIVED_INTERFACE_TEXTS:
       InterfaceTextSectionStore.updateState('texts', action.data);

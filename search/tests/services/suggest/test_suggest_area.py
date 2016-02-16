@@ -9,7 +9,9 @@ class SuggestAreaTestCase(SuggestBaseTestCase):
 
         self.rebuild_index()
 
-        SuggestArea.query('school')['Area'][0]['value'].should.be.equal('{type}: {value}'.format(type=area.type, value=area.name))
+        SuggestArea.query('school')['Area'][0]['suggest_value'].should.be.equal(
+            '{type}: {value}'.format(type=area.type, value=area.name)
+        )
         SuggestArea.query('something wrong')['Area'].should.be.equal([])
 
     def test_suggest_area_order(self):
@@ -21,6 +23,6 @@ class SuggestAreaTestCase(SuggestBaseTestCase):
 
         suggest_entries = SuggestArea.query('same name')['Area']
 
-        suggest_entries[0]['value'].should.be.equal('{type}: {value}'.format(type=area3.type, value=area3.name))
-        suggest_entries[1]['value'].should.be.equal('{type}: {value}'.format(type=area1.type, value=area1.name))
-        suggest_entries[2]['value'].should.be.equal('{type}: {value}'.format(type=area2.type, value=area2.name))
+        suggest_entries[0]['suggest_value'].should.be.equal('{type}: {value}'.format(type=area3.type, value=area3.name))
+        suggest_entries[1]['suggest_value'].should.be.equal('{type}: {value}'.format(type=area1.type, value=area1.name))
+        suggest_entries[2]['suggest_value'].should.be.equal('{type}: {value}'.format(type=area2.type, value=area2.name))

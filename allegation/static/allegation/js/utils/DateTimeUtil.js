@@ -2,10 +2,10 @@ var moment = require('moment');
 
 var DateTimeUtil = {
   displayDateTime: function (date, format) {
-    momentDate = moment(date);
+    var momentDate = moment(date);
 
     if (momentDate.isValid()) {
-      return momentDate.format(format)
+      return momentDate.format(format);
     } else {
       return '';
     }

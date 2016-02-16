@@ -3,7 +3,6 @@ from django.views.generic.base import View
 
 from document.forms import RequestEmailForm
 from document.response import HttpResponseBadRequest
-from share.models import Session
 
 
 class RequestView(View):

@@ -3,7 +3,9 @@ var SearchTrafficAPI = require('../utils/SearchTrafficAPI');
 var QueryItemList = require('./OverviewSection/QueryItemList.react');
 var SearchTrafficChart = require('./OverviewSection/SearchTrafficChart.react');
 var PeriodPicker = require('./OverviewSection/PeriodPicker.react');
-var NewSessionPerDay = require('./OverviewSection/NewSessionPerDay.react.js')
+var NewSessionPerDay = require('./OverviewSection/NewSessionPerDay.react.js');
+
+
 var OverviewSection = React.createClass({
   componentDidMount: function () {
     SearchTrafficAPI.getTopQueries();
@@ -43,8 +45,8 @@ var OverviewSection = React.createClass({
           </div>
         </div>
       </div>
-    )
-  },
+    );
+  }
 });
 
 module.exports = OverviewSection;

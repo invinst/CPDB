@@ -1,0 +1,5 @@
+**/*bundle*.js
+./static/**
+**/bower_components/**
+**/*.min.js
+./common/**

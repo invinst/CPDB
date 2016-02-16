@@ -54,22 +54,29 @@
   "devDependencies": {
     "browserify": "^6.2.0",
     "envify": "^3.0.0",
+    "eslint-plugin-react": "^3.16.1",
+    "mochify": "^2.16.0",
     "react-addons-perf": "0.14.3",
     "react-tools": "~0.13.3",
     "reactify": "^0.15.2",
+    "should": "^8.2.2",
     "uglify-js": "~2.4.15",
     "watchify": "^2.1.1"
   },
   "scripts": {
+    "test": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js mochify --recursive allegation/static/allegation/js/tests/",
     "start": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js watchify -o allegation/static/allegation/js/bundle.js -v -d allegation/static/allegation/js/app.js",
     "start_admin": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js watchify -o dashboard/static/dashboard/js/bundle.js -v -d dashboard/static/dashboard/js/app.js",
     "start_mobile": "NODE_PATH=mobile/static/mobile/js watchify -o mobile/static/mobile/js/bundle.js -v -d mobile/static/mobile/js/app.js",
+    "start_sunburst": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js watchify -o allegation/static/allegation/js/sunburst-bundle.js -v -d allegation/static/allegation/js/sunburst-app.js",
     "build": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > allegation/static/allegation/js/bundle.min.js",
     "build_admin": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js browserify dashboard/static/dashboard/js/app.js -t [envify --NODE_ENV production] | uglifyjs -cm > dashboard/static/dashboard/js/bundle.min.js",
     "build_mobile": "NODE_PATH=mobile/static/mobile/js browserify mobile/static/mobile/js/app.js -t [envify --NODE_ENV production] | uglifyjs -cm > mobile/static/mobile/js/bundle.min.js",
+    "build_sunburst": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js browserify allegation/static/allegation/js/sunburst-app.js -t [envify --NODE_ENV production] | uglifyjs -cm > allegation/static/allegation/js/sunburst-bundle.min.js",
     "circleci": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js browserify allegation/static/allegation/js/app.js > allegation/static/allegation/js/bundle.js",
     "circleci_admin": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js browserify dashboard/static/dashboard/js/app.js > dashboard/static/dashboard/js/bundle.js",
-    "circleci_mobile": "NODE_PATH=mobile/static/mobile/js browserify mobile/static/mobile/js/app.js > mobile/static/mobile/js/bundle.js"
+    "circleci_mobile": "NODE_PATH=mobile/static/mobile/js browserify mobile/static/mobile/js/app.js > mobile/static/mobile/js/bundle.js",
+    "circleci_sunburst": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js browserify allegation/static/allegation/js/sunburst-app.js > allegation/static/allegation/js/sunburst-bundle.js"
   },
   "author": "Stefan Georg",
   "browserify": {

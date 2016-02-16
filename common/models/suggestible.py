@@ -26,7 +26,7 @@ class MobileSuggestibleOfficer(MobileSuggestible):
                 'gender': self.gender,
                 'race': self.race,
                 'star': self.star
-             }
+            }
         }
 
 

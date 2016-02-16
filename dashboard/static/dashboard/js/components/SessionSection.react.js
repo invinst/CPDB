@@ -20,9 +20,9 @@ var SessionSection = React.createClass(_.assign(Base(SessionSectionStore), {
 
   renderContent: function () {
     if (this.state.active == 'all') {
-      return <SessionList />
+      return <SessionList />;
     }
-    return <SessionAliasList />
+    return <SessionAliasList />;
   },
 
   showAliasModal: function () {
@@ -32,7 +32,7 @@ var SessionSection = React.createClass(_.assign(Base(SessionSectionStore), {
     });
   },
 
-  render: function() {
+  render: function () {
     return (
       <div>
         <div className='row top-nav'>
@@ -42,7 +42,7 @@ var SessionSection = React.createClass(_.assign(Base(SessionSectionStore), {
             </h1>
           </div>
           <div id='add-alias' className='col-md-3 col-xs-3 text-right'>
-            <button className='btn btn-primary' onClick={this.showAliasModal}>
+            <button className='btn btn-primary' onClick={ this.showAliasModal }>
               <i className='fa fa-plus' />
               <span>Add Alias</span>
             </button>
@@ -50,10 +50,10 @@ var SessionSection = React.createClass(_.assign(Base(SessionSectionStore), {
         </div>
         <div>
           <div className='row'>
-            <div className="col-md-8">
+            <div className='col-md-8'>
               <Tabs />
             </div>
-            <div className="col-md-4 text-right">
+            <div className='col-md-4 text-right'>
               <Search />
             </div>
           </div>
@@ -65,7 +65,7 @@ var SessionSection = React.createClass(_.assign(Base(SessionSectionStore), {
         </div>
         <AddSessionAliasModal />
       </div>
-    )
+    );
   }
 }));
 
