@@ -6,6 +6,7 @@ ADMINS = (('Hieu', 'hieu.hoang@eastagile.com'), ('Giang', 'giang.nguyen@eastagil
           ('Tay', 'tay.nguyen@eastagile.com'), ('Stefan', 'stefan.georg@eastagile.com'),
           ('Thai', 'thai.nguyen@eastagile.com'))
 
+# TODO: remove this when we have newrelic setup
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
