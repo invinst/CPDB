@@ -48,6 +48,7 @@
     "react-tooltip": "^1.0.3",
     "slug": "^0.9.1",
     "slugify": "^0.1.1",
+    "string": "^3.3.1",
     "superagent": "^1.5.0",
     "toastr": "^2.1.2"
   },
@@ -57,9 +58,11 @@
     "eslint-plugin-react": "^3.16.1",
     "mochify": "^2.16.0",
     "react-addons-perf": "0.14.3",
+    "react-addons-test-utils": "^0.14.3",
     "react-tools": "~0.13.3",
     "reactify": "^0.15.2",
     "should": "^8.2.2",
+    "sinon": "^1.17.3",
     "uglify-js": "~2.4.15",
     "watchify": "^2.1.1"
   },

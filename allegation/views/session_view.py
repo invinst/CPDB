@@ -43,8 +43,7 @@ class SessionAPIView(View):
             ))
 
     def put(self, request):
-        put = QueryDict(request.body)
-        data = json.loads(put.get('request_data', {}))
+        data = json.loads(request.body.decode("utf-8"))
         ints = Session.id_from_hash(data['hash'])
         owned_sessions = request.session.get('owned_sessions', [])
 

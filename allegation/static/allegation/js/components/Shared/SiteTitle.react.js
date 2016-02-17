@@ -1,25 +1,39 @@
-var _ = require('lodash');
 var $ = require('jquery');
 var classnames = require('classnames');
 var React = require('react');
 var PureRenderMixin = require('react-addons-pure-render-mixin');
 
-var Base = require('components/Base.react');
-var SessionAPI = require('utils/SessionAPI');
-var SessionStore = require('stores/SessionStore');
 var FilterTagStore = require('stores/FilterTagStore');
-var ShareBarStore = require('stores/DataToolPage/ShareBarStore');
+var ShareButtonStore = require('stores/DataToolPage/ShareButtonStore');
+var SiteTitleActions = require('actions/SiteTitleActions');
+var SiteTitleStore = require('stores/SiteTitleStore');
+var SessionStore = require('stores/SessionStore');
 
-var _timeout = false;
 
+var SiteTitle = React.createClass({
+  propTypes: {
+    changable: React.PropTypes.bool
+  },
 
-var SiteTitle = React.createClass(_.assign(Base(SessionStore), {
   mixins: [PureRenderMixin],
+
+  getDefaultProps: function () {
+    return {
+      changable: true
+    };
+  },
+
+  getInitialState: function () {
+    return {
+      showDottedUnderline: false,
+      siteTitle: SessionStore.getSiteTitle()
+    };
+  },
 
   componentDidMount: function () {
     document.title = this.state.siteTitle;
-    SessionStore.addChangeListener(this._onChange);
-    ShareBarStore.addChangeListener(this._onShareBarOrFilterTagChanged);
+    SiteTitleStore.addChangeListener(this._onSiteTitleChange);
+    ShareButtonStore.addChangeListener(this._onShareBarOrFilterTagChanged);
     FilterTagStore.addChangeListener(this._onShareBarOrFilterTagChanged);
   },
 
@@ -28,9 +42,32 @@ var SiteTitle = React.createClass(_.assign(Base(SessionStore), {
   },
 
   componentWillUnmount: function () {
-    SessionStore.removeChangeListener(this._onChange);
-    ShareBarStore.removeChangeListener(this._onShareBarOrFilterTagChanged);
+    SiteTitleStore.removeChangeListener(this._onSiteTitleChange);
+    ShareButtonStore.removeChangeListener(this._onShareBarOrFilterTagChanged);
     FilterTagStore.removeChangeListener(this._onShareBarOrFilterTagChanged);
+  },
+
+  _onSiteTitleChange: function () {
+    this.setState({
+      siteTitle: SiteTitleStore.getSiteTitle()
+    });
+  },
+
+  _onSessionJustReceived: function () {
+    this.setState({
+      siteTitle: SessionStore.getSiteTitle()
+    });
+  },
+
+  _onShareBarOrFilterTagChanged: function () {
+    this.setState({
+      showDottedUnderline: ShareButtonStore.isActive() && !FilterTagStore.isNoFilter()
+    });
+  },
+
+  _onTitleChange: function (e) {
+    var newTitle = $(e.target).val();
+    SiteTitleActions.changeSiteTitle(newTitle);
   },
 
   render: function () {
@@ -43,33 +80,7 @@ var SiteTitle = React.createClass(_.assign(Base(SessionStore), {
       <input className={ className } type='text' value={ this.state.siteTitle } disabled={ disabled }
         onChange={ this._onTitleChange } />
     );
-  },
-
-  _onChange: function () {
-    this.setState({
-      siteTitle: SessionStore.getSiteTitle()
-    });
-  },
-
-  _onShareBarOrFilterTagChanged: function () {
-    this.setState({
-      showDottedUnderline: ShareBarStore.isActive() && !FilterTagStore.isNoFilter()
-    });
-  },
-
-  _onTitleChange: function (e) {
-    var newTitle = $(e.target).val();
-    if (_timeout) {
-      clearTimeout(_timeout);
-    }
-
-    this.setState({'siteTitle': newTitle});
-
-    _timeout = setTimeout(function () {
-      SessionAPI.updateSessionInfo({'title': newTitle});
-    }, 500);
   }
-
-}));
+});
 
 module.exports = SiteTitle;

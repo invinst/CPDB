@@ -4,7 +4,7 @@ var classnames = require('classnames');
 
 var ShareBar = require('components/DataToolPage/Share/ShareBar.react');
 var SessionStore = require('stores/SessionStore');
-var ShareBarStore = require('stores/DataToolPage/ShareBarStore');
+var ShareButtonStore = require('stores/DataToolPage/ShareButtonStore');
 var ShareBarActions = require('actions/ShareBarActions');
 
 
@@ -12,20 +12,21 @@ var ShareButton = React.createClass({
   getInitialState: function () {
     return {
       active: false,
-      sharedSessionHashId: null
+      sharedSessionHashId: null,
+      sharedUrl: null
     };
   },
 
   componentDidMount: function () {
-    ShareBarStore.addChangeListener(this._onReceivedSharedSession);
+    ShareButtonStore.addChangeListener(this._onReceivedSharedSession);
   },
 
   componentWillUnmount: function () {
-    ShareBarStore.removeChangeListener(this._onReceivedSharedSession);
+    ShareButtonStore.removeChangeListener(this._onReceivedSharedSession);
   },
 
   _onReceivedSharedSession: function () {
-    this.setState(ShareBarStore.getState());
+    this.setState(ShareButtonStore.getState());
   },
 
   toggleShareBar: function () {
@@ -52,7 +53,13 @@ var ShareButton = React.createClass({
           <i className={ buttonIconClassNames }></i>
           <span> Share</span>
         </button>
-        { this.state.active ? <ShareBar sharedSessionHashId={ this.state.sharedSessionHashId } /> : null }
+        { this.state.active ?
+          <ShareBar
+            sharedSessionHashId={ this.state.sharedSessionHashId }
+            sharedUrl={ this.state.sharedUrl }
+          />
+          : null
+        }
       </div>
     );
   }

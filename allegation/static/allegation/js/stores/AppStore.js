@@ -1,5 +1,5 @@
 var _ = require('lodash');
-var StringUtil = require('utils/StringUtil');
+var S = require('string');
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
@@ -63,7 +63,7 @@ var AppStore = _.assign(Base(_state), {
   getDataToolUrl: function () {
     if (_state.sessionHash) {
       if (_state.sessionTitle) {
-        return '/data/' + _state.sessionHash + '/' + StringUtil.slugify(_state.sessionTitle);
+        return '/data/' + _state.sessionHash + '/' + S(_state.sessionTitle).slugify().s;
       }
       return '/data/' + _state.sessionHash + '/';
     }

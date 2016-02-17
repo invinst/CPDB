@@ -12,6 +12,16 @@ var ShareBarActions = {
 
   openShareBar: function (currentHash) {
     SessionAPI.createSharedSession(currentHash);
+  },
+
+  shareToFB: function (hashId, newTitle, sharedUrl) {
+    SessionAPI.updateSessionRequest({'hash': hashId, 'title': newTitle})
+    .then(function () {
+      window.open(
+        'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(sharedUrl),
+        'pop', 'width=600, height=400, scrollbars=no'
+      );
+    });
   }
 };
 

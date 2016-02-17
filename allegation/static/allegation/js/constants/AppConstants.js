@@ -52,6 +52,8 @@ module.exports = {
   SET_STORY_DOCUMENT_THUMB: c++,
   RECEIVE_STORIES: c++,
 
+  CHANGE_SITE_TITLE: c++,
+
   ADD_TAG: c++,
   TOGGLE_TAGS: c++,
   REMOVE_TAG: c++,
