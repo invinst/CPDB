@@ -1,4 +1,4 @@
-/*eslin "react/no-danger":0*/
+/*eslint "react/no-danger":0*/
 var _ = require('lodash');
 var React = require('react');
 var classnames = require('classnames');
