@@ -7,7 +7,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.views.decorators.csrf import ensure_csrf_cookie
 
-from allegation.views import AllegationListView
+from allegation.views import AllegationListView, DataToolView
 from allegation.views.session_view import InitSession
 from allegation.views.landing_view import LandingView
 from dashboard.views.admin_analysis_dashboard_view import AdminAnalysisDashboardView
@@ -31,8 +31,9 @@ urlpatterns = [
     url(r'^/session/(?P<hash_id>[\w-]+)/$', ensure_csrf_cookie(AllegationListView.as_view()), name='homepage-share'),
     url(r'^/session/(?P<hash_id>[\w-]+)/(?P<slugified_url>[\w-]+)$',
         ensure_csrf_cookie(AllegationListView.as_view()), name='homepage-share-with-title'),
-    url(r'^(findings|story|method|data(/\w+/(.+)?)?|officer/[^/]+/\d+|investigator/[^/]+/\d+)?/?$',
+    url(r'^(findings|story|method|officer/[^/]+/\d+|investigator/[^/]+/\d+)?/?$',
         ensure_csrf_cookie(AllegationListView.as_view()), name='homepage'),
+    url(r'^data/(?P<hash_id>\w{6})/(?P<title_slug>.*)', ensure_csrf_cookie(DataToolView.as_view()), name='datatool')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DJANGO_ENV == 'test':

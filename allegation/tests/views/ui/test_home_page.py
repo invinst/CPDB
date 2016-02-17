@@ -247,3 +247,12 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
 
         self.visit_home(fresh=True)
         self.browser.title.should.equal(setting.default_site_title)
+
+    def test_share_button(self):
+        self.visit_home()
+        self.find('.share-button button').click()
+        self.find('.share-bar').is_displayed()
+        self.find('.share-bar__content-wrapper input').get_attribute('value').should_not.equal(self.browser.current_url)
+        self.find('.share-button button').click()
+        with self.browser_no_wait():
+            self.element_exist('.share-bar').should.be.false

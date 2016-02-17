@@ -211,7 +211,7 @@ UNITS_DICT = dict(UNITS)
 GENDER = [
     ['M', 'Male'],
     ['F', 'Female'],
-    ['X', 'Trans']
+    ['X', 'X']
 ]
 
 GENDER_DICT = dict(GENDER)

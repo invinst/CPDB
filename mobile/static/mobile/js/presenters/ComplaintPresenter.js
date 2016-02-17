@@ -39,7 +39,7 @@ var ComplaintPresenter = function (complaint) {
   };
 
   var documentId = function () {
-    return HelperUtil.fetch(complaint, 'document_id', '');
+    return HelperUtil.fetch(complaint, 'document_id', '').toString();
   };
 
   var documentNormalizedTitle = function () {
