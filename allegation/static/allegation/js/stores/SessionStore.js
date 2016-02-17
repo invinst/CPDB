@@ -73,13 +73,6 @@ SessionStore.dispatcherToken = AppDispatcher.register(function (action) {
       SessionStore.emitChange();
       break;
 
-    case AppConstants.UPDATE_TITLE:
-      var title = action.title;
-      _state['data']['title'] = title;
-      _state.siteTitle = title;
-      SessionStore.emitChange();
-      break;
-
     case AppConstants.RECEIVED_UPDATED_SESSION_DATA:
       _state['data'] = action.data.data;
       _state.siteTitle = _state['data'].title;

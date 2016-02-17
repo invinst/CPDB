@@ -6,7 +6,6 @@ var PureRenderMixin = require('react-addons-pure-render-mixin');
 
 var Base = require('components/Base.react');
 var SessionAPI = require('utils/SessionAPI');
-var SessionActions = require('actions/SessionActions');
 var SessionStore = require('stores/SessionStore');
 var FilterTagStore = require('stores/FilterTagStore');
 var ShareBarStore = require('stores/DataToolPage/ShareBarStore');
@@ -18,9 +17,10 @@ var SiteTitle = React.createClass(_.assign(Base(SessionStore), {
   mixins: [PureRenderMixin],
 
   componentDidMount: function () {
+    document.title = this.state.siteTitle;
     SessionStore.addChangeListener(this._onChange);
-    ShareBarStore.addChangeListener(this._onToggleShareBar);
-    FilterTagStore.addChangeListener(this._onToggleShareBar);
+    ShareBarStore.addChangeListener(this._onShareBarOrFilterTagChanged);
+    FilterTagStore.addChangeListener(this._onShareBarOrFilterTagChanged);
   },
 
   componentDidUpdate: function () {
@@ -29,14 +29,14 @@ var SiteTitle = React.createClass(_.assign(Base(SessionStore), {
 
   componentWillUnmount: function () {
     SessionStore.removeChangeListener(this._onChange);
-    ShareBarStore.removeChangeListener(this._onToggleShareBar);
-    FilterTagStore.removeChangeListener(this._onToggleShareBar);
+    ShareBarStore.removeChangeListener(this._onShareBarOrFilterTagChanged);
+    FilterTagStore.removeChangeListener(this._onShareBarOrFilterTagChanged);
   },
 
   render: function () {
     var disabled = !this.props.changable;
     var className = classnames('site-title-input', {
-      'dashed-border': this.state.isHasFilterOnShareMode
+      'dashed-border': this.state.showDottedUnderline
     });
 
     return (
@@ -51,9 +51,9 @@ var SiteTitle = React.createClass(_.assign(Base(SessionStore), {
     });
   },
 
-  _onToggleShareBar: function () {
+  _onShareBarOrFilterTagChanged: function () {
     this.setState({
-      isHasFilterOnShareMode: ShareBarStore.isActive() && !FilterTagStore.isNoFilter()
+      showDottedUnderline: ShareBarStore.isActive() && !FilterTagStore.isNoFilter()
     });
   },
 
@@ -67,7 +67,6 @@ var SiteTitle = React.createClass(_.assign(Base(SessionStore), {
 
     _timeout = setTimeout(function () {
       SessionAPI.updateSessionInfo({'title': newTitle});
-      SessionActions.updateTitle(newTitle);
     }, 500);
   }
 

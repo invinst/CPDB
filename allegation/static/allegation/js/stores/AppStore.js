@@ -90,11 +90,6 @@ AppStore.dispatcherToken = AppDispatcher.register(function (action) {
       AppStore.emitChange();
       break;
 
-    case AppConstants.UPDATE_TITLE:
-      _state.sessionTitle = action.title;
-      AppStore.emitChange();
-      break;
-
     default:
       break;
   }
