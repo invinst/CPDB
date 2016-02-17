@@ -6,7 +6,7 @@ param_name = 'deny_crawlers'
 
 class CrawlerDetector(object):
     def process_request(self, request):
-        user_agent = request.META.get('HTTP_USER_AGENT', None)
+        user_agent = request.META.get('HTTP_USER_AGENT', [])
 
         request.is_crawler = False
 
