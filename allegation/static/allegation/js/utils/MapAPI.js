@@ -1,14 +1,19 @@
 var AppConstants = require('constants/AppConstants');
-var OfficerPageActions = require('actions/OfficerPage/OfficerPageActions');
-var FilterStore = require('stores/FilterStore');
+
 var MapActions = require('actions/MapActions');
+var OfficerPageActions = require('actions/OfficerPage/OfficerPageActions');
+
+var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFilterTagsQueryBuilder');
 
 var ajax = null;
 var _queryString = null;
 
+var AREA_FILTER = ['Area'];
+
+
 var MapAPI = {
   getMarkers: function (query) {
-    var queryString = FilterStore.getQueryString(['areas__id']);
+    var queryString = AllegationFilterTagsQueryBuilder.buildQuery(AREA_FILTER);
     queryString = query || queryString;
 
     if (_queryString == queryString) {
@@ -20,7 +25,7 @@ var MapAPI = {
       ajax.abort()
     }
 
-    ajax = $.getJSON("/api/allegations/cluster/?" + queryString, function (data) {
+    ajax = $.getJSON("/api/officer-allegations/cluster/?" + queryString, function (data) {
       MapActions.changeMarkers(data);
     });
   }

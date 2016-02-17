@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^search/', include('search.urls', namespace='search')),
     url(r'^share/', include('share.urls', namespace='share')),
     url(r'^officer/', include('officer.urls', namespace='officer')),
+    url(r'^investigator/', include('investigator.urls', namespace='investigator')),
     url(r'^document/', include('document.urls', namespace='document')),
     url(r'^mobile/', include('mobile.urls', namespace='mobile')),
     url(r'^lookup/', include('common.urls', namespace='common')),
@@ -34,8 +35,11 @@ urlpatterns = [
     url(r'^landing/', LandingView.as_view(), name='landing'),
     url(r'^', include('dashboard.urls')),
     url(r'^/session/(?P<hash_id>[\w-]+)/$', ensure_csrf_cookie(AllegationListView.as_view()), name='homepage-share'),
-    url(r'^/session/(?P<hash_id>[\w-]+)/(?P<slugified_url>[\w-]+)$', ensure_csrf_cookie(AllegationListView.as_view()), name='homepage-share-with-title'),
-    url(r'^(findings|story|method|data(/\w+/(.+)?)?|officer/[^/]+/\d+)?$', ensure_csrf_cookie(AllegationListView.as_view()), name='homepage'),
+    url(r'^/session/(?P<hash_id>[\w-]+)/(?P<slugified_url>[\w-]+)$',
+        ensure_csrf_cookie(AllegationListView.as_view()), name='homepage-share-with-title'),
+    url(r'^(findings|story|method|data(/\w+/(.+)?)?|officer/[^/]+/\d+|investigator/[^/]+/\d+)?/?$',
+       ensure_csrf_cookie(AllegationListView.as_view()), name='homepage'),
+
     url(r'^wagtail-admin/', include(wagtailadmin_urls)),
 
     url(r'^search/', include(wagtailsearch_urls)),

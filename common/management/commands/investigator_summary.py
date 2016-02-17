@@ -1,7 +1,8 @@
 from django.core.management.base import BaseCommand
 from django.db.models import Count
 
-from common.models import Allegation, Investigator, DISCIPLINE_CODES
+from common.models import (
+    Allegation, Investigator, OfficerAllegation)
 
 
 class Command(BaseCommand):
@@ -10,7 +11,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         Allegation.objects.all().update(investigator=None)
 
-        values = Allegation.objects.values('investigator_name').annotate(dcount=Count('*'))
+        values = Allegation.objects.values('investigator_name')\
+            .annotate(dcount=Count('*'))
         for value in values:
             if value['investigator_name']:
                 raw_name = value['investigator_name']
@@ -22,10 +24,14 @@ class Command(BaseCommand):
                     investigator.name = name
                     investigator.save()
                 except Investigator.DoesNotExist:
-                    investigator = Investigator.objects.create(raw_name=raw_name,
-                                                               name=name,
-                                                               complaint_count=value['dcount'])
-                allegations = Allegation.objects.filter(investigator_name=raw_name)
+                    investigator = Investigator.objects.create(
+                        raw_name=raw_name,
+                        name=name,
+                        complaint_count=value['dcount'])
+                allegations = Allegation.objects.filter(
+                    investigator_name=raw_name)
                 allegations.update(investigator=investigator)
-                investigator.discipline_count = allegations.filter(final_outcome__in=DISCIPLINE_CODES).count()
+                investigator.discipline_count = \
+                    OfficerAllegation.disciplined.filter(
+                        allegation__in=allegations).count()
                 investigator.save()

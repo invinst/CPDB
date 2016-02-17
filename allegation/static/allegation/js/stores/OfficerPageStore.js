@@ -1,16 +1,16 @@
 var _ = require ('lodash');
-var AppConstants = require('constants/AppConstants');
-var AppDispatcher = require('dispatcher/AppDispatcher');
-var Base = require('stores/Base');
+var AppConstants = require('../constants/AppConstants');
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+var Base = require('./Base');
 
-_state = {
+var _state = {
   data: {
     allegations: [],
     officer: {},
     relatedOfficers: [],
     hasMap: false
   }
-};
+}
 
 var OfficerPageStore = _.assign(Base(_state), {
 });
@@ -18,7 +18,7 @@ var OfficerPageStore = _.assign(Base(_state), {
 AppDispatcher.register(function(action) {
   switch (action.actionType) {
     case AppConstants.RECEIVED_OFFICER_DATA:
-      _state['data'] = action.data;
+      OfficerPageStore.updateState('data', action.data);
       OfficerPageStore.emitChange();
       break;
 

@@ -1,17 +1,17 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var classnames = require('classnames');
 
-var Filters = require('components/DataToolPage/Filters.react');
 var OfficerActions = require('actions/OfficerActions');
 var Officer = require("components/DataToolPage/Officer.react");
 var Counter = require("components/DataToolPage/Counter.react");
 
-var FilterStore = require("stores/FilterStore");
 var OfficerListStore = require("stores/OfficerListStore");
 
 var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
 var OfficerMixin = require('components/DataToolPage/Officer/OfficerMixin.react');
 
+var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFilterTagsQueryBuilder');
 
 
 var VIEW_PORT_COUNT=6,
@@ -38,10 +38,10 @@ var OfficerList = React.createClass({
 
   // embedding
   getEmbedCode: function () {
-    var node = this.getDOMNode();
+    var node = ReactDOM.findDOMNode(this);
     var width = $(node).width();
     var height = $(node).height();
-    var src = "/embed/?page=officers&query=" + encodeURIComponent(FilterStore.getQueryString());
+    var src = "/embed/?page=officers&query=" + encodeURIComponent(AllegationFilterTagsQueryBuilder.buildQuery());
     return '<iframe width="' + width + 'px" height="' + height + 'px" frameborder="0" src="' + this.absoluteUri(src)
        + '"></iframe>';
   },
@@ -63,7 +63,7 @@ var OfficerList = React.createClass({
   },
 
   enterEmbedMode: function () {
-    var node = this.getDOMNode();
+    var node = ReactDOM.findDOMNode(this);
     var parent = $(node).parent();
     $(parent).prepend(this.getEmbedNode());
     this.setState({

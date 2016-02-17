@@ -1,40 +1,44 @@
-var cx = require('classnames');
 var objectAssign = require('object-assign');
 var React = require('react');
 
 var Base = require('components/Base.react');
 
 var About = require('components/Shared/About.react');
+var SearchResults = require('components/Shared/SearchablePage/SearchResults.react');
+var LoadingPage = require('components/Shared/LoadingPage.react');
+var MainPageContent = require('components/MainPage/MainPageContent.react');
+
 var MainPageStore = require('stores/MainPageStore');
-var Logo = require('components/Shared/Logo.react');
-var Search = require('components/Shared/Search.react');
-var SuggestionSection = require('components/MainPage/SuggestionSection.react');
-var SearchResultSection = require('components/MainPage/SearchResultSection.react');
+var HelperUtil = require('utils/HelperUtil');
+var SuggestionAPI = require('utils/SuggestionAPI');
 
 
 var MainPage = React.createClass(objectAssign(Base(MainPageStore), {
   getInitialState: function () {
     return {
-      'searchStatus': 'blank'
+      'isSearchFocused': 0
+    }
+  },
+
+  componentDidMount: function () {
+    MainPageStore.addChangeListener(this._onChange);
+    var term = HelperUtil.fetch(this, 'props.params.query', '');
+    var santinizedTerm = term.replace(/\+|\-|\_/g, ' ');
+
+    if (santinizedTerm) {
+      SuggestionAPI.get(santinizedTerm)
     }
   },
 
   render: function () {
-    var classNames = cx('search-wrapper', 'pad', 'animation', 'content', {'top-left': this.state.searchStatus != 'blank'});
-    return (
-      <div className='main-page'>
-        <Logo topLeft={this.state.searchStatus != 'blank'}/>
-        <div className={classNames}>
-          <Search />
-          <SuggestionSection visible={this.state.searchStatus == 'suggesting'}/>
-          <SearchResultSection visible={this.state.searchStatus == 'results'}/>
-        </div>
+    var isSearchFocused = this.state.isSearchFocused;
 
-        <div className='bar bar-standard bar-footer'>
-          <About />
-        </div>
+    return (
+      <div className='main-page content'>
+        <MainPageContent topLeft={isSearchFocused} />
+        <About topLeft={isSearchFocused}/>
       </div>
-    )
+    );
   }
 }));
 

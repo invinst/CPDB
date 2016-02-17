@@ -1,4 +1,5 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 
 var SIMPLE_DATE_FORMAT = 'MMM DD, YYYY';
 var DETAIL_DATE_FORMAT = 'MMM DD, YYYY HH:mm';
@@ -68,7 +69,7 @@ var Timeline = React.createClass({
 
   componentDidMount: function () {
     var allegation = this.props.complaint.allegation;
-    var container = $(this.getDOMNode()).find(".timeline")[0];
+    var container = $(ReactDOM.findDOMNode(this)).find(".timeline")[0];
     var firstDate, lastDate, incidentDate;
     var items = [];
 
@@ -134,9 +135,8 @@ var Timeline = React.createClass({
   },
 
   render: function () {
-    var className = "col-md-6 " + (this.props.className || '');
     return (
-      <div className={className}>
+      <div className='col-md-10 col-xs-12'>
         <div className="section-title">Investigation timeline</div>
         <div className="timeline" />
       </div>

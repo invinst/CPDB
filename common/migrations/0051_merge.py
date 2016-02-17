@@ -7,8 +7,8 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', '0046_auto_20151118_0955'),
         ('common', '0050_reimport_table_category'),
+        ('common', '0049_merge'),
     ]
 
     operations = [

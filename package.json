@@ -25,12 +25,14 @@
     "mapbox.js": "~2.2.1",
     "medium-editor": "^5.8.2",
     "moment": "^2.10.3",
+    "mousetrap": "^1.5.3",
     "numeral": "^1.5.3",
     "object-assign": "^1.0.0",
     "pluralize": "~1.1.2",
     "q": "~1.4.1",
     "react": "^0.14.3",
     "react-addons-css-transition-group": "^0.14.3",
+    "react-addons-pure-render-mixin": "^0.14.6",
     "react-chartjs": "^0.6.0",
     "react-cookie": "^0.4.2",
     "react-date-picker": "^3.1.7",
@@ -40,9 +42,10 @@
     "react-infinite": "^0.6.0",
     "react-medium-editor": "^1.6.1",
     "react-mini-router": "^2.0.0",
-    "react-router": "^1.0.0",
+    "react-router": "^2.0.0-rc5",
     "react-select": "^0.6.12",
     "react-tag-input": "^2.0.2",
+    "react-tooltip": "^1.0.3",
     "slug": "^0.9.1",
     "slugify": "^0.1.1",
     "superagent": "^1.5.0",
@@ -51,8 +54,7 @@
   "devDependencies": {
     "browserify": "^6.2.0",
     "envify": "^3.0.0",
-    "jest-cli": "^0.5.5",
-    "react-addons-perf": "^0.14.3",
+    "react-addons-perf": "0.14.3",
     "react-tools": "~0.13.3",
     "reactify": "^0.15.2",
     "uglify-js": "~2.4.15",
@@ -67,8 +69,7 @@
     "build_mobile": "NODE_PATH=mobile/static/mobile/js browserify mobile/static/mobile/js/app.js -t [envify --NODE_ENV production] | uglifyjs -cm > mobile/static/mobile/js/bundle.min.js",
     "circleci": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js browserify allegation/static/allegation/js/app.js > allegation/static/allegation/js/bundle.js",
     "circleci_admin": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js browserify dashboard/static/dashboard/js/app.js > dashboard/static/dashboard/js/bundle.js",
-    "circleci_mobile": "NODE_PATH=mobile/static/mobile/js browserify mobile/static/mobile/js/app.js > mobile/static/mobile/js/bundle.js",
-    "test": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js jest"
+    "circleci_mobile": "NODE_PATH=mobile/static/mobile/js browserify mobile/static/mobile/js/app.js > mobile/static/mobile/js/bundle.js"
   },
   "author": "Stefan Georg",
   "browserify": {
@@ -76,15 +77,5 @@
       "reactify",
       "envify"
     ]
-  },
-  "jest": {
-    "scriptPreprocessor": "allegation/static/allegation/js/test-preprocessor.js",
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "<rootDir>/static/"
-    ],
-    "globals": {
-      "__DEV__": true
-    }
   }
 }

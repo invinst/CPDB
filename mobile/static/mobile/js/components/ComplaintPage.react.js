@@ -12,8 +12,8 @@ var InvestigatorSection = require('components/ComplaintPage/InvestigatorSection.
 var InvestigationTimeline = require('components/ComplaintPage/InvestigationTimeline.react');
 var LoadingPage = require('components/Shared/LoadingPage.react');
 var Location = require('components/ComplaintPage/Location.react');
-var SearchBar = require('components/Shared/SearchBar.react');
 var NotMatchedPage = require('components/ComplaintPage/NotMatchedPage.react');
+var SearchablePage = require('components/Shared/SearchablePage.react');
 
 
 var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
@@ -22,7 +22,7 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
       'complaint': {
         'complaining_witness': [],
         'officers': [],
-        'allegation': null
+        'officer_allegation': null
       },
       loading: true
     };
@@ -34,11 +34,12 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
     ComplaintPageStore.addChangeListener(this._onChange);
   },
 
+
   render: function () {
     var found = this.state.found;
     var loading = this.state.loading;
     var complaint = this.state.complaint;
-    var info = complaint['allegation'];
+    var info = complaint['officer_allegation'];
     var complainingWitness = complaint['complaining_witnesses'];
     var involvedOfficers = complaint['officers'];
 
@@ -55,19 +56,20 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
     }
 
     return (
-      <div className='complaint-page'>
-        <div className='container content'>
-          <SearchBar />
-          <div className='main-content'>
-            <ComplaintDetail info={info} />
-            <InvestigationTimeline info={info} />
-            <ComplainingWitness complainingWitness={complainingWitness} />
-            <OfficerInvolved involvedOfficers={involvedOfficers} />
-            <InvestigatorSection info={info} />
-            <Location info={info} />
+      <SearchablePage>
+        <div className='complaint-page'>
+          <div className='container content'>
+            <div className='main-content'>
+              <ComplaintDetail info={info} />
+              <InvestigationTimeline info={info} />
+              <ComplainingWitness complainingWitness={complainingWitness} />
+              <OfficerInvolved involvedOfficers={involvedOfficers} />
+              <InvestigatorSection info={info} />
+              <Location info={info} />
+            </div>
           </div>
         </div>
-      </div>
+      </SearchablePage>
     );
   }
 }));

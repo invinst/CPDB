@@ -9,66 +9,101 @@ var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
 var Link = ReactRouter.Link;
 
-var Base = require('components/Base.react');
+var AppConstants = require('../../constants/AppConstants');
 var AppStore = require('stores/AppStore');
+var Back = require('components/Shared/Back.react');
+var Base = require('components/Base.react');
 var NavActions = require('actions/NavActions');
 var SessionAPI = require('utils/SessionAPI');
 var SiteTitle = require('components/Shared/SiteTitle.react');
 var WagtailPagesStore = require('stores/WagtailPagesStore');
 
-var Nav = React.createClass(_.assign(Base(AppStore), {
-  goToPage: function (page) {
-    NavActions.goToPage(page);
+
+var Nav = React.createClass({
+  getInitialState: function () {
+    return _.extend({}, AppStore.getState(), {
+      wagtailPages: WagtailPagesStore.getWagtailPages()
+    });
+  },
+
+  getDefaultProps: function () {
+    return {
+      page: 'data',
+      navTabs: AppConstants.DEFAULT_NAV_TABS
+    };
+  },
+
+  getDisplayComponent: function () {
+    var isActive = this.props.isActive;
+
+    return {
+      navTabSection: !(isActive('officer') || isActive('investigator')),
+      titleBox: isActive('data'),
+      subNav: isActive('story'),
+      backLink: isActive('officer') || isActive('investigator'),
+      welcomeMessage: isActive('findings')
+    };
+  },
+
+  goToPage: function (page, event) {
+    if (!this.props.isActive(page)) {
+      NavActions.goToPage(page);
+    } else {
+      event.preventDefault();
+    }
   },
 
   getNavClass: function (tab) {
     return classnames('nav-link', {
-      'active': tab == this.state.page,
+      'active': this.props.isActive(tab)
     });
+  },
+
+  getIndexLink: function () {
+    var isActive = this.props.isActive;
+
+    if(isActive('officer') || isActive('investigator')) {
+      return AppStore.getDataToolUrl();
+    }
+    return '/';
+  },
+
+  componentDidMount: function () {
+    this.moveArrow();
+    AppStore.addChangeListener(this._onChange);
+    WagtailPagesStore.addChangeListener(this._receiveWagtailPage);
+  },
+
+  componentWillUnmount: function () {
+    AppStore.removeChangeListener(this._onChange);
+    WagtailPagesStore.removeChangeListener(this._receiveWagtailPage);
   },
 
   componentDidUpdate: function () {
     this.moveArrow();
   },
 
-  componentDidMount: function () {
-    this.moveArrow();
-    this.attachWindowScroll();
-    AppStore.addChangeListener(this._onChange);
+  _onChange: function () {
+    this.setState(AppStore.getState());
   },
 
-  renderWagtailTabs: function () {
-    var that = this;
-
-    return this.state.wagtailPages.map(function (wagtailPage, index) {
-      var wagtailPageTo = '/' + wagtailPage.slug;
-
-      return (
-        <li className={that.getNavClass(wagtailPage.slug)} key={index}>
-          <Link onClick={that.goToPage.bind(that, wagtailPage.slug)} to={wagtailPageTo}>{wagtailPage.title}</Link>
-        </li>
-      );
-    });
+  _receiveWagtailPage: function () {
+    this.setState({wagtailPages:WagtailPagesStore.getWagtailPages()});
   },
 
-  attachWindowScroll: function () {
-    var $body = $('body');
-    var navBarHeight = 90;
-
-
-    $(document).on('click', '.story-nav a', function() {
-      $element = $($(this).data('target'));
-      $body.animate({
-          scrollTop: $element.offset().top - navBarHeight
-      }, 1000);
-      return false;
-    });
+  startNewSession: function (e) {
+    var isActive = this.props.isActive;
+    if (isActive('data')){
+      e.preventDefault();
+      SessionAPI.getSessionInfo('');
+    }
   },
 
   moveArrow: function () {
     $target = jQuery('.nav-link.active');
+    $arrow = jQuery(".moving-arrow");
 
-    if ($target && $target.offset()) {
+    if ($target.length && $arrow.length) {
       jQuery(".moving-arrow").css({
         left: $target.offset().left - 5,
         width: $target.width() + 10,
@@ -76,70 +111,124 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
     }
   },
 
-  startNewSession: function (e) {
-    e.preventDefault();
-    SessionAPI.getSessionInfo('');
+  navigateSub: function (event) {
+    event.preventDefault();
+    var $body = $('body');
+    var navBarHeight = 90;
+
+    $element = $($(event.currentTarget).data('target'));
+    $body.animate({
+      scrollTop: $element.offset().top - navBarHeight
+    }, 1000);
+  },
+
+  renderWagtailTabs: function () {
+    var that = this;
+
+    if (this.state.wagtailPages) {
+      return this.state.wagtailPages.map(function (wagtailPage, index) {
+        var wagtailPageTo = '/' + wagtailPage.slug;
+
+        return (
+          <li className={that.getNavClass(wagtailPage.slug)} key={index}>
+            <Link onClick={that.goToPage.bind(that, wagtailPage.slug)} to={wagtailPageTo}>{wagtailPage.title}</Link>
+          </li>
+        );
+      });
+    }
+
+    return '';
+  },
+
+  renderTitleBox: function () {
+    return (
+      <div className='site-title pull-left'>
+        <SiteTitle changable={true} />
+      </div>
+    );
+  },
+
+  renderSubNav: function () {
+    return (
+      <div>
+        <nav className='sub-nav story-nav'>
+          <a href="#" className="pull-right" data-target="#next-steps" onClick={this.navigateSub}>
+            Next Steps
+          </a>
+          <a href="#" className="pull-right" data-target="#invisible-institute" onClick={this.navigateSub}>
+            The Invisible Institute
+          </a>
+          <a href="#" className="pull-right active" data-target="#stateway" onClick={this.navigateSub}>
+            Stateway Gardens Litigation
+          </a>
+        </nav>
+      </div>
+    );
+  },
+
+  renderNavTabItems: function () {
+    var self = this;
+
+    return this.props.navTabs.map(function (navTab, index) {
+      return (
+        <li key={index} className={ self.getNavClass(navTab.name) }>
+          <Link
+            onClick={self.goToPage.bind(self, navTab.name)}
+            to={AppStore.getNavTabUrl(navTab.name)}
+            aria-controls={navTab.name}>{navTab.display}</Link>
+        </li>
+      );
+    });
+  },
+
+  renderNavTabSection: function () {
+    return (
+      <ul className="pull-right" role="tablist">
+        <span className="moving-arrow" />
+        { this.renderNavTabItems() }
+        { this.renderWagtailTabs() }
+      </ul>
+    );
+  },
+
+  renderWelcome: function () {
+    return (
+      <div className="welcome">
+        <div className="page-logo">
+        </div>
+        <div className="page-banner">
+          <p>Until recently, records of police misconduct in Chicago have been kept secret.</p>
+          <p>In 2014, the court decision <i>Kalven v. Chicago</i> opened those files to the public.</p>
+          <p>
+            <Link data-target="data" to="/data">
+              Explore the data.
+            </Link>
+          </p>
+        </div>
+      </div>
+    );
   },
 
   render: function () {
-    var mobileExpanded = isMobile.any && this.state.searchExpanded;
-
-    var subNavClass = classnames('sub-nav', {
-      'hidden': !AppStore.isStoryPage()
-    });
-
-    var navClass = classnames('landing-nav', {
-      'fixed-nav': !AppStore.isFindingPage()
-    });
-
-    var navbarClass = classnames(
-      'navbar-collapse',
-      {
-        'hidden': mobileExpanded
-      }
-    );
-
-    var dataToolUrl = AppStore.getDataToolUrl();
-    var siteTitleClass = classnames('site-title pull-left', {
-      hidden: !AppStore.isDataToolPage()
-    });
+    var display = this.getDisplayComponent();
 
     return (
-      <nav className="landing-nav">
-        <div className="items clearfix">
-          <a href="/" onClick={this.startNewSession} id="logo_link">
-            <img className="pull-left cpdp-logo" src="/static/img/cpdp-logo.svg" />
-          </a>
-          <div className={siteTitleClass}>
-            <SiteTitle changable={true} />
+      <div className="landing-page fixed-nav">
+        { display.welcomeMessage ? this.renderWelcome() : '' }
+        <nav className="landing-nav">
+          <div className="items clearfix">
+            <Link to={this.getIndexLink()} onClick={this.startNewSession} id='logo_link'>
+              <img className="pull-left cpdp-logo" src="/static/img/cpdp-logo.svg" />
+            </Link>
+            { display.backLink ? <Back /> : '' }
+            { display.titleBox ? this.renderTitleBox() : '' }
+            { display.navTabSection ? this.renderNavTabSection() : '' }
           </div>
-          <ul className="pull-right" role="tablist">
-            <span className="moving-arrow" />
-            <li className={this.getNavClass("data")}>
-              <Link onClick={this.goToPage.bind(this, 'findings')} to={dataToolUrl} aria-controls="data">Data</Link>
-            </li>
-            <li className={this.getNavClass("method")}>
-              <Link onClick={this.goToPage.bind(this, 'method')} to="/method" aria-controls="method">Methods</Link>
-            </li>
-            <li className={this.getNavClass("story")}>
-              <Link onClick={this.goToPage.bind(this, 'story')} to="/story" aria-controls="story">Stories</Link>
-            </li>
-            <li className={this.getNavClass("findings")}>
-              <Link onClick={this.goToPage.bind(this, 'findings')} to="/findings" aria-controls="findings">Findings</Link>
-            </li>
-            {this.renderWagtailTabs()}
-          </ul>
-        </div>
-        <div className={subNavClass}>
-          <nav className='story-nav'>
-            <a href="#" className="pull-right" data-target="#next-steps">Next Steps</a>
-            <a href="#" className="pull-right" data-target="#invisible-institute">The Invisible Institute</a>
-            <a href="#" className="pull-right active" data-target="#stateway">Stateway Gardens Litigation</a>
-          </nav>
-        </div>
-      </nav>
+          { display.subNav ? this.renderSubNav() : '' }
+        </nav>
+      </div>
     );
   }
-}));
+});
 
 module.exports = Nav;

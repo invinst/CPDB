@@ -2,7 +2,6 @@
 from django.core.urlresolvers import reverse
 
 from allegation.factories import AreaFactory
-from common.models import Area
 from common.tests.core import SimpleTestCase
 from share.models import Session
 
@@ -24,7 +23,8 @@ class AllegationInitApiViewTestCase(SimpleTestCase):
         hash_id = self.response['location'].split('/')[-1]
         session_id = Session.id_from_hash(hash_id)[0]
         session = Session.objects.get(id=session_id)
-        session.query['filters']['areas__id']['value'].should.equal([self.area.id])
+        session.query['filters']['Area'][0]['value']\
+            .should.equal(self.area.id)
 
     def test_init_no_area(self):
         self.visit(reverse('init'), {

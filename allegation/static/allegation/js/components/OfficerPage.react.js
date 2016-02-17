@@ -16,16 +16,13 @@ var RelatedOfficers = require('components/OfficerPage/RelatedOfficers.react');
 var SessionStore = require('stores/SessionStore');
 var StoryList = require('components/OfficerPage/StoryList.react');
 var OfficerPresenter = require('presenters/OfficerPresenter');
-var Disclaimer = require('components/DataToolPage/Disclaimer.react');
-var Footer = require('components/DataToolPage/Footer.react');
-var HappyFox = require('components/Shared/HappyFox.react');
 
 
 var OfficerPage = React.createClass({
   getInitialState: function() {
     return {
       data: {
-        allegations: [],
+        officer_allegations: [],
         officer: {},
         relatedOfficers: [],
         hasMap: false
@@ -76,69 +73,60 @@ var OfficerPage = React.createClass({
   stateHasNewUpdates: function (nextState) {
     return (
       (_.get(nextState, 'timelineData.items.length') && !_.get(this.state, 'timelineData.items')) ||
-      (_.get(nextState, 'data.allegations.length') && !_.get(this.state, 'data.allegations.length')));
+      (_.get(nextState, 'data.officer_allegations.length') && !_.get(this.state, 'data.officer_allegations.length')));
   },
 
   shouldComponentUpdate: function (nextProps, nextState) {
-    return (nextProps.transitioning === false &&
-      (!_.isEqual(nextProps, this.props) || this.stateHasNewUpdates(nextState)));
+    return ((!_.isEqual(nextProps, this.props) || this.stateHasNewUpdates(nextState)));
+  },
+
+  renderRelatedOfficers: function (relatedOfficers) {
+    if (relatedOfficers.length) {
+      return <RelatedOfficers relatedOfficers={relatedOfficers} />;
+    }
+    return null;
+  },
+
+  renderComplaintSection: function (officer) {
+    if (officer.discipline_count !== undefined){
+      return <ComplaintSection officer={officer}/>;
+    }
+    return <div className="complaint-list-placeholder"/>;
   },
 
   render: function () {
-    var allegations = this.state.data['allegations'];
     var officer = this.state.data['officer'];
     var relatedOfficers = this.state.data['relatedOfficers'];
     var hasMap = this.state.data['has_map'];
     var content;
 
-    content = (
-      <div>
-        <Nav />
-        <div id='officer-profile'>
-          <div className="map-row">
-            <div className="container">
-              <OfficerDetail timelineData={this.state.timelineData} officer={officer} hasMap={hasMap}/>
-            </div>
+    return (
+      <div id='officer-profile'>
+        <div className="map-row">
+          <div className="container">
+            <OfficerDetail timelineData={this.state.timelineData} officer={officer} hasMap={hasMap}/>
           </div>
-          <div className="white-background">
-            <div className="container">
-              <ReactCSSTransitionGroup
-                  transitionName="related-officers"
-                  transitionEnterTimeout={500}
-                  transitionLeaveTimeout={500}>
-                {relatedOfficers.length
-                  ? <RelatedOfficers relatedOfficers={relatedOfficers} />
-                  : null
-                }
-              </ReactCSSTransitionGroup>
-              <StoryList officer={officer} />
-            </div>
-          </div>
+        </div>
+        <div className="white-background">
           <div className="container">
             <ReactCSSTransitionGroup
-                transitionName="complaint-list"
+                transitionName="related-officers"
                 transitionEnterTimeout={500}
                 transitionLeaveTimeout={500}>
-              {officer.discipline_count !== undefined
-                ? <ComplaintSection officer={officer}/>
-                : <div className="complaint-list-placeholder"/>
-              }
+              { this.renderRelatedOfficers(relatedOfficers) }
             </ReactCSSTransitionGroup>
           </div>
-          <div className='container-fluid'>
-            <div className='sticky-footer'>
-              <Footer />
-            </div>
-          </div>
+        </div>
+        <div className="container">
+          <ReactCSSTransitionGroup
+              transitionName="complaint-list"
+              transitionEnterTimeout={500}
+              transitionLeaveTimeout={500}>
+            { this.renderComplaintSection(officer) }
+          </ReactCSSTransitionGroup>
         </div>
       </div>
     );
-
-    return <div>
-        {content}
-        <Disclaimer />
-        <HappyFox />
-      </div>;
   },
 
   _onLogoClick: function(e) {

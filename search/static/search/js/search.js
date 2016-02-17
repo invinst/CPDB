@@ -1,5 +1,10 @@
 NO_CAP_CATEGORIES = [
-  'has_filters'
+  'has:',
+  'Category ID'
+];
+
+UPPER_CATEGORIES = [
+  'Category ID'
 ];
 
 function suggestionExists(term, suggestions) {
@@ -11,6 +16,13 @@ function suggestionExists(term, suggestions) {
   return false;
 }
 
+function slugify (title) {
+  var asciiTitle = title.replace(/\s{2,}/g, ' ');
+  var singleSpaceTitle = asciiTitle.replace(/[^\w\s]/gi, '').trim();
+  var lowerCaseTitle  = singleSpaceTitle.toLowerCase();
+
+  return lowerCaseTitle.replace(/\s/g, '-').trim();
+}
 
 function prettyLabels(label, term) {
   label = String(label).toLowerCase();
@@ -41,17 +53,19 @@ function prettyLabels(label, term) {
       this._super();
       this.widget().menu("option", "items", "> :not(." + AUTOCOMPLETE_CAT_CLASS + ")");
     },
+
     _renderMenu: function (ul, items) {
       var widget = this;
       var currentCategory = "";
       $.each(items, function (index, item) {
         if (item.category != currentCategory) {
-          ul.append(renderCategoryElement(widget.options.categoryNames[item.category]));
+          ul.append(renderCategoryElement(item['category']));
           currentCategory = item.category;
         }
         widget._renderItemData(ul, item);
       });
     },
+
     _renderItem: function (ul, item) {
       var label = item.type ? item.type + ": " + item.label : item.label;
       var element = $("<li>");
@@ -59,9 +73,13 @@ function prettyLabels(label, term) {
       if (NO_CAP_CATEGORIES.indexOf(item.category) == -1) {
         element.addClass('capitalize');
       }
+      if (UPPER_CATEGORIES.indexOf(item.category) != -1) {
+        element.addClass('uppercase');
+      }
 
-      return element.addClass('autocomplete-' + item.category).html(prettyLabels(label, $(this.element).val())).appendTo(ul);
+      return element.addClass('autocomplete-' + slugify(item.category)).html(prettyLabels(label, $(this.element).val())).appendTo(ul);
     },
+
     displayMessage: function (value) {
       var ul = this.menu.element.empty();
       ul.append(renderCategoryElement(value));

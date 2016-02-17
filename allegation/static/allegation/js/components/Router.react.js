@@ -1,76 +1,78 @@
 var React = require('react');
 var ReactRouter = require('react-router');
 var IndexRoute = ReactRouter.IndexRoute;
-var History = require('history');
 
 var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
 var Link = ReactRouter.Link;
 var IndexRoute = ReactRouter.IndexRoute;
+var History = ReactRouter.browserHistory;
 
 var IndexPage = require('components/IndexPage.react');
 var DataToolPage = require('components/DataToolPage.react');
 var OfficerPage = require('components/OfficerPage.react');
-var StatePropagateCSSTransitionGroup = require(
-  'components/Shared/StatePropagateCSSTransitionGroup.react');
+var InvestigatorPage = require('components/InvestigatorPage.react');
 
+var AppConstants = require('../constants/AppConstants');
+var DataPage = require('components/IndexTabContent/DataPage.react');
+var FindingPage = require('components/IndexTabContent/FindingPage.react');
+var MethodPage = require('components/IndexTabContent/MethodPage.react');
+var StoryPage = require('components/IndexTabContent/StoryPage.react');
+var SessionAPI = require('utils/SessionAPI');
+var StringUtil = require('utils/StringUtil');
+var WagtailPage = require('components/WagtailPage.react');
 
-var RootPage = React.createClass({
+// disable scroll restoration
+if (history.scrollRestoration){
+  history.scrollRestoration = 'manual';
+}
 
-  render: function () {
-    return (
-      <div className='page-wrapper'>
-        <StatePropagateCSSTransitionGroup transitionName="page" transitionEnterTimeout={500} transitionLeaveTimeout={500}>
-          <PageAnimator className='page' key={this.props.location.pathname}>
-            {this.props.children}
-          </PageAnimator>
-        </StatePropagateCSSTransitionGroup>
-      </div>
-    )
-  }
-});
-
-var PageAnimator = React.createClass({
-  renderChildren: function () {
-    var animator = this;
-
-    return React.cloneElement(this.props.children, {
-      transitioning: this.props.transitioning,
-    });
-  },
-
-  render: function () {
-    return <div className={this.props.className}>
-      {this.renderChildren()}
-    </div>;
-  },
-})
 
 var RootRouter = React.createClass({
-  render: function() {
-    var history = History.useBasename(History.createHistory)({
-      basename: '/'
-    });
+  onEnterData: function (nextState, replaceState, callback) {
+    var sessionCallBack = function (data) {
+      if (!(nextState.params.session && nextState.params.title)){
+        var siteTitle = StringUtil.slugify(data.title || AppConstants.DEFAULT_SITE_TITLE);
+        url = ['', 'data', data.hash, siteTitle].join('/');
+        replaceState(url);
+      }
+      callback();
+    };
 
+    SessionAPI.getSessionInfoRouter(nextState.params.session, sessionCallBack);
+  },
+
+  render: function() {
     return (
-      <Router history={history}>
-        <Route path="/" component={RootPage}>
-          <IndexRoute component={IndexPage} />
-          <Route path="/findings" component={IndexPage}>
+      <Router history={History}>
+        <Route path="/" component={IndexPage}>
+          <IndexRoute onEnter={this.onEnterData}/>
+          <Route path="findings" component={FindingPage}>
           </Route>
-          <Route path="/method" component={IndexPage}>
+          <Route path="method" component={MethodPage}>
           </Route>
-          <Route path="/story" component={IndexPage}>
+          <Route path="story" component={StoryPage}>
           </Route>
-          <Route path="/data" component={IndexPage}>
+          <Route path="data" onEnter={this.onEnterData}>
+            <Route path=":session">
+              <Route path=":title" component={DataPage}>
+              </Route>
+            </Route>
           </Route>
-          <Route path="/data/:session/" component={IndexPage}>
+
+          <Route path="officer">
+            <Route path=":slug">
+              <Route path=":id" component={OfficerPage}>
+              </Route>
+            </Route>
           </Route>
-          <Route path="/data/:session/:title" component={IndexPage}>
+          <Route path="investigator">
+            <Route path=":slug">
+              <Route path=":id" component={InvestigatorPage}>
+              </Route>
+            </Route>
           </Route>
-          <Route path="/officer/:slug/:id" component={OfficerPage}>
-          </Route>
-          <Route path="/:page" component={IndexPage}>
+          <Route path="/:page" component={WagtailPage}>
           </Route>
         </Route>
       </Router>

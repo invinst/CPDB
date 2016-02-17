@@ -2,14 +2,14 @@ from django.core.management.base import BaseCommand
 from documentcloud import DocumentCloud
 
 from common.models import Allegation
-from document.utils import send_document_notification
 
 
 class Command(BaseCommand):
     help = 'Update complaint documents info'
 
     id_delim = '-'
-    search_syntax = 'account: 10146-invisible-institute title:"CR %s"'
+    search_syntaxes = ['Group: invisibleinstitute title:"CR %s"',
+                       'Group: invisibleinstitute title:"CR-%s"']
 
     def add_arguments(self, parser):
         parser.add_argument('--start')
@@ -19,17 +19,16 @@ class Command(BaseCommand):
 
     def get_document(self, allegation):
         client = DocumentCloud()
-        if allegation.crid not in self.document_by_crid:
-            results = client.documents.search(self.search_syntax % allegation.crid)
+        for search_syntax in self.search_syntaxes:
+            results = client.documents.search(search_syntax % allegation.crid)
             if results:
                 document = results[0]
                 self.document_by_crid[allegation.crid] = document
+                break
 
-                if document.title != allegation.document_title:  # new document found
-                    # send notification
-                    send_document_notification(allegation, document)
             else:
                 self.document_by_crid[allegation.crid] = None
+
         return self.document_by_crid[allegation.crid]
 
     def handle(self, *args, **options):
@@ -55,9 +54,5 @@ class Command(BaseCommand):
                 allegation.document_id = doc_id
                 allegation.document_normalized_title = normalized_title
                 allegation.document_title = title
-            else:
-                allegation.document_id = 0
-                allegation.document_normalized_title = ''
-                allegation.document_title = ''
 
-            allegation.save()
+                allegation.save()

@@ -9,11 +9,13 @@
  * MapStore
  */
 var _ = require('lodash');
-var AppDispatcher = require('../dispatcher/AppDispatcher');
-var EventEmitter = require('events').EventEmitter;
-var AppConstants = require('../constants/AppConstants');
 var assign = require('object-assign');
-var FilterStore = require('./FilterStore');
+var EventEmitter = require('events').EventEmitter;
+
+var AppDispatcher = require('../dispatcher/AppDispatcher');
+var AppConstants = require('../constants/AppConstants');
+
+var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFilterTagsQueryBuilder');
 
 var CHANGE_EVENT = 'change';
 var SUMMARY_CHANGE = 'summary-change';
@@ -37,23 +39,15 @@ var OfficerListStore = assign({}, EventEmitter.prototype, {
     return _state.active_officers;
   },
 
-  getQueryString: function () {
-    var queryString = FilterStore.getQueryString();
-    for (var i = 0; i < _state['active_officers'].length; i++) {
-      queryString += "officer=" + _state['active_officers'][i] + "&"
-    }
-    return queryString;
-  },
-
   update: function (query) {
     if (ajax) {
       ajax.abort();
     }
-    var queryString = query || FilterStore.getQueryString();
+    var queryString = query || AllegationFilterTagsQueryBuilder.buildQuery();
 
     _state.filtered = queryString;
 
-    ajax = $.getJSON('/api/allegations/officers/?' + queryString, function (data) {
+    ajax = $.getJSON('/api/officer-allegations/officers/?' + queryString, function (data) {
       _state.officers = data.officers;
       _state.overview = data.overview || [];
       OfficerListStore.emitChange();
@@ -104,8 +98,10 @@ OfficerListStore.dispatchEvent = AppDispatcher.register(function (action) {
     case AppConstants.MAP_CHANGE_FILTER:
     case AppConstants.MAP_ADD_FILTER:
     case AppConstants.ADD_TAG:
+    case AppConstants.SAVE_TAGS:
     case AppConstants.REMOVE_TAG:
     case AppConstants.TOGGLE_TAGS:
+    case AppConstants.SUNBURST_SELECT_ARC:
       if (!firstCall) {
         OfficerListStore.set('active_officers', []);
       }

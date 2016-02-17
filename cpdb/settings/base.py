@@ -39,6 +39,7 @@ INSTALLED_APPS = (
     'jsonify',
     'django_nose',
     'django_user_agents',
+    'haystack',
     'taggit',
     'modelcluster',
 
@@ -220,8 +221,6 @@ EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 BROKER_URL = os.environ.get('BROKER_URL', 'redis://localhost:6379/0')
-COMPRESS_ENABLED = os.environ.get('COMPRESS_ENABLED') != 'False'
-COMPRESS_JS_FILTERS = []
 COMPRESS_PRECOMPILERS = (
     ('text/less', 'lessc {infile}'),
     ('text/sass', 'sass {infile}'),
@@ -255,3 +254,48 @@ SITE_INFO = {
 
 # WAGTAIL
 WAGTAIL_SITE_NAME = 'CPDB'
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'search.search_backends.CustomElasticSearchEngine',
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': 'suggestion',
+    },
+}
+
+HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
+
+ELASTICSEARCH_SETTINGS = {
+    'settings': {
+        'number_of_shards': 1,
+        'analysis': {
+            'analyzer': {
+                'ngram_analyzer': {
+                    'type': 'custom',
+                    'tokenizer': 'whitespace',
+                    'filter': ['haystack_ngram', 'lowercase']
+                },
+                'edgengram_analyzer': {
+                    'type': 'custom',
+                    'tokenizer': 'whitespace',
+                    'filter': ['haystack_edgengram', 'lowercase']
+                }
+            },
+            'filter': {
+                'haystack_ngram': {
+                    'type': 'nGram',
+                    'min_gram': 2,
+                    'max_gram': 15
+                },
+                'haystack_edgengram': {
+                    'type': 'edge_ngram',
+                    'min_gram': 2,
+                    'max_gram': 15
+                }
+            }
+        }
+    }
+}
+
+if 'test' in sys.argv:
+    from cpdb.settings.test import *

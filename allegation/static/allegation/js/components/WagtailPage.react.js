@@ -5,11 +5,42 @@ var classnames = require('classnames');
 var AppStore = require('stores/AppStore');
 var AppConstants = require('constants/AppConstants');
 var Base = require('components/Base.react');
+var WagtailPagesStore = require('stores/WagtailPagesStore');
+var WagtailPageActions = require('actions/WagtailPagesActions');
 
 
-var WagtailPage = React.createClass(_.assign(Base(AppStore), {
+var WagtailPage = React.createClass({
+  getInitialState: function () {
+    return {
+      page: WagtailPagesStore.getCurrentPage()
+    };
+  },
+
+  componentDidMount: function () {
+    WagtailPagesStore.addChangeListener(this._onChange);
+    WagtailPageActions.changeWagtailPage(this.props.params.page);
+  },
+
+  componentWillUnmount: function () {
+    WagtailPagesStore.removeChangeListener(this._onChange);
+  },
+
+  componentWillReceiveProps: function (nextProps) {
+    WagtailPageActions.changeWagtailPage(nextProps.params.page);
+  },
+
+  _onChange: function () {
+    this.setState({
+      page: WagtailPagesStore.getCurrentPage()
+    });
+  },
+
+  isHasPage: function () {
+    return !!this.state.page;
+  },
+
   renderRows: function () {
-    var body = this.props.body;
+    var body = _.get(this.state.page, 'extended_body', []);
 
     return body.map(function (row, i) {
 
@@ -41,6 +72,6 @@ var WagtailPage = React.createClass(_.assign(Base(AppStore), {
       </div>
     );
   },
-}));
+});
 
 module.exports = WagtailPage;

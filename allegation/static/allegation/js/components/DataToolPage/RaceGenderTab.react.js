@@ -1,13 +1,18 @@
 var _ = require('lodash');
 var jQuery = require('jquery');
 var React = require('react');
+var ReactDOM = require('react-dom');
 
 var Base = require('components/Base.react');
 var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
-var FilterStore = require("stores/FilterStore");
 var PercentageRectangleChart = require('components/DataToolPage/RaceGenderTab/PercentageRectangleChart.react');
-var RaceGenderAPITransformation = require('utils/RaceGenderAPITransformation');
+
 var RaceGenderTabStore = require('stores/DataToolPage/RaceGenderTab/RaceGenderTabStore');
+
+var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFilterTagsQueryBuilder');
+var RaceGenderAPITransformation = require('utils/RaceGenderAPITransformation');
+var RaceGenderTabServerActions = require('actions/DataToolPage/RaceGenderTabServerActions');
+
 
 var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
   mixins: [EmbedMixin],
@@ -15,6 +20,7 @@ var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
   componentDidMount: function() {
     RaceGenderTabStore.addChangeListener(this._onChange);
     this.initTabs();
+    RaceGenderTabServerActions.initData();
   },
 
   initTabs: function () {
@@ -24,26 +30,26 @@ var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
   },
 
   getEmbedCode: function () {
-    var node = this.getDOMNode();
+    var node = ReactDOM.findDOMNode(this);
     var width = jQuery(node).width();
     var height = jQuery(node).height();
-    var src = "/embed/?page=race-gender&query=" + encodeURIComponent(FilterStore.getQueryString());
+    var src = "/embed/?page=race-gender&query=" + encodeURIComponent(AllegationFilterTagsQueryBuilder.buildQuery());
     return '<iframe width="' + width + 'px" height="' + height + 'px" frameborder="0" src="' + this.absoluteUri(src)
        + '"></iframe>';
   },
 
   render: function () {
     var complaintRaces = _.get(this.state.data, 'complaining_witness.race', []);
-    var complaintRacesData = RaceGenderAPITransformation.transformRacesForComplaint(complaintRaces);
+    var complaintRacesData = RaceGenderAPITransformation.transformRaces(complaintRaces, false);
 
     var officerRaces = _.get(this.state.data, 'officers.race', []);
-    var officerRacesData = RaceGenderAPITransformation.transformRacesForOfficer(officerRaces);
+    var officerRacesData = RaceGenderAPITransformation.transformRaces(officerRaces, true);
 
     var complaintGenders = _.get(this.state.data, 'complaining_witness.gender', []);
-    var complaintGendersData = RaceGenderAPITransformation.transformGenders(complaintGenders);
+    var complaintGendersData = RaceGenderAPITransformation.transformGenders(complaintGenders, false);
 
     var officerGenders = _.get(this.state.data, 'officers.gender', []);
-    var officerGendersData = RaceGenderAPITransformation.transformGenders(officerGenders);
+    var officerGendersData = RaceGenderAPITransformation.transformGenders(officerGenders, true);
 
     var genderOptions = {
       colors: ['#003366', '#ff6633', '#669966'], // Female, Male, Trans
@@ -85,10 +91,10 @@ var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
             <div className='col-lg-10 col-md-11 col-sm-10 col-xs-0 col-md-offset-1'>
               <div className='complaint-race-chart col-lg-4 col-md-4 col-sm-3 col-xs-4 relative'>
                 <span className='vertical-title'>Complainant</span>
-                <PercentageRectangleChart data={complaintRacesData} options={raceOptions} filter='complainant_race' />
+                <PercentageRectangleChart data={complaintRacesData} options={raceOptions} filter='complainant_race' category='Complainant Race' />
               </div>
               <div className='complaint-gender-chart col-lg-4 col-md-4 col-sm-3 col-xs-4'>
-                <PercentageRectangleChart data={complaintGendersData} options={genderOptions} filter='complainant_gender' />
+                <PercentageRectangleChart data={complaintGendersData} options={genderOptions} filter='complainant_gender' category='Complainant Gender' />
               </div>
             </div>
           </div>
@@ -97,10 +103,10 @@ var RaceGenderTab = React.createClass(_.assign(Base(RaceGenderTabStore), {
             <div className='col-lg-10 col-md-11 col-sm-10 col-xs-0 col-md-offset-1'>
               <div className='officer-race-chart col-lg-4 col-md-4 col-sm-3 col-xs-4 relative'>
                 <span className='vertical-title'>Officer</span>
-                <PercentageRectangleChart data={officerRacesData} options={raceOptions} filter='officer__race' />
+                <PercentageRectangleChart data={officerRacesData} options={raceOptions} filter='officer__race' category='Officer Race' />
               </div>
               <div className='officer-gender-chart col-lg-4 col-md-4 col-sm-3 col-xs-4'>
-                <PercentageRectangleChart data={officerGendersData} options={genderOptions} filter='officer__gender' />
+                <PercentageRectangleChart data={officerGendersData} options={genderOptions} filter='officer__gender' category='Officer Gender' />
               </div>
             </div>
           </div>

@@ -22,9 +22,9 @@ var ComplaintPresenter = function (complaint) {
     return complaintService.isOpenInvestigation ? 'Open Investigation' : closedStatus;
   };
 
-  var incidentDate = function () {
+  var incidentDate = function (format) {
     var incidentDate = complaintService.incidentDate;
-    return !!incidentDate ? incidentDate.format(AppConstants.SIMPLE_DATE_FORMAT) : 'Unknown date';
+    return !!incidentDate ? incidentDate.format(format) : 'Unknown date';
   };
 
   var startInvestigationDate = function () {
@@ -41,19 +41,27 @@ var ComplaintPresenter = function (complaint) {
     return [complaint.add1, complaint.add2].join(' ').trim(); // a bit magic here :>)
   };
 
-  var documentLink = function () {
-    var linkFormat = 'http://documentcloud.org/documents/{documentId}-{documentNormalizedTitle}.html';
-    var documentId = HelperUtil.fetch(complaint, 'document_id', '');
-    var documentNormalizedTitle = HelperUtil.fetch(complaint, 'document_normalized_title', '');
+  var documentId = function () {
+    return HelperUtil.fetch(complaint, 'document_id', '');
+  };
 
-    return HelperUtil.format(linkFormat, {'documentId': documentId, 'documentNormalizedTitle': documentNormalizedTitle});
+  var documentNormalizedTitle = function () {
+    return HelperUtil.fetch(complaint, 'document_normalized_title', '');
+  };
+
+  var crid = function () {
+      return HelperUtil.fetch(complaint, 'crid', 'Unknown');
+  };
+
+  var url = function () {
+    return HelperUtil.format('/complaint/{crid}', {'crid': crid()})
   };
 
   return {
-    crid: HelperUtil.fetch(complaint, 'crid', 'Unknown'),
+    crid: crid(),
     finalFinding: finalFinding(),
     finalStatus: finalStatus(),
-    incidentDate: incidentDate(),
+    incidentDate: incidentDate(AppConstants.SIMPLE_DATE_FORMAT),
     startInvestigationDate: startInvestigationDate(),
     endInvestigationDate: endInvestigationDate(),
     category: HelperUtil.fetch(complaint, 'cat.category', 'Unknown'),
@@ -62,7 +70,10 @@ var ComplaintPresenter = function (complaint) {
     city: HelperUtil.fetch(complaint, 'city', ''),
     locationType: HelperUtil.fetch(complaint, 'location', ''),
     beat: HelperUtil.fetch(complaint, 'beat.name', ''),
-    documentLink: documentLink()
+    documentId: documentId(),
+    documentNormalizedTitle: documentNormalizedTitle(),
+    getIncidentDate: incidentDate,
+    url: url()
   }
 };
 

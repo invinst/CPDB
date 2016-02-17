@@ -1,10 +1,10 @@
+var _ = require('lodash');
 var React = require('react');
 var classnames = require('classnames');
 
-var Filters = require('components/DataToolPage/Filters.react');
 var MapStore = require('stores/MapStore');
 var FilterTagsActions = require('actions/FilterTagsActions');
-var FilterStore = require('stores/FilterStore');
+var FilterTagStore = require('stores/FilterTagStore');
 var SummaryStore = require('stores/SummaryStore');
 var SummaryActions = require('actions/SummaryActions');
 var AppConstants = require('constants/AppConstants');
@@ -15,6 +15,7 @@ function getSummaryRowState() {
     'rows': []
   }
 }
+
 
 var SummaryRow = React.createClass({
   getInitialState: function () {
@@ -28,16 +29,13 @@ var SummaryRow = React.createClass({
   },
 
   hasActiveChildren: function () {
-    var filters = FilterStore.getAll();
-    if ('cat' in filters) {
-      var category = this.props.category;
-      for (var i = 0; i < filters['cat'].value.length; i++) {
-        for (var j = 0; j < category.subcategories.length; j++) {
-          var childCategoryName = category.subcategories[j].cat_id;
-          if (filters['cat'].value[i].indexOf(childCategoryName) > -1) {
-            return true;
-          }
-        }
+    var filters = FilterTagStore.getAll();
+    var category = this.props.category;
+
+    for (var i = 0; i < category.subcategories.length; i++) {
+      childCategoryName = category.subcategories[i].name
+      if (FilterTagStore.getFilter('Allegation type', childCategoryName)) {
+        return true;
       }
     }
     return false;
@@ -48,8 +46,8 @@ var SummaryRow = React.createClass({
     if (selectedCategories) {
       return selectedCategories.indexOf(category.name) > -1;
     }
-    var filters = FilterStore.getAll();
-    return 'cat__category' in filters && filters['cat__category'].value.indexOf(category.name) > -1
+    var filters = FilterTagStore.getAll();
+    return !!FilterTagStore.getFilter('Category', category.name);
   },
 
   render: function () {
@@ -111,10 +109,12 @@ var SummaryRow = React.createClass({
 
     var current = this.props.category;
 
+    FilterTagsActions.removeCategory('Allegation type');
+
     if (this.isActive(current)) {
-      FilterTagsActions.removeTag('cat__category', {label: current.name, value: current.name});
+      FilterTagsActions.removeTag('Category', current.name);
     } else {
-      FilterTagsActions.addTag('cat__category', {label: current.name, value: current.name});
+      FilterTagsActions.addTag('Category', current.name, 'cat__category=' + current.name, current.name);
     }
 
     SummaryStore.setCurrentActive(current.name);

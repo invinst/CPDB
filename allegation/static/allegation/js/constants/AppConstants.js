@@ -1,5 +1,5 @@
 if (!global.DEFAULT_SITE_TITLE) {
-  global.DEFAULT_SITE_TITLE = '';
+  global.DEFAULT_SITE_TITLE = 'Citizens Police Data Project';
 }
 if (!global.STORY_TYPES_ORDER) {
   global.STORY_TYPES_ORDER = '';
@@ -9,11 +9,14 @@ var c = 0;
 module.exports = {
   CHANGE_EVENT: c++,
   SET_ACTIVE_COMPLAINT_LIST_FILTER: c++,
+  SET_ACTIVE_COMPLAINT_LIST_FILTER_SUB_PAGE: c++,
   RECEIVED_OUTCOME_FILTER_ANALYSIS: c++,
   COMPLAINT_LIST_RECEIVED_DATA: c++,
   COMPLAINT_LIST_RECEIVED_MORE_DATA: c++,
   COMPLAINT_LIST_GET_DATA: c++,
   COMPLAINT_LIST_GET_MORE_DATA: c++,
+
+  ALLEGATION_DETAILS_DATA_RECEIVED: c++,
 
   OFFICER_COMPLAINT_LIST_RECEIVED_DATA: c++,
   OFFICER_MOUSE_OUT: c++,
@@ -52,6 +55,9 @@ module.exports = {
   REMOVE_TAG: c++,
   REMOVED_TAG: c++,
   PIN_TAG: c++,
+  TOGGLE_ALL_TAGS: c++,
+  REMOVE_CATEGORY: c++,
+  SAVE_TAGS: c++,
 
   RECEIVED_SUNBURST_DATA: c++,
   SUNBURST_SELECT_ARC: c++,
@@ -64,10 +70,11 @@ module.exports = {
   DOWNLOAD_PROCESS: c++,
   GENERATED_DOWNLOAD: c++,
 
-  INIT_DATA_TOOL: c++,
   NAV_GO_TO_PAGE: c++,
 
   MAP_CHANGE_MARKERS: c++,
+
+  RECEIVED_INVESTIGATOR_DATA: c++,
 
   AVG_COMPLAINTS_NUMBER_GREEN: 20,
   AVG_COMPLAINTS_NUMBER_YELLOW: 60,
@@ -80,6 +87,7 @@ module.exports = {
   MAP_TYPE: 'datamade.7e795301',
 
   WAGTAIL_PAGES_RECEIVED_DATA: c++,
+  CHANGE_WAGTAIL_PAGE: c++,
 
   NUMERAL_FORMAT: '0,0',
 
@@ -250,10 +258,11 @@ module.exports = {
   },
 
   AUTOCOMPLETE_CATEGORY_NAMES: {
-    'crid': 'Allegation ID',
+    'allegation__crid': 'Allegation ID',
     'cat__category': 'Category',
+    'cat__cat_id': 'Category ID',
     'cat': 'Allegation type',
-    'investigator': 'Investigator',
+    'allegation__investigator': 'Investigator',
     'officer': 'Officer',
     'officer__star': 'Badge number',
     'officer__unit': 'Officer Unit',
@@ -269,15 +278,16 @@ module.exports = {
     'incident_date_only__year': 'Incident Year',
     'incident_date_only__year_month': 'Incident Year/Month',
     'incident_date_only': 'Incident Date',
-    'areas__id': 'Area',
+    'allegation__areas__id': 'Area',
     'complainant_gender': 'Complainant Gender',
     'complainant_race': 'Complainant Race',
     'outcome_text': 'Outcome',
-    'city': 'Zip Code',
+    'allegation__city': 'Zip Code',
     'data_source': 'Data Source',
     'officer__allegations_count__gt': 'Repeater',
     'session': 'Session',
-    'has_filters': 'has:'
+    'has_filters': 'has:',
+    'allegation__investigator__agency': 'Investigator Agency'
   },
 
   AUTOCOMPLETE_DISPLAY_CATEGORY_IN_TAG: [
@@ -289,13 +299,34 @@ module.exports = {
 
   DEFAULT_SITE_TITLE: DEFAULT_SITE_TITLE,  // from global variable
   STORY_TYPES_ORDER: STORY_TYPES_ORDER,  // from global variable
+  DEFAULT_NAV_TABS: [
+    {
+      name: 'data',
+      display: 'Data'
+    },
+    {
+      name: 'method',
+      display: 'Collaboration'
+    },
+    {
+      name: 'story',
+      display: 'Backstory'
+    },
+    {
+      name: 'findings',
+      display: 'Findings'
+    }
+  ],
 
   MEDIA_URL: '/media/',
 
   MAP_MARKER_ICON_URL: 'http://cpdb.co/static/img/64x_map_marker.png', // it must be a full url
   OFFICER_PAGE_API_ENDPOINT: '/officer/',
   SESSION_API_ENDPOINT: '/api/allegations/session/',
-  RACE_GENDER_API_ENDPOINT: '/api/allegations/race-gender/',
+  RACE_GENDER_API_ENDPOINT: '/api/officer-allegations/race-gender/',
+  ALLEGATION_DETAILS_API_ENDPOINT: '/api/police-witness/',
+  ALLEGATIONS_API_ENDPOINT: '/api/officer-allegations/',
+  INVESTIGATOR_API_ENDPOINT: '/investigator/',
   WAGTAIL_PAGES_API_ENDPOINT: '/api/wagtail/v1/pages/?type=home.HomePage&fields=title,extended_body,slug',
 
   DATE_FORMAT: 'D MMM, YYYY',
@@ -312,5 +343,32 @@ module.exports = {
     'categories': 1,
     'race-gender': 2,
     'map': 3,
+  },
+
+  SUNBURST_ARC_COLORS: {
+    'Allegation': '#bfd4df',
+    'Unsustained': '#0079ae' ,
+    'Sustained': '#ff6000',
+    'No Affidavit': '#709dc0',
+    'Discharged': '#cbcbcb',
+    'No Cooperation': '#a5b4be',
+    'Unfounded': '#172b3a',
+    'Exonerate': '#62b28c',
+    'Not Sustained': '#258aad',
+    'Disciplined': '#cc0000',
+    'Not Disciplined': '#ff9d5c',
+    'Noted': '#ff9d5c',
+    'Not Served (Resigned)': '#fdae6a',
+    'Not Served (Inactive)': '#fdd0a2',
+    'Reinstated by Court Action': '#669999',
+    'Reinstated by Police Board': '#66cccc',
+    'Unknown': '#989898',
+    'No Action Taken': '#688b99',
+    '1-9 days': '#ff8a90',
+    'Reprimand': '#ff5454',
+    '10-30 days': '#ed2121',
+    'Termination': '#647a66',
+    'Separation': '#4c544c',
+    '30+ days': '#930c0c'
   }
 };

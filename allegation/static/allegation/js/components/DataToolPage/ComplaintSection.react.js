@@ -3,7 +3,6 @@ require('utils/jQuery');
 var classnames = require('classnames');
 var Infinite = require('react-infinite');
 
-var Filters = require('components/DataToolPage/Filters.react');
 var Download = require('components/DataToolPage/Download.react');
 var Counter = require('components/DataToolPage/Counter.react');
 var OutcomeFilter = require('components/DataToolPage/ComplaintList/OutcomeFilter.react');
@@ -45,9 +44,9 @@ var ComplaintSection = React.createClass({
 
     for (var i = 0; i < complaints.length; i++) {
       var complaint = complaints[i];
-      var allegation = complaint.allegation;
-      var key = 'allegation' + allegation.id;
-      rows.push(<ComplaintListRow key={key} complaint={complaint} officer={officer} finding={allegation.final_finding}/>)
+      var officer_allegation = complaint.officer_allegation;
+      var key = 'allegation' + officer_allegation.id+ "-" +i;
+      rows.push(<ComplaintListRow key={key} complaint={complaint} officer={officer} finding={officer_allegation.final_finding}/>)
     }
 
     return rows;
@@ -63,7 +62,7 @@ var ComplaintSection = React.createClass({
     var analytics = this.state.analytics;
     var loading = this.state.loading;
     var items = this.renderComplaints(this.state.complaints, this.props.officer);
-    var className = classnames('complaint_list', {
+    var className = classnames('complaint-list', {
       'hidden': this.state.noQuery
     });
 
@@ -77,7 +76,7 @@ var ComplaintSection = React.createClass({
       complaintList = (
         <Infinite elementHeight={80}
             preloadBatchSize={Infinite.containerHeightScaleFactor(2)}
-            preloadAdditionalHeight={2500}
+            preloadAdditionalHeight={2000}
             infiniteLoadBeginEdgeOffset={100}
             onInfiniteLoad={this.handleInfiniteLoad}
             loadingSpinnerDelegate={this.elementInfiniteLoad()}
@@ -95,7 +94,11 @@ var ComplaintSection = React.createClass({
             <h3 className="margin-top-0">Complaints <Counter to={analytics.All} /></h3>
           </div>
           <div className='col-md-9 text-right'>
-            <OutcomeFilter loading={loading} activeFilter={activeFilter} analytics={analytics}/>
+            <OutcomeFilter
+              loading={loading}
+              activeFilter={activeFilter}
+              analytics={analytics}
+              callAPI={true}/>
           </div>
         </div>
         {complaintList}

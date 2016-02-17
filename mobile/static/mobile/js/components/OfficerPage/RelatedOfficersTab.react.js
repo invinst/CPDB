@@ -4,36 +4,35 @@ var RelatedOfficerItem = require('components/OfficerPage/RelatedOfficersTab/Rela
 var NoRelatedOfficer = require('components/OfficerPage/RelatedOfficersTab/NoRelatedOfficer.react');
 
 
+//FIXME : Should refactor this component since we removed witness officers from the related officers
 var RelatedOfficersTab = React.createClass({
   renderRelatedOfficers: function (type) {
     return function (officer) {
       return (
-        <RelatedOfficerItem type={type} officer={officer} />
+        <RelatedOfficerItem type={type} officer={officer} key={officer.id}/>
       );
     };
   },
 
   render: function () {
     var coAccused = this.props.coAccused;
-    var witness = this.props.witness;
 
-    var numberOfRelatedOfficers = coAccused.length + witness.length;
+    if (!coAccused) {
+      return (<div></div>);
+    }
 
-    if (numberOfRelatedOfficers == 0) {
+    if (coAccused.length == 0) {
       return (
         <div>
           <NoRelatedOfficer />
         </div>
-      )
-    };
+      );
+    }
 
     return (
       <div className='related-officers-tab'>
         <div className='co-accused-list'>
           {coAccused.map(this.renderRelatedOfficers('Co-accused'))}
-        </div>
-        <div className='witness-list'>
-          {witness.map(this.renderRelatedOfficers('Witness'))}
         </div>
       </div>
     );

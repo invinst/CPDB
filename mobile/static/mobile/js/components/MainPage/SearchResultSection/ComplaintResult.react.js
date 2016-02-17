@@ -1,5 +1,6 @@
 var cx = require('classnames');
 var React = require('react');
+
 var Link = require('react-router').Link;
 var ComplaintCard = require('components/Shared/ComplaintCard.react');
 

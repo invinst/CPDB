@@ -6,36 +6,35 @@ var classnames = require('classnames');
 var Base = require('components/Base.react');
 var SessionStore = require('stores/SessionStore');
 var FilterTagsActions = require('actions/FilterTagsActions');
-var FilterStore = require('stores/FilterStore');
+var FilterTagStore = require('stores/FilterTagStore');
 var AppConstants = require('constants/AppConstants');
 
 
-var FilterTags = React.createClass(_.assign(Base(SessionStore), {
-  removeTag: function (category, filter) {
-    FilterTagsActions.removeTag(category, filter, true);
-    FilterTagsActions.removedTag(category, filter);
+var FilterTags = React.createClass(_.assign(Base(FilterTagStore), {
+  removeTag: function (category, item) {
+    FilterTagsActions.removeTag(category, item.value, true);
+    FilterTagsActions.removedTag(category, item);
   },
 
-  pinTag: function (category, filter) {
-    FilterTagsActions.pinTag(category, filter);
+  pinTag: function (category, value) {
+    FilterTagsActions.pinTag(category, value);
   },
 
   renderTags: function () {
     var that = this;
-    return _.map(this.state.data.readable_query, function (value, category) {
-      return value.map(function (filter) {
+    return _.map(this.state.filters, function (items, category) {
+      return items.map(function (item) {
         var tagClassName = classnames('tag label label-info-autocomplete fadeIn', {
-          'pinned': FilterStore.isPinned(category, filter.value)
+          'pinned': item.pinned
         });
-
         return (
           <span className={tagClassName}>
-            <a href='javascript:void(0);' className="action remove" onClick={that.removeTag.bind(that, category, filter)}><i className="fa fa-times"></i></a>
+            <a href='javascript:void(0);' className="action remove" onClick={that.removeTag.bind(that, category, item)}><i className="fa fa-times"></i></a>
             <span className="filter">
-              <span className='filter-name'>{filter.text || filter}</span>
-              <span className='filter-category-name'>{AppConstants.AUTOCOMPLETE_CATEGORY_NAMES[category]}</span>
+              <span className='filter-name'>{item.value}</span>
+              <span className='filter-category-name'>{category}</span>
             </span>
-            <span className='action pin' onClick={that.pinTag.bind(that, category, filter)}><i className="fa fa-thumb-tack"></i></span>
+            <span className='action pin' onClick={that.pinTag.bind(that, category, item.value)}><i className="fa fa-thumb-tack"></i></span>
           </span>
         );
       });
