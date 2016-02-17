@@ -1,15 +1,19 @@
+/*eslin "react/no-danger":0*/
 var _ = require('lodash');
 var React = require('react');
 var classnames = require('classnames');
 
-var AppStore = require('stores/AppStore');
-var AppConstants = require('constants/AppConstants');
-var Base = require('components/Base.react');
+var PropTypes = React.PropTypes;
+
 var WagtailPagesStore = require('stores/WagtailPagesStore');
 var WagtailPageActions = require('actions/WagtailPagesActions');
 
 
 var WagtailPage = React.createClass({
+  propTypes: {
+    params: PropTypes.object
+  },
+
   getInitialState: function () {
     return {
       page: WagtailPagesStore.getCurrentPage()
@@ -21,12 +25,12 @@ var WagtailPage = React.createClass({
     WagtailPageActions.changeWagtailPage(this.props.params.page);
   },
 
-  componentWillUnmount: function () {
-    WagtailPagesStore.removeChangeListener(this._onChange);
-  },
-
   componentWillReceiveProps: function (nextProps) {
     WagtailPageActions.changeWagtailPage(nextProps.params.page);
+  },
+
+  componentWillUnmount: function () {
+    WagtailPagesStore.removeChangeListener(this._onChange);
   },
 
   _onChange: function () {
@@ -51,14 +55,14 @@ var WagtailPage = React.createClass({
         });
 
         return (
-          <div key={key} className={colClassName} dangerouslySetInnerHTML={{ __html: col.value }} />
+          <div key={ key } className={ colClassName } dangerouslySetInnerHTML={ { __html: col.value } } />
         );
       });
 
       return (
-        <div key={i} className="row section">
-          <div className="container">
-            {rowContent}
+        <div key={ i } className='row section'>
+          <div className='container'>
+            { rowContent }
           </div>
         </div>
       );
@@ -68,10 +72,10 @@ var WagtailPage = React.createClass({
   render: function () {
     return (
       <div>
-        {this.renderRows()}
+        { this.renderRows() }
       </div>
     );
-  },
+  }
 });
 
 module.exports = WagtailPage;

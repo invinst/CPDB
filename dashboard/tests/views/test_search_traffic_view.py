@@ -1,6 +1,5 @@
 from common.tests.core import SimpleTestCase
 from search.factories import SuggestionLogFactory
-from search.models.suggestion import SuggestionLog
 
 
 class SearchTrafficTestCase(SimpleTestCase):
