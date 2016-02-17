@@ -8,7 +8,7 @@ import django_extensions.db.fields.json
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('share', '0014_auto_20160112_0358'),
+        ('share', '0015_session_shared'),
     ]
 
     operations = [

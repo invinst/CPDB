@@ -69,7 +69,7 @@ class Session(models.Model):
         session = Session()
         session.title = self.title
         session.query = self.query
-        session.sunburst_arc = self.sunburst_arc
+        session.selected_sunburst_arc = self.selected_sunburst_arc
         session.active_tab = self.active_tab
         session.share_from = self
         session.save()

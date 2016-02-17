@@ -103,7 +103,7 @@ class SessionAPIView(View):
                 'query': session.query,
                 'title': session.title,
                 'active_tab': session.active_tab,
-                'sunburst_arc': session.sunburst_arc,
+                'selected_sunburst_arc': session.selected_sunburst_arc,
             }
         }
 
@@ -137,8 +137,8 @@ class SessionAPIView(View):
             self.track_filter(session)
         if 'active_tab' in data:
             session.active_tab = data['active_tab']
-        if 'sunburst_arc' in data:
-            session.sunburst_arc = data['sunburst_arc']
+        if 'selected_sunburst_arc' in data:
+            session.selected_sunburst_arc = data['selected_sunburst_arc']
         if 'title' in data:
             session.title = data['title']
         session.save()
