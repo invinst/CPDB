@@ -37,7 +37,7 @@ class Response(models.Model):
 
 class TwitterSearch(models.Model):
     query = models.CharField(max_length=100)
-    refresh_url = models.CharField(max_length=255)
+    refresh_url = models.CharField(max_length=255, null=True, blank=True)
     updated_at = models.DateTimeField(auto_now=True)
 
     def search(self):
