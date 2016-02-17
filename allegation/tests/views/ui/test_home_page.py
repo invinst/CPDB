@@ -3,7 +3,8 @@ import json
 from wagtail.wagtailcore.models import Site
 
 from allegation.factories import (
-    AllegationCategoryFactory, OfficerAllegationFactory)
+    OfficerAllegationFactory, AllegationCategoryFactory)
+from allegation.tests.utils.autocomplete_test_helper_mixin import AutocompleteTestHelperMixin
 from common.tests.core import BaseLiveTestCase
 from common.utils.haystack import rebuild_index
 from share.models import Session
@@ -11,7 +12,7 @@ from home.factories import HomePageFactory
 from home.models import HomePage
 
 
-class HomePageTestCase(BaseLiveTestCase):
+class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
     def setUp(self):
         self.allegation_category = AllegationCategoryFactory()
         self.officer_allegation = OfficerAllegationFactory(
@@ -245,25 +246,6 @@ class HomePageTestCase(BaseLiveTestCase):
         self.should_not_see_text(officer_allegation.officer.display_name)
         self.should_not_see_text(self.officer_allegation.officer.display_name)
 
-    def autocomplete_available(self, text):
-        items = self.find_all(".ui-autocomplete .ui-menu-item")
-        items = [x.text for x in items]
-        return any(text in x for x in items)
-
-    def autocomplete_select(self, text):
-        items = self.find_all(".ui-autocomplete .ui-menu-item")
-        for item in items:
-            if text in item.text:
-                item.click()
-
-    def search_officer(self, officer):
-        self.fill_in("#autocomplete", officer.officer_first)
-        self.until_ajax_complete()
-        self.find(".ui-autocomplete").is_displayed()
-        self.until(lambda: self.autocomplete_available(officer.display_name))
-        self.autocomplete_select(officer.display_name)
-        self.until_ajax_complete()
-
     def test_default_site_title_from_settings(self):
         setting = self.get_admin_settings()
         setting.default_site_title = 'New title'
@@ -271,6 +253,15 @@ class HomePageTestCase(BaseLiveTestCase):
 
         self.visit_home(fresh=True)
         self.browser.title.should.equal(setting.default_site_title)
+
+    def test_share_button(self):
+        self.visit_home()
+        self.find('.share-button button').click()
+        self.find('.share-bar').is_displayed()
+        self.find('.share-bar__content-wrapper input').get_attribute('value').should_not.equal(self.browser.current_url)
+        self.find('.share-button button').click()
+        with self.browser_no_wait():
+            self.element_exist('.share-bar').should.be.false
 
     def test_wagtail_tab(self):
         body_content = 'body content'

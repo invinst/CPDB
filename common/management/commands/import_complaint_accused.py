@@ -95,7 +95,7 @@ class Command(BaseCommand):
                 return
 
         except:
-            print (
+            print(
                 "CRID: %s has no star  %s %s %s" %
                 (crid, first_name, last_name, star))
 
@@ -211,4 +211,3 @@ class Command(BaseCommand):
                         self.counters['updated'] += 1
 
         print(self.counters)
-

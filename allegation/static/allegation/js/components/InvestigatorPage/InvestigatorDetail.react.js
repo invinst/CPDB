@@ -1,5 +1,4 @@
 var React = require('react');
-var classnames = require('classnames');
 var PropTypes = React.PropTypes;
 
 var InvestigatorDonutChart = require('components/InvestigatorPage/InvestigatorDonutChart.react');
@@ -9,21 +8,21 @@ var Timeline = require('components/InvestigatorPage/Timeline.react');
 
 var InvestigatorDetail = React.createClass({
   propTypes: {
-    investigator: PropTypes.object.isRequired
-  },
-
-  getChartData: function () {
-    return {
-      'Disciplined': this.props.data['num_disciplined'],
-      'Complaints': this.props.data['num_allegations']
-    }
+    data: PropTypes.object
   },
 
   getChartColors: function () {
     return {
       'Disciplined':'#a5b4be',
       'Complaints':'#013270'
-    }
+    };
+  },
+
+  getChartData: function () {
+    return {
+      'Disciplined': this.props.data['num_disciplined'],
+      'Complaints': this.props.data['num_allegations']
+    };
   },
 
   render: function () {
@@ -34,23 +33,23 @@ var InvestigatorDetail = React.createClass({
     return (
       <div>
         <div className='row'>
-          <div className="col-sm-9 h3">
-            {investigator.name}
+          <div className='col-sm-9 h3'>
+            { investigator.name }
           </div>
         </div>
 
-        <InvestigatorInformation investigator={investigator} />
+        <InvestigatorInformation investigator={ investigator } />
 
-        <div className="row visualization-information">
+        <div className='row visualization-information'>
           <div className='col-xs-6'>
-            <Timeline isInvestigator={true}/>
+            <Timeline isInvestigator={ true }/>
           </div>
           <div className='col-xs-6'>
-            <InvestigatorDonutChart chartColors={chartColors} chartData={chartData} />
+            <InvestigatorDonutChart chartColors={ chartColors } chartData={ chartData } />
           </div>
         </div>
       </div>
-    )
+    );
   }
 });
 

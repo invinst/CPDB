@@ -32,16 +32,26 @@ class SuggestBase(object):
         return results
 
     @classmethod
-    def entry_format(cls, label, value, filter):
+    def entry_format(cls, suggest_value, tag_value):
         return {
-            'label': label,
-            'value': value,
-            'filter': filter
+            'suggest_value': suggest_value,
+            'tag_value': tag_value
         }
 
     @classmethod
-    def build_filter(cls, category, value):
-        return '{category}={value}'.format(category=category, value=value)
+    def build_tag_value(cls, category, value, display_category, display_value):
+        if value is None:
+            processed_value = 'null'
+        else:
+            processed_value = value
+
+        tag_value = {
+            'category': category,
+            'value': processed_value,
+            'display_category': display_category,
+            'display_value': display_value
+        }
+        return tag_value
 
     @classmethod
     def _query_database(cls, model_cls, condition, fields_to_get, limit=5, order_bys=None):

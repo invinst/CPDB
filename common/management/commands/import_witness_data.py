@@ -35,4 +35,3 @@ class Command(BaseCommand):
                     pass
 
             m.objects.bulk_create(create)
-

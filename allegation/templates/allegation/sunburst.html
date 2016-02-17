@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% load staticfiles compress jsonify %}
+<html>
+  <head>
+      {% compress css %}
+      <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" />
+      <link rel="stylesheet" type="text/css" href="{% static 'components-font-awesome/css/font-awesome.min.css' %}" />
+      {% endcompress %}
+
+      {% compress css %}
+      <link rel="stylesheet" type="text/sass" href="{% static 'sass/style.sass' %}" />
+      {% endcompress %}
+  </head>
+  <body>
+    <div id='root'></div>
+    {% compress js %}
+      <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
+    {% endcompress %}
+    <script type="text/javascript">
+        var SUNBURST_DATA = {{ sunburst_data | jsonify }};
+        var SUNBURST_ARC = "{{ sunburst_arc }}";
+    </script>
+    <script src="{% static 'allegation/js/sunburst-bundle.js' %}" data-cover></script>
+    <script type="text/javascript">initReact()</script>
+  </body>
+</html>

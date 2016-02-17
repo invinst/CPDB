@@ -1,5 +1,3 @@
-from django.core.urlresolvers import reverse
-
 from allegation.factories import AreaFactory
 from common.tests.core import SimpleTestCase
 

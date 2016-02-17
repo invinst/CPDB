@@ -1,3 +1,5 @@
+import re
+
 from allegation.factories import (
     OfficerAllegationFactory, OfficerFactory, ComplainingWitnessFactory,
     AllegationCategoryFactory)
@@ -14,7 +16,7 @@ class RaceGenderTabTest(BaseLiveTestCase):
     NON_DISPLAY_RACES = ['Indigenous', 'Asian', 'Unknown', 'White/Hispanic',
                          'Black/Hispanic']
     GENDERS = ['M', 'F', 'X']
-    DISPLAY_GENDERS = ['Male', 'Female', 'Trans']
+    DISPLAY_GENDERS = ['Male', 'Female', 'X']
 
     def setUp(self):
         Allegation.objects.all().delete()
@@ -96,14 +98,14 @@ class RaceGenderTabTest(BaseLiveTestCase):
 
         self.ensure_the_correct_gender_data_is_shown(ratio)
 
-    def test_trigger_4_different_filters_when_click_on_other_block(self):
+    def test_trigger_different_filters_when_click_on_other_block(self):
         self.create_allegation_with_races()
         self.go_to_race_gender_tab()
 
         self.find('.officer-race-chart .others text').click()
         self.until_ajax_complete()
 
-        len(self.find_all('.filter-name')).should.equal(4)
+        len(self.find_all('.filter-name')).should.equal(3)
 
     def test_race_chart_by_filter(self):
         analysis_for_complainants = {
@@ -138,6 +140,23 @@ class RaceGenderTabTest(BaseLiveTestCase):
         self.ensure_the_correct_race_data_is_shown(
             analysis_for_complainants, analysis_for_officer, total)
 
+    def test_race_chart_allegation_count(self):
+        complaints_by_class = [
+            ('.white', 1),
+            ('.black', 1),
+            ('.hispanic', 3),
+            ('.others', 3)
+        ]
+
+        self.create_allegation_with_races()
+        self.go_to_race_gender_tab()
+        self.until(self.ajax_complete)
+
+        for class_name, complaints_count in complaints_by_class:
+            self.complainant_race_chart_block(class_name).click()
+            self.until_ajax_complete()
+            self.find('.complaint-count h3 span:nth-child(2)').text.should.equal(str(complaints_count))
+
     def test_toggle_filter_tags(self):
         self.create_allegation_with_genders()
 
@@ -168,29 +187,40 @@ class RaceGenderTabTest(BaseLiveTestCase):
         self.find('.officer-count').text.should.contain('1')
         self.find('.complaint-count').text.should.contain('1')
 
-    def test_dim_out_inactive_sections(self):
+    def test_dim_out_inactive_segments(self):
         self.create_allegation_with_races()
         self.create_allegation_with_genders()
 
         self.go_to_race_gender_tab()
         self.until_ajax_complete()
-        self.officer_gender_chart_block('.female').click()
+
+        for chart in self.find_all('.percentage-rectangle-chart'):
+            # go through each segment, click and check that other segments are dim
+            segment_classes = [
+                segment.get_attribute('class').replace('inactive', '').replace('officers', '').strip()
+                for segment in chart.find_all('g')]
+            for segment_class in segment_classes:
+                chart.find_element_by_css_selector('g.%s' % segment_class).click()
+                self.until_ajax_complete()
+                chart.find_element_by_css_selector('g.%s' % segment_class)\
+                    .has_class('inactive').should.be.false
+                [seg.has_class('inactive').should.be.true
+                 for seg in chart.find_all('g')
+                 if segment_class not in seg.get_attribute('class')]
+
+            # deactivate chart
+            chart.find_element_by_css_selector('g.%s' % segment_class).click()
+            self.until_ajax_complete()
+
+    def test_race_gender_percentage_add_up_to_100(self):
+        self.create_allegation_with_races()
+        self.create_allegation_with_genders()
+
+        self.go_to_race_gender_tab()
         self.until_ajax_complete()
 
-        # other sections in officer gender chart fade out
-        other_sections = ['male', 'trans']
-        [
-            self.find('.officer-gender-chart .{section}'.format(section=section))
-                .has_class('inactive').should.be.true
-            for section in other_sections
-        ]
-
-        # other charts do not fade out
-        other_charts = ['complaint-gender-chart', 'complaint-race-chart', 'officer-race-chart']
-        [
-            len(self.find_all('.{chart} .inactive'.format(chart=chart))).should.equal(0)
-            for chart in other_charts
-        ]
+        for chart in self.find_all('.percentage-rectangle-chart'):
+            sum([int(re.findall(r'\d+', el.text)[0]) for el in chart.find_all('g text')]).should.equal(100)
 
     def complainant_gender_chart_block(self, block_class):
         block_css_class = '.complaint-gender-chart {block_class}'\
@@ -202,15 +232,18 @@ class RaceGenderTabTest(BaseLiveTestCase):
             .format(block_class=block_class)
         return self.find(block_css_path)
 
+    def complainant_race_chart_block(self, block_class):
+        block_css_path = ".complaint-race-chart {block_class} text"\
+            .format(block_class=block_class)
+        return self.find(block_css_path)
+
     def ensure_the_correct_gender_data_is_shown(self, ratio):
         complaint_gender_chart = self.find('.complaint-gender-chart').text
         officer_gender_chart = self.find('.officer-gender-chart').text
 
         for gender in self.DISPLAY_GENDERS:
-            complaint_gender_chart.should.contain(
-                self.percent_text(gender, ratio))
-            officer_gender_chart.should.contain(
-                self.percent_text(gender, ratio))
+            self.ensure_correct_percent_text_show(complaint_gender_chart, gender, ratio)
+            self.ensure_correct_percent_text_show(officer_gender_chart, gender, ratio)
 
     def ensure_the_correct_race_data_is_shown(
             self, analysis_for_complainants, analysis_for_officer, total):
@@ -219,13 +252,16 @@ class RaceGenderTabTest(BaseLiveTestCase):
 
         for race in self.DISPLAY_RACES_FOR_COMPLAINANTS:
             ratio = analysis_for_complainants[race] / total
-            complaint_race_chart.should.contain(self.percent_text(race, ratio))
+            self.ensure_correct_percent_text_show(complaint_race_chart, race, ratio)
 
         for race in self.DISPLAY_RACES_FOR_OFFICERS:
             ratio = analysis_for_officer[race] / total
-            officer_race_chart.should.contain(self.percent_text(race, ratio))
+            self.ensure_correct_percent_text_show(officer_race_chart, race, ratio)
 
-    def percent_text(self, label, ratio):
+    def ensure_correct_percent_text_show(self, chart, label, ratio):
+        """This test allow percentage to increase by 1 and still pass."""
         percent = int(ratio * 100)
-        text = "%d" % percent
-        return "{label} {percent}".format(label=label, percent=text)
+        try:
+            chart.should.contain("{label} {percent}".format(label=label, percent=percent))
+        except:
+            chart.should.contain("{label} {percent}".format(label=label, percent=percent + 1))

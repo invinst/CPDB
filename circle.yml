@@ -12,17 +12,22 @@ database:
   post:
     - psql -c "CREATE EXTENSION postgis;" -d circle_test
 dependencies:
+  pre:
+    - bash ./install_phantomjs.sh
   override:
     - gem install sass
     - pip install -r requirements.txt
     - pyenv local 2.7.9
     - PYTHON=python2 npm install -g npm@3.5.1
     - PYTHON=python2 npm install -g bower@1.7.0
+    - PYTHON=python2 npm install -g eslint@1.10.3
+    - PYTHON=python2 npm install -g eslint-plugin-react@3.16.1
     - python manage.py bower_install
     - PYTHON=python2 npm install
     - PYTHON=python2 npm run circleci
     - PYTHON=python2 npm run circleci_admin
     - PYTHON=python2 npm run circleci_mobile
+    - PYTHON=python2 npm run circleci_sunburst
     - pyenv local 3.4.2
   cache_directories:
     - "bower_components"
@@ -34,7 +39,10 @@ test:
   pre:
     - python manage.py collectstatic --noinput
   override:
-    - coverage run --parallel-mode manage.py test  --noinput --nologcapture --with-timer -s
+    - coverage run --parallel-mode manage.py test  --noinput --nologcapture --with-timer -s -v 2
+    - PYTHON=python2 npm run test
+    - flake8
+    - eslint .
   post:
     - coverage combine
     - coveralls

@@ -36,17 +36,8 @@ class SuggestViewTestCase(SimpleTestCase):
 
         rebuild_index()
 
-        data = self.get_suggestion('je')
-        data.should.contain('Officer')
-
-        data = self.get_suggestion('je da')
-        data.should.contain('Officer')
-
-        data = self.get_suggestion('genie')
-        data.shouldnt.contain('Officer')
-
-        data = self.get_suggestion('je e')
-        data.shouldnt.contain('Officer')
+        [self.get_suggestion(term).should.contain('Officer') for term in ['je', 'je da']]
+        [self.get_suggestion(term).shouldnt.contain('Officer') for term in ['genie', 'je e']]
 
     def test_detect_suggest_type_officer_badge_number(self):
         OfficerFactory(star=123456)
@@ -182,7 +173,7 @@ class SuggestViewTestCase(SimpleTestCase):
         data = self.get_suggestion(alias.alias[0:2])
         data.should.contain('Officer')
 
-        officer_ids = [x['value'] for x in data['Officer']]
+        officer_ids = [x['tagValue']['displayValue'] for x in data['Officer']]
         officer_ids.should.contain('{first} {last}\n'.format(first=officer.officer_first, last=officer.officer_last))
 
         alias = Alias.objects.get(id=alias.id)
@@ -204,5 +195,5 @@ class SuggestViewTestCase(SimpleTestCase):
 
         data = self.get_suggestion(session_alias.alias[0:2])
         data.should.contain('Session')
-        [x['label'] for x in data['Session']]\
+        [x['suggestValue'] for x in data['Session']]\
             .should.contain(session_alias.title)

@@ -29,6 +29,7 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
   },
 
   componentDidMount: function () {
+    ga('send', 'event', 'allegation', 'view_detail', location.pathname);
     var crid = this.props.params.crid || '';
     AllegationResourceUtil.get(crid);
     ComplaintPageStore.addChangeListener(this._onChange);
@@ -51,8 +52,8 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
 
     if (!found) {
       return (
-        <NotMatchedPage crid={this.state.crid} />
-      )
+        <NotMatchedPage crid={ this.state.crid } />
+      );
     }
 
     return (
@@ -60,12 +61,12 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
         <div className='complaint-page'>
           <div className='container content'>
             <div className='main-content'>
-              <ComplaintDetail info={info} />
-              <InvestigationTimeline info={info} />
-              <ComplainingWitness complainingWitness={complainingWitness} />
-              <OfficerInvolved involvedOfficers={involvedOfficers} />
-              <InvestigatorSection info={info} />
-              <Location info={info} />
+              <ComplaintDetail info={ info } />
+              <InvestigationTimeline info={ info } />
+              <ComplainingWitness complainingWitness={ complainingWitness } />
+              <OfficerInvolved involvedOfficers={ involvedOfficers } />
+              <InvestigatorSection info={ info } />
+              <Location info={ info } />
             </div>
           </div>
         </div>

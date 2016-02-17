@@ -1,4 +1,3 @@
-var _ = require('lodash');
 var AppConstants = require('../constants/AppConstants');
 
 var DocumentListStore = require('stores/DocumentSection/DocumentListStore');
@@ -14,7 +13,7 @@ var limit = 0;
 var count = 20;
 
 var DocumentRequestAPI = {
-  get: function() {
+  get: function () {
     if (ajax) {
       ajax.abort();
     }
@@ -24,7 +23,7 @@ var DocumentRequestAPI = {
       ordering: DocumentListStore.getSortOrder()
     };
 
-    ajax = jQuery.getJSON(AppConstants.DOCUMENT_REQUEST_END_POINT, params, function(data) {
+    ajax = jQuery.getJSON(AppConstants.DOCUMENT_REQUEST_END_POINT, params, function (data) {
       limit = 0;
       DocumentListActions.receivedDocumentList(data.results);
     });
@@ -35,12 +34,12 @@ var DocumentRequestAPI = {
       ajax.abort();
     }
 
-    ajax = jQuery.getJSON(AppConstants.DOCUMENT_REQUEST_END_POINT + id + '/', function(data) {
+    ajax = jQuery.getJSON(AppConstants.DOCUMENT_REQUEST_END_POINT + id + '/', function (data) {
       DocumentActions.receivedDocument(data);
     });
   },
 
-  loadMore: function() {
+  loadMore: function () {
     if (ajax) {
       ajax.abort();
     }
@@ -53,12 +52,12 @@ var DocumentRequestAPI = {
       ordering: DocumentListStore.getSortOrder()
     };
 
-    ajax = jQuery.getJSON(AppConstants.DOCUMENT_REQUEST_END_POINT, params, function(data) {
+    ajax = jQuery.getJSON(AppConstants.DOCUMENT_REQUEST_END_POINT, params, function (data) {
       DocumentListActions.receivedMore(data.results);
     });
   },
 
-  addLink: function(link, crid) {
+  addLink: function (link, crid) {
     if (ajax) {
       ajax.abort();
     }
@@ -72,10 +71,10 @@ var DocumentRequestAPI = {
       url: AppConstants.DOCUMENT_LINK_END_POINT,
       data: params,
       method: 'POST',
-      success: function(data) {
+      success: function (data) {
         AddDocumentLinkModalActions.documentLinkAdded(data.crid);
       },
-      error: function(jqXHR) {
+      error: function (jqXHR) {
         if (jqXHR.status == 400) {
           AddDocumentLinkModalActions.failedToAddDocumentLink();
         }
@@ -96,10 +95,10 @@ var DocumentRequestAPI = {
       url: AppConstants.DOCUMENT_LINK_END_POINT,
       data: params,
       method: 'POST',
-      success: function(data) {
+      success: function (data) {
         DocumentActions.requestCancel(allegation);
       },
-      error: function(jqXHR) {
+      error: function (jqXHR) {
         if (jqXHR.status == 400) {
           AddDocumentLinkModalActions.failedToAddDocumentLink();
         }
@@ -107,12 +106,12 @@ var DocumentRequestAPI = {
     });
   },
 
-  loadByCrid: function(crid) {
+  loadByCrid: function (crid) {
     if (ajax) {
       ajax.abort();
     }
 
-    ajax = jQuery.getJSON(AppConstants.DOCUMENT_REQUEST_END_POINT, {crid: crid}, function(data) {
+    ajax = jQuery.getJSON(AppConstants.DOCUMENT_REQUEST_END_POINT, {crid: crid}, function (data) {
       if (data.results.length == 0) {
         DocumentListActions.requestNotFound();
       } else {

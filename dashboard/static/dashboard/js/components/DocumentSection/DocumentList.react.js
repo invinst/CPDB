@@ -10,15 +10,14 @@ var DocumentListStore = require('../../stores/DocumentSection/DocumentListStore'
 var DocumentListActions = require('../../actions/DocumentSection/DocumentListActions');
 var DocumentRequestAPI = require('../../utils/DocumentRequestAPI');
 var DocumentMixin = require('./DocumentMixin');
-var DocumentRequestAPI = require('../../utils/DocumentRequestAPI');
-var AddDocumentLinkModalActions = require('../../actions/DocumentSection/AddDocumentLinkModalActions');
 
 global.jQuery = require('jquery');
+
 
 var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
   mixins: [DocumentMixin],
 
-  _onScroll: function(e) {
+  _onScroll: function (e) {
     var windowHeight = window.innerHeight;
     var toBottom = jQuery(document).height() - windowHeight - jQuery(window).scrollTop();
 
@@ -47,36 +46,36 @@ var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
     return this.setActiveAllegation.bind(this, allegation);
   },
 
-  _onHeaderClick: function(sortBy) {
+  _onHeaderClick: function (sortBy) {
     DocumentListActions.sortBy(sortBy);
     DocumentRequestAPI.get();
   },
 
-  renderDocumentList: function() {
+  renderDocumentList: function () {
     var that = this;
-    return this.state.documents.map(function(x) {
+    return this.state.documents.map(function (x) {
       var status = that.getStatus(x);
       var statusObj = that.getStatusObject(status);
       var statusText = statusObj.text;
       var statusIcon = statusObj.icon;
 
-      var className = classnames('fa', "fa-" + statusIcon);
+      var className = classnames('fa', 'fa-' + statusIcon);
 
       return (
-        <tr key={"crid" + x.crid} className={that.rowClassName(x)} onClick={that.onClick(x)}>
-          <td>{x.crid}</td>
-          <td className="status"><i className={className}></i> {statusText}</td>
-          <td>{x.number_of_request}</td>
-          <td>{moment(x.last_requested).format(AppConstants.HUMAN_READABLE_FORMAT)}</td>
-          <td className="actions">
+        <tr key={ 'crid' + x.crid } className={ that.rowClassName(x) } onClick={ that.onClick(x) }>
+          <td>{ x.crid }</td>
+          <td className='status'><i className={ className }></i> { statusText }</td>
+          <td>{ x.number_of_request }</td>
+          <td>{ moment(x.last_requested).format(AppConstants.HUMAN_READABLE_FORMAT) }</td>
+          <td className='actions'>
             { that.renderDocumentActions(status, x) }
           </td>
         </tr>
-      )
+      );
     });
   },
 
-  renderSortIcon: function(sortName) {
+  renderSortIcon: function (sortName) {
     var sortBy = this.state.sortBy;
     var isSorting = _(sortBy).contains(sortName);
     var isDesc = this.state.order < 0;
@@ -89,10 +88,10 @@ var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
       'fa-sort-asc': isSorting && !isDesc
     });
 
-    return (<i className={cx}></i>)
+    return (<i className={ cx }></i>);
   },
 
-  render: function() {
+  render: function () {
     return (
       <div className='table-responsive'>
         <table className='table table-striped table-hover'>
@@ -100,8 +99,12 @@ var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
             <tr>
               <th>CRID</th>
               <th>Status</th>
-              <th onClick={this._onHeaderClick.bind(this, 'number_of_request')}>No. of requests {this.renderSortIcon('number_of_request')}</th>
-              <th onClick={this._onHeaderClick.bind(this, 'last_requested')}>Last requested {this.renderSortIcon('last_requested')}</th>
+              <th onClick={ this._onHeaderClick.bind(this, 'number_of_request') }>
+                No. of requests { this.renderSortIcon('number_of_request') }
+              </th>
+              <th onClick={ this._onHeaderClick.bind(this, 'last_requested') }>
+                Last requested { this.renderSortIcon('last_requested') }
+              </th>
               <th>Action</th>
             </tr>
           </thead>

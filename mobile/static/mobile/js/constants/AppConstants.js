@@ -23,12 +23,9 @@ module.exports = {
   MAIN_PAGE_RECEIVED_DATA: c++,
   MAIN_PAGE_FAILED_TO_RECEIVED_DATA: c++,
 
-  // MainPage events
-  MAIN_PAGE_RECEIVED_DATA: c++,
-  MAIN_PAGE_FAILED_TO_RECEIVED_DATA: c++,
-
   // Tokens
-  MAPBOX_TOKEN: '***REMOVED***',
+  MAPBOX_TOKEN:
+    '***REMOVED***',
 
   // Other constants
   FINAL_FINDINGS: {
@@ -160,7 +157,7 @@ module.exports = {
     '393': 'Gang Enforcement Division',
     '441': 'Special Activities Section',
     '442': 'Bomb Unit',
-    '443': "Bomb Unit - O'Hare Airport'",
+    '443': 'Bomb Unit - O\'Hare Airport\'',
     '541': 'FOP Detail',
     '542': 'Detached Services - Governmental Security Detail',
     '543': 'Detached Services-Miscellaneous Detail',

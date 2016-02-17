@@ -1,28 +1,60 @@
 var _ = require('lodash');
 var React = require('react');
+var PropTypes = React.PropTypes;
 var ReactDOM = require('react-dom');
 
-var SummaryActions = require('actions/SummaryActions');
-
 var ExtraInformation = require('components/DataToolPage/SummarySection/ExtraInformation.react');
-var SummaryRow = require("components/DataToolPage/SummaryRow.react");
-var SummaryChildRow = require("components/DataToolPage/SummaryChildRow.react");
-
+var SummaryRow = require('components/DataToolPage/SummaryRow.react');
+var SummaryChildRow = require('components/DataToolPage/SummaryChildRow.react');
 var SummaryStore = require('stores/SummaryStore');
 var FilterTagStore = require('stores/FilterTagStore');
-
 var EmbedMixin = require('./Embed/Mixin.react');
-
 var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFilterTagsQueryBuilder');
-
 var EMBED_QUERY_IGNORE_FILTERS = ['Allegation type', 'Category'];
 
 
 var Summary = React.createClass({
+  propTypes: {
+    query: PropTypes.string,
+    tabs: PropTypes.object,
+    currentActive: PropTypes.bool
+  },
+
   mixins: [EmbedMixin],
 
   getInitialState: function () {
     return SummaryStore.init(this.props.query);
+  },
+
+  // end embedding
+  componentDidMount: function () {
+    SummaryStore.addChangeListener(this._onChange);
+    SummaryStore.addSummaryListener(this._changeView);
+
+    var that = $(ReactDOM.findDOMNode(this));
+    var height = that.parent().height();
+    setTimeout(function () {
+      that.find('.child-rows').css('max-height', height);
+    }, 1000);
+
+    if (this.props.tabs) {
+      if (this.props.tabs.tabs.length > 1) {
+        for (var i =0; i < this.props.tabs.length; i++) {
+          var tab = this.props.tabs.tabs[i];
+          if (tab.drawChart) {
+            this.props.tabs.tabs[i] = this;
+            /* I am sorry for this code, blame: Bang!!!! */
+          }
+        }
+      }
+      else {
+        this.props.tabs.tabs.push(this);
+      }
+    }
+  },
+  componentWillUnmount: function () {
+    SummaryStore.removeChangeListener(this._onChange);
+    SummaryStore.removeSummaryListener(this._changeView);
   },
 
   // embedding
@@ -30,7 +62,7 @@ var Summary = React.createClass({
     var node = ReactDOM.findDOMNode(this);
     var width = $(node).width();
     var height = $(node).height();
-    var src = "/embed/?page=summary&query=" + encodeURIComponent(
+    var src = '/embed/?page=summary&query=' + encodeURIComponent(
       AllegationFilterTagsQueryBuilder.buildQuery(EMBED_QUERY_IGNORE_FILTERS)
     );
 
@@ -45,39 +77,16 @@ var Summary = React.createClass({
     return '<iframe width="' + width + 'px" height="' + height + 'px" frameborder="0" src="' + this.absoluteUri(src)
        + '"></iframe>';
   },
-  // end embedding
 
-  componentDidMount: function () {
-    SummaryStore.addChangeListener(this._onChange);
-    SummaryStore.addSummaryListener(this._changeView);
-
-    var that = $(ReactDOM.findDOMNode(this));
-    var height = that.parent().height();
-    setTimeout(function () {
-      that.find(".child-rows").css('max-height', height);
-    }, 1000);
-
-    if (this.props.tabs) {
-      if (this.props.tabs.tabs.length > 1) {
-        for(var i =0; i < this.props.tabs.length; i++){
-          var tab = this.props.tabs.tabs[i];
-          if(tab.drawChart) {
-            this.props.tabs.tabs[i] = this;
-            /* I am sorry for this code, blame: Bang!!!! */
-          }
-        }
-      }
-      else {
-        this.props.tabs.tabs.push(this);
-      }
-    }
+  _changeView: function () {
+    this.setState(SummaryStore.getAll());
   },
-
-  componentWillUnmount: function() {
-    SummaryStore.removeChangeListener(this._onChange);
-    SummaryStore.removeSummaryListener(this._changeView);
+  _onChange: function () {
+    this.setState(SummaryStore.getAll());
   },
-
+  containerClick: function (e) {
+    $('#summary').addClass('selected');
+  },
   render: function () {
     var i,
       j,
@@ -93,7 +102,7 @@ var Summary = React.createClass({
       var isCurrentActive = (
         category.name == SummaryStore.getCurrentActive()
       );
-      rows.push(<SummaryRow key={i} category={category} isCurrentActive={isCurrentActive} summary={this}/>);
+      rows.push(<SummaryRow key={ i } category={ category } isCurrentActive={ isCurrentActive } summary={ this }/>);
     }
 
     var childRowGroup = [];
@@ -105,45 +114,38 @@ var Summary = React.createClass({
           text: subcategory.name,
           value: ['cat__cat_id', subcategory.cat_id]
         };
-        childRows.push(<SummaryChildRow category={category} key={i}
-                                        subcategory={subcategory} summary={this}/>);
+        childRows.push(
+          <SummaryChildRow category={ category } key={ subcategory.id }
+            subcategory={ subcategory } summary={ this }/>
+        );
       }
-      var id = "child-rows-" + category.id;
+      var id = 'child-rows-' + category.id;
       childRowGroup.push(
-        <div className="child-rows" id={id} key={j}>
-          {childRows}
+        <div className='child-rows' id={ id } key={ id }>
+          { childRows }
         </div>
       );
       childRows = [];
     }
     var className = this.props.currentActive ? 'selected' : '';
     return (
-      <div id="summary-container" onClick={this.containerClick}>
-        <div id='summary' className={className}>
+      <div id='summary-container' onClick={ this.containerClick }>
+        <div id='summary' className={ className }>
           <div className='row'>
-            <div className='col-md-8 col-xs-8'>{rows}</div>
+            <div className='col-md-8 col-xs-8'>{ rows }</div>
             <div className='col-md-4 col-xs-4 child-row-wrapper'>
-              <div className='child-row-container'>{childRowGroup}</div>
+              <div className='child-row-container'>{ childRowGroup }</div>
             </div>
             <ExtraInformation />
           </div>
-          <div className="row">
-            <div className="col-md-12">
+          <div className='row'>
+            <div className='col-md-12'>
             </div>
           </div>
         </div>
       </div>
     );
 
-  },
-  containerClick: function (e) {
-    $("#summary").addClass("selected");
-  },
-  _onChange: function () {
-    this.setState(SummaryStore.getAll())
-  },
-  _changeView: function () {
-    this.setState(SummaryStore.getAll())
   }
 });
 

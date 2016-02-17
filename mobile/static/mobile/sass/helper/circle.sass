@@ -9,17 +9,13 @@
   width: 6px
   height: 6px
 
-.circle-0
-  background-color: $circle-0-color
+$levels: $level-0-color, $level-1-color, $level-2-color, $level-3-color, $level-4-color
 
-.circle-1
-  background-color: $circle-1-color
 
-.circle-2
-  background-color: $circle-2-color
-
-.circle-3
-  background-color: $circle-3-color
-
-.circle-4
-  background-color: $circle-4-color
+@for $i from 1 through length($levels)
+  .circle-#{$i - 1}
+    background-color: nth($levels, $i)
+  .stroke-#{$i - 1}
+    stroke: nth($levels, $i)
+  .fill-#{$i - 1}
+    fill: nth($levels, $i)

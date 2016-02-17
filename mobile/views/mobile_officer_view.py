@@ -9,11 +9,12 @@ from mobile.exceptions.bad_request_api_exception import BadRequestApiException
 from mobile.serializers.mobile_officer_view_serializer import \
     MobileOfficerViewSerializer
 from mobile.services.officer_allegation_service import OfficerAllegationService
+from mobile.services.officer_distribution_service import OfficerDistributionService
 from mobile.services.related_officer_service import RelatedOfficerService
 
 
 class MobileOfficerView(APIView):
-    renderer_classes = (JSONRenderer, )
+    renderer_classes = (JSONRenderer,)
 
     def get(self, request):
         pk = request.GET.get('pk', '')
@@ -27,8 +28,8 @@ class MobileOfficerView(APIView):
             'detail': officer,
             'co_accused':
                 RelatedOfficerService.co_accused_officers(officer.pk),
-            'complaints': OfficerAllegationService.get_officer_allegations(
-                officer.pk)
+            'complaints': OfficerAllegationService.get_officer_allegations(officer.pk),
+            'distribution': OfficerDistributionService.get_distribution()
         })
 
         return Response(content.data)

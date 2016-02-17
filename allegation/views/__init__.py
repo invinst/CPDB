@@ -2,12 +2,13 @@ import json
 
 from django.conf import settings
 from django.contrib.gis.geos.factory import fromstr
+from django.core.urlresolvers import reverse
 from django.db import connection
 from django.db.models import Count
+from django.db.models.query_utils import Q
 from django.http.response import HttpResponse
 from django.views.generic import TemplateView
 from django.views.generic import View
-from django.db.models.query_utils import Q
 
 from allegation.views.officer_allegation_api_view import (
     OfficerAllegationAPIView)
@@ -16,7 +17,8 @@ from common.constants import NO_DISCIPLINE_CODES
 from common.json_serializer import JSONSerializer
 from common.models import (
     Allegation, Area, AllegationCategory, Officer, OfficerAllegation)
-from common.models import ComplainingWitness, PoliceWitness
+from common.models import PoliceWitness
+from share.models import Session
 
 
 OFFICER_COMPLAINT_COUNT_RANGE = [
@@ -47,6 +49,31 @@ class AllegationListView(TemplateView):
 
     def get(self, request, hash_id=None, *args, **kwargs):
         return super(AllegationListView, self).get(request, *args, **kwargs)
+
+
+class DataToolView(AllegationListView):
+    def get_og_image(self, hash_id):
+        return self.request.build_absolute_uri(reverse('allegation:sunburst-image', args=[hash_id]))
+
+    def get_site_title(self, hash_id):
+        try:
+            session_id = Session.id_from_hash(hash_id)[0]
+            session = Session.objects.filter(pk=session_id)[0]
+            return session.title
+        except IndexError:
+            default_site_title = Setting.objects.first().default_site_title
+            return default_site_title
+
+    def get_context_data(self, **kwargs):
+        context = super(DataToolView, self).get_context_data(**kwargs)
+        context.update({
+            'og_image': self.get_og_image(self.hash_id),
+            'site_title': self.get_site_title(self.hash_id)})
+        return context
+
+    def get(self, request, hash_id, *args, **kwargs):
+        self.hash_id = hash_id
+        return super(DataToolView, self).get(request, *args, **kwargs)
 
 
 class AreaAPIView(View):

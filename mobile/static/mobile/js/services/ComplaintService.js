@@ -35,18 +35,19 @@ var ComplaintService = function (complaint) {
   var startInvestigatingAtIncidentDate = function () {
     // NOTE: We always have investigation date when we already have incident date but the opposite condition is not
     // correct
-    return !startInvestigationDate() || startInvestigationDate().isSame(incidentDate(), 'day')
+    return !startInvestigationDate() || startInvestigationDate().isSame(incidentDate(), 'day');
   };
 
-  var hasLocation = function() {
-    return complaint.beat || complaint.location || complaint.add1 || complaint.add2 || complaint.city || complaint.point;
+  var hasLocation = function () {
+    return complaint.beat || complaint.location || complaint.add1 || complaint.add2 || complaint.city
+      || complaint.point;
   };
 
-  var hasFullAddress = function() {
+  var hasFullAddress = function () {
     return complaint.add1 && complaint.add2;
   };
 
-  var hasNoData = function() {
+  var hasNoData = function () {
     return !complaint.locationType && !hasLocation();
   };
 
@@ -70,8 +71,8 @@ var ComplaintService = function (complaint) {
     hasFullAddress: hasFullAddress(),
     hasNoData: hasNoData(),
     hasNoIncidentDate: hasNoIncidentDate(),
-    hasDocument: hasDocument(),
-  }
+    hasDocument: hasDocument()
+  };
 };
 
 module.exports = ComplaintService;

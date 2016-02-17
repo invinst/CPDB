@@ -1,48 +1,50 @@
-var _ = require('lodash');
 var React = require('react');
-
-var AppConstants = require('../constants/AppConstants');
 var NavigationItem = require('./Navigation/Item.react');
 var NavigationStore = require('../stores/NavigationStore');
+var AppConstants = require('../constants/AppConstants');
+var _ = require('lodash');
 var Icon = require('./Shared/Icon.react');
 
 
 var Navigation = React.createClass({
-  getInitialState: function() {
+  getInitialState: function () {
     return NavigationStore.getState();
   },
 
-  goToWagtail: function () {
-    window.location.href = '/wagtail-admin'
-  },
-
-  componentDidMount: function() {
+  componentDidMount: function () {
     NavigationStore.addChangeListener(this._onChange);
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount: function () {
     NavigationStore.removeChangeListener(this._onChange);
   },
 
-  renderNavigation: function() {
-    var currentActiveItem = this.state.activeItem || 0;
-
-    return _.map(AppConstants.NAVIGATION_ITEMS, function(item, i) {
-      return <NavigationItem icon={item.icon} active={i == currentActiveItem} text={item.text} navigation_id={i} key={i}/>
-    })
+  goToWagtail: function () {
+    window.location.href = '/wagtail-admin';
   },
 
-  render: function() {
+  _onChange: function () {
+    this.setState(NavigationStore.getState());
+  },
+
+  renderNavigation: function () {
+    var currentActiveItem = this.state.activeItem || 0;
+
+    return _.map(AppConstants.NAVIGATION_ITEMS, function (item, i) {
+      return (
+        <NavigationItem icon={ item.icon } active={ i == currentActiveItem }
+          text={ item.text } navigationId={ i } key={ i }/>
+      );
+    });
+  },
+
+  render: function () {
     return (
       <ul className='list-unstyled col-md-12 col-xs-12 navigation'>
         { this.renderNavigation() }
-        <li onClick={this.goToWagtail}><Icon icon='sitemap' /><span>Wagtail</span></li>
+        <li onClick={ this.goToWagtail }><Icon icon='sitemap' /><span>Wagtail</span></li>
       </ul>
-    )
-  },
-
-  _onChange: function() {
-    this.setState(NavigationStore.getState());
+    );
   }
 });
 

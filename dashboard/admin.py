@@ -1,10 +1,8 @@
 from import_export import resources, fields
 
-from django.contrib import admin
-
 from common.models import Allegation
 
-# Register your models here.
+
 class AllegationResource(resources.ModelResource):
     crid = fields.Field(attribute='crid', column_name='CRID')
     status = fields.Field(column_name='Status')
@@ -19,7 +17,6 @@ class AllegationResource(resources.ModelResource):
         widgets = {
             'last_requested': {'format': '%I:%M %p, %d %b %Y'}
         }
-
 
     def dehydrate_status(self, allegation):
         if allegation.document_id:
