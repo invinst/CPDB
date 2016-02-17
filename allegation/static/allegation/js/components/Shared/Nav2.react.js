@@ -4,6 +4,7 @@ var classnames = require('classnames');
 var ReactRouter = require('react-router');
 
 var Link = ReactRouter.Link;
+var PropTypes = React.PropTypes;
 
 var AppConstants = require('../../constants/AppConstants');
 var AppStore = require('stores/AppStore');
@@ -16,6 +17,11 @@ var ShareButton = require('components/DataToolPage/Share/ShareButton.react');
 
 
 var Nav = React.createClass({
+  propTypes: {
+    isActive: PropTypes.func,
+    navTabs: PropTypes.array
+  },
+
   getDefaultProps: function () {
     return {
       page: 'data',
@@ -27,6 +33,21 @@ var Nav = React.createClass({
     return _.extend({}, AppStore.getState(), {
       wagtailPages: WagtailPagesStore.getWagtailPages()
     });
+  },
+
+  componentDidMount: function () {
+    this.moveArrow();
+    AppStore.addChangeListener(this._onChange);
+    WagtailPagesStore.addChangeListener(this._receiveWagtailPage);
+  },
+
+  componentDidUpdate: function () {
+    this.moveArrow();
+  },
+
+  componentWillUnmount: function () {
+    AppStore.removeChangeListener(this._onChange);
+    WagtailPagesStore.removeChangeListener(this._receiveWagtailPage);
   },
 
   getDisplayComponent: function () {
@@ -41,20 +62,6 @@ var Nav = React.createClass({
     };
   },
 
-  goToPage: function (page, event) {
-    if (!this.props.isActive(page)) {
-      NavActions.goToPage(page);
-    } else {
-      event.preventDefault();
-    }
-  },
-
-  getNavClass: function (tab) {
-    return classnames('nav-link', {
-      'active': this.props.isActive(tab)
-    });
-  },
-
   getIndexLink: function () {
     var isActive = this.props.isActive;
 
@@ -64,19 +71,10 @@ var Nav = React.createClass({
     return '/';
   },
 
-  componentDidMount: function () {
-    this.moveArrow();
-    AppStore.addChangeListener(this._onChange);
-    WagtailPagesStore.addChangeListener(this._receiveWagtailPage);
-  },
-
-  componentWillUnmount: function () {
-    AppStore.removeChangeListener(this._onChange);
-    WagtailPagesStore.removeChangeListener(this._receiveWagtailPage);
-  },
-
-  componentDidUpdate: function () {
-    this.moveArrow();
+  getNavClass: function (tab) {
+    return classnames('nav-link', {
+      'active': this.props.isActive(tab)
+    });
   },
 
   _onChange: function () {
@@ -87,11 +85,11 @@ var Nav = React.createClass({
     this.setState({wagtailPages:WagtailPagesStore.getWagtailPages()});
   },
 
-  startNewSession: function (e) {
-    var isActive = this.props.isActive;
-    if (isActive('data')) {
-      e.preventDefault();
-      SessionAPI.getSessionInfo('');
+  goToPage: function (page, event) {
+    if (!this.props.isActive(page)) {
+      NavActions.goToPage(page);
+    } else {
+      event.preventDefault();
     }
   },
 
@@ -118,48 +116,12 @@ var Nav = React.createClass({
     }, 1000);
   },
 
-  renderWagtailTabs: function () {
-    var that = this;
-
-    if (this.state.wagtailPages) {
-      return this.state.wagtailPages.map(function (wagtailPage, index) {
-        var wagtailPageTo = '/' + wagtailPage.slug;
-
-        return (
-          <li className={that.getNavClass(wagtailPage.slug)} key={index}>
-            <Link onClick={that.goToPage.bind(that, wagtailPage.slug)} to={wagtailPageTo}>{wagtailPage.title}</Link>
-          </li>
-        );
-      });
+  startNewSession: function (e) {
+    var isActive = this.props.isActive;
+    if (isActive('data')) {
+      e.preventDefault();
+      SessionAPI.getSessionInfo('');
     }
-
-    return '';
-  },
-
-  renderTitleBox: function () {
-    return (
-      <div className='site-title pull-left'>
-        <SiteTitle changable={ true } />
-      </div>
-    );
-  },
-
-  renderSubNav: function () {
-    return (
-      <div>
-        <nav className='sub-nav story-nav'>
-          <a href='#' className='pull-right' data-target='#next-steps' onClick={ this.navigateSub }>
-            Next Steps
-          </a>
-          <a href='#' className='pull-right' data-target='#invisible-institute' onClick={ this.navigateSub }>
-            The Invisible Institute
-          </a>
-          <a href='#' className='pull-right active' data-target='#stateway' onClick={ this.navigateSub }>
-            Stateway Gardens Litigation
-          </a>
-        </nav>
-      </div>
-    );
   },
 
   renderNavTabItems: function () {
@@ -185,6 +147,51 @@ var Nav = React.createClass({
         { this.renderWagtailTabs() }
       </ul>
     );
+  },
+
+  renderSubNav: function () {
+    return (
+      <div>
+        <nav className='sub-nav story-nav'>
+          <a href='#' className='pull-right' data-target='#next-steps' onClick={ this.navigateSub }>
+            Next Steps
+          </a>
+          <a href='#' className='pull-right' data-target='#invisible-institute' onClick={ this.navigateSub }>
+            The Invisible Institute
+          </a>
+          <a href='#' className='pull-right active' data-target='#stateway' onClick={ this.navigateSub }>
+            Stateway Gardens Litigation
+          </a>
+        </nav>
+      </div>
+    );
+  },
+
+  renderTitleBox: function () {
+    return (
+      <div className='site-title pull-left'>
+        <SiteTitle changable={ true } />
+      </div>
+    );
+  },
+
+  renderWagtailTabs: function () {
+    var that = this;
+
+    if (this.state.wagtailPages) {
+      return this.state.wagtailPages.map(function (wagtailPage, index) {
+        var wagtailPageTo = '/' + wagtailPage.slug;
+
+        return (
+          <li className={ that.getNavClass(wagtailPage.slug) } key={ index }>
+            <Link onClick={ that.goToPage.bind(that, wagtailPage.slug) }
+              to={ wagtailPageTo }>{ wagtailPage.title }</Link>
+          </li>
+        );
+      });
+    }
+
+    return '';
   },
 
   renderWelcome: function () {
