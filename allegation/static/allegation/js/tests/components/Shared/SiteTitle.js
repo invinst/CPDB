@@ -1,7 +1,6 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var ReactTestUtils = require('react-addons-test-utils');
-var sinon = require('sinon');
 
 var SessionStore = require('stores/SessionStore');
 var SiteTitleStore = require('stores/SiteTitleStore');
@@ -61,8 +60,6 @@ describe('SiteTitle component', function () {
   it('emits changeSiteTitle action when editted', function () {
     var siteTitle, node;
 
-    sinon.stub(AppDispatcher, 'dispatch');
-
     SessionStore.updateState('siteTitle', 'Lothric');
     siteTitle = ReactTestUtils.renderIntoDocument(
       <SiteTitle/>
@@ -75,8 +72,6 @@ describe('SiteTitle component', function () {
       actionType: AppConstants.CHANGE_SITE_TITLE,
       title: 'giraffe'
     })).should.be.true();
-
-    AppDispatcher.dispatch.restore();
   });
 
   it('shows dotted underline when share bar active and there are filters', function () {

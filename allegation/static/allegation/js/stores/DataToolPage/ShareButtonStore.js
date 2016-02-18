@@ -42,30 +42,30 @@ var ShareButtonStore = _.assign(Base(_state), {
 
   isActive: function () {
     return _state.active;
-  }
-});
+  },
 
-AppDispatcher.register(function (action) {
-  switch (action.actionType) {
-    case AppConstants.CLOSE_SHARE_BAR:
-      ShareButtonStore.setActive(false);
-      ShareButtonStore.emitChange();
-      break;
+  dispatcherIndex: AppDispatcher.register(function (action) {
+    switch (action.actionType) {
+      case AppConstants.CLOSE_SHARE_BAR:
+        ShareButtonStore.setActive(false);
+        ShareButtonStore.emitChange();
+        break;
 
-    case AppConstants.RECEIVED_SHARED_SESSION:
-      ShareButtonStore.setActive(true);
-      ShareButtonStore.updateSharedSessionHashId(action.data.data.hash);
-      ShareButtonStore.emitChange();
-      break;
+      case AppConstants.RECEIVED_SHARED_SESSION:
+        ShareButtonStore.setActive(true);
+        ShareButtonStore.updateSharedSessionHashId(action.data.data.hash);
+        ShareButtonStore.emitChange();
+        break;
 
-    case AppConstants.CHANGE_SITE_TITLE:
-      ShareButtonStore.updateSharedUrlWithSiteTitle(action.siteTitle);
-      ShareButtonStore.emitChange();
-      break;
+      case AppConstants.CHANGE_SITE_TITLE:
+        ShareButtonStore.updateSharedUrlWithSiteTitle(action.siteTitle);
+        ShareButtonStore.emitChange();
+        break;
 
-    default:
-      break;
-  }
+      default:
+        break;
+    }
+  })
 });
 
 module.exports = ShareButtonStore;
