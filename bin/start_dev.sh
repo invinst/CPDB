@@ -1,0 +1,5 @@
+tmux new -d -s npm_start 'npm start; tmux detach'
+tmux new -d -s npm_start_mobile 'npm run start_mobile; tmux detach'
+tmux new -d -s npm_start_admin 'npm run start_admin; tmux detach'
+tmux new -d -s elasticsearch '../elasticsearch/bin/elasticsearch; tmux detach'
+tmux new -d -s redis_server 'redis-server; tmux detach;'
