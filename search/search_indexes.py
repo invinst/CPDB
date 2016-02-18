@@ -25,13 +25,16 @@ class SuggestionBaseIndex(indexes.SearchIndex):
 class OfficerIndex(SuggestionBaseIndex, indexes.Indexable):
     DEFAULT_MODEL = Officer
 
-    officer_name = CustomNgramField(use_template=True)
+    officer_name = CustomNgramField()
     officer_star = CustomIntegerNgramField(model_attr='star', null=True)
     officer_unit = CustomNgramField(model_attr='unit', null=True)
 
     officer_id = indexes.IntegerField(model_attr='id')
     officer_allegations_count = indexes.IntegerField(model_attr='allegations_count')
     officer_star_sort = indexes.IntegerField(model_attr='star', null=True)
+
+    def prepare_officer_name(self, obj):
+        return '{first} {last}'.format(first=obj.officer_first, last=obj.officer_last)
 
 
 class AllegationIndex(SuggestionBaseIndex, indexes.Indexable):
@@ -61,12 +64,15 @@ class AllegationDistinctCityIndex(SuggestionBaseIndex, indexes.Indexable):
 class AllegationCategoryIndex(SuggestionBaseIndex, indexes.Indexable):
     DEFAULT_MODEL = AllegationCategory
 
-    allegationcategory_name_and_id = CustomNgramField(use_template=True)
+    allegationcategory_name_and_id = CustomNgramField()
 
     allegationcategory_id = indexes.IntegerField(model_attr='id')
     allegationcategory_allegation_name = indexes.CharField(model_attr='allegation_name')
     allegationcategory_cat_id = indexes.CharField(model_attr='cat_id')
     allegationcategory_allegation_count = indexes.IntegerField(model_attr='allegation_count')
+
+    def prepare_allegationcategory_name_and_id(self, obj):
+        return '{name} {id}'.format(name=obj.allegation_name, id=obj.cat_id)
 
 
 class AllegationCategoryDistinctCategoryIndex(SuggestionBaseIndex, indexes.Indexable):
