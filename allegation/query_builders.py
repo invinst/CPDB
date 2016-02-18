@@ -248,11 +248,13 @@ class OfficerAllegationQueryBuilder(object):
 
         if len(data_source) == 2:
             return Q()
-
         if 'pre-FOIA' in data_source:
-            return Q(allegation__incident_date__lt=FOIA_START_DATE)
+            return Q(allegation__incident_date__lt=FOIA_START_DATE)\
+                   | Q(start_date__lt=FOIA_START_DATE) \
+                   | Q(allegation__incident_date__isnull=True)
         elif 'FOIA' in data_source:
-            return Q(allegation__incident_date__gte=FOIA_START_DATE)
+            return Q(allegation__incident_date__gte=FOIA_START_DATE)\
+                   | Q(start_date__gte=FOIA_START_DATE)
 
         return Q()
 

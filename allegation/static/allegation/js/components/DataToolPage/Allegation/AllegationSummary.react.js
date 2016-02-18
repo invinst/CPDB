@@ -86,7 +86,7 @@ var AllegationSummary = React.createClass({
             <div>{ presenter.finalOutcome }</div>
           </div>
           <div>
-            <div className='title'>Disciplinary action</div>
+            <div className='title'>Investigation Finding</div>
             <div>{ presenter.finalFinding }</div>
           </div>
           { this.renderComplainingWitnessSection(presenter) }
