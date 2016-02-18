@@ -2,7 +2,6 @@ from django.db import models
 
 from officer.models import Story
 
-
 DEFAULT_SITE_TITLE = 'Police Misconduct in Chicago'
 
 
@@ -15,6 +14,7 @@ class Setting(models.Model):
     story_types_order = models.TextField(default=_default_story_types_order)
     requested_document_email_subject = models.CharField(max_length=255, blank=True, null=True)
     requested_document_email_text = models.TextField(blank=True, null=True)
+    export_excel_disclaimer = models.TextField(blank=True)
 
     DEFAULT_SITE_TITLE = DEFAULT_SITE_TITLE
 
