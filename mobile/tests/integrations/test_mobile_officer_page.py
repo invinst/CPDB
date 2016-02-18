@@ -96,24 +96,33 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
         no_related_officer_text = 'No any officer related to this officer.'
         self.should_see_text(no_related_officer_text)
 
-    def test_less_officer_information(self):
+    def test_no_summary_section(self):
         officer = OfficerFactory(gender='', rank=None, appt_date=None,
-                                 unit='', race=None, star=None)
+                                 unit='', race='')
         OfficerAllegationFactory(officer=officer)
-        officer_gender_display = 'Gender unknown'
-        officer_star_display = 'Badge  Unknown'
-        officer_rank_display = 'Rank N/A'
-        officer_join_date_display = 'Joined Unknown'
-        officer_unit_display = 'Unit Unknown'
-        officer_race_display = 'Race unknown'
 
         self.visit_officer_page(officer.id)
-        self.find('.tab-navs .tab-summary').click()
+        self.find_all('.officer-summary-section').should.have.length_of(0)
+
+    def test_less_data_information_officer(self):
+        # no data, race is keep here to make summary section not to be hidden
+        officer = OfficerFactory(gender='', rank=None, appt_date=None, unit='', race='Hispanic')
+        OfficerAllegationFactory(officer=officer)
+
+        self.visit_officer_page(officer.id)
         self.until(lambda: self.find('.officer-summary-section'))
 
-        self.should_see_text(officer_rank_display)
-        self.should_see_text(officer_unit_display)
-        self.should_see_text(officer_join_date_display)
-        self.should_see_text(officer_gender_display)
-        self.should_see_text(officer_race_display)
-        self.should_see_text(officer_star_display)
+        self.should_not_see_text('Rank')
+        self.should_not_see_text('Unit')
+        self.should_not_see_text('Joined Date')
+        self.should_not_see_text('Sex')
+
+        # Invalid units and no race data
+        other_officer = OfficerFactory(gender='M', rank=None, appt_date=None, unit='999', race='')
+        OfficerAllegationFactory(officer=other_officer)
+
+        self.visit_officer_page(other_officer.id)
+        self.until(lambda: self.find('.officer-summary-section'))
+
+        self.should_not_see_text('Unit')
+        self.should_not_see_text('Race')

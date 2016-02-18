@@ -153,7 +153,7 @@ class MobileComplaintPageTest(BaseLivePhoneTestCase):
         self.should_see_text('Rank unknown')
 
     def test_officer_with_unknown_race(self):
-        officer = OfficerFactory(race='Unknown')
+        officer = OfficerFactory(race='')
         officer_allegation = OfficerAllegationFactory(officer=officer)
 
         self.visit_complaint_page(officer_allegation.allegation.crid)
