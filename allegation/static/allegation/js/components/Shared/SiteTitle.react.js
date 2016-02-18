@@ -3,6 +3,8 @@ var $ = require('jquery');
 var React = require('react');
 var PureRenderMixin = require('react-addons-pure-render-mixin');
 
+var PropTypes = React.PropTypes;
+
 var Base = require('components/Base.react');
 var DOMUtils = require('utils/DOMUtils');
 var SessionAPI = require('utils/SessionAPI');
@@ -15,6 +17,10 @@ var _timeout = false;
 
 var SiteTitle = React.createClass(_.assign(Base(SessionStore), {
   mixins: [PureRenderMixin],
+
+  propTypes: {
+    changable: PropTypes.bool
+  },
 
   componentDidMount: function () {
     document.title = this.state.siteTitle;
@@ -37,7 +43,7 @@ var SiteTitle = React.createClass(_.assign(Base(SessionStore), {
     var underLineWidth, style, inputStyle;
 
     if (this.state.showDottedUnderline) {
-      inputStyle = DOMUtils.getComputeStyle(this.refs.siteTitle);
+      inputStyle = window.getComputedStyle(this.refs.siteTitle);
       underLineWidth = DOMUtils.getTextWidth(this.state.siteTitle, inputStyle.font);
 
       style = {

@@ -11,13 +11,8 @@ var DOMUtils = (function () {
     return metrics.width;
   };
 
-  var getComputeStyle = function (element) {
-    return window.getComputedStyle(element);
-  };
-
   return {
-    getTextWidth: getTextWidth,
-    getComputeStyle: getComputeStyle
+    getTextWidth: getTextWidth
   };
 })();
 
