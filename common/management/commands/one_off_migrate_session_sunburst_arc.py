@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 
-from allegation.views.officer_allegation_sunburst_view import OfficerAllegationSunburstView
+from allegation.serializers import SunburstSerializer
 from share.models import Session
 
 
@@ -8,7 +8,7 @@ class Command(BaseCommand):
     help = 'Migrate sunburst arc data because of share 0015'
 
     def generate_sunburst_category_map(self):
-        arcs = OfficerAllegationSunburstView.levels
+        arcs = SunburstSerializer.structs
         new_arcs = {}
 
         # this is for a quick one off migration
@@ -32,12 +32,10 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         arc_name_category_map = self.generate_sunburst_category_map()
 
-        count = 0
-        for session in Session.objects.all():
+        for session in Session.objects.all().order_by('pk'):
             sunburst_arc = session.sunburst_arc
             if sunburst_arc == '':
                 sunburst_arc = 'Allegations'
-                count += 1
             sunburst_arc_category = arc_name_category_map.get(sunburst_arc, '')
 
             new_sunburst_arc = {
@@ -45,16 +43,14 @@ class Command(BaseCommand):
                 'category': sunburst_arc_category
             }
 
-            print(new_sunburst_arc)
+            session.selected_sunburst_arc = new_sunburst_arc
+            print(session.id, new_sunburst_arc)
 
-            # session.selected_sunburst_arc = new_sunburst_arc
-
-            # session.save()
+            session.save()
 
             # checking if the change is already in database
-            # session.refresh_from_db()
-            # if session.selected_sunburst_arc != new_sunburst_arc:
-            #     print(session.id)
+            session.refresh_from_db()
+            if session.selected_sunburst_arc != new_sunburst_arc:
+                print(session.id)
 
-        print(count, Session.objects.all().count())
         print("Done")
