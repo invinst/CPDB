@@ -41,17 +41,17 @@ var ShareBar = React.createClass({
   },
 
   showFBPopup: function () {
-    ShareBarActions.shareToFB(this.props.sharedSessionHashId, this.props.sharedUrl);
+    ShareBarActions.shareToFB(this.props.sharedSessionHashId, this.state.siteTitle, this.props.sharedUrl);
   },
 
   render: function () {
     return (
       <div className='share-bar'>
         <div className='share-bar__content-wrapper'>
-          <a onClick={ this.showFBPopup }>
+          <a onClick={ this.showFBPopup } className='share-bar__facebook-link'>
             <i className='fa fa-facebook-square'></i>
           </a>
-          <a href={ this.getTweetIntentUrl() }>
+          <a href={ this.getTweetIntentUrl() } className='share-bar__twitter-link'>
             <i className='fa fa-twitter-square'></i>
           </a>
           <input type='text' value={ this.props.sharedUrl }

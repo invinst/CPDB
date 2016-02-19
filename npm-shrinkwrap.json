@@ -124,7 +124,7 @@
         },
         "xtend": {
           "version": "3.0.0",
-          "from": "xtend@>=3.0.0 <3.1.0",
+          "from": "https://registry.npmjs.org/xtend/-/xtend-3.0.0.tgz",
           "resolved": "https://registry.npmjs.org/xtend/-/xtend-3.0.0.tgz"
         }
       }
@@ -1365,7 +1365,7 @@
     },
     "string": {
       "version": "3.3.1",
-      "from": "string@*",
+      "from": "https://registry.npmjs.org/string/-/string-3.3.1.tgz",
       "resolved": "https://registry.npmjs.org/string/-/string-3.3.1.tgz"
     },
     "string_decoder": {

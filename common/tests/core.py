@@ -2,6 +2,7 @@ import json
 import os
 import threading
 import time
+from contextlib import contextmanager
 
 from bs4 import BeautifulSoup
 from django.core import management
@@ -478,3 +479,12 @@ class SimpleTestCase(DjangoSimpleTestCase, UserTestBaseMixin):
 
     def json(self, response):
         return json.loads(response.content.decode())
+
+
+@contextmanager
+def switch_to_popup(driver):
+    while len(driver.window_handles) < 2:
+        pass
+    driver.switch_to.window(driver.window_handles[1])
+    yield None
+    driver.switch_to_default_content()

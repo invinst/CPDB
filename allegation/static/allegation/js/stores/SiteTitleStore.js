@@ -9,10 +9,6 @@ var _state = {
 };
 
 var SiteTitleStore = _.assign(Base(_state), {
-  updateTitle: function (title) {
-    _state.siteTitle = title;
-  },
-
   getSiteTitle: function () {
     return _state.siteTitle;
   }
@@ -21,7 +17,7 @@ var SiteTitleStore = _.assign(Base(_state), {
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.CHANGE_SITE_TITLE:
-      SiteTitleStore.updateTitle(action.title);
+      _state.siteTitle = action.title;
       SiteTitleStore.emitChange();
       break;
 
