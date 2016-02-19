@@ -1,7 +1,7 @@
 from django.db.models import Count
 
 from common.models import Officer
-from mobile.utils.cache_helper import CacheHelper
+from mobile.utils.cache_helper import get_or_set
 
 
 class OfficerDistributionService(object):
@@ -22,5 +22,6 @@ class OfficerDistributionService(object):
         return results
 
     @staticmethod
+    @get_or_set('distribution')
     def get_distribution():
-        return CacheHelper.get_or_set('distribution', OfficerDistributionService.calculate_distribution())
+        return OfficerDistributionService.calculate_distribution()
