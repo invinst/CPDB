@@ -18,13 +18,17 @@ var SessionHistory = React.createClass({
   },
 
   render: function () {
-    var suggestions = this.props.suggestions || [];
+    var suggestions,
+      filterLogs,
+      histories;
+
+    suggestions = this.props.suggestions || [];
     suggestions = suggestions.map(SuggestionLogPresenter);
 
-    var filterLogs = this.props.filters || [];
+    filterLogs = this.props.filters || [];
     filterLogs = filterLogs.map(FilterLogPresenter);
 
-    var histories = filterLogs.concat(suggestions);
+    histories = filterLogs.concat(suggestions);
     histories = _.sortByOrder(histories, ['unixTime'], ['asc']);
 
     if (!histories.length) {

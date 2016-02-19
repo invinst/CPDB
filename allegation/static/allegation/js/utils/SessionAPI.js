@@ -1,4 +1,3 @@
-require('utils/jQuery');
 var _ = require('lodash');
 
 var AppConstants = require('constants/AppConstants');
@@ -42,8 +41,10 @@ var SessionAPI = {
 
   updateSessionInfo: function (data) {
     var currentData = SessionStore.getState()['data'];
+    var requestData;
+
     data = _.extend(currentData, data);
-    var requestData = {
+    requestData = {
       'request_data': JSON.stringify(data)
     };
 

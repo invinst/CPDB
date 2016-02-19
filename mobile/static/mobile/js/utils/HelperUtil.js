@@ -7,9 +7,11 @@ var HelperUtil = {
 
   fetch: function (obj, path, defaultValue) {
     var paths = path.split('.');
+    var i,
+      key;
 
-    for (var i = 0; i < paths.length; i++) {
-      var key = paths[i];
+    for (i = 0; i < paths.length; i++) {
+      key = paths[i];
 
       if (!obj || !this.hasOwnProperty(obj, key) || obj[key] == null) {
         return defaultValue;

@@ -40,10 +40,11 @@ var OfficerListStore = assign({}, EventEmitter.prototype, {
   },
 
   update: function (query) {
+    var queryString = query || AllegationFilterTagsQueryBuilder.buildQuery();
+
     if (ajax) {
       ajax.abort();
     }
-    var queryString = query || AllegationFilterTagsQueryBuilder.buildQuery();
 
     _state.filtered = queryString;
 
@@ -93,6 +94,9 @@ var OfficerListStore = assign({}, EventEmitter.prototype, {
 
 // Register callback to handle all updates
 OfficerListStore.dispatchEvent = AppDispatcher.register(function (action) {
+  var index,
+    data;
+
   switch (action.actionType) {
     case AppConstants.MAP_REPLACE_FILTERS:
     case AppConstants.MAP_CHANGE_FILTER:
@@ -120,7 +124,7 @@ OfficerListStore.dispatchEvent = AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.SET_ACTIVE_OFFICER:
-      var index = _state['active_officers'].indexOf(action.officer.id);
+      index = _state['active_officers'].indexOf(action.officer.id);
       if (index == -1) {
         _state['active_officers'].push(action.officer.id);
       }
@@ -131,7 +135,7 @@ OfficerListStore.dispatchEvent = AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.RECEIVED_SESSION_DATA:
-      var data = action.data.data;
+      data = action.data.data;
       _state['active_officers'] = data['query']['active_officers'] || [];
       OfficerListStore.update();
       OfficerListStore.emitChange();

@@ -32,10 +32,12 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
   },
 
   initTabs: function () {
+    var i, tab;
+
     if (this.props.tabs) {
       if (this.props.tabs.tabs.length > 0) {
-        for (var i =0; i < this.props.tabs.tabs.length; i++) {
-          var tab = this.props.tabs.tabs[i];
+        for (i =0; i < this.props.tabs.tabs.length; i++) {
+          tab = this.props.tabs.tabs[i];
           if (tab.drawChart) {
             this.props.tabs.tabs[i] = this;
             /* I am sorry for this code, blame: Bang!!!! */
@@ -88,9 +90,11 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
   },
 
   drawSunburst: function () {
+    var selected;
+
     SunburstChartD3.draw(this.getChartData());
 
-    var selected = SunburstStore.getSelected();
+    selected = SunburstStore.getSelected();
 
     if (selected) {
       SunburstChartD3.selectArc(selected);

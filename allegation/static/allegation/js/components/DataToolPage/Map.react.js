@@ -1,5 +1,4 @@
-require('mapbox.js');
-require('leaflet.heat');
+
 var React = require('react');
 var PropTypes = React.PropTypes;
 var ReactDOM = require('react-dom');
@@ -12,10 +11,6 @@ var AppConstants = require('constants/AppConstants');
 var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
 var MapAPI = require('utils/MapAPI');
 var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFilterTagsQueryBuilder');
-
-
-L.mapbox.accessToken = AppConstants.MAP_TOKEN;
-
 
 var highlightStyle = {
   color: '#2262CC',
@@ -36,8 +31,14 @@ var selectedLayers = {};
 var allLayersIndex = {};
 var _maxBounds = {};
 var _defaultBounds = {};
+var Map;
 
-var Map = React.createClass({
+require('mapbox.js');
+require('leaflet.heat');
+L.mapbox.accessToken = AppConstants.MAP_TOKEN;
+
+
+Map = React.createClass({
   propTypes: {
     center: PropTypes.array,
     defaultZoom: PropTypes.number
@@ -95,6 +96,8 @@ var Map = React.createClass({
 
   onEachFeature: function (feature, layer) {
     var filter = FilterTagStore.getFilter('allegation__areas__id', feature.properties.id);
+    var areaType, tagValue;
+
     layer.selected = false;
 
     if (filter) {
@@ -106,7 +109,7 @@ var Map = React.createClass({
 
     allLayersIndex[feature.properties.id] = layer;
 
-    var areaType = feature.properties.type;
+    areaType = feature.properties.type;
     layer.on('mouseover', function () {
       $('.leaflet-control-command-interior').show().text(feature.properties.name);
       layer.setStyle(highlightStyle);
@@ -120,7 +123,7 @@ var Map = React.createClass({
     });
 
     // Generate tagValue on server instead
-    var tagValue = FilterTagStore.generateTagValue(
+    tagValue = FilterTagStore.generateTagValue(
       'allegation__areas__id', feature.properties.id,
       'Area', areaType + ': ' + feature.properties.name
     );
@@ -151,6 +154,8 @@ var Map = React.createClass({
   getAreaBoundaries: function (type) {
     var that = this;
     $.get('/api/areas/?type=' + type, function (data) {
+      var nextTypeIndex;
+
       that.firstLayerAdded = false;
       _geoJSONLayer = L.geoJson(data, {
         pointToLayer: L.mapbox.marker.style,
@@ -159,7 +164,7 @@ var Map = React.createClass({
         },
         onEachFeature: that.onEachFeature
       });
-      var nextTypeIndex = _types.indexOf(type) + 1;
+      nextTypeIndex = _types.indexOf(type) + 1;
       if (_types[nextTypeIndex]) {
         that.getAreaBoundaries(_types[nextTypeIndex]);
       }
@@ -201,12 +206,15 @@ var Map = React.createClass({
   },
 
   setMarkers: function (markers) {
+    var latLngs, features, heatOpts;
+
     if (!markers) {
       return;
     }
-    var latLngs = [];
-    var features = markers.features;
-    var heatOpts = { radius: 10, max: this.mapIntensity(features.length) };
+
+    latLngs = [];
+    features = markers.features;
+    heatOpts = { radius: 10, max: this.mapIntensity(features.length) };
     if (typeof(HEATMAP_OVERRIDES) != 'undefined') {
       heatOpts = HEATMAP_OVERRIDES;
     }
@@ -233,15 +241,16 @@ var Map = React.createClass({
 
   _onChange: function () {
     var filters = FilterTagStore.getFilters();
+    var k, layer, bounds, hasOneSelected;
+
     if (!filters['allegation__areas__id'] || filters['allegation__areas__id'].length == 0) {
       _map.fitBounds(_defaultBounds);
       return;
     }
 
-    var k;
 
     for (k in allLayersIndex) {
-      var layer = allLayersIndex[k];
+      layer = allLayersIndex[k];
       if (!FilterTagStore.getFilter('allegation__areas__id', layer.feature.properties.id)) {
         layer.selected = false;
         layer.setStyle(_normalStyle);
@@ -255,8 +264,8 @@ var Map = React.createClass({
       }
     }
 
-    var bounds = L.latLngBounds([]);
-    var hasOneSelected = false;
+    bounds = L.latLngBounds([]);
+    hasOneSelected = false;
     for (k in selectedLayers) {
       hasOneSelected = true;
       bounds.extend(selectedLayers[k].getBounds());
@@ -281,15 +290,17 @@ var Map = React.createClass({
   },
 
   create: function (domId, opts) {
+    var defaultZoom, center, southWest, northEast;
+
     this.firstLayerAdded = false;
     _layers = {};
     domId = domId ? domId : ReactDOM.findDOMNode(this);
     opts = opts ? opts : this.state;
-    var defaultZoom = opts.defaultZoom ? opts['defaultZoom'] : 11;
-    var center = opts.center ? opts['center'] : [41.85677, -87.6024055];
+    defaultZoom = opts.defaultZoom ? opts['defaultZoom'] : 11;
+    center = opts.center ? opts['center'] : [41.85677, -87.6024055];
 
-    var southWest = L.latLng(41.143501411390766, -88.53057861328125);
-    var northEast = L.latLng(42.474122772511485, -85.39947509765625);
+    southWest = L.latLng(41.143501411390766, -88.53057861328125);
+    northEast = L.latLng(42.474122772511485, -85.39947509765625);
     _maxBounds = L.latLngBounds(southWest, northEast);
     _map = L.mapbox.map(domId, AppConstants.MAP_TYPE, opts).setView(center, defaultZoom);
     _defaultBounds = _map.getBounds();
@@ -308,6 +319,8 @@ var Map = React.createClass({
   },
 
   createAreas: function () {
+    var areaHover;
+
     if (_geoJSONLayer) {
       _map.removeLayer(_geoJSONLayer);
     }
@@ -327,12 +340,14 @@ var Map = React.createClass({
 
       onAdd: function (map) {
         var controlDiv = L.DomUtil.create('div', 'leaflet-control-command');
+        var controlUI;
+
         L.DomEvent
               .addListener(controlDiv, 'click', L.DomEvent.stopPropagation)
               .addListener(controlDiv, 'click', L.DomEvent.preventDefault)
           .addListener(controlDiv, 'click', function () { MapShowCommand(); });
 
-        var controlUI = L.DomUtil.create('div', 'leaflet-control-command-interior', controlDiv);
+        controlUI = L.DomUtil.create('div', 'leaflet-control-command-interior', controlDiv);
         controlUI.title = '';
         return controlDiv;
       }
@@ -340,7 +355,7 @@ var Map = React.createClass({
     L.control.command = function (options) {
       return new L.Control.Command(options);
     };
-    var areaHover = new L.Control.Command();
+    areaHover = new L.Control.Command();
     _map.addControl(areaHover);
   },
 

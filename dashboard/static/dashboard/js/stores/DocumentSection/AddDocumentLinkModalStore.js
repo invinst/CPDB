@@ -24,6 +24,8 @@ var AddDocumentLinkModalStore = _.assign(Base(_state), {
 });
 
 AppDispatcher.register(function (action) {
+  var msg;
+
   switch (action.actionType) {
     case AppConstants.SHOW_ADD_DOCUMENT_LINK_MODAL:
       AddDocumentLinkModalStore.updateState('isOpen', true);
@@ -45,7 +47,7 @@ AppDispatcher.register(function (action) {
 
     case AppConstants.DOCUMENT_LINK_ADDED:
       AddDocumentLinkModalStore.updateState('isOpen', false);
-      var msg = 'The document is successfully added to allegation #'+action.crid+'!';
+      msg = 'The document is successfully added to allegation #'+action.crid+'!';
       AddDocumentLinkModalStore.updateState('flashMessage', msg);
       AddDocumentLinkModalStore.updateState('errorMessages', []);
       AddDocumentLinkModalStore.emitChange();

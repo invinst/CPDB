@@ -8,8 +8,6 @@ var classnames = require('classnames');
 var slugify = require('slugify');
 var isMobile = require('ismobilejs');
 
-global.jQuery = require('jquery');
-
 var Base = require('components/Base.react');
 var AppConstants = require('constants/AppConstants');
 var TabsStore = require('stores/DataToolPage/TabsStore');
@@ -81,9 +79,10 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
   },
 
   enterEmbedMode: function () {
-    this.embedding = true;
     var node = ReactDOM.findDOMNode(this);
     var parent = $(node).parent();
+
+    this.embedding = true;
     $(parent).prepend(this.getEmbedNode());
   },
 
@@ -101,12 +100,13 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
     var target = slugify(label.toLowerCase().replace('&', ''));
     var dataTarget = '#' + target;
     var tab = target;
+    var tabClass;
 
     if (tab == 'map' && !isMobile.any) {
       return;
     }
 
-    var tabClass = classnames({
+    tabClass = classnames({
       'active': this.isActive(target)
     });
 
@@ -121,11 +121,13 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
   },
 
   renderTabContent: function (id, Component) {
+    var tabClass;
+
     if (id == 'map' && !isMobile.any) {
       return;
     }
 
-    var tabClass = classnames('tab-pane', {
+    tabClass = classnames('tab-pane', {
       'active': this.isActive(id)
     });
 

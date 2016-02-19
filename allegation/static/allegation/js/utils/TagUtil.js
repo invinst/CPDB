@@ -7,7 +7,9 @@ var TagUtil = {
   },
 
   isDuplicatedTag: function (tags, tag) {
-    for (var i = 0; i < tags.length; i++) {
+    var i;
+
+    for (i = 0; i < tags.length; i++) {
       if (this.isSameTag(tags[i], tag)) {
         return true;
       }

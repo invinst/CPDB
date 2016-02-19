@@ -12,7 +12,7 @@ var FilterTagStore = require('stores/FilterTagStore');
 var EmbedStore = require('stores/EmbedStore');
 
 
-function updateSiteData(dontUpdateSession) {
+var updateSiteData = function (dontUpdateSession) {
   ComplaintListAPI.getData();
   OutcomeAnalysisAPI.getAnalysisInformation();
   RaceGenderAPI.getData();
@@ -25,7 +25,7 @@ function updateSiteData(dontUpdateSession) {
       })
     });
   }
-}
+};
 
 
 var FilterTagsActions = {

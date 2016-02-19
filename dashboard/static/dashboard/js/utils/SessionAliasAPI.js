@@ -10,15 +10,15 @@ var count = 20;
 
 var SessionAliasAPI = {
   create: function (alias, target, title) {
-    if (ajax) {
-      ajax.abort();
-    }
-
     var aliasData = {
       alias: alias,
       target: target,
       title: title
     };
+
+    if (ajax) {
+      ajax.abort();
+    }
 
     ajax = jQuery.post(AppConstants.SESSION_ALIAS_API_ENDPOINT, aliasData).done(function (data) {
       AddSessionAliasModalServerActions.receivedAliasCreationResult(data);
@@ -28,12 +28,14 @@ var SessionAliasAPI = {
   },
 
   get: function (query) {
+    var params;
+
     if (ajax) {
       ajax.abort();
     }
 
     limit = 0;
-    var params = {
+    params = {
       q: SessionSearchStore.getState()['query']
     };
 
@@ -43,9 +45,11 @@ var SessionAliasAPI = {
   },
 
   getMore: function () {
+    var params;
+
     limit += count;
 
-    var params = {
+    params = {
       limit: count,
       offset: limit,
       q: SessionSearchStore.getState()['query']

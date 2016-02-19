@@ -24,12 +24,13 @@ var DocumentLink = React.createClass({
   render: function () {
     var documentId = this.props.documentId;
     var documentNormalizedTitle = this.props.documentNormalizedTitle;
+    var documentLink;
 
     if (!documentId) {
       return (<div></div>);
     }
 
-    var documentLink = this.getDocumentLink(documentId, documentNormalizedTitle);
+    documentLink = this.getDocumentLink(documentId, documentNormalizedTitle);
     return (
       <a href={ documentLink } className='document-link'>
         View documents

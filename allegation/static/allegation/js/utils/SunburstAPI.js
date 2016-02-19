@@ -1,9 +1,6 @@
 /**
  * Created by eastagile on 11/2/15.
  */
-global.jQuery = require('jquery');
-
-
 var SunburstActions = require('actions/SunburstActions');
 
 var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFilterTagsQueryBuilder');

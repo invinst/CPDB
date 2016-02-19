@@ -28,7 +28,9 @@ var SimpleTab = React.createClass({
   },
 
   getIndexOfNav: function (parent, nav) {
-    for (var i = 0; i < parent.length; i++) {
+    var i;
+
+    for (i = 0; i < parent.length; i++) {
       if (parent[i] == nav) {
         return i;
       }

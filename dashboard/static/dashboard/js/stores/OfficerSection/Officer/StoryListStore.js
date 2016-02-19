@@ -12,7 +12,9 @@ var _state = {
 
 var StoryListStore = _.assign(Base(_state), {
   selectAll: function (selected) {
-    for (var i = 0; i < _state.stories.length; i++) {
+    var i;
+
+    for (i = 0; i < _state.stories.length; i++) {
       _state.stories[i].selected = selected;
     }
     this.emitChange();

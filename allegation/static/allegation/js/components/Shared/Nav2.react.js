@@ -87,11 +87,12 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
   },
 
   navigateSub: function (event) {
-    event.preventDefault();
     var $body = $('body');
     var navBarHeight = 90;
-
     var $element = $($(event.currentTarget).data('target'));
+
+    event.preventDefault();
+
     $body.animate({
       scrollTop: $element.offset().top - navBarHeight
     }, 1000);

@@ -35,8 +35,10 @@ var SunburstStore = _.assign(Base(_state), {
   },
 
   updateSelected: function () {
+    var arc;
+
     if (_state.selected) {
-      var arc = SunburstChartD3.findPathByName(_state.selected.name);
+      arc = SunburstChartD3.findPathByName(_state.selected.name);
 
       if (_state.selected.fromSession) {
         if (arc) {
@@ -63,9 +65,11 @@ var SunburstStore = _.assign(Base(_state), {
   },
 
   tryZoomOut: function (category, filter) {
+    var tagValue;
+
     if (this.isSelected(category, filter.value)) {
       _state.selected = _state.selected.parent;
-      var tagValue = _state.selected.tagValue;
+      tagValue = _state.selected.tagValue;
 
       // Add parent arc to filter if not at root
       if (tagValue) {
@@ -91,9 +95,10 @@ var SunburstStore = _.assign(Base(_state), {
   getArcSize: function (arc) {
     // TODO: don't calculate recursively
     var size = 0;
+    var i = 0;
 
     if (arc.children) {
-      for (var i = 0; i < arc.children.length; i++) {
+      for (i = 0; i < arc.children.length; i++) {
         size += this.getArcSize(arc.children[i]);
       }
     } else {
@@ -141,6 +146,9 @@ var SunburstStore = _.assign(Base(_state), {
 
 // Register callback to handle all updates
 AppDispatcher.register(function (action) {
+  var selected,
+    arcName;
+
   switch (action.actionType) {
     case AppConstants.RECEIVED_SUNBURST_DATA:
       SunburstStore.setData(action.data);
@@ -156,7 +164,7 @@ AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.SUNBURST_SELECT_ARC:
-      var selected = _state['selected'];
+      selected = _state['selected'];
       _state['selected'] = action.arc;
       SunburstStore.emitChange();
 
@@ -177,7 +185,7 @@ AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.RECEIVED_SESSION_DATA:
-      var arcName = 'Allegations';
+      arcName = 'Allegations';
       if (action.data && action.data.data.sunburst_arc) {
         arcName = action.data.data.sunburst_arc;
       }

@@ -1,10 +1,11 @@
+var c = 0;
+
 if (!global.DEFAULT_SITE_TITLE) {
   global.DEFAULT_SITE_TITLE = 'Citizens Police Data Project';
 }
 if (!global.STORY_TYPES_ORDER) {
   global.STORY_TYPES_ORDER = '';
 }
-var c = 0;
 
 module.exports = {
   CHANGE_EVENT: c++,

@@ -32,8 +32,8 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
   },
 
   componentWillReceiveProps: function (nextProps) {
-    ga('send', 'event', 'officer', 'view_detail', location.pathname);
     var id = nextProps.params.id || '';
+    ga('send', 'event', 'officer', 'view_detail', location.pathname);
     OfficerResourceUtil.get(id);
     // The way react-router handle the same resource url leads to the issue that this React component is not remount
     // again, so we need to put this action here. It's not a cool solution anyway.
@@ -41,8 +41,8 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
   },
 
   componentDidMount: function () {
-    ga('send', 'event', 'officer', 'view_detail', location.pathname);
     var id = this.props.params.id || '';
+    ga('send', 'event', 'officer', 'view_detail', location.pathname);
     OfficerPageStore.addChangeListener(this._onChange);
     OfficerResourceUtil.get(id);
   },

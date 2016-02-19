@@ -2,7 +2,6 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var classnames = require('classnames');
 
-require('utils/jQuery');
 var AppDispatcher = require('dispatcher/AppDispatcher');
 var RequestDocumentConstants = require('constants/RequestDocumentConstants');
 var RequestDocumentActions = require('actions/RequestDocumentActions');
@@ -26,8 +25,10 @@ var RequestModal = (function () {
       jQuery(ReactDOM.findDOMNode(this)).modal('hide');
     },
     show: function () {
+      var emailInput;
+
       jQuery(ReactDOM.findDOMNode(this)).modal('show');
-      var emailInput = jQuery(ReactDOM.findDOMNode(this)).find('input[name=\'email\']');
+      emailInput = jQuery(ReactDOM.findDOMNode(this)).find('input[name=\'email\']');
       setTimeout(function () {
         emailInput.focus();
       }, 500);
