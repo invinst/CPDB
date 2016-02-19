@@ -83,6 +83,10 @@ var DistributionCurve = React.createClass({
               </g>
             </g>
 
+            <text textAnchor='middle' className={ fillClass } x={ lineX + defaultPadding } y='53'>
+              { allegationsCount }
+            </text>
+
             <g transform='rotate(-90)'>
               <text textAnchor='middle' className='legend' x={ numberOfOfficerTextX } y='18'>Number of Officers</text>
             </g>
