@@ -370,3 +370,15 @@ LOCATION_CHOICES = [
 LCOATIONS_DICT = {}
 for location in LOCATION_CHOICES:
     LCOATIONS_DICT[location[0]] = location[1]
+
+DEFAULT_SITE_TITLE = 'Police Misconduct in Chicago'
+
+DEFAULT_META_DESCRIPTION = (
+    'The Citizens Police Data Project stores a searchable database of '
+    'police disciplinary information obtained from the City of Chicago.'
+    )
+
+DEFAULT_META_KEYWORDS = (
+    'Chicago Police Department, Citizens Police Data Project, '
+    'Invisible Institute, Police, Allegations, Disciplines'
+    )
