@@ -2,6 +2,7 @@ var React = require('react');
 var Base = require('./Base.react');
 
 var Document = require('./DocumentSection/Document.react');
+var DocumentCrawlStats = require('./DocumentSection/DocumentCrawlStats.react');
 var DocumentList = require('./DocumentSection/DocumentList.react');
 var Tabs = require('./DocumentSection/Tabs.react');
 var DocumentSectionStore = require('../stores/DocumentSectionStore');
@@ -90,6 +91,9 @@ var DocumentSection = React.createClass(_.assign(Base(DocumentSectionStore), {
           </div>
         </div>
         <div>
+          <div className='row'>
+            <DocumentCrawlStats />
+          </div>
           <div className='row'>
             { this.content() }
           </div>

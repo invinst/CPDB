@@ -4,6 +4,7 @@ from django.views.decorators.cache import cache_page
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import routers
 
+from dashboard.views.crawl_stats import crawl_stats
 from dashboard.views.admin_allegation_request_analysis_view import AdminAllegationRequestAnalysisView
 from dashboard.views.alias_view import AdminAliasApi
 from dashboard.views.allegation_request_view import AdminAllegationRequestViewSet
@@ -53,5 +54,6 @@ urlpatterns = [
     url(r'^api/dashboard/documents_export/$',
         login_required(csrf_exempt(AdminInvestigationDocumentsExportView.as_view())), name='documents-export'),
     url(r'^api/dashboard/upload-document/$',
-        login_required(AdminDocumentUploadView.as_view()), name='document-upload')
+        login_required(AdminDocumentUploadView.as_view()), name='document-upload'),
+    url(r'^api/dashboard/crawl-stats/', login_required(crawl_stats), name='document-crawl-stats'),
 ]
