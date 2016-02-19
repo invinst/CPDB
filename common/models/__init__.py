@@ -36,7 +36,7 @@ class Officer(MobileSuggestibleOfficer, TimeStampedModel):
         return self.get_absolute_url()
 
     def get_absolute_url(self):
-        return reverse("officer:detail") + "?pk=%d" % self.pk
+        return reverse("officer:detail") + "%d" % self.pk
 
     def __str__(self):
         return self.display_name

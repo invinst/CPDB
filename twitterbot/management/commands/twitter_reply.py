@@ -10,24 +10,28 @@ class Command(BaseCommand):
     help = 'Post Twitter replies'
 
     @classmethod
-    def create_response(cls, try_officer_name):
-        response = False
-        obj = None
-        context = None
+    def create_responses(cls, try_officer_name):
+        responses = []
 
-        results = SuggestInvestigator.query(try_officer_name)
-        if results['Investigator']:
+        investigator_results = SuggestInvestigator.query(try_officer_name)
+        if investigator_results['Investigator']:
             response = Response.objects.get(type='investigator')
-            obj = Investigator.objects.get(pk=results['Investigator'][0]['tag_value']['value'])
-            context = results['Investigator'][0]['tag_value']
+            obj = Investigator.objects.get(pk=investigator_results['Investigator'][0]['tag_value']['value'])
+            context = investigator_results['Investigator'][0]['tag_value']
+            responses.append((response, obj, context))
 
-        results = SuggestOfficerName.query(try_officer_name)
-        if results['Officer']:
+        officer_results = SuggestOfficerName.query(try_officer_name)
+        if officer_results['Officer']:
             response = Response.objects.get(type='officer')
-            obj = Officer.objects.get(pk=results['Officer'][0]['tag_value']['value'])
-            context = results['Officer'][0]['tag_value']
+            obj = Officer.objects.get(pk=officer_results['Officer'][0]['tag_value']['value'])
+            context = officer_results['Officer'][0]['tag_value']
+            responses.append((response, obj, context))
 
-        return response, obj, context
+        return responses
+
+    @classmethod
+    def create_not_found_response(cls):
+        return Response.objects.get(type='not_found')
 
     def handle(self, *args, **options):
         for search in TwitterSearch.objects.all():
@@ -41,18 +45,26 @@ class Command(BaseCommand):
 
                 max_index = len(splitted)
 
+                not_found = True
                 for i in range(max_index - 1):
-
                     try_officer_name = " ".join(splitted[i:i+2])
-                    response, obj, context = Command.create_response(try_officer_name)
+                    responses = Command.create_responses(try_officer_name)
+                    not_found = False if responses else True
 
-                    if response:
+                    for response, obj, context in responses:
                         context['user'] = status['user']['screen_name']
                         context['obj'] = obj
                         msg = response.get_message(context)
 
                         tweet = TwitterResponse.objects.create(search=search, response=msg, user=context['user'])
                         tweet.send()
+
+                if not_found:
+                    response = Command.create_not_found_response()
+                    context = {'user': status['user']['screen_name']}
+                    msg = response.get_message(context)
+                    tweet = TwitterResponse.objects.create(search=search, response=msg, user=context['user'])
+                    tweet.send()
 
             if 'search_metadata' in data:
                 search.refresh_url = data['search_metadata']['refresh_url']

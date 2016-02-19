@@ -19,7 +19,8 @@ def oauth_req(url, http_method="GET", post_body=b"", http_headers=None):
 
 TYPE_CHOICES = [
     ['officer', 'officer'],
-    ['investigator', 'investigator']
+    ['investigator', 'investigator'],
+    ['not_found', 'not_found']
 ]
 
 
@@ -44,7 +45,7 @@ class TwitterSearch(models.Model):
         if self.refresh_url:
             append = self.refresh_url
         else:
-            append = "?q=%s" % self.query
+            append = "?q=%s&since_id=700220701853114368" % self.query
 
         url = "https://api.twitter.com/1.1/search/tweets.json{append}"\
             .format(append=append)
@@ -59,7 +60,11 @@ class TwitterResponse(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def send(self):
-        escaped = requests.utils.quote(self.response)
+        escaped = TwitterResponse.escape_response(self.response)
         url = "https://api.twitter.com/1.1/statuses/update.json?status={response}".format(response=escaped)
 
         print(oauth_req(url, "POST"))
+
+    @classmethod
+    def escape_response(cls, response):
+        return requests.utils.quote(response, safe='')
