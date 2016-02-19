@@ -174,7 +174,7 @@ class SuggestViewTestCase(SimpleTestCase):
         data.should.contain('Officer')
 
         officer_ids = [x['tagValue']['displayValue'] for x in data['Officer']]
-        officer_ids.should.contain('{first} {last}\n'.format(first=officer.officer_first, last=officer.officer_last))
+        officer_ids.should.contain('{first} {last}'.format(first=officer.officer_first, last=officer.officer_last))
 
         alias = Alias.objects.get(id=alias.id)
         alias.num_usage.should.equal(1)

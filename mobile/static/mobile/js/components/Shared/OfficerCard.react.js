@@ -7,7 +7,7 @@ var OfficerUtil = require('utils/OfficerUtil');
 
 var OfficerCard = React.createClass({
   propTypes: {
-    officerId: React.PropTypes.number,
+    officerId: React.PropTypes.string,
     allegationsCount: React.PropTypes.number,
     displayName: React.PropTypes.string,
     description: React.PropTypes.string
@@ -16,9 +16,7 @@ var OfficerCard = React.createClass({
   render: function () {
     var officerClassname = HelperUtil.format('officer-{id}', {'id': this.props.officerId});
     var classNames = cx('officer-card pad', officerClassname);
-
-    var officerUtil = OfficerUtil();
-    var circleClassNames = cx('circle', officerUtil.getStarClass(this.props.allegationsCount));
+    var circleClassNames = cx('circle', OfficerUtil.getColorLevelClass('circle', this.props.allegationsCount));
 
     return (
       <div className={ classNames }>

@@ -3,4 +3,5 @@
 **/bower_components/**
 **/*.min.js
 ./common/**
-**/htmlcov/*
+<<<<<<< HEAD
+./htmlcov/**

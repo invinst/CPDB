@@ -26,15 +26,24 @@ var SessionActions = {
       data: data
     });
   },
+
   updateTitle: function (title) {
     AppDispatcher.dispatch({
       actionType: AppConstants.UPDATE_TITLE,
       title: title
     });
   },
+
   createdSession: function () {
     AppDispatcher.dispatch({
       actionType: AppConstants.SESSION_CREATED
+    });
+  },
+
+  receivedSharedSession: function (data) {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.RECEIVED_SHARED_SESSION,
+      data: data
     });
   }
 };

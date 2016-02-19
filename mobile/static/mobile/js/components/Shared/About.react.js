@@ -3,7 +3,7 @@ var cx = require('classnames');
 
 var About = React.createClass({
   propTypes: {
-    topLeft: React.PropTypes.bool
+    topLeft: React.PropTypes.number
   },
 
   render: function () {
