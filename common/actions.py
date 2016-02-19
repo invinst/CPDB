@@ -2,6 +2,8 @@ import csv
 
 from django.http import HttpResponse
 
+from common.utils.geocode import geocode_address, get_address, set_areas
+
 
 def make_export_action(label, **kwargs):
     return [export_as_csv_action(description=label, **kwargs)]
@@ -37,3 +39,14 @@ def export_as_csv_action(description="Export selected objects as CSV file",
         return response
     export_as_csv.short_description = description
     return export_as_csv
+
+
+def geocode_allegation(modeladmin, request, queryset):
+    for allegation in queryset:
+        address = get_address(allegation)
+        point = geocode_address(address)
+
+        if point:
+            allegation.point = point
+            set_areas(allegation, point)
+            allegation.save()

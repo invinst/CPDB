@@ -7,29 +7,38 @@ var PropTypes = React.PropTypes;
 var ReadMore = React.createClass({
   propTypes: {
     limit: PropTypes.number.isRequired,
-    content: PropTypes.string.isRequired
+    content: PropTypes.string.isRequired,
+    over: PropTypes.number
+  },
+
+  getDefaultProps: function () {
+    return {
+      over: 1
+    };
   },
 
   getInitialState: function () {
     return {
-      expanded: true,
-      maxHeight: '100px'
+      expanded: true
     };
   },
 
   componentDidMount: function () {
+    setTimeout(this.computeComponentState, 0);
+  },
+
+  computeComponentState: function () {
     var limit = this.props.limit;
     var contentParagraph = $(this.refs.contentParagraph);
     var lineHeight = parseInt(contentParagraph.css('line-height'));
     var height = parseInt(contentParagraph.css('height'));
     var line = Math.floor(height / lineHeight);
 
-    if (line > limit) {
+    if (line > limit + this.props.over) {
       this.collapseContent(limit * lineHeight);
     }
   },
 
-  // TODO: Move this to store for more flux
   collapseContent: function (maxHeight) {
     this.setState({
       expanded: false,
@@ -55,7 +64,7 @@ var ReadMore = React.createClass({
   render: function () {
     var contentStyle = {};
     if (!this.state.expanded) {
-      contentStyle['max-height'] = this.state.maxHeight;
+      contentStyle.maxHeight = this.state.maxHeight;
     }
     var paragraphClass = classnames({
       'has-ellipsis': !this.state.expanded
