@@ -58,4 +58,3 @@ class LiveIntegrityTest(SimpleTestCase):
 
         data['analytics']['All'].should.equal(54089)
         len(data['officer_allegations']).should.equal(50)
-
