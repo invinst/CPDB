@@ -45,7 +45,7 @@ class TwitterSearch(models.Model):
         if self.refresh_url:
             append = self.refresh_url
         else:
-            append = "?q=%s&since_id=700220701853114368" % self.query
+            append = "?q=%s" % self.query
 
         url = "https://api.twitter.com/1.1/search/tweets.json{append}"\
             .format(append=append)
