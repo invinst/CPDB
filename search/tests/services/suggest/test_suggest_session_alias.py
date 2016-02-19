@@ -1,9 +1,9 @@
 from search.factories import SessionAliasFactory
 from search.services.suggest.suggest_session_alias import SuggestSessionAlias
-from search.tests.services.suggest.test_suggest_base import SuggestBaseTestCase
+from search.tests.services.suggest.base_test_suggest import BaseSuggestTestCase
 
 
-class SuggestSessionAliasTestCase(SuggestBaseTestCase):
+class SessionAliasSuggestTestCase(BaseSuggestTestCase):
     def test_suggest_session_alias_without_realtime_signal_processor(self):
         with self.settings(HAYSTACK_SIGNAL_PROCESSOR=''):
             session_alias = SessionAliasFactory(alias='skullcap')

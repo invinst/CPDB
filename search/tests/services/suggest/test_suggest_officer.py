@@ -2,10 +2,10 @@ from allegation.factories import OfficerFactory
 from search.services.suggest.suggest_officer import (
     SuggestOfficerName, SuggestOfficerUnit, SuggestOfficerStar, SuggestOfficerRank,
     SuggestOfficerActive)
-from search.tests.services.suggest.test_suggest_base import SuggestBaseTestCase
+from search.tests.services.suggest.base_test_suggest import BaseSuggestTestCase
 
 
-class SuggestOfficerTestCase(SuggestBaseTestCase):
+class OfficerSuggestTestCase(BaseSuggestTestCase):
     def test_suggest_officer_name(self):
         officer = OfficerFactory(officer_first='Michael', officer_last='Molford')
 
@@ -17,9 +17,7 @@ class SuggestOfficerTestCase(SuggestBaseTestCase):
             allegations_count=officer.allegations_count
         )
 
-        SuggestOfficerName.query('Mich')['Officer'][0]['suggest_value']\
-            .should.be.equal(expect_suggest)
-        SuggestOfficerName.query('olford')['Officer'][0]['suggest_value']\
+        SuggestOfficerName.query('Molf')['Officer'][0]['suggest_value']\
             .should.be.equal(expect_suggest)
         SuggestOfficerName.query('Bad')['Officer'].should.be.equal([])
 
