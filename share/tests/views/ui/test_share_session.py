@@ -5,7 +5,7 @@ from share.models import Session
 from common.tests.mixins.sunburst_chart_mixin import SunburstChartTestMixin
 
 
-class ShareSessionTestCase(BaseLiveTestCase, SunburstChartTestMixin):
+class ShareSessionTestCase(SunburstChartTestMixin, BaseLiveTestCase):
     def test_share_id_appended_to_url_in_home(self):
         self.visit_home()
         self.find("body").click()  # bug - firefox focus url address bar
