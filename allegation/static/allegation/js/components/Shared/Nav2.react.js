@@ -99,9 +99,7 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
 
   renderTitleBox: function () {
     return (
-      <div className='site-title pull-left'>
-        <SiteTitle changable={ true } />
-      </div>
+      <SiteTitle changable={ true } />
     );
   },
 

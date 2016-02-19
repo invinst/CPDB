@@ -29,7 +29,7 @@ describe('SiteTitle component', function () {
     siteTitle = ReactTestUtils.renderIntoDocument(
       <SiteTitle changable={ true } />
     );
-    node = ReactDOM.findDOMNode(siteTitle);
+    node = ReactTestUtils.findRenderedDOMComponentWithTag(siteTitle, 'input');
 
     (node.hasAttribute('disabled')).should.not.be.true();
   });
@@ -40,7 +40,7 @@ describe('SiteTitle component', function () {
     siteTitle = ReactTestUtils.renderIntoDocument(
       <SiteTitle changable={ false } />
     );
-    node = ReactDOM.findDOMNode(siteTitle);
+    node = ReactTestUtils.findRenderedDOMComponentWithTag(siteTitle, 'input');
 
     (node.hasAttribute('disabled')).should.be.true();
   });
@@ -52,7 +52,7 @@ describe('SiteTitle component', function () {
     siteTitle = ReactTestUtils.renderIntoDocument(
       <SiteTitle/>
     );
-    node = ReactDOM.findDOMNode(siteTitle);
+    node = ReactTestUtils.findRenderedDOMComponentWithTag(siteTitle, 'input');
 
     (node.value).should.equal(title);
   });
@@ -63,7 +63,7 @@ describe('SiteTitle component', function () {
     siteTitle = ReactTestUtils.renderIntoDocument(
       <SiteTitle/>
     );
-    node = ReactDOM.findDOMNode(siteTitle);
+    node = ReactTestUtils.findRenderedDOMComponentWithTag(siteTitle, 'input');
 
     SiteTitleStore.updateState('siteTitle', title);
     SiteTitleStore.emitChange();
@@ -78,7 +78,7 @@ describe('SiteTitle component', function () {
     siteTitle = ReactTestUtils.renderIntoDocument(
       <SiteTitle/>
     );
-    node = ReactDOM.findDOMNode(siteTitle);
+    node = ReactTestUtils.findRenderedDOMComponentWithTag(siteTitle, 'input');
     node.value = 'giraffe';
     ReactTestUtils.Simulate.change(node);
 
@@ -89,42 +89,36 @@ describe('SiteTitle component', function () {
   });
 
   it('shows dotted underline when share bar active and there are filters', function () {
-    var node;
-
     siteTitle = ReactTestUtils.renderIntoDocument(
       <SiteTitle/>
     );
-    node = ReactDOM.findDOMNode(siteTitle);
 
     ShareButtonStore.updateState('active', true);
     ShareButtonStore.emitChange();
     FilterTagStore.updateState('filters', {key: 'val'});
     FilterTagStore.emitChange();
 
-    (node.className).should.containEql('dashed-border');
+    (ReactTestUtils.scryRenderedDOMComponentsWithClass(siteTitle, 'after-title-input').length).should.be.equal(1);
   });
 
   it('does not show dotted underline otherwise', function () {
-    var node;
-
     siteTitle = ReactTestUtils.renderIntoDocument(
       <SiteTitle/>
     );
-    node = ReactDOM.findDOMNode(siteTitle);
 
     ShareButtonStore.updateState('active', false);
     ShareButtonStore.emitChange();
     FilterTagStore.updateState('filters', {key: 'val'});
     FilterTagStore.emitChange();
 
-    (node.className).should.not.containEql('dashed-border');
+    (ReactTestUtils.scryRenderedDOMComponentsWithClass(siteTitle, 'after-title-input').length).should.be.equal(0);
 
     ShareButtonStore.updateState('active', true);
     ShareButtonStore.emitChange();
     FilterTagStore.updateState('filters', {});
     FilterTagStore.emitChange();
 
-    (node.className).should.not.containEql('dashed-border');
+    (ReactTestUtils.scryRenderedDOMComponentsWithClass(siteTitle, 'after-title-input').length).should.be.equal(0);
   });
 
   it('changes shared url when change site title', function () {
@@ -138,7 +132,7 @@ describe('SiteTitle component', function () {
     siteTitle = ReactTestUtils.renderIntoDocument(
       <SiteTitle/>
     );
-    siteTitleNode = ReactDOM.findDOMNode(siteTitle);
+    siteTitleNode = ReactTestUtils.findRenderedDOMComponentWithTag(siteTitle, 'input');
 
     ShareButtonStore.updateState('active', true);
     ShareButtonStore.updateState('sharedSessionHashId', 'abcdef');
