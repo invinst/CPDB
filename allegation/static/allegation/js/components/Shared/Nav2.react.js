@@ -29,6 +29,7 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
     return {
       navTabSection: !(isActive('officer') || isActive('investigator')),
       titleBox: isActive('data'),
+      shareButton: isActive('data'),
       subNav: isActive('story'),
       backLink: isActive('officer') || isActive('investigator'),
       welcomeMessage: isActive('findings')
@@ -176,7 +177,7 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
             </Link>
             { display.backLink ? <Back /> : '' }
             { display.titleBox ? this.renderTitleBox() : '' }
-            <ShareButton/>
+            { display.shareButton ? <ShareButton/> : '' }
             { display.navTabSection ? this.renderNavTabSection() : '' }
           </div>
           { display.subNav ? this.renderSubNav() : '' }
