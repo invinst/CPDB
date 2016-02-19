@@ -9,5 +9,5 @@ class LiveServerIntegrityTestCase(SimpleTestCase):
 
     @skip(skip_msg)
     def test_email(self):
-        return_code = send_mail('Yo', 'Yo', None)
+        return_code = send_mail('Production test email', 'Yo', None, ['giang.nguyen@eastagile.com'], fail_silently=True)
         return_code.should.equal(1)
