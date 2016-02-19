@@ -5,7 +5,7 @@ from mobile.services.mobile_suggestion_service import suggest
 
 class LookupView(RedirectView):
     def get_default_search_url(self, query):
-        uri = '/mobile/search/{query}'.format(query=query)
+        uri = '/search/{query}'.format(query=query)
         return self.request.build_absolute_uri(uri)
 
     @staticmethod

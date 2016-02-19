@@ -5,7 +5,7 @@ var Wrapper = React.createClass({
   propTypes: {
     wrapperClass: React.PropTypes.string,
     visible: React.PropTypes.bool,
-    children: React.PropTypes.element
+    children: React.PropTypes.node
   },
 
   render: function () {

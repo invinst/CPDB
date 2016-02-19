@@ -159,7 +159,6 @@ class SuggestViewTestCase(SimpleTestCase):
 
         rebuild_index()
 
-        self.get_suggestion('616')
         self.get_suggestion('616').should.contain('Zip Code')
         self.get_suggestion('123').shouldnt.contain('Zip Code')
         self.get_suggestion('Chi').shouldnt.contain('Zip Code')
@@ -174,7 +173,7 @@ class SuggestViewTestCase(SimpleTestCase):
         data.should.contain('Officer')
 
         officer_ids = [x['tagValue']['displayValue'] for x in data['Officer']]
-        officer_ids.should.contain('{first} {last}\n'.format(first=officer.officer_first, last=officer.officer_last))
+        officer_ids.should.contain('{first} {last}'.format(first=officer.officer_first, last=officer.officer_last))
 
         alias = Alias.objects.get(id=alias.id)
         alias.num_usage.should.equal(1)

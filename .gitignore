@@ -73,6 +73,7 @@ node_modules/
 bundle.js
 *.sql
 allegation/static/allegation/js/bundle.js
+allegation/static/allegation/js/sunburst-bundle.js
 .sass-cache
 /keys/
 dump.rdb

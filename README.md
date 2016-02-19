@@ -11,3 +11,9 @@ python manage.py get_allegation_date_only
 python manage.py investigator_summary
 python manage.py update_documents
 ```
+
+# Pre-deploy
+
+Place any shell commands into the pre_deploy.sh. These will run once per deploy (by checking timestamps). After deploy
+remember to blank out the file in the develop branch so that it is empty again and available for any pre_deploy commands
+

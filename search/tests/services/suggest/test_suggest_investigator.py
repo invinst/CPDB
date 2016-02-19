@@ -1,11 +1,11 @@
 from allegation.factories import InvestigatorFactory
 from search.services.suggest.suggest_investigator_agency import SuggestInvestigatorAgency
 from common.models import OfficerAllegation
-from search.tests.services.suggest.test_suggest_base import SuggestBaseTestCase
+from search.tests.services.suggest.base_test_suggest import BaseSuggestTestCase
 from search.services.suggest.suggest_investigator import SuggestInvestigator
 
 
-class SuggestInvestigatorTestCase(SuggestBaseTestCase):
+class InvestigatorSuggestTestCase(BaseSuggestTestCase):
     def test_suggest_investigator(self):
         investigator = InvestigatorFactory(name='Daniel Neubeck')
 
