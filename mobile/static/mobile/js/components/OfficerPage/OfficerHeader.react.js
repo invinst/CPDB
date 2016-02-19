@@ -4,6 +4,10 @@ var OfficerPresenter = require('presenters/OfficerPresenter');
 
 
 var OfficerHeader = React.createClass({
+  propTypes: {
+    officer: React.PropTypes.object
+  },
+
   render: function () {
     var officerPresenter = OfficerPresenter(this.props.officer);
 
@@ -12,9 +16,9 @@ var OfficerHeader = React.createClass({
         <div className='pad'>
           <div className='badge-info'>
             <span className='badge-label'>Badge &nbsp;</span>
-            <span className='badge-value'>{officerPresenter.badge}</span>
+            <span className='badge-value'>{ officerPresenter.badge }</span>
           </div>
-          <div className='name'>{officerPresenter.displayName}</div>
+          <div className='name'>{ officerPresenter.displayName }</div>
         </div>
       </div>
     );

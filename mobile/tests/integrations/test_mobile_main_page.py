@@ -4,9 +4,6 @@ from common.tests.core import BaseLivePhoneTestCase
 
 
 class MobileMainPageTest(BaseLivePhoneTestCase):
-    def go_to_main_page(self):
-        self.visit('/mobile')
-
     def search_for(self, query):
         self.fill_in('.input-text', query)
 
@@ -21,7 +18,7 @@ class MobileMainPageTest(BaseLivePhoneTestCase):
 
     def test_search_officer_name_failed(self):
         something_never_successful = 'something always failed'
-        self.go_to_main_page()
+        self.visit_mobile_home()
         self.search_for(something_never_successful)
         self.wait_for_error_message()
         self.should_see_text("Sorry, there's no results for your search in the database.")
@@ -29,7 +26,7 @@ class MobileMainPageTest(BaseLivePhoneTestCase):
     def test_search_officer_name_successfully(self):
         officer = OfficerFactory()
 
-        self.go_to_main_page()
+        self.visit_mobile_home()
         self.search_for(officer.officer_first)
 
         self.wait_for_success_result()
@@ -42,7 +39,7 @@ class MobileMainPageTest(BaseLivePhoneTestCase):
         a_part_of_badge = '123'
         OfficerFactory(star=badge)
 
-        self.go_to_main_page()
+        self.visit_mobile_home()
 
         self.search_for(a_part_of_badge)
         self.wait_for_error_message()
@@ -52,7 +49,7 @@ class MobileMainPageTest(BaseLivePhoneTestCase):
         badge = '1234567'
         OfficerFactory(star=badge)
 
-        self.go_to_main_page()
+        self.visit_mobile_home()
 
         self.search_for(badge)
         self.wait_for_success_result()
@@ -66,7 +63,7 @@ class MobileMainPageTest(BaseLivePhoneTestCase):
         allegation = AllegationFactory(crid=crid)
         officer_allegation = OfficerAllegationFactory(allegation=allegation)
 
-        self.go_to_main_page()
+        self.visit_mobile_home()
         self.search_for(a_part_of_crid)
         self.wait_for_error_message()
         self.should_see_text_in_result('No matches yet.')

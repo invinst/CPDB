@@ -1,7 +1,6 @@
 from common.tests.core import SimpleTestCase
 from search.factories import SessionAliasFactory
 from share.factories import SessionFactory
-from share.models import Session
 
 
 class SessionAliasViewTestCase(SimpleTestCase):

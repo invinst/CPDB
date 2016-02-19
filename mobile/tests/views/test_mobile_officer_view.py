@@ -8,7 +8,7 @@ from common.tests.core import SimpleTestCase
 
 class MobileOfficerViewTest(SimpleTestCase):
     def call_related_officer_api(self, params={}):
-        response = self.client.get(reverse('mobile:officer'), params)
+        response = self.client.get(reverse('mobile:mobile-officer'), params)
         data = self.json(response)
 
         return response, data
@@ -18,12 +18,9 @@ class MobileOfficerViewTest(SimpleTestCase):
         co_accused_officer = OfficerFactory()
         witness_officer = OfficerFactory()
         officer_allegation = OfficerAllegationFactory(officer=officer)
-        PoliceWitnessFactory(
-            crid=officer_allegation.allegation.crid, officer=witness_officer,
-            allegation=officer_allegation.allegation)
-        OfficerAllegationFactory(
-            allegation=officer_allegation.allegation,
-            officer=co_accused_officer)
+        PoliceWitnessFactory(crid=officer_allegation.allegation.crid, officer=witness_officer,
+                             allegation=officer_allegation.allegation)
+        OfficerAllegationFactory(allegation=officer_allegation.allegation, officer=co_accused_officer)
 
         response, data = self.call_related_officer_api({'pk': officer.pk})
         response.status_code.should.equal(HTTP_200_OK)
@@ -41,10 +38,10 @@ class MobileOfficerViewTest(SimpleTestCase):
         detail['officer_last'].should.be.equal(officer.officer_last)
 
         len(complaints).should.be(1)
-        complaints[0]['data']['crid'].should.be.equal(
-            str(officer_allegation.allegation.crid))
+        complaints[0]['data']['crid'].should.be.equal(str(officer_allegation.allegation.crid))
         len(complaints[0]['allegation_counts']).should.be.equal(2)
         len(data['co_accused']).should.be.equal(1)
+        data.should.contain('distribution')
 
     def test_return_404_when_get_invalid_pk(self):
         invalid_pk = -1

@@ -2,6 +2,10 @@ var React = require('react');
 
 
 var NotMatchedPage = React.createClass({
+  propTypes: {
+    crid: React.PropTypes.number
+  },
+
   render: function () {
     var crid = this.props.crid;
 
@@ -11,11 +15,11 @@ var NotMatchedPage = React.createClass({
           Invalid page!
         </h3>
         <div className='message-content'>
-          The CRID <span className='crid-number'>{crid}</span> is not recorded in out database. Please use
+          The CRID <span className='crid-number'>{ crid }</span> is not recorded in out database. Please use
           search box for new search session.
         </div>
       </div>
-    )
+    );
   }
 });
 

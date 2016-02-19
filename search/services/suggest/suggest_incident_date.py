@@ -18,9 +18,13 @@ class SuggestIncidentDateOnlyYearMonth(SuggestBase):
 
                 results = [
                     cls.entry_format(
-                        label=entry,
-                        value=entry,
-                        filter=cls.build_filter(category='incident_date_only__year_month', value=entry)
+                        suggest_value=entry,
+                        tag_value=cls.build_tag_value(
+                            category='incident_date_only__year_month',
+                            value=entry,
+                            display_category='Incident Year/Month',
+                            display_value=entry,
+                        )
                     ) for entry in raw_results
                 ]
         else:
@@ -35,9 +39,13 @@ class SuggestIncidentDateOnlyYearMonth(SuggestBase):
 
                     results = [
                         cls.entry_format(
-                            label=entry[0],
-                            value=entry[1],
-                            filter=cls.build_filter(category='incident_date_only__year_month', value=entry[1])
+                            suggest_value=entry[0],
+                            tag_value=cls.build_tag_value(
+                                category='incident_date_only__year_month',
+                                value=entry[1],
+                                display_category='Incident Year/Month',
+                                display_value=entry[1],
+                            )
                         ) for entry in raw_results
                     ]
 
@@ -59,9 +67,13 @@ class SuggestIncidentDateOnly(SuggestBase):
 
             results = [
                 cls.entry_format(
-                    label=entry,
-                    value=entry,
-                    filter=cls.build_filter(category='incident_date_only', value=entry)
+                    suggest_value=entry,
+                    tag_value=cls.build_tag_value(
+                        category='incident_date_only',
+                        value=entry,
+                        display_category='Incident Date',
+                        display_value=entry,
+                    )
                 ) for entry in raw_results
             ]
 
@@ -80,9 +92,13 @@ class SuggestIncidentDateOnlyYear(SuggestBase):
 
         results = [
             cls.entry_format(
-                label=entry,
-                value=entry,
-                filter=cls.build_filter(category='incident_date_only__year', value=entry)
+                suggest_value=entry,
+                tag_value=cls.build_tag_value(
+                    category='incident_date_only__year',
+                    value=entry,
+                    display_category='Incident Year',
+                    display_value=entry,
+                )
             ) for entry in raw_results
         ]
 

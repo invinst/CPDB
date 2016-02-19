@@ -3,14 +3,11 @@ var React = require('react');
 var isMobile = require('ismobilejs');
 var classnames = require('classnames');
 
-var AppConstants = require('constants/AppConstants');
 var Base = require('components/Base.react');
 var ComplaintSection = require('components/DataToolPage/ComplaintSection.react');
-var Footer = require('components/DataToolPage/Footer.react');
 var FilterTags = require('components/DataToolPage/FilterTags.react');
 var Map = require('components/DataToolPage/Map.react');
 var OfficerList = require('components/DataToolPage/OfficerList.react');
-var SessionAPI = require('utils/SessionAPI');
 var SessionStore = require('stores/SessionStore');
 var Tabs = require('components/DataToolPage/Tabs.react');
 var Search = require('components/Shared/Search.react');
@@ -25,7 +22,7 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
 
   isPassAllegationSection: function () {
     var top = $(window).scrollTop();
-    var documentList = $("#complaint-list");
+    var documentList = $('#complaint-list');
     if (!documentList.size()) {
       return false;
     }
@@ -34,7 +31,7 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
       return false;
     }
 
-    return top >= $("#complaint-list").offset().top;
+    return top >= $('#complaint-list').offset().top;
   },
 
   unsetStickyFooter: function () {
@@ -48,7 +45,7 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
 
   setStickyFooter: function () {
     var isSetStickyFooter = this.isPassAllegationSection();
-    if(isSetStickyFooter) {
+    if (isSetStickyFooter) {
       $('body').addClass('stick-footer-bottom');
       $(window).off('scroll', this.setStickyFooter);
       $(window).on('scroll', this.unsetStickyFooter);
@@ -66,7 +63,7 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
       return (
         <div className='row map-row mobile'>
           <div className='col-md-12'>
-            <Search mobileExpanded={mobileExpanded} />
+            <Search mobileExpanded={ mobileExpanded } />
             <Tabs mobile='true' />
           </div>
         </div>
@@ -78,7 +75,7 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
             <Map />
           </div>
           <div className='col-md-6 tabs-column'>
-            <Search mobileExpanded={mobileExpanded} />
+            <Search mobileExpanded={ mobileExpanded } />
             <Tabs />
           </div>
         </div>
@@ -87,27 +84,25 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
   },
 
   render: function () {
-    var complaintListContainerClassName = classnames('container-fluid content', {
-      'hidden': SessionStore.isNoQuery()
-    });
+    var complaintListContainerClassName = classnames('container-fluid content');
     return (
-      <div id="data-tool">
+      <div id='data-tool'>
         <div className='container-fluid'>
-            <div className="row" id='filter-row'>
-               <div className="col-md-10">
-                  <FilterTags />
-               </div>
+          <div className='row' id='filter-row'>
+            <div className='col-md-10'>
+              <FilterTags />
             </div>
+          </div>
         </div>
         <div className='container-fluid'>
           { this.renderTabs() }
         </div>
-        <div className="white-background">
+        <div className='white-background'>
           <div className='container-fluid content'>
             <div id='officer-cards'><OfficerList /></div>
           </div>
         </div>
-        <div className={complaintListContainerClassName}>
+        <div className={ complaintListContainerClassName }>
           <div id='complaint-list'><ComplaintSection /></div>
         </div>
       </div>

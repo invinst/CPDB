@@ -7,21 +7,26 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', '0033_auto_20150723_0957'),
+        ('common', '0001_initial'),
     ]
 
     operations = [
         migrations.CreateModel(
             name='Story',
             fields=[
-                ('id', models.AutoField(verbose_name='ID', auto_created=True, primary_key=True, serialize=False)),
+                ('id', models.AutoField(serialize=False, primary_key=True, auto_created=True, verbose_name='ID')),
                 ('title', models.CharField(max_length=254)),
+                ('url', models.URLField(blank=True, default='')),
                 ('slug', models.SlugField(max_length=254)),
                 ('short_description', models.TextField()),
-                ('content', models.TextField()),
-                ('created_date', models.DateTimeField(auto_now_add=True)),
+                ('content', models.TextField(blank=True, default='')),
+                ('story_type', models.CharField(max_length=254)),
+                ('created_date', models.DateField(blank=True, null=True)),
                 ('custom_order', models.IntegerField(default=1)),
                 ('officer', models.ForeignKey(to='common.Officer')),
             ],
+            options={
+                'verbose_name_plural': 'Stories',
+            },
         ),
     ]

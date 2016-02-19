@@ -1,7 +1,4 @@
 var React = require('react');
-var pluralize = require('pluralize');
-
-var OfficerPresenter = require('presenters/OfficerPresenter');
 
 
 var NoRelatedOfficer = React.createClass({

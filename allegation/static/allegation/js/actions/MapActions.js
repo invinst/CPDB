@@ -18,7 +18,7 @@ var MapActions = {
       actionType: AppConstants.MAP_CHANGE_MARKERS,
       markers: markers
     });
-  },
+  }
 };
 
 module.exports = MapActions;

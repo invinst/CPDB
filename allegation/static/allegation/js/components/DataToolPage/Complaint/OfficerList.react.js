@@ -1,9 +1,15 @@
+var _ = require('lodash');
 var React = require('react');
+var PropTypes = React.PropTypes;
+var pluralize = require('pluralize');
 
 var Officer = require('components/DataToolPage/Officer.react');
 
 
 var OfficerList = React.createClass({
+  propTypes: {
+    allegation: PropTypes.object
+  },
 
   getOfficerCount: function () {
     var allegation = this.props.allegation;
@@ -18,8 +24,8 @@ var OfficerList = React.createClass({
 
     return officers.map(function (officer, index) {
       return (
-        <div className='col-md-3 col-sm-4 col-xs-6' key={officer.id}>
-          <Officer active={true} officer={officer} noClick={true}/>
+        <div className='col-md-3 col-sm-4 col-xs-6' key={ officer.id }>
+          <Officer active={ true } officer={ officer } noClick={ true }/>
         </div>
       );
     });
@@ -32,7 +38,7 @@ var OfficerList = React.createClass({
     return (
       <div>
         <div className='col-md-12'>
-          <div className="section-title">
+          <div className='section-title'>
             { pluralize('Officer', officerCount) } Involved
           </div>
         </div>
