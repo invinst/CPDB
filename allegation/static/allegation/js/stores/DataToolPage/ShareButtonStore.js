@@ -12,29 +12,29 @@ var _state = {
   sharedUrl: null
 };
 
+var updateSharedSessionHashId = function (hashId) {
+  _state.sharedSessionHashId = hashId;
+  _state.sharedUrl = locationUtils.getWindowHref().replace(
+    /data\/\w+/,
+    S('data/{{hashId}}').template({
+      hashId: _state.sharedSessionHashId
+    }).s
+  );
+};
+
+var updateSharedUrlWithSiteTitle = function (siteTitle) {
+  _state.sharedUrl = locationUtils.getWindowHref().replace(
+    /data\/\w+\/.+/,
+    S('data/{{hashId}}/{{slug}}').template({
+      hashId: _state.sharedSessionHashId,
+      slug: S(siteTitle).slugify().s
+    }).s
+  );
+};
+
 var ShareButtonStore = _.assign(Base(_state), {
   getSharedSessionHashId: function () {
     return _state['sharedSessionHashId'];
-  },
-
-  updateSharedSessionHashId: function (hashId) {
-    _state.sharedSessionHashId = hashId;
-    _state.sharedUrl = locationUtils.getWindowHref().replace(
-      /data\/\w+/,
-      S('data/{{hashId}}').template({
-        hashId: _state.sharedSessionHashId
-      }).s
-    );
-  },
-
-  updateSharedUrlWithSiteTitle: function (siteTitle) {
-    _state.sharedUrl = locationUtils.getWindowHref().replace(
-      /data\/\w+\/.+/,
-      S('data/{{hashId}}/{{slug}}').template({
-        hashId: _state.sharedSessionHashId,
-        slug: S(siteTitle).slugify().s
-      }).s
-    );
   },
 
   isActive: function () {
@@ -50,12 +50,12 @@ var ShareButtonStore = _.assign(Base(_state), {
 
       case AppConstants.RECEIVED_SHARED_SESSION:
         _state.active = true;
-        ShareButtonStore.updateSharedSessionHashId(action.data.data.hash);
+        updateSharedSessionHashId(action.data.data.hash);
         ShareButtonStore.emitChange();
         break;
 
       case AppConstants.CHANGE_SITE_TITLE:
-        ShareButtonStore.updateSharedUrlWithSiteTitle(action.title);
+        updateSharedUrlWithSiteTitle(action.title);
         ShareButtonStore.emitChange();
         break;
 

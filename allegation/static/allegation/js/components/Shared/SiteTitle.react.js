@@ -76,12 +76,6 @@ var SiteTitle = React.createClass({
     return null;
   },
 
-  _onSessionJustReceived: function () {
-    this.setState({
-      siteTitle: SessionStore.getSiteTitle()
-    });
-  },
-
   _onShareBarOrFilterTagChanged: function () {
     this.setState({
       showDottedUnderline: ShareButtonStore.isActive() && !FilterTagStore.isNoFilter()
