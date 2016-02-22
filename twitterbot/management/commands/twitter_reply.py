@@ -56,7 +56,7 @@ class Command(BaseCommand):
                         tweet.send()
 
                 if not_found:
-                    print('No result for %s from %s') % (status['text'], status['user']['screen_name'])
+                    print('No result for %s from %s' % (status['text'], status['user']['screen_name']))
 
             if 'search_metadata' in data:
                 search.refresh_url = data['search_metadata']['refresh_url']
