@@ -1,3 +1,4 @@
+from slugify import slugify
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 from django.contrib.gis.db import models
@@ -188,6 +189,11 @@ class Investigator(TimeStampedModel):
             'text': self.name,
             'value': self.pk,
         }
+
+    @property
+    def absolute_url(self):
+        slug = slugify(self.name)
+        return '%s%s/%s' % (reverse("investigator:detail"), slug, self.pk)
 
 
 class PendingPdfAllegation(models.Model):
