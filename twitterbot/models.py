@@ -19,8 +19,7 @@ def oauth_req(url, http_method="GET", post_body=b"", http_headers=None):
 
 TYPE_CHOICES = [
     ['officer', 'officer'],
-    ['investigator', 'investigator'],
-    ['not_found', 'not_found']
+    ['investigator', 'investigator']
 ]
 
 

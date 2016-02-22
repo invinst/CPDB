@@ -29,10 +29,6 @@ class Command(BaseCommand):
 
         return responses
 
-    @classmethod
-    def create_not_found_response(cls):
-        return Response.objects.get(type='not_found')
-
     def handle(self, *args, **options):
         for search in TwitterSearch.objects.all():
             data = search.search()
@@ -60,14 +56,7 @@ class Command(BaseCommand):
                         tweet.send()
 
                 if not_found:
-                    response = Command.create_not_found_response()
-                    context = {
-                        'user': status['user']['screen_name'],
-                        'obj': status['text']
-                    }
-                    msg = response.get_message(context)
-                    tweet = TwitterResponse.objects.create(search=search, response=msg, user=context['user'])
-                    tweet.send()
+                    print('No result for %s from %s') % (status['text'], status['user']['screen_name'])
 
             if 'search_metadata' in data:
                 search.refresh_url = data['search_metadata']['refresh_url']

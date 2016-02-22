@@ -59,11 +59,3 @@ class TwitterReplyCommandTestCase(SimpleTestCase):
 
         responses[0][0].message.should.contain('investigated')
         responses[1][0].message.should.contain('against')
-
-    @patch('twitterbot.models.TwitterSearch.search', return_value={
-        'status': {'text': 'Jason Van Dyke'}
-    })
-    @patch('twitterbot.management.commands.twitter_reply.Command.create_not_found_response')
-    def test_not_found(self, search_func, create_not_found_response):
-        call_command('twitter_reply')
-        create_not_found_response.assert_called()
