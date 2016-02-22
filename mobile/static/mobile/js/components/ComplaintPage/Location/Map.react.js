@@ -40,7 +40,7 @@ var Map = React.createClass({
   },
 
   render: function () {
-    return(
+    return (
       <Wrapper wrapperClass='map' visible={ !!this.props.info.point } />
     );
   }
