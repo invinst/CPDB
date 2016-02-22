@@ -43,22 +43,20 @@ class SessionAPIView(View):
             ))
 
     def put(self, request):
-        put = QueryDict(request.body)
-        data = json.loads(put.get('request_data', {}))
-        ints = Session.id_from_hash(data['hash'])
+        data = json.loads(request.body.decode("utf-8"))
         owned_sessions = request.session.get('owned_sessions', [])
 
-        if len(ints) < 1:
+        try:
+            session_id = Session.id_from_hash(data['hash'])[0]
+        except IndexError:
             return self.error_response('Hash not found')
 
-        session_id = ints[0]
-
-        if session_id not in owned_sessions:
-            return self.error_response('Hash is not owned')
-
         session = Session.objects.filter(pk=session_id).first()
+
         if not session:
             return self.error_response('Session is not found')
+        if not session.shared and session_id not in owned_sessions:
+            return self.error_response('Hash is not owned')
 
         session = self.update_session_data(session, data)
 
@@ -131,10 +129,11 @@ class SessionAPIView(View):
                                  num_allegations=num_allegations)
 
     def update_session_data(self, session, data):
-        updates = data['query'] or {}
-        if session.query != updates:
-            session.query.update(**updates)
-            self.track_filter(session)
+        if 'query' in data:
+            updates = data['query'] or {}
+            if session.query != updates:
+                session.query.update(**updates)
+                self.track_filter(session)
         if 'active_tab' in data:
             session.active_tab = data['active_tab']
         if 'selected_sunburst_arc' in data:

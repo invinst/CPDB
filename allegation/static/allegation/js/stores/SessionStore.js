@@ -35,6 +35,10 @@ var SessionStore = _.assign(Base(_state), {
     return _state['data']['title'];
   },
 
+  getSiteTitle: function () {
+    return _state['siteTitle'];
+  },
+
   isNoQuery: function () {
     return _.isEmpty(_state.data.query.active_officers) && _.isEmpty(_state.data.query.filters);
   },
@@ -76,13 +80,6 @@ SessionStore.dispatcherToken = AppDispatcher.register(function (action) {
       _state['data'] = data;
       _state.siteTitle = data.title;
       _state['data']['active_tab'] = data.active_tab;
-      SessionStore.emitChange();
-      break;
-
-    case AppConstants.UPDATE_TITLE:
-      var title = action.title;
-      _state['data']['title'] = title;
-      _state.siteTitle = title;
       SessionStore.emitChange();
       break;
 
