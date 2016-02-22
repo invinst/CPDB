@@ -254,7 +254,7 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
         self.visit_home()
         self.find('.share-button button').click()
         self.find('.share-bar').is_displayed()
-        self.find('.share-bar__content-wrapper input').get_attribute('value').should_not.equal(self.browser.current_url)
+        self.find('.share-bar-content-wrapper input').get_attribute('value').should_not.equal(self.browser.current_url)
         self.find('.share-button button').click()
         with self.browser_no_wait():
             self.element_exist('.share-bar').should.be.false
@@ -267,7 +267,7 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
         self.until_ajax_complete()
         self.fill_in('.site-title-input', title)
         shared_hash_id = re.findall(
-            r'data/([^/]+)', self.find('.share-bar__content-wrapper input').get_attribute('value'))[0]
+            r'data/([^/]+)', self.find('.share-bar-content-wrapper input').get_attribute('value'))[0]
         self.find('.share-bar-facebook-link').click()
         self.until_ajax_complete()
 
