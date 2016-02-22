@@ -152,7 +152,7 @@ class AllegationSessionApiView(SimpleTestCase):
         data['data']['query'].should.be.equal(self.db_session.query)
         data['data']['title'].should.be.equal(self.db_session.title)
         data['data']['active_tab'].should.be.equal(self.db_session.active_tab)
-        data['data']['sunburst_arc'].should.be.equal(self.db_session.sunburst_arc)
+        data['data']['selected_sunburst_arc'].should.be.equal(dict(self.db_session.selected_sunburst_arc))
 
     def num_of_filter_logs(self):
         return FilterLog.objects.count()

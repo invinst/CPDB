@@ -39,6 +39,16 @@ var SessionStore = _.assign(Base(_state), {
     return _.isEmpty(_state.data.query.active_officers) && _.isEmpty(_state.data.query.filters);
   },
 
+  serializeSelectedSunburstArc: function (arc) {
+    var name = arc.name;
+    var category = arc.category;
+
+    return {
+      name: name,
+      category: category
+    };
+  },
+
   removeSessionCreatedListener: function (callback) {
     this.removeListener(SESSION_CREATED_EVENT, callback);
   },
