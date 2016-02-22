@@ -27,6 +27,7 @@ var DistributionCurve = React.createClass({
   },
 
   render: function () {
+    // TODO: Splitting this ernomous `render()`
     var data = this.props.distribution;
     var defaultPadding = 36;
     var defaultWidth = 320;
