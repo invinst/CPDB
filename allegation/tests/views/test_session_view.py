@@ -1,5 +1,4 @@
 import json
-from urllib.parse import urlencode
 
 from faker import Faker
 
@@ -38,11 +37,8 @@ class AllegationSessionApiView(SimpleTestCase):
         return response, data
 
     def call_put_session_api(self, params={}):
-        request_params = {
-            'request_data': json.dumps(params)
-        }
         response = self.client.put(
-            '/api/allegations/session/', urlencode(request_params))
+            '/api/allegations/session/', json.dumps(params))
         data = self.json(response)
 
         return response, data
@@ -84,15 +80,13 @@ class AllegationSessionApiView(SimpleTestCase):
         data['new'].should.equal(False)
 
     def test_not_in_owned_session(self):
+        session = SessionFactory()
+        self.update_params['hash'] = session.hash_id
         response, data = self.call_put_session_api(self.update_params)
         response.status_code.should.equal(400)
         data['data']['msg'].should.equal('Hash is not owned')
 
     def test_invalid_session(self):
-        session = self.client.session
-        session['owned_sessions'] = [624]
-        session.save()
-
         response, data = self.call_put_session_api(self.update_params)
         response.status_code.should.equal(400)
         data['data']['msg'].should.equal('Session is not found')

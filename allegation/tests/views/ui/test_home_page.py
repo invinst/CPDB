@@ -268,7 +268,7 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
         self.fill_in('.site-title-input', title)
         shared_hash_id = re.findall(
             r'data/([^/]+)', self.find('.share-bar__content-wrapper input').get_attribute('value'))[0]
-        self.find('.share-bar__facebook-link').click()
+        self.find('.share-bar-facebook-link').click()
         self.until_ajax_complete()
 
         with switch_to_popup(self.browser):

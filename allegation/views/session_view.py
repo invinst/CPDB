@@ -53,10 +53,10 @@ class SessionAPIView(View):
 
         session = Session.objects.filter(pk=session_id).first()
 
-        if not session.shared and session_id not in owned_sessions:
-            return self.error_response('Hash is not owned')
         if not session:
             return self.error_response('Session is not found')
+        if not session.shared and session_id not in owned_sessions:
+            return self.error_response('Hash is not owned')
 
         session = self.update_session_data(session, data)
 
