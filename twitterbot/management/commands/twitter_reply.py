@@ -42,9 +42,14 @@ class Command(BaseCommand):
 
     def handle_url(self, url, status, search):
         try:
+            response = requests.head(url)
+            if 'twitter.com/' in response.headers['location']:
+                return False
+
             response = requests.get(url)
         except:
             return False
+
         html = response.content.decode('utf-8')
         soup = BeautifulSoup(html)
         [s.extract() for s in soup(['style',
@@ -56,23 +61,46 @@ class Command(BaseCommand):
         self.handle_text(visible_text, status, search)
 
     def handle_text(self, text, status, search):
+        text = re.sub('(\t|\n|\r|\s)+', ' ', text)
+        text = re.sub('[^A-Za-z0-9]+', ' ', text)
         splitted = text.split(" ")
         max_index = len(splitted)
 
+        search.responded = {}
+
         responded = False
         for i in range(max_index - 1):
-            try_officer_name = " ".join(splitted[i:i+2]).replace("\t", "").replace("\n", "")
-            if try_officer_name:
+            try_officer_name = " ".join(splitted[i:i+2])
+
+            if try_officer_name and try_officer_name != ' ' and len(try_officer_name) > 6:
                 responses = Command.create_responses(try_officer_name)
 
                 for response, obj, context in responses:
-                    context['user'] = status['user']['screen_name']
-                    context['obj'] = obj
-                    msg = response.get_message(context)
+                    compare_str = "%s" % obj
+                    if compare_str == try_officer_name and try_officer_name not in search.responded:
+                        context['user'] = status['user']['screen_name']
+                        context['obj'] = obj
+                        search.responded[try_officer_name] = True
+                        msg = response.get_message(context)
 
-                    tweet = TwitterResponse.objects.create(search=search, response=msg, user=context['user'])
-                    tweet.send()
-                    responded = True
+                        print("creating response search - ", try_officer_name, ": ", obj)
+
+                        tweet = TwitterResponse.objects.create(search=search, response=msg, user=context['user'])
+                        tweet.send()
+                        responded = True
+
+        return responded
+
+    def handle_status(self, status, search, orig_status=False):
+
+        if not orig_status:
+            orig_status = status
+
+        responded = self.handle_text(status['text'], status, search)
+
+        urls = re.findall(self.url_regex, status['text'])
+        if urls:
+            self.handle_urls(urls, status, search)
 
         return responded
 
@@ -82,11 +110,10 @@ class Command(BaseCommand):
 
             statuses = data.get('statuses', [])
             for status in statuses:
-                responded = self.handle_text(status['text'], status, search)
+                if 'quoted_status' in status and 'text' in status['quoted_status']:
+                    responded = self.handle_status(status['quoted_status'], search, status)
 
-                urls = re.findall(self.url_regex, status['text'])
-                if urls:
-                    self.handle_urls(urls, status, search)
+                responded = self.handle_status(status, search) or responded
 
                 if responded:
                     print('No result for %s from %s' % (status['text'], status['user']['screen_name']))

@@ -59,3 +59,16 @@ class TwitterReplyCommandTestCase(SimpleTestCase):
 
         responses[0][0].message.should.contain('investigated')
         responses[1][0].message.should.contain('against')
+
+    def test_link_parsing_retrieval(self):
+        TwitterResponse.objects.all().delete()
+        TwitterSearch.objects.create(query='#CPDB')
+        ret = {
+            'statuses': [
+                {'text': '#CPDB Some text http://www.truth-out.org/news/item/26986-amid-'
+                         'shootings-chicago-police-department-upholds-culture-of-impunity',
+                 'user': {'screen_name': 'anyone'}}]
+        }
+        with patch('twitterbot.models.TwitterSearch.search', return_value=ret):
+            call_command('twitter_reply')
+            TwitterResponse.objects.filter().exists().should.be.true
