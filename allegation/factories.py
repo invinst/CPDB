@@ -115,8 +115,9 @@ class AllegationFactory(factory.django.DjangoModelFactory):
 
     @factory.post_generation
     def investigator_name(self, create, extracted, **kwargs):
-        self.investigator_name = self.investigator.raw_name
-        self.save()
+        if self.investigator is not None:
+            self.investigator_name = self.investigator.raw_name
+            self.save()
 
 
 class OfficerAllegationFactory(factory.django.DjangoModelFactory):

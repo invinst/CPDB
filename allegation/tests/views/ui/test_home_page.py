@@ -156,7 +156,7 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
 
         self.find(".tag .remove").click()
         self.until(lambda: self.element_by_classname_and_text('filter-name', us))
-        self.until(lambda: self.should_see_text('Officers (1)'))
+        self.should_see_text('Officers (1)')
 
     def test_sticky_footer(self):
         officer = self.officer_allegation.officer
