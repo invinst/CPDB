@@ -7,6 +7,7 @@ from django.http.request import QueryDict
 import xlsxwriter
 from allegation.models import Download
 
+from api.models import Setting
 from allegation.views.officer_allegation_api_view import (
     OfficerAllegationAPIView)
 from common.models import (
@@ -54,20 +55,11 @@ class AllegationsDownload(OfficerAllegationAPIView):
         worksheet.set_column('A:A', 100)
         worksheet.set_tab_color('red')
 
-        DISCLAIMER = """DISCLAIMER:
-
-This dataset is compiled from three lists of allegations against Chicago Police Department officers,
-spanning approximately 2002 - 2008 and 2010 - 2014, produced by the City of Chicago in response
-to litigation and to FOIA requests.
-
-The City of Chicago's production of this information is accompanied by a disclaimer that
-not all information contained in the City's database may be correct.
-
-No independent verification of the City's records has taken place and this dataset does not
-purport to be an accurate reflection of either the City's database or its veracity."""
+        app_setting = Setting.objects.first()
+        disclaimer = app_setting.export_excel_disclaimer
 
         line_count = 0
-        for line in DISCLAIMER.splitlines():
+        for line in disclaimer.splitlines():
             line_count += 1
             worksheet.write("A%s" % line_count, line)
 

@@ -29,6 +29,7 @@ class Session(models.Model):
     title = models.CharField(max_length=255, blank=True)
     query = JSONField(blank=True)
     active_tab = models.CharField(max_length=40, default='', blank=True)
+    selected_sunburst_arc = JSONField(blank=True)
     sunburst_arc = models.CharField(max_length=40, default='', blank=True)
     share_from = models.ForeignKey('share.Session', null=True, default=None, blank=True)
     share_count = models.IntegerField(default=0, blank=True)
@@ -68,7 +69,7 @@ class Session(models.Model):
         session = Session()
         session.title = self.title
         session.query = self.query
-        session.sunburst_arc = self.sunburst_arc
+        session.selected_sunburst_arc = self.selected_sunburst_arc
         session.active_tab = self.active_tab
         session.share_from = self
         session.save()

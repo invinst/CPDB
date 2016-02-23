@@ -1,6 +1,7 @@
-require('should');
 var _ = require('lodash');
 var calculatePercentages = require('utils/calculatePercentages');
+
+require('should');
 
 
 describe('calculatePercentages', function () {

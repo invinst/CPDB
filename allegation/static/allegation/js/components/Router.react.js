@@ -16,7 +16,7 @@ var FindingPage = require('components/IndexTabContent/FindingPage.react');
 var MethodPage = require('components/IndexTabContent/MethodPage.react');
 var StoryPage = require('components/IndexTabContent/StoryPage.react');
 var SessionAPI = require('utils/SessionAPI');
-var StringUtil = require('utils/StringUtil');
+var S = require('string');
 
 // disable scroll restoration
 if (history.scrollRestoration) {
@@ -28,7 +28,7 @@ var RootRouter = React.createClass({
   onEnterData: function (nextState, replaceState, callback) {
     var sessionCallBack = function (data) {
       if (!(nextState.params.session && nextState.params.title)) {
-        var siteTitle = StringUtil.slugify(data.title || AppConstants.DEFAULT_SITE_TITLE);
+        var siteTitle = S(data.title || AppConstants.DEFAULT_SITE_TITLE).slugify().s;
         var url = ['', 'data', data.hash, siteTitle].join('/');
         replaceState(url);
       }

@@ -15,4 +15,5 @@ class SessionUtilsTestCase(SimpleTestCase):
                     'value': 'd'
                 }]
             }})
-        build_query_string_from_session(session).should.equal('a=b&c=d')
+        query_str = build_query_string_from_session(session)
+        (query_str in ['a=b&c=d', 'c=d&a=b']).should.be.true

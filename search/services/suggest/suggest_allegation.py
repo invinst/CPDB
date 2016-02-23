@@ -3,7 +3,6 @@ import re
 from haystack.query import SearchQuerySet
 
 from search.services.suggest import SuggestBase
-from search.utils.zip_code import get_zipcode_from_city
 
 
 class SuggestAllegationCity(SuggestBase):
@@ -14,16 +13,16 @@ class SuggestAllegationCity(SuggestBase):
     @classmethod
     def _query(cls, term):
         sqs = SearchQuerySet()
-        raw_results = sqs.filter(allegation_distinct_city=term).values_list('allegation_distinct_city', flat=True)[:5]
+        raw_results = sqs.filter(allegation_distinct_zip_code=term)[:5]
 
         results = [
             cls.entry_format(
-                suggest_value=get_zipcode_from_city(entry),
+                suggest_value=entry.allegation_distinct_zip_code,
                 tag_value=cls.build_tag_value(
                     category='allegation__city',
-                    value=entry,
+                    value=entry.allegation_distinct_city,
                     display_category='Zip Code',
-                    display_value=entry
+                    display_value=entry.allegation_distinct_city
                 )
             ) for entry in raw_results
         ]

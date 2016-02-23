@@ -1,0 +1,20 @@
+.circle
+  width: 10px
+  height: 10px
+  background: $circle-color
+  border-radius: 50%
+  display: inline-block
+
+.small-circle
+  width: 6px
+  height: 6px
+
+$levels: $level-0-color, $level-1-color, $level-2-color, $level-3-color, $level-4-color
+
+@for $i from 1 through length($levels)
+  .circle-#{$i - 1}
+    background-color: nth($levels, $i)
+  .stroke-#{$i - 1}
+    stroke: nth($levels, $i)
+  .fill-#{$i - 1}
+    fill: nth($levels, $i)
