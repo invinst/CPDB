@@ -44,7 +44,6 @@ class Command(BaseCommand):
             response = requests.get(url)
         except:
             return False
-
         html = response.content.decode('utf-8')
         soup = BeautifulSoup(html)
         [s.extract() for s in soup(['style',
@@ -61,17 +60,18 @@ class Command(BaseCommand):
 
         responded = False
         for i in range(max_index - 1):
-            try_officer_name = " ".join(splitted[i:i+2])
-            responses = Command.create_responses(try_officer_name)
+            try_officer_name = " ".join(splitted[i:i+2]).replace("\t", "").replace("\n", "")
+            if try_officer_name:
+                responses = Command.create_responses(try_officer_name)
 
-            for response, obj, context in responses:
-                context['user'] = status['user']['screen_name']
-                context['obj'] = obj
-                msg = response.get_message(context)
+                for response, obj, context in responses:
+                    context['user'] = status['user']['screen_name']
+                    context['obj'] = obj
+                    msg = response.get_message(context)
 
-                tweet = TwitterResponse.objects.create(search=search, response=msg, user=context['user'])
-                tweet.send()
-                responded = True
+                    tweet = TwitterResponse.objects.create(search=search, response=msg, user=context['user'])
+                    tweet.send()
+                    responded = True
 
         return responded
 
