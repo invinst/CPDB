@@ -61,8 +61,8 @@ class TwitterResponse(models.Model):
     def send(self):
         escaped = TwitterResponse.escape_response(self.response)
         url = "https://api.twitter.com/1.1/statuses/update.json?status={response}".format(response=escaped)
-
-        print(oauth_req(url, "POST"))
+        if not settings.DEBUG:
+            print(oauth_req(url, "POST"))
 
     @classmethod
     def escape_response(cls, response):

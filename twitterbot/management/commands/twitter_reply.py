@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import re
 
+from django.conf import settings
 from django.core.management.base import BaseCommand
 
 from common.models import Officer, Investigator
@@ -92,4 +93,5 @@ class Command(BaseCommand):
 
             if 'search_metadata' in data:
                 search.refresh_url = data['search_metadata']['refresh_url']
-                search.save()
+                if not settings.DEBUG:
+                    search.save()
