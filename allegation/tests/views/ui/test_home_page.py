@@ -158,28 +158,6 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
         self.until(lambda: self.element_by_classname_and_text('filter-name', us))
         self.until(lambda: self.should_see_text('Officers (1)'))
 
-    def test_sticky_footer(self):
-        officer = self.officer_allegation.officer
-        OfficerAllegationFactory.create_batch(40, officer=officer)
-        self.browser.set_window_size(width=1200, height=800)
-        self.visit_home()
-        self.is_displayed_in_viewport('.sticky-footer').should.be.false
-
-        self.find('.checkmark').click()
-        self.until_ajax_complete()
-
-        self.browser.execute_script(
-            "jQuery(window).scrollTop(jQuery('#complaint-list').offset().top + 100);")
-        self.until(
-            lambda:
-            self.is_displayed_in_viewport('.sticky-footer').should.be.true)
-        self.browser.execute_script(
-            "jQuery(window).scrollTop(jQuery('#complaint-list').offset().top - 100);")
-
-        self.until(
-            lambda:
-            self.is_displayed_in_viewport('.sticky-footer').should.be.false)
-
     def test_replace_old_filter_in_same_category(self):
         officer_allegation = OfficerAllegationFactory()
 
