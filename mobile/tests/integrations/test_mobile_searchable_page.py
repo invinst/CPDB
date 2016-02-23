@@ -3,9 +3,6 @@ from common.tests.core import BaseLivePhoneTestCase
 
 
 class MobileSearchablePageTest(BaseLivePhoneTestCase):
-    def go_to_detail_page(self, link):
-        self.visit(link)
-
     def show_error_when_search_bad_query(self):
         bad_query = 'bad_query'
         self.search_for(bad_query)

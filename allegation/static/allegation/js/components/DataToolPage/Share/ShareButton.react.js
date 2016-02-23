@@ -4,38 +4,36 @@ var classnames = require('classnames');
 
 var ShareBar = require('components/DataToolPage/Share/ShareBar.react');
 var SessionStore = require('stores/SessionStore');
-var ShareBarStore = require('stores/DataToolPage/ShareBarStore');
-var SessionAPI = require('utils/SessionAPI');
+var ShareButtonStore = require('stores/DataToolPage/ShareButtonStore');
+var ShareBarActions = require('actions/ShareBarActions');
 
 
 var ShareButton = React.createClass({
   getInitialState: function () {
     return {
       active: false,
-      sharedSessionHashId: null
+      sharedSessionHashId: null,
+      sharedUrl: null
     };
   },
 
   componentDidMount: function () {
-    ShareBarStore.addChangeListener(this._onReceivedSharedSession);
+    ShareButtonStore.addChangeListener(this._onReceivedSharedSession);
   },
 
   componentWillUnmount: function () {
-    ShareBarStore.removeChangeListener(this._onReceivedSharedSession);
+    ShareButtonStore.removeChangeListener(this._onReceivedSharedSession);
   },
 
   _onReceivedSharedSession: function () {
-    this.setState({
-      active: true,
-      sharedSessionHashId: ShareBarStore.getSharedSessionHashId()
-    });
+    this.setState(ShareButtonStore.getState());
   },
 
-  createSharedSession: function () {
-    if (this.state.active) {
-      this.setState({'active': false});
+  toggleShareBar: function () {
+    if (!this.state.active) {
+      ShareBarActions.openShareBar(SessionStore.getHash());
     } else {
-      SessionAPI.createSharedSession(SessionStore.getHash());
+      ShareBarActions.closeShareBar();
     }
   },
 
@@ -51,11 +49,17 @@ var ShareButton = React.createClass({
 
     return (
       <div className={ shareButtonClassNames }>
-        <button onClick={ this.createSharedSession }>
+        <button onClick={ this.toggleShareBar }>
           <i className={ buttonIconClassNames }></i>
           <span> Share</span>
         </button>
-        { this.state.active ? <ShareBar sharedSessionHashId={ this.state.sharedSessionHashId } /> : null }
+        { this.state.active ?
+          <ShareBar
+            sharedSessionHashId={ this.state.sharedSessionHashId }
+            sharedUrl={ this.state.sharedUrl }
+          />
+          : null
+        }
       </div>
     );
   }

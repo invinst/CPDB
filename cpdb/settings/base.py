@@ -255,8 +255,8 @@ ELASTICSEARCH_SETTINGS = {
                 },
                 'edgengram_analyzer': {
                     'type': 'custom',
-                    'tokenizer': 'whitespace',
-                    'filter': ['haystack_edgengram', 'lowercase']
+                    'tokenizer': 'standard',
+                    'filter': ['lowercase', 'custom_delimiter', 'haystack_edgengram']
                 }
             },
             'filter': {
@@ -267,8 +267,13 @@ ELASTICSEARCH_SETTINGS = {
                 },
                 'haystack_edgengram': {
                     'type': 'edge_ngram',
-                    'min_gram': 2,
+                    'min_gram': 1,
                     'max_gram': 15
+                },
+                'custom_delimiter': {
+                    'type': 'word_delimiter',
+                    'preserve_original': True,
+                    'stem_english_possessive': False
                 }
             }
         }

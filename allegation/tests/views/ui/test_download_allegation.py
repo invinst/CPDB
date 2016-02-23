@@ -12,6 +12,7 @@ class DownloadAllegationTestCase(BaseLiveTestCase):
         OfficerAllegationFactory(allegation=allegation)
         PoliceWitnessFactory(crid=allegation.crid)
         ComplainingWitnessFactory(crid=allegation.crid)
+        self.get_admin_settings()
 
         self.visit_home()
         self.browser.execute_script("window.redirect = function () {};")  # disable excel redirect on testing

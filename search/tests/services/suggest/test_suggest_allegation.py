@@ -1,9 +1,9 @@
 from allegation.factories import AllegationFactory
 from search.services.suggest.suggest_allegation import SuggestAllegationCity, SuggestAllegationCrid
-from search.tests.services.suggest.test_suggest_base import SuggestBaseTestCase
+from search.tests.services.suggest.base_test_suggest import BaseSuggestTestCase
 
 
-class SuggestAllegationTestCase(SuggestBaseTestCase):
+class AllegationSuggestTestCase(BaseSuggestTestCase):
     def test_suggest_zip_code(self):
         city = 'Chicago IL 60616'
         available_zip_code = '60616'

@@ -9,7 +9,15 @@ class MobileGoogleAnalyticsTest(BaseLivePhoneTestCase):
         OfficerAllegationFactory(officer=self.officer, allegation=self.allegation)
 
     def test_send_google_analytics_when_view_officer_page(self):
+        another_officer = OfficerFactory()
+        OfficerAllegationFactory(officer=another_officer, allegation=self.allegation)
+
         self.visit_officer_page(self.officer.id)
+        self.should_track_ga_event()
+
+        self.reset_ga_call()
+        self.find('.tab-navs .tab-co-accused').click()
+        self.find('.related-officer-item').click()
         self.should_track_ga_event()
 
     def test_send_google_analytics_when_view_complaint_page(self):

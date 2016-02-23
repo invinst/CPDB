@@ -1,0 +1,20 @@
+.distribution-curve
+  animation: swipe 2s ease
+  -webkit-animation: swipe 2s ease
+  -moz-animation: swipe 2s ease
+  -o-animation: swipe 2s ease
+  overflow-x: hidden
+  .distribution-curve-wrapper
+    position: relative
+    svg
+      position: absolute
+      top: 0
+      width: 100%
+      stroke-width: 1
+      .distribution-chart
+        fill: $distribution-curve-color
+        stroke: $distribution-curve-color
+      .red-line
+        stroke: $red-line-color
+      .eclipse-of-red-line
+        fill: $red-line-color

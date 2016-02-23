@@ -29,14 +29,19 @@ var SunburstStore = _.assign(Base(_state), {
   },
 
   isSelected: function (category, value) {
+    // this function use FilterTag values to check if sunburst arc is selected
     var selected = _state.selected;
     return selected && selected.tagValue && selected.tagValue.category == category
       && selected.tagValue.value == value;
   },
 
+  isRootSelected: function () {
+    return _state.selected.name == 'Allegations';
+  },
+
   updateSelected: function () {
     if (_state.selected) {
-      var arc = SunburstChartD3.findPathByName(_state.selected.name);
+      var arc = SunburstChartD3.findArc(_state.selected.name, _state.selected.category);
 
       if (_state.selected.fromSession) {
         if (arc) {
@@ -65,10 +70,11 @@ var SunburstStore = _.assign(Base(_state), {
   tryZoomOut: function (category, filter) {
     if (this.isSelected(category, filter.value)) {
       _state.selected = _state.selected.parent;
-      var tagValue = _state.selected.tagValue;
 
       // Add parent arc to filter if not at root
-      if (tagValue) {
+      if (!this.isRootSelected()) {
+        var tagValue = _state.selected.tagValue;
+
         FilterTagStore.addFilter(tagValue);
         FilterTagStore.emitChange();
       }
@@ -178,11 +184,16 @@ AppDispatcher.register(function (action) {
 
     case AppConstants.RECEIVED_SESSION_DATA:
       var arcName = 'Allegations';
-      if (action.data && action.data.data.sunburst_arc) {
-        arcName = action.data.data.sunburst_arc;
+      var arcCategory = '';
+
+      if (action.data && !_.isEmpty(action.data.data.selected_sunburst_arc)) {
+        arcName = action.data.data.selected_sunburst_arc.name;
+        arcCategory = action.data.data.selected_sunburst_arc.category;
       }
+
       _state.selected = {
         name: arcName,
+        category: arcCategory,
         fromSession: true
       };
       break;

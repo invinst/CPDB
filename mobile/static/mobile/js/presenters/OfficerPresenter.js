@@ -15,7 +15,7 @@ var OfficerPresenter = function (officer) {
   };
 
   var id = function () {
-    return HelperUtil.fetch(officer, 'id', 'Unknown');
+    return HelperUtil.fetch(officer, 'id', '').toString();
   };
 
   var race = function () {
