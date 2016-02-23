@@ -470,8 +470,18 @@ class SimpleTestCase(DjangoSimpleTestCase, UserTestBaseMixin):
 
 @contextmanager
 def switch_to_popup(driver):
+    """
+    Switch to opened popup, switch to main window when leave context.
+
+    This context assume that there're only one popup opened.
+
+    Usage example:
+
+    with switch_to_popup(driver):
+        ('https://www.facebook.com' in browser.current_url).should.be.true
+    """
     while len(driver.window_handles) < 2:
         pass
     driver.switch_to.window(driver.window_handles[1])
     yield None
-    driver.switch_to_default_content()
+    driver.switch_to.window(driver.window_handles[0])

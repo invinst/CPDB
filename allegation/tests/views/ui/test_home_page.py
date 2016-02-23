@@ -252,6 +252,8 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
         with switch_to_popup(self.browser):
             ('https://www.facebook.com' in self.browser.current_url).should.be.true
 
+        self.find('.share-button button').click()
+
         session_id = Session.id_from_hash(shared_hash_id)[0]
         session = Session.objects.get(id=session_id)
         session.title.should.be.equal(title)
