@@ -35,10 +35,11 @@ class AllegationsDownloadTestCase(SimpleTestCase):
             mock_worksheet.assert_has_calls(expected_calls)
 
     def test_investigator_name_rank_in_allegation_sheet(self):
-        officer_allegation = OfficerAllegationFactory()
-        investigator = officer_allegation.allegation.investigator
+        officer_allegation_1 = OfficerAllegationFactory()
+        investigator = officer_allegation_1.allegation.investigator
+        officer_allegation_2 = OfficerAllegationFactory(allegation=AllegationFactory(investigator=None))
         allegation_download = AllegationsDownload(DownloadFactory().id)
-        allegation_download.officer_allegations = [officer_allegation]
+        allegation_download.officer_allegations = [officer_allegation_1, officer_allegation_2]
         allegation_download.update_crids()
         allegation_download.write_headers = MagicMock()
         mock_worksheet = MagicMock()
@@ -52,7 +53,7 @@ class AllegationsDownloadTestCase(SimpleTestCase):
             (set(columns) > set(['InvestigatorName', 'InvestigatorRank'])).should.be.true
 
             allegation_download.write_allegations_data(mock_worksheet)
-            mock_worksheet.write.assert_any_call(1, 21, officer_allegation.allegation.investigator_name)
+            mock_worksheet.write.assert_any_call(1, 21, officer_allegation_1.allegation.investigator_name)
             mock_worksheet.write.assert_any_call(1, 22, investigator.current_rank)
 
     def test_complaining_witness_sheet(self):
