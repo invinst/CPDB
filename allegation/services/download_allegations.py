@@ -147,9 +147,9 @@ class AllegationsDownload(OfficerAllegationAPIView):
                 sheet.write(
                     row_count, 20,
                     officer_allegation.end_date.strftime("%Y-%m-%d"))
-            sheet.write(
-                row_count, 21, officer_allegation.allegation.investigator_name)
             if officer_allegation.allegation.investigator is not None:
+                sheet.write(
+                    row_count, 21, officer_allegation.allegation.investigator.name)
                 sheet.write(
                     row_count, 22, officer_allegation.allegation.investigator.current_rank)
 
