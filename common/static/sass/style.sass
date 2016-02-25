@@ -60,6 +60,8 @@ $text_color: #013270
 $font_weight: 400
 $cubic_bezier: cubic-bezier(0, 0, 0.16, 1.08)
 $embed_background_color: #A5B4BF
+$overlay_color: rgba(51,51,51,.7)
+$site_title_underline_color: #a5b4be
 
 //LOADING COLOR
 $midnight-blue: #003366
@@ -370,7 +372,7 @@ footer
     border: none
     width: 100%
   .after-title-input
-    border-bottom: 2px dashed $text_color
+    border-bottom: 2px dashed $color_cadet_blue_approx
     margin-bottom: -2px
 
 .map-row
@@ -1442,6 +1444,14 @@ footer
 #data-tool
   background-color: $color_spring_wood_approx2
   color: $color_mine_shaft_approx
+  #overlay.active
+    background: $overlay_color
+    position: absolute
+    width: 100%
+    height: 100%
+    top: 0
+    z-index: 1000
+
 .white-background
   background-color: $white
   .container-fluid.content

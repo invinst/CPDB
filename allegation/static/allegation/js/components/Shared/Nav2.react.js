@@ -32,7 +32,8 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
       shareButton: isActive('data'),
       subNav: isActive('story'),
       backLink: isActive('officer') || isActive('investigator'),
-      welcomeMessage: isActive('findings')
+      welcomeMessage: isActive('findings'),
+      fixedNav: isActive('data')
     };
   },
 
@@ -166,11 +167,14 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
 
   render: function () {
     var display = this.getDisplayComponent();
+    var navClassName = classnames('landing-nav', {
+      'fixed-nav': display.fixedNav
+    });
 
     return (
       <div className='landing-page fixed-nav'>
         { display.welcomeMessage ? this.renderWelcome() : '' }
-        <nav className='landing-nav'>
+        <nav className={ navClassName }>
           <div className='items clearfix'>
             <Link to={ this.getIndexLink() } onClick={ this.startNewSession } id='logo_link'>
               <img className='pull-left cpdp-logo' src='/static/img/cpdp-logo.svg' />

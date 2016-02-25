@@ -87,6 +87,7 @@ module.exports = {
   RACE_GENDER_TAB_RECEIVED_DATA: c++,
 
   SET_ACTIVE_TAB: c++,
+  TOGLLE_OVERLAY: c++,
   MAP_TOKEN: '***REMOVED***',
   MAP_TYPE: 'datamade.7e795301',
 
