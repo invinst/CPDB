@@ -58,12 +58,6 @@ class TwitterResponse(models.Model):
     user = models.CharField(max_length=50, default="")
     created_at = models.DateTimeField(auto_now_add=True)
 
-    def send(self):
-        escaped = TwitterResponse.escape_response(self.response)
-        url = "https://api.twitter.com/1.1/statuses/update.json?status={response}".format(response=escaped)
-        if not settings.DEBUG:
-            print(oauth_req(url, "POST"))
-
     @classmethod
     def escape_response(cls, response):
         return requests.utils.quote(response, safe='')

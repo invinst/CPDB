@@ -13,26 +13,26 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Response',
             fields=[
-                ('id', models.AutoField(serialize=False, primary_key=True, auto_created=True, verbose_name='ID')),
-                ('type', models.CharField(choices=[['officer', 'officer'], ['investigator', 'investigator'], ['not_found', 'not_found']], max_length=20)),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('type', models.CharField(max_length=20, choices=[['officer', 'officer'], ['investigator', 'investigator']])),
                 ('message', models.TextField()),
             ],
         ),
         migrations.CreateModel(
             name='TwitterResponse',
             fields=[
-                ('id', models.AutoField(serialize=False, primary_key=True, auto_created=True, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('response', models.TextField()),
-                ('user', models.CharField(default='', max_length=50)),
+                ('user', models.CharField(max_length=50, default='')),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
             ],
         ),
         migrations.CreateModel(
             name='TwitterSearch',
             fields=[
-                ('id', models.AutoField(serialize=False, primary_key=True, auto_created=True, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('query', models.CharField(max_length=100)),
-                ('refresh_url', models.CharField(blank=True, null=True, max_length=255)),
+                ('refresh_url', models.CharField(max_length=255, blank=True, null=True)),
                 ('updated_at', models.DateTimeField(auto_now=True)),
             ],
         ),
