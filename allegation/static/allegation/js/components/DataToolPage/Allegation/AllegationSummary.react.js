@@ -81,10 +81,19 @@ var AllegationSummary = React.createClass({
             <div className='main-category'>{ presenter.mainCategory }</div>
             <div className='title'>{ presenter.subCategory }</div>
           </div>
+
+          { presenter.displayRecFinding ?
+            <div className='rec-finding'>
+              <div className='title'>Recommended Finding</div>
+              <div>{ presenter.recFinding }</div>
+            </div>
+            : null
+          }
           <div>
-            <div className='title'>Final Outcome</div>
-            <div>{ presenter.finalOutcome }</div>
+            <div className='title'>Final Finding</div>
+            <div>{ presenter.finalFinding }</div>
           </div>
+
           { presenter.displayRecOutcome ?
             <div className='rec-outcome'>
               <div className='title'>Recommended Outcome</div>
@@ -93,16 +102,10 @@ var AllegationSummary = React.createClass({
             : null
           }
           <div>
-            <div className='title'>Investigation Finding</div>
-            <div>{ presenter.finalFinding }</div>
+            <div className='title'>Final Outcome</div>
+            <div>{ presenter.finalOutcome }</div>
           </div>
-          { presenter.displayRecFinding ?
-            <div className='rec-finding'>
-              <div className='title'>Recommended Finding</div>
-              <div>{ presenter.recFinding }</div>
-            </div>
-            : null
-          }
+
           { this.renderComplainingWitnessSection(presenter) }
           <div className='row'>
             { this.renderInvestigator(allegation) }
