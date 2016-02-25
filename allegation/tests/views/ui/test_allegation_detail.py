@@ -97,7 +97,7 @@ class AllegationDetailTestCase(AllegationRowHelperMixin, BaseLiveTestCase):
         self.should_see_text('CRID {crid}'.format(crid=allegation.crid))
         self.should_see_text(officer_allegation.cat.category)
         self.should_see_text(officer_allegation.cat.allegation_name)
-        self.should_see_text('Investigation Finding\n{final_finding}'.format(
+        self.should_see_text('Final Finding\n{final_finding}'.format(
             final_finding=officer_allegation.get_final_finding_display()
             )
         )
