@@ -3,6 +3,7 @@ from django.db import models
 from django.db.models.signals import post_save
 
 from common.models import Allegation
+from .document import Document  # NOQA
 
 
 class RequestEmail(models.Model):
