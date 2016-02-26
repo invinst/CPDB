@@ -84,8 +84,12 @@ var IndexPage = React.createClass({
       'landing-page': !(isActive('data') || isActive('officer') || isActive('investigator'))
     });
 
+    var mainClassName = classnames('main', {
+      'margin-top-45': isActive('data')
+    });
+
     return (
-      <div className='main'>
+      <div className={ mainClassName }>
         <div className='tab-content'>
           <div role='tabpanel' className={ tabPanelClass }>
             { this.props.children }

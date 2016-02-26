@@ -4,15 +4,15 @@
   height: 45px
   border: 0
   background: white
-  font-weight: 100
+  font-weight: 500
 
 .share-button.active > button
-  background-color: $color_blumine_approx
-  color: $color_link_water_approx
+  background-color: $color_link_water_approx
+  color: $midnight-blue
 
 .share-bar
-  background-color: $color_blumine_approx
-  color: $color_link_water_approx
+  background-color: $color_link_water_approx
+  color: $midnight-blue
   position: absolute
   height: 55px
   width: 100%
@@ -28,15 +28,22 @@
     font-size: xx-large
     margin: 0 9px
     cursor: pointer
-    color: $color_link_water_approx
+    color: $midnight-blue
 
   input
     width: 386px
     height: 30px
     border: 0
-    background-color: $color_link_water_approx
+    background-color: $white
     margin: 0 9px
     vertical-align: top
-    color: $color_blumine_approx
+    color: $midnight-blue
     padding: 0 5px
-    font-size: smaller
+    font-size: 12px
+
+    &::selection
+      background: $midnight-blue
+      color: $white
+    &::-moz-selection
+      background: $midnight-blue
+      color: $white
