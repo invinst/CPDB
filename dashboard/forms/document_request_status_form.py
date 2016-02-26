@@ -27,10 +27,11 @@ class DocumentRequestStatusForm(forms.Form):
         crid = cleaned_data['crid']
         status = cleaned_data['status']
 
-        allegation = Allegation.objects.filter(crid=crid)[0]
+        allegation = Allegation.objects.get(crid=crid)
+        document, _ = allegation.documents.get_or_create(type='CR')
+
         if status == 'pending':
-            if not allegation.document_requested or \
-                    allegation.document_pending:
+            if not document.requested or document.pending:
                 raise forms.ValidationError(error_status_not_assignable)
 
         return cleaned_data
@@ -39,7 +40,7 @@ class DocumentRequestStatusForm(forms.Form):
         crid = self.cleaned_data['crid']
         status = self.cleaned_data['status']
 
-        if status == 'pending':
-            Allegation.objects.filter(crid=crid).update(document_pending=True)
-        elif status == 'requesting':
-            Allegation.objects.filter(crid=crid).update(document_pending=False)
+        allegation = Allegation.objects.get(crid=crid)
+        document, _ = allegation.documents.get_or_create(type='CR')
+        document.pending = status == 'pending'
+        document.save()

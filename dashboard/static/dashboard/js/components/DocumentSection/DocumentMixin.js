@@ -1,3 +1,4 @@
+var _ = require('lodash');
 var React = require('react');
 var classnames = require('classnames');
 var bootbox = require('bootbox');
@@ -8,16 +9,21 @@ var DocumentRequestStatusAPI = require('../../utils/DocumentRequestStatusAPI');
 
 var DocumentMixin = {
   getStatus: function (allegation) {
-    if (allegation.document_id) {
-      return 'fulfilled';
-    }
+    // Temporary fix to keep old logic
+    var crDocument = _.find(allegation.documents, {'type': 'CR'});
 
-    if (allegation.document_requested) {
-      if (allegation.document_pending) {
-        return 'pending';
+    if (crDocument) {
+      if (crDocument.documentcloud_id) {
+        return 'fulfilled';
       }
 
-      return 'requesting';
+      if (crDocument.requested) {
+        if (crDocument.pending) {
+          return 'pending';
+        }
+
+        return 'requesting';
+      }
     }
 
     return 'missing';

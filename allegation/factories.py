@@ -90,8 +90,6 @@ class AllegationFactory(factory.django.DjangoModelFactory):
             random.randint(1, 28)))
     incident_date_only = factory.LazyAttribute(lambda o: o.incident_date)
     investigator = factory.SubFactory(InvestigatorFactory)
-    document_requested = False
-    document_title = factory.Sequence(lambda n: capitalize_word())
     beat = factory.SubFactory(AreaFactory)
     point = None
 

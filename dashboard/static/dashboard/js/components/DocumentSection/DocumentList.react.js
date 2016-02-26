@@ -65,8 +65,8 @@ var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
         <tr key={ 'crid' + x.crid } className={ that.rowClassName(x) } onClick={ that.onClick(x) }>
           <td>{ x.crid }</td>
           <td className='status'><i className={ className }></i> { statusText }</td>
-          <td>{ x.number_of_request }</td>
-          <td>{ moment(x.last_requested).format(AppConstants.HUMAN_READABLE_FORMAT) }</td>
+          <td>{ x.total_document_requests }</td>
+          <td>{ moment(x.last_document_requested).format(AppConstants.HUMAN_READABLE_FORMAT) }</td>
           <td className='actions'>
             { that.renderDocumentActions(status, x) }
           </td>
@@ -99,11 +99,11 @@ var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
             <tr>
               <th>CRID</th>
               <th>Status</th>
-              <th onClick={ this._onHeaderClick.bind(this, 'number_of_request') }>
-                No. of requests { this.renderSortIcon('number_of_request') }
+              <th onClick={ this._onHeaderClick.bind(this, 'total_document_requests') }>
+                No. of requests { this.renderSortIcon('total_document_requests') }
               </th>
-              <th onClick={ this._onHeaderClick.bind(this, 'last_requested') }>
-                Last requested { this.renderSortIcon('last_requested') }
+              <th onClick={ this._onHeaderClick.bind(this, 'last_document_requested') }>
+                Last requested { this.renderSortIcon('total_document_requests') }
               </th>
               <th>Action</th>
             </tr>

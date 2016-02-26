@@ -7,7 +7,7 @@ var Base = require('../Base');
 var _state = {
   documents: [],
   locked: false,
-  sortBy: 'number_of_request',
+  sortBy: 'total_document_requests',
   order: -1
 };
 
@@ -17,10 +17,16 @@ var DocumentListStore = _.assign(Base(_state), {
       return (_state['order'] > 0 ? '' : '-') + _state['sortBy'];
     }
     return '';
+  },
+
+  getCrDocumentFromAllegation: function (allegation) {
+    return _.find(allegation.documents, {type: 'CR'});
   }
 });
 
 AppDispatcher.register(function (action) {
+  var document;
+
   switch (action.actionType) {
     case AppConstants.RECEIVED_DOCUMENT_LIST:
       _state.documents = action.data;
@@ -41,18 +47,27 @@ AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.DOCUMENT_REQUEST_CANCEL:
-      action.data['document_requested'] = false;
+      document = DocumentListStore.getCrDocumentFromAllegation(action.data);
+      if (document) {
+        document.requested = false;
+      }
       DocumentListStore.emitChange();
       break;
 
     case AppConstants.DOCUMENT_PUT_TO_PENDING:
-      action.data['document_pending'] = true;
+      document = DocumentListStore.getCrDocumentFromAllegation(action.data);
+      if (document) {
+        document.pending = true;
+      }
       DocumentListStore.emitChange();
       break;
 
     case AppConstants.DOCUMENT_PUT_TO_REQUESTING:
-      action.data['document_pending'] = false;
-      action.data['document_requested'] = true;
+      document = DocumentListStore.getCrDocumentFromAllegation(action.data);
+      if (document) {
+        document.pending = false;
+        document.requested = true;
+      }
       DocumentListStore.emitChange();
       break;
 

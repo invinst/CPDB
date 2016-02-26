@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
                 ('number_of_request', models.IntegerField(default=0)),
                 ('last_requested', models.DateTimeField(default=django.utils.timezone.now)),
                 ('type', models.CharField(max_length=10, choices=[('CR', 'CR'), ('CPB', 'CPB')])),
-                ('allegation', models.ForeignKey(to='common.Allegation')),
+                ('allegation', models.ForeignKey(to='common.Allegation', related_name='documents')),
             ],
             options={
                 'abstract': False,

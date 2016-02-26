@@ -11,15 +11,17 @@ from dashboard.authentication import SessionAuthentication
 from document.models import RequestEmail
 
 
+# temporarily query document_type here to keep old logic working
 DOCUMENT_REQUEST_FILTERS = {
     "All": Q(),
     "Missing":
-        Q(document_requested=False) & (Q(document_id=None) | Q(document_id=0)),
+        (Q(documents__requested=None) | Q(documents__requested=False)) &
+        (Q(documents__documentcloud_id=None) | Q(documents__documentcloud_id=0)),
     "Requested":
-        Q(document_pending=False) & Q(document_requested=True) &
-        (Q(document_id=None) | Q(document_id=0)),
-    "Fulfilled": Q(document_id__gt=0),
-    "Pending": Q(document_pending=True) & Q(document_requested=True),
+        Q(documents__type='CR') & Q(documents__pending=False) & Q(documents__requested=True) &
+        (Q(documents__documentcloud_id=None) | Q(documents__documentcloud_id=0)),
+    "Fulfilled": Q(documents__type='CR') & Q(documents__documentcloud_id__gt=0),
+    "Pending": Q(documents__type='CR') & Q(documents__pending=True) & Q(documents__requested=True),
 }
 
 
@@ -28,8 +30,8 @@ class AdminAllegationRequestViewSet(viewsets.ModelViewSet):
     serializer_class = AllegationRequestSerializer
     authentication_classes = (SessionAuthentication,)
     filter_backends = (filters.OrderingFilter,)
-    ordering = ('-number_of_request',)
-    ordering_fields = ('last_requested', 'number_of_request',)
+    ordering = ('-total_document_requests',)
+    ordering_fields = ('last_document_requested', 'total_document_requests',)
 
     def get_queryset(self):
         query_set = super(AdminAllegationRequestViewSet, self).get_queryset()

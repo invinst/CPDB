@@ -20,4 +20,5 @@ class Document(TimeStampedModel):
     number_of_request = models.IntegerField(default=0)
     last_requested = models.DateTimeField(default=timezone.now)
     type = models.CharField(max_length=10, choices=DOCUMENT_TYPES)
-    allegation = models.ForeignKey(Allegation, on_delete=models.CASCADE)
+
+    allegation = models.ForeignKey(Allegation, on_delete=models.CASCADE, related_name='documents')

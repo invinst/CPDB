@@ -1,8 +1,10 @@
+from django.shortcuts import get_object_or_404
 from django.views.generic.base import View
 import requests
 from requests.exceptions import RequestException
 
 from common.models import Allegation
+from dashboard.services.document_processing import DocumentProcessing
 from document.response import JsonResponse, HttpResponseBadRequest
 from document.tasks import send_document_notification_by_crid_and_link
 
@@ -13,12 +15,14 @@ class DocumentLinkView(View):
         crid = request.POST.get('crid', None)
 
         if link is None:
-            return self.cancle_requests(crid)
+            return self.cancel_requests(crid)
 
         return self.update_allegation_document(crid, link)
 
-    def cancle_requests(self, crid):
-        Allegation.objects.filter(crid=crid).update(document_requested=False)
+    def cancel_requests(self, crid):
+        allegation = get_object_or_404(Allegation, crid=crid)
+        DocumentProcessing(allegation)
+
         return JsonResponse()
 
     def update_allegation_document(self, crid, link):
@@ -32,6 +36,7 @@ class DocumentLinkView(View):
             return HttpResponseBadRequest()
 
         crid = crid or crid_part
+        allegation = get_object_or_404(Allegation, crid=crid)
 
         try:
             get_title_resp = requests.get(link)
@@ -43,9 +48,13 @@ class DocumentLinkView(View):
             })
         title = self.get_title(get_title_resp.content.decode())
 
-        Allegation.objects.filter(crid=crid).update(
-            document_id=document_id,
-            document_normalized_title=normalized_title, document_title=title)
+        document_params = {
+            'documentcloud_id': document_id,
+            'normalized_title': normalized_title,
+            'title': title
+        }
+
+        DocumentProcessing(allegation).update_link(document_params)
 
         send_document_notification_by_crid_and_link.delay(crid, link)
 
