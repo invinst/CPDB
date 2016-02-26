@@ -15,6 +15,7 @@ var _state = {
   newTarget: false
 };
 
+
 var AddSessionAliasModalStore = _.assign(Base(_state), {
   validFormData: function () {
     if (_.isEmpty(_state['alias']) || !_state['target']) {
