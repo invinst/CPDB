@@ -1,6 +1,6 @@
 **/*bundle*.js
-./static/**
+/static/
 **/bower_components/**
 **/*.min.js
-./common/**
-./htmlcov/**
+/common/
+/htmlcov/**

@@ -27,6 +27,7 @@ var DistributionCurve = React.createClass({
   },
 
   render: function () {
+    // TODO: Splitting this ernomous `render()`
     var data = this.props.distribution;
     var defaultPadding = 36;
     var defaultWidth = 320;
@@ -82,6 +83,10 @@ var DistributionCurve = React.createClass({
                 <ellipse className={ fillClass } ry='5' rx='5' cy={ lineY } cx={ lineX }/>
               </g>
             </g>
+
+            <text textAnchor='middle' className={ fillClass } x={ lineX + defaultPadding } y='53'>
+              { allegationsCount }
+            </text>
 
             <g transform='rotate(-90)'>
               <text textAnchor='middle' className='legend' x={ numberOfOfficerTextX } y='18'>Number of Officers</text>

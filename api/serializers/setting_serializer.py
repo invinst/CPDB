@@ -14,4 +14,5 @@ class SettingSerializer(serializers.HyperlinkedModelSerializer):
             'requested_document_email_text',
             'meta_description',
             'meta_keywords',
+            'export_excel_disclaimer'
             )

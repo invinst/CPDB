@@ -6,12 +6,9 @@ var Base = require('./Base.react');
 var SettingSectionStore = require('../stores/SettingSectionStore');
 var SettingAPI = require('utils/SettingAPI');
 var SettingActions = require('actions/SettingActions');
-var FormMixin = require('components/Form/Mixin.react');
 
 
 var SettingSection = React.createClass(_.assign(Base(SettingSectionStore), {
-  mixins: [FormMixin],
-
   content: function () {
     var setting = this.state.setting;
     var crid = '{crid}';
@@ -65,6 +62,18 @@ var SettingSection = React.createClass(_.assign(Base(SettingSectionStore), {
               HTML is not supported.
               </em>
             </div>
+          </div>
+        </div>
+
+        <div className='form-group'>
+          <label htmlFor='default_site_title' className='col-lg-2 col-md-2 col-xs-2'>
+            Excel Export Disclaimer
+          </label>
+          <div className='col-lg-10 col-md-10 col-xs-10'>
+            <textarea rows='6' id='export_excel_disclaimer' className='form-control'
+              value={ setting.export_excel_disclaimer }
+              onChange={ this.change('export_excel_disclaimer') } required={ true } >
+            </textarea>
           </div>
         </div>
 

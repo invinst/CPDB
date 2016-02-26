@@ -1,6 +1,7 @@
 from django.db import models
 
-from common.constants import (DEFAULT_SITE_TITLE, DEFAULT_META_DESCRIPTION, DEFAULT_META_KEYWORDS)
+from common.constants import (
+    DEFAULT_SITE_TITLE, DEFAULT_META_DESCRIPTION, DEFAULT_META_KEYWORDS, DEFAULT_EXCEL_EXPORT_DISCLAIMER)
 from officer.models import Story
 
 
@@ -15,6 +16,7 @@ class Setting(models.Model):
     requested_document_email_text = models.TextField(blank=True, null=True)
     meta_description = models.CharField(max_length=255, default=DEFAULT_META_DESCRIPTION)
     meta_keywords = models.CharField(max_length=255, default=DEFAULT_META_KEYWORDS)
+    export_excel_disclaimer = models.TextField(blank=True, default=DEFAULT_EXCEL_EXPORT_DISCLAIMER)
 
     DEFAULT_SITE_TITLE = DEFAULT_SITE_TITLE
 

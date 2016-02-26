@@ -1,33 +1,31 @@
 var React = require('react');
 
-var SessionStore = require('stores/SessionStore');
+var ShareBarActions = require('actions/ShareBarActions');
+var SiteTitleStore = require('stores/SiteTitleStore');
 
 
 var ShareBar = React.createClass({
   propTypes: {
-    sharedSessionHashId: React.PropTypes.string
+    sharedSessionHashId: React.PropTypes.string,
+    sharedUrl: React.PropTypes.string
   },
 
   getInitialState: function () {
     return {
-      'siteTitle': SessionStore.getTitle()
+      'siteTitle': SiteTitleStore.getSiteTitle()
     };
   },
 
   componentDidMount: function () {
-    SessionStore.addChangeListener(this._onSessionChange);
+    SiteTitleStore.addChangeListener(this._onSiteTitleChange);
   },
 
   componentWillUnmount: function () {
-    SessionStore.removeChangeListener(this._onSessionChange);
+    SiteTitleStore.removeChangeListener(this._onSiteTitleChange);
   },
 
-  sharedUrl: function () {
-    return window.location.href.replace(/data\/\w+/, 'data/' + this.props.sharedSessionHashId);
-  },
-
-  _onSessionChange: function () {
-    this.setState({'siteTitle': SessionStore.getTitle()});
+  _onSiteTitleChange: function () {
+    this.setState({'siteTitle': SiteTitleStore.getSiteTitle()});
   },
 
   inputClicked: function () {
@@ -38,28 +36,25 @@ var ShareBar = React.createClass({
     return [
       'https://twitter.com/intent/tweet',
       '?text=' + encodeURIComponent(this.state.siteTitle),
-      '&url=' + encodeURIComponent(this.sharedUrl())
+      '&url=' + encodeURIComponent(this.props.sharedUrl)
     ].join('');
   },
 
   showFBPopup: function () {
-    window.open(
-      'https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(this.sharedUrl()),
-      'pop', 'width=600, height=400, scrollbars=no'
-    );
+    ShareBarActions.shareToFB(this.props.sharedSessionHashId, this.state.siteTitle, this.props.sharedUrl);
   },
 
   render: function () {
     return (
       <div className='share-bar'>
-        <div className='share-bar__content-wrapper'>
-          <a onClick={ this.showFBPopup }>
+        <div className='share-bar-content-wrapper'>
+          <a onClick={ this.showFBPopup } className='share-bar-facebook-link'>
             <i className='fa fa-facebook-square'></i>
           </a>
-          <a href={ this.getTweetIntentUrl() }>
+          <a href={ this.getTweetIntentUrl() } className='share-bar-twitter-link'>
             <i className='fa fa-twitter-square'></i>
           </a>
-          <input type='text' value={ this.sharedUrl() }
+          <input type='text' value={ this.props.sharedUrl }
             readOnly={ true } onClick={ this.inputClicked } ref='urlText'/>
         </div>
       </div>

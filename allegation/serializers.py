@@ -8,8 +8,8 @@ class SunburstSerializer(object):
         self.data = self._serialize(officer_allegations)
 
     def _serialize(self, officer_allegations):
-        results = []
-        queue = [(self.structs, officer_allegations, results)]
+        children = []
+        queue = [(self.structs, officer_allegations, children)]
 
         while queue:
             structs, oas, output = queue.pop()
@@ -17,6 +17,7 @@ class SunburstSerializer(object):
                 sub_oas = oas.filter(struct['condition'])
                 obj = {
                     'name': struct['name'],
+                    'category': struct['tagValue']['category'],
                     'tagValue': struct['tagValue'],
                     'size': sub_oas.count(),
                 }
@@ -25,6 +26,12 @@ class SunburstSerializer(object):
                     del obj['size']
                     obj['children'] = []
                     queue.append((struct['children'], sub_oas, obj['children']))
+
+        results = {
+            'name': 'Allegations',
+            'category': '',
+            'children': children
+        }
 
         return results
 
