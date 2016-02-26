@@ -2,6 +2,7 @@ import json
 import os
 import threading
 import time
+from contextlib import contextmanager
 
 from bs4 import BeautifulSoup
 from django.core import management
@@ -465,3 +466,22 @@ class SimpleTestCase(DjangoSimpleTestCase, UserTestBaseMixin):
 
     def json(self, response):
         return json.loads(response.content.decode())
+
+
+@contextmanager
+def switch_to_popup(driver):
+    """
+    Switch to opened popup, switch to main window when leave context.
+
+    This context assume that there're only one popup opened.
+
+    Usage example:
+
+    with switch_to_popup(driver):
+        ('https://www.facebook.com' in browser.current_url).should.be.true
+    """
+    while len(driver.window_handles) < 2:
+        pass
+    driver.switch_to.window(driver.window_handles[1])
+    yield None
+    driver.switch_to.window(driver.window_handles[0])

@@ -29,6 +29,7 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
     return {
       navTabSection: !(isActive('officer') || isActive('investigator')),
       titleBox: isActive('data'),
+      shareButton: isActive('data'),
       subNav: isActive('story'),
       backLink: isActive('officer') || isActive('investigator'),
       welcomeMessage: isActive('findings')
@@ -100,9 +101,7 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
 
   renderTitleBox: function () {
     return (
-      <div className='site-title pull-left'>
-        <SiteTitle changable={ true } />
-      </div>
+      <SiteTitle changable={ true } />
     );
   },
 
@@ -179,7 +178,7 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
             </Link>
             { display.backLink ? <Back /> : '' }
             { display.titleBox ? this.renderTitleBox() : '' }
-            <ShareButton/>
+            { display.shareButton ? <ShareButton/> : '' }
             { display.navTabSection ? this.renderNavTabSection() : '' }
           </div>
           { display.subNav ? this.renderSubNav() : '' }

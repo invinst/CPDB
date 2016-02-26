@@ -76,9 +76,9 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
             <div className='tabs'>
               <SimpleTab navigation={ true }>
                 <div>
-                  <div className='tab-summary'>Summary</div>
-                  <div className='tab-complaints'>Complaints</div>
-                  <div className='tab-co-accused'>Co-accused</div>
+                  <div className='tab-summary' tabIdentifier='summary'>Summary</div>
+                  <div className='tab-complaints' tabIdentifier='complaints'>Complaints</div>
+                  <div className='tab-co-accused' tabIdentifier='coaccused'>Co-accused</div>
                 </div>
                 <div className='officer-page-content'>
                   <div>

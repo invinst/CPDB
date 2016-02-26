@@ -101,19 +101,19 @@ var SunburstChartD3 = {
       });
   },
 
-  findPathByName: function (name) {
+  findArc: function (name, category) {
     var path;
 
     if (svg) {
       svg.selectAll('path').each(function (d) {
-        if (d.name == name) {
+        if (d.name == name && d.category == category) {
           path = d;
         }
       });
 
       if (path && path.size == 0) {
         svg.selectAll('path').each(function (d) {
-          if (d.name == 'Allegations') {
+          if (d.name == 'Allegations' && d.category == '') {
             path = d;
           }
         });

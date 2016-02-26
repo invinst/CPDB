@@ -16,7 +16,7 @@ var FindingPage = require('components/IndexTabContent/FindingPage.react');
 var MethodPage = require('components/IndexTabContent/MethodPage.react');
 var StoryPage = require('components/IndexTabContent/StoryPage.react');
 var SessionAPI = require('utils/SessionAPI');
-var StringUtil = require('utils/StringUtil');
+var S = require('string');
 
 var RootRouter;
 
@@ -32,7 +32,7 @@ RootRouter = React.createClass({
       var siteTitle, url;
 
       if (!(nextState.params.session && nextState.params.title)) {
-        siteTitle = StringUtil.slugify(data.title || AppConstants.DEFAULT_SITE_TITLE);
+        siteTitle = S(data.title || AppConstants.DEFAULT_SITE_TITLE).slugify().s;
         url = ['', 'data', data.hash, siteTitle].join('/');
         replaceState(url);
       }

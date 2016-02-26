@@ -5,7 +5,7 @@ var _ = require('lodash');
 var React = require('react');
 var ReactDOM = require('react-dom');
 var classnames = require('classnames');
-var slugify = require('slugify');
+var S = require('string');
 var isMobile = require('ismobilejs');
 
 var Base = require('components/Base.react');
@@ -97,7 +97,7 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
   },
 
   renderNavTab: function (label) {
-    var target = slugify(label.toLowerCase().replace('&', ''));
+    var target = S(label.toLowerCase().replace('&', '')).slugify().s;
     var dataTarget = '#' + target;
     var tab = target;
     var tabClass;

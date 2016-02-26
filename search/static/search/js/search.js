@@ -79,11 +79,18 @@ function prettyLabels(rawLabel, term) {
 
     displayMessage: function (value) {
       var ul = this.menu.element.empty();
+
       ul.append(renderCategoryElement(value));
       this.isNewMenu = true;
       this.menu.refresh();
 
       ul.show();
+
+      // code from autocomplete to init ul display
+      this._resizeMenu();
+      ul.position( $.extend( {
+        of: this.element
+      }, this.options.position ) );
     }
   });
 })();

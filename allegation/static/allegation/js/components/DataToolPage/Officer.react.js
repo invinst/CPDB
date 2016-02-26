@@ -13,7 +13,7 @@ var CheckMark = require('components/DataToolPage/Officer/CheckMark.react');
 var Counter = require('components/DataToolPage/Counter.react');
 var OfficerPresenter = require('presenters/OfficerPresenter');
 var jQuery = require('utils/jQuery');
-var StringUtil = require('utils/StringUtil');
+var S = require('string');
 
 
 var Officer = React.createClass({
@@ -99,7 +99,7 @@ var Officer = React.createClass({
 
   officerLink: function (officer) {
     var presenter = OfficerPresenter(officer);
-    return '/officer/' + StringUtil.slugify(presenter.displayName) + '/' + officer.id;
+    return '/officer/' + S(presenter.displayName).slugify().s + '/' + officer.id;
   },
 
   renderAllegationsCount: function (officer) {

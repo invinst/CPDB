@@ -35,8 +35,22 @@ var SessionStore = _.assign(Base(_state), {
     return _state['data']['title'];
   },
 
+  getSiteTitle: function () {
+    return _state['siteTitle'];
+  },
+
   isNoQuery: function () {
     return _.isEmpty(_state.data.query.active_officers) && _.isEmpty(_state.data.query.filters);
+  },
+
+  serializeSelectedSunburstArc: function (arc) {
+    var name = arc.name;
+    var category = arc.category;
+
+    return {
+      name: name,
+      category: category
+    };
   },
 
   removeSessionCreatedListener: function (callback) {
@@ -54,8 +68,7 @@ var SessionStore = _.assign(Base(_state), {
 
 // Register callback to handle all updates
 SessionStore.dispatcherToken = AppDispatcher.register(function (action) {
-  var data,
-    title;
+  var data, title;
 
   switch (action.actionType) {
     case AppConstants.SAVE_SESSION:

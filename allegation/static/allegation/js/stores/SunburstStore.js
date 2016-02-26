@@ -29,16 +29,21 @@ var SunburstStore = _.assign(Base(_state), {
   },
 
   isSelected: function (category, value) {
+    // this function use FilterTag values to check if sunburst arc is selected
     var selected = _state.selected;
     return selected && selected.tagValue && selected.tagValue.category == category
       && selected.tagValue.value == value;
+  },
+
+  isRootSelected: function () {
+    return _state.selected.name == 'Allegations';
   },
 
   updateSelected: function () {
     var arc;
 
     if (_state.selected) {
-      arc = SunburstChartD3.findPathByName(_state.selected.name);
+      arc = SunburstChartD3.findArc(_state.selected.name, _state.selected.category);
 
       if (_state.selected.fromSession) {
         if (arc) {
@@ -69,10 +74,11 @@ var SunburstStore = _.assign(Base(_state), {
 
     if (this.isSelected(category, filter.value)) {
       _state.selected = _state.selected.parent;
-      tagValue = _state.selected.tagValue;
 
       // Add parent arc to filter if not at root
-      if (tagValue) {
+      if (!this.isRootSelected()) {
+        tagValue = _state.selected.tagValue;
+
         FilterTagStore.addFilter(tagValue);
         FilterTagStore.emitChange();
       }
@@ -146,8 +152,7 @@ var SunburstStore = _.assign(Base(_state), {
 
 // Register callback to handle all updates
 AppDispatcher.register(function (action) {
-  var selected,
-    arcName;
+  var selected, arcName, arcCategory;
 
   switch (action.actionType) {
     case AppConstants.RECEIVED_SUNBURST_DATA:
@@ -186,11 +191,16 @@ AppDispatcher.register(function (action) {
 
     case AppConstants.RECEIVED_SESSION_DATA:
       arcName = 'Allegations';
-      if (action.data && action.data.data.sunburst_arc) {
-        arcName = action.data.data.sunburst_arc;
+      arcCategory = '';
+
+      if (action.data && !_.isEmpty(action.data.data.selected_sunburst_arc)) {
+        arcName = action.data.data.selected_sunburst_arc.name;
+        arcCategory = action.data.data.selected_sunburst_arc.category;
       }
+
       _state.selected = {
         name: arcName,
+        category: arcCategory,
         fromSession: true
       };
       break;

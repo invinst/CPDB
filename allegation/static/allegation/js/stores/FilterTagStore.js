@@ -25,6 +25,10 @@ var matchValue = function (value) {
 
 
 var FilterTagStore = _.assign(Base(_state), {
+  isNoFilter: function () {
+    return _.isEmpty(_state.filters);
+  },
+
   update: function (category, values) {
     _state['filters'][category] = _.union([], _state['filters'][category], values);
   },

@@ -22,10 +22,7 @@ class SunburstView(TemplateView):
         query_set = OfficerAllegationQueryBuilder().build(query_dict)
         officer_allegations = OfficerAllegation.objects.filter(query_set)
         context['sunburst_data'] = {
-            'sunburst': {
-                'name': 'Allegations',
-                'children': SunburstSerializer(officer_allegations).data,
-            }
+            'sunburst': SunburstSerializer(officer_allegations).data
         }
         context['sunburst_arc'] = session.sunburst_arc
 

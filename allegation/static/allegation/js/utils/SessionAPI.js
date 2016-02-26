@@ -6,6 +6,7 @@ var SessionActions = require('actions/SessionActions');
 var SessionStore = require('stores/SessionStore');
 
 var ajax = null;
+var _timeout = false;
 
 
 var SessionAPI = {
@@ -39,26 +40,35 @@ var SessionAPI = {
     });
   },
 
-  updateSessionInfo: function (data) {
-    var currentData = SessionStore.getState()['data'];
-    var requestData;
+  updateSessionRequest: function (data) {
+    return $.ajax({
+      url: AppConstants.SESSION_API_ENDPOINT,
+      data: JSON.stringify(data),
+      contentType: 'application/json',
+      dataType: 'json',
+      type: 'PUT'
+    });
+  },
 
-    data = _.extend(currentData, data);
-    requestData = {
-      'request_data': JSON.stringify(data)
-    };
+  updateSessionInfo: function (data) {
+    data = _.extend(SessionStore.getState()['data'], data);
 
     if (!_.isEmpty(data.hash)) {
-      jQuery.ajax({
-        url: AppConstants.SESSION_API_ENDPOINT,
-        data: requestData,
-        dataType: 'json',
-        type: 'PUT',
-        success: function (data) {
-          SessionActions.receivedUpdatedSessionInfoData(data);
-        }
+      SessionAPI.updateSessionRequest(data)
+      .done(function (result) {
+        SessionActions.receivedUpdatedSessionInfoData(result);
       });
     }
+  },
+
+  updateSiteTitleDelayed500ms: function (siteTitle) {
+    if (_timeout) {
+      clearTimeout(_timeout);
+    }
+
+    _timeout = setTimeout(function () {
+      SessionAPI.updateSessionInfo({'title': siteTitle});
+    }, 500);
   },
 
   createSharedSession: function (hashId) {

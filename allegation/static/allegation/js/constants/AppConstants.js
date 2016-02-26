@@ -33,6 +33,7 @@ module.exports = {
   SAVE_SESSION: c++,
   SESSION_CREATED: c++,
   RECEIVED_SHARED_SESSION: c++,
+  CLOSE_SHARE_BAR: c++,
 
   ENTER_EMBED_MODE: c++,
   LEAVE_EMBED_MODE: c++,
@@ -51,6 +52,8 @@ module.exports = {
 
   SET_STORY_DOCUMENT_THUMB: c++,
   RECEIVE_STORIES: c++,
+
+  CHANGE_SITE_TITLE: c++,
 
   ADD_TAG: c++,
   TOGGLE_TAGS: c++,
