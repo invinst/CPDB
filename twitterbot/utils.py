@@ -69,6 +69,7 @@ class CPDBTweetHandler(tweepy.StreamListener):
 
         texts.append(status.text)
         texts += self.parse_linked_websites(status.entities['urls'])
+        texts += self.parse_hashtags(status)
 
         return ' '.join(texts)
 
@@ -90,6 +91,13 @@ class CPDBTweetHandler(tweepy.StreamListener):
             texts.append(soup.getText())
 
         return texts
+
+    def parse_hashtags(self, status):
+        hashtags = status.entities.get('hashtags', [])
+        words = []
+        for hashtag in hashtags:
+            words += re.findall('[A-Z][a-z]*', hashtag['text'])
+        return words
 
     def sanitize_text(self, text):
         text = re.sub('(\t|\n|\r|\s)+', ' ', text)
