@@ -28,19 +28,21 @@ var Summary = React.createClass({
 
   // end embedding
   componentDidMount: function () {
+    var that = $(ReactDOM.findDOMNode(this));
+    var height = that.parent().height();
+    var i, tab;
+
     SummaryStore.addChangeListener(this._onChange);
     SummaryStore.addSummaryListener(this._changeView);
 
-    var that = $(ReactDOM.findDOMNode(this));
-    var height = that.parent().height();
     setTimeout(function () {
       that.find('.child-rows').css('max-height', height);
     }, 1000);
 
     if (this.props.tabs) {
       if (this.props.tabs.tabs.length > 1) {
-        for (var i =0; i < this.props.tabs.length; i++) {
-          var tab = this.props.tabs.tabs[i];
+        for (i =0; i < this.props.tabs.length; i++) {
+          tab = this.props.tabs.tabs[i];
           if (tab.drawChart) {
             this.props.tabs.tabs[i] = this;
             /* I am sorry for this code, blame: Bang!!!! */
@@ -92,24 +94,30 @@ var Summary = React.createClass({
       j,
       rows = [],
       childRows = [],
-      category;
+      category,
+      isCurrentActive,
+      childRowGroup,
+      subcategory,
+      id,
+      className;
+
     for (i = 0; i < this.state.rows.length; i++) {
       category = this.state.rows[i];
       category.tagValue = {
         text: category.name,
         value: ['cat__category', category.name]
       };
-      var isCurrentActive = (
+      isCurrentActive = (
         category.name == SummaryStore.getCurrentActive()
       );
       rows.push(<SummaryRow key={ i } category={ category } isCurrentActive={ isCurrentActive } summary={ this }/>);
     }
 
-    var childRowGroup = [];
+    childRowGroup = [];
     for (j = 0; j < this.state.rows.length; j++) {
       category = this.state.rows[j];
       for (i = 0; i < category.subcategories.length; i++) {
-        var subcategory = category.subcategories[i];
+        subcategory = category.subcategories[i];
         subcategory.tagValue = {
           text: subcategory.name,
           value: ['cat__cat_id', subcategory.cat_id]
@@ -119,7 +127,7 @@ var Summary = React.createClass({
             subcategory={ subcategory } summary={ this }/>
         );
       }
-      var id = 'child-rows-' + category.id;
+      id = 'child-rows-' + category.id;
       childRowGroup.push(
         <div className='child-rows' id={ id } key={ id }>
           { childRows }
@@ -127,7 +135,7 @@ var Summary = React.createClass({
       );
       childRows = [];
     }
-    var className = this.props.currentActive ? 'selected' : '';
+    className = this.props.currentActive ? 'selected' : '';
     return (
       <div id='summary-container' onClick={ this.containerClick }>
         <div id='summary' className={ className }>

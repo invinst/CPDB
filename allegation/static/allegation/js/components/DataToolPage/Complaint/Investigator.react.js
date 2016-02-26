@@ -21,6 +21,7 @@ var Investigator = React.createClass({
   render: function () {
     var investigator = this.props.complaint.investigator;
     var more = '';
+    var description;
 
     var progressStyle = {
       width: '100%'
@@ -31,7 +32,7 @@ var Investigator = React.createClass({
     };
 
     if (investigator.complaint_count > 1) {
-      var description = (
+      description = (
         <div>{ investigator.complaint_count } { pluralize('case', investigator.complaint_count) }</div>
       );
       if (investigator.discipline_count) {

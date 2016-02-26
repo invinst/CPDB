@@ -13,9 +13,12 @@ var NavActions = require('actions/NavActions');
 var SessionAPI = require('utils/SessionAPI');
 var SiteTitle = require('components/Shared/SiteTitle.react');
 var ShareButton = require('components/DataToolPage/Share/ShareButton.react');
+var Nav;
+
+require('utils/jQuery');
 
 
-var Nav = React.createClass(_.assign(Base(AppStore), {
+Nav = React.createClass(_.assign(Base(AppStore), {
   getDefaultProps: function () {
     return {
       page: 'data',
@@ -88,11 +91,12 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
   },
 
   navigateSub: function (event) {
-    event.preventDefault();
     var $body = $('body');
     var navBarHeight = 90;
-
     var $element = $($(event.currentTarget).data('target'));
+
+    event.preventDefault();
+
     $body.animate({
       scrollTop: $element.offset().top - navBarHeight
     }, 1000);

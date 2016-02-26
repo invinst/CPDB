@@ -1,5 +1,4 @@
 var _ = require('lodash');
-require('utils/jQuery');
 
 var FilterTagStore = require('stores/FilterTagStore');
 var OfficerListStore = require('stores/OfficerListStore');

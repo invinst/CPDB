@@ -37,8 +37,10 @@ var OfficerDetail = React.createClass({
     });
     var mapDiv = '';
     var radius = 8;
+    var options;
+
     if (hasMap) {
-      var options = {
+      options = {
         defaultZoom: 10,
         maxZoom: 15,
         minZoom: 8,

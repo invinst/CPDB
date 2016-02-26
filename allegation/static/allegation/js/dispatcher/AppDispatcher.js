@@ -1,11 +1,12 @@
 var Dispatcher = require('flux').Dispatcher;
 var AppDispatcher = new Dispatcher();
+var sinon, _callbacks;
 
 
 // stub AppDispatcher if we're running tests
 if (global.Mocha !== undefined) {
-  var sinon = require('sinon');
-  var _callbacks = [];
+  sinon = require('sinon');
+  _callbacks = [];
 
   AppDispatcher.register = function (callback) {
     _callbacks.push(callback);

@@ -68,6 +68,8 @@ var SessionStore = _.assign(Base(_state), {
 
 // Register callback to handle all updates
 SessionStore.dispatcherToken = AppDispatcher.register(function (action) {
+  var data, title;
+
   switch (action.actionType) {
     case AppConstants.SAVE_SESSION:
       // SessionStore.updateSession(action.data);
@@ -75,11 +77,18 @@ SessionStore.dispatcherToken = AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.RECEIVED_SESSION_DATA:
-      var data = action.data.data;
+      data = action.data.data;
       data['title'] = data['title'] || AppConstants.DEFAULT_SITE_TITLE;
       _state['data'] = data;
       _state.siteTitle = data.title;
       _state['data']['active_tab'] = data.active_tab;
+      SessionStore.emitChange();
+      break;
+
+    case AppConstants.UPDATE_TITLE:
+      title = action.title;
+      _state['data']['title'] = title;
+      _state.siteTitle = title;
       SessionStore.emitChange();
       break;
 

@@ -19,11 +19,11 @@ function slugify(title) {
   return lowerCaseTitle.replace(/\s/g, '-').trim();
 }
 
-function prettyLabels(label, term) {
-  label = label.toString();
-
+function prettyLabels(rawLabel, term) {
+  var label = rawLabel.toString();
   var re = new RegExp('('+term+')', 'i');
   var result = label.replace(/-/g, ' ');
+
   result = result.replace(re, '<span class=\'term\'>$1</span>');
   return result;
 }

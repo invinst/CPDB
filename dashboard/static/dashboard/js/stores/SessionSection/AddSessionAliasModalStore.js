@@ -27,11 +27,15 @@ var AddSessionAliasModalStore = _.assign(Base(_state), {
 });
 
 AppDispatcher.register(function (action) {
+  var alias,
+    target,
+    newTarget;
+
   switch (action.actionType) {
     case AppConstants.SHOW_ADD_SESSION_ALIAS_MODAL:
-      var alias = (action.data && action.data.alias) ? action.data.alias : '';
-      var target = (action.data && action.data.target) ? action.data.target : '';
-      var newTarget = target ? false : true;
+      alias = (action.data && action.data.alias) ? action.data.alias : '';
+      target = (action.data && action.data.target) ? action.data.target : '';
+      newTarget = target ? false : true;
 
       _state.isOpen = true;
       _state.formValid = false;

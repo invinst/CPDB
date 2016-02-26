@@ -63,10 +63,12 @@ var ReadMore = React.createClass({
 
   render: function () {
     var contentStyle = {};
+    var paragraphClass;
+
     if (!this.state.expanded) {
       contentStyle.maxHeight = this.state.maxHeight;
     }
-    var paragraphClass = classnames({
+    paragraphClass = classnames({
       'has-ellipsis': !this.state.expanded
     });
 

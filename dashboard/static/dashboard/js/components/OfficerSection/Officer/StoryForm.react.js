@@ -8,11 +8,13 @@ var FormMixin = require('../../Form/Mixin.react');
 var StoryFormStore = require('../../../stores/OfficerSection/Officer/StoryFormStore');
 var StoryFormActions = require('../../../actions/OfficerSection/Officer/StoryFormActions');
 var StoryAPI = require('../../../utils/StoryAPI');
+var StoryForm;
+
 global.jQuery = require('jquery');
 require('bootstrap-datepicker');
 
 
-var StoryForm = React.createClass(_.assign(Base(StoryFormStore), {
+StoryForm = React.createClass(_.assign(Base(StoryFormStore), {
   mixins: [FormMixin],
   onChange: function (field, e) {
     var value = e.target.value;

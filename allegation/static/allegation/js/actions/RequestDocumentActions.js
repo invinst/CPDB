@@ -24,9 +24,11 @@ var RequestDocumentActions = {
         RequestDocumentActions.setRequested(crid);
       },
       error: function (xhr) {
-        for (var key in xhr.responseJSON) {
-          var errors = xhr.responseJSON[key];
-          for (var i = 0; i < errors.length; i++) {
+        var key, errors, i;
+
+        for (key in xhr.responseJSON) {
+          errors = xhr.responseJSON[key];
+          for (i = 0; i < errors.length; i++) {
             toastr.error(errors[i]);
           }
         }
