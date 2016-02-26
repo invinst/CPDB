@@ -28,7 +28,7 @@ describe('Overlay component', function () {
     ReactTestUtils.scryRenderedDOMComponentsWithClass(overlay, 'active').length.should.be.equal(0);
   });
 
-  it('active/deactive overlay when store say so', function () {
+  it('activate overlay when store say so', function () {
     sinon.stub(OverlayStore, 'getState', function () {
       return {
         active: true
@@ -44,7 +44,7 @@ describe('Overlay component', function () {
     ReactTestUtils.scryRenderedDOMComponentsWithClass(overlay, 'active').length.should.be.equal(1);
   });
 
-  it('deactive overlay when store say so', function () {
+  it('deactivate overlay when store say so', function () {
     sinon.stub(OverlayStore, 'getState', function () {
       return {
         active: false

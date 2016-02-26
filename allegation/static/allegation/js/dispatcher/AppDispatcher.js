@@ -17,6 +17,7 @@ if (global.Mocha !== undefined) {
   };
 
   sinon.stub(AppDispatcher, 'dispatch');
+  sinon.stub(AppDispatcher, 'waitFor');
 }
 
 module.exports = AppDispatcher;
