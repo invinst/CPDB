@@ -10,16 +10,24 @@ from search.services.suggest.suggest_investigator import SuggestInvestigator
 from search.services.suggest.suggest_officer import SuggestOfficerName
 from twitterbot.models import Response, TwitterSearch, TwitterResponse
 
+ERR_DUPLICATED_RESPONSE = 187
+IGNORED_ERROR_CODES = [
+    ERR_DUPLICATED_RESPONSE,
+]
+
 
 class TwitterBot:
-    def __init__(self):
+    def __init__(self, **kwargs):
         self.api = None
+        self.tweet_handler = None
+        self.stream = None
+        self.async = kwargs.get('async', False)
 
     def start(self):
         self.auth()
 
-        tweet_handler = CPDBTweetHandler(self.api)
-        self.listen_to_tweets(tweet_handler)
+        self.tweet_handler = CPDBTweetHandler(self.api)
+        self.listen_to_tweets(self.tweet_handler)
 
     def auth(self):
         auth = tweepy.OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET)
@@ -29,20 +37,19 @@ class TwitterBot:
         self.api.verify_credentials()
 
     def listen_to_tweets(self, handler):
-        stream = tweepy.Stream(auth=self.api.auth, listener=handler)
-        stream.userstream()
+        self.stream = tweepy.Stream(auth=self.api.auth, listener=handler)
+        self.stream.userstream(async=self.async)
 
 
 class CPDBTweetHandler(tweepy.StreamListener):
     def on_status(self, status):
         try:
             self.reply(status)
-            if hasattr(status, 'retweeted_status'):
+            if hasattr(status, 'retweeted_status') and status.retweeted_status:
                 self.reply(status.retweeted_status)
         except tweepy.TweepError as e:
             # Errors that should not stop the bot
-            # 187: Duplicated status
-            if int(e.api_code) in [187]:
+            if e.api_code in IGNORED_ERROR_CODES:
                 pass
 
     def reply(self, status):
@@ -61,7 +68,7 @@ class CPDBTweetHandler(tweepy.StreamListener):
             search, created = TwitterSearch.objects.get_or_create(query=query)
             TwitterResponse(search=search, response=response, user=status.user.screen_name).save()
 
-            response = '@{user} {msg}'.format(user=status.user.screen_name, msg=response)
+            response = response.replace('{user}', status.user.screen_name)
             self.api.update_status(response)
 
     def get_all_content(self, status):
@@ -95,8 +102,10 @@ class CPDBTweetHandler(tweepy.StreamListener):
     def parse_hashtags(self, status):
         hashtags = status.entities.get('hashtags', [])
         words = []
+
         for hashtag in hashtags:
             words += re.findall('[A-Z][a-z]*', hashtag['text'])
+
         return words
 
     def sanitize_text(self, text):
@@ -115,34 +124,42 @@ class CPDBTweetHandler(tweepy.StreamListener):
             if name and name != ' ' and len(name) > 6:
                 names.append(name)
 
-        return set(names)
+        return names
 
     def build_officer_reponses(self, names):
         responses = []
+        pks = []
 
         for name in names:
             search_results = SuggestOfficerName.query(name)
             if search_results['Officer']:
-                response = Response.objects.get(type='officer')
-                context = search_results['Officer'][0]['tag_value']
-                context['obj'] = Officer.objects.get(pk=search_results['Officer'][0]['tag_value']['value'])
-                msg = response.get_message(context)
+                pk = search_results['Officer'][0]['tag_value']['value']
+                if pk not in pks:
+                    response = Response.objects.get(type='officer')
+                    context = search_results['Officer'][0]['tag_value']
+                    context['obj'] = Officer.objects.get(pk=pk)
+                    msg = response.get_message(context)
 
-                responses.append(msg)
+                    responses.append(msg)
+                    pks.append(pk)
 
         return responses
 
     def build_investigator_reponses(self, names):
         responses = []
+        pks = []
 
         for name in names:
             search_results = SuggestInvestigator.query(name)
             if search_results['Investigator']:
-                response = Response.objects.get(type='investigator')
-                context = search_results['Investigator'][0]['tag_value']
-                context['obj'] = Investigator.objects.get(pk=search_results['Investigator'][0]['tag_value']['value'])
-                msg = response.get_message(context)
+                pk = search_results['Investigator'][0]['tag_value']['value']
+                if pk not in pks:
+                    response = Response.objects.get(type='investigator')
+                    context = search_results['Investigator'][0]['tag_value']
+                    context['obj'] = Investigator.objects.get(pk=pk)
+                    msg = response.get_message(context)
 
-                responses.append(msg)
+                    responses.append(msg)
+                    pks.append(pk)
 
         return responses

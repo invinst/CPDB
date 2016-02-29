@@ -1,0 +1,44 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Authorization: ['OAuth oauth_nonce="65305967539575697551456719311", oauth_timestamp="1456719311",
+          oauth_version="1.0", oauth_signature_method="HMAC-SHA1", oauth_consumer_key="nGGG8l0DOqysJ0rukJOXqJWEy",
+          oauth_token="4880788160-ulBmMbkcAgcIHu5F2ykwsCl0KYAK11POXNFEt0m", oauth_signature="dDR%2B8zImTI1Li9XxANUVoqacx9I%3D"']
+      Host: [api.twitter.com]
+    method: GET
+    uri: https://api.twitter.com/1.1/account/verify_credentials.json
+  response:
+    body: {string: '{"id":4880788160,"id_str":"4880788160","name":"ThrowAway","screen_name":"giangthrowaway1","location":"","description":"","url":null,"entities":{"description":{"urls":[]}},"protected":false,"followers_count":1,"friends_count":0,"listed_count":0,"created_at":"Tue
+        Feb 09 01:57:02 +0000 2016","favourites_count":0,"utc_offset":null,"time_zone":null,"geo_enabled":false,"verified":false,"statuses_count":98,"lang":"en","status":{"created_at":"Fri
+        Feb 26 03:16:54 +0000 2016","id":703056114603024384,"id_str":"703056114603024384","text":"@CPDbot
+        #JasonVanDyke 3","truncated":false,"source":"\u003ca href=\"http:\/\/twitter.com\"
+        rel=\"nofollow\"\u003eTwitter Web Client\u003c\/a\u003e","in_reply_to_status_id":null,"in_reply_to_status_id_str":null,"in_reply_to_user_id":4923697764,"in_reply_to_user_id_str":"4923697764","in_reply_to_screen_name":"CPDbot","geo":null,"coordinates":null,"place":null,"contributors":null,"is_quote_status":false,"retweet_count":0,"favorite_count":0,"entities":{"hashtags":[{"text":"JasonVanDyke","indices":[8,21]}],"symbols":[],"user_mentions":[{"screen_name":"CPDbot","name":"Citizens
+        Police Data","id":4923697764,"id_str":"4923697764","indices":[0,7]}],"urls":[]},"favorited":false,"retweeted":false,"lang":"und"},"contributors_enabled":false,"is_translator":false,"is_translation_enabled":false,"profile_background_color":"F5F8FA","profile_background_image_url":null,"profile_background_image_url_https":null,"profile_background_tile":false,"profile_image_url":"http:\/\/abs.twimg.com\/sticky\/default_profile_images\/default_profile_3_normal.png","profile_image_url_https":"https:\/\/abs.twimg.com\/sticky\/default_profile_images\/default_profile_3_normal.png","profile_link_color":"2B7BB9","profile_sidebar_border_color":"C0DEED","profile_sidebar_fill_color":"DDEEF6","profile_text_color":"333333","profile_use_background_image":true,"has_extended_profile":false,"default_profile":true,"default_profile_image":true,"following":false,"follow_request_sent":false,"notifications":false}'}
+    headers:
+      cache-control: ['no-cache, no-store, must-revalidate, pre-check=0, post-check=0']
+      content-disposition: [attachment; filename=json.json]
+      content-length: ['2013']
+      content-type: [application/json;charset=utf-8]
+      date: ['Mon, 29 Feb 2016 04:15:12 GMT']
+      expires: ['Tue, 31 Mar 1981 05:00:00 GMT']
+      last-modified: ['Mon, 29 Feb 2016 04:15:12 GMT']
+      pragma: [no-cache]
+      server: [tsa_a]
+      set-cookie: [lang=en; Path=/, 'guest_id=v1%3A145671931215504852; Domain=.twitter.com;
+          Path=/; Expires=Wed, 28-Feb-2018 04:15:12 UTC']
+      status: [200 OK]
+      strict-transport-security: [max-age=631138519]
+      x-access-level: [read-write]
+      x-connection-hash: [2320453a694bcf718a8f4941642b0da5]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-rate-limit-limit: ['15']
+      x-rate-limit-remaining: ['13']
+      x-rate-limit-reset: ['1456720150']
+      x-response-time: ['42']
+      x-transaction: [e729cf4007444e3a]
+      x-twitter-response-tags: [BouncerExempt, BouncerCompliant]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+version: 1
