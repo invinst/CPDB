@@ -14,6 +14,9 @@ var SessionListStore = _.assign(Base(_state), {
 });
 
 AppDispatcher.register(function (action) {
+  var data,
+    alias;
+
   switch (action.actionType) {
     case AppConstants.RECEIVED_SESSIONS_ALIAS_DATA:
       _state['data'] = action.data['results'];
@@ -29,7 +32,7 @@ AppDispatcher.register(function (action) {
 
     case AppConstants.RECEIVED_MORE_SESSIONS_ALIAS_DATA:
       if (!_.isEmpty(action.data)) {
-        var data = _state['data'].concat(action.data);
+        data = _state['data'].concat(action.data);
         _state['data'] = data;
         _state['locked'] = false;
         SessionListStore.emitChange();
@@ -37,7 +40,7 @@ AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.DELETED_SESSION_ALIAS:
-      var alias = action.data;
+      alias = action.data;
       toastr.error('Delete alias successfully.');
       _state.data.splice(_state.data.indexOf(alias), 1);
       SessionListStore.emitChange();

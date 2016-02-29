@@ -19,12 +19,12 @@ var Breadcrumb = React.createClass(_.assign(Base(SunburstStore), {
 
   renderBreadcrumb: function () {
     var arc = this.state.hovering || SunburstStore.getSelected();
+    var breadcrumb = SunburstStore.getAncestorArcs(arc);
+    var that = this;
+
     if (!arc) {
       return '';
     }
-
-    var breadcrumb = SunburstStore.getAncestorArcs(arc);
-    var that = this;
 
     return _.map(breadcrumb, function (item, key) {
       var total = SunburstStore.getArcSize(item);

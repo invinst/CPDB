@@ -50,6 +50,8 @@ var ComplaintListStore = assign({}, EventEmitter.prototype, {
 
 
 AppDispatcher.register(function (action) {
+  var data;
+
   switch (action.actionType) {
     case AppConstants.SET_ACTIVE_COMPLAINT_LIST_FILTER:
       ComplaintListStore.setActiveFilter(action.filter);
@@ -107,7 +109,7 @@ AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.RECEIVED_SESSION_DATA:
-      var data = action.data.data;
+      data = action.data.data;
       _state['activeComplaints'] = data['query']['activeComplaints'] || [];
       ComplaintListStore.emitChange();
       break;

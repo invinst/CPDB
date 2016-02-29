@@ -12,8 +12,13 @@ var SimpleTab = React.createClass({
   },
 
   getInitialState: function () {
+    var tabId = window.location.hash.replace('#', '');
+    var tabIds = this.getTabIds();
+    var tabIndex = tabIds.indexOf(tabId);
+    var activeIndex = tabIndex > -1 ? tabIndex : 0;
+
     return {
-      'activeIndex': 0,
+      'activeIndex': activeIndex,
       'previousIndex': -1
     };
   },
@@ -28,7 +33,9 @@ var SimpleTab = React.createClass({
   },
 
   getIndexOfNav: function (parent, nav) {
-    for (var i = 0; i < parent.length; i++) {
+    var i;
+
+    for (i = 0; i < parent.length; i++) {
       if (parent[i] == nav) {
         return i;
       }
@@ -40,9 +47,11 @@ var SimpleTab = React.createClass({
     var node = e.target;
     var parentChildren = node.parentNode.children;
     var index = this.getIndexOfNav(parentChildren, node);
+    var tabIdentifier = HelperUtil.format('#{tabId}', {'tabId': this.getTabIds()[index]});
 
     if (index != -1) {
       this.setActiveTab(index);
+      window.history.pushState(null, '', tabIdentifier);
     }
   },
 
@@ -72,6 +81,12 @@ var SimpleTab = React.createClass({
   renderTabContent: function () {
     var tabs = this.props.children[1];
     return this.renderChildren('tab-content', tabs);
+  },
+
+  getTabIds: function () {
+    return this.props.children[0].props.children.map(function (child) {
+      return child.props.tabIdentifier;
+    });
   },
 
   renderNavigation: function () {

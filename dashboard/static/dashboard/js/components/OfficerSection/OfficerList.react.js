@@ -4,9 +4,12 @@ var Base = require('../Base.react');
 var OfficerActions = require('../../actions/OfficerSection/OfficerActions');
 var OfficerListStore = require('../../stores/OfficerSection/OfficerListStore');
 var SearchStore = require('../../stores/OfficerSection/SearchStore');
+var OfficerList;
 
 global.jQuery = require('jquery');
-var OfficerList = React.createClass(_.assign(Base(OfficerListStore), {
+
+
+OfficerList = React.createClass(_.assign(Base(OfficerListStore), {
 
   clickOfficer: function (officer) {
     OfficerActions.setOfficer(officer);

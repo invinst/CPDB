@@ -1,3 +1,5 @@
+from selenium.webdriver.common.keys import Keys
+
 from allegation.factories import (
     AllegationCategoryFactory, OfficerAllegationFactory)
 from allegation.tests.utils.outcome_filter import \
@@ -148,6 +150,20 @@ class AllegationFilterTestCase(BaseLiveTestCase):
 
         self.number_of_pinned_tags().should.equal(0)
         self.number_of_tags().should.equal(2)
+
+    def test_press_enter_not_refresh_page(self):
+        query = 'query that has no results'
+        autocomplete_element = self.find('#autocomplete')
+        # This is to clear input from other tests
+        autocomplete_element.clear()
+
+        autocomplete_element.send_keys(query)
+        self.until(lambda: self.should_see_text('No matches found'))
+
+        autocomplete_element.send_keys(Keys.ENTER)
+        self.sleep(3)
+
+        autocomplete_element.get_attribute('value').should.equal(query)
 
     def number_of_tags(self):
         return len(self.find_all('span.tag'))

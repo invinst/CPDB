@@ -15,8 +15,9 @@ var InvestigatorPage = React.createClass(_.assign(Base(InvestigatorPageStore), {
   },
 
   componentDidMount: function () {
-    InvestigatorPageStore.addChangeListener(this._onChange);
     var investigatorId = this.props.params.id || '';
+
+    InvestigatorPageStore.addChangeListener(this._onChange);
     this.initAPIRequest(investigatorId);
   },
 

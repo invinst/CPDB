@@ -53,10 +53,12 @@ var IndexPage = React.createClass({
 
     var scrollTop = $(window).scrollTop();
     var cond = scrollTop >= $welcome.height();
+    var opacity;
+
     $landingNav.toggleClass('fixed-nav', cond);
     $landingNav.toggleClass('border-top', scrollTop != 0);
     $main.toggleClass('margin-top-45', cond);
-    var opacity = scrollTop / $welcome.height();
+    opacity = scrollTop / $welcome.height();
     $cpdpLogo.css('opacity', opacity);
     $iiLogo.css('opacity', 1 - opacity);
     this.syncNavState();
@@ -66,10 +68,11 @@ var IndexPage = React.createClass({
     var navBarHeight = 90;
     var navItems = $('.landing-nav .sub-nav a');
     var currentPos = $(window).scrollTop() + navBarHeight;
+    var index, item, $control;
 
-    for (var index = 0; index < navItems.length; index++) {
-      var item = $(navItems[index]);
-      var $control = $(item.data('target'));
+    for (index = 0; index < navItems.length; index++) {
+      item = $(navItems[index]);
+      $control = $(item.data('target'));
 
       if (currentPos >= $control.offset().top) {
         navItems.removeClass('active');
@@ -86,8 +89,12 @@ var IndexPage = React.createClass({
       'landing-page': !(isActive('data') || isActive('officer') || isActive('investigator'))
     });
 
+    var mainClassName = classnames('main', {
+      'margin-top-45': isActive('data')
+    });
+
     return (
-      <div className='main'>
+      <div className={ mainClassName }>
         <div className='tab-content'>
           <div role='tabpanel' className={ tabPanelClass }>
             { this.props.children }

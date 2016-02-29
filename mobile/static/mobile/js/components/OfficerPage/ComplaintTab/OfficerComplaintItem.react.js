@@ -17,8 +17,9 @@ var OfficerComplaintItem = React.createClass({
 
   renderCircles: function (allegationCounts) {
     var circles = [];
+    var i;
 
-    for (var i = 0; i < allegationCounts.length; i++) {
+    for (i = 0; i < allegationCounts.length; i++) {
       circles.push(
         <div className={ cx('circle-wrapper', HelperUtil.format('officer-{index}', {'index': i})) } key={ i }>
           <span className={ cx('circle', OfficerUtil.getColorLevelClass('circle', allegationCounts[i])) } />

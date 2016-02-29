@@ -1,6 +1,5 @@
 var _ = require('lodash');
 var React = require('react');
-require('utils/jQuery');
 var classnames = require('classnames');
 
 var Base = require('components/Base.react');

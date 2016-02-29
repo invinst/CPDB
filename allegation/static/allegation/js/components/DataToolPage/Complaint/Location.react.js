@@ -38,12 +38,13 @@ var Location = React.createClass({
   renderMap: function () {
     var allegation = this.props.complaint.allegation;
     var mapImage = '';
+    var lat, lng, centerLng, locationImage;
 
     if (allegation.point.lat) {
-      var lat = allegation.point.lat;
-      var lng = allegation.point.lng;
-      var centerLng = lng + 0.02;
-      var locationImage = '(' + lng + ',' + lat + ')/' + centerLng + ',' + lat + ',12/900x180.png';
+      lat = allegation.point.lat;
+      lng = allegation.point.lng;
+      centerLng = lng + 0.02;
+      locationImage = '(' + lng + ',' + lat + ')/' + centerLng + ',' + lat + ',12/900x180.png';
 
       if (allegation.add1 && allegation.add2) {
         mapImage = 'http://api.tiles.mapbox.com/v4/mapbox.streets/pin-l-cross+482';

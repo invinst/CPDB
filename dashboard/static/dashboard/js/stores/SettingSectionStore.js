@@ -12,8 +12,10 @@ var _state = {
 
 var SettingSectionStore = _.assign(Base(_state), {
   generateTags: function () {
+    var tags;
+
     if (_state.setting['story_types_order'] != undefined) {
-      var tags = _.compact(_.union(_state.setting['story_types_order'].split(','), _state.storyTypes));
+      tags = _.compact(_.union(_state.setting['story_types_order'].split(','), _state.storyTypes));
       _state.tags = tags.map(function (value, index) {
         return {
           id: index,

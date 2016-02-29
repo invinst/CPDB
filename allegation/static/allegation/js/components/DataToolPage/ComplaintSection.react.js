@@ -1,4 +1,3 @@
-require('utils/jQuery');
 var React = require('react');
 var PropTypes = React.PropTypes;
 var classnames = require('classnames');
@@ -54,10 +53,11 @@ var ComplaintSection = React.createClass({
 
   renderComplaints: function (complaints, officer) {
     var rows = [];
+    var i, complaint, officerAllegation;
 
-    for (var i = 0; i < complaints.length; i++) {
-      var complaint = complaints[i];
-      var officerAllegation = complaint['officer_allegation'];
+    for (i = 0; i < complaints.length; i++) {
+      complaint = complaints[i];
+      officerAllegation = complaint['officer_allegation'];
       rows.push(
         <ComplaintListRow
           key={ i }

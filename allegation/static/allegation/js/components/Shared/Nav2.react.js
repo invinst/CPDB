@@ -14,9 +14,12 @@ var SessionAPI = require('utils/SessionAPI');
 var SiteTitle = require('components/Shared/SiteTitle.react');
 var WagtailPagesStore = require('stores/WagtailPagesStore');
 var ShareButton = require('components/DataToolPage/Share/ShareButton.react');
+var Nav;
+
+require('utils/jQuery');
 
 
-var Nav = React.createClass({
+Nav = React.createClass({
   propTypes: {
     isActive: PropTypes.func,
     navTabs: PropTypes.array
@@ -106,11 +109,11 @@ var Nav = React.createClass({
   },
 
   navigateSub: function (event) {
-    event.preventDefault();
     var $body = $('body');
+    var $element = $($(event.currentTarget).data('target'));
     var navBarHeight = 90;
 
-    var $element = $($(event.currentTarget).data('target'));
+    event.preventDefault();
     $body.animate({
       scrollTop: $element.offset().top - navBarHeight
     }, 1000);
@@ -169,9 +172,7 @@ var Nav = React.createClass({
 
   renderTitleBox: function () {
     return (
-      <div className='site-title pull-left'>
-        <SiteTitle changable={ true } />
-      </div>
+      <SiteTitle changable={ true } />
     );
   },
 
@@ -214,18 +215,21 @@ var Nav = React.createClass({
 
   render: function () {
     var display = this.getDisplayComponent();
+    var navClassName = classnames('landing-nav', {
+      'fixed-nav': display.fixedNav
+    });
 
     return (
       <div className='landing-page fixed-nav'>
         { display.welcomeMessage ? this.renderWelcome() : '' }
-        <nav className='landing-nav'>
+        <nav className={ navClassName }>
           <div className='items clearfix'>
             <Link to={ this.getIndexLink() } onClick={ this.startNewSession } id='logo_link'>
               <img className='pull-left cpdp-logo' src='/static/img/cpdp-logo.svg' />
             </Link>
             { display.backLink ? <Back /> : '' }
             { display.titleBox ? this.renderTitleBox() : '' }
-            <ShareButton/>
+            { display.shareButton ? <ShareButton/> : '' }
             { display.navTabSection ? this.renderNavTabSection() : '' }
           </div>
           { display.subNav ? this.renderSubNav() : '' }

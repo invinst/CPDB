@@ -65,11 +65,15 @@ var Legend = React.createClass(_.assign(Base(SunburstStore), {
 
   renderPercentStatement: function (arc) {
     var total = SunburstStore.getArcSize(arc);
+    var max,
+      maxChildren,
+      connectString,
+      percent;
 
     // Get max children
     if (arc.children) {
-      var max = 0;
-      var maxChildren;
+      max = 0;
+      maxChildren;
 
       _.each(arc.children, function (child) {
         var size = SunburstStore.getArcSize(child);
@@ -82,8 +86,8 @@ var Legend = React.createClass(_.assign(Base(SunburstStore), {
     }
 
     if (maxChildren) {
-      var connectString = this.getPercentateConnectString(maxChildren);
-      var percent = (max * 100 / total).toFixed(2);
+      connectString = this.getPercentateConnectString(maxChildren);
+      percent = (max * 100 / total).toFixed(2);
 
       return (
         <div>
@@ -115,19 +119,22 @@ var Legend = React.createClass(_.assign(Base(SunburstStore), {
 
   renderLegends: function () {
     var selected = SunburstStore.getSelected();
+    var legends, that;
 
     if (selected) {
-      var legends = this.getLegends(selected);
-      var that = this;
+      legends = this.getLegends(selected);
+      that = this;
 
       return _.map(legends, function (item, key) {
         var total = SunburstStore.getArcSize(item);
+        var formattedTotal, style;
+
         if (!total) {
           return <tr key={ key }></tr>;
         }
 
-        var formattedTotal = numeral(total).format(AppConstants.NUMERAL_FORMAT);
-        var style = {
+        formattedTotal = numeral(total).format(AppConstants.NUMERAL_FORMAT);
+        style = {
           color: AppConstants.SUNBURST_ARC_COLORS[item.name]
         };
 
