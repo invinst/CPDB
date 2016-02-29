@@ -1,19 +1,24 @@
 var cx = require('classnames');
 var React = require('react');
+var PropTypes = React.PropTypes;
 
 var Link = require('react-router').Link;
 var ComplaintCard = require('components/Shared/ComplaintCard.react');
 
 
 var ComplaintResult = React.createClass({
+  propTypes: {
+    visible: PropTypes.bool
+  },
+
   render: function () {
     var classNames = cx('complaint-result', {'hidden': !this.props.visible});
 
     return (
-      <div className={classNames}>
+      <div className={ classNames }>
         <ul>
           <li className='complaint-result-item'>
-            <Link to={'/complaint'} data-transition='slide-in'>
+            <Link to={ '/complaint' } data-transition='slide-in'>
               <ComplaintCard />
             </Link>
           </li>
@@ -25,7 +30,7 @@ var ComplaintResult = React.createClass({
           </li>
         </ul>
       </div>
-    )
+    );
   }
 });
 

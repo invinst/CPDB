@@ -1,14 +1,19 @@
 var React = require('react');
+var PropTypes = React.PropTypes;
 
 var pluralize = require('pluralize');
 
 var AppHistory = require('utils/History');
 
-var DataTypeUtil = require('utils/DataTypeUtil');
 var SuggestionPresenter = require('presenters/SuggestionPresenter');
 
 
 var OfficerBadgeResult = React.createClass({
+  propTypes: {
+    suggestions: PropTypes.array,
+    term: PropTypes.number
+  },
+
   _onClick: function () {
     var officer = this.props.suggestions[0];
     var presenter = SuggestionPresenter(officer);
@@ -22,8 +27,9 @@ var OfficerBadgeResult = React.createClass({
     return (
       <ul className='suggestion-list'>
         <li className='officer-badge-results'>
-          <div className='link officer-badge-result-item' onClick={this._onClick}>
-            Badge no. <span className='highlight'>{this.props.term}&nbsp;</span> {pluralize('complaint', presenter.allegationsCount, true)}
+          <div className='link officer-badge-result-item' onClick={ this._onClick }>
+            Badge no. <span className='highlight'>
+              { this.props.term }&nbsp;</span> { pluralize('complaint', presenter.allegationsCount, true) }
           </div>
         </li>
       </ul>

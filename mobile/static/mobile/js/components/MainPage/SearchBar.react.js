@@ -4,7 +4,6 @@ var objectAssign = require('object-assign');
 
 var Base = require('components/Base.react');
 
-var HelperUtil = require('utils/HelperUtil');
 var SuggestionAPI = require('utils/SuggestionAPI');
 var SearchBarActions = require('actions/MainPage/SearchBarActions');
 var SearchBarStore = require('stores/MainPage/SearchBarStore');
@@ -15,7 +14,7 @@ var SearchBar = React.createClass(objectAssign(Base(SearchBarStore), {
     return {
       'status': 'blank',
       'term': ''
-    }
+    };
   },
 
   _onInputChange: function (event) {
@@ -46,7 +45,7 @@ var SearchBar = React.createClass(objectAssign(Base(SearchBarStore), {
       // TODO: Refactor this
       SuggestionAPI.get(term);
     }
-    SearchBarStore.addChangeListener(this._onChange)
+    SearchBarStore.addChangeListener(this._onChange);
   },
 
   render: function () {
@@ -58,11 +57,11 @@ var SearchBar = React.createClass(objectAssign(Base(SearchBarStore), {
     return (
       <div className='search-bar animation'>
         <input className='input-text' placeholder='Search officers or complaints'
-               onChange={this._onInputChange}
-               onFocus={this._onFocus}
-               value={this.state.term}
-               onBlur={this._onBlur}/>
-        <span className={iconClassName} onClick={this._onSearchIconClick}></span>
+          onChange={ this._onInputChange }
+          onFocus={ this._onFocus }
+          value={ this.state.term }
+          onBlur={ this._onBlur }/>
+        <span className={ iconClassName } onClick={ this._onSearchIconClick }></span>
       </div>
     );
   }
