@@ -6,6 +6,9 @@ var FilterTagStore = require('stores/FilterTagStore');
 
 var isHispanic = function (x, y) { return _(y.toLowerCase()).contains('hispanic'); };
 var isWhite = function (x, y) { return _(['white', 'italian']).contains(y.toLowerCase()); };
+var shouldBeOthers = function (otherFilterValues) {
+  return otherFilterValues.length !== 1 || otherFilterValues[0] === 'Unknown';
+};
 
 var setTagActive = function (raceData, isOfficer) {
   var filterCategory = isOfficer ? 'officer__race' : 'complainant_race';
@@ -55,6 +58,8 @@ var RaceGenderAPITransform = {
       return { value: x, label: x };
     });
 
+    var otherLabel = shouldBeOthers(otherFilterValues) ? 'Others' : otherFilterValues[0];
+
     var raceData = _([
       {
         label: this.raceLabel('White', isOfficer),
@@ -72,7 +77,7 @@ var RaceGenderAPITransform = {
         filters: hispanicFilters
       },
       {
-        label: 'Others',
+        label: this.raceLabel(otherLabel, isOfficer),
         value: others,
         filters: otherFilters
       }
@@ -84,7 +89,7 @@ var RaceGenderAPITransform = {
   },
 
   raceLabel: function (race, isOfficer) {
-    return isOfficer ? race + ' officers' : race;
+    return isOfficer && race !== 'Others' ? race + ' officers' : race;
   },
 
   transformGenders: function (genders, isOfficer) {
