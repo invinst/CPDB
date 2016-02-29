@@ -1,5 +1,6 @@
 from django.db.models import Q
 
+
 START_UNIX_TIME_DATE = '1970-01-01'
 DATE_ONLY_FORMAT = '%Y-%m-%d'
 DATE_TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
@@ -395,3 +396,15 @@ DEFAULT_EXCEL_EXPORT_DISCLAIMER = (
     'By entering this website, you acknowledge that the Citizens’ Police Data Project (CPDP) is not responsible '
     'for any derivative work performed by or published by users of this public database.'
 )
+
+DEFAULT_SITE_TITLE = 'Police Misconduct in Chicago'
+
+DEFAULT_META_DESCRIPTION = (
+    'The Citizens Police Data Project stores a searchable database of '
+    'police disciplinary information obtained from the City of Chicago.'
+    )
+
+DEFAULT_META_KEYWORDS = (
+    'Chicago Police Department, Citizens Police Data Project, '
+    'Invisible Institute, Police, Allegations, Disciplines'
+    )
