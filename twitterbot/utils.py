@@ -140,10 +140,11 @@ class CPDBTweetHandler(tweepy.StreamListener):
             search_results = SuggestOfficerName.query(name)
             if search_results['Officer']:
                 pk = search_results['Officer'][0]['tag_value']['value']
-                if pk not in pks:
+                officer = Officer.objects.get(pk=pk)
+                if pk not in pks and officer.display_name.lower() == name.lower():
                     response = Response.objects.get(type='officer')
                     context = search_results['Officer'][0]['tag_value']
-                    context['obj'] = Officer.objects.get(pk=pk)
+                    context['obj'] = officer
                     msg = response.get_message(context)
 
                     responses.append(msg)
@@ -159,10 +160,11 @@ class CPDBTweetHandler(tweepy.StreamListener):
             search_results = SuggestInvestigator.query(name)
             if search_results['Investigator']:
                 pk = search_results['Investigator'][0]['tag_value']['value']
-                if pk not in pks:
+                investigator = Investigator.objects.get(pk=pk)
+                if pk not in pks and investigator.name.lower() == name.lower():
                     response = Response.objects.get(type='investigator')
                     context = search_results['Investigator'][0]['tag_value']
-                    context['obj'] = Investigator.objects.get(pk=pk)
+                    context['obj'] = investigator
                     msg = response.get_message(context)
 
                     responses.append(msg)
