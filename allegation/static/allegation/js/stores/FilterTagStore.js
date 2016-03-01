@@ -13,16 +13,15 @@ var _state = {
   filters: {}
 };
 
-function isNotPinned(item) {
+var isNotPinned = function (item) {
   return !item.pinned;
-}
+};
 
-function matchValue(value) {
+var matchValue = function (value) {
   return function (item) {
     return item.value == value;
   };
-}
-
+};
 
 
 var FilterTagStore = _.assign(Base(_state), {
@@ -189,6 +188,12 @@ var FilterTagStore = _.assign(Base(_state), {
 
 
 AppDispatcher.register(function (action) {
+  var sessionQuery,
+    arc,
+    selected,
+    isArcParentSelected,
+    current;
+
   switch (action.actionType) {
     case AppConstants.ENTER_EMBED_MODE:
       _state['initialized'] = false;
@@ -242,18 +247,18 @@ AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.RECEIVED_SESSION_DATA:
-      var sessionQuery = _.get(action.data, 'data.query', {});
+      sessionQuery = _.get(action.data, 'data.query', {});
       FilterTagStore.setSession(sessionQuery);
       _state['initialized'] = sessionQuery['filters'] || {};
       FilterTagStore.emitChange();
       break;
 
     case AppConstants.SUNBURST_SELECT_ARC:
-      var arc = action.arc;
-      var selected = action.selected;
+      arc = action.arc;
+      selected = action.selected;
 
-      var isArcParentSelected = false;
-      var current = selected;
+      isArcParentSelected = false;
+      current = selected;
       while (current.parent) {
         isArcParentSelected = isArcParentSelected || (arc == current.parent);
         current = current.parent;

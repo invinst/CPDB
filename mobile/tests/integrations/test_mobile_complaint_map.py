@@ -10,13 +10,16 @@ class MobileComplaintMapTest(BaseLivePhoneTestCase):
         len(self.find_all('.map .leaflet-overlay-pane svg')).should.be.equal(1)
 
     def assert_no_map(self):
-        len(self.find_all('.map')).shouldnt.be.equal(0)
+        self.find_all('.location .map').should.have.length_of(0)
 
     def test_no_map(self):
         allegation = AllegationFactory(
             add1=None, add2=None, beat=None, city=None,
-            location=None, point=None)
+            location=None)
         OfficerAllegationFactory(allegation=allegation)
+        allegation.point = None
+        allegation.save()
+
         self.visit_complaint_page(allegation)
 
         self.assert_no_map()

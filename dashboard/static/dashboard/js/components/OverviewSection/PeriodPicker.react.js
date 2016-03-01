@@ -27,8 +27,11 @@ var PeriodPicker = React.createClass({
 
   render: function () {
     var periods = [];
-    for (var period in AppConstants.PERIODS) {
-      var activeClass = period == this.state.period ? 'active' : '';
+    var period,
+      activeClass;
+
+    for (period in AppConstants.PERIODS) {
+      activeClass = period == this.state.period ? 'active' : '';
       periods.push(
         <li key={ period } className={ activeClass } onClick={ this._onClick.bind(this, period) }>
           { AppConstants.PERIODS[period] }

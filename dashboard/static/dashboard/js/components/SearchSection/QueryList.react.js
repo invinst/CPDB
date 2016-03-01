@@ -1,18 +1,20 @@
 var _ = require('lodash');
-var React = require('react');
+var classnames = require('classnames');
 var moment = require('moment');
+var React = require('react');
 
 var AppConstants = require('../../constants/AppConstants');
-
 var AddAliasModalActions = require('../../actions/SearchSection/AddAliasModalActions');
 var Base = require('../Base.react');
-var classnames = require('classnames');
 var QueryListStore = require('../../stores/SearchSection/QueryListStore');
 var QueryListActions = require('../../actions/SearchSection/QueryListActions');
 var SearchResultsAPI = require('../../utils/SearchResultsAPI');
+var QueryList;
 
 global.jQuery = require('jquery');
-var QueryList = React.createClass(_.assign(Base(QueryListStore), {
+
+
+QueryList = React.createClass(_.assign(Base(QueryListStore), {
   _onClick: function (alias, e) {
     e.preventDefault();
     AddAliasModalActions.show({

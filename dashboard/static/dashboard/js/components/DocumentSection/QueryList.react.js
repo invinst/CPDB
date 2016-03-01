@@ -16,10 +16,14 @@ var QueryList = React.createClass({
   },
 
   renderQueryList: function () {
+    var that;
+
     if (!this.props.document.queries) {
       return;
     }
-    var that = this;
+
+    that = this;
+
     return this.props.document.queries.map(function (x, index) {
       return (
         <tr key={ index }>

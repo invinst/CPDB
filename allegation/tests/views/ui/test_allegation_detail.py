@@ -3,16 +3,13 @@ from faker import Faker
 from allegation.factories import AllegationFactory, AreaFactory,\
     OfficerAllegationFactory
 from common.tests.core import BaseLiveTestCase
+from allegation.tests.utils.allegation_row_helper_mixin import AllegationRowHelperMixin
 
 
-class AllegationDetailTestCase(BaseLiveTestCase):
+class AllegationDetailTestCase(AllegationRowHelperMixin, BaseLiveTestCase):
     # Since we lost this marker many times, so we write this test to ensure
     # it's available. In case this test failed, please take a look on its url
     # in allegation/constants/AppConstants.js
-    def open_complaint_detail(self):
-        self.visit_home()
-        self.find('.checkmark').click()
-
     def test_marker_should_be_available(self):
         area = AreaFactory()
         allegation = AllegationFactory(
@@ -100,7 +97,7 @@ class AllegationDetailTestCase(BaseLiveTestCase):
         self.should_see_text('CRID {crid}'.format(crid=allegation.crid))
         self.should_see_text(officer_allegation.cat.category)
         self.should_see_text(officer_allegation.cat.allegation_name)
-        self.should_see_text('Investigation Finding\n{final_finding}'.format(
+        self.should_see_text('Final Finding\n{final_finding}'.format(
             final_finding=officer_allegation.get_final_finding_display()
             )
         )

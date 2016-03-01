@@ -16,10 +16,11 @@ var OutcomeFilter = React.createClass({
     var activeFilter = this.props.activeFilter;
     var analytics = this.props.analytics;
     var outcomeFilters = [];
+    var type, name, quantity;
 
-    for (var type in AppConstants.FILTERS) {
-      var name = AppConstants.FILTERS[type];
-      var quantity = analytics[name];
+    for (type in AppConstants.FILTERS) {
+      name = AppConstants.FILTERS[type];
+      quantity = analytics[name];
       if (quantity) {
         outcomeFilters.push(
           <OutcomeFilterItem

@@ -20,8 +20,10 @@ var Story = React.createClass({
   },
 
   componentDidMount: function () {
+    var story;
+
     if (this.props.story.url) {
-      var story = this.props.story;
+      story = this.props.story;
       DocumentCloudAPI.getThumbnail(story);
     } else {
       this.props.story.url = '#';
@@ -52,11 +54,13 @@ var Story = React.createClass({
   renderDocumentDescription: function () {
     var story = this.props.story;
     var description = story.short_description;
+    var descCol;
+
     if (description.length >= 300) {
       description = description.substr(0, 300) + '...';
     }
 
-    var descCol = classnames({
+    descCol = classnames({
       'col-md-12': !story.thumbUrl,
       'col-md-10': story.thumbUrl
     });

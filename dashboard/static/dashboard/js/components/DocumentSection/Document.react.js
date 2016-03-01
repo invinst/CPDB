@@ -29,15 +29,20 @@ var Document = React.createClass(_.assign(Base(DocumentStore), {
 
   render: function () {
     var document = this.state.document;
+    var status,
+      statusObj,
+      statusClass,
+      className;
+
     if (!document) {
       return <div></div>;
     }
 
-    var status = this.getStatus(document);
-    var statusObj = this.getStatusObject(status);
+    status = this.getStatus(document);
+    statusObj = this.getStatusObject(status);
 
-    var statusClass = cx('status', status);
-    var className = cx('fa', 'fa-' + statusObj.icon);
+    statusClass = cx('status', status);
+    className = cx('fa', 'fa-' + statusObj.icon);
 
     return (
       <div>

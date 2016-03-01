@@ -18,18 +18,22 @@ var StoryPage = require('components/IndexTabContent/StoryPage.react');
 var SessionAPI = require('utils/SessionAPI');
 var S = require('string');
 
+var RootRouter;
+
 // disable scroll restoration
 if (history.scrollRestoration) {
   history.scrollRestoration = 'manual';
 }
 
 
-var RootRouter = React.createClass({
+RootRouter = React.createClass({
   onEnterData: function (nextState, replaceState, callback) {
     var sessionCallBack = function (data) {
+      var siteTitle, url;
+
       if (!(nextState.params.session && nextState.params.title)) {
-        var siteTitle = S(data.title || AppConstants.DEFAULT_SITE_TITLE).slugify().s;
-        var url = ['', 'data', data.hash, siteTitle].join('/');
+        siteTitle = S(data.title || AppConstants.DEFAULT_SITE_TITLE).slugify().s;
+        url = ['', 'data', data.hash, siteTitle].join('/');
         replaceState(url);
       }
       callback();

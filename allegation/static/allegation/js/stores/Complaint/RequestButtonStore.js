@@ -6,13 +6,13 @@ var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var RequestDocumentConstants = require('../../constants/RequestDocumentConstants');
 var EventEmitter = require('events').EventEmitter;
 
-function setRequestedCrid(crid) {
+var setRequestedCrid = function (crid) {
   $.cookie('requested_document_' + crid, '1', {path: '/'});
-}
+};
 
-function isCridRequested(crid) {
+var isCridRequested = function (crid) {
   return $.cookie('requested_document_' + crid);
-}
+};
 
 
 var RequestButtonStore = assign({}, EventEmitter.prototype, {

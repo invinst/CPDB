@@ -8,11 +8,11 @@ var SummaryStore = require('stores/SummaryStore');
 var AppConstants = require('constants/AppConstants');
 var numeral = require('numeral');
 
-function getSummaryRowState() {
+var getSummaryRowState = function () {
   return {
     'rows': []
   };
-}
+};
 
 
 var SummaryRow = React.createClass({
@@ -33,15 +33,18 @@ var SummaryRow = React.createClass({
   },
 
   onClick: function (e) {
+    var current,
+      tagValue;
+
     if (e) {
       e.preventDefault();
     }
 
-    var current = this.props.category;
+    current = this.props.category;
 
     FilterTagsActions.removeCategory('cat');
     // Generate tagValue on server instead
-    var tagValue = FilterTagStore.generateTagValue('cat__category', current.name, 'Category', current.name);
+    tagValue = FilterTagStore.generateTagValue('cat__category', current.name, 'Category', current.name);
 
     if (this.isActive(current)) {
       FilterTagsActions.removeTag(tagValue.category, tagValue.value);
@@ -57,8 +60,9 @@ var SummaryRow = React.createClass({
 
   hasActiveChildren: function () {
     var category = this.props.category, childCategoryId;
+    var i;
 
-    for (var i = 0; i < category.subcategories.length; i++) {
+    for (i = 0; i < category.subcategories.length; i++) {
       childCategoryId = category.subcategories[i].id;
       if (FilterTagStore.getFilter('cat', childCategoryId)) {
         return true;

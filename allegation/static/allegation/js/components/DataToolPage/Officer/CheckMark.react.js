@@ -66,12 +66,12 @@ var CheckMark = React.createClass({
     var checkMarkClass = 'checkmark cursor ';
     var officer = this.props.officer;
     var justChange = CheckMarkStore.getCheckMarkStatus(officer.id);
+    var selectableArea = <div></div>;
 
     if (justChange) {
       checkMarkClass += ' justChange';
     }
 
-    var selectableArea = <div></div>;
     if (this.props.clickable) {
       selectableArea = (
         <div onClick={ this.onClick }

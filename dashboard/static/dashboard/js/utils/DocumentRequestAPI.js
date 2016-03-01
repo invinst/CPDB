@@ -14,14 +14,14 @@ var count = 20;
 
 var DocumentRequestAPI = {
   get: function () {
-    if (ajax) {
-      ajax.abort();
-    }
-
     var params = {
       type: TabsStore.getState().active,
       ordering: DocumentListStore.getSortOrder()
     };
+
+    if (ajax) {
+      ajax.abort();
+    }
 
     ajax = jQuery.getJSON(AppConstants.DOCUMENT_REQUEST_END_POINT, params, function (data) {
       limit = 0;
@@ -40,12 +40,14 @@ var DocumentRequestAPI = {
   },
 
   loadMore: function () {
+    var params;
+
     if (ajax) {
       ajax.abort();
     }
     limit += count;
 
-    var params = {
+    params = {
       type: TabsStore.getState().active,
       limit: limit,
       offset: limit + count,
@@ -58,14 +60,14 @@ var DocumentRequestAPI = {
   },
 
   addLink: function (link, crid) {
-    if (ajax) {
-      ajax.abort();
-    }
-
     var params = {
       link: link,
       crid: crid
     };
+
+    if (ajax) {
+      ajax.abort();
+    }
 
     ajax = jQuery.ajax({
       url: AppConstants.DOCUMENT_LINK_END_POINT,
@@ -83,13 +85,13 @@ var DocumentRequestAPI = {
   },
 
   cancelRequest: function (allegation) {
-    if (ajax) {
-      ajax.abort();
-    }
-
     var params = {
       crid: allegation.crid
     };
+
+    if (ajax) {
+      ajax.abort();
+    }
 
     ajax = jQuery.ajax({
       url: AppConstants.DOCUMENT_LINK_END_POINT,

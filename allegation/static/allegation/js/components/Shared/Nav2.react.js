@@ -13,9 +13,12 @@ var NavActions = require('actions/NavActions');
 var SessionAPI = require('utils/SessionAPI');
 var SiteTitle = require('components/Shared/SiteTitle.react');
 var ShareButton = require('components/DataToolPage/Share/ShareButton.react');
+var Nav;
+
+require('utils/jQuery');
 
 
-var Nav = React.createClass(_.assign(Base(AppStore), {
+Nav = React.createClass(_.assign(Base(AppStore), {
   getDefaultProps: function () {
     return {
       page: 'data',
@@ -32,7 +35,8 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
       shareButton: isActive('data'),
       subNav: isActive('story'),
       backLink: isActive('officer') || isActive('investigator'),
-      welcomeMessage: isActive('findings')
+      welcomeMessage: isActive('findings'),
+      fixedNav: isActive('data')
     };
   },
 
@@ -88,11 +92,12 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
   },
 
   navigateSub: function (event) {
-    event.preventDefault();
     var $body = $('body');
     var navBarHeight = 90;
-
     var $element = $($(event.currentTarget).data('target'));
+
+    event.preventDefault();
+
     $body.animate({
       scrollTop: $element.offset().top - navBarHeight
     }, 1000);
@@ -166,11 +171,14 @@ var Nav = React.createClass(_.assign(Base(AppStore), {
 
   render: function () {
     var display = this.getDisplayComponent();
+    var navClassName = classnames('landing-nav', {
+      'fixed-nav': display.fixedNav
+    });
 
     return (
       <div className='landing-page fixed-nav'>
         { display.welcomeMessage ? this.renderWelcome() : '' }
-        <nav className='landing-nav'>
+        <nav className={ navClassName }>
           <div className='items clearfix'>
             <Link to={ this.getIndexLink() } onClick={ this.startNewSession } id='logo_link'>
               <img className='pull-left cpdp-logo' src='/static/img/cpdp-logo.svg' />
