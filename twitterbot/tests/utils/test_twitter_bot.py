@@ -1,6 +1,7 @@
 from unittest.mock import patch, call
 import tweepy
 import vcr
+from django.conf import settings
 
 from allegation.factories import OfficerFactory, InvestigatorFactory
 from common.models import Officer
@@ -139,3 +140,11 @@ class CPDBTweetHandlerTestCase(SimpleTestCase):
                 call('@%s Jason Van Dyke' % screen_name),
                 call('investigator')
             ], any_order=True)
+
+    def test_ignore_tweets_from_self(self):
+        text = '... Jason Van Dyke ...'
+        screen_name = settings.TWITTER_SCREEN_NAME
+
+        with patch('tweepy.API.update_status') as update_status:
+            self.bot.tweet_handler.on_status(TweetFactory(text=text, screen_name=screen_name))
+            update_status.assert_not_called()

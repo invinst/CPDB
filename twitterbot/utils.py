@@ -43,10 +43,16 @@ class TwitterBot:
 
 class CPDBTweetHandler(tweepy.StreamListener):
     def on_status(self, status):
+        if status.user.screen_name == settings.TWITTER_SCREEN_NAME:
+            return
+
+        self.handle(status)
+        if hasattr(status, 'retweeted_status') and status.retweeted_status:
+            self.handle(status.retweeted_status)
+
+    def handle(self, status):
         try:
             self.reply(status)
-            if hasattr(status, 'retweeted_status') and status.retweeted_status:
-                self.reply(status.retweeted_status)
         except tweepy.TweepError as e:
             # Errors that should not stop the bot
             if e.api_code in IGNORED_ERROR_CODES:
@@ -64,7 +70,7 @@ class CPDBTweetHandler(tweepy.StreamListener):
 
         for response in responses:
             # For logging purpose
-            query = '@{user}'.format(user=status.entities['user_mentions'][0]['screen_name'])
+            query = '@{user}'.format(user=status.user.screen_name)
             search, created = TwitterSearch.objects.get_or_create(query=query)
             TwitterResponse(search=search, response=response, user=status.user.screen_name).save()
 
