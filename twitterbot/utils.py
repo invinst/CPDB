@@ -1,5 +1,5 @@
 import re
-
+import os
 import requests
 import tweepy
 from bs4 import BeautifulSoup
@@ -42,6 +42,14 @@ class TwitterBot:
 
 
 class CPDBTweetHandler(tweepy.StreamListener):
+    debug = False
+
+    def __init__(self, *args, **kwargs):
+        super(CPDBTweetHandler, self).__init__(*args, **kwargs)
+
+        if os.environ.get('TWITTER_DEBUG', None) == 'true':
+            self.debug = True
+
     def on_status(self, status):
         if status.user.screen_name == settings.TWITTER_SCREEN_NAME:
             return
@@ -51,6 +59,8 @@ class CPDBTweetHandler(tweepy.StreamListener):
             self.handle(status.retweeted_status)
 
     def handle(self, status):
+        if self.debug:
+            print(status.text)
         try:
             self.reply(status)
         except tweepy.TweepError as e:
@@ -67,6 +77,14 @@ class CPDBTweetHandler(tweepy.StreamListener):
 
         responses += self.build_officer_reponses(names)
         responses += self.build_investigator_reponses(names)
+
+        if self.debug:
+            print("Responses: ", len(responses))
+            import pdb
+            pdb.set_trace()
+
+        if len(responses) > 10:
+            responses = responses[:9]
 
         for response in responses:
             # For logging purpose
