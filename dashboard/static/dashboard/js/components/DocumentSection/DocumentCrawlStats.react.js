@@ -17,7 +17,8 @@ var DocumentCrawlStats = React.createClass(_.assign(Base(DocumentCrawlStatStore)
   renderCrawlStats: function () {
     var rows = [];
     var numRows = this.state.crawlStats.docs.length < 10 ? this.state.crawlStats.docs.length : 10;
-    for (var i = 1; i < numRows; i++) {
+    var i;
+    for (i = 1; i < numRows; i++) {
       rows.push(
         <div key={ i } className='row'>
           <div className='col-md-6'>{ this.state.crawlStats.docs[i].timestamp }</div>
@@ -36,13 +37,14 @@ var DocumentCrawlStats = React.createClass(_.assign(Base(DocumentCrawlStatStore)
 
     var crawlStats = <div></div>;
     var chevronClass = 'fa fa-chevron-up';
+    var mostRecent;
     if (this.state.showCrawlStats) {
       crawlStats = this.renderCrawlStats();
       chevronClass = 'fa fa-chevron-down';
     }
 
     if (this.state.crawlStats && this.state.crawlStats.docs.length > 0) {
-      var mostRecent = this.state.crawlStats.docs[0];
+      mostRecent = this.state.crawlStats.docs[0];
       lastSuccessfulCrawlDate = (
         <div>
           <span>{ mostRecent.timestamp }</span>

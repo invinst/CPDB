@@ -83,7 +83,9 @@ var SettingSection = React.createClass(_.assign(Base(SettingSectionStore), {
           </label>
           <div className='col-lg-10 col-md-10 col-xs-10'>
             <input type='text' id='meta_description' className='form-control'
-              value={ setting.meta_description } onChange={ this.change('meta_description') } required={ true } />
+
+              value={ setting.meta_description } maxLength={ 255 }
+              onChange={ this.change('meta_description') } required={ true } />
           </div>
         </div>
 
@@ -93,7 +95,8 @@ var SettingSection = React.createClass(_.assign(Base(SettingSectionStore), {
           </label>
           <div className='col-lg-10 col-md-10 col-xs-10'>
             <input type='text' id='meta_keywords' className='form-control'
-              value={ setting.meta_keywords } onChange={ this.change('meta_keywords') } required={ true } />
+              value={ setting.meta_keywords } maxLength={ 255 }
+              onChange={ this.change('meta_keywords') } required={ true } />
           </div>
         </div>
       </div>
