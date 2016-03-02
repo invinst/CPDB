@@ -63,7 +63,7 @@ class CPDBTweetHandler(tweepy.StreamListener):
 
         text = self.get_all_content(status)
         text = self.sanitize_text(text)
-        names = self.find_names(text)
+        names = self.find_names(text) + self.find_names(text, word_length=3)
 
         responses += self.build_officer_reponses(names)
         responses += self.build_investigator_reponses(names)
@@ -120,13 +120,13 @@ class CPDBTweetHandler(tweepy.StreamListener):
 
         return text
 
-    def find_names(self, text):
+    def find_names(self, text, word_length=2):
         splitted = text.split(" ")
         max_index = len(splitted)
         names = []
 
         for i in range(max_index - 1):
-            name = " ".join(splitted[i:i+2])
+            name = " ".join(splitted[i:i+word_length])
             if name and name != ' ' and len(name) > 6:
                 names.append(name)
 
