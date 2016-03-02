@@ -80,8 +80,6 @@ class CPDBTweetHandler(tweepy.StreamListener):
 
         if self.debug:
             print("Responses: ", len(responses))
-            import pdb
-            pdb.set_trace()
 
         if len(responses) > 10:
             responses = responses[:9]
@@ -93,6 +91,8 @@ class CPDBTweetHandler(tweepy.StreamListener):
             TwitterResponse(search=search, response=response, user=status.user.screen_name).save()
 
             response = response.replace('{user}', status.user.screen_name)
+            if self.debug:
+                print(response)
             self.api.update_status(response)
 
     def get_all_content(self, status):
