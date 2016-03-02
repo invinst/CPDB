@@ -51,7 +51,7 @@ class CPDBTweetHandler(tweepy.StreamListener):
             self.debug = True
 
     def on_status(self, status):
-        if status.user.screen_name == settings.TWITTER_SCREEN_NAME:
+        if status.user.screen_name.lower() == settings.TWITTER_SCREEN_NAME.lower():
             return
 
         self.handle(status)
