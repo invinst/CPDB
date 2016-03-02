@@ -16,9 +16,14 @@ class InvestigatorDetailViewTestCase(SimpleTestCase):
 
         allegations = OfficerAllegation.objects.filter(allegation__investigator=self.investigator)
         disciplined = OfficerAllegation.disciplined.filter(allegation__investigator=self.investigator)
-        response = self.client.get(reverse('investigator:detail'), {
-            'pk': self.investigator.id
-        })
+        response = self.client.get(
+            reverse('investigator:detail',
+                    kwargs={
+                        'slug': self.investigator.slug,
+                        'pk': self.investigator.id
+                    }
+                    )
+        )
 
         response = json.loads(response.content.decode())
 

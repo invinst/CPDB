@@ -20,7 +20,7 @@ class TwitterBotTestCase(SimpleTestCase):
         if self.bot.stream:
             self.bot.stream.disconnect()
 
-    @vcr.use_cassette('twitterbot/fixtures/vcr/test_auth.yaml')
+    @vcr.use_cassette('twitterbot/fixtures/vcr/test_auth.yaml', ignore_localhost=True)
     def test_auth(self):
         bad_auth_data_code = 215
         cannot_auth_code = 32
@@ -57,7 +57,7 @@ class CPDBTweetHandlerTestCase(SimpleTestCase):
 
         self.setUpAPI()
 
-    @vcr.use_cassette('twitterbot/fixtures/vcr/setUpAPI.yaml')
+    @vcr.use_cassette('twitterbot/fixtures/vcr/setUpAPI.yaml', ignore_localhost=True)
     def setUpAPI(self):
         self.bot = TwitterBot(async=True)
         self.bot.start()

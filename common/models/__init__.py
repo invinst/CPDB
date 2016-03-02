@@ -198,8 +198,11 @@ class Investigator(TimeStampedModel):
 
     @property
     def absolute_url(self):
-        slug = slugify(self.name)
-        return reverse("investigator:detail", kwargs={'slug': slug, 'pk': self.pk})
+        return reverse("investigator:detail", kwargs={'slug': self.slug, 'pk': self.pk})
+
+    @property
+    def slug(self):
+        return slugify(self.name)
 
 
 class PendingPdfAllegation(models.Model):
