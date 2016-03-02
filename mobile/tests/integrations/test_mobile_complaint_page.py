@@ -48,20 +48,20 @@ class MobileComplaintPageTest(BaseLivePhoneTestCase):
             category.category)
         self.find('.complaint-sub-category').text.should.be.equal(
             category.allegation_name)
-        self.find('.officer-involved').text.should.contain(
-            officer.display_name)
-        self.find('.officer-involved').text.should.contain(officer_gender_display)
-        self.find('.complaining-witness-list').text.should.contain(
-            complaint_witness_text)
-        self.find('.investigator .name').text.should.contain(investigator.name)
-        self.find('.investigator .rank').text.should.contain(
-            investigator.current_rank)
-        self.find('.location-detail').text.should.contain(allegation.beat.name)
 
-        self.should_see_text(view_document_text)
-        self.should_see_text(addresss)
-        self.should_see_text(allegation.city)
-        self.should_see_text(allegation.location)
+        self.should_see_text(officer.display_name, '.officer-involved')
+        self.should_see_text(officer_gender_display, '.officer-involved')
+        self.should_see_text(complaint_witness_text, '.complaining-witness-list')
+        self.should_see_text(investigator.name, '.investigator .name')
+        self.should_see_text(investigator.current_rank, '.investigator .rank')
+        self.should_see_text(allegation.beat.name, '.location-detail')
+
+        self.should_see_text(view_document_text, '.document-link')
+
+        location_detail = self.find('.location-detail').text
+        location_detail.should.contain(addresss)
+        location_detail.should.contain(allegation.city)
+        location_detail.should.contain(allegation.location)
 
     def test_circle_color_of_involved_officers(self):
         crid = '1234'
@@ -149,11 +149,10 @@ class MobileComplaintPageTest(BaseLivePhoneTestCase):
 
         self.visit_complaint_page(allegation.crid)
         self.until(lambda: self.find('.crid-title'))
-
-        self.should_see_text('Rank unknown')
+        self.should_see_text('Rank unknown', '.investigator')
 
     def test_officer_with_unknown_race(self):
-        officer = OfficerFactory(race='Unknown')
+        officer = OfficerFactory(race='')
         officer_allegation = OfficerAllegationFactory(officer=officer)
 
         self.visit_complaint_page(officer_allegation.allegation.crid)
@@ -170,7 +169,7 @@ class MobileComplaintPageTest(BaseLivePhoneTestCase):
 
         self.visit_complaint_page(allegation.crid)
         self.until(lambda: self.find('.crid-title'))
-
-        self.should_see_text('Gender unknown')
-        self.should_see_text('Race unknown')
-        self.should_see_text('Age unknown')
+        content = self.find('.complaining-witness-row').text
+        content.should.contain('Gender unknown')
+        content.should.contain('Race unknown')
+        content.should.contain('Age unknown')

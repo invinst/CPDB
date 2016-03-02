@@ -1,25 +1,31 @@
 var _ = require('lodash');
 var AppConstants = require('../constants/AppConstants');
-global.jQuery = require('jquery');
 var StoryListActions = require('../actions/OfficerSection/Officer/StoryListActions');
 var StoryFormActions = require('../actions/OfficerSection/Officer/StoryFormActions');
 var OfficerStore = require('../stores/OfficerSection/OfficerStore');
 
 var ajax = null;
+var StoryAPI;
 
-var StoryAPI = {
+global.jQuery = require('jquery');
+
+
+StoryAPI = {
 
   get: function () {
+    var officer,
+      params;
+
     if (ajax) {
       ajax.abort();
     }
 
-    var officer = OfficerStore.getState().officer;
+    officer = OfficerStore.getState().officer;
     if (!officer) {
       return;
     }
 
-    var params = {
+    params = {
       officer: OfficerStore.getState().officer.id
     };
 

@@ -115,6 +115,7 @@ var StatePropagateCSSTransitionGroupChild = React.createClass({
 
   transition: function (animationType, finishCallback, userSpecifiedDelay) {
     var node = ReactDOM.findDOMNode(this);
+    var className, activeClassName, timeout, endListener;
 
     if (!node) {
       if (finishCallback) {
@@ -123,11 +124,11 @@ var StatePropagateCSSTransitionGroupChild = React.createClass({
       return;
     }
 
-    var className = this.props.name[animationType] || this.props.name + '-' + animationType;
-    var activeClassName = this.props.name[animationType + 'Active'] || className + '-active';
-    var timeout = null;
+    className = this.props.name[animationType] || this.props.name + '-' + animationType;
+    activeClassName = this.props.name[animationType + 'Active'] || className + '-active';
+    timeout = null;
 
-    var endListener = function (e) {
+    endListener = function (e) {
       if (e && e.target !== node) {
         return;
       }

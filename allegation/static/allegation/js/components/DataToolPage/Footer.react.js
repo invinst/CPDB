@@ -20,9 +20,10 @@ var Footer = React.createClass(_.assign(Base(EmbedStore), {
   },
 
   toggleEmbedMode: function (e) {
-    e.preventDefault();
     var currentScrollTop = jQuery(window).scrollTop();
     var currentBodyHeight = jQuery(document).height();
+
+    e.preventDefault();
 
     if (this.state.embedMode) {
       EmbedAction.leaveEmbedMode();

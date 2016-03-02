@@ -12,8 +12,9 @@ var RequestModal = require('components/DataToolPage/Complaint/RequestModal.react
 
 var InvestigationsSection = React.createClass(_.assign(Base(ComplaintSectionStore), {
   componentDidMount: function () {
-    ComplaintSectionStore.addChangeListener(this._onChange);
     var investigator = this.props.investigator.id || '';
+
+    ComplaintSectionStore.addChangeListener(this._onChange);
     ComplaintListAPI.getAllForInvestigator(investigator);
   },
 

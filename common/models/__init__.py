@@ -1,4 +1,6 @@
 from slugify import slugify
+from datetime import date
+
 from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 from django.contrib.gis.db import models
@@ -31,6 +33,10 @@ class Officer(MobileSuggestibleOfficer, TimeStampedModel):
     birth_year = models.IntegerField(default=0, blank=True, null=True)
     active = models.CharField(
         choices=ACTIVE_CHOICES, max_length='10', default='Unknown')
+
+    @property
+    def age(self):
+        return date.today().year - self.birth_year if self.birth_year else None
 
     @property
     def absolute_url(self):

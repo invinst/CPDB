@@ -1,10 +1,11 @@
+var c = 0;
+
 if (!global.DEFAULT_SITE_TITLE) {
   global.DEFAULT_SITE_TITLE = 'Citizens Police Data Project';
 }
 if (!global.STORY_TYPES_ORDER) {
   global.STORY_TYPES_ORDER = '';
 }
-var c = 0;
 
 module.exports = {
   CHANGE_EVENT: c++,
@@ -87,6 +88,7 @@ module.exports = {
   RACE_GENDER_TAB_RECEIVED_DATA: c++,
 
   SET_ACTIVE_TAB: c++,
+  TOGLLE_OVERLAY: c++,
   MAP_TOKEN: '***REMOVED***',
   MAP_TYPE: 'datamade.7e795301',
 

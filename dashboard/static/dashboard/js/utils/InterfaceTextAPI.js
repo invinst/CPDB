@@ -1,13 +1,14 @@
 /*eslint no-console:0*/
-global.jQuery = require('jquery');
-
 var AppConstants = require('../constants/AppConstants');
 var InterfaceTextActions = require('actions/InterfaceTextActions');
 
 var ajax = null;
+var InterfaceTextAPI;
+
+global.jQuery = require('jquery');
 
 
-var InterfaceTextAPI = {
+InterfaceTextAPI = {
   get: function (query) {
     if (ajax) {
       ajax.abort();
@@ -19,10 +20,12 @@ var InterfaceTextAPI = {
   },
 
   save: function (interfaceText) {
+    var appendURL = '';
+
     if (ajax) {
       ajax.abort();
     }
-    var appendURL = '';
+
     if (interfaceText.id) {
       appendURL += interfaceText.id + '/';
     }

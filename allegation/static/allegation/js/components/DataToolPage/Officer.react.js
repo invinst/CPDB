@@ -118,16 +118,23 @@ var Officer = React.createClass({
 
   render: function () {
     var officer = this.props.officer;
+    var className,
+      selectionState,
+      officerId,
+      presenter,
+      intersection,
+      intersectionClass;
+
     if (!officer) {
       return <div></div>;
     }
-    var className = classnames('officer ' + this.getAvgClass(), {
+    className = classnames('officer ' + this.getAvgClass(), {
       'active': this.props.active,
       'selected': this.props.selected,
       'has-intersection': ('intersection' in this.props)
     });
 
-    var selectionState = '';
+    selectionState = '';
     if (this.props.active) {
       className += ' active';
       selectionState = 'selected';
@@ -138,10 +145,10 @@ var Officer = React.createClass({
       selectionState = 'selected';
     }
 
-    var officerId = 'officer_' + officer.id;
-    var presenter = OfficerPresenter(officer);
-    var intersection = '';
-    var intersectionClass = '';
+    officerId = 'officer_' + officer.id;
+    presenter = OfficerPresenter(officer);
+    intersection = '';
+    intersectionClass = '';
     if ('intersection' in this.props) {
       intersection = this.props.witness ? 'Witness in ' : ' Co-accused in ';
       intersection += pluralize('case', this.props.intersection, true);

@@ -5,15 +5,15 @@ var AppConstants = require('../../constants/AppConstants');
 var isMobile = require('ismobilejs');
 var Base = require('../Base');
 
-function defaultTab() {
+var defaultTab = function () {
   return isMobile.any ? 'map' : 'outcomes';
-}
+};
 
-function ifNotMobileChangeMapToOutcome(tab) {
+var ifNotMobileChangeMapToOutcome = function (tab) {
   if (!isMobile.any && tab == 'map')
     return 'outcomes';
   return tab;
-}
+};
 
 var _state = {
   activeTab: defaultTab()

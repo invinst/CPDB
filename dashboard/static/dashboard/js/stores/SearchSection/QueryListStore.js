@@ -21,6 +21,12 @@ var QueryListStore = _.assign(Base(_state), {
 });
 
 AppDispatcher.register(function (action) {
+  var data,
+    page,
+    currentSortBy,
+    order,
+    sortBy;
+
   switch (action.actionType) {
     case AppConstants.RECEIVED_SEARCH_RESULTS_DATA:
       QueryListStore.updateState('page', 1);
@@ -30,8 +36,8 @@ AppDispatcher.register(function (action) {
 
     case AppConstants.LOAD_MORE_SEARCH_RESULTS_DATA:
       if (!_.isEmpty(action.data)) {
-        var data = QueryListStore.getState()['data'].concat(action.data);
-        var page = QueryListStore.getState()['page'];
+        data = QueryListStore.getState()['data'].concat(action.data);
+        page = QueryListStore.getState()['page'];
         QueryListStore.updateState('data', data);
         QueryListStore.updateState('locked', false);
         QueryListStore.updateState('page', page + 1);
@@ -45,9 +51,9 @@ AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.SORT_QUERY_LIST:
-      var currentSortBy = QueryListStore.getState()['sortBy'];
-      var order = QueryListStore.getState()['order'];
-      var sortBy = action.data;
+      currentSortBy = QueryListStore.getState()['sortBy'];
+      order = QueryListStore.getState()['order'];
+      sortBy = action.data;
 
       if (currentSortBy == sortBy) {
         order = -order;

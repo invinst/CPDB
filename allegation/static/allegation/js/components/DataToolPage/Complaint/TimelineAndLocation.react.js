@@ -18,13 +18,14 @@ var TimelineAndLocation = React.createClass({
     var allegation = complaint.allegation;
     var wrapperClassName;
     var row = [];
+    var className;
 
     if (allegation.start_date || allegation.incident_date || allegation.end_date) {
       row.push(<Timeline key='timeline' className='col-md-offset-1' complaint={ complaint } />);
     }
 
     if (allegation.point.lat) {
-      var className = row.length == 0 ? 'col-md-offset-1' : '';
+      className = row.length == 0 ? 'col-md-offset-1' : '';
       row.push(<Location key='location' complaint={ complaint } className={ className } />);
     }
 
