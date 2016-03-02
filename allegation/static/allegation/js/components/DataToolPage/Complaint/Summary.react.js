@@ -49,11 +49,13 @@ var Summary = React.createClass({
   getWitness: function () {
     var witness = this.props.complaint.complaining_witness;
     var witnesses = [];
-    for (var i = 0; i < witness.length; i++) {
+    var i, person;
+
+    for (i = 0; i < witness.length; i++) {
       if (i > 0) {
         witnesses.push(', ');
       }
-      var person = '';
+      person = '';
       person += witness[i].race || 'Unknown race';
       person += ' ';
       person += witness[i].gender ? (witness[i].gender == 'F' ? 'Female' : 'Male') : 'Person';

@@ -1,17 +1,19 @@
 var React = require('react');
 var _ = require('lodash');
+
 var Base = require('../../Base.react');
 var ProfileStore = require('../../../stores/OfficerSection/Officer/ProfileStore');
 var ProfileActions = require('../../../actions/OfficerSection/Officer/ProfileActions');
 var OfficerAPI = require('../../../utils/OfficerAPI');
 var AppConstants = require('../../../constants/AppConstants.js');
+var Profile;
 
 global.jQuery = require('jquery');
 require('jquery-validation');
 require('bootstrap-datepicker');
 
 
-var Profile = React.createClass(_.assign(Base(ProfileStore), {
+Profile = React.createClass(_.assign(Base(ProfileStore), {
   onChange: function (field, e) {
     if (field == 'appt_date' || field == 'birth_year') {
       jQuery(e.target).valid();

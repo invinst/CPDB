@@ -9,6 +9,7 @@ var FilterTags = require('components/DataToolPage/FilterTags.react');
 var Map = require('components/DataToolPage/Map.react');
 var OfficerList = require('components/DataToolPage/OfficerList.react');
 var SessionStore = require('stores/SessionStore');
+var Overlay = require('components/DataToolPage/Overlay.react');
 var Tabs = require('components/DataToolPage/Tabs.react');
 var Search = require('components/Shared/Search.react');
 
@@ -105,6 +106,7 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
         <div className={ complaintListContainerClassName }>
           <div id='complaint-list'><ComplaintSection /></div>
         </div>
+        <Overlay />
       </div>
     );
   }

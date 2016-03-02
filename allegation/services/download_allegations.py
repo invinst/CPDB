@@ -7,6 +7,7 @@ from django.http.request import QueryDict
 import xlsxwriter
 from allegation.models import Download
 
+from api.models import Setting
 from allegation.views.officer_allegation_api_view import (
     OfficerAllegationAPIView)
 from common.models import (
@@ -54,20 +55,11 @@ class AllegationsDownload(OfficerAllegationAPIView):
         worksheet.set_column('A:A', 100)
         worksheet.set_tab_color('red')
 
-        DISCLAIMER = """DISCLAIMER:
-
-This dataset is compiled from three lists of allegations against Chicago Police Department officers,
-spanning approximately 2002 - 2008 and 2010 - 2014, produced by the City of Chicago in response
-to litigation and to FOIA requests.
-
-The City of Chicago's production of this information is accompanied by a disclaimer that
-not all information contained in the City's database may be correct.
-
-No independent verification of the City's records has taken place and this dataset does not
-purport to be an accurate reflection of either the City's database or its veracity."""
+        app_setting = Setting.objects.first()
+        disclaimer = app_setting.export_excel_disclaimer
 
         line_count = 0
-        for line in DISCLAIMER.splitlines():
+        for line in disclaimer.splitlines():
             line_count += 1
             worksheet.write("A%s" % line_count, line)
 
@@ -78,29 +70,31 @@ purport to be an accurate reflection of either the City's database or its veraci
             col_count += 1
 
     def write_allegations_columns(self, sheet):
-        columns = """CRID
-OfficerID
-OfficeFirst
-OfficerLast
-AllegationCode
-Category
-Allegation
-RecommendedFinding
-RecommendedOutcome
-FinalFinding
-FinalOutcome
-Finding
-Outcome
-Beat
-Location
-Add1
-Add2
-City
-IncidentDate
-StartDate
-EndDate
-Investigator"""
-        self.write_headers(sheet, columns.splitlines())
+        columns = [
+            'CRID',
+            'OfficerID',
+            'OfficeFirst',
+            'OfficerLast',
+            'AllegationCode',
+            'Category',
+            'Allegation',
+            'RecommendedFinding',
+            'RecommendedOutcome',
+            'FinalFinding',
+            'FinalOutcome',
+            'Finding',
+            'Outcome',
+            'Beat',
+            'Location',
+            'Add1',
+            'Add2',
+            'City',
+            'IncidentDate',
+            'StartDate',
+            'EndDate',
+            'InvestigatorName',
+            'InvestigatorRank']
+        self.write_headers(sheet, columns)
 
     def write_allegations_data(self, sheet):
         row_count = 1
@@ -153,8 +147,11 @@ Investigator"""
                 sheet.write(
                     row_count, 20,
                     officer_allegation.end_date.strftime("%Y-%m-%d"))
-            sheet.write(
-                row_count, 21, officer_allegation.allegation.investigator_name)
+            if officer_allegation.allegation.investigator is not None:
+                sheet.write(
+                    row_count, 21, officer_allegation.allegation.investigator.name)
+                sheet.write(
+                    row_count, 22, officer_allegation.allegation.investigator.current_rank)
 
             row_count += 1
 
@@ -168,12 +165,12 @@ Investigator"""
 
     def write_police_witnesses(self):
         witnesses = PoliceWitness.objects.filter(crid__in=self.crids).order_by('crid')
-        headers = "CRID,OfficerID,Gender,Race"
+        headers = ['CRID', 'OfficerID', 'Gender', 'Race']
         sheet = self.workbook.add_worksheet()
         sheet.name = "Police Witnesses"
         sheet.set_tab_color('#a8c06e')
 
-        self.write_headers(sheet, headers.split(","))
+        self.write_headers(sheet, headers)
 
         row_count = 1
         for witness in witnesses:
@@ -184,12 +181,12 @@ Investigator"""
             row_count += 1
 
     def write_complaint_witnesses(self):
-        headers = "CRID,Gender,Race"
+        headers = ['CRID', 'Gender', 'Race', 'Age']
         sheet = self.workbook.add_worksheet()
         sheet.name = "Complaining Witnesses"
         sheet.set_tab_color('#a8c06e')
 
-        self.write_headers(sheet, headers.split(","))
+        self.write_headers(sheet, headers)
 
         witnesses = ComplainingWitness.objects.filter(crid__in=self.crids).order_by('crid')
 
@@ -198,15 +195,17 @@ Investigator"""
             sheet.write(row_count, 0, witness.crid)
             sheet.write(row_count, 1, witness.gender)
             sheet.write(row_count, 2, witness.race)
+            sheet.write(row_count, 3, witness.age)
             row_count += 1
 
     def write_officer_profile(self):
-        headers = "OfficerID,OfficerFirst,OfficerLast,Gender,Race,ApptDate,Unit,Rank,Star"
+        headers = [
+            'OfficerID', 'OfficerFirst', 'OfficerLast', 'Gender', 'Race', 'ApptDate', 'Unit', 'Rank', 'Star', 'Age']
         sheet = self.workbook.add_worksheet()
         sheet.name = "Officer Profile"
         sheet.set_tab_color('#a8c06e')
 
-        self.write_headers(sheet, headers.split(","))
+        self.write_headers(sheet, headers)
 
         officer_ids = [o.officer_id for o in self.officer_allegations]
         officers = Officer.objects.filter(id__in=officer_ids)
@@ -222,6 +221,7 @@ Investigator"""
             sheet.write(row_count, 6, officer.unit)
             sheet.write(row_count, 7, officer.rank)
             sheet.write(row_count, 8, officer.star)
+            sheet.write(row_count, 9, officer.age)
             row_count += 1
 
     def save_model(self):
@@ -233,9 +233,12 @@ Investigator"""
     def query_dict(self):
         return QueryDict(self.download.query)
 
+    def update_crids(self):
+        self.crids = [o.allegation.crid for o in self.officer_allegations]
+
     def generate(self):
         self.officer_allegations = self.get_officer_allegations()
-        self.crids = [o.allegation.crid for o in self.officer_allegations]
+        self.update_crids()
 
         self.init_workbook()
         self.write_disclaimer()

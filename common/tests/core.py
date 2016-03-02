@@ -2,6 +2,7 @@ import json
 import os
 import threading
 import time
+from contextlib import contextmanager
 
 from bs4 import BeautifulSoup
 from django.core import management
@@ -77,7 +78,7 @@ class BrowserNoWait(object):
         self.obj.browser.implicitly_wait(0)
 
     def __exit__(self, exc_type, exc_value, traceback):
-        self.obj.browser.implicitly_wait(10)
+        self.obj.browser.implicitly_wait(3)
 
 
 class OpenNewBrowser(object):
@@ -127,7 +128,7 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         browser = WebDriver(
             capabilities=desired_capabilities,
             firefox_profile=self.init_firefox_profile())
-        browser.implicitly_wait(10)
+        browser.implicitly_wait(3)
         browser.set_window_size(**self.DESKTOP_BROWSER_SIZE)
         return browser
 
@@ -190,10 +191,10 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         action_chains.perform()
         self.sleep(1)
 
-    def should_see_text(self, text):
+    def should_see_text(self, text, parent='body'):
         if not isinstance(text, str):
             text = str(text)
-        self.find('body').text.should.contain(text)
+        self.find(parent).text.should.contain(text)
 
     def should_see_texts(self, texts):
         body = self.find('body').text
@@ -388,7 +389,7 @@ class BaseLivePhoneTestCase(MobileUrlMixins, BaseLiveTestCase):
         browser = WebDriver(
             capabilities=desired_capabilities,
             firefox_profile=self.init_firefox_profile())
-        browser.implicitly_wait(10)
+        browser.implicitly_wait(3)
         browser.set_window_size(**self.IPHONE6_BROWSER_SIZE)
         return browser
 
@@ -419,7 +420,7 @@ class BaseLiveAndroidPhoneTestCase(MobileUrlMixins, BaseLiveTestCase):
         browser = WebDriver(
             capabilities=desired_capabilities,
             firefox_profile=self.init_firefox_profile())
-        browser.implicitly_wait(10)
+        browser.implicitly_wait(3)
         browser.set_window_size(**self.GALAXY_S6_BROWSER_SIZE)
         return browser
 
@@ -465,3 +466,22 @@ class SimpleTestCase(DjangoSimpleTestCase, UserTestBaseMixin):
 
     def json(self, response):
         return json.loads(response.content.decode())
+
+
+@contextmanager
+def switch_to_popup(driver):
+    """
+    Switch to opened popup, switch to main window when leave context.
+
+    This context assume that there're only one popup opened.
+
+    Usage example:
+
+    with switch_to_popup(driver):
+        ('https://www.facebook.com' in browser.current_url).should.be.true
+    """
+    while len(driver.window_handles) < 2:
+        pass
+    driver.switch_to.window(driver.window_handles[1])
+    yield None
+    driver.switch_to.window(driver.window_handles[0])

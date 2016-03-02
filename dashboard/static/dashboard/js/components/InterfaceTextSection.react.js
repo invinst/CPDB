@@ -51,9 +51,12 @@ var InterfaceTextSection = React.createClass(_.assign(Base(InterfaceTextSectionS
 
   renderContent: function () {
     var children = [];
+    var i,
+      text;
+
     if (this.state.texts.length > 0) {
-      for (var i = 0; i < this.state.texts.length; i++) {
-        var text = this.state.texts[i];
+      for (i = 0; i < this.state.texts.length; i++) {
+        text = this.state.texts[i];
         if (this.state.activeText && text.id == this.state.activeText.id) {
           children.push(this.renderActive());
         }

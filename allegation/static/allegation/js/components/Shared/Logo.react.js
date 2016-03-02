@@ -5,8 +5,8 @@ var SessionStore = require('stores/SessionStore');
 
 var Logo = React.createClass({
   _onClick: function (e) {
-    e.preventDefault();
     var url = ['/data-tools', SessionStore.getHash()].join('/');
+    e.preventDefault();
     navigate(url);
   },
 

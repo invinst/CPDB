@@ -1,14 +1,18 @@
-var Base = require('../Base.react');
-var React = require('react');
 var _ = require('lodash');
+var React = require('react');
+var toastr = require('toastr');
+
+var Base = require('../Base.react');
+var AddAliasModalStore = require('../../stores/SearchSection/AddAliasModalStore');
+var AddAliasModalActions = require('../../actions/SearchSection/AddAliasModalActions');
+var AddAliasModal;
+
 global.jQuery = require('jquery');
 require('bootstrap');
 require('jquery-validation');
-var AddAliasModalStore = require('../../stores/SearchSection/AddAliasModalStore');
-var AddAliasModalActions = require('../../actions/SearchSection/AddAliasModalActions');
-var toastr = require('toastr');
 
-var AddAliasModal = React.createClass(_.assign(Base(AddAliasModalStore), {
+
+AddAliasModal = React.createClass(_.assign(Base(AddAliasModalStore), {
   updateValue: function (stateName, e) {
     AddAliasModalActions.formDataChange(stateName, e.target.value);
   },
@@ -70,6 +74,9 @@ var AddAliasModal = React.createClass(_.assign(Base(AddAliasModalStore), {
 
   componentDidUpdate: function () {
     var isOpen = this.isOpen();
+    var errorCount,
+      i;
+
     if (isOpen != this.state.isOpen) {
       this.toggleModal();
     }
@@ -78,8 +85,8 @@ var AddAliasModal = React.createClass(_.assign(Base(AddAliasModalStore), {
       toastr.success(this.state.flashMessage);
     }
 
-    var errorCount = this.state.errorMessages.length;
-    for (var i = 0; i < errorCount; i++) {
+    errorCount = this.state.errorMessages.length;
+    for (i = 0; i < errorCount; i++) {
       toastr.error(this.state.errorMessages[i]);
     }
   }

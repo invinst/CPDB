@@ -1,11 +1,13 @@
-global.jQuery = require('jquery');
-
 var AppConstants = require('../constants/AppConstants');
 var SettingActions = require('actions/SettingActions');
 
 var ajax = null;
+var SettingAPI;
 
-var SettingAPI = {
+global.jQuery = require('jquery');
+
+
+SettingAPI = {
   get: function (query) {
     if (ajax) {
       ajax.abort();

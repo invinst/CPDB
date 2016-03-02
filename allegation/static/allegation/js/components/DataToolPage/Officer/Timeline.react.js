@@ -19,20 +19,28 @@ var Timeline = React.createClass({
 
   drawTimeline: function (data) {
     var container = ReactDOM.findDOMNode(this);
-    $(container).html('');
     var timeLineItems = [];
     var items = data.items;
+    var i,
+      style,
+      start,
+      timeLineItem,
+      rangeItem,
+      emptyRangeItem,
+      options;
+
+    $(container).html('');
 
     if (!items) {
       return;
     }
 
-    for (var i = 0; i < items.length; i++) {
+    for (i = 0; i < items.length; i++) {
       if (!items[i]) {
         continue;
       }
-      var style = 'display: none';
-      var start = moment(items[i]);
+      style = 'display: none';
+      start = moment(items[i]);
       if (start == 'Invalid date') {
         continue;
       }
@@ -41,7 +49,7 @@ var Timeline = React.createClass({
         style = '';
       }
 
-      var timeLineItem = {
+      timeLineItem = {
         id: i + 1,
         content: '',
         start: start,
@@ -52,7 +60,7 @@ var Timeline = React.createClass({
         timeLineItem.content = 'Joined force<br /><span>' + start.format('MMM DD, YYYY') + '</span>';
         timeLineItems.push(timeLineItem);
         if (items.length >= 1) {
-          var rangeItem = {
+          rangeItem = {
             id: 'range-1',
             content: 'data withheld for this period',
             start: start,
@@ -71,7 +79,7 @@ var Timeline = React.createClass({
 
     if (!timeLineItems.length) {
 
-      var emptyRangeItem = {
+      emptyRangeItem = {
         id: 'range-1',
         content: 'no data for this officer',
         start: moment('2000-01-01'),
@@ -95,7 +103,7 @@ var Timeline = React.createClass({
     timeLineItems = new vis.DataSet(timeLineItems);
 
     // Configuration for the Timeline
-    var options = {'moveable': false, 'zoomable': false, height: '260px'};
+    options = {'moveable': false, 'zoomable': false, height: '260px'};
 
     new vis.Timeline(container, timeLineItems, options);
   },

@@ -1,5 +1,3 @@
-require('utils/jQuery');
-
 var OfficerListStore = require('stores/OfficerListStore');
 
 

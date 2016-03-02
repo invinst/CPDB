@@ -5,6 +5,9 @@ var Navigation = require('./components/Navigation.react');
 var Period = require('./components/Period.react');
 
 var contentEl = document.getElementById('content');
+var navigationEl = document.getElementById('navigation-menu');
+var periodEl = document.getElementById('period');
+
 if (contentEl) {
   ReactDOM.render(
     <Content />,
@@ -12,7 +15,6 @@ if (contentEl) {
   );
 }
 
-var navigationEl = document.getElementById('navigation-menu');
 if (navigationEl) {
   ReactDOM.render(
     <Navigation />,
@@ -20,7 +22,6 @@ if (navigationEl) {
   );
 }
 
-var periodEl = document.getElementById('period');
 if (periodEl) {
   ReactDOM.render(
     <Period />,

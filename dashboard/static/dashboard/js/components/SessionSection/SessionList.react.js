@@ -1,4 +1,3 @@
-global.jQuery = require('jquery');
 var _ = require('lodash');
 var React = require('react');
 
@@ -8,8 +7,12 @@ var SessionsAPI = require('utils/SessionsAPI');
 var SessionsActions = require('actions/SessionSection/SessionsActions');
 var SessionListStore = require('stores/SessionSection/SessionListStore');
 var SessionHistory = require('components/SessionSection/SessionHistory.react');
+var SessionList;
 
-var SessionList = React.createClass(_.assign(Base(SessionListStore), {
+global.jQuery = require('jquery');
+
+
+SessionList = React.createClass(_.assign(Base(SessionListStore), {
   // TODO: Consider moving this to Mixins
   _onScroll: function (e) {
     var windowHeight = window.innerHeight;

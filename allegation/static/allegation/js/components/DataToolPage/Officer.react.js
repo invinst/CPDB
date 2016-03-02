@@ -13,7 +13,7 @@ var CheckMark = require('components/DataToolPage/Officer/CheckMark.react');
 var Counter = require('components/DataToolPage/Counter.react');
 var OfficerPresenter = require('presenters/OfficerPresenter');
 var jQuery = require('utils/jQuery');
-var StringUtil = require('utils/StringUtil');
+var S = require('string');
 
 
 var Officer = React.createClass({
@@ -99,7 +99,7 @@ var Officer = React.createClass({
 
   officerLink: function (officer) {
     var presenter = OfficerPresenter(officer);
-    return '/officer/' + StringUtil.slugify(presenter.displayName) + '/' + officer.id;
+    return '/officer/' + S(presenter.displayName).slugify().s + '/' + officer.id;
   },
 
   renderAllegationsCount: function (officer) {
@@ -118,16 +118,23 @@ var Officer = React.createClass({
 
   render: function () {
     var officer = this.props.officer;
+    var className,
+      selectionState,
+      officerId,
+      presenter,
+      intersection,
+      intersectionClass;
+
     if (!officer) {
       return <div></div>;
     }
-    var className = classnames('officer ' + this.getAvgClass(), {
+    className = classnames('officer ' + this.getAvgClass(), {
       'active': this.props.active,
       'selected': this.props.selected,
       'has-intersection': ('intersection' in this.props)
     });
 
-    var selectionState = '';
+    selectionState = '';
     if (this.props.active) {
       className += ' active';
       selectionState = 'selected';
@@ -138,10 +145,10 @@ var Officer = React.createClass({
       selectionState = 'selected';
     }
 
-    var officerId = 'officer_' + officer.id;
-    var presenter = OfficerPresenter(officer);
-    var intersection = '';
-    var intersectionClass = '';
+    officerId = 'officer_' + officer.id;
+    presenter = OfficerPresenter(officer);
+    intersection = '';
+    intersectionClass = '';
     if ('intersection' in this.props) {
       intersection = this.props.witness ? 'Witness in ' : ' Co-accused in ';
       intersection += pluralize('case', this.props.intersection, true);

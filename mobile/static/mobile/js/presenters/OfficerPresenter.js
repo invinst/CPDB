@@ -3,6 +3,7 @@ var pluralize = require('pluralize');
 var AppConstants = require('constants/AppConstants');
 
 var HelperUtil = require('utils/HelperUtil');
+var CollectionUtil = require('utils/CollectionUtil');
 var GenderPresenter = require('presenters/GenderPresenter');
 
 
@@ -19,9 +20,7 @@ var OfficerPresenter = function (officer) {
   };
 
   var race = function () {
-    var race = HelperUtil.fetch(officer, 'race', 'Unknown');
-    // In DB, we mark unknown `Race` to be `Unknown` T_T
-    return race.toLowerCase() == 'unknown' ? 'Race unknown' : race;
+    return HelperUtil.fetch(officer, 'race', 'Race unknown');
   };
 
   var gender = function () {
@@ -54,6 +53,35 @@ var OfficerPresenter = function (officer) {
     return HelperUtil.fetch(officer, 'allegations_count', 0);
   };
 
+  var has = function (officer, field) {
+    return !!officer[field];
+  };
+
+  var hasDataIn = function (officer, field, collection) {
+    return (collection.indexOf(officer[field]) > 0);
+  };
+
+  var hasData = function (label) {
+    var field = AppConstants.OFFICER_SUMMARY_MAP[label];
+    var checkers = {
+      'race': has(officer, field),
+      'unit': hasDataIn(officer, field, Object.keys(AppConstants.UNITS)),
+      'rank': has(officer, field),
+      'appt_date': has(officer, field),
+      'gender': has(officer, field)
+    };
+
+    return checkers[field];
+  };
+
+  var hasSummarySection = function () {
+    var labels = Object.keys(AppConstants.OFFICER_SUMMARY_MAP);
+    var summarySectionData = labels.map(function (label) {
+      return hasData(label);
+    });
+    return CollectionUtil.any(summarySectionData);
+  };
+
   var coAccusedWith = function (numberOfCoAccusedOfficers) {
     var theOthers = pluralize('other', numberOfCoAccusedOfficers, true);
     var withSomeOfficers = HelperUtil.format(' and {theOthers}', {'theOthers': theOthers});
@@ -79,6 +107,8 @@ var OfficerPresenter = function (officer) {
     rank: rank(),
     joinedDate: joinedDate(),
     allegationsCount: allegationsCount(),
+    hasData: hasData,
+    hasSummarySection: hasSummarySection(),
     coAccusedWith: coAccusedWith
   };
 };

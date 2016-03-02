@@ -14,8 +14,9 @@ class SunburstSerializerTestCase(SimpleTestCase):
             OfficerAllegationFactory(final_finding='SU', final_outcome=fo)
 
         serializer = SunburstSerializer(OfficerAllegation.objects.all())
-        len(serializer.data).should.equal(2)
-        sum_count(get_category_obj(serializer.data, 'Unsustained')).should.equal(7)
-        sum_count(get_category_obj(serializer.data, 'Sustained')).should.equal(13)
-        sum_count(get_category_obj(serializer.data, 'Not Disciplined')).should.equal(7)
-        sum_count(get_category_obj(serializer.data, 'Disciplined')).should.equal(6)
+        children = serializer.data['children']
+        len(children).should.equal(2)
+        sum_count(get_category_obj(children, 'Unsustained')).should.equal(7)
+        sum_count(get_category_obj(children, 'Sustained')).should.equal(13)
+        sum_count(get_category_obj(children, 'Not Disciplined')).should.equal(7)
+        sum_count(get_category_obj(children, 'Disciplined')).should.equal(6)

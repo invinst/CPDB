@@ -8,10 +8,12 @@ var AppConstants = require('../constants/AppConstants');
 var ajax = null;
 
 // Fill django-rest returned date data
-function fill(data, begin, end) {
+var fill = function (data, begin, end) {
   var index = begin;
+  var filledData;
+
   end = moment(end).subtract(1, 'd').format(AppConstants.DATE_FORMAT);
-  var filledData = _(data['results']).pluck('created_date').value();
+  filledData = _(data['results']).pluck('created_date').value();
 
   while (index != end) {
     index = moment(index).add(1, 'd').format(AppConstants.DATE_FORMAT);
@@ -26,17 +28,17 @@ function fill(data, begin, end) {
   data['results'] = _(data['results']).sortBy(function (x) { return moment(x['created_date']); }).value();
 
   return data;
-}
+};
 
 var NewSessionAnalyticAPI = {
   getRecent: function () {
-    if (ajax) {
-      ajax.abort();
-    }
-
     var end = moment().add(1, 'd').format(AppConstants.DATE_FORMAT);
     var begin = moment().subtract(AppConstants.NUMBER_OF_DAYS_SHOWN_IN_NEW_SESSION_CHART, 'd')
       .format(AppConstants.DATE_FORMAT);
+
+    if (ajax) {
+      ajax.abort();
+    }
 
     ajax = jQuery.get(AppConstants.NEW_SESSION_ANALYTICS_API_ENDPOINT, {begin: begin, end: end})
       .done(function (data) {
