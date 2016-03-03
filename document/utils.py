@@ -25,10 +25,12 @@ def send_document_notification_by_crid_and_link(crid, link):
         .format(crid=crid, link=link)
     from_email = None
 
-    send_mail(
-        subject=subject,
-        message=message,
-        from_email=from_email,
-        recipient_list=recipient_list
-    )
+    for user_email in recipient_list:
+        send_mail(
+            subject=subject,
+            message=message,
+            from_email=from_email,
+            recipient_list=[user_email]
+        )
+
     send_document_notification_by_crid_and_link.called = True
