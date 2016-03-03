@@ -7,7 +7,8 @@ var PropTypes = React.PropTypes;
 var BootstrapTextInput = React.createClass({
   propTypes: {
     placeholder: PropTypes.string,
-    name: PropTypes.string
+    name: PropTypes.string,
+    className: PropTypes.string
   },
   mixins: [Formsy.Mixin],
 
@@ -16,7 +17,7 @@ var BootstrapTextInput = React.createClass({
   },
 
   render: function () {
-    var classNames = classnames('form-group', {
+    var classNames = classnames('form-group', this.props.className, {
       'has-error': this.showRequired() || this.showError()
     });
 

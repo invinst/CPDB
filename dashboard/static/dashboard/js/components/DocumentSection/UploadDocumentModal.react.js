@@ -11,6 +11,7 @@ var DropzoneUpload = require('components/Shared/DropzoneUpload.react');
 var DocumentActions = require('actions/DocumentSection/DocumentActions');
 
 
+// should not use inline styles but React Modal leave us no other choice
 var customStyles = {
   overlay: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)'
@@ -73,9 +74,8 @@ var UploadDocumentModal = React.createClass({
 
   render: function () {
     return (
-      <Modal
-        isOpen={ this.props.isOpen } style={ customStyles }
-        onRequestClose={ this.props.onRequestClose }>
+      <Modal isOpen={ this.props.isOpen } style={ customStyles }
+        onRequestClose={ this.props.onRequestClose } closeTimeoutMS={ 150 }>
         <Formsy.Form onValidSubmit={ this.submit } onValid={ this.enableSubmit } onInvalid={ this.disableSubmit }>
 
           <div className='modal-header'>
@@ -84,8 +84,9 @@ var UploadDocumentModal = React.createClass({
 
           <div className='modal-body'>
             <DropzoneUpload required={ true } name='file'/>
-            <BootstrapTextInput name='title' placeholder='Document title' required={ true }/>
-            <BootstrapTextInput name='source' placeholder='Document source'/>
+            <BootstrapTextInput className='doc-title-input' name='title'
+              placeholder='Document title (required)' required={ true }/>
+            <BootstrapTextInput className='doc-source-input' name='source' placeholder='Document source'/>
           </div>
 
           <div className='modal-footer'>
