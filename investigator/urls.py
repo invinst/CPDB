@@ -7,7 +7,7 @@ cache_view = cache_page(86400)
 
 
 urlpatterns = [
-    url(r'^(?P<slug>[a-z0-9]+(-[a-z0-9]+)*)/(?P<pk>\d+)$',
+    url(r'^$',
         cache_view(InvestigatorDetailView.as_view()),
         name='detail'),
 ]

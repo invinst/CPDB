@@ -9,8 +9,8 @@ from investigator.services.investigator_details_service import \
 
 class InvestigatorDetailView(View):
 
-    def get(self, request, slug, pk):
-        investigator_id = pk
+    def get(self, request):
+        investigator_id = request.GET.get('pk', 0)
         investigator = get_object_or_404(Investigator, pk=investigator_id)
 
         details = InvestigatorDetailsService.get_details(investigator)
