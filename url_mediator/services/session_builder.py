@@ -31,8 +31,12 @@ class SimpleNode(Node):
                 raise Exception('Invalid node type: {child_type}, session_builder.Node is expected'.format(
                     child_type=type(child))
                 )
-            result[child.node_name] = child.build()
 
+            result = self._build_child(result, child)
+        return result
+
+    def _build_child(self, result, child):
+        result[child.node_name] = child.build()
         return result
 
 
@@ -56,8 +60,26 @@ class ActiveComplaints(Node):
         return self.attributes['crids']
 
 
+class VirtualNode(Node):
+    pass
+
+
 class FilterTags(SimpleNode):
     node_name = 'filters'
+
+    def build(self):
+        result = {}
+
+        for child in self.children:
+            if (isinstance(child, VirtualNode)):
+                built_nodes = child.build()
+
+                for node in built_nodes:
+                    result = self._build_child(result, node)
+            else:
+                result = self._build_child(result, child)
+
+        return result
 
 
 class AllegationCrid(Node):
@@ -79,3 +101,34 @@ class AllegationCrid(Node):
             })
 
         return results
+
+
+class SuggestionsNode(Node):
+    node_name = ''
+    supported_attributes = ['suggestions']
+
+    def build(self):
+        results = []
+
+        for suggestion in self.attributes['suggestions']:
+            result = suggestion['tagValue']
+            result['pinned'] = False
+            results.append(result)
+
+        return results
+
+
+class FromSuggestions(VirtualNode):
+    supported_attributes = ['suggestions']
+    node_name = ''
+
+    def build(self):
+        built_nodes = []
+
+        for display_category, suggestions in self.attributes['suggestions'].items():
+            klass_name = '{category}SuggestionNode'.format(category=display_category)
+            node_name = suggestions[0]['tagValue']['category']
+            klass = type(klass_name, (SuggestionsNode,), {'node_name': node_name})
+            built_nodes.append(klass(suggestions=suggestions))
+
+        return built_nodes

@@ -1,6 +1,14 @@
+from collections import OrderedDict
+
+from mock import MagicMock
+
+from allegation.factories import OfficerFactory
 from common.tests.core import SimpleTestCase
+from common.utils.haystack import rebuild_index
 from url_mediator.services.session_builder import (ActiveOfficers, ActiveComplaints, Builder, FilterTags,
-                                                   AllegationCrid, Node, SimpleNode)
+                                                   AllegationCrid, Node, SimpleNode, FromSuggestions, SuggestionsNode,
+                                                   VirtualNode)
+from url_mediator.services.suggest_session_builder import CustomSuggestionService
 
 
 class NodeTest(SimpleTestCase):
@@ -61,6 +69,29 @@ class FilterTagsTest(SimpleTestCase):
     def test_node_name_should_be_filters(self):
         FilterTags().should.have.property('node_name').being.equal('filters')
 
+    def test_build_without_children(self):
+        FilterTags().build().should.be.equal({})
+
+    def test_build_without_virtual_children(self):
+        real_node = Node()
+        real_node.node_name = 'name'
+        real_node.build = MagicMock(return_value='something')
+        FilterTags(real_node).build().should.be.equal({
+            'name': 'something'
+        })
+
+    def test_build_with_virtual_children(self):
+        real_node = Node()
+        real_node.node_name = 'name'
+        real_node.build = MagicMock(return_value='something')
+
+        virtual_node = VirtualNode()
+        virtual_node.build = MagicMock(return_value=[real_node])
+
+        FilterTags(virtual_node).build().should.be.equal({
+            'name': 'something'
+        })
+
 
 class AllegationCridTest(SimpleTestCase):
     def test_node_name_should_be_allegation__crid(self):
@@ -79,6 +110,49 @@ class AllegationCridTest(SimpleTestCase):
             "displayCategory": "Allegation ID"
         }]
         )
+
+
+class SuggestionNodeTest(SimpleTestCase):
+    def test_build(self):
+        suggestions = [{
+            'tagValue': {
+                'key': 'value'
+            }
+        }]
+
+        SuggestionsNode(suggestions=suggestions).build().should.be.equal([{
+            'key': 'value',
+            'pinned': False
+        }])
+
+
+class FromSuggestionsTest(SimpleTestCase):
+    def test_build(self):
+        suggestions = OrderedDict({
+            'Officer': [{
+                'suggestValue': 'John Burzinski (41)',
+                'tagValue': {
+                    'category': 'officer',
+                    'displayCategory': 'Officer',
+                    'displayValue': 'John Burzinski',
+                    'value': 894
+                }
+            }]
+        })
+
+        built_nodes = FromSuggestions(
+            suggestions=suggestions
+        ).build()
+        built_nodes.should.have.length_of(1)
+        built_node = built_nodes[0]
+        built_node.should.be.a(SuggestionsNode)
+        built_node.build().should.be.equal([{
+            'displayValue': 'John Burzinski',
+            'category': 'officer',
+            'displayCategory': 'Officer',
+            'pinned': False,
+            'value': 894
+        }])
 
 
 class SessionBuilderIntegrationTest(SimpleTestCase):
@@ -100,6 +174,34 @@ class SessionBuilderIntegrationTest(SimpleTestCase):
 
         # FIXME: Change session's activeComplaints to active_complaints
         session.should.be.equal({'active_complaints': [123, 456]})
+
+    def test_session_build_from_suggestion(self):
+        officer = OfficerFactory()
+        rebuild_index()
+        suggestions = CustomSuggestionService().make_suggestion(officer.officer_first)
+
+        session = Builder(
+            FilterTags(
+                FromSuggestions(suggestions=suggestions)
+            )).build()
+
+        officer_name = "{officer_first} {officer_last}".format(
+            officer_first=officer.officer_first,
+            officer_last=officer.officer_last
+        )
+
+        session.should.have.length_of(1)
+        session.should.be.equal({
+            'filters': {
+                'officer': [{
+                    'category': 'officer',
+                    'displayCategory': "Officer",
+                    'displayValue': officer_name,
+                    'pinned': False,
+                    'value': officer.pk
+                }]
+            }
+        })
 
     def test_session_builder_with_filter_tags(self):
         session = Builder(

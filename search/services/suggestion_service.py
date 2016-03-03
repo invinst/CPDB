@@ -36,6 +36,7 @@ from search.utils.format_suggest import format_suggest
 
 class SuggestionService(object):
     def __init__(self):
+        # Please don't change this order, it related to the order which will show in the front end
         self.suggests = [
             SuggestIncidentDateOnlyYearMonth,
             SuggestOfficerStar,
