@@ -480,7 +480,8 @@ def switch_to_popup(driver):
     with switch_to_popup(driver):
         ('https://www.facebook.com' in browser.current_url).should.be.true
     """
-    while len(driver.window_handles) < 2:
+    timeout = time.time() + 5
+    while len(driver.window_handles) < 2 and time.time() <= timeout:
         pass
     driver.switch_to.window(driver.window_handles[1])
     yield None
