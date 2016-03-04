@@ -5,25 +5,26 @@ var Navigation = require('./components/Navigation.react');
 var Period = require('./components/Period.react');
 
 var contentEl = document.getElementById('content');
-if(contentEl) {
-    ReactDOM.render(
-      <Content />,
-      contentEl
-    );
-}
-
 var navigationEl = document.getElementById('navigation-menu');
-if(navigationEl) {
-    ReactDOM.render(
-        <Navigation />,
-        navigationEl
-    );
+var periodEl = document.getElementById('period');
+
+if (contentEl) {
+  ReactDOM.render(
+    <Content />,
+    contentEl
+  );
 }
 
-var periodEl = document.getElementById('period');
+if (navigationEl) {
+  ReactDOM.render(
+    <Navigation />,
+    navigationEl
+  );
+}
+
 if (periodEl) {
-    ReactDOM.render(
-      <Period />,
-      periodEl
-    );
+  ReactDOM.render(
+    <Period />,
+    periodEl
+  );
 }

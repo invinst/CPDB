@@ -10,9 +10,9 @@ var AllegationResourceUtil = {
       .query({ crid: crid })
       .end(function (err, res) {
         if (res.ok) {
-          ComplaintPageServerActions.received(res.body)
+          ComplaintPageServerActions.received(res.body);
         } else {
-          ComplaintPageServerActions.failedToReceive(crid)
+          ComplaintPageServerActions.failedToReceive(crid);
         }
       });
   }

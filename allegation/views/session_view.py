@@ -42,28 +42,40 @@ class SessionAPIView(View):
                 self.prepare_return_data(True, session)
             ))
 
-    def post(self, request):
-        data = json.loads(request.POST.get('request_data', {}))
-        ints = Session.id_from_hash(data['hash'])
+    def put(self, request):
+        data = json.loads(request.body.decode("utf-8"))
         owned_sessions = request.session.get('owned_sessions', [])
 
-        if len(ints) < 1:
+        try:
+            session_id = Session.id_from_hash(data['hash'])[0]
+        except IndexError:
             return self.error_response('Hash not found')
 
-        session_id = ints[0]
-
-        if session_id not in owned_sessions:
-            return self.error_response('Hash is not owned')
-
         session = Session.objects.filter(pk=session_id).first()
+
         if not session:
             return self.error_response('Session is not found')
+        if not session.shared and session_id not in owned_sessions:
+            return self.error_response('Hash is not owned')
 
         session = self.update_session_data(session, data)
 
         return HttpResponse(JSONSerializer().serialize(
             self.prepare_return_data(False, session)
         ), content_type='application/json')
+
+    def post(self, request):
+        """Clone an existing session, marking the new session as "shared"."""
+        try:
+            session = get_object_or_404(Session, pk=Session.id_from_hash(request.POST['hash_id'])[0])
+        except (KeyError, IndexError):
+            return self.error_response('Bad parameters.')
+        new_session = session.clone()
+        new_session.shared = True
+        new_session.save()
+        return HttpResponse(JSONSerializer().serialize(
+            self.prepare_return_data(True, new_session)
+        ))
 
     def create_new_session(self, request):
         session = Session()
@@ -89,7 +101,7 @@ class SessionAPIView(View):
                 'query': session.query,
                 'title': session.title,
                 'active_tab': session.active_tab,
-                'sunburst_arc': session.sunburst_arc,
+                'selected_sunburst_arc': session.selected_sunburst_arc,
             }
         }
 
@@ -117,14 +129,15 @@ class SessionAPIView(View):
                                  num_allegations=num_allegations)
 
     def update_session_data(self, session, data):
-        updates = data['query'] or {}
-        if session.query != updates:
-            session.query.update(**updates)
-            self.track_filter(session)
+        if 'query' in data:
+            updates = data['query'] or {}
+            if session.query != updates:
+                session.query.update(**updates)
+                self.track_filter(session)
         if 'active_tab' in data:
             session.active_tab = data['active_tab']
-        if 'sunburst_arc' in data:
-            session.sunburst_arc = data['sunburst_arc']
+        if 'selected_sunburst_arc' in data:
+            session.selected_sunburst_arc = data['selected_sunburst_arc']
         if 'title' in data:
             session.title = data['title']
         session.save()

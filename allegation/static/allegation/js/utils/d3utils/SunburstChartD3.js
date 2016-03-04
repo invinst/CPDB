@@ -1,19 +1,20 @@
-var _ = require('lodash');
 var d3 = require('d3');
 
 var AppConstants = require('../../constants/AppConstants');
 
-function sum(d){
+var sum = function (d) {
   var s = 0;
+  var i;
+
   if (d.children) {
-    for (var i = 0; i < d.children.length; i++) {
+    for (i = 0; i < d.children.length; i++) {
       s += sum(d.children[i]);
     }
   } else {
     s = d.size;
   }
   return s;
-}
+};
 
 // Global access
 var x, y, radius, partition, arc, svg;
@@ -28,13 +29,14 @@ var SunburstChartD3 = {
 
     var width = 390;
     var height = 390;
+    var color;
 
     if (!data) {
       return;
     }
 
     radius = Math.min(width, height) / 2.2;
-    var color = d3.scale.category20c();
+    color = d3.scale.category20c();
 
     x = d3.scale.linear().range([0, 2 * Math.PI]);
     y = d3.scale.sqrt().range([0, radius]);
@@ -43,12 +45,12 @@ var SunburstChartD3 = {
     });
 
     arc = d3.svg.arc()
-        .startAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x))); })
-        .endAngle(function(d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x + d.dx))); })
-        .innerRadius(function(d) { return Math.max(0, y(d.y)); })
-        .outerRadius(function(d) { return Math.max(0, y(d.y + d.dy)); });
+        .startAngle(function (d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x))); })
+        .endAngle(function (d) { return Math.max(0, Math.min(2 * Math.PI, x(d.x + d.dx))); })
+        .innerRadius(function (d) { return Math.max(0, y(d.y)); })
+        .outerRadius(function (d) { return Math.max(0, y(d.y + d.dy)); });
 
-    d3.select("#sunburst-chart svg").remove();
+    d3.select('#sunburst-chart svg').remove();
     svg = d3.select('#sunburst-chart')
         .append('svg')
           .attr('width', width)
@@ -99,29 +101,29 @@ var SunburstChartD3 = {
       });
   },
 
-  findPathByName: function (name) {
+  findArc: function (name, category) {
     var path;
 
     if (svg) {
       svg.selectAll('path').each(function (d) {
-        if (d.name == name) {
+        if (d.name == name && d.category == category) {
           path = d;
         }
       });
 
       if (path && path.size == 0) {
         svg.selectAll('path').each(function (d) {
-          if (d.name == 'Allegations') {
+          if (d.name == 'Allegations' && d.category == '') {
             path = d;
           }
         });
       }
 
-      return path
+      return path;
     }
 
     return false;
-  },
+  }
 };
 
 module.exports = SunburstChartD3;

@@ -10,10 +10,9 @@ var SunburstAPI = require('utils/SunburstAPI');
 var MapAPI = require('utils/MapAPI');
 var FilterTagStore = require('stores/FilterTagStore');
 var EmbedStore = require('stores/EmbedStore');
-var MapAPI = require('utils/MapAPI');
 
 
-function updateSiteData(dontUpdateSession) {
+var updateSiteData = function (dontUpdateSession) {
   ComplaintListAPI.getData();
   OutcomeAnalysisAPI.getAnalysisInformation();
   RaceGenderAPI.getData();
@@ -26,31 +25,28 @@ function updateSiteData(dontUpdateSession) {
       })
     });
   }
-}
+};
 
 
 var FilterTagsActions = {
-  addTag: function (category, value, filter, text) {
+  addTag: function (tagValue) {
+    ga('send', 'event', 'filter', tagValue.category, tagValue.value);
     if (EmbedStore.isEmbedMode()) {
       return;
     }
     AppDispatcher.dispatch({
       actionType: AppConstants.ADD_TAG,
-      category: category,
-      value: value,
-      filter: filter,
-      text: text
+      tagValue: tagValue
     });
     updateSiteData();
   },
 
-  toggleTags: function (category, tags) {
+  toggleTags: function (tags) {
     if (EmbedStore.isEmbedMode()) {
       return;
     }
     AppDispatcher.dispatch({
       actionType: AppConstants.TOGGLE_TAGS,
-      category: category,
       tags: tags
     });
 
@@ -116,7 +112,7 @@ var FilterTagsActions = {
 
   toggleAllTags: function () {
     AppDispatcher.dispatch({
-      actionType: AppConstants.TOGGLE_ALL_TAGS,
+      actionType: AppConstants.TOGGLE_ALL_TAGS
     });
   }
 };

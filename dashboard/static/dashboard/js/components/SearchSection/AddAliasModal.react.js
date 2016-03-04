@@ -1,14 +1,18 @@
-var Base = require('../Base.react');
-var React = require('react');
 var _ = require('lodash');
+var React = require('react');
+var toastr = require('toastr');
+
+var Base = require('../Base.react');
+var AddAliasModalStore = require('../../stores/SearchSection/AddAliasModalStore');
+var AddAliasModalActions = require('../../actions/SearchSection/AddAliasModalActions');
+var AddAliasModal;
+
 global.jQuery = require('jquery');
 require('bootstrap');
 require('jquery-validation');
-var AddAliasModalStore = require('../../stores/SearchSection/AddAliasModalStore');
-var AddAliasModalActions = require('../../actions/SearchSection/AddAliasModalActions');
-var toastr = require('toastr');
 
-var AddAliasModal = React.createClass(_.assign(Base(AddAliasModalStore), {
+
+AddAliasModal = React.createClass(_.assign(Base(AddAliasModalStore), {
   updateValue: function (stateName, e) {
     AddAliasModalActions.formDataChange(stateName, e.target.value);
   },
@@ -17,35 +21,36 @@ var AddAliasModal = React.createClass(_.assign(Base(AddAliasModalStore), {
     AddAliasModalActions.createAlias(this.state.alias, this.state.target);
   },
 
-  render: function() {
+  render: function () {
     var disabled = this.state.formValid ? '' : 'disabled';
     return (
-      <div className="modal fade" id="request_modal" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div className="modal-dialog" role="document">
-          <div className="modal-content">
-            <div className="modal-header">
+      <div className='modal fade' id='request_modal' tabIndex='-1' role='dialog' aria-labelledby='myModalLabel'>
+        <div className='modal-dialog' role='document'>
+          <div className='modal-content'>
+            <div className='modal-header'>
               <h3>Add Alias</h3>
             </div>
-            <div className="modal-body">
+            <div className='modal-body'>
               <form>
                 <div className='form-group'>
                   <input type='text' className='form-control alias-input' name='alias' placeholder='Enter alias'
-                         required="required" onKeyUp={this.checkForm} value={this.state.alias}
-                         onChange={this.updateValue.bind(this, 'alias')} />
+                    required='required' onKeyUp={ this.checkForm } value={ this.state.alias }
+                    onChange={ this.updateValue.bind(this, 'alias') } />
                 </div>
                 <div className='form-group'>
-                  <input type='text' className='form-control target-input' name='target' placeholder='Enter related filter tag'
-                         required="required" onKeyUp={this.checkForm} value={this.state.target}
-                         onChange={this.updateValue.bind(this, 'target')} />
+                  <input type='text' className='form-control target-input' name='target'
+                    placeholder='Enter related filter tag' required='required' onKeyUp={ this.checkForm }
+                    value={ this.state.target } onChange={ this.updateValue.bind(this, 'target') } />
                 </div>
               </form>
             </div>
-            <div className="modal-footer">
-              <div className="Text-left">
-                <button type="button" className="btn btn-cancel btn-submit" disabled={disabled} onClick={this.createAlias}>
+            <div className='modal-footer'>
+              <div className='Text-left'>
+                <button type='button' className='btn btn-cancel btn-submit' disabled={ disabled }
+                  onClick={ this.createAlias }>
                   SUBMIT
                 </button>
-                <button type="button" className="btn btn-cancel" onClick={this.hideModal}>Cancel</button>
+                <button type='button' className='btn btn-cancel' onClick={ this.hideModal }>Cancel</button>
               </div>
             </div>
           </div>
@@ -67,8 +72,11 @@ var AddAliasModal = React.createClass(_.assign(Base(AddAliasModalStore), {
     return jQuery(this.getDOMNode()).hasClass('in');
   },
 
-  componentDidUpdate: function() {
+  componentDidUpdate: function () {
     var isOpen = this.isOpen();
+    var errorCount,
+      i;
+
     if (isOpen != this.state.isOpen) {
       this.toggleModal();
     }
@@ -77,8 +85,8 @@ var AddAliasModal = React.createClass(_.assign(Base(AddAliasModalStore), {
       toastr.success(this.state.flashMessage);
     }
 
-    var errorCount = this.state.errorMessages.length;
-    for (var i = 0; i < errorCount; i++) {
+    errorCount = this.state.errorMessages.length;
+    for (i = 0; i < errorCount; i++) {
       toastr.error(this.state.errorMessages[i]);
     }
   }

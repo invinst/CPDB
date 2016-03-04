@@ -1,3 +1,5 @@
+from selenium.webdriver.common.keys import Keys
+
 from allegation.factories import (
     AllegationCategoryFactory, OfficerAllegationFactory)
 from allegation.tests.utils.outcome_filter import \
@@ -105,21 +107,21 @@ class AllegationFilterTestCase(BaseLiveTestCase):
         self.fill_in('#autocomplete', 'search query that return nothing')
         self.until(lambda: self.should_see_text('No matches found'))
 
-    def test_sugggest_has_document(self):
+    def test_has_filters_stackable(self):
         self.fill_in('#autocomplete', 'has:doc')
-        self.until(
-            lambda: self.element_by_classname_and_text(
-                'ui-autocomplete-category', 'has:').should.be.ok)
-        self.until(
-            lambda: self.element_by_classname_and_text(
-                'autocomplete-has', 'has:document').should.be.ok)
+        self.until(lambda: self.should_see_text('has:document'))
+        self.find('.autocomplete-has').click()
 
-    def test_has_document_filter(self):
-        self.fill_in('#autocomplete', 'has:document')
-        self.until(lambda: self.find('.autocomplete-has').click())
+        self.fill_in('#autocomplete', 'has:summ')
+        self.until(lambda: self.should_see_text('has:summary'))
+        self.find('.autocomplete-has').click()
+
         self.until(
             lambda: self.element_by_classname_and_text(
                 'filter-name', 'has:document').should.be.ok)
+        self.until(
+            lambda: self.element_by_classname_and_text(
+                'filter-name', 'has:summary').should.be.ok)
 
     def test_sticky_tag_shortcut(self):
         # select 2 tags
@@ -148,6 +150,20 @@ class AllegationFilterTestCase(BaseLiveTestCase):
 
         self.number_of_pinned_tags().should.equal(0)
         self.number_of_tags().should.equal(2)
+
+    def test_press_enter_not_refresh_page(self):
+        query = 'query that has no results'
+        autocomplete_element = self.find('#autocomplete')
+        # This is to clear input from other tests
+        autocomplete_element.clear()
+
+        autocomplete_element.send_keys(query)
+        self.until(lambda: self.should_see_text('No matches found'))
+
+        autocomplete_element.send_keys(Keys.ENTER)
+        self.sleep(3)
+
+        autocomplete_element.get_attribute('value').should.equal(query)
 
     def number_of_tags(self):
         return len(self.find_all('span.tag'))

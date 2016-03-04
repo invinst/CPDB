@@ -1,5 +1,5 @@
 var _ = require('lodash');
-var StringUtil = require('utils/StringUtil');
+var S = require('string');
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
@@ -10,8 +10,8 @@ var CHANGE_SESSION_EVENT = 'CHANGE_SESSION_EVENT';
 
 var _state = {
   page: 'data',
-  session_title: null,
-  session_hash: null
+  sessionTitle: null,
+  sessionHash: null
 };
 
 
@@ -29,7 +29,7 @@ var AppStore = _.assign(Base(_state), {
     return this.isPage('data');
   },
 
-  removeChangePageListener: function(callback) {
+  removeChangePageListener: function (callback) {
     this.removeListener(CHANGE_PAGE_EVENT, callback);
   },
 
@@ -45,7 +45,7 @@ var AppStore = _.assign(Base(_state), {
     this.emit(CHANGE_SESSION_EVENT);
   },
 
-  removeChangeSessionListener: function(callback) {
+  removeChangeSessionListener: function (callback) {
     this.removeListener(CHANGE_SESSION_EVENT, callback);
   },
 
@@ -61,11 +61,11 @@ var AppStore = _.assign(Base(_state), {
   },
 
   getDataToolUrl: function () {
-    if (_state.session_hash) {
-      if (_state.session_title) {
-        return '/data/' + _state.session_hash + '/' + StringUtil.slugify(_state.session_title);;
+    if (_state.sessionHash) {
+      if (_state.sessionTitle) {
+        return '/data/' + _state.sessionHash + '/' + S(_state.sessionTitle).slugify().s;
       }
-      return '/data/' + _state.session_hash + '/';
+      return '/data/' + _state.sessionHash + '/';
     }
     return '/data';
   }
@@ -73,6 +73,8 @@ var AppStore = _.assign(Base(_state), {
 
 // Register callback to handle all updates
 AppStore.dispatcherToken = AppDispatcher.register(function (action) {
+  var data;
+
   switch (action.actionType) {
     case AppConstants.NAV_GO_TO_PAGE:
       _state.page = action.page;
@@ -83,15 +85,10 @@ AppStore.dispatcherToken = AppDispatcher.register(function (action) {
     case AppConstants.RECEIVED_SESSION_DATA:
     case AppConstants.RECEIVED_UPDATED_SESSION_DATA:
       AppDispatcher.waitFor([AppStore.sessionDispatcherToken]);
-      var data = action.data.data;
-      _state.session_title = data.title;
-      _state.session_hash = data.hash;
+      data = action.data.data;
+      _state.sessionTitle = data.title;
+      _state.sessionHash = data.hash;
       AppStore.emitChangeSession();
-      AppStore.emitChange();
-      break;
-
-    case AppConstants.UPDATE_TITLE:
-      _state.session_title = action.title;
       AppStore.emitChange();
       break;
 

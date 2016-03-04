@@ -1,30 +1,38 @@
-var React = require('react');
-var cx = require('classnames');
 var _ = require('lodash');
-var Base = require('../Base.react');
+var React = require('react');
+var PropTypes = React.PropTypes;
+
 
 var QueryList = React.createClass({
-  renderQueryList: function () {
-    if (!this.props.document.queries) {
-      return;
-    }
-    var that = this;
-    return this.props.document.queries.map(function (x, index) {
-      return (
-        <tr>
-          <td>{index + 1}</td>
-          <td>{x.email}</td>
-          <td className="session-query">{that.buildQuery(x.query)}</td>
-        </tr>
-      );
-    });
+  propTypes: {
+    document: PropTypes.object
   },
 
   buildQuery: function (query) {
     var result = _.map(query, function (values) {
-      return _.pluck(values, 'value');
+      return _.pluck(values, 'displayValue');
     });
     return _.flatten(result);
+  },
+
+  renderQueryList: function () {
+    var that;
+
+    if (!this.props.document.queries) {
+      return;
+    }
+
+    that = this;
+
+    return this.props.document.queries.map(function (x, index) {
+      return (
+        <tr key={ index }>
+          <td>{ index + 1 }</td>
+          <td>{ x.email }</td>
+          <td className='session-query'>{ that.buildQuery(x.query) }</td>
+        </tr>
+      );
+    });
   },
 
   render: function () {

@@ -1,7 +1,4 @@
 var _ = require('lodash');
-var classnames = require('classnames');
-global.jQuery = require('jquery');
-var moment = require('moment');
 var React = require('react');
 
 var AddSessionAliasModalActions = require('actions/SessionSection/AddSessionAliasModalActions');
@@ -10,10 +7,14 @@ var SessionsAPI = require('utils/SessionsAPI');
 var SessionsActions = require('actions/SessionSection/SessionsActions');
 var SessionListStore = require('stores/SessionSection/SessionListStore');
 var SessionHistory = require('components/SessionSection/SessionHistory.react');
+var SessionList;
 
-var SessionList = React.createClass(_.assign(Base(SessionListStore), {
+global.jQuery = require('jquery');
+
+
+SessionList = React.createClass(_.assign(Base(SessionListStore), {
   // TODO: Consider moving this to Mixins
-  _onScroll: function(e) {
+  _onScroll: function (e) {
     var windowHeight = window.innerHeight;
     var toBottom = jQuery(document).height() - windowHeight - jQuery(window).scrollTop();
 
@@ -36,22 +37,22 @@ var SessionList = React.createClass(_.assign(Base(SessionListStore), {
     jQuery(window).on('scroll', this._onScroll);
   },
 
-  renderSessionRow: function() {
+  renderSessionRow: function () {
     var that = this;
     var rows = [];
 
-    this.state.data.forEach(function(x) {
+    this.state.data.forEach(function (x) {
       var id = 'session-row-' + x.hash_id;
       var dataTarget = '#' + id;
       rows.push(
-        <tr className='session-row pointer' data-toggle='collapse' data-target={dataTarget} key={'c'+id}>
-          <td>{x.hash_id}</td>
-          <td>{x.title}</td>
-          <td>{_(x.query.filters).values().pluck('value').flatten().size()}</td>
-          <td>{x.ip}</td>
-          <td>{x.user_agent}</td>
+        <tr className='session-row pointer' data-toggle='collapse' data-target={ dataTarget } key={ 'c'+id }>
+          <td>{ x.hash_id }</td>
+          <td>{ x.title }</td>
+          <td>{ _(x.query.filters).values().pluck('value').flatten().size() }</td>
+          <td>{ x.ip }</td>
+          <td>{ x.user_agent }</td>
           <td>
-            <a className="add-alias" onClick={that._onClick.bind(that, x.id)} href="#">
+            <a className='add-alias' onClick={ that._onClick.bind(that, x.id) } href='#'>
               Add Alias
             </a>
           </td>
@@ -59,9 +60,9 @@ var SessionList = React.createClass(_.assign(Base(SessionListStore), {
       );
 
       rows.push(
-        <tr className='collapse' id={id} key={id}>
+        <tr className='collapse' id={ id } key={ id }>
           <td colSpan='5'>
-            <SessionHistory suggestions={x.suggestion_logs} filters={x.filter_logs}/>
+            <SessionHistory suggestions={ x.suggestion_logs } filters={ x.filter_logs }/>
           </td>
         </tr>
       );
@@ -70,7 +71,7 @@ var SessionList = React.createClass(_.assign(Base(SessionListStore), {
     return rows;
   },
 
-  render: function() {
+  render: function () {
     return (
       <div className='table-responsive'>
         <table className='table table-striped'>

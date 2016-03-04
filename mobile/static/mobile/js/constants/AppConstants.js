@@ -24,7 +24,8 @@ module.exports = {
   MAIN_PAGE_FAILED_TO_RECEIVED_DATA: c++,
 
   // Tokens
-  MAPBOX_TOKEN: '***REMOVED***',
+  MAPBOX_TOKEN:
+    '***REMOVED***',
 
   // Other constants
   FINAL_FINDINGS: {
@@ -156,7 +157,7 @@ module.exports = {
     '393': 'Gang Enforcement Division',
     '441': 'Special Activities Section',
     '442': 'Bomb Unit',
-    '443': "Bomb Unit - O'Hare Airport'",
+    '443': 'Bomb Unit - O\'Hare Airport\'',
     '541': 'FOP Detail',
     '542': 'Detached Services - Governmental Security Detail',
     '543': 'Detached Services-Miscellaneous Detail',
@@ -174,6 +175,14 @@ module.exports = {
     '704': 'Transit Security Unit',
     '711': 'Violence Reduction Initiative - North',
     '712': 'Violence Reduction Initiative - South'
+  },
+
+  OFFICER_SUMMARY_MAP: {
+    'Rank': 'rank',
+    'Unit': 'unit',
+    'Joined': 'appt_date',
+    'Sex': 'gender',
+    'Race': 'race'
   },
 
   OFFICER_COMPLAINT_COUNT_RANGE: [20, 9, 3, 2, 0],

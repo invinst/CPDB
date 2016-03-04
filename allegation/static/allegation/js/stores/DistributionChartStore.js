@@ -18,15 +18,13 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFilterTagsQueryBuilder');
 
 var CHANGE_EVENT = 'change';
-var SUMMARY_CHANGE = 'summary-change';
 
 var _state = {};
 var ajax = null;
 
 var GRAPH_ELEM_SEL = '#complained-officers .graph';
 
-
-function drawChart(col, rotated) {
+var drawChart = function (col, rotated) {
   rotated = typeof rotated !== 'undefined' ? rotated : false;
 
   c3.generate({
@@ -94,7 +92,7 @@ function drawChart(col, rotated) {
         return {
           top: -15,
           left: 300
-        }
+        };
       },
       contents: function (d, defaultTitleFormat, defaultValueFormat, color) {
         var point = d[0];
@@ -107,8 +105,7 @@ function drawChart(col, rotated) {
       }
     }
   });
-}
-
+};
 
 var rotate = false;
 var col = [];
@@ -128,13 +125,16 @@ var DistributionChartStore = assign({}, EventEmitter.prototype, {
     this.update();
   },
   update: function () {
+    var queryString;
+
     if (!('element' in _state)) {
       return;
     }
     if (ajax) {
       ajax.abort();
     }
-    var queryString = AllegationFilterTagsQueryBuilder.buildQuery();
+
+    queryString = AllegationFilterTagsQueryBuilder.buildQuery();
     ajax = $.get('/officer/count/?by=num_complaints&' + queryString, function (data) {
       drawChart(data);
     });

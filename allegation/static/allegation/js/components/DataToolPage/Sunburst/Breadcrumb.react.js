@@ -6,27 +6,25 @@ var React = require('react');
 var AppConstants = require('../../../constants/AppConstants.js');
 var Base = require('components/Base.react');
 var SunburstStore = require('stores/SunburstStore');
-var SunburstActions = require('actions/SunburstActions');
-var FilterTagsActions = require('actions/FilterTagsActions');
 
 
 var Breadcrumb = React.createClass(_.assign(Base(SunburstStore), {
   render: function () {
     return (
       <div className='row'>
-        <ol className="sunburst-breadcrumb">{this.renderBreadcrumb()}</ol>
+        <ol className='sunburst-breadcrumb'>{ this.renderBreadcrumb() }</ol>
       </div>
     );
   },
 
   renderBreadcrumb: function () {
     var arc = this.state.hovering || SunburstStore.getSelected();
+    var breadcrumb = SunburstStore.getAncestorArcs(arc);
+    var that = this;
+
     if (!arc) {
       return '';
     }
-
-    var breadcrumb = SunburstStore.getAncestorArcs(arc);
-    var that = this;
 
     return _.map(breadcrumb, function (item, key) {
       var total = SunburstStore.getArcSize(item);
@@ -36,9 +34,9 @@ var Breadcrumb = React.createClass(_.assign(Base(SunburstStore), {
       });
 
       return (
-        <li key={key} className={className} onClick={that.clickHandler.bind(that, item)}>
-          {formattedTotal}<br />
-          <span className="name">{item.name}</span>
+        <li key={ key } className={ className } onClick={ that.clickHandler.bind(that, item) }>
+          { formattedTotal }<br />
+          <span className='name'>{ item.name }</span>
         </li>
       );
     });

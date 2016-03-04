@@ -10,9 +10,9 @@ var OfficerResourceUtil = {
       .query({ pk: id })
       .end(function (err, res) {
         if (res.ok) {
-          OfficerPageServerActions.received(res.body)
+          OfficerPageServerActions.received(res.body);
         } else {
-          OfficerPageServerActions.failedToReceive(id)
+          OfficerPageServerActions.failedToReceive(id);
         }
       });
   }

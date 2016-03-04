@@ -15,8 +15,9 @@ var _state = {
   newTarget: false
 };
 
+
 var AddSessionAliasModalStore = _.assign(Base(_state), {
-  validFormData: function() {
+  validFormData: function () {
     if (_.isEmpty(_state['alias']) || !_state['target']) {
       this.updateState('formValid', false);
     } else {
@@ -25,47 +26,51 @@ var AddSessionAliasModalStore = _.assign(Base(_state), {
   }
 });
 
-AppDispatcher.register(function(action) {
+AppDispatcher.register(function (action) {
+  var alias,
+    target,
+    newTarget;
+
   switch (action.actionType) {
-  case AppConstants.SHOW_ADD_SESSION_ALIAS_MODAL:
-    var alias = (action.data && action.data.alias) ? action.data.alias : '';
-    var target = (action.data && action.data.target) ? action.data.target : '';
-    var newTarget = target ? false : true;
+    case AppConstants.SHOW_ADD_SESSION_ALIAS_MODAL:
+      alias = (action.data && action.data.alias) ? action.data.alias : '';
+      target = (action.data && action.data.target) ? action.data.target : '';
+      newTarget = target ? false : true;
 
-    _state.isOpen = true;
-    _state.formValid = false;
-    _state.flashMessage = '';
-    _state.errorMessages = [];
-    _state.alias = alias;
-    _state.target = target;
-    _state.newTarget = newTarget;
+      _state.isOpen = true;
+      _state.formValid = false;
+      _state.flashMessage = '';
+      _state.errorMessages = [];
+      _state.alias = alias;
+      _state.target = target;
+      _state.newTarget = newTarget;
 
-    AddSessionAliasModalStore.emitChange();
-    break;
+      AddSessionAliasModalStore.emitChange();
+      break;
 
-  case AppConstants.HIDE_ADD_SESSION_ALIAS_MODAL:
-    _state.isOpen = false;
-    _state.flashMessage = [];
-    _state.newTarget = false;
-    AddSessionAliasModalStore.emitChange();
-    break;
+    case AppConstants.HIDE_ADD_SESSION_ALIAS_MODAL:
+      _state.isOpen = false;
+      _state.flashMessage = [];
+      _state.newTarget = false;
+      AddSessionAliasModalStore.emitChange();
+      break;
 
-  case AppConstants.RECEIVED_SESSION_ALIAS_CREATION_RESULT:
-    _state.isOpen = false;
-    toastr.success('Add new alias successfully.');
-    AddSessionAliasModalStore.emitChange();
-    break;
+    case AppConstants.RECEIVED_SESSION_ALIAS_CREATION_RESULT:
+      _state.isOpen = false;
+      toastr.success('Add new alias successfully.');
+      AddSessionAliasModalStore.emitChange();
+      break;
 
-  case AppConstants.FAILED_TO_CREATE_SESSION_ALIAS:
-    _state.isOpen = false;
-    toastr.error(action.data);
-    AddSessionAliasModalStore.emitChange();
-    break;
+    case AppConstants.FAILED_TO_CREATE_SESSION_ALIAS:
+      _state.isOpen = false;
+      toastr.error(action.data);
+      AddSessionAliasModalStore.emitChange();
+      break;
 
-  case AppConstants.SESSION_ALIAS_MODAL_FORM_DATA_CHANGED:
-    _state[action.stateName] = action.stateValue;
-    AddSessionAliasModalStore.validFormData();
-    AddSessionAliasModalStore.emitChange();
+    case AppConstants.SESSION_ALIAS_MODAL_FORM_DATA_CHANGED:
+      _state[action.stateName] = action.stateValue;
+      AddSessionAliasModalStore.validFormData();
+      AddSessionAliasModalStore.emitChange();
   }
 });
 

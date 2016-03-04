@@ -1,13 +1,8 @@
 var _ = require('lodash');
-var classnames = require('classnames');
 var React = require('react');
 
 var Base = require('components/Base.react');
 
-var Disclaimer = require('components/DataToolPage/Disclaimer.react');
-var Footer = require('components/DataToolPage/Footer.react');
-var HappyFox = require('components/Shared/HappyFox.react');
-var Nav = require('components/OfficerPage/Nav.react');
 var InvestigationsSection = require('components/InvestigatorPage/InvestigationsSection.react');
 var InvestigatorDetail = require('components/InvestigatorPage/InvestigatorDetail.react');
 var InvestigatorPageStore = require('stores/InvestigatorPageStore');
@@ -20,8 +15,9 @@ var InvestigatorPage = React.createClass(_.assign(Base(InvestigatorPageStore), {
   },
 
   componentDidMount: function () {
-    InvestigatorPageStore.addChangeListener(this._onChange);
     var investigatorId = this.props.params.id || '';
+
+    InvestigatorPageStore.addChangeListener(this._onChange);
     this.initAPIRequest(investigatorId);
   },
 
@@ -44,14 +40,14 @@ var InvestigatorPage = React.createClass(_.assign(Base(InvestigatorPageStore), {
 
     return (
       <div id='officer-profile'>
-        <div className="map-row">
-          <div className="container">
-            <InvestigatorDetail data={this.state.data} />
+        <div className='map-row'>
+          <div className='container'>
+            <InvestigatorDetail data={ this.state.data } />
           </div>
         </div>
-        <div className="white-background">
-          <div className="container">
-            <InvestigationsSection investigator={investigator} />
+        <div className='white-background'>
+          <div className='container'>
+            <InvestigationsSection investigator={ investigator } />
           </div>
         </div>
       </div>

@@ -1,18 +1,21 @@
-require('utils/jQuery');
+var _ = require('lodash');
 
 var AllegationFetcherQueryBuilder = require('utils/querybuilders/AllegationFetcherQueryBuilder');
 var AppConstants = require('../constants/AppConstants');
-var ComplaintListStore = require('stores/ComplaintListStore');
 var ComplaintListServerActions = require('../actions/ComplaintList/ComplaintListServerActions');
-var RaceGenderTabActions = require('actions/DataToolPage/RaceGenderTabActions');
+var APIUtil = require('utils/api/APIUtil');
 
 var ajax = null;
 
+
 var ComplaintListAPI = {
   preloadDataForOtherTab: function () {
+    var filter,
+      params;
+
     for (filter in AppConstants.FILTERS) {
-      var queryString = AllegationFetcherQueryBuilder.buildQuery(filter);
-      ajax = jQuery.getJSON('/api/officer-allegations/?' + queryString, function (data) {
+      params = AllegationFetcherQueryBuilder.buildQueryParams(filter);
+      ajax = APIUtil.getJSON(AppConstants.ALLEGATIONS_API_ENDPOINT, params, function (data) {
       });
     }
   },
@@ -20,16 +23,16 @@ var ComplaintListAPI = {
   getData: function (fromFilter) {
     var activeOutcomeFilter = !fromFilter ? 'all' : '';
 
-    var queryString = AllegationFetcherQueryBuilder.buildQuery(activeOutcomeFilter);
+    var params = AllegationFetcherQueryBuilder.buildQueryParams(activeOutcomeFilter);
     var that = this;
     ComplaintListServerActions.getData();
 
-    if (queryString) {
+    if (!_.isEmpty(params)) {
       if (ajax) {
         ajax.abort();
       }
 
-      ajax = jQuery.getJSON('/api/officer-allegations/?' + queryString, function (data) {
+      ajax = APIUtil.getJSON(AppConstants.ALLEGATIONS_API_ENDPOINT, params, function (data) {
         ComplaintListServerActions.receivedData(data, fromFilter);
         if (!fromFilter) {
           that.preloadDataForOtherTab();
@@ -40,7 +43,7 @@ var ComplaintListAPI = {
     }
   },
 
-  getAllForOfficer: function(officer) {
+  getAllForOfficer: function (officer) {
     var params = {
       officer: officer,
       length: -1
@@ -50,14 +53,14 @@ var ComplaintListAPI = {
       ajax.abort();
     }
 
-    ajax = jQuery.getJSON(AppConstants.ALLEGATIONS_API_ENDPOINT, params, function (data) {
+    ajax = APIUtil.getJSON(AppConstants.ALLEGATIONS_API_ENDPOINT, params, function (data) {
       ComplaintListServerActions.receivedFullComplaints(data);
     });
   },
 
-  getAllForInvestigator: function(investigator) {
+  getAllForInvestigator: function (investigator) {
     var params = {
-      allegation__investigator: investigator,
+      'allegation__investigator': investigator,
       length: -1
     };
 
@@ -65,21 +68,22 @@ var ComplaintListAPI = {
       ajax.abort();
     }
 
-    ajax = jQuery.getJSON(AppConstants.ALLEGATIONS_API_ENDPOINT, params, function (data) {
+    ajax = APIUtil.getJSON(AppConstants.ALLEGATIONS_API_ENDPOINT, params, function (data) {
       ComplaintListServerActions.receivedFullComplaints(data);
     });
   },
 
   getMoreData: function (pageNumber) {
-    var queryString = AllegationFetcherQueryBuilder.buildQuery();
-    var pagedQuery = [queryString, 'page=' + pageNumber, 'length=50'].join('&');
+    var params = AllegationFetcherQueryBuilder.buildQueryParams();
+    params = _.merge(params, {
+      page: pageNumber,
+      length: 50
+    });
 
-    if (queryString) {
-      jQuery.getJSON('/api/officer-allegations/?' + pagedQuery, function (data) {
-        ComplaintListServerActions.receivedMoreData(data);
-      });
-    }
-  },
+    APIUtil.getJSON(AppConstants.ALLEGATIONS_API_ENDPOINT, params, function (data) {
+      ComplaintListServerActions.receivedMoreData(data);
+    });
+  }
 };
 
 module.exports = ComplaintListAPI;

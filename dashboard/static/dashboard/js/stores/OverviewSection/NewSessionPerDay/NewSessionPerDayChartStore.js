@@ -9,7 +9,7 @@ var _state = {
     labels: [],
     datasets: [
       _.assign(AppConstants.LINE_CHART_COLOR_OPTIONS, {
-      data: []
+        data: []
       })
     ]
   },
@@ -21,9 +21,11 @@ var NewSessionPerDayChartStore = _.assign(Base(_state), {
 });
 
 AppDispatcher.register(function (action) {
+  var data;
+
   switch (action.actionType) {
     case AppConstants.RECEIVED_NEW_SESSIONS_DATA:
-      var data = action.data['results'];
+      data = action.data['results'];
       _state['chartData']['datasets'][0]['data'] = _.pluck(data, 'count');
       _state['chartData']['labels'] = _.pluck(data, 'created_date');
       NewSessionPerDayChartStore.emitChange();

@@ -1,13 +1,87 @@
 var React = require('react');
+var PropTypes = React.PropTypes;
 var ReactDOM = require('react-dom');
+var moment = require('moment');
 
 var SIMPLE_DATE_FORMAT = 'MMM DD, YYYY';
 var DETAIL_DATE_FORMAT = 'MMM DD, YYYY HH:mm';
 
 
 var Timeline = React.createClass({
+  propTypes: {
+    complaint: PropTypes.object
+  },
+
   getInitialState: function () {
     return {};
+  },
+
+  componentDidMount: function () {
+    var allegation = this.props.complaint.allegation;
+    var container = $(ReactDOM.findDOMNode(this)).find('.timeline')[0];
+    var firstDate, lastDate, incidentDate;
+    var items = [];
+    var startDate, endDate, options, duration, subtract, add;
+
+    allegation['incident_date'] = this.normalizeIncidentDate(allegation['incident_date']);
+
+    if (allegation['incident_date']) {
+      incidentDate = moment(allegation['incident_date']);
+      firstDate = incidentDate;
+      lastDate = incidentDate;
+
+      items.push({
+        id: 1,
+        content: this.createTimelineItem('Incident Date', incidentDate),
+        start: incidentDate
+      });
+    }
+
+    if (allegation.start_date) {
+      startDate = moment(allegation.start_date);
+
+      if (firstDate) {
+        lastDate = startDate;
+        startDate = this.normalizeStartDate(incidentDate, startDate);
+      }
+
+      items.push({
+        id: 2,
+        content: this.createTimelineItem('Investigation Start', startDate, 'start'),
+        start: startDate
+      });
+    }
+
+    if (allegation.end_date) {
+      endDate = moment(allegation.end_date);
+      firstDate = firstDate || endDate;
+      lastDate = endDate;
+
+      items.push({
+        id: 3,
+        content: this.createTimelineItem('Investigation End', endDate, 'end'),
+        start: endDate,
+        className: 'end'
+      });
+    }
+
+    items = items || new vis.DataSet(items);
+
+    // Configuration for the Timeline
+    options = this.getOptions();
+    if (firstDate && lastDate) {
+      duration = lastDate.year() * 12 + lastDate.month() - firstDate.year() * 12 - firstDate.month();
+      subtract = 1;
+      add = 1;
+      if (duration > 3) {
+        subtract = duration / 8;
+        add = duration / 6;
+      }
+      options.start = moment(firstDate).subtract(subtract, 'months');
+      options.end = moment(lastDate).add(add, 'months');
+    }
+
+    new vis.Timeline(container, items, options);
   },
 
   getOptions: function () {
@@ -32,13 +106,29 @@ var Timeline = React.createClass({
     };
   },
 
+  createTimelineItem: function (title, date, klass) {
+    var useSimpleFormat = klass ? true : false;
+    var displayDate = this.displayDateFormat(date, useSimpleFormat);
+    var display;
+    klass = klass || '';
+
+    title = '<div class="timeline-title">' + title + '</div>';
+    display = '<div class="timeline-date' + klass + '">' + displayDate + '</div>';
+    return title + display;
+  },
+
+  displayDateFormat: function (date, useSimpleFormat) {
+    var displayFormat = (useSimpleFormat || this.hasNoHourAndMinutes(date)) ? SIMPLE_DATE_FORMAT : DETAIL_DATE_FORMAT;
+    return date.format(displayFormat);
+  },
+
   hasNoHourAndMinutes: function (date) {
-    return date.get('hour') == 0 && date.get('minute') == 0
+    return date.get('hour') == 0 && date.get('minute') == 0;
   },
 
   normalizeIncidentDate: function (incidentDate) {
     // We don't care about incident that happens before 1970
-    if(incidentDate && moment(incidentDate).year() <= 1970) {
+    if (incidentDate && moment(incidentDate).year() <= 1970) {
       return false;
     }
     return incidentDate;
@@ -52,93 +142,11 @@ var Timeline = React.createClass({
     return startDate;
   },
 
-  displayDateFormat: function (date, useSimpleFormat) {
-    var displayFormat = (useSimpleFormat || this.hasNoHourAndMinutes(date)) ? SIMPLE_DATE_FORMAT : DETAIL_DATE_FORMAT;
-    return date.format(displayFormat);
-  },
-
-  createTimelineItem: function (title, date, klass) {
-    var useSimpleFormat = klass ? true : false;
-    var displayDate = this.displayDateFormat(date, useSimpleFormat);
-    klass = klass || '';
-
-    title = '<div class="timeline-title">' + title + '</div>';
-    var display = '<div class="timeline-date' + klass + '">' + displayDate + '</div>';
-    return title + display;
-  },
-
-  componentDidMount: function () {
-    var allegation = this.props.complaint.allegation;
-    var container = $(ReactDOM.findDOMNode(this)).find(".timeline")[0];
-    var firstDate, lastDate, incidentDate;
-    var items = [];
-
-    allegation.incident_date = this.normalizeIncidentDate(allegation.incident_date);
-
-    if (allegation.incident_date) {
-      incidentDate = moment(allegation.incident_date);
-      firstDate = incidentDate;
-      lastDate = incidentDate;
-
-      items.push({
-        id: 1,
-        content: this.createTimelineItem('Incident Date', incidentDate),
-        start: incidentDate
-      });
-    }
-
-    if (allegation.start_date) {
-      var startDate = moment(allegation.start_date);
-
-      if (firstDate) {
-        lastDate = startDate;
-        startDate = this.normalizeStartDate(incidentDate, startDate);
-      }
-
-      items.push({
-        id: 2,
-        content: this.createTimelineItem('Investigation Start', startDate, 'start'),
-        start: startDate
-      });
-    }
-
-    if (allegation.end_date) {
-      var endDate = moment(allegation.end_date);
-      firstDate = firstDate || endDate;
-      lastDate = endDate;
-
-      items.push({
-        id: 3,
-        content: this.createTimelineItem('Investigation End', endDate, 'end'),
-        start: endDate,
-        className: 'end'
-      });
-    }
-
-    items = items || new vis.DataSet(items);
-
-    // Configuration for the Timeline
-    var options = this.getOptions();
-    if(firstDate && lastDate) {
-      var duration = lastDate.year() * 12 + lastDate.month() - firstDate.year() * 12 - firstDate.month();
-      var subtract = 1;
-      var add = 1;
-      if (duration > 3){
-        subtract = duration / 8;
-        add = duration / 6;
-      }
-      options.start = moment(firstDate).subtract(subtract, 'months');
-      options.end = moment(lastDate).add(add, 'months');
-    }
-
-    new vis.Timeline(container, items, options)
-  },
-
   render: function () {
     return (
       <div className='col-md-10 col-xs-12'>
-        <div className="section-title">Investigation timeline</div>
-        <div className="timeline" />
+        <div className='section-title'>Investigation timeline</div>
+        <div className='timeline' />
       </div>
     );
   }

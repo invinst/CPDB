@@ -36,12 +36,9 @@ class AllegationSessionApiView(SimpleTestCase):
 
         return response, data
 
-    def call_post_session_api(self, params={}):
-        request_params = {
-            'request_data': json.dumps(params)
-        }
-        response = self.client.post(
-            '/api/allegations/session/', request_params)
+    def call_put_session_api(self, params={}):
+        response = self.client.put(
+            '/api/allegations/session/', json.dumps(params))
         data = self.json(response)
 
         return response, data
@@ -83,29 +80,27 @@ class AllegationSessionApiView(SimpleTestCase):
         data['new'].should.equal(False)
 
     def test_not_in_owned_session(self):
-        response, data = self.call_post_session_api(self.update_params)
+        session = SessionFactory()
+        self.update_params['hash'] = session.hash_id
+        response, data = self.call_put_session_api(self.update_params)
         response.status_code.should.equal(400)
         data['data']['msg'].should.equal('Hash is not owned')
 
     def test_invalid_session(self):
-        session = self.client.session
-        session['owned_sessions'] = [624]
-        session.save()
-
-        response, data = self.call_post_session_api(self.update_params)
+        response, data = self.call_put_session_api(self.update_params)
         response.status_code.should.equal(400)
         data['data']['msg'].should.equal('Session is not found')
 
     def test_session_not_found(self):
         self.update_params['hash'] = '123'
-        response, data = self.call_post_session_api(self.update_params)
+        response, data = self.call_put_session_api(self.update_params)
         response.status_code.should.equal(400)
         data['data']['msg'].should.equal('Hash not found')
 
     def test_success_update(self):
         self.init_session()
 
-        response, data = self.call_post_session_api(self.update_params)
+        response, data = self.call_put_session_api(self.update_params)
         response.status_code.should.equal(200)
 
     def test_update_active_tab(self):
@@ -115,7 +110,7 @@ class AllegationSessionApiView(SimpleTestCase):
         update_params = self.update_params.copy()
         update_params['active_tab'] = active_tab
 
-        response, data = self.call_post_session_api(update_params)
+        response, data = self.call_put_session_api(update_params)
         Session.objects.get(
             pk=self.db_session.id).active_tab.should.equal(active_tab)
 
@@ -128,15 +123,30 @@ class AllegationSessionApiView(SimpleTestCase):
         update_params['query'] = {
             'filters': {
                 'Officer': [{
+                    'category': 'officer',
                     'value': 123,
                     'filter': 'officer=123',
                     'pinned': False
                 }]
             }
         }
-        response, data = self.call_post_session_api(update_params)
+        response, data = self.call_put_session_api(update_params)
 
         self.num_of_filter_logs().should.equal(1)
+
+    def test_create_shared_session(self):
+        self.init_session()
+
+        response = self.client.post(
+            '/api/allegations/session/', {'hash_id': self.db_session.hash_id})
+        data = self.json(response)
+
+        data['data']['new'].should.be.true
+        data['data']['hash'].should_not.be.equal(self.db_session.hash_id)
+        data['data']['query'].should.be.equal(self.db_session.query)
+        data['data']['title'].should.be.equal(self.db_session.title)
+        data['data']['active_tab'].should.be.equal(self.db_session.active_tab)
+        data['data']['selected_sunburst_arc'].should.be.equal(dict(self.db_session.selected_sunburst_arc))
 
     def num_of_filter_logs(self):
         return FilterLog.objects.count()

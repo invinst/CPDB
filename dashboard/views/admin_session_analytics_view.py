@@ -1,11 +1,18 @@
 from django.db.models import Count
 
 from rest_framework import viewsets, filters
+from rest_framework.pagination import PageNumberPagination
+
 from allegation.utils.date import tomorrow
 from api.serializers.session_analytic_serializer import SessionAnalyticSerializer
 from common.constants import START_UNIX_TIME_DATE, DATE_ONLY_FORMAT
 from dashboard.authentication import SessionAuthentication
 from share.models import Session
+
+
+class AdminSessionAnalyticsPagination(PageNumberPagination):
+    page_size = 50
+    page_size_query_param = 'page_size'
 
 
 class AdminNewSessionsAnalyticsViewSet(viewsets.ModelViewSet):
@@ -15,6 +22,7 @@ class AdminNewSessionsAnalyticsViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.OrderingFilter,)
     ordering_fields = ('created_date')
     ordering = ('created_date',)
+    pagination_class = AdminSessionAnalyticsPagination
 
     def get_queryset(self):
         begin = self.request.GET.get('begin', START_UNIX_TIME_DATE)

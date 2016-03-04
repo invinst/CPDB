@@ -5,10 +5,8 @@ var _ = require('lodash');
 var React = require('react');
 var ReactDOM = require('react-dom');
 var classnames = require('classnames');
-var slugify = require('slugify');
+var S = require('string');
 var isMobile = require('ismobilejs');
-
-global.jQuery = require('jquery');
 
 var Base = require('components/Base.react');
 var AppConstants = require('constants/AppConstants');
@@ -49,7 +47,7 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
     this.activeTabIndex = number;
 
     if (this.embedding) {
-      $(ReactDOM.findDOMNode(this)).parent().find(".embed-code input").val(this.getEmbedCode());
+      $(ReactDOM.findDOMNode(this)).parent().find('.embed-code input').val(this.getEmbedCode());
     }
 
     TabActions.setActiveTab(tab);
@@ -68,7 +66,7 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
     this.embedNode.append('<i class="fa fa-code"></i>');
     this.embedNode.append('<input type="text" value="" readonly="readonly" />');
 
-    this.embedNode.find("input").on("click", function (e) {
+    this.embedNode.find('input').on('click', function (e) {
       e.preventDefault();
       $(this).select();
     }).val(this.getEmbedCode());
@@ -81,9 +79,10 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
   },
 
   enterEmbedMode: function () {
-    this.embedding = true;
     var node = ReactDOM.findDOMNode(this);
     var parent = $(node).parent();
+
+    this.embedding = true;
     $(parent).prepend(this.getEmbedNode());
   },
 
@@ -98,59 +97,62 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
   },
 
   renderNavTab: function (label) {
-    var target = slugify(label.toLowerCase().replace('&', ''));
-    var data_target = '#' + target;
+    var target = S(label.toLowerCase().replace('&', '')).slugify().s;
+    var dataTarget = '#' + target;
     var tab = target;
+    var tabClass;
 
     if (tab == 'map' && !isMobile.any) {
       return;
     }
 
-    var tabClass = classnames({
+    tabClass = classnames({
       'active': this.isActive(target)
     });
 
     return (
-      <li role="presentation" className={tabClass}>
-          <a  href={data_target} aria-controls='profile' aria-control={target} role='tab' className='pointer' data-toggle='tab'
-          onClick={this.activeTab.bind(this, AppConstants.TABS[tab], target)}>
-            {label}
-          </a>
-        </li>
-      );
+      <li role='presentation' className={ tabClass }>
+        <a href={ dataTarget } aria-control={ target } role='tab' className='pointer' data-toggle='tab'
+          onClick={ this.activeTab.bind(this, AppConstants.TABS[tab], target) }>
+          { label }
+        </a>
+      </li>
+    );
   },
 
   renderTabContent: function (id, Component) {
+    var tabClass;
+
     if (id == 'map' && !isMobile.any) {
       return;
     }
 
-    var tabClass = classnames('tab-pane', {
+    tabClass = classnames('tab-pane', {
       'active': this.isActive(id)
     });
 
     return (
-      <div role="tabpanel" className={tabClass} id={id}>
-        <Component tabs={this} />
+      <div role='tabpanel' className={ tabClass } id={ id }>
+        <Component tabs={ this } />
       </div>
     );
   },
 
   render: function () {
     return (
-      <div className="chart-row">
-        <ul className="nav nav-tabs" role="tablist">
+      <div className='chart-row'>
+        <ul className='nav nav-tabs' role='tablist'>
           { this.renderNavTab('Map') }
           { this.renderNavTab('Outcomes') }
           { this.renderNavTab('Categories') }
           { this.renderNavTab('Race & Gender') }
         </ul>
 
-        <div className="tab-content">
+        <div className='tab-content'>
           { this.renderTabContent('map', Map) }
-          { this.renderTabContent('outcomes', Sunburst)}
-          { this.renderTabContent('categories', Summary)}
-          { this.renderTabContent('race-gender', RaceGenderTab)}
+          { this.renderTabContent('outcomes', Sunburst) }
+          { this.renderTabContent('categories', Summary) }
+          { this.renderTabContent('race-gender', RaceGenderTab) }
         </div>
       </div>
     );

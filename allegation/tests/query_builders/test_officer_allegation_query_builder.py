@@ -2,14 +2,16 @@ import datetime
 
 from django.contrib.gis.geos.point import Point
 from django.http.request import QueryDict
+from django.db.models.query_utils import Q
+
 from allegation.factories import (
     OfficerAllegationFactory, AllegationFactory, OfficerFactory,
-    ComplainingWitnessFactory)
-
+    ComplainingWitnessFactory, AllegationCategoryFactory)
 from allegation.query_builders import (
-    OfficerAllegationQueryBuilder, DISCIPLINE_CODES, NO_DISCIPLINE_CODES)
+    OfficerAllegationQueryBuilder, DISCIPLINE_CODES, NO_DISCIPLINE_CODES, _apply_all_query_methods)
 from common.models import OfficerAllegation, Allegation, OUTCOMES
 from common.tests.core import SimpleTestCase
+from common.utils.haystack import rebuild_index
 
 from allegation.factories import InvestigatorFactory
 
@@ -92,7 +94,7 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
                 allegation=AllegationFactory(document_id=1))]
         OfficerAllegationFactory()
 
-        query_string = 'has_filters=has:document'
+        query_string = 'has_document=true'
         expected_ids = [allegation.id for allegation in expected_allegations]
 
         self.check_built_query(query_string, expected_ids)
@@ -104,7 +106,7 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
         allegation.point = None
         allegation.save()
 
-        query_string = 'has_filters=has:map'
+        query_string = 'has_map=true'
         expected_ids = [o.id for o in expected_allegations]
 
         self.check_built_query(query_string, expected_ids)
@@ -115,7 +117,7 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
             OfficerAllegationFactory(allegation=AllegationFactory(add2='100'))]
         OfficerAllegationFactory()
 
-        query_string = 'has_filters=has:address'
+        query_string = 'has_address=true'
         expected_ids = [allegation.id for allegation in expected_allegations]
 
         self.check_built_query(query_string, expected_ids)
@@ -126,7 +128,7 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
                 allegation=AllegationFactory(location='4 Privet Drive'))]
         OfficerAllegationFactory()
 
-        query_string = 'has_filters=has:location'
+        query_string = 'has_location=true'
         expected_ids = [allegation.id for allegation in expected_allegations]
 
         self.check_built_query(query_string, expected_ids)
@@ -137,7 +139,7 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
         OfficerAllegationFactory(
             allegation=AllegationFactory(investigator=None))
 
-        query_string = 'has_filters=has:investigator'
+        query_string = 'has_investigator=true'
         expected_ids = [allegation.id for allegation in expected_allegations]
 
         self.check_built_query(query_string, expected_ids)
@@ -148,7 +150,7 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
         OfficerAllegationFactory(
             officer=None)
 
-        query_string = 'has_filters=has:identified'
+        query_string = 'has_identified=true'
         expected_ids = [allegation.id for allegation in expected_allegations]
 
         self.check_built_query(query_string, expected_ids)
@@ -159,7 +161,7 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
                 allegation=AllegationFactory(summary='Some summary'))]
         OfficerAllegationFactory()
 
-        query_string = 'has_filters=has:summary'
+        query_string = 'has_summary=true'
         expected_ids = [allegation.id for allegation in expected_allegations]
 
         self.check_built_query(query_string, expected_ids)
@@ -365,11 +367,12 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
     def _test_foia(self):
         expected_allegations = [
             OfficerAllegationFactory(allegation=AllegationFactory(
-                incident_date=datetime.datetime.strptime(
-                    '2011-01-01', '%Y-%m-%d')))]
-        OfficerAllegationFactory(allegation=AllegationFactory(
-            incident_date=datetime.datetime.strptime(
-                '2010-12-31', '%Y-%m-%d')))
+                incident_date=datetime.datetime.strptime('2011-01-01', '%Y-%m-%d')))]
+        OfficerAllegationFactory(
+            allegation=AllegationFactory(
+                incident_date=datetime.datetime.strptime('2010-12-31', '%Y-%m-%d')),
+            start_date=datetime.datetime.strptime('2010-12-31', '%Y-%m-%d')
+        )
 
         query_string = 'data_source=FOIA'
         expected_ids = [allegation.id for allegation in expected_allegations]
@@ -386,6 +389,35 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
                 '2011-01-01', '%Y-%m-%d')))
 
         query_string = 'data_source=pre-FOIA'
+        expected_ids = [allegation.id for allegation in expected_allegations]
+
+        self.check_built_query(query_string, expected_ids)
+
+    def test_allegation_summary(self):
+        expected_allegations = [
+            OfficerAllegationFactory(allegation=AllegationFactory(
+                summary='some some really long summary')),
+            OfficerAllegationFactory(allegation=AllegationFactory(
+                summary='I am so sorry'))]
+        OfficerAllegationFactory()
+
+        rebuild_index()
+
+        query_string = 'allegation_summary=so'
+        expected_ids = [allegation.id for allegation in expected_allegations]
+
+        self.check_built_query(query_string, expected_ids)
+
+    def test_allegation_summary_multiple_word_term(self):
+        expected_allegations = [
+            OfficerAllegationFactory(allegation=AllegationFactory(
+                summary='some some really long summary'))]
+        OfficerAllegationFactory(
+            allegation=AllegationFactory(summary='I am so sorry some'))
+
+        rebuild_index()
+
+        query_string = 'allegation_summary=some some'
         expected_ids = [allegation.id for allegation in expected_allegations]
 
         self.check_built_query(query_string, expected_ids)
@@ -418,6 +450,46 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
         expected_ids = [allegation.id for allegation in expected_allegations]
 
         self.check_built_query(query_string, expected_ids)
+
+    def test_allegation_category_on_duty(self):
+        expected_allegations = [
+            OfficerAllegationFactory(cat=AllegationCategoryFactory(
+                on_duty=True))]
+        OfficerAllegationFactory()
+
+        query_string = 'cat__on_duty=true'
+        expected_ids = [allegation.id for allegation in expected_allegations]
+
+        self.check_built_query(query_string, expected_ids)
+
+    def test_apply_all_query_methods(self):
+        query_1 = Q(filter1='value1')
+        query_2 = Q(filter2='value2')
+
+        class QueryBuilderStub(object):
+            _q_method_1_called_with = None
+            _q_method_2_called_with = None
+
+            def _q_method_1(self, params):
+                self._q_method_1_called_with = params
+                return query_1
+
+            def _q_method_2(self, params):
+                self._q_method_2_called_with = params
+                return query_2
+
+        builder = QueryBuilderStub()
+        params = QueryDict()
+
+        repr(_apply_all_query_methods(builder, params)).should.be.equal(repr(query_1 & query_2))
+        builder._q_method_1_called_with.should.equal(params)
+        builder._q_method_2_called_with.should.equal(params)
+
+    def test_exclude_ignore_params(self):
+        params = QueryDict('a=1&b=2&c=3')
+        builder = OfficerAllegationQueryBuilder()
+        sorted(builder._exclude_ignore_params(params, None).keys()).should.equal(['a', 'b', 'c'])
+        sorted(builder._exclude_ignore_params(params, ['c', 'd']).keys()).should.equal(['a', 'b'])
 
     def check_built_query(self, query_string, expected_ids):
         params = QueryDict(query_string)

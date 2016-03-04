@@ -5,6 +5,8 @@ var OutcomeAnalysisAPI = require('../utils/OutcomeAnalysisAPI');
 
 var FilterActions = {
   replaceFilters: function (values) {
+    var lastFilter;
+
     AppDispatcher.dispatch({
       actionType: AppConstants.MAP_REPLACE_FILTERS,
       filters: values
@@ -12,7 +14,7 @@ var FilterActions = {
 
     // call API here
     if (values.length > 0) {
-      var lastFilter = values[values.length - 1];
+      lastFilter = values[values.length - 1];
       ga('send', 'event', 'filter', lastFilter.value[0], lastFilter.text);
     }
     ComplaintListAPI.getData();
@@ -39,10 +41,10 @@ var FilterActions = {
     OutcomeAnalysisAPI.getAnalysisInformation();
   },
 
-  saveSession: function() {
+  saveSession: function () {
     AppDispatcher.dispatch({
       actionType: AppConstants.SAVE_SESSION
-    })
+    });
   }
 };
 

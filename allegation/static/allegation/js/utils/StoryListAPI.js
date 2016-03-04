@@ -1,5 +1,4 @@
-global.jQuery = require('jquery');
-var StoryListActions = require('actions/OfficerPage/StoryListActions')
+var StoryListActions = require('actions/OfficerPage/StoryListActions');
 
 var StoryListAPI = {
   get: function (officerId) {

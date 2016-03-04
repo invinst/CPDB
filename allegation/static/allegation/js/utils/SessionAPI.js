@@ -1,4 +1,3 @@
-require('utils/jQuery');
 var _ = require('lodash');
 
 var AppConstants = require('constants/AppConstants');
@@ -7,6 +6,7 @@ var SessionActions = require('actions/SessionActions');
 var SessionStore = require('stores/SessionStore');
 
 var ajax = null;
+var _timeout = false;
 
 
 var SessionAPI = {
@@ -22,7 +22,7 @@ var SessionAPI = {
     });
   },
 
-  getSessionInfo: function(session) {
+  getSessionInfo: function (session) {
     var params = {
       'hash_id': session
     };
@@ -31,37 +31,56 @@ var SessionAPI = {
       ajax.abort();
     }
 
-    ajax = $.getJSON(AppConstants.SESSION_API_ENDPOINT, params, function(data) {
+    ajax = $.getJSON(AppConstants.SESSION_API_ENDPOINT, params, function (data) {
       SessionActions.receivedSessionInfoData(data);
       if (session == '') {
         SessionActions.createdSession();
       }
-      ComplaintListAPI.getData()
+      ComplaintListAPI.getData();
     });
   },
 
-  updateSessionInfo: function(data) {
-    var currentData = SessionStore.getState()['data'];
-    var data = _.extend(currentData, data);
-    var requestData = {
-      'request_data': JSON.stringify(data),
-    };
+  updateSessionRequest: function (data) {
+    return $.ajax({
+      url: AppConstants.SESSION_API_ENDPOINT,
+      data: JSON.stringify(data),
+      contentType: 'application/json',
+      dataType: 'json',
+      type: 'PUT'
+    });
+  },
 
-    if (ajax) {
-      ajax.abort();
-    }
+  updateSessionInfo: function (data) {
+    data = _.extend(SessionStore.getState()['data'], data);
 
     if (!_.isEmpty(data.hash)) {
-      ajax = jQuery.ajax({
-        url: AppConstants.SESSION_API_ENDPOINT,
-        data: requestData,
-        dataType: 'json',
-        type: 'POST',
-        success: function (data) {
-          SessionActions.receivedUpdatedSessionInfoData(data);
-        }
+      SessionAPI.updateSessionRequest(data)
+      .done(function (result) {
+        SessionActions.receivedUpdatedSessionInfoData(result);
       });
     }
+  },
+
+  updateSiteTitleDelayed500ms: function (siteTitle) {
+    if (_timeout) {
+      clearTimeout(_timeout);
+    }
+
+    _timeout = setTimeout(function () {
+      SessionAPI.updateSessionInfo({'title': siteTitle});
+    }, 500);
+  },
+
+  createSharedSession: function (hashId) {
+    $.ajax({
+      url: AppConstants.SESSION_API_ENDPOINT,
+      data: {'hash_id': hashId},
+      dataType: 'json',
+      type: 'POST',
+      success: function (data) {
+        SessionActions.receivedSharedSession(data);
+      }
+    });
   }
 };
 

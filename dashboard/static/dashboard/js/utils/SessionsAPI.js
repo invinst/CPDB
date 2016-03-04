@@ -1,5 +1,3 @@
-global.jQuery = require('jquery');
-
 var AppConstants = require('../constants/AppConstants');
 var SessionsActions = require('actions/SessionSection/SessionsActions');
 var SessionSearchStore = require('stores/SessionSection/SessionSearchStore');
@@ -7,9 +5,15 @@ var SessionSearchStore = require('stores/SessionSection/SessionSearchStore');
 var ajax = null;
 var limit = 0;
 var count = 20;
+var SessionsAPI;
 
-var SessionsAPI = {
-  get: function(query) {
+global.jQuery = require('jquery');
+
+
+SessionsAPI = {
+  get: function (query) {
+    var params;
+
     if (ajax) {
       ajax.abort();
     }
@@ -19,25 +23,27 @@ var SessionsAPI = {
       q: SessionSearchStore.getState()['query']
     };
 
-    ajax = jQuery.getJSON(AppConstants.SESSIONS_API_ENDPOINT, params, function(data) {
+    ajax = jQuery.getJSON(AppConstants.SESSIONS_API_ENDPOINT, params, function (data) {
       SessionsActions.receivedData(data);
     });
   },
 
-  getMore: function() {
+  getMore: function () {
+    var params;
+
     if (ajax) {
       ajax.abort();
     }
 
     limit += count;
 
-    var params = {
+    params = {
       limit: count,
       offset: limit,
       q: SessionSearchStore.getState()['query']
     };
 
-    ajax = jQuery.getJSON(AppConstants.SESSIONS_API_ENDPOINT, params, function(data) {
+    ajax = jQuery.getJSON(AppConstants.SESSIONS_API_ENDPOINT, params, function (data) {
       SessionsActions.receivedMore(data.results);
     });
   }

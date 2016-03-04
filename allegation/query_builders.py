@@ -1,12 +1,23 @@
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import D
 from django.db.models.query_utils import Q
+from haystack.query import SearchQuerySet
 
 import inspect
 
 from allegation.utils.query import OfficerQuery
 from common.constants import FOIA_START_DATE, DISCIPLINE_CODES, NO_DISCIPLINE_CODES
 from common.models import Allegation
+
+
+def _apply_all_query_methods(inst, query_params):
+    queries = Q()
+
+    for name, func in inspect.getmembers(inst, predicate=inspect.ismethod):
+        if name[:3] == '_q_':
+            queries &= func(query_params)
+
+    return queries
 
 
 class OfficerAllegationQueryBuilder(object):
@@ -24,16 +35,7 @@ class OfficerAllegationQueryBuilder(object):
         and return the combined Q query.
         """
         query_params = self._exclude_ignore_params(query_params, ignore_params)
-        queries = self._apply_all_query_methods(query_params)
-        return queries
-
-    def _apply_all_query_methods(self, query_params):
-        queries = Q()
-
-        for name, func in inspect.getmembers(self, predicate=inspect.ismethod):
-            if name[:3] == '_q_':
-                queries &= func(query_params)
-
+        queries = _apply_all_query_methods(self, query_params)
         return queries
 
     def _exclude_ignore_params(self, query_params, ignore_params):
@@ -66,6 +68,7 @@ class OfficerAllegationQueryBuilder(object):
             'allegation__investigator',
             'cat__category',
             'allegation__city',
+            'officer__active'
         ]
 
         for key in query_params.keys():
@@ -73,7 +76,8 @@ class OfficerAllegationQueryBuilder(object):
                 val_list = query_params.getlist(key)
                 sub_queries = Q()
                 for val in val_list:
-                    if val.lower() in ('none', 'null'):
+                    val_lower = val.lower()
+                    if val_lower in ('none', 'null'):
                         val = True
                         key = "%s__isnull" % key
                     sub_queries |= Q(**{key: val})
@@ -123,38 +127,38 @@ class OfficerAllegationQueryBuilder(object):
         return Q()
 
     def _q_has_document(self, query_params):
-        if 'has:document' in query_params.getlist('has_filters', []):
+        if 'true' in query_params.getlist('has_document', []):
             return Q(allegation__document_id__gt=0)
         return Q()
 
     def _q_has_map(self, query_params):
-        if 'has:map' in query_params.getlist('has_filters', []):
+        if 'true' in query_params.getlist('has_map', []):
             return Q(allegation__point__isnull=False)
         return Q()
 
     def _q_has_address(self, query_params):
-        if 'has:address' in query_params.getlist('has_filters', []):
+        if 'true' in query_params.getlist('has_address', []):
             return Q(allegation__add1__isnull=False) | \
                 Q(allegation__add2__isnull=False)
         return Q()
 
     def _q_has_location(self, query_params):
-        if 'has:location' in query_params.getlist('has_filters', []):
+        if 'true' in query_params.getlist('has_location', []):
             return Q(allegation__location__isnull=False)
         return Q()
 
     def _q_has_investigator(self, query_params):
-        if 'has:investigator' in query_params.getlist('has_filters', []):
+        if 'true' in query_params.getlist('has_investigator', []):
             return Q(allegation__investigator__isnull=False)
         return Q()
 
     def _q_has_identified(self, query_params):
-        if 'has:identified' in query_params.getlist('has_filters', []):
+        if 'true' in query_params.getlist('has_identified', []):
             return Q(officer__isnull=False)
         return Q()
 
     def _q_has_summary(self, query_params):
-        if 'has:summary' in query_params.getlist('has_filters', []):
+        if 'true' in query_params.getlist('has_summary', []):
             return Q(allegation__summary__isnull=False)
         return Q()
 
@@ -245,11 +249,15 @@ class OfficerAllegationQueryBuilder(object):
 
         if len(data_source) == 2:
             return Q()
-
         if 'pre-FOIA' in data_source:
-            return Q(allegation__incident_date__lt=FOIA_START_DATE)
+            return (
+                Q(allegation__incident_date__lt=FOIA_START_DATE) |
+                Q(start_date__lt=FOIA_START_DATE) |
+                Q(allegation__incident_date__isnull=True))
         elif 'FOIA' in data_source:
-            return Q(allegation__incident_date__gte=FOIA_START_DATE)
+            return (
+                Q(allegation__incident_date__gte=FOIA_START_DATE) |
+                Q(start_date__gte=FOIA_START_DATE))
 
         return Q()
 
@@ -265,3 +273,25 @@ class OfficerAllegationQueryBuilder(object):
         elif 'iad' in ranks:
             return Q(allegation__investigator__agency__icontains='iad')
         return Q()
+
+    def _q_allegation_summary(self, query_params):
+        terms = query_params.getlist('allegation_summary', [])
+        if len(terms) == 0:
+            return Q()
+
+        sqs = SearchQuerySet()
+        matched_allegation_ids = []
+        for term in terms:
+            raw_results = sqs.filter(allegation_summary__exact=term).values_list('pk', flat=True)
+            casted_results = [int(x) for x in raw_results]
+            matched_allegation_ids += casted_results
+
+        return Q(allegation__pk__in=matched_allegation_ids)
+
+    def _q_category_on_duty(self, query_params):
+        duties = query_params.getlist('cat__on_duty', [])
+        if len(duties) == 0:
+            return Q()
+
+        duties = [duty == 'true' for duty in duties]
+        return Q(cat__on_duty__in=duties)

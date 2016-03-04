@@ -1,9 +1,9 @@
 from allegation.factories import AllegationFactory
 from search.services.suggest.suggest_allegation import SuggestAllegationCity, SuggestAllegationCrid
-from search.tests.services.suggest.test_suggest_base import SuggestBaseTestCase
+from search.tests.services.suggest.base_test_suggest import BaseSuggestTestCase
 
 
-class SuggestAllegationTestCase(SuggestBaseTestCase):
+class AllegationSuggestTestCase(BaseSuggestTestCase):
     def test_suggest_zip_code(self):
         city = 'Chicago IL 60616'
         available_zip_code = '60616'
@@ -15,8 +15,8 @@ class SuggestAllegationTestCase(SuggestBaseTestCase):
         self.rebuild_index()
 
         suggest_entry = SuggestAllegationCity.query(available_zip_code)['Zip Code'][0]
-        suggest_entry['value'].should.be.equal(city)
-        suggest_entry['label'].should.be.equal('60616')
+        suggest_entry['suggest_value'].should.be.equal(available_zip_code)
+        suggest_entry['tag_value']['display_value'].should.be.equal(city)
         SuggestAllegationCity.query(unavailable_zip_code)['Zip Code'].should.be.equal([])
         SuggestAllegationCity.query(not_digit_term).should.be.equal(None)
 
@@ -38,7 +38,6 @@ class SuggestAllegationTestCase(SuggestBaseTestCase):
         AllegationFactory(crid=crid)
 
         self.rebuild_index()
-
-        SuggestAllegationCrid.query('1002')['Allegation ID'][0]['value'].should.be.equal(crid)
+        SuggestAllegationCrid.query('1002')['Allegation ID'][0]['suggest_value'].should.be.equal(crid)
         SuggestAllegationCrid.query(unavailable_crid)['Allegation ID'].should.be.equal([])
         SuggestAllegationCrid.query(not_numeric).should.be.equal(None)

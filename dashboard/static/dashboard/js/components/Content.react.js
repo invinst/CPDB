@@ -7,14 +7,19 @@ var SearchSection = require('./SearchSection.react');
 var SessionSection = require('components/SessionSection.react');
 var DocumentSection = require('./DocumentSection.react');
 var SettingSection = require('components/SettingSection.react');
-var InterfaceTextSection = require('components/InterfaceTextSection.react')
+var InterfaceTextSection = require('components/InterfaceTextSection.react');
+
+var Content;
+
+require('../stores/ContentStore.js');
 
 
-var ContentStore = require("../stores/ContentStore.js");
-
-
-var Content = React.createClass({
+Content = React.createClass({
   mixins: [RouterMixin],
+
+  getInitialState: function () {
+    return {};
+  },
 
   routes: {
     '/' : 'overviewSection',
@@ -23,44 +28,40 @@ var Content = React.createClass({
     '/document': 'documentSection',
     '/session': 'sessionSection',
     '/setting': 'settingSection',
-    '/interface-text': 'interfaceTextSection',
+    '/interface-text': 'interfaceTextSection'
   },
 
-  overviewSection: function() {
+  overviewSection: function () {
     return <OverviewSection />;
   },
 
-  searchSection: function() {
+  searchSection: function () {
     return <SearchSection />;
   },
 
-  officerSection: function(params) {
-    return <OfficerSection params={params} />;
+  officerSection: function (params) {
+    return <OfficerSection params={ params } />;
   },
 
   documentSection: function (params) {
-    return <DocumentSection params={params} />;
+    return <DocumentSection params={ params } />;
   },
 
-  sessionSection: function() {
+  sessionSection: function () {
     return <SessionSection />;
   },
 
   settingSection: function () {
-    return <SettingSection />
+    return <SettingSection />;
   },
 
   interfaceTextSection: function () {
-    return <InterfaceTextSection />
+    return <InterfaceTextSection />;
   },
 
-  getInitialState: function() {
-    return {};
-  },
-
-  render: function() {
+  render: function () {
     return this.renderCurrentRoute();
-  },
+  }
 });
 
 module.exports = Content;

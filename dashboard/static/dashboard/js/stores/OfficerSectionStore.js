@@ -14,7 +14,7 @@ var OfficerSectionStore = _.assign(Base(_state), {
   }
 });
 
-AppDispatcher.register(function(action) {
+AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.RECEIVED_OFFICER_LIST:
       OfficerSectionStore.navigateMain();

@@ -6,11 +6,21 @@ var Wrapper = require('components/Shared/Wrapper.react');
 
 
 var SimpleTab = React.createClass({
+  propTypes: {
+    children: React.PropTypes.node,
+    navigation: React.PropTypes.bool
+  },
+
   getInitialState: function () {
+    var tabId = window.location.hash.replace('#', '');
+    var tabIds = this.getTabIds();
+    var tabIndex = tabIds.indexOf(tabId);
+    var activeIndex = tabIndex > -1 ? tabIndex : 0;
+
     return {
-      'activeIndex': 0,
+      'activeIndex': activeIndex,
       'previousIndex': -1
-    }
+    };
   },
 
   setActiveTab: function (index) {
@@ -23,7 +33,9 @@ var SimpleTab = React.createClass({
   },
 
   getIndexOfNav: function (parent, nav) {
-    for (var i = 0; i < parent.length; i++) {
+    var i;
+
+    for (i = 0; i < parent.length; i++) {
       if (parent[i] == nav) {
         return i;
       }
@@ -35,9 +47,11 @@ var SimpleTab = React.createClass({
     var node = e.target;
     var parentChildren = node.parentNode.children;
     var index = this.getIndexOfNav(parentChildren, node);
+    var tabIdentifier = HelperUtil.format('#{tabId}', {'tabId': this.getTabIds()[index]});
 
     if (index != -1) {
       this.setActiveTab(index);
+      window.history.pushState(null, '', tabIdentifier);
     }
   },
 
@@ -49,24 +63,30 @@ var SimpleTab = React.createClass({
       var classNames = cx(item.props.className, prefix, {
         'active': (i == self.state.activeIndex),
         'no-animation': (self.state.previousIndex == -1),
-       'reverse-animation': (i > self.state.previousIndex)
+        'reverse-animation': (i > self.state.previousIndex)
       });
 
       return React.cloneElement(item, {
         'key': itemKey,
         className: classNames
       });
-    })
+    });
   },
 
   renderTabNav: function () {
     var navs = this.props.children[0];
-    return this.renderChildren('tab-nav', navs)
+    return this.renderChildren('tab-nav', navs);
   },
 
   renderTabContent: function () {
     var tabs = this.props.children[1];
-    return this.renderChildren('tab-content', tabs)
+    return this.renderChildren('tab-content', tabs);
+  },
+
+  getTabIds: function () {
+    return this.props.children[0].props.children.map(function (child) {
+      return child.props.tabIdentifier;
+    });
   },
 
   renderNavigation: function () {
@@ -81,14 +101,14 @@ var SimpleTab = React.createClass({
     var next = tabs[nextIndex].props.children;
 
     return (
-      <Wrapper visible={!!this.props.navigation} wrapperClass='tab-navigations'>
+      <Wrapper visible={ !!this.props.navigation } wrapperClass='tab-navigations'>
         <div className='row'>
-          <div className='six columns' onClick={this.setActiveTab.bind(this, prevIndex)}>
+          <div className='six columns' onClick={ this.setActiveTab.bind(this, prevIndex) }>
             <span className='icon icon-left'/>
-            {prev}
+            { prev }
           </div>
-          <div className='six columns align-right' onClick={this.setActiveTab.bind(this, nextIndex)}>
-            {next}
+          <div className='six columns align-right' onClick={ this.setActiveTab.bind(this, nextIndex) }>
+            { next }
             <span className='icon icon-right'/>
           </div>
         </div>
@@ -99,13 +119,13 @@ var SimpleTab = React.createClass({
   render: function () {
     return (
       <div>
-        <div className='tab-navs' onClick={this.onTabItemClick}>
-          {this.renderTabNav()}
+        <div className='tab-navs' onClick={ this.onTabItemClick }>
+          { this.renderTabNav() }
         </div>
         <div className='tab-contents'>
-          {this.renderTabContent()}
+          { this.renderTabContent() }
         </div>
-        {this.renderNavigation()}
+        { this.renderNavigation() }
       </div>
     );
   }

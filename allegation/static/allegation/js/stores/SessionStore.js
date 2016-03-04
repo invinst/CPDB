@@ -3,10 +3,6 @@ var _ = require('lodash');
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
 var Base = require('stores/Base');
-var FilterTagStore = require('../stores/FilterTagStore');
-var MapStore = require('../stores/MapStore');
-var OfficerListStore = require('../stores/OfficerListStore');
-var OfficerPresenter = require('presenters/OfficerPresenter');
 var AppStore = require('stores/AppStore');
 
 var _state = {
@@ -22,12 +18,12 @@ var _state = {
 
 var SESSION_CREATED_EVENT = 'SESSION_CREATED_EVENT';
 var SessionStore = _.assign(Base(_state), {
-  updateSession: function(data) {
+  updateSession: function (data) {
     _state['data'] = _.assign(_state['data'], data);
     this.emitChange();
   },
 
-  getHash: function() {
+  getHash: function () {
     return _state['data']['hash'];
   },
 
@@ -35,50 +31,29 @@ var SessionStore = _.assign(Base(_state), {
     return _state['data']['active_tab'];
   },
 
-  removeTagInCategory: function (category) {
-    // if (!_state.data.readable_query[category]) {
-    //   return;
-    // }
-    // var filters = _state.data.readable_query[category];
-    // var newValue = [];
-    // for (var i in filters) {
-    //   if (FilterTagStore.isPinned(category, filters[i].value)) {
-    //     newValue.push(filters[i]);
-    //   }
-    // }
-    // _state.data.readable_query[category] = newValue;
+  getTitle: function () {
+    return _state['data']['title'];
   },
 
-  addTag: function (category, value, filter) {
-    // this.removeTagInCategory(category);
-
-    // var filterObject = this.formatFilter(filter);
-
-    // var tags = _state.data.readable_query[category];
-    // if (tags) {
-    //   tags.push(filterObject);
-    // } else {
-    //   _state.data.readable_query[category] = [filterObject];
-    // }
-  },
-
-  removeTag: function (category, filter) {
-    // var tags = _state.data.readable_query[category]
-    // if (tags) {
-    //   for (i in tags) {
-    //     if (tags[i].value == filter.value) {
-    //       tags.splice(i, 1);
-    //       break;
-    //     }
-    //   }
-    // }
+  getSiteTitle: function () {
+    return _state['siteTitle'];
   },
 
   isNoQuery: function () {
     return _.isEmpty(_state.data.query.active_officers) && _.isEmpty(_state.data.query.filters);
   },
 
-  removeSessionCreatedListener: function(callback) {
+  serializeSelectedSunburstArc: function (arc) {
+    var name = arc.name;
+    var category = arc.category;
+
+    return {
+      name: name,
+      category: category
+    };
+  },
+
+  removeSessionCreatedListener: function (callback) {
     this.removeListener(SESSION_CREATED_EVENT, callback);
   },
 
@@ -88,19 +63,21 @@ var SessionStore = _.assign(Base(_state), {
 
   emitSessionCreated: function () {
     this.emit(SESSION_CREATED_EVENT);
-  },
+  }
 });
 
 // Register callback to handle all updates
 SessionStore.dispatcherToken = AppDispatcher.register(function (action) {
+  var data, title;
+
   switch (action.actionType) {
     case AppConstants.SAVE_SESSION:
-    // SessionStore.updateSession(action.data);
-    SessionStore.emitChange();
+      // SessionStore.updateSession(action.data);
+      SessionStore.emitChange();
       break;
 
     case AppConstants.RECEIVED_SESSION_DATA:
-      var data = action.data.data;
+      data = action.data.data;
       data['title'] = data['title'] || AppConstants.DEFAULT_SITE_TITLE;
       _state['data'] = data;
       _state.siteTitle = data.title;
@@ -109,7 +86,7 @@ SessionStore.dispatcherToken = AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.UPDATE_TITLE:
-      var title = action.title;
+      title = action.title;
       _state['data']['title'] = title;
       _state.siteTitle = title;
       SessionStore.emitChange();
@@ -122,12 +99,10 @@ SessionStore.dispatcherToken = AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.ADD_TAG:
-      SessionStore.addTag(action.category, action.value, action.filter);
       SessionStore.emitChange();
       break;
 
     case AppConstants.REMOVE_TAG:
-      SessionStore.removeTag(action.category, action.filter);
       SessionStore.emitChange();
       break;
 

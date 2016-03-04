@@ -1,0 +1,49 @@
+.share-button > button
+  color: $color_cadet_blue_approx
+  padding: 0 10px
+  height: 45px
+  border: 0
+  background: white
+  font-weight: 500
+
+.share-button.active > button
+  background-color: $color_link_water_approx
+  color: $midnight-blue
+
+.share-bar
+  background-color: $color_link_water_approx
+  color: $midnight-blue
+  position: absolute
+  height: 55px
+  width: 100%
+  top: 45px
+  left: 0
+  z-index: 1
+
+  .share-bar-content-wrapper
+    margin: 12px auto
+    width: 500px
+
+  i.fa
+    font-size: xx-large
+    margin: 0 9px
+    cursor: pointer
+    color: $midnight-blue
+
+  input
+    width: 386px
+    height: 30px
+    border: 0
+    background-color: $white
+    margin: 0 9px
+    vertical-align: top
+    color: $midnight-blue
+    padding: 0 5px
+    font-size: 12px
+
+    &::selection
+      background: $midnight-blue
+      color: $white
+    &::-moz-selection
+      background: $midnight-blue
+      color: $white

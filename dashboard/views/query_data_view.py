@@ -46,12 +46,12 @@ class AdminQueryDataApi(View):
                 AND char_length(search_query) > 2 {additional_condition}
                 GROUP BY search_query ORDER BY {order_by} {order} OFFSET {start} LIMIT {limit}
                 '''.format(
-                    search_query=q,
-                    additional_condition=additional_condition,
-                    order_by=order_by,
-                    order=order,
-                    start=start,
-                    limit=self.PER_PAGE
+                search_query=q,
+                additional_condition=additional_condition,
+                order_by=order_by,
+                order=order,
+                start=start,
+                limit=self.PER_PAGE
             ))
             logs = cursor.fetchall()
 

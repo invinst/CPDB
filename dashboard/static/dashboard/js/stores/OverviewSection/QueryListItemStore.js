@@ -14,7 +14,7 @@ var _state = {
 
 
 var QueryListItemStore = assign({}, EventEmitter.prototype, {
-  getState: function() {
+  getState: function () {
     return _state;
   },
 
@@ -22,21 +22,22 @@ var QueryListItemStore = assign({}, EventEmitter.prototype, {
     this.on(AppConstants.CHANGE_EVENT, callback);
   },
 
-  removeChangeListener: function(callback) {
+  removeChangeListener: function (callback) {
     this.removeListener(AppConstants.CHANGE_EVENT, callback);
   },
 
-  setRawData: function(data) {
+  setRawData: function (data) {
     var rawData = {};
+    var period;
 
-    for (var period in data) {
-      rawData[period] = Object.keys(data[period])
+    for (period in data) {
+      rawData[period] = Object.keys(data[period]);
     }
 
-    _state['rawData'] = rawData
+    _state['rawData'] = rawData;
   },
 
-  updateQueriesData: function() {
+  updateQueriesData: function () {
     var period = PeriodPickerStore.getState().period;
     var queries = _state['rawData'][period];
 

@@ -1,5 +1,4 @@
 var _ = require('lodash');
-var navigate = require('react-mini-router').navigate;
 
 var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var AppConstants = require('../../constants/AppConstants');
@@ -22,6 +21,10 @@ var DocumentListStore = _.assign(Base(_state), {
 });
 
 AppDispatcher.register(function (action) {
+  var currentSortBy,
+    order,
+    sortBy;
+
   switch (action.actionType) {
     case AppConstants.RECEIVED_DOCUMENT_LIST:
       _state.documents = action.data;
@@ -42,25 +45,25 @@ AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.DOCUMENT_REQUEST_CANCEL:
-      action.data.document_requested = false;
+      action.data['document_requested'] = false;
       DocumentListStore.emitChange();
       break;
 
     case AppConstants.DOCUMENT_PUT_TO_PENDING:
-      action.data.document_pending = true;
+      action.data['document_pending'] = true;
       DocumentListStore.emitChange();
       break;
 
     case AppConstants.DOCUMENT_PUT_TO_REQUESTING:
-      action.data.document_pending = false;
-      action.data.document_requested = true;
+      action.data['document_pending'] = false;
+      action.data['document_requested'] = true;
       DocumentListStore.emitChange();
       break;
 
     case AppConstants.DOCUMENT_SORT_LIST:
-      var currentSortBy = _state['sortBy'];
-      var order = _state['order'];
-      var sortBy = action.data;
+      currentSortBy = _state['sortBy'];
+      order = _state['order'];
+      sortBy = action.data;
 
       if (currentSortBy == sortBy) {
         order = -order;

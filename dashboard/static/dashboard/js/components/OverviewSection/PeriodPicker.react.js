@@ -5,42 +5,45 @@ var AppConstants = require('../../constants/AppConstants');
 
 
 var PeriodPicker = React.createClass({
-  getInitialState: function() {
+  getInitialState: function () {
     return PeriodPickerStore.getState();
   },
 
-  componentDidMount: function() {
+  componentDidMount: function () {
     PeriodPickerStore.addChangeListener(this._onChange);
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount: function () {
     PeriodPickerStore.removeChangeListener(this._onChange);
   },
 
-  render: function() {
+  _onChange: function () {
+    this.setState(PeriodPickerStore.getState());
+  },
+
+  _onClick: function (period) {
+    PeriodPickerActions.setPeriod(period);
+  },
+
+  render: function () {
     var periods = [];
-    for (var period in AppConstants.PERIODS) {
-      var activeClass = period == this.state.period ? 'active' : '';
+    var period,
+      activeClass;
+
+    for (period in AppConstants.PERIODS) {
+      activeClass = period == this.state.period ? 'active' : '';
       periods.push(
-        <li key={period} className={activeClass} onClick={this._onClick.bind(this, period)}>
-          {AppConstants.PERIODS[period]}
+        <li key={ period } className={ activeClass } onClick={ this._onClick.bind(this, period) }>
+          { AppConstants.PERIODS[period] }
         </li>
       );
     }
 
     return (
       <ul id='period-picker'>
-        {periods}
+        { periods }
       </ul>
-    )
-  },
-
-  _onClick: function(period) {
-    PeriodPickerActions.setPeriod(period);
-  },
-
-  _onChange: function() {
-    this.setState(PeriodPickerStore.getState());
+    );
   }
 });
 

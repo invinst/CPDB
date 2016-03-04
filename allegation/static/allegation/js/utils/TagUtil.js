@@ -7,7 +7,9 @@ var TagUtil = {
   },
 
   isDuplicatedTag: function (tags, tag) {
-    for (var i = 0; i < tags.length; i++) {
+    var i;
+
+    for (i = 0; i < tags.length; i++) {
       if (this.isSameTag(tags[i], tag)) {
         return true;
       }
@@ -15,10 +17,8 @@ var TagUtil = {
     return false;
   },
 
-  isATagIn: function(tags) {
-    var that = this;
-
-    return function(category, value) {
+  isATagIn: function (tags) {
+    return function (category, value) {
       return _(tags).chain().get(category, []).get('value', []).contains(value).value();
     };
   }

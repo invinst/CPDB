@@ -6,46 +6,48 @@ var assign = require('object-assign');
 
 //TODO: How to deal with duplication in OfficerPage components and DataToolPage components?
 var _state = {
-  'activeOfficers': []
+  'active_officers': []
 };
 
 var RelatedOfficersStore = assign({}, EventEmitter.prototype, {
-  getState: function() {
+  getState: function () {
     return _state;
   },
 
-  addChangeListener: function(callback) {
+  addChangeListener: function (callback) {
     this.on(AppConstants.CHANGE_EVENT, callback);
   },
 
-  removeChangeListener: function(callback) {
+  removeChangeListener: function (callback) {
     this.removeListener(AppConstants.CHANGE_EVENT, callback);
   },
 
-  emitChange: function() {
+  emitChange: function () {
     this.emit(AppConstants.CHANGE_EVENT);
   }
 });
 
-RelatedOfficersStore.dispatchEvents = AppDispatcher.register(function(action) {
+RelatedOfficersStore.dispatchEvents = AppDispatcher.register(function (action) {
+  var index;
+
   switch (action.actionType) {
-  case AppConstants.SET_ACTIVE_OFFICER_IN_OFFICER_PAGE:
-    var index = _state.activeOfficers.indexOf(action.officer.id);
+    case AppConstants.SET_ACTIVE_OFFICER_IN_OFFICER_PAGE:
+      index = _state['active_officers'].indexOf(action.officer.id);
 
-    if (index == -1) {
-      _state['activeOfficers'].push(action.officer.id);
+      if (index == -1) {
+        _state['active_officers'].push(action.officer.id);
 
-    }
+      }
     else {
-      _state['activeOfficers'].splice(index, 1);
-    }
-    RelatedOfficersStore.emitChange();
-    break;
-  case AppConstants.OFFICER_COMPLAINT_LIST_RECEIVED_DATA:
-    _state['activeOfficers'] = [];
-    RelatedOfficersStore.emitChange();
-    break;
-  default:
+        _state['active_officers'].splice(index, 1);
+      }
+      RelatedOfficersStore.emitChange();
+      break;
+    case AppConstants.OFFICER_COMPLAINT_LIST_RECEIVED_DATA:
+      _state['active_officers'] = [];
+      RelatedOfficersStore.emitChange();
+      break;
+    default:
       break;
   }
 });

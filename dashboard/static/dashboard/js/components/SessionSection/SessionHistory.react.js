@@ -1,25 +1,34 @@
 var _ = require('lodash');
-var moment = require('moment');
 var React = require('react');
+var PropTypes = React.PropTypes;
 
 var FilterLogPresenter = require('utils/FilterLogPresenter');
 var SuggestionLogPresenter = require('utils/SuggestionLogPresenter');
 
 var SessionHistory = React.createClass({
-  renderSessionHistory: function(histories) {
-     return histories.map(function(x) {
-       return <li>{x.asHistoryEntry}</li>;
-     });
+  propTypes: {
+    suggestions: PropTypes.array,
+    filters: PropTypes.array
   },
 
-  render: function() {
-    var suggestions = this.props.suggestions || [];
+  renderSessionHistory: function (histories) {
+    return histories.map(function (x, i) {
+      return <li key={ i }>{ x.asHistoryEntry }</li>;
+    });
+  },
+
+  render: function () {
+    var suggestions,
+      filterLogs,
+      histories;
+
+    suggestions = this.props.suggestions || [];
     suggestions = suggestions.map(SuggestionLogPresenter);
 
-    var filter_logs = this.props.filters || [];
-    filter_logs = filter_logs.map(FilterLogPresenter);
+    filterLogs = this.props.filters || [];
+    filterLogs = filterLogs.map(FilterLogPresenter);
 
-    var histories = filter_logs.concat(suggestions);
+    histories = filterLogs.concat(suggestions);
     histories = _.sortByOrder(histories, ['unixTime'], ['asc']);
 
     if (!histories.length) {
@@ -29,7 +38,7 @@ var SessionHistory = React.createClass({
     }
 
     return (
-      <ul className='histories'>{this.renderSessionHistory(histories)}</ul>
+      <ul className='histories'>{ this.renderSessionHistory(histories) }</ul>
     );
   }
 });

@@ -29,12 +29,14 @@ class Session(models.Model):
     title = models.CharField(max_length=255, blank=True)
     query = JSONField(blank=True)
     active_tab = models.CharField(max_length=40, default='', blank=True)
+    selected_sunburst_arc = JSONField(blank=True)
     sunburst_arc = models.CharField(max_length=40, default='', blank=True)
     share_from = models.ForeignKey('share.Session', null=True, default=None, blank=True)
     share_count = models.IntegerField(default=0, blank=True)
     created_at = models.DateTimeField(default=timezone.now, null=True, blank=True)
     ip = models.CharField(default='', max_length=40, null=True, blank=True)  # we could handle IPv6 as well
     user_agent = models.CharField(max_length=255, null=True, blank=True)
+    shared = models.BooleanField(default=False)
 
     @property
     def hash_id(self):
@@ -67,7 +69,7 @@ class Session(models.Model):
         session = Session()
         session.title = self.title
         session.query = self.query
-        session.sunburst_arc = self.sunburst_arc
+        session.selected_sunburst_arc = self.selected_sunburst_arc
         session.active_tab = self.active_tab
         session.share_from = self
         session.save()
@@ -80,7 +82,8 @@ class Session(models.Model):
     def query_string(self):
         filters = self.query.get('filters', {})
         query = []
-        for category in filters:
-            items = filters[category]
-            query.append('&'.join(item['filter'] for item in items))
+        for category, items in filters.items():
+            query.append('&'.join(
+                '{category}={value}'.format(category=item['category'], value=item['value']) for item in items)
+            )
         return '&'.join(query)

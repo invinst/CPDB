@@ -1,7 +1,6 @@
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var EventEmitter = require('events').EventEmitter;
 var AppConstants = require('../constants/AppConstants');
-var ajax = null;
 var assign = require('object-assign');
 var _ = require('lodash');
 
@@ -13,21 +12,22 @@ var _state = {
   'pageNumber': 1,
   'handleInfiniteLoad': false,
   'stopHandleInfiniteLoad': false,
-  'noQuery': true
+  'noQuery': true,
+  'loading': true
 };
 
 var ComplaintListStore = assign({}, EventEmitter.prototype, {
-  setAnalysisInformation: function(data) {
+  setAnalysisInformation: function (data) {
     _state.analytics = data;
     _state.activeFilter = 'all';
     this.emitChange();
   },
 
-  getActiveFilter: function() {
+  getActiveFilter: function () {
     return _state['activeFilter'];
   },
 
-  setActiveFilter: function(activeFilter) {
+  setActiveFilter: function (activeFilter) {
     _state['activeFilter'] = activeFilter;
   },
 
@@ -39,7 +39,7 @@ var ComplaintListStore = assign({}, EventEmitter.prototype, {
     this.on(AppConstants.CHANGE_EVENT, callback);
   },
 
-  removeChangeListener: function(callback) {
+  removeChangeListener: function (callback) {
     this.removeListener(AppConstants.CHANGE_EVENT, callback);
   },
 
@@ -49,7 +49,9 @@ var ComplaintListStore = assign({}, EventEmitter.prototype, {
 });
 
 
-AppDispatcher.register(function(action) {
+AppDispatcher.register(function (action) {
+  var data;
+
   switch (action.actionType) {
     case AppConstants.SET_ACTIVE_COMPLAINT_LIST_FILTER:
       ComplaintListStore.setActiveFilter(action.filter);
@@ -69,12 +71,15 @@ AppDispatcher.register(function(action) {
       } else {
         _state['handleInfiniteLoad'] = false;
         _state['stopHandleInfiniteLoad'] = true;
+
         ComplaintListStore.emitChange();
       }
+      _state['loading'] = false;
       break;
 
     case AppConstants.COMPLAINT_LIST_GET_DATA:
       _state['handleInfiniteLoad'] = false;
+      _state['loading'] = true;
       ComplaintListStore.emitChange();
       break;
 
@@ -84,6 +89,7 @@ AppDispatcher.register(function(action) {
         ComplaintListStore.setAnalysisInformation(action.data['analytics']);
       }
       _state.noQuery = action.data.noQuery;
+      _state['loading'] = false;
       _state['pageNumber'] = 1;
       _state['handleInfiniteLoad'] = false;
       _state['stopHandleInfiniteLoad'] = false;
@@ -94,14 +100,16 @@ AppDispatcher.register(function(action) {
       if (_state['activeComplaints'].indexOf(action.id) > -1) {
         _state['activeComplaints'].splice(_state['activeComplaints'].indexOf(action.id), 1);
       }
-      else{
+      else {
         _state['activeComplaints'].push(action.id);
+
       }
+
       ComplaintListStore.emitChange();
       break;
 
     case AppConstants.RECEIVED_SESSION_DATA:
-      var data = action.data.data;
+      data = action.data.data;
       _state['activeComplaints'] = data['query']['activeComplaints'] || [];
       ComplaintListStore.emitChange();
       break;

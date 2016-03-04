@@ -12,7 +12,9 @@ var _state = {
 var SessionListStore = _.assign(Base(_state), {
 });
 
-AppDispatcher.register(function(action) {
+AppDispatcher.register(function (action) {
+  var data;
+
   switch (action.actionType) {
     case AppConstants.RECEIVED_SESSIONS_DATA:
       _state['data'] = action.data['results'];
@@ -28,7 +30,7 @@ AppDispatcher.register(function(action) {
 
     case AppConstants.RECEIVED_MORE_SESSIONS_DATA:
       if (!_.isEmpty(action.data)) {
-        var data = _state['data'].concat(action.data);
+        data = _state['data'].concat(action.data);
         _state['data'] = data;
         _state['locked'] = false;
         SessionListStore.emitChange();

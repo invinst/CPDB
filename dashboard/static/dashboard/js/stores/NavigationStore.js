@@ -10,11 +10,11 @@ var _state = {
 
 
 var NavigationStore = assign({}, EventEmitter.prototype, {
-  getState: function() {
+  getState: function () {
     return _state;
   },
 
-  setActiveItem: function(i) {
+  setActiveItem: function (i) {
     _state['activeItem'] = i;
     this.emitChange();
   },
@@ -23,7 +23,7 @@ var NavigationStore = assign({}, EventEmitter.prototype, {
     this.on(AppConstants.CHANGE_EVENT, callback);
   },
 
-  removeChangeListener: function(callback) {
+  removeChangeListener: function (callback) {
     this.removeListener(AppConstants.CHANGE_EVENT, callback);
   },
 
@@ -35,12 +35,12 @@ var NavigationStore = assign({}, EventEmitter.prototype, {
 
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
-  case AppConstants.SET_ACTIVE_NAV_ITEM:
-    NavigationStore.setActiveItem(action.activeItem);
-    break;
+    case AppConstants.SET_ACTIVE_NAV_ITEM:
+      NavigationStore.setActiveItem(action.activeItem);
+      break;
 
-  default:
-    break;
+    default:
+      break;
   }
 });
 

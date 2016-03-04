@@ -1,17 +1,8 @@
-var _ = require('lodash');
 var classnames = require('classnames');
-var navigate = require('react-mini-router').navigate;
 var React = require('react');
-var ReactRouter = require('react-router');
+var PropTypes = React.PropTypes;
 var PureRenderMixin = require('react-addons-pure-render-mixin');
 
-var Router = ReactRouter.Router;
-var Route = ReactRouter.Route;
-var Link = ReactRouter.Link;
-
-var AppConstants = require('constants/AppConstants');
-var Base = require('components/Base.react');
-var NavActions = require('actions/NavActions');
 var PageAnimator = require('components/PageAnimator.react');
 var StatePropagateCSSTransitionGroup = require(
   'components/Shared/StatePropagateCSSTransitionGroup.react');
@@ -24,6 +15,11 @@ var HappyFox = require('components/Shared/HappyFox.react');
 
 
 var IndexPage = React.createClass({
+  propTypes: {
+    children: PropTypes.node,
+    location: PropTypes.object
+  },
+
   contextTypes: {
     router: React.PropTypes.object.isRequired
   },
@@ -38,6 +34,11 @@ var IndexPage = React.createClass({
     $(window).off('scroll', this.scrollToggleShow);
   },
 
+  isLandingPage: function () {
+    var isActive = this.context.router.isActive;
+    return !(isActive('investigator') || isActive('officer') || isActive('data'));
+  },
+
   scrollToggleShow: function () {
     var $welcome = $('.welcome');
     var $landingNav = $('.landing-nav');
@@ -47,10 +48,12 @@ var IndexPage = React.createClass({
 
     var scrollTop = $(window).scrollTop();
     var cond = scrollTop >= $welcome.height();
+    var opacity;
+
     $landingNav.toggleClass('fixed-nav', cond);
     $landingNav.toggleClass('border-top', scrollTop != 0);
     $main.toggleClass('margin-top-45', cond);
-    var opacity = scrollTop / $welcome.height();
+    opacity = scrollTop / $welcome.height();
     $cpdpLogo.css('opacity', opacity);
     $iiLogo.css('opacity', 1 - opacity);
     this.syncNavState();
@@ -60,10 +63,11 @@ var IndexPage = React.createClass({
     var navBarHeight = 90;
     var navItems = $('.landing-nav .sub-nav a');
     var currentPos = $(window).scrollTop() + navBarHeight;
+    var index, item, $control;
 
-    for(var index = 0; index < navItems.length; index++) {
-      var item = $(navItems[index]);
-      var $control = $(item.data('target'));
+    for (index = 0; index < navItems.length; index++) {
+      item = $(navItems[index]);
+      $control = $(item.data('target'));
 
       if (currentPos >= $control.offset().top) {
         navItems.removeClass('active');
@@ -73,16 +77,33 @@ var IndexPage = React.createClass({
     }
   },
 
-  isLandingPage: function () {
+  renderContent: function () {
     var isActive = this.context.router.isActive;
-    return !(isActive('investigator') || isActive('officer') || isActive('data'));
+
+    var tabPanelClass = classnames('tab-pane active',{
+      'landing-page': !(isActive('data') || isActive('officer') || isActive('investigator'))
+    });
+
+    var mainClassName = classnames('main', {
+      'margin-top-45': isActive('data')
+    });
+
+    return (
+      <div className={ mainClassName }>
+        <div className='tab-content'>
+          <div role='tabpanel' className={ tabPanelClass }>
+            { this.props.children }
+          </div>
+        </div>
+      </div>
+    );
   },
 
   renderFooter: function () {
     return (
       <div className='container-fluid'>
         <div className='sticky-footer'>
-          <Footer withEmbedBar={this.context.router.isActive('data')}/>
+          <Footer withEmbedBar={ this.context.router.isActive('data') }/>
         </div>
       </div>
     );
@@ -90,7 +111,7 @@ var IndexPage = React.createClass({
 
   renderFooterLandingPage: function () {
     return (
-      <div className="landing-page">
+      <div className='landing-page'>
         <LandingFooter />
       </div>
     );
@@ -106,25 +127,7 @@ var IndexPage = React.createClass({
     );
   },
 
-  renderContent: function () {
-    var isActive = this.context.router.isActive;
-
-    var tabPanelClass = classnames('tab-pane active',{
-      'landing-page': !(isActive('data') || isActive('officer') || isActive('investigator'))
-    });
-
-    return (
-      <div className="main">
-        <div className="tab-content">
-          <div role="tabpanel" className={tabPanelClass}>
-            { this.props.children }
-          </div>
-        </div>
-      </div>
-    );
-  },
-
-  render: function() {
+  render: function () {
     var isActive = this.context.router.isActive;
 
     var pageClassName = classnames({
@@ -134,16 +137,16 @@ var IndexPage = React.createClass({
     return (
       <div className='page-wrapper'>
         <StatePropagateCSSTransitionGroup
-          transitionName="page"
-          transitionEnterTimeout={500}
-          transitionLeaveTimeout={500}>
-            <PageAnimator className='page' key={this.props.location.pathname}>
-              <div id='landing-page' className={pageClassName}>
-                <Nav isActive={this.context.router.isActive}/>
-                { this.renderContent() }
-                { this.renderFooterWrapper() }
-              </div>
-            </PageAnimator>
+          transitionName='page'
+          transitionEnterTimeout={ 500 }
+          transitionLeaveTimeout={ 500 }>
+          <PageAnimator className='page' key={ this.props.location.pathname }>
+            <div id='landing-page' className={ pageClassName }>
+              <Nav isActive={ this.context.router.isActive }/>
+              { this.renderContent() }
+              { this.renderFooterWrapper() }
+            </div>
+          </PageAnimator>
         </StatePropagateCSSTransitionGroup>
       </div>
     );

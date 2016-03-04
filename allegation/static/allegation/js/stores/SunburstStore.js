@@ -5,7 +5,6 @@ var AppConstants = require('constants/AppConstants');
 
 var Base = require('stores/Base');
 var FilterTagStore = require('stores/FilterTagStore');
-var SessionStore = require('stores/SessionStore');
 
 var SunburstChartD3 = require('utils/d3utils/SunburstChartD3');
 
@@ -30,13 +29,21 @@ var SunburstStore = _.assign(Base(_state), {
   },
 
   isSelected: function (category, value) {
+    // this function use FilterTag values to check if sunburst arc is selected
     var selected = _state.selected;
-    return selected && selected.tagValue && selected.tagValue.category == category && selected.tagValue.label == value
+    return selected && selected.tagValue && selected.tagValue.category == category
+      && selected.tagValue.value == value;
+  },
+
+  isRootSelected: function () {
+    return _state.selected.name == 'Allegations';
   },
 
   updateSelected: function () {
+    var arc;
+
     if (_state.selected) {
-      var arc = SunburstChartD3.findPathByName(_state.selected.name);
+      arc = SunburstChartD3.findArc(_state.selected.name, _state.selected.category);
 
       if (_state.selected.fromSession) {
         if (arc) {
@@ -63,13 +70,16 @@ var SunburstStore = _.assign(Base(_state), {
   },
 
   tryZoomOut: function (category, filter) {
+    var tagValue;
+
     if (this.isSelected(category, filter.value)) {
       _state.selected = _state.selected.parent;
-      var tagValue = _state.selected.tagValue;
 
       // Add parent arc to filter if not at root
-      if (tagValue) {
-        FilterTagStore.addFilter(tagValue.category, tagValue.label, tagValue.filter + '=' + tagValue.value);
+      if (!this.isRootSelected()) {
+        tagValue = _state.selected.tagValue;
+
+        FilterTagStore.addFilter(tagValue);
         FilterTagStore.emitChange();
       }
     }
@@ -91,9 +101,10 @@ var SunburstStore = _.assign(Base(_state), {
   getArcSize: function (arc) {
     // TODO: don't calculate recursively
     var size = 0;
+    var i = 0;
 
     if (arc.children) {
-      for (var i = 0; i < arc.children.length; i++) {
+      for (i = 0; i < arc.children.length; i++) {
         size += this.getArcSize(arc.children[i]);
       }
     } else {
@@ -141,6 +152,8 @@ var SunburstStore = _.assign(Base(_state), {
 
 // Register callback to handle all updates
 AppDispatcher.register(function (action) {
+  var selected, arcName, arcCategory;
+
   switch (action.actionType) {
     case AppConstants.RECEIVED_SUNBURST_DATA:
       SunburstStore.setData(action.data);
@@ -156,7 +169,7 @@ AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.SUNBURST_SELECT_ARC:
-      var selected  = _state['selected'];
+      selected = _state['selected'];
       _state['selected'] = action.arc;
       SunburstStore.emitChange();
 
@@ -177,12 +190,17 @@ AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.RECEIVED_SESSION_DATA:
-      var arcName = 'Allegations';
-      if (action.data && action.data.data.sunburst_arc) {
-        arcName = action.data.data.sunburst_arc;
+      arcName = 'Allegations';
+      arcCategory = '';
+
+      if (action.data && !_.isEmpty(action.data.data.selected_sunburst_arc)) {
+        arcName = action.data.data.selected_sunburst_arc.name;
+        arcCategory = action.data.data.selected_sunburst_arc.category;
       }
+
       _state.selected = {
         name: arcName,
+        category: arcCategory,
         fromSession: true
       };
       break;

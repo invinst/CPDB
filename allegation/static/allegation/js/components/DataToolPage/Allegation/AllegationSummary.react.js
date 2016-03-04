@@ -1,17 +1,27 @@
-var _ = require('lodash')
-var classnames = require('classnames');
+var _ = require('lodash');
 var React = require('react');
 var PropTypes = React.PropTypes;
 
-var AllegationPresenter = require('presenters/AllegationPresenter');
+var AllegationPresenterFactory = require('presenters/AllegationPresenterFactory');
 var Investigator = require('components/DataToolPage/Complaint/Investigator.react');
 var RequestButton = require('components/DataToolPage/Complaint/RequestButton.react');
-var ComplaintListActions = require('actions/ComplaintList/ComplaintListActions');
-var SessionAPI = require('utils/SessionAPI');
+
 
 var AllegationSummary = React.createClass({
   propTypes: {
-    allegation: PropTypes.object.isRequired
+    allegation: PropTypes.object.isRequired,
+    noButton: PropTypes.bool,
+    toggleComplaint: PropTypes.func
+  },
+
+  renderComplainingWitness: function (allegation) {
+    return allegation.complainingWitness.map(function (item, i) {
+      return (
+        <li key={ i }>
+          { item }
+        </li>
+      );
+    });
   },
 
   renderComplainingWitnessSection: function (allegation) {
@@ -24,45 +34,19 @@ var AllegationSummary = React.createClass({
         <div className='title'>Complaining Witness</div>
         <div>
           <ul>
-            {this.renderComplainingWitness(allegation)}
+            { this.renderComplainingWitness(allegation) }
           </ul>
         </div>
       </div>
     );
   },
 
-  renderComplainingWitness: function (allegation) {
-    return allegation.complainingWitness.map(function (item, i) {
-      return (
-        <li key={i}>
-          {item}
-        </li>
-      );
-    });
-  },
-
-  renderInvestigator: function (allegation) {
-    if (allegation.investigator) {
-      return (
-        <div className='col-xs-12'>
-          <div className='title'>Investigator</div>
-          <Investigator complaint={allegation}/>
-        </div>
-      );
-    }
-    return '';
-  },
-
   renderDocumentRequestButton: function (allegation) {
-    var cssClasses = classnames('row-fluid complaint_detail clearfix slide-down', {
-      'closed': this.props.hide
-    });
-
     if (!this.props.noButton) {
       return (
         <div className='allegation-function'>
-          <RequestButton complaint={allegation} />
-          <button type='button' className='btn btn-close' onClick={this.props.toggleComplaint}>
+          <RequestButton complaint={ allegation } />
+          <button type='button' className='btn btn-close' onClick={ this.props.toggleComplaint }>
             <i className='fa fa-times' /> Close
           </button>
         </div>
@@ -71,34 +55,63 @@ var AllegationSummary = React.createClass({
     return '';
   },
 
+  renderInvestigator: function (allegation) {
+    if (allegation.investigator) {
+      return (
+        <div className='col-xs-12'>
+          <div className='title'>Investigator</div>
+          <Investigator complaint={ allegation }/>
+        </div>
+      );
+    }
+    return '';
+  },
+
   render: function () {
     var allegation = this.props.allegation;
-    var presenter = AllegationPresenter(allegation);
+    var presenter = AllegationPresenterFactory.buildPresenter(allegation);
 
     return (
       <div className='col-xs-12'>
         <div className='allegation-info'>
           <div>
-            <span className='title'>CRID</span> {presenter.crid}
+            <span className='title'>CRID</span> { presenter.crid }
           </div>
           <div>
-            <div className='main-category'>{presenter.mainCategory}</div>
-            <div className='title'>{presenter.subCategory}</div>
+            <div className='main-category'>{ presenter.mainCategory }</div>
+            <div className='title'>{ presenter.subCategory }</div>
           </div>
+
+          { presenter.displayRecFinding ?
+            <div className='rec-finding'>
+              <div className='title'>Recommended Finding</div>
+              <div>{ presenter.recFinding }</div>
+            </div>
+            : null
+          }
+          <div>
+            <div className='title'>Final Finding</div>
+            <div>{ presenter.finalFinding }</div>
+          </div>
+
+          { presenter.displayRecOutcome ?
+            <div className='rec-outcome'>
+              <div className='title'>Recommended Outcome</div>
+              <div>{ presenter.recOutcome }</div>
+            </div>
+            : null
+          }
           <div>
             <div className='title'>Final Outcome</div>
-            <div>{presenter.finalOutcome}</div>
+            <div>{ presenter.finalOutcome }</div>
           </div>
-          <div>
-            <div className='title'>Disciplinary action</div>
-            <div>{presenter.finalFinding}</div>
-          </div>
-          {this.renderComplainingWitnessSection(presenter)}
+
+          { this.renderComplainingWitnessSection(presenter) }
           <div className='row'>
-            {this.renderInvestigator(allegation)}
+            { this.renderInvestigator(allegation) }
           </div>
         </div>
-        {this.renderDocumentRequestButton(allegation)}
+        { this.renderDocumentRequestButton(allegation) }
       </div>
     );
   }

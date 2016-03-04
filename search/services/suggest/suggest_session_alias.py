@@ -13,9 +13,13 @@ class SuggestSessionAlias(SuggestBase):
 
         results = [
             cls.entry_format(
-                label=entry.sessionalias_title,
-                value=hash_obj.encode(entry.sessionalias_session_id),
-                filter=cls.build_filter(category='session', value=entry.sessionalias_session_id)
+                suggest_value=entry.sessionalias_title,
+                tag_value=cls.build_tag_value(
+                    category='session',
+                    value=entry.sessionalias_session_id,
+                    display_category='Session',
+                    display_value=hash_obj.encode(entry.sessionalias_session_id),
+                )
             ) for entry in raw_results
         ]
 

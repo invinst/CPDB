@@ -2,6 +2,7 @@ var React = require('react');
 var objectAssign = require('object-assign');
 
 var Base = require('components/Base.react');
+var HelperUtil = require('utils/HelperUtil');
 
 var SimpleTab = require('components/Shared/SimpleTab.react');
 var ComplaintsTab = require('components/OfficerPage/ComplaintsTab.react');
@@ -32,19 +33,28 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
 
   componentWillReceiveProps: function (nextProps) {
     var id = nextProps.params.id || '';
-    OfficerPageServerActions.reload();
+    ga('send', 'event', 'officer', 'view_detail', location.pathname);
     OfficerResourceUtil.get(id);
+    // The way react-router handle the same resource url leads to the issue that this React component is not remount
+    // again, so we need to put this action here. It's not a cool solution anyway.
+    OfficerPageServerActions.reload();
   },
 
   componentDidMount: function () {
     var id = this.props.params.id || '';
-    OfficerResourceUtil.get(id);
+    ga('send', 'event', 'officer', 'view_detail', location.pathname);
     OfficerPageStore.addChangeListener(this._onChange);
+    OfficerResourceUtil.get(id);
   },
 
   render: function () {
     var loading = this.state.loading;
     var found = this.state.found;
+    var officer = this.state.officer;
+    var officerDetail = HelperUtil.fetch(officer, 'detail', {});
+    var complaints = HelperUtil.fetch(officer, 'complaints', {});
+    var coAccused = HelperUtil.fetch(officer, 'co_accused', {});
+    var distribution = HelperUtil.fetch(officer, 'distribution', {});
 
     if (loading) {
       return (
@@ -54,36 +64,31 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
 
     if (!found) {
       return (
-        <NotMatchedPage id={this.state.pk} />
+        <NotMatchedPage id={ this.state.pk } />
       );
     }
-
-    var officer = this.state.officer;
-    var officerDetail = officer['detail'];
-    var complaints = officer['complaints'];
-    var coAccused = officer['co_accused'];
 
     return (
       <SearchablePage>
         <div className='officer-page'>
           <div className='content'>
-            <OfficerHeader officer={officerDetail} />
+            <OfficerHeader officer={ officerDetail } />
             <div className='tabs'>
-              <SimpleTab navigation={true}>
+              <SimpleTab navigation={ true }>
                 <div>
-                  <div className='tab-summary'>Summary</div>
-                  <div className='tab-complaints'>Complaints</div>
-                  <div className='tab-co-accused'>Co-accused officer</div>
+                  <div className='tab-summary' tabIdentifier='summary'>Summary</div>
+                  <div className='tab-complaints' tabIdentifier='complaints'>Complaints</div>
+                  <div className='tab-co-accused' tabIdentifier='coaccused'>Co-accused</div>
                 </div>
                 <div className='officer-page-content'>
                   <div>
-                    <SummaryTab officer={officerDetail} />
+                    <SummaryTab officer={ officerDetail } distribution={ distribution } />
                   </div>
                   <div>
-                    <ComplaintsTab officer={officerDetail} complaints={complaints} />
+                    <ComplaintsTab officer={ officerDetail } complaints={ complaints } />
                   </div>
                   <div>
-                    <RelatedOfficersTab coAccused={coAccused}/>
+                    <RelatedOfficersTab coAccused={ coAccused }/>
                   </div>
                 </div>
               </SimpleTab>
