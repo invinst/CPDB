@@ -44,6 +44,7 @@ class TwitterBot:
 
 class CPDBTweetHandler(tweepy.StreamListener):
     debug = False
+    screen_names = []
 
     def __init__(self, *args, **kwargs):
         super(CPDBTweetHandler, self).__init__(*args, **kwargs)
@@ -52,6 +53,7 @@ class CPDBTweetHandler(tweepy.StreamListener):
             self.debug = True
 
     def on_status(self, status):
+        self.screen_names = []
         if status.user.screen_name.lower() == settings.TWITTER_SCREEN_NAME.lower():
             return
 
@@ -59,7 +61,13 @@ class CPDBTweetHandler(tweepy.StreamListener):
         if hasattr(status, 'retweeted_status') and status.retweeted_status:
             self.handle(status.retweeted_status)
 
+        elif hasattr(status, 'quoted_status') and status.quoted_status:
+            status.quoted_status['user'] = type('X', (object, ), status.quoted_status['user'])
+            self.handle(type('Status', (object, ), status.quoted_status))
+
     def handle(self, status):
+
+        self.screen_names.append(status.user.screen_name)
         if self.debug:
             print(status.text)
         try:
@@ -84,14 +92,19 @@ class CPDBTweetHandler(tweepy.StreamListener):
 
         for response in responses[:REPLY_LIMIT-1]:
             # For logging purpose
-            query = '@{user}'.format(user=status.user.screen_name)
-            search, created = TwitterSearch.objects.get_or_create(query=query)
-            TwitterResponse(search=search, response=response, user=status.user.screen_name).save()
+            for screen_name in self.screen_names:
 
-            response = response.replace('{user}', status.user.screen_name)
-            if self.debug:
-                print(response)
-            self.api.update_status(response)
+                query = '@{user}'.format(user=screen_name)
+                search, created = TwitterSearch.objects.get_or_create(query=query)
+                TwitterResponse(search=search, response=response, user=status.user.screen_name).save()
+
+                user_response = response.replace('{user}', screen_name)
+                if self.debug:
+                    print(user_response)
+                try:
+                    self.api.update_status(user_response)
+                except:
+                    pass
 
     def get_all_content(self, status):
         texts = []
@@ -106,7 +119,8 @@ class CPDBTweetHandler(tweepy.StreamListener):
         texts = []
 
         for url in urls:
-            response = requests.get(url['expanded_url'])
+            headers = {'User-agent': 'Mozilla/5.0'}
+            response = requests.get(url['expanded_url'], headers=headers)
             html = response.content.decode('utf-8')
             soup = BeautifulSoup(html)
             [s.extract() for s in soup([
