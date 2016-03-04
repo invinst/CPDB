@@ -198,7 +198,8 @@ class Investigator(TimeStampedModel):
 
     @property
     def absolute_url(self):
-        return reverse("investigator:detail", kwargs={'slug': self.slug, 'pk': self.pk})
+        # There is no view for this url. It is handled by React router.
+        return '/investigator/{slug}/{pk}'.format(slug=self.slug, pk=self.pk)
 
     @property
     def slug(self):
