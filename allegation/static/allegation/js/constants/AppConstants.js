@@ -90,7 +90,7 @@ module.exports = {
   SET_ACTIVE_TAB: c++,
   TOGLLE_OVERLAY: c++,
   MAP_TOKEN: '***REMOVED***',
-  MAP_TYPE: 'datamade.7e795301',
+  MAP_TYPE: 'invisibleinstitute.acaf9ef3',
 
   NUMERAL_FORMAT: '0,0',
 
