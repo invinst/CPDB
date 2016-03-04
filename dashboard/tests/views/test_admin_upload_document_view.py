@@ -3,6 +3,8 @@ from mock import patch, MagicMock
 
 from django.core.urlresolvers import reverse
 
+from rest_framework import status
+
 from common.tests.core import SimpleTestCase
 from allegation.factories import AllegationFactory
 from common.models import Allegation
@@ -18,7 +20,8 @@ class AdminUploadDocumentTestCase(SimpleTestCase):
         title = 'CR %s' % crid
         AllegationFactory(crid=crid)
         upload_func = MagicMock(return_value=(
-            200, {'canonical_url': 'https://www.documentcloud.org/documents/%s-cr-%s.html' % (doc_id, crid)}))
+            status.HTTP_200_OK,
+            {'canonical_url': 'https://www.documentcloud.org/documents/%s-cr-%s.html' % (doc_id, crid)}))
 
         with patch('dashboard.views.admin_document_upload_view.upload_cr_document', new=upload_func):
             response = self.client.post(
@@ -31,7 +34,7 @@ class AdminUploadDocumentTestCase(SimpleTestCase):
                 format='multipart'
                 )
 
-        response.status_code.should.equal(200)
+        response.status_code.should.equal(status.HTTP_200_OK)
         content = json.loads(response.content.decode())
         content['crid'].should.equal(crid)
 
@@ -45,7 +48,7 @@ class AdminUploadDocumentTestCase(SimpleTestCase):
         title = 'CR %s' % crid
         AllegationFactory(crid=crid)
         upload_func = MagicMock(return_value=(
-            200, {'canonical_url': 'https://www.documentcloud.org/documents/123-cr-%s.html' % crid}))
+            status.HTTP_200_OK, {'canonical_url': 'https://www.documentcloud.org/documents/123-cr-%s.html' % crid}))
 
         with patch('dashboard.views.admin_document_upload_view.upload_cr_document', new=upload_func):
             response = self.client.post(
@@ -57,11 +60,11 @@ class AdminUploadDocumentTestCase(SimpleTestCase):
                 format='multipart'
                 )
 
-        response.status_code.should.equal(200)
+        response.status_code.should.equal(status.HTTP_200_OK)
 
     def test_upload_to_document_cloud_failed(self):
         error_message = {'error': 'Bad request'}
-        upload_func = MagicMock(return_value=(400, error_message))
+        upload_func = MagicMock(return_value=(status.HTTP_400_BAD_REQUEST, error_message))
         with patch('dashboard.views.admin_document_upload_view.upload_cr_document', new=upload_func):
             response = self.client.post(
                 reverse('document-upload'),
@@ -72,12 +75,12 @@ class AdminUploadDocumentTestCase(SimpleTestCase):
                 },
                 format='multipart'
                 )
-        response.status_code.should.equal(400)
+        response.status_code.should.equal(status.HTTP_400_BAD_REQUEST)
         content = json.loads(response.content.decode())
         content['documentCloudMessage'].should.equal(error_message)
 
     def test_update_allegation_failed(self):
-        upload_func = MagicMock(return_value=(200, {'canonical_url': None}))
+        upload_func = MagicMock(return_value=(status.HTTP_200_OK, {'canonical_url': None}))
         with patch('dashboard.views.admin_document_upload_view.upload_cr_document', new=upload_func):
             response = self.client.post(
                 reverse('document-upload'),
@@ -88,6 +91,6 @@ class AdminUploadDocumentTestCase(SimpleTestCase):
                 },
                 format='multipart'
                 )
-        response.status_code.should.equal(400)
+        response.status_code.should.equal(status.HTTP_400_BAD_REQUEST)
         content = json.loads(response.content.decode())
         content['errors'].should.equal(['Invalid document link'])
