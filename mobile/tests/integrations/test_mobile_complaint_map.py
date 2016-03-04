@@ -4,13 +4,13 @@ from common.tests.core import BaseLivePhoneTestCase
 
 class MobileComplaintMapTest(BaseLivePhoneTestCase):
     def assert_map_has_marker(self):
-        len(self.find_all('.map .leaflet-marker-icon')).should.be.equal(1)
+        self.until(lambda: self.find_all('.map .leaflet-marker-icon').should.have.length_of(1))
 
     def assert_map_has_circle(self):
-        len(self.find_all('.map .leaflet-overlay-pane svg')).should.be.equal(1)
+        self.until(lambda: self.find_all('.map .leaflet-overlay-pane svg').should.have.length_of(1))
 
     def assert_no_map(self):
-        self.find_all('.location .map').should.have.length_of(0)
+        self.until(lambda: self.find_all('.location .map').should.have.length_of(0))
 
     def test_no_map(self):
         allegation = AllegationFactory(

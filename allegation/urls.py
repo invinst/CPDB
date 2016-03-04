@@ -61,7 +61,8 @@ urlpatterns = [
     url(r'^api/allegations/session/$',
         csrf_exempt(ensure_csrf_cookie(SessionAPIView.as_view())),
         name='allegation-api-session'),
-    url(r'^query/(?P<term>\w+)/$', cache_view(AllegationSearchView.as_view()), name='search-page'),
+    url(r'^q/(?P<term>\w+)/$', cache_view(AllegationSearchView.as_view()), name='search-q-page'),
+    url(r'^s/(?P<term>\w+)/$', cache_view(AllegationSearchView.as_view()), name='search-s-page'),
     url(r'^complaint/(?P<crid>\d+)/$', cache_view(AllegationView.as_view()), name='complaint-page'),
 
     url(r'^sunburst-image/(?P<hash_id>\w{6})/$', cache_view(SunburstImageView.as_view()), name='sunburst-image'),
