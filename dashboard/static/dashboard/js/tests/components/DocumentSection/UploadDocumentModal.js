@@ -2,14 +2,22 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var ReactTestUtils = require('react-addons-test-utils');
 var Modal = require('react-modal');
+var sinon = require('sinon');
+var Formsy = require('formsy-react');
+var jQuery = require('jquery');
 
 var UploadDocumentModal = require('components/DocumentSection/UploadDocumentModal.react');
+var DocumentActions = require('actions/DocumentSection/DocumentActions');
 
 require('should');
 
 
 describe('UploadDocumentModal component', function () {
   var component;
+  var file = {
+    name: 'test.pdf',
+    size: 1111
+  };
 
   afterEach(function () {
     ReactDOM.unmountComponentAtNode(ReactDOM.findDOMNode(component).parentNode);
@@ -35,10 +43,6 @@ describe('UploadDocumentModal component', function () {
     var sourceInput;
     var listInput;
     var dropzoneContent;
-    var files = [{
-      name: 'test.pdf',
-      size: 1111
-    }];
 
     component = ReactTestUtils.renderIntoDocument(
       <UploadDocumentModal isOpen={ true }/>
@@ -50,7 +54,7 @@ describe('UploadDocumentModal component', function () {
 
     // file upload is required
     dropzoneContent = ReactTestUtils.findRenderedDOMComponentWithClass(modal.portal, 'dropzone-content');
-    ReactTestUtils.Simulate.drop(dropzoneContent, { dataTransfer: { files: files } });
+    ReactTestUtils.Simulate.drop(dropzoneContent, { dataTransfer: { files: [file] } });
 
     // title is required
     titleInput = listInput[1];
@@ -84,6 +88,43 @@ describe('UploadDocumentModal component', function () {
     requested.should.be.false();
     ReactTestUtils.Simulate.click(cancelBtn);
     requested.should.be.true();
+  });
+
+  it('submit should receive proper value', function () {
+    var title = 'qwe';
+    var source = 'sdf';
+    var modal;
+    var listInput;
+    var dropzoneContent;
+    var titleInput;
+    var sourceInput;
+    var form;
+
+    component = ReactTestUtils.renderIntoDocument(
+      <UploadDocumentModal isOpen={ true }/>
+    );
+    modal = ReactTestUtils.findRenderedComponentWithType(component, Modal);
+    listInput = ReactTestUtils.scryRenderedDOMComponentsWithTag(modal.portal, 'input');
+    sinon.stub(DocumentActions, 'uploadDocument').returns(jQuery.Deferred().promise());
+
+    dropzoneContent = ReactTestUtils.findRenderedDOMComponentWithClass(modal.portal, 'dropzone-content');
+    ReactTestUtils.Simulate.drop(dropzoneContent, { dataTransfer: { files: [file] } });
+
+    titleInput = listInput[1];
+    titleInput.value = title;
+    ReactTestUtils.Simulate.change(titleInput);
+
+
+    form = ReactTestUtils.findRenderedComponentWithType(modal.portal, Formsy.Form);
+    ReactTestUtils.Simulate.submit(ReactDOM.findDOMNode(form));
+    DocumentActions.uploadDocument.calledWithMatch({file: file, title: title, source: ''}).should.be.true();
+
+    sourceInput = listInput[2];
+    sourceInput.value = source;
+    ReactTestUtils.Simulate.change(sourceInput);
+
+    ReactTestUtils.Simulate.submit(ReactDOM.findDOMNode(form));
+    DocumentActions.uploadDocument.calledWithMatch({file: file, title: title, source: source}).should.be.true();
   });
 });
 

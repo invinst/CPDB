@@ -13,7 +13,7 @@ class DocumentLinkView(View):
         crid = request.POST.get('crid', None)
 
         if link is None:
-            return self.cancle_requests(crid)
+            return self.cancel_requests(crid)
         try:
             crid = update_allegation_document(crid, link)
         except InvalidDocumentError as e:
@@ -28,6 +28,6 @@ class DocumentLinkView(View):
             'crid': crid
         })
 
-    def cancle_requests(self, crid):
+    def cancel_requests(self, crid):
         Allegation.objects.filter(crid=crid).update(document_requested=False)
         return JsonResponse()

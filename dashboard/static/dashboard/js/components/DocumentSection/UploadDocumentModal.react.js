@@ -52,7 +52,7 @@ var UploadDocumentModal = React.createClass({
     DocumentActions.uploadDocument({
       file: model.file,
       title: model.title,
-      source: model.source
+      source: model.source || ''
     })
     .done(function (res) {
       toastr.success('Upload succeed');

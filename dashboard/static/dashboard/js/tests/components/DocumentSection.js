@@ -15,7 +15,7 @@ describe('DocumentSection component', function () {
     ReactDOM.unmountComponentAtNode(ReactDOM.findDOMNode(component).parentNode);
   });
 
-  it('should open and close upload modal', function () {
+  it('should open and close upload modal', function (done) {
     var uploadBtn;
     var cancelBtn;
     var modal;
@@ -33,6 +33,10 @@ describe('DocumentSection component', function () {
     cancelBtn = ReactTestUtils.findRenderedDOMComponentWithClass(modal.portal, 'btn-cancel');
     ReactTestUtils.Simulate.click(cancelBtn);
 
-    ReactTestUtils.scryRenderedDOMComponentsWithClass(modal.portal, 'ReactModal__Content').length.should.equal(0);
+    setTimeout(function () {
+      ReactTestUtils.scryRenderedDOMComponentsWithClass(modal.portal, 'ReactModal__Content').length.should.equal(0);
+      done();
+    }, 150);
+
   });
 });
