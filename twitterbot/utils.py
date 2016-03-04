@@ -158,13 +158,14 @@ class CPDBTweetHandler(tweepy.StreamListener):
                 pk = search_results['Officer'][0]['tag_value']['value']
                 officer = Officer.objects.get(pk=pk)
                 if pk not in pks and officer.display_name.lower() == name.lower():
-                    response = Response.objects.get(response_type='officer')
-                    context = search_results['Officer'][0]['tag_value']
-                    context['obj'] = officer
-                    msg = response.get_message(context)
+                    response = Response.objects.filter(response_type='officer').first()
+                    if response:
+                        context = search_results['Officer'][0]['tag_value']
+                        context['obj'] = officer
+                        msg = response.get_message(context)
 
-                    responses.append(msg)
-                    pks.append(pk)
+                        responses.append(msg)
+                        pks.append(pk)
 
         return responses
 
@@ -178,12 +179,13 @@ class CPDBTweetHandler(tweepy.StreamListener):
                 pk = search_results['Investigator'][0]['tag_value']['value']
                 investigator = Investigator.objects.get(pk=pk)
                 if pk not in pks and investigator.name.lower() == name.lower():
-                    response = Response.objects.get(response_type='investigator')
-                    context = search_results['Investigator'][0]['tag_value']
-                    context['obj'] = investigator
-                    msg = response.get_message(context)
+                    response = Response.objects.filter(response_type='investigator').first()
+                    if response:
+                        context = search_results['Investigator'][0]['tag_value']
+                        context['obj'] = investigator
+                        msg = response.get_message(context)
 
-                    responses.append(msg)
-                    pks.append(pk)
+                        responses.append(msg)
+                        pks.append(pk)
 
         return responses
