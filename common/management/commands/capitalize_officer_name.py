@@ -14,10 +14,10 @@ class Command(BaseCommand):
         parts = [x.capitalize() for x in name.split()]
         if parts[0] in IRISH_O_NAMES:
                 name = parts[0][1:]
-                parts[0] = "O'{p0}".format(p0=name.capitalize())
+                parts[0] = "O'" % name.capitalize()
 
         if name.startswith("O'"):
-            parts[0] = "O'{p1}".format(p1=name[2:].capitalize())
+            parts[0] = "O'" % name[2:].capitalize()
 
         elif len(parts) > 1:
             if re.match('^[iIvVxX]+$', parts[-1]):
@@ -26,7 +26,7 @@ class Command(BaseCommand):
                 parts[-1] = parts[-1].upper()
             elif len(parts[-1]) == 2:
                 # John Verlak sr —> John Verlak Sr.
-                parts[-1] = "{p1}.".format(p1=parts[-1].capitalize())
+                parts[-1] = parts[-1].capitalize()
 
         return " ".join(parts)
 
