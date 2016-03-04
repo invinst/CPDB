@@ -1,5 +1,3 @@
-import sys
-
 from cpdb.settings.base import *  # NOQA
 
 
@@ -54,12 +52,3 @@ USE_TZ = False
 SHELL_PLUS = 'ipython'
 
 DEBUG = True
-
-if len(sys.argv) > 1 and sys.argv[1] == 'test':
-    HAYSTACK_CONNECTIONS = {
-        'default': {
-            'ENGINE': 'search.search_backends.CustomElasticSearchEngine',
-            'URL': 'http://127.0.0.1:9200/',
-            'INDEX_NAME': 'test_suggestion',
-        },
-    }

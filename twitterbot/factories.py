@@ -9,7 +9,7 @@ class ResponseFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Response
 
-    type = factory.Sequence(lambda n: random.choice(TYPE_CHOICES))
+    response_type = factory.Sequence(lambda n: random.choice(TYPE_CHOICES))
     message = factory.Sequence(lambda n: n)
 
 

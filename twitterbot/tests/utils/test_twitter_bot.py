@@ -47,8 +47,10 @@ class TwitterBotTestCase(SimpleTestCase):
 
 class CPDBTweetHandlerTestCase(SimpleTestCase):
     def setUp(self):
-        self.response = ResponseFactory(type='officer', message='@{user} {{obj.officer_first}} {{obj.officer_last}}')
-        ResponseFactory(type='investigator', message='investigator')
+        self.response = ResponseFactory(
+            response_type='officer',
+            message='@{user} {{obj.officer_first}} {{obj.officer_last}}')
+        ResponseFactory(response_type='investigator', message='investigator')
         OfficerFactory(officer_first='Jason', officer_last='Van Dyke')
         OfficerFactory(officer_first='Ruth', officer_last='Castelli')
         InvestigatorFactory(name='Daniel Neubeck')

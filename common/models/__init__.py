@@ -17,6 +17,20 @@ class User(AbstractUser):
     pass
 
 
+RANKS = [
+    ['FTO', 'Field Training Officer'],
+    ['LT', 'Lieutenant'],
+    ['ET', 'Ethics Trainer'],
+    ['DET', 'Detective'],
+    ['PO', 'Police Officer'],
+    ['Cpt', 'Captain'],
+    ['SGT', 'Sergeant'],
+    ['CMDR', 'Commander'],
+    ['Agent', 'Agent'],
+    ['Chief', 'Chief'],
+]
+
+
 class Officer(MobileSuggestibleOfficer, TimeStampedModel):
     officer_first = models.CharField(
         max_length=255, null=True, db_index=True, blank=True)
@@ -26,7 +40,7 @@ class Officer(MobileSuggestibleOfficer, TimeStampedModel):
     race = models.CharField(max_length=50, null=True, blank=True)
     appt_date = models.DateField(null=True, blank=True)
     unit = models.CharField(max_length=5, null=True, blank=True)
-    rank = models.CharField(max_length=5, null=True, blank=True)
+    rank = models.CharField(choices=RANKS, max_length=5, null=True, blank=True)
     star = models.FloatField(null=True, blank=True)
     allegations_count = models.IntegerField(default=0, blank=True, null=True)
     discipline_count = models.IntegerField(default=0, blank=True, null=True)

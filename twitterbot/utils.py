@@ -14,6 +14,7 @@ ERR_DUPLICATED_RESPONSE = 187
 IGNORED_ERROR_CODES = [
     ERR_DUPLICATED_RESPONSE,
 ]
+REPLY_LIMIT = 10
 
 
 class TwitterBot:
@@ -75,16 +76,13 @@ class CPDBTweetHandler(tweepy.StreamListener):
         text = self.sanitize_text(text)
         names = self.find_names(text) + self.find_names(text, word_length=3)
 
-        responses += self.build_officer_reponses(names)
-        responses += self.build_investigator_reponses(names)
+        responses += self.build_officer_responses(names)
+        responses += self.build_investigator_responses(names)
 
         if self.debug:
             print("Responses: ", len(responses))
 
-        if len(responses) > 10:
-            responses = responses[:9]
-
-        for response in responses:
+        for response in responses[:REPLY_LIMIT-1]:
             # For logging purpose
             query = '@{user}'.format(user=status.user.screen_name)
             search, created = TwitterSearch.objects.get_or_create(query=query)
@@ -150,7 +148,7 @@ class CPDBTweetHandler(tweepy.StreamListener):
 
         return names
 
-    def build_officer_reponses(self, names):
+    def build_officer_responses(self, names):
         responses = []
         pks = []
 
@@ -160,7 +158,7 @@ class CPDBTweetHandler(tweepy.StreamListener):
                 pk = search_results['Officer'][0]['tag_value']['value']
                 officer = Officer.objects.get(pk=pk)
                 if pk not in pks and officer.display_name.lower() == name.lower():
-                    response = Response.objects.get(type='officer')
+                    response = Response.objects.get(response_type='officer')
                     context = search_results['Officer'][0]['tag_value']
                     context['obj'] = officer
                     msg = response.get_message(context)
@@ -170,7 +168,7 @@ class CPDBTweetHandler(tweepy.StreamListener):
 
         return responses
 
-    def build_investigator_reponses(self, names):
+    def build_investigator_responses(self, names):
         responses = []
         pks = []
 
@@ -180,7 +178,7 @@ class CPDBTweetHandler(tweepy.StreamListener):
                 pk = search_results['Investigator'][0]['tag_value']['value']
                 investigator = Investigator.objects.get(pk=pk)
                 if pk not in pks and investigator.name.lower() == name.lower():
-                    response = Response.objects.get(type='investigator')
+                    response = Response.objects.get(response_type='investigator')
                     context = search_results['Investigator'][0]['tag_value']
                     context['obj'] = investigator
                     msg = response.get_message(context)

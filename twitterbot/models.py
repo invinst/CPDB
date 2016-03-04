@@ -24,7 +24,7 @@ TYPE_CHOICES = [
 
 
 class Response(models.Model):
-    type = models.CharField(max_length=20, choices=TYPE_CHOICES)
+    response_type = models.CharField(max_length=20, choices=TYPE_CHOICES)
     message = models.TextField()
 
     def get_message(self, context):
@@ -32,7 +32,7 @@ class Response(models.Model):
         return t.render(Context(context))
 
     def __str__(self):
-        return self.type
+        return self.response_type
 
 
 class TwitterSearch(models.Model):
