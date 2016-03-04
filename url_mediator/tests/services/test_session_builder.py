@@ -8,7 +8,8 @@ from common.utils.haystack import rebuild_index
 from url_mediator.services.session_builder import (ActiveOfficers, ActiveComplaints, Builder, FilterTags,
                                                    AllegationCrid, Node, SimpleNode, FromSuggestions, SuggestionsNode,
                                                    VirtualNode)
-from url_mediator.services.suggest_session_builder import CustomSuggestionService
+
+from url_mediator.services.url_mediator_suggestion_service import UrlMediatorSuggestionService
 
 
 class NodeTest(SimpleTestCase):
@@ -178,7 +179,7 @@ class SessionBuilderIntegrationTest(SimpleTestCase):
     def test_session_build_from_suggestion(self):
         officer = OfficerFactory()
         rebuild_index()
-        suggestions = CustomSuggestionService().make_suggestion(officer.officer_first)
+        suggestions = UrlMediatorSuggestionService().make_suggestion(officer.officer_first)
 
         session = Builder(
             FilterTags(

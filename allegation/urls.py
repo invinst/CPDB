@@ -8,6 +8,7 @@ from allegation.views import (
 from allegation.views import PoliceWitnessAPIView
 from allegation.views import (
     OfficerAllegationSummaryApiView, OfficerListAPIView)
+from allegation.views.allegation_search_view import AllegationSearchView
 from allegation.views.allegation_view import AllegationView
 from allegation.views.officer_allegation_analysis_api_view import (
     OfficerAllegationAnalysisAPIView)
@@ -60,8 +61,9 @@ urlpatterns = [
     url(r'^api/allegations/session/$',
         csrf_exempt(ensure_csrf_cookie(SessionAPIView.as_view())),
         name='allegation-api-session'),
-
+    url(r'^query/(?P<term>\w+)/$', cache_view(AllegationSearchView.as_view()), name='search-page'),
     url(r'^complaint/(?P<crid>\d+)/$', cache_view(AllegationView.as_view()), name='complaint-page'),
+
     url(r'^sunburst-image/(?P<hash_id>\w{6})/$', cache_view(SunburstImageView.as_view()), name='sunburst-image'),
     url(r'^sunburst/(?P<hash_id>\w{6})/$', cache_view(SunburstView.as_view()), name='sunburst')
 ]
