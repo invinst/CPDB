@@ -20,7 +20,7 @@ class User(AbstractUser):
 RANKS = [
     ['FTO', 'Field Training Officer'],
     ['LT', 'Lieutenant'],
-    ['ET', 'Ethics Trainer'],
+    ['ET', 'Evidence Technician'],
     ['DET', 'Detective'],
     ['PO', 'Police Officer'],
     ['Cpt', 'Captain'],
