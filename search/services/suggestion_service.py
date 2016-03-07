@@ -36,7 +36,6 @@ from search.utils.format_suggest import format_suggest
 
 class SuggestionService(object):
     def __init__(self):
-        # Please don't change this order, it related to the order which will show in the front end
         self.suggests = [
             SuggestIncidentDateOnlyYearMonth,
             SuggestOfficerStar,
@@ -66,14 +65,15 @@ class SuggestionService(object):
         ]
 
     def _make_suggestion(self, q):
-        q = q.strip()
         suggestions = OrderedDict()
+        q = q.strip()
 
         for suggest in self.suggests:
-            suggestion = suggest.query(q)
+            group = suggest.query(q)
+            if group:
+                suggestions.update(group)
 
-            if suggestion:
-                suggestions.update(suggestion)
+        suggestions = OrderedDict((k, v) for k, v in suggestions.items() if v)
 
         return suggestions
 

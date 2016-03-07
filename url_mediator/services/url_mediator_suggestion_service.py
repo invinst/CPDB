@@ -9,6 +9,7 @@ from search.services.suggestion_service import SuggestionService
 class UrlMediatorSuggestionService(SuggestionService):
     def __init__(self):
         super().__init__()
+        # Please don't change this order, it related to the order which will priority to pick the best match
         self.suggests = [
             SuggestOfficerName,
             SuggestAllegationCrid,
