@@ -47,28 +47,54 @@ class MobileSuggestibleOfficerTest(TestCase):
 
 
 class MobileSuggestibleAllegationTest(TestCase):
-    def setUp(self):
-        self.crid = '1011111'
-        self.allegation = AllegationFactory(crid=self.crid)
-        OfficerAllegationFactory(allegation=self.allegation)
-        self.expected_url = '/complaint/{crid}'.format(crid=self.crid)
-
     def test_get_url(self):
-        self.allegation.get_mobile_url().should.equal(self.expected_url)
+        crid = '1011111'
+        allegation = AllegationFactory(crid=crid)
+        OfficerAllegationFactory(allegation=allegation)
+        expected_url = '/complaint/{crid}'.format(crid=crid)
+
+        allegation.get_mobile_url().should.equal(expected_url)
 
     def test_suggestion_entry(self):
-        cat = self.allegation.officerallegation_set.first().cat
+        crid = '1011111'
+        allegation = AllegationFactory(crid=crid)
+        OfficerAllegationFactory(allegation=allegation)
+        expected_url = '/complaint/{crid}'.format(crid=crid)
+
+        cat = allegation.officerallegation_set.first().cat
+
         expected_entry = {
-            'text': self.crid,
+            'text': crid,
             'resource': 'allegation',
-            'resource_key': self.crid,
-            'url': self.expected_url,
+            'resource_key': crid,
+            'url': expected_url,
             'meta': {
-                'incident_date': self.allegation.incident_date,
+                'incident_date': allegation.incident_date,
                 'cat': {
                     'allegation_name': cat.allegation_name,
                     'category': cat.category
                 }
             }
         }
-        self.allegation.as_suggestion_entry().should.be.equal(expected_entry)
+        allegation.as_suggestion_entry().should.be.equal(expected_entry)
+
+    def test_suggestion_entry_without_category(self):
+        crid = '1011111'
+        allegation = AllegationFactory(crid=crid)
+        expected_url = '/complaint/{crid}'.format(crid=crid)
+        OfficerAllegationFactory(allegation=allegation, cat=None)
+
+        expected_entry = {
+            'text': crid,
+            'resource': 'allegation',
+            'resource_key': crid,
+            'url': expected_url,
+            'meta': {
+                'incident_date': allegation.incident_date,
+                'cat': {
+                    'allegation_name': '',
+                    'category': ''
+                }
+            }
+        }
+        allegation.as_suggestion_entry().should.be.equal(expected_entry)
