@@ -119,8 +119,7 @@ class CPDBTweetHandler(tweepy.StreamListener):
         texts = []
 
         for url in urls:
-            headers = {'User-agent': 'Mozilla/5.0'}
-            response = requests.get(url['expanded_url'], headers=headers)
+            response = requests.get(url['expanded_url'])
             html = response.content.decode('utf-8')
             soup = BeautifulSoup(html)
             [s.extract() for s in soup([

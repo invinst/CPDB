@@ -134,22 +134,24 @@ class CPDBTweetHandlerTestCase(SimpleTestCase):
 
     def test_reply_retweet_with_link(self):
         text = '... check this out ...'
-        screen_name = 'tweeter'
-        response = '@%s Ruth Castelli' % screen_name
+        original = 'original'
+        retweet = 'retweet'
         url = 'http://chicago.suntimes.com/chicago-politics/7/71/159374/tentative-1-25-million-deal-reached-in-fatal-police-shooting'  # NOQA
 
         with patch('tweepy.API.update_status') as update_status:
             self.bot.tweet_handler.on_status(TweetFactory(
                 text=text,
                 retweeted_status=TweetFactory(
-                    screen_name=screen_name,
+                    screen_name=retweet,
                     urls=[{'expanded_url': url}],
                     text=text
                 ),
-                screen_name='tweeter1'
+                screen_name=original
             ))
 
-            update_status.assert_called_once_with(response)
+            original_reply = '@%s Ruth Castelli' % original
+            retweet_reply = '@%s Ruth Castelli' % retweet
+            update_status.assert_has_calls([call(original_reply), call(retweet_reply)], any_order=True)
 
     def test_reply_types(self):
         text = '... Jason Van Dyke Daniel Neubeck ...'
