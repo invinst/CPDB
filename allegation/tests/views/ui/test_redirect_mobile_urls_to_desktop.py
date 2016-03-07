@@ -23,13 +23,13 @@ class MobileSearchPageRedirectTest(FilterTagsTestMixin, BaseLiveTestCase):
     def test_search_page_to_data_tool(self):
         officer = OfficerFactory(officer_first='John', officer_last='Henry')
 
-        search_url = reverse('allegation:search-page', kwargs={'term': officer.officer_first})
+        search_url = reverse('allegation:search-q-page', kwargs={'term': officer.officer_first})
         self.visit(search_url)
 
         self.assert_have_filter_tags('officer', officer.officer_first)
 
     def test_search_page_no_result_to_homepage(self):
-        search_url = reverse('allegation:search-page', kwargs={'term': 'no_result'})
+        search_url = reverse('allegation:search-q-page', kwargs={'term': 'no_result'})
 
         self.visit(search_url)
 
