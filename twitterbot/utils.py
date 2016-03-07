@@ -18,17 +18,14 @@ REPLY_LIMIT = 10
 
 
 class TwitterBot:
-    def __init__(self, **kwargs):
+    def __init__(self):
         self.api = None
-        self.tweet_handler = None
-        self.stream = None
-        self.async = kwargs.get('async', False)
 
     def start(self):
         self.auth()
 
-        self.tweet_handler = CPDBTweetHandler(self.api)
-        self.listen_to_tweets(self.tweet_handler)
+        tweet_handler = CPDBTweetHandler(self.api)
+        self.listen_to_tweets(tweet_handler)
 
     def auth(self):
         auth = tweepy.OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET)
@@ -38,8 +35,8 @@ class TwitterBot:
         self.api.verify_credentials()
 
     def listen_to_tweets(self, handler):
-        self.stream = tweepy.Stream(auth=self.api.auth, listener=handler)
-        self.stream.userstream(async=self.async)
+        stream = tweepy.Stream(auth=self.api.auth, listener=handler)
+        stream.userstream()
 
 
 class CPDBTweetHandler(tweepy.StreamListener):
@@ -51,6 +48,8 @@ class CPDBTweetHandler(tweepy.StreamListener):
 
         if os.environ.get('TWITTER_DEBUG', None) == 'true':
             self.debug = True
+
+        self.tweet_utils = TweetUtils()
 
     def on_status(self, status):
         self.screen_names = []
@@ -80,12 +79,12 @@ class CPDBTweetHandler(tweepy.StreamListener):
     def reply(self, status):
         responses = []
 
-        text = self.get_all_content(status)
-        text = self.sanitize_text(text)
-        names = self.find_names(text) + self.find_names(text, word_length=3)
+        text = self.tweet_utils.get_all_content(status)
+        text = self.tweet_utils.sanitize_text(text)
+        names = self.tweet_utils.find_names(text) + self.tweet_utils.find_names(text, word_length=3)
 
-        responses += self.build_officer_responses(names)
-        responses += self.build_investigator_responses(names)
+        responses += self.tweet_utils.build_officer_responses(names)
+        responses += self.tweet_utils.build_investigator_responses(names)
 
         if self.debug:
             print("Responses: ", len(responses))
@@ -93,7 +92,6 @@ class CPDBTweetHandler(tweepy.StreamListener):
         for response in responses[:REPLY_LIMIT-1]:
             # For logging purpose
             for screen_name in self.screen_names:
-
                 query = '@{user}'.format(user=screen_name)
                 search, created = TwitterSearch.objects.get_or_create(query=query)
                 TwitterResponse(search=search, response=response, user=status.user.screen_name).save()
@@ -106,6 +104,8 @@ class CPDBTweetHandler(tweepy.StreamListener):
                 except:
                     pass
 
+
+class TweetUtils:
     def get_all_content(self, status):
         texts = []
 
@@ -146,6 +146,7 @@ class CPDBTweetHandler(tweepy.StreamListener):
     def sanitize_text(self, text):
         text = re.sub('(\t|\n|\r|\s)+', ' ', text)
         text = re.sub('[^A-Za-z0-9]+', ' ', text)
+        text = text.strip()
 
         return text
 
@@ -154,7 +155,7 @@ class CPDBTweetHandler(tweepy.StreamListener):
         max_index = len(splitted)
         names = []
 
-        for i in range(max_index - 1):
+        for i in range(max_index - (word_length - 1)):
             name = " ".join(splitted[i:i+word_length])
             if name and name != ' ' and len(name) > 6:
                 names.append(name)
