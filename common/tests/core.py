@@ -2,6 +2,7 @@ import json
 import os
 import threading
 import time
+from datetime import timedelta, datetime
 from contextlib import contextmanager
 
 from bs4 import BeautifulSoup
@@ -480,7 +481,8 @@ def switch_to_popup(driver):
     with switch_to_popup(driver):
         ('https://www.facebook.com' in browser.current_url).should.be.true
     """
-    while len(driver.window_handles) < 2:
+    timeout = datetime.now() + timedelta(seconds=5)
+    while len(driver.window_handles) < 2 and datetime.now() <= timeout:
         pass
     driver.switch_to.window(driver.window_handles[1])
     yield None
