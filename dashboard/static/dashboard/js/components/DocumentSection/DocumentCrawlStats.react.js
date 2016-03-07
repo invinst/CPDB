@@ -21,9 +21,10 @@ var DocumentCrawlStats = React.createClass(_.assign(Base(DocumentCrawlStatStore)
     for (i = 1; i < numRows; i++) {
       rows.push(
         <div key={ i } className='row'>
-          <div className='col-md-6'>{ this.state.crawlStats.docs[i].timestamp }</div>
-          <div className='col-md-6 tright' align='right'>
-            <span className='pull-right'>{ this.state.crawlStats.docs[i].num_documents }</span>
+          <div className='col-md-12 margin-top'>
+            <i className='fa fa-calendar'></i> { this.state.crawlStats.docs[i].timestamp }
+            <span className='pull-right'>
+              <i className='fa fa-file-text-o'></i> { this.state.crawlStats.docs[i].num_documents }</span>
           </div>
         </div>
       );
@@ -36,35 +37,43 @@ var DocumentCrawlStats = React.createClass(_.assign(Base(DocumentCrawlStatStore)
 
 
     var crawlStats = <div></div>;
-    var chevronClass = 'fa fa-chevron-up';
+    var chevronClass = 'fa fa-chevron-down';
     var mostRecent;
     if (this.state.showCrawlStats) {
       crawlStats = this.renderCrawlStats();
-      chevronClass = 'fa fa-chevron-down';
+      chevronClass = 'fa fa-chevron-up';
     }
 
     if (this.state.crawlStats && this.state.crawlStats.docs.length > 0) {
       mostRecent = this.state.crawlStats.docs[0];
       lastSuccessfulCrawlDate = (
-        <div>
-          <span>{ mostRecent.timestamp }</span>
+        <span>
+          had <strong> <i className='fa fa-file-text-o'></i> { mostRecent.num_documents } </strong>
+          and ran on <strong>{ mostRecent.timestamp }</strong>.
           <span className='pull-right'>
-            Number of Documents { mostRecent.num_documents }
+
+            <button className='pull-right' onClick={ this._toggleCrawlStats }>
+              <i className={ chevronClass }></i></button>
           </span>
-        </div>
+        </span>
       );
 
     }
 
     return (
       <div className='container-fluid'>
-        <div className='row'>
-          <div className='col-md-12'>
-            Last successful crawl <button onClick={ this._toggleCrawlStats }><i className={ chevronClass }></i></button>
-            <span className='last-successful-crawl-date'>{ lastSuccessfulCrawlDate }</span>
+        <div className='row margin-top'>
+          <div className='col-md-6 col-md-offset-3 alert alert-info'>
+            <span className='a-stack fa-lg'>
+              <i className='fa fa-circle fa-stack-2x'></i>
+              <i className='fa fa-info fa-stack-1x fa-inverse'></i>
+            </span>
+            Last successful crawl { lastSuccessfulCrawlDate }
+            { crawlStats }
           </div>
         </div>
-        { crawlStats }
+
+
       </div>
     );
   },
