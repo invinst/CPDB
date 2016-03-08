@@ -63,8 +63,8 @@ var DocumentCrawlStats = React.createClass(_.assign(Base(DocumentCrawlStatStore)
     return (
       <div className='container-fluid'>
         <div className='row margin-top'>
-          <div className='col-md-6 col-md-offset-3 alert alert-info'>
-            <span className='a-stack fa-lg'>
+          <div className='col-md-6 col-md-offset-3 alert alert-info last-successful-crawl-date'>
+            <span className='fa-stack fa-lg'>
               <i className='fa fa-circle fa-stack-2x'></i>
               <i className='fa fa-info fa-stack-1x fa-inverse'></i>
             </span>
