@@ -15,7 +15,7 @@ var Sunburst = require('components/DataToolPage/Sunburst.react');
 var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
 var Summary = require('components/DataToolPage/Summary.react');
 var Map = require('components/DataToolPage/Map.react');
-var RaceGenderTab = require('components/DataToolPage/RaceGenderTab.react');
+var RaceGenderTab = require('components/DataToolPage/RaceGenderAgeTab.react');
 var TabActions = require('actions/DataToolPage/TabActions');
 
 var Tabs = React.createClass(_.assign(Base(TabsStore), {
