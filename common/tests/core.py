@@ -79,7 +79,7 @@ class BrowserNoWait(object):
         self.obj.browser.implicitly_wait(0)
 
     def __exit__(self, exc_type, exc_value, traceback):
-        self.obj.browser.implicitly_wait(3)
+        self.obj.browser.implicitly_wait(10)
 
 
 class OpenNewBrowser(object):
@@ -129,7 +129,7 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         browser = WebDriver(
             capabilities=desired_capabilities,
             firefox_profile=self.init_firefox_profile())
-        browser.implicitly_wait(3)
+        browser.implicitly_wait(10)
         browser.set_window_size(**self.DESKTOP_BROWSER_SIZE)
         return browser
 
@@ -421,7 +421,7 @@ class BaseLiveAndroidPhoneTestCase(MobileUrlMixins, BaseLiveTestCase):
         browser = WebDriver(
             capabilities=desired_capabilities,
             firefox_profile=self.init_firefox_profile())
-        browser.implicitly_wait(3)
+        browser.implicitly_wait(10)
         browser.set_window_size(**self.GALAXY_S6_BROWSER_SIZE)
         return browser
 

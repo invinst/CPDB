@@ -82,6 +82,7 @@ class MobileComplaintPageTest(BaseLivePhoneTestCase):
             OfficerAllegationFactory(allegation=allegation, officer=officer)
 
         self.visit_complaint_page(allegation.crid)
+        self.until(lambda: self.should_not_see_text(allegation.crid))
 
         for circle_class, allegations_count in \
                 allegations_count_color_map.items():
@@ -89,7 +90,8 @@ class MobileComplaintPageTest(BaseLivePhoneTestCase):
                 id=officers[circle_class].id,
                 circle_class=circle_class
             )
-            len(self.find_all(selector)).should.be.equal(1)
+
+            self.find_all(selector).should.have.length_of(1)
 
     def test_allegation_with_bad_crid(self):
         bad_crid = 0
