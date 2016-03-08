@@ -491,6 +491,13 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
         sorted(builder._exclude_ignore_params(params, None).keys()).should.equal(['a', 'b', 'c'])
         sorted(builder._exclude_ignore_params(params, ['c', 'd']).keys()).should.equal(['a', 'b'])
 
+    def test_adhoc_queries_null(self):
+        builder = OfficerAllegationQueryBuilder()
+        queries = builder.build(QueryDict('id=None'))
+        repr(queries).should.equal(repr(Q(id__isnull=True)))
+        queries = builder.build(QueryDict('cat=null'))
+        repr(queries).should.equal(repr(Q(cat__isnull=True)))
+
     def check_built_query(self, query_string, expected_ids):
         params = QueryDict(query_string)
 
