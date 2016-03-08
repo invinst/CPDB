@@ -8,15 +8,13 @@ from common.tests.core import BaseLivePhoneTestCase
 
 class MobileComplaintTimelineTest(BaseLivePhoneTestCase):
     def assert_timeline_have_three_nodes(self):
-        nodes = self.find_all('.drawing line')
-        len(nodes).should.equal(2)
+        self.until(lambda: self.find_all('.drawing line').should.have.length_of(2))
 
     def assert_timeline_have_two_nodes(self):
-        nodes = self.find_all('.drawing line')
-        len(nodes).should.equal(1)
+        self.until(lambda: self.find_all('.drawing line').should.have.length_of(1))
 
     def assert_no_timeline(self):
-        len(self.find_all('.investigation-timeline svg')).should.equal(0)
+        self.until(lambda: self.find_all('.investigation-timeline svg').should.have.length_of(0))
 
     def assert_timeline_should_contains_text(self, text):
         self.find('.investigation-timeline svg').text.should.contain(text)
@@ -44,6 +42,7 @@ class MobileComplaintTimelineTest(BaseLivePhoneTestCase):
             start_date=start_date, end_date=end_date)
 
         self.visit_complaint_page(allegation)
+
         self.assert_timeline_have_three_nodes()
         self.assert_timeline_should_contains_text(incident_date_text)
         self.assert_timeline_should_contains_text(start_date_text)
@@ -67,7 +66,9 @@ class MobileComplaintTimelineTest(BaseLivePhoneTestCase):
         allegation = AllegationFactory(incident_date=None)
         OfficerAllegationFactory(
             allegation=allegation, start_date=None, end_date=None)
+
         self.visit_complaint_page(allegation)
+
         self.assert_no_timeline()
 
     def test_no_incident_date(self):
@@ -78,6 +79,9 @@ class MobileComplaintTimelineTest(BaseLivePhoneTestCase):
             allegation=allegation, start_date=start_date, end_date=end_date)
 
         self.visit_complaint_page(allegation)
+
+        self.until(lambda: len(self.find_all('.investigation-timeline line')) > 0)
+
         first_line = self.find('.investigation-timeline line')
         self.assert_line_is_dash_line(first_line)
         self.find_all('.event-date')[0].text.should.contain('Unknown date')
@@ -91,6 +95,8 @@ class MobileComplaintTimelineTest(BaseLivePhoneTestCase):
             final_outcome_class='open-investigation')
 
         self.visit_complaint_page(allegation)
+
+        self.until(lambda: len(self.find_all('.investigation-timeline line')) > 0)
 
         second_line = self.find_all('.investigation-timeline line')[1]
         self.assert_line_is_dash_line(second_line)

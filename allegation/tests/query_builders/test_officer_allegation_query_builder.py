@@ -2,12 +2,13 @@ import datetime
 
 from django.contrib.gis.geos.point import Point
 from django.http.request import QueryDict
+from django.db.models.query_utils import Q
+
 from allegation.factories import (
     OfficerAllegationFactory, AllegationFactory, OfficerFactory,
     ComplainingWitnessFactory, AllegationCategoryFactory)
-
 from allegation.query_builders import (
-    OfficerAllegationQueryBuilder, DISCIPLINE_CODES, NO_DISCIPLINE_CODES)
+    OfficerAllegationQueryBuilder, DISCIPLINE_CODES, NO_DISCIPLINE_CODES, _apply_all_query_methods)
 from common.models import OfficerAllegation, Allegation, OUTCOMES
 from common.tests.core import SimpleTestCase
 from common.utils.haystack import rebuild_index
@@ -366,11 +367,12 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
     def _test_foia(self):
         expected_allegations = [
             OfficerAllegationFactory(allegation=AllegationFactory(
-                incident_date=datetime.datetime.strptime(
-                    '2011-01-01', '%Y-%m-%d')))]
-        OfficerAllegationFactory(allegation=AllegationFactory(
-            incident_date=datetime.datetime.strptime(
-                '2010-12-31', '%Y-%m-%d')))
+                incident_date=datetime.datetime.strptime('2011-01-01', '%Y-%m-%d')))]
+        OfficerAllegationFactory(
+            allegation=AllegationFactory(
+                incident_date=datetime.datetime.strptime('2010-12-31', '%Y-%m-%d')),
+            start_date=datetime.datetime.strptime('2010-12-31', '%Y-%m-%d')
+        )
 
         query_string = 'data_source=FOIA'
         expected_ids = [allegation.id for allegation in expected_allegations]
@@ -459,6 +461,35 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
         expected_ids = [allegation.id for allegation in expected_allegations]
 
         self.check_built_query(query_string, expected_ids)
+
+    def test_apply_all_query_methods(self):
+        query_1 = Q(filter1='value1')
+        query_2 = Q(filter2='value2')
+
+        class QueryBuilderStub(object):
+            _q_method_1_called_with = None
+            _q_method_2_called_with = None
+
+            def _q_method_1(self, params):
+                self._q_method_1_called_with = params
+                return query_1
+
+            def _q_method_2(self, params):
+                self._q_method_2_called_with = params
+                return query_2
+
+        builder = QueryBuilderStub()
+        params = QueryDict()
+
+        repr(_apply_all_query_methods(builder, params)).should.be.equal(repr(query_1 & query_2))
+        builder._q_method_1_called_with.should.equal(params)
+        builder._q_method_2_called_with.should.equal(params)
+
+    def test_exclude_ignore_params(self):
+        params = QueryDict('a=1&b=2&c=3')
+        builder = OfficerAllegationQueryBuilder()
+        sorted(builder._exclude_ignore_params(params, None).keys()).should.equal(['a', 'b', 'c'])
+        sorted(builder._exclude_ignore_params(params, ['c', 'd']).keys()).should.equal(['a', 'b'])
 
     def check_built_query(self, query_string, expected_ids):
         params = QueryDict(query_string)

@@ -10,6 +10,16 @@ from common.constants import FOIA_START_DATE, DISCIPLINE_CODES, NO_DISCIPLINE_CO
 from common.models import Allegation
 
 
+def _apply_all_query_methods(inst, query_params):
+    queries = Q()
+
+    for name, func in inspect.getmembers(inst, predicate=inspect.ismethod):
+        if name[:3] == '_q_':
+            queries &= func(query_params)
+
+    return queries
+
+
 class OfficerAllegationQueryBuilder(object):
     """
     Build Q queries from query params.
@@ -25,16 +35,7 @@ class OfficerAllegationQueryBuilder(object):
         and return the combined Q query.
         """
         query_params = self._exclude_ignore_params(query_params, ignore_params)
-        queries = self._apply_all_query_methods(query_params)
-        return queries
-
-    def _apply_all_query_methods(self, query_params):
-        queries = Q()
-
-        for name, func in inspect.getmembers(self, predicate=inspect.ismethod):
-            if name[:3] == '_q_':
-                queries &= func(query_params)
-
+        queries = _apply_all_query_methods(self, query_params)
         return queries
 
     def _exclude_ignore_params(self, query_params, ignore_params):
@@ -248,11 +249,15 @@ class OfficerAllegationQueryBuilder(object):
 
         if len(data_source) == 2:
             return Q()
-
         if 'pre-FOIA' in data_source:
-            return Q(allegation__incident_date__lt=FOIA_START_DATE)
+            return (
+                Q(allegation__incident_date__lt=FOIA_START_DATE) |
+                Q(start_date__lt=FOIA_START_DATE) |
+                Q(allegation__incident_date__isnull=True))
         elif 'FOIA' in data_source:
-            return Q(allegation__incident_date__gte=FOIA_START_DATE)
+            return (
+                Q(allegation__incident_date__gte=FOIA_START_DATE) |
+                Q(start_date__gte=FOIA_START_DATE))
 
         return Q()
 

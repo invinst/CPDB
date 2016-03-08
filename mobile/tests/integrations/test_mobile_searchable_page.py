@@ -3,15 +3,13 @@ from common.tests.core import BaseLivePhoneTestCase
 
 
 class MobileSearchablePageTest(BaseLivePhoneTestCase):
-    def go_to_detail_page(self, link):
-        self.visit(link)
-
     def show_error_when_search_bad_query(self):
         bad_query = 'bad_query'
         self.search_for(bad_query)
         self.until(lambda: self.should_see_text("Sorry, there's no results for your search in the database."))
 
     def search_for(self, query):
+        self.until(lambda: len(self.find_all('.input-text')) > 0)
         self.fill_in('.input-text', query)
 
     def setUp(self):

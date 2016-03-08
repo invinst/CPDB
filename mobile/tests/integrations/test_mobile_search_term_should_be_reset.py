@@ -4,6 +4,7 @@ from common.tests.core import BaseLivePhoneTestCase
 
 class MobileSearchTermShouldBeResetTest(BaseLivePhoneTestCase):
     def search_for(self, query):
+        self.until(lambda: len(self.find_all('.input-text')).should.be.greater_than(0))
         self.fill_in('.input-text', query)
 
     def wait_for_suggestion_list(self):

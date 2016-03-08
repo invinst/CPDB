@@ -1,14 +1,18 @@
 var _ = require('lodash');
+
 var AppConstants = require('../constants/AppConstants');
-global.jQuery = require('jquery');
 var SearchResultsActions = require('../actions/SearchSection/SearchResultsActions');
 var SearchStore = require('../stores/SearchSection/SearchStore');
 var QueryListFilterStore = require('../stores/SearchSection/QueryListFilterStore');
 var QueryListStore = require('../stores/SearchSection/QueryListStore');
 
 var ajax = null;
+var SearchResultsAPI;
 
-var SearchResultsAPI = {
+global.jQuery = require('jquery');
+
+
+SearchResultsAPI = {
   getAPIEndpoint: function (activeItem) {
     if (activeItem != 'alias') {
       return AppConstants.SEARCH_RESULTS_API_ENDPOINT;
@@ -45,9 +49,6 @@ var SearchResultsAPI = {
   },
 
   get: function () {
-    if (ajax) {
-      ajax.abort();
-    }
     var query = SearchStore.getState()['query'];
     var activeItem = QueryListFilterStore.getState()['activeItem'];
     var sortBy = QueryListStore.getSortOrder();
@@ -55,6 +56,10 @@ var SearchResultsAPI = {
 
     var params = this.buildParams(query, activeItem, sortBy);
     var endpoint = this.getAPIEndpoint(activeItem);
+
+    if (ajax) {
+      ajax.abort();
+    }
 
     ajax = jQuery.getJSON(endpoint, params, function (data) {
       SearchResultsActions.receivedSearchResultsData(that.transform(data, activeItem));
@@ -62,20 +67,20 @@ var SearchResultsAPI = {
   },
 
   loadMore: function () {
-    if (ajax) {
-      ajax.abort();
-    }
 
     var query = SearchStore.getState()['query'];
     var sortBy = QueryListStore.getSortOrder();
     var activeItem = QueryListFilterStore.getState()['activeItem'];
     var page = QueryListStore.getState()['page'];
     var that = this;
-
     var params = this.buildParams(query, activeItem, sortBy);
+    var endpoint = this.getAPIEndpoint(activeItem);
+
     params.page = page;
 
-    var endpoint = this.getAPIEndpoint(activeItem);
+    if (ajax) {
+      ajax.abort();
+    }
 
     ajax = jQuery.getJSON(endpoint, params, function (data) {
       SearchResultsActions.receivedMore(that.transform(data, activeItem));

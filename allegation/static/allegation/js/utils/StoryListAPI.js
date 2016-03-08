@@ -1,4 +1,3 @@
-global.jQuery = require('jquery');
 var StoryListActions = require('actions/OfficerPage/StoryListActions');
 
 var StoryListAPI = {

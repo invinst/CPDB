@@ -1,11 +1,11 @@
 var _ = require('lodash');
 
 
-function mergeArray(objValue, srcValue) {
+var mergeArray = function (objValue, srcValue) {
   if (_.isArray(objValue)) {
     return _.union(objValue, srcValue);
   }
-}
+};
 
 
 var QueryBuilderUtil = {

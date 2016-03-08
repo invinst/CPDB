@@ -9,28 +9,39 @@ var PercentageRectangleChart = {
     var colors = options.colors;
     var width = options.width;
     var height = options.height;
+    var currentY,
+      values,
+      sum,
+      n,
+      minHeight,
+      heightWithoutMinHeight,
+      heightScale,
+      ys,
+      i,
+      blocks;
+
     data = calculatePercentages(data);
 
-    var currentY = 0;
-    var values = _.pluck(data, 'value');
-    var sum = _.sum(values);
-    var n = data.length || 0;
-    var minHeight = 15;
-    var heightWithoutMinHeight = height - minHeight * n;
+    currentY = 0;
+    values = _.pluck(data, 'value');
+    sum = _.sum(values);
+    n = data.length || 0;
+    minHeight = 15;
+    heightWithoutMinHeight = height - minHeight * n;
 
-    var heightScale = d3.scale.linear()
+    heightScale = d3.scale.linear()
                         .domain([0, sum])
                         .range([0, heightWithoutMinHeight]);
 
-    var ys = [];
-    for (var i = 0; i < values.length; i++) {
+    ys = [];
+    for (i = 0; i < values.length; i++) {
       ys.push(currentY);
       currentY += heightScale(values[i]) + minHeight;
     }
 
     d3.select(domCSSPath + ' > *').remove();
 
-    var blocks = d3.select(domCSSPath)
+    blocks = d3.select(domCSSPath)
       .append('svg')
       .attr('width', width)
       .attr('height', height)

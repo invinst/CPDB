@@ -49,6 +49,8 @@ var Download = React.createClass(_.assign(Base(DownloadStore), {
 
   render: function () {
     var content = '';
+    var downloadClassName;
+
     if (this.state.processing) {
       content = (
         <div className='progress progress-striped active'>
@@ -63,7 +65,7 @@ var Download = React.createClass(_.assign(Base(DownloadStore), {
       );
     }
 
-    var downloadClassName = classnames('download-wrapper', {
+    downloadClassName = classnames('download-wrapper', {
       'invisible': !this.state.query
     });
 

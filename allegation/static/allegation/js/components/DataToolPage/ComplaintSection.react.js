@@ -1,4 +1,3 @@
-require('utils/jQuery');
 var React = require('react');
 var PropTypes = React.PropTypes;
 var classnames = require('classnames');
@@ -10,6 +9,7 @@ var RequestModal = require('components/DataToolPage/Complaint/RequestModal.react
 var ComplaintListStore = require('stores/ComplaintListStore');
 var ComplaintListAPI = require('utils/ComplaintListAPI');
 var ComplaintListRow = require('components/DataToolPage/ComplaintListRow.react');
+var LoadingPage = require('components/Shared/LoadingPage.react');
 
 
 var ComplaintSection = React.createClass({
@@ -53,10 +53,11 @@ var ComplaintSection = React.createClass({
 
   renderComplaints: function (complaints, officer) {
     var rows = [];
+    var i, complaint, officerAllegation;
 
-    for (var i = 0; i < complaints.length; i++) {
-      var complaint = complaints[i];
-      var officerAllegation = complaint['officer_allegation'];
+    for (i = 0; i < complaints.length; i++) {
+      complaint = complaints[i];
+      officerAllegation = complaint['officer_allegation'];
       rows.push(
         <ComplaintListRow
           key={ i }
@@ -70,15 +71,18 @@ var ComplaintSection = React.createClass({
   },
 
   render: function () {
+    var loading = this.state.loading;
     var activeFilter = this.state.activeFilter;
     var analytics = this.state.analytics;
-    var loading = this.state.loading;
     var items = this.renderComplaints(this.state.complaints, this.props.officer);
     var className = classnames('complaint-list', {
       'hidden': this.state.noQuery
     });
-
     var complaintList = '';
+
+    if (loading) {
+      return <LoadingPage />;
+    }
 
     if (items.length == 0) {
       complaintList = (

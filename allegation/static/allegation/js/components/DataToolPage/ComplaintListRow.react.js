@@ -27,6 +27,17 @@ var ComplaintListRow = React.createClass(_.assign(Base(ComplaintListStore), {
     var detailIsShown = this.detailIsCurrentlyShown();
 
     var showMore = '';
+    var allegation,
+      officerAllegation,
+      category,
+      officerName,
+      dateLabel,
+      date,
+      finding,
+      caretClasses,
+      rowClassName,
+      domId;
+
     if (this.detailRendered()) {
       showMore = (
         <Allegation
@@ -36,13 +47,13 @@ var ComplaintListRow = React.createClass(_.assign(Base(ComplaintListStore), {
       );
     }
 
-    var allegation = complaint.allegation;
-    var officerAllegation = complaint['officer_allegation'];
-    var category = {};
+    allegation = complaint.allegation;
+    officerAllegation = complaint['officer_allegation'];
+    category = {};
     if (this.props.complaint.category) {
       category = this.props.complaint.category;
     }
-    var officerName = '';
+    officerName = '';
     if (complaint.officer) {
       officerName = complaint.officer.officer_first + ' ' + complaint.officer.officer_last;
       if (complaint.officers.length > 0) {
@@ -52,22 +63,22 @@ var ComplaintListRow = React.createClass(_.assign(Base(ComplaintListStore), {
     if (allegation['incident_date'] && moment(allegation['incident_date']).year() <= 1970) {
       allegation['incident_date'] = false;
     }
-    var dateLabel = 'Incident Date';
-    var date = allegation['incident_date_only'];
+    dateLabel = 'Incident Date';
+    date = allegation['incident_date_only'];
     if (!allegation['incident_date'] && officerAllegation.start_date) {
       date = officerAllegation.start_date;
       dateLabel = 'Investigation Start';
     }
-    var finding = this.props.finding ? this.props.finding.replace(/ /,'-').toLowerCase() : 'other';
+    finding = this.props.finding ? this.props.finding.replace(/ /,'-').toLowerCase() : 'other';
 
-    var caretClasses = classnames({
+    caretClasses = classnames({
       'fa fa-chevron-right': !detailIsShown,
       'fa fa-chevron-down': detailIsShown
     }, 'complaint-row-outcome', finding);
 
-    var rowClassName = classnames('complaint-row', finding, officerAllegation.final_outcome_class);
+    rowClassName = classnames('complaint-row', finding, officerAllegation.final_outcome_class);
 
-    var domId = 'allegation-' + officerAllegation.id;
+    domId = 'allegation-' + officerAllegation.id;
     return (
       <div className={ rowClassName }>
         <div className='row cursor' id={ domId } onClick={ this.toggleComplaint }>

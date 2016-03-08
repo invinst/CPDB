@@ -1,9 +1,9 @@
 from allegation.factories import AreaFactory
 from search.services.suggest.suggest_area import SuggestArea
-from search.tests.services.suggest.test_suggest_base import SuggestBaseTestCase
+from search.tests.services.suggest.base_test_suggest import BaseSuggestTestCase
 
 
-class SuggestAreaTestCase(SuggestBaseTestCase):
+class AreaSuggestTestCase(BaseSuggestTestCase):
     def test_suggest_area(self):
         area = AreaFactory(name='School Ground')
 

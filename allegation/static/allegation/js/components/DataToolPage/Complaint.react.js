@@ -36,6 +36,7 @@ var Complaint = React.createClass({
   render: function () {
     var complaint = this.props.complaint;
     var infor = [<Summary key='summary' complaint={ complaint } />];
+    var cssClasses, buttons;
 
     infor.push(<OfficerList key='officer-list' complaint={ complaint } />);
     infor.push(<TimelineAndLocation key='timeline' complaint={ complaint } />);
@@ -44,8 +45,8 @@ var Complaint = React.createClass({
       infor.push(<PoliceWitness key='police-witness' complaint={ complaint } witnesses={ this.state.policeWitness } />);
     }
 
-    var cssClasses = 'row-fluid complaint_detail clearfix slide-down' + (this.props.hide ? ' closed' : '');
-    var buttons = '';
+    cssClasses = 'row-fluid complaint_detail clearfix slide-down' + (this.props.hide ? ' closed' : '');
+    buttons = '';
     if (!this.props.noButton) {
       buttons = (
         <div className='col-md-10 col-md-offset-1 button-list'>

@@ -30,6 +30,8 @@ LOGGING = {
     },
 }
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 DEBUG_TOOLBAR_ENABLE = False
 
 if DEBUG_TOOLBAR_ENABLE:

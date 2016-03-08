@@ -21,6 +21,7 @@ var Timeline = React.createClass({
     var container = $(ReactDOM.findDOMNode(this)).find('.timeline')[0];
     var firstDate, lastDate, incidentDate;
     var items = [];
+    var startDate, endDate, options, duration, subtract, add;
 
     allegation['incident_date'] = this.normalizeIncidentDate(allegation['incident_date']);
 
@@ -37,7 +38,7 @@ var Timeline = React.createClass({
     }
 
     if (allegation.start_date) {
-      var startDate = moment(allegation.start_date);
+      startDate = moment(allegation.start_date);
 
       if (firstDate) {
         lastDate = startDate;
@@ -52,7 +53,7 @@ var Timeline = React.createClass({
     }
 
     if (allegation.end_date) {
-      var endDate = moment(allegation.end_date);
+      endDate = moment(allegation.end_date);
       firstDate = firstDate || endDate;
       lastDate = endDate;
 
@@ -67,11 +68,11 @@ var Timeline = React.createClass({
     items = items || new vis.DataSet(items);
 
     // Configuration for the Timeline
-    var options = this.getOptions();
+    options = this.getOptions();
     if (firstDate && lastDate) {
-      var duration = lastDate.year() * 12 + lastDate.month() - firstDate.year() * 12 - firstDate.month();
-      var subtract = 1;
-      var add = 1;
+      duration = lastDate.year() * 12 + lastDate.month() - firstDate.year() * 12 - firstDate.month();
+      subtract = 1;
+      add = 1;
       if (duration > 3) {
         subtract = duration / 8;
         add = duration / 6;
@@ -108,10 +109,11 @@ var Timeline = React.createClass({
   createTimelineItem: function (title, date, klass) {
     var useSimpleFormat = klass ? true : false;
     var displayDate = this.displayDateFormat(date, useSimpleFormat);
+    var display;
     klass = klass || '';
 
     title = '<div class="timeline-title">' + title + '</div>';
-    var display = '<div class="timeline-date' + klass + '">' + displayDate + '</div>';
+    display = '<div class="timeline-date' + klass + '">' + displayDate + '</div>';
     return title + display;
   },
 

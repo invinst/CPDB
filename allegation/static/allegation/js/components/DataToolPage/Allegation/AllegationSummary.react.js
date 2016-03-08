@@ -2,7 +2,7 @@ var _ = require('lodash');
 var React = require('react');
 var PropTypes = React.PropTypes;
 
-var AllegationPresenter = require('presenters/AllegationPresenter');
+var AllegationPresenterFactory = require('presenters/AllegationPresenterFactory');
 var Investigator = require('components/DataToolPage/Complaint/Investigator.react');
 var RequestButton = require('components/DataToolPage/Complaint/RequestButton.react');
 
@@ -69,7 +69,7 @@ var AllegationSummary = React.createClass({
 
   render: function () {
     var allegation = this.props.allegation;
-    var presenter = AllegationPresenter(allegation);
+    var presenter = AllegationPresenterFactory.buildPresenter(allegation);
 
     return (
       <div className='col-xs-12'>
@@ -81,14 +81,31 @@ var AllegationSummary = React.createClass({
             <div className='main-category'>{ presenter.mainCategory }</div>
             <div className='title'>{ presenter.subCategory }</div>
           </div>
+
+          { presenter.displayRecFinding ?
+            <div className='rec-finding'>
+              <div className='title'>Recommended Finding</div>
+              <div>{ presenter.recFinding }</div>
+            </div>
+            : null
+          }
+          <div>
+            <div className='title'>Final Finding</div>
+            <div>{ presenter.finalFinding }</div>
+          </div>
+
+          { presenter.displayRecOutcome ?
+            <div className='rec-outcome'>
+              <div className='title'>Recommended Outcome</div>
+              <div>{ presenter.recOutcome }</div>
+            </div>
+            : null
+          }
           <div>
             <div className='title'>Final Outcome</div>
             <div>{ presenter.finalOutcome }</div>
           </div>
-          <div>
-            <div className='title'>Disciplinary action</div>
-            <div>{ presenter.finalFinding }</div>
-          </div>
+
           { this.renderComplainingWitnessSection(presenter) }
           <div className='row'>
             { this.renderInvestigator(allegation) }

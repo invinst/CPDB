@@ -27,13 +27,6 @@ var SessionActions = {
     });
   },
 
-  updateTitle: function (title) {
-    AppDispatcher.dispatch({
-      actionType: AppConstants.UPDATE_TITLE,
-      title: title
-    });
-  },
-
   createdSession: function () {
     AppDispatcher.dispatch({
       actionType: AppConstants.SESSION_CREATED

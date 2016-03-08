@@ -1,5 +1,5 @@
 var _ = require('lodash');
-var StringUtil = require('utils/StringUtil');
+var S = require('string');
 
 var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
@@ -63,7 +63,7 @@ var AppStore = _.assign(Base(_state), {
   getDataToolUrl: function () {
     if (_state.sessionHash) {
       if (_state.sessionTitle) {
-        return '/data/' + _state.sessionHash + '/' + StringUtil.slugify(_state.sessionTitle);
+        return '/data/' + _state.sessionHash + '/' + S(_state.sessionTitle).slugify().s;
       }
       return '/data/' + _state.sessionHash + '/';
     }
@@ -73,6 +73,8 @@ var AppStore = _.assign(Base(_state), {
 
 // Register callback to handle all updates
 AppStore.dispatcherToken = AppDispatcher.register(function (action) {
+  var data;
+
   switch (action.actionType) {
     case AppConstants.NAV_GO_TO_PAGE:
       _state.page = action.page;
@@ -83,15 +85,10 @@ AppStore.dispatcherToken = AppDispatcher.register(function (action) {
     case AppConstants.RECEIVED_SESSION_DATA:
     case AppConstants.RECEIVED_UPDATED_SESSION_DATA:
       AppDispatcher.waitFor([AppStore.sessionDispatcherToken]);
-      var data = action.data.data;
+      data = action.data.data;
       _state.sessionTitle = data.title;
       _state.sessionHash = data.hash;
       AppStore.emitChangeSession();
-      AppStore.emitChange();
-      break;
-
-    case AppConstants.UPDATE_TITLE:
-      _state.sessionTitle = action.title;
       AppStore.emitChange();
       break;
 
