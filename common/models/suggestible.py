@@ -36,6 +36,15 @@ class MobileSuggestibleAllegation(MobileSuggestible):
 
     def as_suggestion_entry(self):
         cat = self.officerallegation_set.first().cat
+
+        # TODO: This is not a perfect solution here, but keep on using until we change to use suggestion_service instead
+        if cat:
+            allegation_name = cat.allegation_name
+            category = cat.category
+        else:
+            allegation_name = ''
+            category = ''
+
         return {
             'text': self.crid,
             'resource': 'allegation',
@@ -44,8 +53,8 @@ class MobileSuggestibleAllegation(MobileSuggestible):
             'meta': {
                 'incident_date': self.incident_date,
                 'cat': {
-                    'allegation_name': cat.allegation_name,
-                    'category': cat.category
+                    'allegation_name': allegation_name,
+                    'category': category
                 }
             }
         }

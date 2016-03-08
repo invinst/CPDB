@@ -2,12 +2,13 @@ from allegation.factories import OfficerFactory
 from common.tests.core import BaseLivePhoneTestCase
 
 
-class MobileSimpleTabTestMixin(object):
+class MobileSimpleTabTestMixin(BaseLivePhoneTestCase):
     def assert_active_tab(self, tab_class):
         tab_selector = '.tab-nav.active.{tab_class}'.format(tab_class=tab_class)
-        self.find(tab_selector).should.be.ok
+        self.until(lambda: self.find_all(tab_selector).should.have.length_of(1))
 
     def change_tab(self, tab_class):
+        self.until(lambda: self.find_all(tab_class).should.have.length_of(1))
         self.find(tab_class).click()
 
 
@@ -27,4 +28,4 @@ class MobileSimpleTabTest(MobileSimpleTabTestMixin, BaseLivePhoneTestCase):
         self.visit_officer_page(officer.id)
         self.change_tab('.tab-complaints')
 
-        self.browser.current_url.should.contain('#complaints')
+        self.until(lambda: self.browser.current_url.should.contain('#complaints'))

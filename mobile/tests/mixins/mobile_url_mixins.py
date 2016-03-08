@@ -12,4 +12,4 @@ class MobileUrlMixins(object):
         self.visit('/officer/any-slug/{officer_id}#{tab}'.format(officer_id=officer_id, tab=tab))
 
     def visit_search_page(self, query):
-        self.visit('/search/{query}'.format(query=query))
+        self.visit('/s/{query}'.format(query=query))
