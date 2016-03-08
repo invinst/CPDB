@@ -9,6 +9,7 @@ class MobileSearchablePageTest(BaseLivePhoneTestCase):
         self.until(lambda: self.should_see_text("Sorry, there's no results for your search in the database."))
 
     def search_for(self, query):
+        self.until(lambda: len(self.find_all('.input-text')) > 0)
         self.fill_in('.input-text', query)
 
     def setUp(self):

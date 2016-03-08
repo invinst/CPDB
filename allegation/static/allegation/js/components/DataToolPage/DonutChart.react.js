@@ -1,22 +1,13 @@
+var _ = require('lodash');
 var React = require('react');
 var PropTypes = React.PropTypes;
 
-var DonutChartMixin = require('./DonutChartMixin');
+var AppConstants = require('constants/AppConstants');
 
 
 var DonutChart = React.createClass({
   propTypes: {
-    chartData: PropTypes.object.isRequired,
-    chartColors: PropTypes.object.isRequired
-  },
-
-  mixins: [DonutChartMixin],
-
-  getDefaultProps: function () {
-    return {
-      chartColors: {},
-      defaultColor: '#a5b4be'
-    };
+    chartData: PropTypes.object.isRequired
   },
 
   componentDidMount: function () {
@@ -32,6 +23,8 @@ var DonutChart = React.createClass({
   componentDidUpdate: function () {
     this.chart.reflow();
   },
+
+  defaultColor: AppConstants['DONUT_CHART_UNDISCIPLINED_COLOR'],
 
   getHighChart: function (browserData) {
     return this.chart || new Highcharts.Chart({
@@ -70,12 +63,49 @@ var DonutChart = React.createClass({
     );
   },
 
+  buildBrowserData: function (props) {
+    var chartData = props.chartData;
+    var defaultColor = this.defaultColor;
+
+    return _.map(_.keys(chartData), function (chartDataKey) {
+      var obj = chartData[chartDataKey];
+      return {
+        name: chartDataKey,
+        y: obj.data,
+        color: obj.color || defaultColor
+      };
+    });
+  },
+
+  renderMiddleText: function () {
+    var chartData = this.buildBrowserData(this.props);
+    var fractionText = _.first(chartData)['y'] + ' / ' + _.sum(chartData, 'y');
+
+    return (
+      <span>
+        <span className='donut-chart-fraction-text'>
+          <strong>{ fractionText }</strong>
+          <br/>
+        </span>
+        <span className='donut-chart-label-text'>
+          <span>
+            <div>
+              <span className='donut-chart-inner-text'>
+                { 'allegations disciplined' }
+              </span>
+            </div>
+          </span>
+        </span>
+      </span>
+    );
+  },
+
   render: function () {
     return (
       <div className='donut-chart'>
         <div id='donut-chart'></div>
         <div id='addText'>
-          { this.middleTextRender() }
+          { this.renderMiddleText() }
         </div>
       </div>
     );

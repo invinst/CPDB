@@ -48,7 +48,7 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
 
         self.visit_officer_page(officer.id)
 
-        self.find('.name').text.should.equal(officer.display_name)
+        self.until(lambda: self.find('.name').text.should.equal(officer.display_name))
         self.find('.badge-value').text.should.equal(str(officer.star))
 
         officer_summary = self.find('.officer-summary-section').text
@@ -93,6 +93,7 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
         OfficerAllegationFactory(officer=officer)
 
         self.visit_officer_page(officer.id)
+        self.until(lambda: self.find_all('.tab-navs .tab-co-accused').should.have.length_of(1))
         self.find('.tab-navs .tab-co-accused').click()
 
         self.until(lambda: self.find('.no-related-officer'))
