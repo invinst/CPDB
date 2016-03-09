@@ -6,7 +6,7 @@ from django.contrib.auth.models import AbstractUser
 from django.contrib.gis.db import models
 from django.core.urlresolvers import reverse
 
-from common.constants import FINDINGS, OUTCOMES, ACTIVE_CHOICES, CITIZEN_DEPTS, LOCATION_CHOICES
+from common.constants import FINDINGS, OUTCOMES, ACTIVE_CHOICES, CITIZEN_DEPTS, LOCATION_CHOICES, RANKS
 from common.models.time_stamp import TimeStampedModel
 from allegation.models.managers import AllegationManager, OfficerAllegationManager, DisciplinedManager
 from common.models.suggestible import (
@@ -15,20 +15,6 @@ from common.models.suggestible import (
 
 class User(AbstractUser):
     pass
-
-
-RANKS = [
-    ['FTO', 'Field Training Officer'],
-    ['LT', 'Lieutenant'],
-    ['ET', 'Evidence Technician'],
-    ['DET', 'Detective'],
-    ['PO', 'Police Officer'],
-    ['Cpt', 'Captain'],
-    ['SGT', 'Sergeant'],
-    ['CMDR', 'Commander'],
-    ['Agent', 'Agent'],
-    ['Chief', 'Chief'],
-]
 
 
 class Officer(MobileSuggestibleOfficer, TimeStampedModel):
@@ -212,8 +198,7 @@ class Investigator(TimeStampedModel):
 
     @property
     def absolute_url(self):
-        # There is no view for this url. It is handled by React router.
-        return '/investigator/{slug}/{pk}'.format(slug=self.slug, pk=self.pk)
+        return reverse('investigator:view', kwargs={'slug': self.slug, 'pk': self.pk})
 
     @property
     def slug(self):
