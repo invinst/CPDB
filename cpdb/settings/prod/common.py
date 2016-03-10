@@ -34,3 +34,6 @@ LOGGING = {
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+TEMPLATES[0]['DIRS'] = ['templates']
+TEMPLATES[0]['APP_DIRS'] = False
