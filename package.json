@@ -54,9 +54,20 @@
   },
   "devDependencies": {
     "browserify": "^6.2.0",
+    "del": "^2.2.0",
     "envify": "^3.0.0",
     "eslint": "^2.0.0",
     "eslint-plugin-react": "^3.16.1",
+    "gulp": "^3.9.1",
+    "gulp-env": "^0.4.0",
+    "gulp-if": "^2.0.0",
+    "gulp-minify-css": "^1.2.4",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.4",
+    "gulp-sass": "^2.2.0",
+    "gulp-uglify": "^1.5.3",
+    "gulp-useref": "^3.0.7",
+    "gulp-util": "^3.0.7",
     "mochify": "^2.16.0",
     "react-addons-perf": "0.14.3",
     "react-addons-test-utils": "0.14.3",
@@ -65,7 +76,10 @@
     "should": "^8.2.2",
     "sinon": "^1.17.3",
     "uglify-js": "~2.4.15",
-    "watchify": "^2.1.1"
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-paths": "^2.1.0",
+    "vinyl-source-stream": "^1.1.0",
+    "watchify": "^3.7.0"
   },
   "scripts": {
     "test": "NODE_PATH=allegation/static/allegation/js:dashboard/static/dashboard/js mochify --recursive allegation/static/allegation/js/tests/",
