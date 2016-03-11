@@ -19,7 +19,7 @@ class TweetUtilsTestCase(SimpleTestCase):
 
     def test_get_all_content(self):
         status_text = 'status'
-        linked_content = 'linked'
+        linked_content = 'linked CPD'
         hashtag = '#HashTag'
         parsed_hashtag_text = 'Hash Tag'
         url = 'http://example.com'
