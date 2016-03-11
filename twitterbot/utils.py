@@ -1,3 +1,4 @@
+import copy
 import re
 import os
 import requests
@@ -52,39 +53,17 @@ class CPDBTweetHandler(tweepy.StreamListener):
         self.tweet_utils = TweetUtils()
 
     def on_status(self, status):
-        self.screen_names = []
-        if status.user.screen_name.lower() == settings.TWITTER_SCREEN_NAME.lower():
-            return
-
-        self.handle(status)
-        if hasattr(status, 'retweeted_status') and status.retweeted_status:
-            self.handle(status.retweeted_status)
-
-        elif hasattr(status, 'quoted_status') and status.quoted_status:
-            status.quoted_status['user'] = type('X', (object, ), status.quoted_status['user'])
-            quoted_status = type('Status', (object, ), status.quoted_status)
-            self.handle(quoted_status)
-
-            if hasattr(quoted_status, 'quoted_status_id_str'):
-                quoted_quoted_status = self.api.get_status(quoted_status.quoted_status_id_str)
-                self.handle(quoted_quoted_status)
-
-    def handle(self, status):
-
-        self.screen_names.append(status.user.screen_name)
-        if self.debug:
-            print(status.text)
+        self.screen_names = self.tweet_utils.get_screen_names_recursively(status)
         try:
             self.reply(status)
         except tweepy.TweepError as e:
-            # Errors that should not stop the bot
             if e.api_code in IGNORED_ERROR_CODES:
                 pass
 
     def reply(self, status):
         responses = []
 
-        text = self.tweet_utils.get_all_content(status)
+        text = ' '.join(self.tweet_utils.get_all_content_recursively(status))
         text = self.tweet_utils.sanitize_text(text)
         names = self.tweet_utils.find_names(text) + self.tweet_utils.find_names(text, word_length=3)
 
@@ -111,14 +90,32 @@ class CPDBTweetHandler(tweepy.StreamListener):
 
 
 class TweetUtils:
-    def get_all_content(self, status):
+    def get_screen_names_recursively(self, status):
+        screen_names = [status.user.screen_name]
+        screen_names += [x['screen_name'] for x in status.entities['user_mentions']]
+
+        if hasattr(status, 'retweeted_status') and status.retweeted_status:
+            screen_names += self.get_screen_names_recursively(status.retweeted_status)
+
+        if hasattr(status, 'quoted_status') and status.quoted_status:
+            screen_names += self.get_screen_names_recursively(self.convert_quoted_status(status.quoted_status))
+
+        return [x for x in set(screen_names) if x != settings.TWITTER_SCREEN_NAME]
+
+    def get_all_content_recursively(self, status):
         texts = []
 
         texts.append(status.text)
         texts += self.parse_linked_websites(status.entities['urls'])
         texts += self.parse_hashtags(status)
 
-        return ' '.join(texts)
+        if hasattr(status, 'retweeted_status') and status.retweeted_status:
+            texts += self.get_all_content_recursively(status.retweeted_status)
+
+        if hasattr(status, 'quoted_status') and status.quoted_status:
+            texts += self.get_all_content_recursively(self.convert_quoted_status(status.quoted_status))
+
+        return texts
 
     def parse_linked_websites(self, urls):
         texts = []
@@ -210,3 +207,8 @@ class TweetUtils:
                         pks.append(pk)
 
         return responses
+
+    def convert_quoted_status(self, status):
+        new_status = copy.deepcopy(status)
+        new_status['user'] = type('X', (object, ), new_status['user'])
+        return type('Status', (object, ), new_status)

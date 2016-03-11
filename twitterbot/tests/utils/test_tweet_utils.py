@@ -1,11 +1,13 @@
 from collections import namedtuple
 from unittest.mock import patch
 
+from django.conf import settings
+
 from allegation.factories import OfficerFactory, InvestigatorFactory
 from common.models import Officer, Investigator
 from common.tests.core import SimpleTestCase
 from common.utils.haystack import rebuild_index
-from twitterbot.factories import TweetFactory, ResponseFactory
+from twitterbot.factories import TweetFactory, ResponseFactory, QuotedTweetFactory
 from twitterbot.utils import TweetUtils
 
 
@@ -17,26 +19,44 @@ class TweetUtilsTestCase(SimpleTestCase):
         Officer.objects.all().delete()
         Investigator.objects.all().delete()
 
-    def test_get_all_content(self):
+    def test_get_all_screen_names_recursively(self):
+        status = TweetFactory(
+            screen_name='name1',
+            user_mentions=[{'screen_name': 'name3'}, {'screen_name': settings.TWITTER_SCREEN_NAME}],
+            retweeted_status=TweetFactory(
+                screen_name='name2',
+                quoted_status=QuotedTweetFactory(screen_name='name1')
+            )
+        )
+        screen_names = self.utils.get_screen_names_recursively(status)
+
+        len(screen_names).should.equal(3)
+        screen_names.should.contain('name1')
+        screen_names.should.contain('name2')
+        screen_names.should.contain('name3')
+
+    def test_get_all_content_recursively(self):
         status_text = 'status'
         linked_content = 'linked CPD'
         hashtag = '#HashTag'
-        parsed_hashtag_text = 'Hash Tag'
+        parsed_hashtag_text = ['Hash', 'Tag']
         url = 'http://example.com'
 
         status = TweetFactory(
             text=status_text,
-            urls=[{'expanded_url': url}],
-            hashtags=[{'text': hashtag}]
+            retweeted_status=TweetFactory(
+                urls=[{'expanded_url': url}],
+                quoted_status=QuotedTweetFactory(hashtags=[{'text': hashtag}])
+            )
         )
 
         MockResponse = namedtuple('MockResponse', 'content')
         with patch('requests.get', return_value=MockResponse(content=bytearray(linked_content, encoding='utf-8'))):
-            text = self.utils.get_all_content(status)
+            text = self.utils.get_all_content_recursively(status)
 
             text.should.contain(status_text)
             text.should.contain(linked_content)
-            text.should.contain(parsed_hashtag_text)
+            [text.should.contain(x) for x in parsed_hashtag_text]
 
     def test_find_names(self):
         text = 'Jason Van Dyke Haskell'
@@ -94,3 +114,10 @@ class TweetUtilsTestCase(SimpleTestCase):
         found = self.utils.build_investigator_responses(names)
         len(found).should.equal(1)
         found[0].should.contain(investigator.name)
+
+    def test_normalize_quoted_status(self):
+        name = 'name'
+        original = {'user': {'screen_name': name}}
+        converted = self.utils.convert_quoted_status(original)
+
+        converted.user.screen_name.should.equal(name)

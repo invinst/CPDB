@@ -6,7 +6,7 @@ from allegation.factories import OfficerFactory, InvestigatorFactory
 from common.models import Officer
 from common.tests.core import SimpleTestCase
 from common.utils.haystack import rebuild_index
-from twitterbot.factories import ResponseFactory, TweetFactory
+from twitterbot.factories import ResponseFactory, TweetFactory, QuotedTweetFactory
 from twitterbot.models import Response
 from twitterbot.utils import ERR_DUPLICATED_RESPONSE, CPDBTweetHandler
 
@@ -77,6 +77,25 @@ class CPDBTweetHandlerTestCase(SimpleTestCase):
             update_status.assert_called_once_with('@%s Jason Van Dyke' % screen_name)
 
     def test_reply_retweet(self):
+        text = ''
+        original = 'original'
+        retweet = 'retweet'
+
+        with patch('tweepy.API.update_status') as update_status:
+            self.tweet_handler.on_status(TweetFactory(
+                text='Jason Van Dyke',
+                retweeted_status=TweetFactory(
+                    screen_name=retweet,
+                    text=text
+                ),
+                screen_name=original
+            ))
+
+            original_reply = '@%s Jason Van Dyke' % original
+            retweet_reply = '@%s Jason Van Dyke' % retweet
+            update_status.assert_has_calls([call(original_reply), call(retweet_reply)], any_order=True)
+
+    def test_reply_retweet_with_comment(self):
         text = '... Jason Van Dyke ...'
         original = 'original'
         retweet = 'retweet'
@@ -84,7 +103,7 @@ class CPDBTweetHandlerTestCase(SimpleTestCase):
         with patch('tweepy.API.update_status') as update_status:
             self.tweet_handler.on_status(TweetFactory(
                 text=text,
-                retweeted_status=TweetFactory(
+                quoted_status=QuotedTweetFactory(
                     screen_name=retweet,
                     text=text
                 ),
