@@ -2,7 +2,7 @@ var buildSass = require('./utils/build_sass');
 
 
 module.exports = buildSass({
-  src: './common/static/sass/style.sass',
+  src: './dashboard/static/dashboard/sass/style.sass',
   dest: './static/css',
-  fileName: 'style.css'
+  fileName: 'dashboard_style.css'
 });

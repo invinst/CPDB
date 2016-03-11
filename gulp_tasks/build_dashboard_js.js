@@ -4,9 +4,9 @@ var buildJS = require('./utils/build_js');
 module.exports = function (production) {
   return buildJS({
     production: production,
-    nodePath: 'allegation/static/allegation/js',
-    entries: './allegation/static/allegation/js/app.js',
+    nodePath: 'dashboard/static/dashboard/js',
+    entries: './dashboard/static/dashboard/js/app.js',
     bundleName: 'bundle.js',
-    dest: './static/allegation/js/'
+    dest: './static/dashboard/js/'
   });
 };

@@ -33,7 +33,6 @@ THIRD_PARTY_APPS = (
     'django_extensions',
     'djangobower',
     'django_tables2',
-    'compressor',
     'rest_framework',
     'jsonify',
     'django_nose',
@@ -133,7 +132,6 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'djangobower.finders.BowerFinder',
-    'compressor.finders.CompressorFinder',
 )
 
 STATIC_URL = '/static/'
@@ -203,10 +201,6 @@ EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 BROKER_URL = os.environ.get('BROKER_URL', 'redis://localhost:6379/0')
-COMPRESS_PRECOMPILERS = (
-    ('text/less', 'lessc {infile}'),
-    ('text/sass', 'sass {infile}'),
-)
 
 LOGIN_URL = reverse_lazy("admin:login")
 
