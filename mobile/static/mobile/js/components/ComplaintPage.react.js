@@ -21,8 +21,8 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
     return {
       'complaint': {
         'complaining_witness': [],
-        'officers': [],
-        'officer_allegation': null
+        'allegation': null,
+        'officer_allegation': []
       },
       loading: true
     };
@@ -39,9 +39,9 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
     var found = this.state.found;
     var loading = this.state.loading;
     var complaint = this.state.complaint;
-    var info = complaint['officer_allegation'];
+    var info = complaint['allegation'];
     var complainingWitness = complaint['complaining_witnesses'];
-    var involvedOfficers = complaint['officers'];
+    var involvedOfficers = complaint['officer_allegation'];
 
     if (loading) {
       return (
