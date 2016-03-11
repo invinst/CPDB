@@ -132,7 +132,9 @@ class TweetUtils:
 
             texts.append(soup.getText())
 
-        return texts
+        if 'CPD' in texts[0] or ('Chicago' in texts[0] and 'Police' in texts[0]):
+            return texts
+        return []
 
     def parse_hashtags(self, status):
         hashtags = status.entities.get('hashtags', [])
