@@ -105,7 +105,8 @@ gulp.task('build_sunburst', ['transform_sunburst_template', 'build_sunburst_js_m
 
 
 gulp.task('circleci', [
-  'build_test_sass', 'build_allegation_js', 'build_dashboard_js', 'build_mobile_js', 'build_sunburst_js'
+  'build_test_sass', 'build_allegation_js', 'build_dashboard_js', 'build_mobile_js', 'build_sunburst_js',
+  'compile_mobile_sass', 'compile_dashboard_sass', 'compile_allegation_sass'
 ]);
 gulp.task('build', ['build_allegation', 'build_dashboard', 'build_mobile', 'build_sunburst']);
 gulp.task('dev', ['watch_allegation', 'watch_dashboard', 'watch_mobile']);
