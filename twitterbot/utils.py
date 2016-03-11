@@ -62,7 +62,12 @@ class CPDBTweetHandler(tweepy.StreamListener):
 
         elif hasattr(status, 'quoted_status') and status.quoted_status:
             status.quoted_status['user'] = type('X', (object, ), status.quoted_status['user'])
-            self.handle(type('Status', (object, ), status.quoted_status))
+            quoted_status = type('Status', (object, ), status.quoted_status)
+            self.handle(quoted_status)
+
+            if hasattr(quoted_status, 'quoted_status_id_str'):
+                quoted_quoted_status = self.api.get_status(quoted_status.quoted_status_id_str)
+                self.handle(quoted_quoted_status)
 
     def handle(self, status):
 
@@ -132,7 +137,7 @@ class TweetUtils:
 
             texts.append(soup.getText())
 
-        if 'CPD' in texts[0] or ('Chicago' in texts[0] and 'Police' in texts[0]):
+        if len(texts) > 0 and ('CPD' in texts[0] or ('Chicago' in texts[0] and 'Police' in texts[0])):
             return texts
         return []
 
