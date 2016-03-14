@@ -7,6 +7,7 @@ from share.models import Session
 
 
 class RequestEmailForm(forms.ModelForm):
+    type = forms.CharField()
 
     def __init__(self, *args, **kwargs):
         super(RequestEmailForm, self).__init__(*args, **kwargs)
@@ -21,8 +22,13 @@ class RequestEmailForm(forms.ModelForm):
         return crid
 
     def save(self, commit=True):
-        Allegation.objects.filter(crid=self.cleaned_data['crid'])\
-            .update(document_requested=True)
+        crid = self.cleaned_data['crid']
+        type = self.cleaned_data['type']
+
+        document, _ = Allegation.objects.get(crid=crid).documents.get_or_create(type=type)
+        document.requested = True
+        document.save()
+        self.instance.document = document
         super(RequestEmailForm, self).save(commit=commit)
 
     class Meta:

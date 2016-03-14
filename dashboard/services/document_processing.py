@@ -1,16 +1,14 @@
 class DocumentProcessing(object):
-    def __init__(self, allegation):
-        self.allegation = allegation
+    def __init__(self, document):
+        self.document = document
 
     def update_link(self, params):
-        document, _ = self.allegation.documents.get_or_create(type='CR')
+        self.document.documentcloud_id = params['documentcloud_id']
+        self.document.normalized_title = params['normalized_title']
+        self.document.title = params['title']
+        self.document.save()
 
-        document.documentcloud_id = params['documentcloud_id']
-        document.normalized_title = params['normalized_title']
-        document.title = params['title']
-        document.save()
-
-    def cancel_requests(self, crid):
-        document, _ = self.allegation.documents.get_or_create(type='CR')
-        document.requested = False
-        document.save()
+    def cancel_requests(self):
+        self.document.requested = False
+        self.document.pending = False
+        self.document.save()

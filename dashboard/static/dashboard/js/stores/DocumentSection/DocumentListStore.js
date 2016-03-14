@@ -6,9 +6,11 @@ var Base = require('../Base');
 
 var _state = {
   documents: [],
+  documentType: 'CR',
   locked: false,
-  sortBy: 'total_document_requests',
-  order: -1
+  sortBy: 'number_of_request',
+  order: -1,
+  next: '',
 };
 
 var DocumentListStore = _.assign(Base(_state), {
@@ -18,10 +20,6 @@ var DocumentListStore = _.assign(Base(_state), {
     }
     return '';
   },
-
-  getCrDocumentFromAllegation: function (allegation) {
-    return _.find(allegation.documents, {type: 'CR'});
-  }
 });
 
 AppDispatcher.register(function (action) {
@@ -30,12 +28,15 @@ AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.RECEIVED_DOCUMENT_LIST:
       _state.documents = action.data;
+      _state.next = action.next;
+      _state.locked = false;
       DocumentListStore.emitChange();
       break;
 
     case AppConstants.RECEIVED_MORE_DOCUMENT_RESULTS_DATA:
       if (!_.isEmpty(action.data)) {
         _state.documents = _state.documents.concat(action.data);
+        _state.next = action.next;
         _state.locked = false;
         DocumentListStore.emitChange();
       }
@@ -47,27 +48,25 @@ AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.DOCUMENT_REQUEST_CANCEL:
-      document = DocumentListStore.getCrDocumentFromAllegation(action.data);
-      if (document) {
-        document.requested = false;
-      }
+      // these seem kind of dangerous, but it works
+      document = action.data;
+      document.requested = false;
+      document.pending = false;
       DocumentListStore.emitChange();
       break;
 
     case AppConstants.DOCUMENT_PUT_TO_PENDING:
-      document = DocumentListStore.getCrDocumentFromAllegation(action.data);
-      if (document) {
-        document.pending = true;
-      }
+      // these seem kind of dangerous, but it works
+      document = action.data;
+      document.pending = true;
       DocumentListStore.emitChange();
       break;
 
     case AppConstants.DOCUMENT_PUT_TO_REQUESTING:
-      document = DocumentListStore.getCrDocumentFromAllegation(action.data);
-      if (document) {
-        document.pending = false;
-        document.requested = true;
-      }
+      // these seem kind of dangerous, but it works
+      document = action.data;
+      document.pending = false;
+      document.requested = true;
       DocumentListStore.emitChange();
       break;
 
@@ -83,6 +82,11 @@ AppDispatcher.register(function (action) {
       DocumentListStore.updateState('sortBy', action.data);
       DocumentListStore.updateState('order', order);
       DocumentListStore.emitChange();
+      break;
+
+    case AppConstants.SET_ACTIVE_DOCUMENT_TYPE_TAB:
+      // clear sort state
+      DocumentListStore.updateState('documentType', action.data);
       break;
 
     default:

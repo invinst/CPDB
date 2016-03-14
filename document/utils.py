@@ -11,8 +11,8 @@ def send_document_notification(allegation, document):
 
 
 @app.task
-def send_document_notification_by_crid_and_link(crid, link):
-    request_emails = RequestEmail.objects.filter(crid=crid)
+def send_document_notification_by_crid_and_link(crid, link, document_type):
+    request_emails = RequestEmail.objects.filter(crid=crid, document__type=document_type)
     if not request_emails.count():
         return
 

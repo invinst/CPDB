@@ -1,7 +1,8 @@
 from django.apps import apps
 from django.db import models
-from dashboard.views.allegation_request_view import DOCUMENT_REQUEST_FILTERS
-from common.models import Allegation
+
+from dashboard.query_builders import AllegationDocumentQueryBuilder
+from document.models.document import Document
 
 
 class DocumentRequestQuerySet(models.query.QuerySet):
@@ -11,23 +12,27 @@ class DocumentRequestQuerySet(models.query.QuerySet):
         return apps.get_model('document', 'RequestEmail')._meta.db_table
 
     @staticmethod
-    def allegation_table():
-        return apps.get_model('common', 'Allegation')._meta.db_table
+    def document_table():
+        return apps.get_model('document', 'Document')._meta.db_table
 
-    def get_filter(self):
+    def get_filter(self, type):
+        builder = AllegationDocumentQueryBuilder()
         filter_allegation_document = \
-            DOCUMENT_REQUEST_FILTERS['Requested'] | \
-            DOCUMENT_REQUEST_FILTERS['Pending']
-        extra_raw_query = """
+            builder.build({'request_type': 'Requested', 'document_type': type})\
+            | builder.build({'request_type': 'Pending', 'document_type': type})
+
+        extra_raw_query = '''
             select string_agg(email, ',')
             from {document_requestemail_table}
-            where {document_requestemail_table}.crid = {allegation_table}.crid
-            """.format(
+            where {document_requestemail_table}.document_id = {document_table}.id
+        '''.format(
             document_requestemail_table=self.document_requestemail_table(),
-            allegation_table=self.allegation_table()
-            )
-        result = Allegation.objects.filter(filter_allegation_document)\
-            .distinct('crid').extra(select={
+            document_table=self.document_table()
+        )
+
+        result = Document.objects.filter(filter_allegation_document)\
+            .select_related('allegation')\
+            .extra(select={
                 'emails': extra_raw_query
             })
 

@@ -10,15 +10,6 @@ from share.factories import SessionFactory
 fake = Faker()
 
 
-class RequestEmailFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = RequestEmail
-    crid = factory.Sequence(lambda n: str(n))
-    email = factory.Sequence(lambda n: fake.email())
-    session = factory.SubFactory(SessionFactory)
-    email = factory.Sequence(lambda n: 'email{n}@example.com'.format(n=n))
-
-
 class DocumentFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Document
@@ -27,3 +18,12 @@ class DocumentFactory(factory.django.DjangoModelFactory):
     type = 'CR'
 
     allegation = factory.SubFactory(AllegationFactory)
+
+
+class RequestEmailFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = RequestEmail
+    crid = factory.Sequence(lambda n: str(n))
+    email = factory.Sequence(lambda n: fake.email())
+    session = factory.SubFactory(SessionFactory)
+    document = factory.SubFactory(DocumentFactory)

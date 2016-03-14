@@ -1,62 +1,46 @@
-from django.db.models.query_utils import Q
 from rest_framework import viewsets
 from rest_framework import filters
 
-from api.serializers.allegation_request_serializer import \
-    AllegationRequestSerializer
-from api.serializers.allegation_request_single_serializer import \
-    AllegationRequestSingleSerializer
-from common.models import Allegation
 from dashboard.authentication import SessionAuthentication
-from document.models import RequestEmail
-
-
-# temporarily query document_type here to keep old logic working
-DOCUMENT_REQUEST_FILTERS = {
-    "All": Q(),
-    "Missing":
-        (Q(documents__requested=None) | Q(documents__requested=False)) &
-        (Q(documents__documentcloud_id=None) | Q(documents__documentcloud_id=0)),
-    "Requested":
-        Q(documents__type='CR') & Q(documents__pending=False) & Q(documents__requested=True) &
-        (Q(documents__documentcloud_id=None) | Q(documents__documentcloud_id=0)),
-    "Fulfilled": Q(documents__type='CR') & Q(documents__documentcloud_id__gt=0),
-    "Pending": Q(documents__type='CR') & Q(documents__pending=True) & Q(documents__requested=True),
-}
+from dashboard.query_builders import AllegationDocumentQueryBuilder
+from document.models.document import Document
+from dashboard.serializers import DocumentSerializer, DocumentSingleSerializer
 
 
 class AdminAllegationRequestViewSet(viewsets.ModelViewSet):
-    queryset = Allegation.objects.all()
-    serializer_class = AllegationRequestSerializer
+    queryset = Document.objects.all()
+    serializer_class = DocumentSerializer
     authentication_classes = (SessionAuthentication,)
-    filter_backends = (filters.OrderingFilter,)
-    ordering = ('-total_document_requests',)
-    ordering_fields = ('last_document_requested', 'total_document_requests',)
+    filter_backends = (filters.DjangoFilterBackend, filters.OrderingFilter,)
+    filter_fields = ('type',)
+    ordering = ('-number_of_request',)
+    ordering_fields = ('last_requested', 'number_of_request',)
 
     def get_queryset(self):
         query_set = super(AdminAllegationRequestViewSet, self).get_queryset()
 
         if 'crid' in self.request.GET:
-            query_set = query_set.filter(crid=self.request.GET.get('crid'))
+            document_type = self.request.GET.get('document_type', 'CR')
+            query_set = query_set.filter(allegation__crid=self.request.GET.get('crid'), type=document_type)
         else:
-            ids = Allegation.objects.all().distinct('crid')\
-                .values_list('id', flat=True)
-            query_set = query_set.filter(id__in=ids)
-            query_set = query_set.filter(DOCUMENT_REQUEST_FILTERS[
-                self.request.GET.get('type', 'All')])
+            request_document_type = self.request.GET.get('request_document_type', 'All')
+            query_set = query_set.filter(AllegationDocumentQueryBuilder().build({
+                'request_type': request_document_type,
+            }))
 
         return query_set
 
     def get_object(self):
-        obj = super(AdminAllegationRequestViewSet, self).get_object()
-        requests = RequestEmail.objects.filter(crid=obj.crid)
+        document = super(AdminAllegationRequestViewSet, self).get_object()
+
+        requests = document.requestemails.all()
         queries = [
-            {'query': x.session.query.get('filters', {}), 'email': x.email}
-            for x in requests]
-        obj.queries = queries
-        return obj
+            {'query': request.session.query.get('filters', {}), 'email': request.email}
+            for request in requests]
+        document.queries = queries
+        return document
 
     def get_serializer_class(self, *args, **kwargs):
         if self.kwargs.get('pk'):
-            return AllegationRequestSingleSerializer
-        return AllegationRequestSerializer
+            return DocumentSingleSerializer
+        return DocumentSerializer

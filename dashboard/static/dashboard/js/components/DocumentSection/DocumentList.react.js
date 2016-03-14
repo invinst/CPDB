@@ -1,78 +1,79 @@
 var _ = require('lodash');
 var classnames = require('classnames');
-var moment = require('moment');
 var React = require('react');
+var navigate = require('react-mini-router').navigate;
 
-var Base = require('../Base.react');
-var AppConstants = require('../../constants/AppConstants');
-
-var DocumentListStore = require('../../stores/DocumentSection/DocumentListStore');
-var DocumentListActions = require('../../actions/DocumentSection/DocumentListActions');
-var DocumentRequestAPI = require('../../utils/DocumentRequestAPI');
-var DocumentMixin = require('./DocumentMixin');
-
-global.jQuery = require('jquery');
+var Base = require('components/Base.react');
+var AllegationDocumentPresenter = require('presenters/AllegationDocumentPresenter');
+var DocumentListStore = require('stores/DocumentSection/DocumentListStore');
+var DocumentListActions = require('actions/DocumentSection/DocumentListActions');
+var DocumentMixin = require('components/DocumentSection/DocumentMixin');
+var DocumentRequestAPI = require('utils/DocumentRequestAPI');
 
 
 var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
   mixins: [DocumentMixin],
 
-  _onScroll: function (e) {
-    var windowHeight = window.innerHeight;
-    var toBottom = jQuery(document).height() - windowHeight - jQuery(window).scrollTop();
-
-    if (toBottom <= 100 && !this.state.locked) {
-      DocumentRequestAPI.loadMore();
-      DocumentListActions.lockScroll();
-    }
-  },
-
   componentDidMount: function () {
     DocumentListStore.addChangeListener(this._onChange);
-    DocumentRequestAPI.get();
+    DocumentRequestAPI.getDocuments();
     jQuery(window).on('scroll', this._onScroll);
   },
 
   componentWillUnmount: function () {
+    DocumentListStore.removeChangeListener(this._onChange);
     jQuery(window).off('scroll', this._onScroll);
   },
 
-  setActiveAllegation: function (allegation) {
-    DocumentRequestAPI.loadDocument(allegation.id);
-    DocumentListActions.setActive(allegation);
+  _onScroll: function () {
+    var windowHeight = window.innerHeight;
+    var toBottom = jQuery(document).height() - windowHeight - jQuery(window).scrollTop();
+
+    if (toBottom <= 100 && !this.state.locked) {
+      DocumentRequestAPI.getMoreDocuments();
+      DocumentListActions.lockScroll();
+    }
   },
 
-  onClick: function (allegation) {
-    return this.setActiveAllegation.bind(this, allegation);
+  _onClick: function (document) {
+    return this.navigateToDocument.bind(this, document);
   },
 
-  _onHeaderClick: function (sortBy) {
-    DocumentListActions.sortBy(sortBy);
-    DocumentRequestAPI.get();
+  navigateToDocument: function (document) {
+    navigate('/document?id=' + document.id);
+    DocumentRequestAPI.getSingleDocument(document.id);
+    DocumentListActions.setActive(document);
   },
 
   renderDocumentList: function () {
     var that = this;
-    return this.state.documents.map(function (x) {
-      var status = that.getStatus(x);
-      var statusObj = that.getStatusObject(status);
-      var statusText = statusObj.text;
-      var statusIcon = statusObj.icon;
 
-      var className = classnames('fa', 'fa-' + statusIcon);
+    return _.map(this.state.documents, function (document) {
+      var documentPresenter = AllegationDocumentPresenter(document);
+
+      var statusClassName = classnames('fa', 'fa-' + documentPresenter.documentStatusIcon);
+      var rowClassName = classnames('document pointer', {
+        requested: documentPresenter.documentRequested,
+        fulfilled: documentPresenter.documentPending
+      });
 
       return (
-        <tr key={ 'crid' + x.crid } className={ that.rowClassName(x) } onClick={ that.onClick(x) }>
-          <td>{ x.crid }</td>
-          <td className='status'><i className={ className }></i> { statusText }</td>
-          <td>{ x.total_document_requests }</td>
-          <td>{ moment(x.last_document_requested).format(AppConstants.HUMAN_READABLE_FORMAT) }</td>
+        <tr key={ 'crid' + documentPresenter.crid } className={ rowClassName } onClick={ that._onClick(document) }>
+          <td>{ documentPresenter.crid }</td>
+          <td className='status'><i className={ statusClassName }></i> { documentPresenter.documentStatusText }</td>
+          <td>{ documentPresenter.numberOfDocumentRequests }</td>
+          <td>{ documentPresenter.lastRequested }</td>
           <td className='actions'>
-            { that.renderDocumentActions(status, x) }
+            { that.renderDocumentActions(documentPresenter) }
           </td>
         </tr>
       );
     });
+  },
+
+  _onHeaderClick: function (sortBy) {
+    DocumentListActions.sortBy(sortBy);
+    DocumentRequestAPI.getDocuments();
   },
 
   renderSortIcon: function (sortName) {
@@ -80,7 +81,7 @@ var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
     var isSorting = _(sortBy).contains(sortName);
     var isDesc = this.state.order < 0;
 
-    var cx = classnames({
+    var className = classnames({
       'fa': true,
       'fa-sort': !isSorting,
       'sort-active': isSorting,
@@ -88,7 +89,7 @@ var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
       'fa-sort-asc': isSorting && !isDesc
     });
 
-    return (<i className={ cx }></i>);
+    return (<i className={ className }></i>);
   },
 
   render: function () {
@@ -99,11 +100,11 @@ var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
             <tr>
               <th>CRID</th>
               <th>Status</th>
-              <th onClick={ this._onHeaderClick.bind(this, 'total_document_requests') }>
-                No. of requests { this.renderSortIcon('total_document_requests') }
+              <th onClick={ this._onHeaderClick.bind(this, 'number_of_request') }>
+                No. of requests { this.renderSortIcon('number_of_request') }
               </th>
-              <th onClick={ this._onHeaderClick.bind(this, 'last_document_requested') }>
-                Last requested { this.renderSortIcon('total_document_requests') }
+              <th onClick={ this._onHeaderClick.bind(this, 'last_requested') }>
+                Last requested { this.renderSortIcon('last_requested') }
               </th>
               <th>Action</th>
             </tr>

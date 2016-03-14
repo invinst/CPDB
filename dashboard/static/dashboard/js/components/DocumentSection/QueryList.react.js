@@ -16,16 +16,16 @@ var QueryList = React.createClass({
   },
 
   renderQueryList: function () {
-    if (!this.props.document.queries) {
-      return;
-    }
+    // if (!this.props.document.queries) {
+    //   return;
+    // }
     var that = this;
-    return this.props.document.queries.map(function (x, index) {
+    return _.map(this.props.document.queries, function (query, index) {
       return (
         <tr key={ index }>
           <td>{ index + 1 }</td>
-          <td>{ x.email }</td>
-          <td className='session-query'>{ that.buildQuery(x.query) }</td>
+          <td>{ query.email }</td>
+          <td className='session-query'>{ that.buildQuery(query.query) }</td>
         </tr>
       );
     });
@@ -33,7 +33,7 @@ var QueryList = React.createClass({
 
   render: function () {
     var document = this.props.document;
-    if (!document.document_requested && (!document.queries || !document.queries.length)) {
+    if (!document.requested && (!document.queries || !document.queries.length)) {
       return (
         <div>
           This allegation has no data as the the moment.
