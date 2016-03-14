@@ -25,8 +25,8 @@ gulp.task('collectstatic', require('./gulp_tasks/collectstatic'));
 gulp.task('build_allegation_js_minified', ['collectstatic'], buildAllegationJSTask(true));
 gulp.task('build_allegation_js', buildAllegationJSTask(false));
 
-gulp.task('build_allegation_sass', ['collectstatic'], buildAllegationCSSTask);
-gulp.task('compile_allegation_sass', buildAllegationCSSTask);
+gulp.task('build_allegation_sass', ['collectstatic'], buildAllegationCSSTask(true));
+gulp.task('compile_allegation_sass', buildAllegationCSSTask(false));
 
 gulp.task('transform_allegation_template', ['collectstatic'], require('./gulp_tasks/transform_allegation_template'));
 
@@ -60,8 +60,8 @@ gulp.task('watch_allegation', ['watch_allegation_js', 'watch_allegation_sass']);
 gulp.task('transform_dashboard_template', ['build_dashboard_sass'],
  require('./gulp_tasks/transform_dashboard_template'));
 
-gulp.task('build_dashboard_sass', ['collectstatic'], buildDashboardCSSTask);
-gulp.task('compile_dashboard_sass', buildDashboardCSSTask);
+gulp.task('build_dashboard_sass', ['collectstatic'], buildDashboardCSSTask(true));
+gulp.task('compile_dashboard_sass', buildDashboardCSSTask(false));
 
 gulp.task('build_dashboard_js', buildDashboardJSTask(false));
 gulp.task('build_dashboard_js_minified', ['collectstatic'], buildDashboardJSTask(true));
@@ -81,8 +81,8 @@ gulp.task('build_dashboard', ['collect_bower_fonts', 'transform_dashboard_templa
 /////////////////////////////////////////////////////////////////
 gulp.task('transform_mobile_template', ['build_mobile_sass'], require('./gulp_tasks/transform_mobile_template'));
 
-gulp.task('build_mobile_sass', ['collectstatic'], buildMobileCSSTask);
-gulp.task('compile_mobile_sass', buildMobileCSSTask);
+gulp.task('build_mobile_sass', ['collectstatic'], buildMobileCSSTask(true));
+gulp.task('compile_mobile_sass', buildMobileCSSTask(false));
 
 gulp.task('build_mobile_js', buildMobileJSTask(false));
 gulp.task('build_mobile_js_minified', ['collectstatic'], buildMobileJSTask(true));

@@ -16,7 +16,7 @@ function watchJS(opts) {
 
   function bundle() {
     return b.bundle()
-      .pipe(source('app.js'))
+      .pipe(source(opts.fileName))
       .on('error', gutil.log.bind(gutil, 'Browserify Error'))
       .pipe(gulp.dest(opts.dest));
   }
