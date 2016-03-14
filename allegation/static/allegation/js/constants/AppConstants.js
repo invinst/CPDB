@@ -372,5 +372,8 @@ module.exports = {
     'Termination': '#647a66',
     'Separation': '#4c544c',
     '30+ days': '#930c0c'
-  }
+  },
+
+  DONUT_CHART_DISCIPLINED_COLOR: '#a5b4be',
+  DONUT_CHART_UNDISCIPLINED_COLOR: '#013270'
 };

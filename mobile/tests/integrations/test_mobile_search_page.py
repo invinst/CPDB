@@ -23,7 +23,9 @@ class MobileSearchPageTest(BaseLivePhoneTestCase):
     def test_search_failed(self):
         bad_query = 'bad_query'
         self.visit_search_page(query=bad_query)
+
         self.wait_for_error_message()
+
         self.should_see_text("Sorry, there's no results for your search in the database.")
 
     def test_search_with_special_character(self):

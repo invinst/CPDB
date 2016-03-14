@@ -3,7 +3,7 @@ import re
 from allegation.factories import (
     OfficerAllegationFactory, AllegationCategoryFactory)
 from allegation.tests.utils.autocomplete_test_helper_mixin import AutocompleteTestHelperMixin
-from common.tests.core import BaseLiveTestCase, switch_to_popup
+from common.tests.core import BaseLiveTestCase, retry_random_fail, switch_to_popup
 from common.utils.haystack import rebuild_index
 from share.models import Session
 
@@ -171,6 +171,7 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
         self.should_see_text(self.officer_allegation.officer.display_name)
         self.should_not_see_text(officer_allegation.officer.display_name)
 
+    @retry_random_fail
     def test_pin_tag(self):
         officer_allegation = OfficerAllegationFactory()
         another = OfficerAllegationFactory()

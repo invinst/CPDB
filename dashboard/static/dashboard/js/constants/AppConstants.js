@@ -187,7 +187,6 @@ module.exports = {
   DOCUMENT_REQUEST_STATUS_END_POINT: '/api/dashboard/document-request-status/',
   DOCUMENT_REQUEST_ANALYSIS_END_POINT: '/api/dashboard/document-requests-analysis/',
   DOCUMENT_LINK_END_POINT: '/api/dashboard/document-link/',
-  DOCUMENT_UPLOAD_API_ENDPOINT: '/api/dashboard/upload-document/',
   SESSIONS_API_ENDPOINT: '/api/dashboard/sessions/',
   SESSION_ALIAS_API_ENDPOINT: '/api/dashboard/session-alias/',
   SESSION_ALIAS2_API_ENDPOINT: '/api/dashboard/session-alias2/',
