@@ -22,15 +22,11 @@ var DocumentCrawlStats = React.createClass({
     var lastSuccessfulCrawlDate = <i className='fa fa-spin fa-spinner'></i>;
 
 
-    var crawlStats = <div></div>;
     var chevronClass = classnames({
       'fa fa-chevron-down': !this.state.showCrawlStats,
       'fa fa-chevron-up': this.state.showCrawlStats
     });
     var mostRecent;
-    if (this.state.showCrawlStats) {
-      crawlStats = <DocumentCrawlLog crawlStats={ this.state.crawlStats } />;
-    }
 
     if (this.state.crawlStats && this.state.crawlStats.docs.length > 0) {
       mostRecent = this.state.crawlStats.docs[0];
@@ -56,7 +52,7 @@ var DocumentCrawlStats = React.createClass({
               <i className='fa fa-info fa-stack-1x fa-inverse'></i>
             </span>
             Last successful crawl { lastSuccessfulCrawlDate }
-            { crawlStats }
+            <DocumentCrawlLog show={ this.state.showCrawlStats } crawlStats={ this.state.crawlStats } />
           </div>
         </div>
 
