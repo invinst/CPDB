@@ -27,6 +27,7 @@ gulp.task('build_allegation_js', buildAllegationJSTask(false));
 
 gulp.task('build_allegation_sass', ['collectstatic'], buildAllegationCSSTask(true));
 gulp.task('compile_allegation_sass', buildAllegationCSSTask(false));
+gulp.task('circle_allegation_sass', buildAllegationCSSTask(true));
 
 gulp.task('transform_allegation_template', ['collectstatic'], require('./gulp_tasks/transform_allegation_template'));
 
@@ -62,6 +63,7 @@ gulp.task('transform_dashboard_template', ['build_dashboard_sass'],
 
 gulp.task('build_dashboard_sass', ['collectstatic'], buildDashboardCSSTask(true));
 gulp.task('compile_dashboard_sass', buildDashboardCSSTask(false));
+gulp.task('circle_dashboard_sass', buildDashboardCSSTask(true));
 
 gulp.task('build_dashboard_js', buildDashboardJSTask(false));
 gulp.task('build_dashboard_js_minified', ['collectstatic'], buildDashboardJSTask(true));
@@ -83,6 +85,7 @@ gulp.task('transform_mobile_template', ['build_mobile_sass'], require('./gulp_ta
 
 gulp.task('build_mobile_sass', ['collectstatic'], buildMobileCSSTask(true));
 gulp.task('compile_mobile_sass', buildMobileCSSTask(false));
+gulp.task('circle_mobile_sass', buildMobileCSSTask(true));
 
 gulp.task('build_mobile_js', buildMobileJSTask(false));
 gulp.task('build_mobile_js_minified', ['collectstatic'], buildMobileJSTask(true));
@@ -113,7 +116,7 @@ gulp.task('build_sunburst', ['transform_sunburst_template', 'build_sunburst_js_m
 
 gulp.task('circleci', [
   'build_test_sass', 'build_allegation_js', 'build_dashboard_js', 'build_mobile_js', 'build_sunburst_js',
-  'compile_mobile_sass', 'compile_dashboard_sass', 'compile_allegation_sass'
+  'circle_mobile_sass', 'circle_dashboard_sass', 'circle_allegation_sass'
 ]);
 gulp.task('build', ['build_allegation', 'build_dashboard', 'build_mobile', 'build_sunburst']);
 gulp.task('dev', ['watch_allegation', 'watch_dashboard', 'watch_mobile']);
