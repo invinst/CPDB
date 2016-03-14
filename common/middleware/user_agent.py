@@ -13,3 +13,4 @@ class CrawlerDetector(object):
         for botname in BotNames:
             if botname in user_agent:
                 request.is_crawler = True
+                break

@@ -274,6 +274,6 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
 
         self.set_browser(browser)
         self.visit_home()
-        self.until(lambda: self.should_not_see_text('I UNDERSTAND'))
+        self.find('#disclaimer').get_attribute('class').should.contain('fade')
 
         self.set_browser(old_browser)

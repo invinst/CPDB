@@ -67,11 +67,7 @@
     {% endif %}
 
     <script>
-      {% if request.is_crawler %}
-        var SHOW_DISCLAIMER = false;
-      {% else %}
-        var SHOW_DISCLAIMER = {% if DJANGO_ENV != 'test' or request.GET.with_disclaimer %}true{% else %} false {% endif %};
-      {% endif %}
+      var SHOW_DISCLAIMER = {{ show_disclaimer }};
     </script>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/vis/4.2.0/vis.min.js"></script>
