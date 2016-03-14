@@ -2,16 +2,19 @@ var Base = require('../Base.react');
 var React = require('react');
 var ReactDOM = require('react-dom');
 var _ = require('lodash');
-global.jQuery = require('jquery');
-require('bootstrap');
-require('jquery-validation');
 var toastr = require('toastr');
 
 var AddDocumentLinkModalStore = require('../../stores/DocumentSection/AddDocumentLinkModalStore');
 var AddDocumentLinkModalActions = require('../../actions/DocumentSection/AddDocumentLinkModalActions');
 var DocumentAPI = require('../../utils/DocumentRequestAPI');
+var AddDocumentLinkModal;
 
-var AddDocumentLinkModal = React.createClass(_.assign(Base(AddDocumentLinkModalStore), {
+global.jQuery = require('jquery');
+require('bootstrap');
+require('jquery-validation');
+
+
+AddDocumentLinkModal = React.createClass(_.assign(Base(AddDocumentLinkModalStore), {
   updateValue: function (stateName, e) {
     AddDocumentLinkModalActions.formDataChange(stateName, e.target.value);
   },
@@ -82,6 +85,9 @@ var AddDocumentLinkModal = React.createClass(_.assign(Base(AddDocumentLinkModalS
 
   componentDidUpdate: function () {
     var isOpen = this.isOpen();
+    var errorCount,
+      i;
+
     if (isOpen != this.state.isOpen) {
       this.toggleModal();
     }
@@ -91,10 +97,10 @@ var AddDocumentLinkModal = React.createClass(_.assign(Base(AddDocumentLinkModalS
       toastr.success(this.state.flashMessage);
     }
 
-    var errorCount = this.state.errorMessages.length;
+    errorCount = this.state.errorMessages.length;
     if (errorCount > 0) {
       this.waitScreen(false);
-      for (var i = 0; i < errorCount; i++) {
+      for (i = 0; i < errorCount; i++) {
         toastr.error(this.state.errorMessages[i]);
       }
     }

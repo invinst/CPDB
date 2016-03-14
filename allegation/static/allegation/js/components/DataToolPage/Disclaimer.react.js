@@ -1,7 +1,6 @@
 var _ = require('lodash');
 var React = require('react');
 var cookie = require('react-cookie');
-require('utils/jQuery');
 
 var Base = require('components/Base.react');
 var DisclaimerStore = require('stores/DisclaimerStore');

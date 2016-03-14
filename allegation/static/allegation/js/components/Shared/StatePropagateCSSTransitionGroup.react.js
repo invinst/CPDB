@@ -13,7 +13,7 @@ var assign = require('react/lib/Object.assign');
 var ReactTransitionGroup = require('react/lib/ReactTransitionGroup');
 var StatePropagateCSSTransitionGroupChild = require('./StatePropagateCSSTransitionGroupChild.react');
 
-function createTransitionTimeoutPropValidator(transitionType) {
+var createTransitionTimeoutPropValidator = function (transitionType) {
   var timeoutPropName = 'transition' + transitionType + 'Timeout';
   var enabledPropName = 'transition' + transitionType;
 
@@ -32,7 +32,7 @@ function createTransitionTimeoutPropValidator(transitionType) {
       }
     }
   };
-}
+};
 
 var StatePropagateCSSTransitionGroup = React.createClass({
   displayName: 'StatePropagateCSSTransitionGroup',

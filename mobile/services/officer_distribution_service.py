@@ -1,7 +1,8 @@
 from django.db.models import Count
 
 from common.models import Officer
-from mobile.utils.cache_helper import CacheHelper
+from mobile.utils.cache_helper import get_or_set
+from mobile.utils.collection_helper import safe_get
 
 
 class OfficerDistributionService(object):
@@ -11,7 +12,7 @@ class OfficerDistributionService(object):
                                               values_list('allegations_count').
                                               annotate(num=Count('allegations_count')).
                                               order_by('allegations_count'))
-        max_allegations_count = allegations_count_distribution[-1][0]
+        max_allegations_count = safe_get(allegations_count_distribution, -1, (0, 0))[0]
 
         results = [0] * max_allegations_count
 
@@ -22,5 +23,6 @@ class OfficerDistributionService(object):
         return results
 
     @staticmethod
+    @get_or_set('distribution')
     def get_distribution():
-        return CacheHelper.get_or_set('distribution', OfficerDistributionService.calculate_distribution())
+        return OfficerDistributionService.calculate_distribution()

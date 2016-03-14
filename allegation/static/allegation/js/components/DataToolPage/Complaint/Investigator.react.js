@@ -2,9 +2,9 @@ var React = require('react');
 var PropTypes = React.PropTypes;
 var pluralize = require('pluralize');
 var Link = require('react-router').Link;
+var S = require('string');
 
 var OfficerMixin = require('components/DataToolPage/Officer/OfficerMixin.react');
-var StringUtil = require('utils/StringUtil');
 
 
 var Investigator = React.createClass({
@@ -15,12 +15,13 @@ var Investigator = React.createClass({
   mixins: [OfficerMixin],
 
   investigatorLink: function (investigator) {
-    return '/investigator/' + StringUtil.slugify(investigator.name) + '/' + investigator.id;
+    return '/investigator/' + S(investigator.name).slugify().s + '/' + investigator.id;
   },
 
   render: function () {
     var investigator = this.props.complaint.investigator;
     var more = '';
+    var description;
 
     var progressStyle = {
       width: '100%'
@@ -31,7 +32,7 @@ var Investigator = React.createClass({
     };
 
     if (investigator.complaint_count > 1) {
-      var description = (
+      description = (
         <div>{ investigator.complaint_count } { pluralize('case', investigator.complaint_count) }</div>
       );
       if (investigator.discipline_count) {

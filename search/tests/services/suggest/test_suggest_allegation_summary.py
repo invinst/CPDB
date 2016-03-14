@@ -1,9 +1,9 @@
 from allegation.factories import AllegationFactory
 from search.services.suggest.suggest_allegation import SuggestAllegationSummary
-from search.tests.services.suggest.test_suggest_base import SuggestBaseTestCase
+from search.tests.services.suggest.base_test_suggest import BaseSuggestTestCase
 
 
-class SuggestAllegationTestCase(SuggestBaseTestCase):
+class AllegationSuggestTestCase(BaseSuggestTestCase):
     def test_suggest_allegation_summary(self):
         summary_1 = 'some some really long summary I am sorry'
 

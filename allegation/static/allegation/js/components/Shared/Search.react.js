@@ -25,6 +25,15 @@ var Search = React.createClass({
     }
   },
 
+  onKeyPress: function (event) {
+    var keyCode = (event.keyCode ? event.keyCode : event.which);
+
+    if (keyCode == 13) { // Enter key code
+      event.preventDefault();
+      event.stopPropagation();
+    }
+  },
+
   initAutocomplete: function () {
     $('#autocomplete').catcomplete({
       autoFocus: true,
@@ -87,7 +96,7 @@ var Search = React.createClass({
             <div className='input-group'>
               <input type='text' id='autocomplete'
                 placeholder='Search by a name/place/category, or click inside the graphs below'
-                className='ui-autocomplete-input form-control' autoComplete='off'/>
+                className='ui-autocomplete-input form-control' autoComplete='off' onKeyPress={ this.onKeyPress } />
               <span className='input-group-btn'>
                 <button className='btn btn-primary' id='btn-search' type='button'
                   onClick={ this.onSearchClick }>

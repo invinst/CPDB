@@ -10,11 +10,12 @@ var DocumentListStore = require('../../stores/DocumentSection/DocumentListStore'
 var DocumentListActions = require('../../actions/DocumentSection/DocumentListActions');
 var DocumentRequestAPI = require('../../utils/DocumentRequestAPI');
 var DocumentMixin = require('./DocumentMixin');
+var DocumentList;
 
 global.jQuery = require('jquery');
 
 
-var DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
+DocumentList = React.createClass(_.assign(Base(DocumentListStore), {
   mixins: [DocumentMixin],
 
   _onScroll: function (e) {

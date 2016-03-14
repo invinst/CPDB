@@ -2,7 +2,6 @@ var React = require('react');
 var _ = require('lodash');
 var bootbox = require('bootbox');
 var classnames = require('classnames');
-global.jQuery = require('jquery');
 
 var Base = require('components/Base.react');
 var AppConstants = require('../../../constants/AppConstants');
@@ -11,9 +10,13 @@ var StoryListActions = require('actions/OfficerSection/Officer/StoryListActions'
 var TabsActions = require('actions/OfficerSection/Officer/TabsActions');
 var StoryAPI = require('utils/StoryAPI');
 var DateTimeUtil = require('utils/DateTimeUtil');
+var StoryList;
+
+global.jQuery = require('jquery');
 require('jquery.scrollto');
 
-var StoryList = React.createClass(_.assign(Base(StoryListStore), {
+
+StoryList = React.createClass(_.assign(Base(StoryListStore), {
 
   prevent: function (e) {
     if (e) {
@@ -113,13 +116,15 @@ var StoryList = React.createClass(_.assign(Base(StoryListStore), {
   },
 
   render: function () {
+    var deleteBtnClassname;
+
     if (!this.state.stories.length) {
       return (
         <div>There is no story about this officer in system.</div>
       );
     }
 
-    var deleteBtnClassname = classnames('btn btn-primary', {
+    deleteBtnClassname = classnames('btn btn-primary', {
       'hidden': !StoryListStore.hasSelectedStories()
     });
 

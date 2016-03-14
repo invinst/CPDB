@@ -8,6 +8,8 @@ from allegation.views import (
 from allegation.views import PoliceWitnessAPIView
 from allegation.views import (
     OfficerAllegationSummaryApiView, OfficerListAPIView)
+from allegation.views.allegation_search_view import AllegationSearchView
+from allegation.views.allegation_view import AllegationView
 from allegation.views.officer_allegation_analysis_api_view import (
     OfficerAllegationAnalysisAPIView)
 from allegation.views.allegation_download_view import AllegationDownloadView
@@ -23,7 +25,6 @@ from allegation.views.sunburst_image_view import SunburstImageView
 from common.middleware.cache import orderless_cache_page
 
 cache_view = orderless_cache_page(86400 * 90)
-
 
 urlpatterns = [
     url(r'^api/officer-allegations/$',
@@ -60,6 +61,9 @@ urlpatterns = [
     url(r'^api/allegations/session/$',
         csrf_exempt(ensure_csrf_cookie(SessionAPIView.as_view())),
         name='allegation-api-session'),
+    url(r'^q/(?P<term>\w+)/$', cache_view(AllegationSearchView.as_view()), name='search-q-page'),
+    url(r'^s/(?P<term>\w+)/$', cache_view(AllegationSearchView.as_view()), name='search-s-page'),
+    url(r'^complaint/(?P<crid>\d+)/$', cache_view(AllegationView.as_view()), name='complaint-page'),
 
     url(r'^sunburst-image/(?P<hash_id>\w{6})/$', cache_view(SunburstImageView.as_view()), name='sunburst-image'),
     url(r'^sunburst/(?P<hash_id>\w{6})/$', cache_view(SunburstView.as_view()), name='sunburst')

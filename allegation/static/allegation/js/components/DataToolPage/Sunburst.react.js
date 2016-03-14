@@ -13,8 +13,10 @@ var FilterTagsActions = require('actions/FilterTagsActions');
 var SunburstStore = require('stores/SunburstStore');
 var SunburstChartD3 = require('utils/d3utils/SunburstChartD3');
 var SessionAPI = require('utils/SessionAPI');
+var SunburstAPI = require('utils/SunburstAPI');
 var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFilterTagsQueryBuilder');
 var SunburstServerActions = require('actions/DataToolPage/SunburstServerActions');
+var SessionStore = require('stores/SessionStore');
 
 
 var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
@@ -32,10 +34,12 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
   },
 
   initTabs: function () {
+    var i, tab;
+
     if (this.props.tabs) {
       if (this.props.tabs.tabs.length > 0) {
-        for (var i =0; i < this.props.tabs.tabs.length; i++) {
-          var tab = this.props.tabs.tabs[i];
+        for (i =0; i < this.props.tabs.tabs.length; i++) {
+          tab = this.props.tabs.tabs[i];
           if (tab.drawChart) {
             this.props.tabs.tabs[i] = this;
             /* I am sorry for this code, blame: Bang!!!! */
@@ -64,6 +68,8 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
   },
 
   componentWillUnmount: function () {
+    SunburstAPI.resetQueryString();
+
     SunburstStore.removeChangeListener(this._onChange);
     SunburstStore.removeDataChangeListener(this._onDataChange);
     SunburstStore.removeSelectedChangeListener(this._onSelectedChange);
@@ -76,8 +82,11 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
 
   _onSelectedChange: function () {
     var selected = SunburstStore.getSelected();
+    var selectedSunburstArc;
+
     SunburstChartD3.selectArc(selected);
-    SessionAPI.updateSessionInfo({'sunburst_arc': selected.name});
+    selectedSunburstArc = SessionStore.serializeSelectedSunburstArc(selected);
+    SessionAPI.updateSessionInfo({'selected_sunburst_arc': selectedSunburstArc});
   },
 
   _onZoomedOut: function () {
@@ -88,9 +97,11 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
   },
 
   drawSunburst: function () {
+    var selected;
+
     SunburstChartD3.draw(this.getChartData());
 
-    var selected = SunburstStore.getSelected();
+    selected = SunburstStore.getSelected();
 
     if (selected) {
       SunburstChartD3.selectArc(selected);

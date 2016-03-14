@@ -24,6 +24,7 @@ var SettingSection = React.createClass(_.assign(Base(SettingSectionStore), {
               required={ true } />
           </div>
         </div>
+
         <div className='form-group' id='story-types-order-input'>
           <label htmlFor='story_types_order' className='col-lg-2 col-md-2 col-xs-2'>Story Types Order</label>
           <div className='col-lg-10 col-md-10 col-xs-10'>
@@ -34,6 +35,7 @@ var SettingSection = React.createClass(_.assign(Base(SettingSectionStore), {
               handleDrag={ this.handleDrag } />
           </div>
         </div>
+
         <div className='form-group'>
           <label htmlFor='default_site_title' className='col-lg-2 col-md-2 col-xs-2'>
             Requested Document Email Subject
@@ -44,6 +46,7 @@ var SettingSection = React.createClass(_.assign(Base(SettingSectionStore), {
               onChange={ this.change('requested_document_email_subject') } required={ true } />
           </div>
         </div>
+
         <div className='form-group'>
           <label htmlFor='default_site_title' className='col-lg-2 col-md-2 col-xs-2'>
             Requested Document Email Text
@@ -59,6 +62,40 @@ var SettingSection = React.createClass(_.assign(Base(SettingSectionStore), {
               HTML is not supported.
               </em>
             </div>
+          </div>
+        </div>
+
+        <div className='form-group'>
+          <label htmlFor='default_site_title' className='col-lg-2 col-md-2 col-xs-2'>
+            Excel Export Disclaimer
+          </label>
+          <div className='col-lg-10 col-md-10 col-xs-10'>
+            <textarea rows='6' id='export_excel_disclaimer' className='form-control'
+              value={ setting.export_excel_disclaimer }
+              onChange={ this.change('export_excel_disclaimer') } required={ true } >
+            </textarea>
+          </div>
+        </div>
+
+        <div className='form-group'>
+          <label htmlFor='meta_description' className='col-lg-2 col-md-2 col-xs-2'>
+            Meta Description
+          </label>
+          <div className='col-lg-10 col-md-10 col-xs-10'>
+            <input type='text' id='meta_description' className='form-control'
+              value={ setting.meta_description } maxlength={ 255 }
+              onChange={ this.change('meta_description') } required={ true } />
+          </div>
+        </div>
+
+        <div className='form-group'>
+          <label htmlFor='meta_keywords' className='col-lg-2 col-md-2 col-xs-2'>
+            Meta Keywords
+          </label>
+          <div className='col-lg-10 col-md-10 col-xs-10'>
+            <input type='text' id='meta_keywords' className='form-control'
+              value={ setting.meta_keywords } maxlength={ 255 }
+              onChange={ this.change('meta_keywords') } required={ true } />
           </div>
         </div>
       </div>

@@ -4,19 +4,20 @@ var EventEmitter = require('events').EventEmitter;
 var AppConstants = require('../constants/AppConstants');
 
 
-function cloneObject(obj) {
-  var temp;
+var cloneObject = function (obj) {
+  var temp,
+    key;
 
   if (obj === null || typeof obj !== 'object') {
     return obj;
   }
 
   temp = obj.constructor();
-  for (var key in obj) {
+  for (key in obj) {
     temp[key] = cloneObject(obj[key]);
   }
   return temp;
-}
+};
 
 var Base = function (state) {
   return objectAssign({}, EventEmitter.prototype, {

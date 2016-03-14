@@ -2,7 +2,7 @@ import requests
 
 from allegation.factories import AllegationFactory, PoliceWitnessFactory,\
     ComplainingWitnessFactory, OfficerAllegationFactory
-from common.tests.core import BaseLiveTestCase
+from common.tests.core import BaseLiveTestCase, retry_random_fail
 
 
 class DownloadAllegationTestCase(BaseLiveTestCase):
@@ -12,6 +12,7 @@ class DownloadAllegationTestCase(BaseLiveTestCase):
         OfficerAllegationFactory(allegation=allegation)
         PoliceWitnessFactory(crid=allegation.crid)
         ComplainingWitnessFactory(crid=allegation.crid)
+        self.get_admin_settings()
 
         self.visit_home()
         self.browser.execute_script("window.redirect = function () {};")  # disable excel redirect on testing
@@ -23,6 +24,7 @@ class DownloadAllegationTestCase(BaseLiveTestCase):
     def download_link(self):
         return self.find(".download-wrapper a")
 
+    @retry_random_fail
     def test_show_processing(self):
         self.download_link.click()
         self.until(lambda: self.find('.download-wrapper').text.should.equal('Processing'))

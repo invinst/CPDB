@@ -1,10 +1,11 @@
+var c = 0;
+
 if (!global.DEFAULT_SITE_TITLE) {
   global.DEFAULT_SITE_TITLE = 'Citizens Police Data Project';
 }
 if (!global.STORY_TYPES_ORDER) {
   global.STORY_TYPES_ORDER = '';
 }
-var c = 0;
 
 module.exports = {
   CHANGE_EVENT: c++,
@@ -32,6 +33,7 @@ module.exports = {
   SAVE_SESSION: c++,
   SESSION_CREATED: c++,
   RECEIVED_SHARED_SESSION: c++,
+  CLOSE_SHARE_BAR: c++,
 
   ENTER_EMBED_MODE: c++,
   LEAVE_EMBED_MODE: c++,
@@ -50,6 +52,8 @@ module.exports = {
 
   SET_STORY_DOCUMENT_THUMB: c++,
   RECEIVE_STORIES: c++,
+
+  CHANGE_SITE_TITLE: c++,
 
   ADD_TAG: c++,
   TOGGLE_TAGS: c++,
@@ -84,8 +88,9 @@ module.exports = {
   RACE_GENDER_TAB_RECEIVED_DATA: c++,
 
   SET_ACTIVE_TAB: c++,
+  TOGLLE_OVERLAY: c++,
   MAP_TOKEN: '***REMOVED***',
-  MAP_TYPE: 'datamade.7e795301',
+  MAP_TYPE: 'invisibleinstitute.acaf9ef3',
 
   NUMERAL_FORMAT: '0,0',
 
@@ -367,5 +372,8 @@ module.exports = {
     'Termination': '#647a66',
     'Separation': '#4c544c',
     '30+ days': '#930c0c'
-  }
+  },
+
+  DONUT_CHART_DISCIPLINED_COLOR: '#a5b4be',
+  DONUT_CHART_UNDISCIPLINED_COLOR: '#013270'
 };

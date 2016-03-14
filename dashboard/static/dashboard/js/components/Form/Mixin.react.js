@@ -25,7 +25,8 @@ var FormMixin = {
   },
 
   generateFormMediumEditorElement: function (fieldName, label, prefix, required) {
-    var id;
+    var id,
+      className;
 
     if (prefix) {
       id = prefix + fieldName;
@@ -33,7 +34,7 @@ var FormMixin = {
       id = fieldName;
     }
 
-    var className = classnames('medium-editor', id);
+    className = classnames('medium-editor', id);
 
     return (
       <div className='form-group'>

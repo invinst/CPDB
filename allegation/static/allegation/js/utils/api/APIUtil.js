@@ -1,6 +1,3 @@
-require('utils/jQuery');
-
-
 var APIUtil = {
   getJSON: function (url, data, callback) {
     // Shift arguments if data argument was omitted
