@@ -7,6 +7,6 @@ module.exports = function (production) {
     nodePath: 'allegation/static/allegation/js',
     entries: './allegation/static/allegation/js/sunburst-app.js',
     bundleName: 'sunburst-bundle.js',
-    dest: './static/allegation/js/'
+    dest: production ? './static/allegation/js/' : './local_static/allegation/js/'
   });
 };

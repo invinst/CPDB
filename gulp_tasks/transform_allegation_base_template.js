@@ -5,6 +5,7 @@ var source = require('vinyl-source-stream');
 var useref = require('gulp-useref');
 var ignore = require('gulp-ignore');
 var uglify = require('gulp-uglify');
+var minifyCss = require('gulp-minify-css');
 var replaceStaticTagWithRealPath = require('./utils/replace_static_tag_with_real_path');
 
 
@@ -18,19 +19,20 @@ var replaceFunc = replaceStaticTagWithRealPath([
 ]);
 
 module.exports = function () {
-  return gulp.src(['./allegation/templates/allegation/index.html'])
+  return gulp.src(['./allegation/templates/allegation/base.html'])
     .pipe(replace(/<!-- build(?:.|\s)+?<!-- endbuild/g, replaceFunc))
     .pipe(useref({ searchPath: '.' }))
-    .pipe(gulpif('index.html', source('index.html')
-      .pipe(replace(/(<script src=")(js\/combined.js)/g, '$1{% static \'$2\' %}'))
+    .pipe(gulpif('base.html', source('base.html')
+      .pipe(replace(/(<script src=")(js\/allegation_base_combined.js)/g, '$1{% static \'$2\' %}'))
     ))
-    .pipe(gulpif('index.html', source('index.html')
-      .pipe(replace(/(<link.+? href=")(css\/combined.css)/g, '$1{% static \'$2\' %}'))
+    .pipe(gulpif('base.html', source('base.html')
+      .pipe(replace(/(<link.+? href=")(css\/base_combined.css)/g, '$1{% static \'$2\' %}'))
     ))
-    .pipe(gulpif('index.html', source('index.html')
+    .pipe(gulpif('base.html', source('base.html')
       .pipe(gulp.dest('templates/allegation'))
     ))
-    .pipe(ignore.exclude('index.html'))
+    .pipe(ignore.exclude('base.html'))
     .pipe(gulpif('*.js', uglify()))
+    .pipe(gulpif('*.css', minifyCss()))
     .pipe(gulp.dest('static'));
 };

@@ -14,6 +14,8 @@ var buildSunburstJSTask = require('./gulp_tasks/build_sunburst_js');
 
 gulp.task('build_test_sass', require('./gulp_tasks/build_test_sass'));
 
+gulp.task('transform_base_template', ['collectstatic'], require('./gulp_tasks/transform_base_template'));
+
 
 /////////////////////////////////////////////////////////////////
 ///                  ALLEGATION APP TASKS                     ///
@@ -28,6 +30,10 @@ gulp.task('compile_allegation_sass', buildAllegationCSSTask);
 
 gulp.task('transform_allegation_template', ['collectstatic'], require('./gulp_tasks/transform_allegation_template'));
 
+gulp.task('transform_allegation_base_template', ['collectstatic'],
+  require('./gulp_tasks/transform_allegation_base_template')
+);
+
 gulp.task('collect_common_template', ['collectstatic'], require('./gulp_tasks/collect_common_template'));
 
 gulp.task('collect_bower_fonts', ['collectstatic'], require('./gulp_tasks/collect_bower_fonts'));
@@ -41,7 +47,8 @@ gulp.task('watch_allegation_sass', ['compile_allegation_sass'], function () {
 gulp.task('build_allegation', [
   'build_allegation_sass', 'build_allegation_js_minified',
   'transform_allegation_template', 'collect_common_template',
-  'collect_bower_fonts'
+  'collect_bower_fonts', 'transform_allegation_base_template',
+  'transform_base_template'
 ]);
 
 gulp.task('watch_allegation', ['watch_allegation_js', 'watch_allegation_sass']);

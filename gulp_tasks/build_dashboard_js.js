@@ -7,6 +7,6 @@ module.exports = function (production) {
     nodePath: 'dashboard/static/dashboard/js',
     entries: './dashboard/static/dashboard/js/app.js',
     bundleName: 'bundle.js',
-    dest: './static/dashboard/js/'
+    dest: production ? './static/dashboard/js/' : './local_static/dashboard/js/'
   });
 };
