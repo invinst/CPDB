@@ -1,10 +1,20 @@
 var React = require('react');
 
 var DocumentCrawlLog = React.createClass({
+  propTypes: {
+    crawlStats: React.PropTypes.string.isRequired,
+    show: React.PropTypes.string.isRequired
+  },
+
   render: function () {
     var rows = [];
-    var numRows = this.props.crawlStats.docs.length < 10 ? this.props.crawlStats.docs.length : 10;
+    var numRows = 0;
     var i;
+
+    if (this.props.crawlStats.docs) {
+      numRows = this.props.crawlStats.docs.length < 10 ? this.props.crawlStats.docs.length : 10;
+    }
+
 
     if (!this.props.show) {
       return <div></div>;

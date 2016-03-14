@@ -20,8 +20,6 @@ var DocumentCrawlStats = React.createClass({
 
   render: function () {
     var lastSuccessfulCrawlDate = <i className='fa fa-spin fa-spinner'></i>;
-
-
     var chevronClass = classnames({
       'fa fa-chevron-down': !this.state.showCrawlStats,
       'fa fa-chevron-up': this.state.showCrawlStats
