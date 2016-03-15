@@ -5,6 +5,7 @@
   "repository": "https://github.com/facebook/flux",
   "main": "allegation/static/allegation/js/app.js",
   "dependencies": {
+    "babelify": "^7.2.0",
     "bootbox": "^4.4.0",
     "bootstrap": "^3.3.5",
     "bootstrap-datepicker": "^1.4.1",
