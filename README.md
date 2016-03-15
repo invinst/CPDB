@@ -20,4 +20,4 @@ remember to blank out the file in the develop branch so that it is empty again a
 # Gulp commands
 
 - `gulp build`: build everything, only use this command on production.
-- `gulp dev`: watch and compile js/sass files when necessary.
+- `gulp watch_{app}`: watch over and compile js/sass files of the app (allegation, dashboard, mobile) when necessary.
