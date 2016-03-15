@@ -5,9 +5,6 @@ from common.tests.core import BaseAdminTestCase
 
 
 class DocumentRequestTestCase(BaseAdminTestCase):
-    def tearDown(self):
-        super(DocumentRequestTestCase, self).tearDown()
-
     def go_to_documents(self):
         self.element_by_tagname_and_text(
             'span', 'Investigation Documents').click()
