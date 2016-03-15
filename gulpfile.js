@@ -126,4 +126,3 @@ gulp.task('build', function (done) {
     'build_sunburst', 'build_mobile', 'build_dashboard', done
   );
 });
-gulp.task('dev', ['watch_allegation', 'watch_dashboard', 'watch_mobile']);

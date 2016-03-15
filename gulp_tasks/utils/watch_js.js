@@ -8,28 +8,35 @@ var browserify = require('browserify');
 
 
 function watchJS(opts) {
-  var browserifyOpts = _.assign({}, watchify.args, {
-    entries: opts.entries,
-    debug: true
-  });
-  var b;
+  return function () {
+    var browserifyOpts = _.assign({}, watchify.args, {
+      entries: opts.entries,
+      debug: true
+    });
+    var bundler;
 
-  function bundle() {
-    return b.bundle()
-      .pipe(source(opts.fileName))
-      .on('error', gutil.log.bind(gutil, 'Browserify Error'))
-      .pipe(gulp.dest(opts.dest));
-  }
+    function bundleJS(b) {
+      return b.bundle()
+        .pipe(source(opts.fileName))
+        .on('error', gutil.log.bind(gutil, 'Browserify Error'))
+        .pipe(gulp.dest(opts.dest));
+    }
 
-  env.set({
-    'NODE_PATH': opts.nodePath,
-    'NODE_ENV': 'development'
-  });
-  b = watchify(browserify(browserifyOpts));
-  b.on('update', bundle);
-  b.on('log', gutil.log);
+    env.set({
+      'NODE_PATH': opts.nodePath,
+      'NODE_ENV': 'development'
+    });
 
-  return bundle;
+    bundler = watchify(browserify(browserifyOpts));
+
+    bundleJS(bundler);
+    bundler.on('update', function () {
+      bundleJS(bundler);
+    });
+    bundler.on('log', gutil.log);
+
+    return bundler;
+  };
 }
 
 module.exports = watchJS;
