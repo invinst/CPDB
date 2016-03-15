@@ -37,3 +37,14 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 TEMPLATES[0]['DIRS'] = ['templates']
 TEMPLATES[0]['APP_DIRS'] = False
+
+TEMPLATES[0]['OPTIONS']['loaders'] = [
+    'django.template.loaders.filesystem.Loader',
+    'cpdb.loaders.BlackListAppDirectoriesLoader']
+
+TEMPLATE_APP_DIRS_BLACK_LIST = [
+    'allegation',
+    'common',
+    'dashboard',
+    'mobile'
+]
