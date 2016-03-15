@@ -4,17 +4,18 @@ var React = require('react');
 var DocumentCrawlLog = require('components/DocumentSection/DocumentCrawlLog.react');
 var DocumentCrawlStatActions = require('actions/DocumentSection/DocumentCrawlStatActions');
 var DocumentCrawlStatStore = require('stores/DocumentSection/DocumentCrawlStatStore');
+var DocumentCrawlStatAPI = require('utils/DocumentCrawlStatAPI');
 
 var DocumentCrawlStats = React.createClass({
   getInitialState: function () {
     return {
-      crawlStats: false,
+      crawlStats: {},
       showCrawlStats: false
     };
   },
 
   componentDidMount: function () {
-    DocumentCrawlStatActions.getCrawlStats();
+    DocumentCrawlStatAPI.get();
     DocumentCrawlStatStore.addChangeListener(this._onChange);
   },
 
@@ -26,7 +27,7 @@ var DocumentCrawlStats = React.createClass({
     });
     var mostRecent;
 
-    if (this.state.crawlStats && this.state.crawlStats.docs.length > 0) {
+    if (this.state.crawlStats.docs && this.state.crawlStats.docs.length > 0) {
       mostRecent = this.state.crawlStats.docs[0];
       lastSuccessfulCrawlDate = (
         <span>
@@ -34,7 +35,7 @@ var DocumentCrawlStats = React.createClass({
           and ran on <strong>{ mostRecent.timestamp }</strong>.
           <span className='pull-right'>
 
-            <button className='pull-right' onClick={ this._toggleCrawlStats }>
+            <button className='show-crawl-log pull-right' onClick={ this._toggleCrawlStats }>
               <i className={ chevronClass }></i></button>
           </span>
         </span>

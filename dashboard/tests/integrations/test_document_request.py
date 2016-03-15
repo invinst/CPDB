@@ -165,6 +165,7 @@ class DocumentRequestTestCase(BaseAdminTestCase):
         documents[1].text.should.contain(str(one_request_allegation.crid))
 
     def test_display_last_successful_crawl(self):
+        DocumentCrawler.objects.create(num_documents=100)
         DocumentCrawler.objects.create(num_documents=155)
         self.go_to_documents()
         self.until_ajax_complete()
@@ -173,3 +174,6 @@ class DocumentRequestTestCase(BaseAdminTestCase):
         self.until_ajax_complete()
 
         self.find('.last-successful-crawl-date').text.should.contain('155')
+
+        self.find('.show-crawl-log').click()
+        self.find('.document-crawl-log').text.should.contain('100')

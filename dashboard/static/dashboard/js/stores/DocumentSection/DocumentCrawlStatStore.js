@@ -3,7 +3,6 @@ var EventEmitter = require('events').EventEmitter;
 
 var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var AppConstants = require('../../constants/AppConstants');
-var DocumentCrawlStatAPI = require('utils/DocumentCrawlStatAPI');
 
 var _state = {};
 
@@ -30,11 +29,6 @@ AppDispatcher.register(function (action) {
     case AppConstants.RECEIVED_CRAWL_STATS:
       _state.crawlStats = action.data;
       DocumentCrawlStatStore.emitChange();
-      break;
-
-
-    case AppConstants.GET_CRAWL_STATS:
-      DocumentCrawlStatAPI.get();
       break;
 
     case AppConstants.TOGGLE_CRAWL_STATS:

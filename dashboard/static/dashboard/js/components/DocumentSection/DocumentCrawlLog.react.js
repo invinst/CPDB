@@ -2,8 +2,8 @@ var React = require('react');
 
 var DocumentCrawlLog = React.createClass({
   propTypes: {
-    crawlStats: React.PropTypes.string.isRequired,
-    show: React.PropTypes.string.isRequired
+    crawlStats: React.PropTypes.object.isRequired,
+    show: React.PropTypes.bool.isRequired
   },
 
   render: function () {
@@ -30,7 +30,7 @@ var DocumentCrawlLog = React.createClass({
           </div>
         );
       }
-      return (<div>
+      return (<div className='document-crawl-log'>
         { rows }
       </div>);
     }

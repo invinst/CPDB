@@ -2,13 +2,6 @@ var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var AppConstants = require('../../constants/AppConstants');
 
 var DocumentCrawlStatActions = {
-  getCrawlStats: function (data) {
-    AppDispatcher.dispatch({
-      actionType: AppConstants.GET_CRAWL_STATS,
-      data: data
-    });
-  },
-
   setCrawlStats: function (data) {
     AppDispatcher.dispatch({
       actionType: AppConstants.RECEIVED_CRAWL_STATS,
