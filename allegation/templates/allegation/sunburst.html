@@ -1,21 +1,16 @@
 <!DOCTYPE html>
-{% load staticfiles compress jsonify %}
+{% load staticfiles jsonify %}
 <html>
   <head>
-      {% compress css %}
+      <!-- build:css css/sunburst_combined.css -->
       <link rel="stylesheet" type="text/css" href="{% static 'bootstrap/dist/css/bootstrap.min.css' %}" />
       <link rel="stylesheet" type="text/css" href="{% static 'components-font-awesome/css/font-awesome.min.css' %}" />
-      {% endcompress %}
-
-      {% compress css %}
-      <link rel="stylesheet" type="text/sass" href="{% static 'sass/style.sass' %}" />
-      {% endcompress %}
+      <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
+      <!-- endbuild -->
   </head>
   <body>
     <div id='root'></div>
-    {% compress js %}
-      <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
-    {% endcompress %}
+    <script src="{% static 'jquery/dist/jquery.min.js' %}"></script>
     <script type="text/javascript">
         var SUNBURST_DATA = {{ sunburst_data | jsonify }};
         var SUNBURST_ARC = "{{ sunburst_arc }}";

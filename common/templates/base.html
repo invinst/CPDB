@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% load staticfiles compress %}
+{% load staticfiles %}
 <html>
 <head>
     <title>{% block title %} Police Misconduct in Chicago {% endblock %}</title>
@@ -27,7 +27,7 @@
         <link rel="stylesheet" type="text/css" href="{% static 'bootstrap-material-design/dist/css/roboto.min.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'toastr/toastr.min.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'components-font-awesome/css/font-awesome.min.css' %}" />
-        <link rel="stylesheet" type="text/sass" href="{% static 'sass/style.sass' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'icomoon/icomoon.css' %}" />
 
     {% endblock %}
@@ -70,21 +70,19 @@
   <script src='https://api.tiles.mapbox.com/mapbox.js/plugins/leaflet-heat/v0.1.3/leaflet-heat.js'></script>
 {% endblock %}
 {% block footerjs %}
-  {% compress js %}
-
-    <script src="{% static 'js/jquery.mobile.custom.min.js' %}"></script>
-    <script src="{% static 'js/jquery-ui.custom.min.js' %}"></script>
-    <script src="{% static 'jquery.cookie/jquery.cookie.js' %}"></script>
-    <script src="{% static 'js/head_define.js' %}"></script>
-
-    <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'bootstrap-material-design/dist/js/material.min.js' %}"></script>
-    <script src="{% static 'toastr/toastr.min.js' %}"></script>
-    <script src="{% static 'moment/min/moment.min.js' %}"></script>
-    <script src="{% static 'underscore/underscore-min.js' %}"></script>
-    <script src="{% static 'js/foot_define.js' %}"></script>
-    {% include "google_analytics.html" %}
-  {% endcompress %}
+  <!-- build:js js/base_combined.js -->
+  <script src="{% static 'js/jquery.mobile.custom.min.js' %}"></script>
+  <script src="{% static 'js/jquery-ui.custom.min.js' %}"></script>
+  <script src="{% static 'jquery.cookie/jquery.cookie.js' %}"></script>
+  <script src="{% static 'js/head_define.js' %}"></script>
+  <script src="{% static 'bootstrap/dist/js/bootstrap.min.js' %}"></script>
+  <script src="{% static 'bootstrap-material-design/dist/js/material.min.js' %}"></script>
+  <script src="{% static 'toastr/toastr.min.js' %}"></script>
+  <script src="{% static 'moment/min/moment.min.js' %}"></script>
+  <script src="{% static 'underscore/underscore-min.js' %}"></script>
+  <script src="{% static 'js/foot_define.js' %}"></script>
+  <!-- endbuild -->
+  {% include "google_analytics.html" %}
 {% endblock %}
 
 </body>

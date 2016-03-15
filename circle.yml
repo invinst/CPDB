@@ -22,12 +22,10 @@ dependencies:
     - PYTHON=python2 npm install -g bower@1.7.0
     - PYTHON=python2 npm install -g eslint@2.0.0
     - PYTHON=python2 npm install -g eslint-plugin-react@3.16.1
+    - PYTHON=python2 npm install -g gulp-cli@1.2.1
     - python manage.py bower_install
     - PYTHON=python2 npm install
-    - PYTHON=python2 npm run circleci
-    - PYTHON=python2 npm run circleci_admin
-    - PYTHON=python2 npm run circleci_mobile
-    - PYTHON=python2 npm run circleci_sunburst
+    - PYTHON=python2 gulp circleci
     - pyenv local 3.4.2
   cache_directories:
     - "bower_components"
