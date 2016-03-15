@@ -12,13 +12,18 @@ var buildMobileCSSTask = require('./gulp_tasks/build_mobile_sass');
 
 var buildSunburstJSTask = require('./gulp_tasks/build_sunburst_js');
 
+var mkdirTask = require('./gulp_tasks/mkdir');
+
 
 gulp.task('build_test_sass', require('./gulp_tasks/build_test_sass'));
 
 gulp.task('transform_base_template', require('./gulp_tasks/transform_base_template'));
 
+gulp.task('mkdir_static', mkdirTask('static'));
+gulp.task('mkdir_local_static', mkdirTask('local_static'));
+
 gulp.task('collect_all_templates', require('./gulp_tasks/collect_all_templates'));
-gulp.task('collectstatic', require('./gulp_tasks/collectstatic'));
+gulp.task('collectstatic', ['mkdir_static', 'mkdir_local_static'], require('./gulp_tasks/collectstatic'));
 
 
 /////////////////////////////////////////////////////////////////
