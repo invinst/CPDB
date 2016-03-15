@@ -11,10 +11,11 @@ var InvestigationList = React.createClass({
 
   renderInvestigations: function () {
     var rows = [];
+    var i, complaint, allegation;
 
-    for (var i = 0; i < this.props.complaints.length; i++) {
-      var complaint = this.props.complaints[i];
-      var allegation = complaint.allegation;
+    for (i = 0; i < this.props.complaints.length; i++) {
+      complaint = this.props.complaints[i];
+      allegation = complaint.allegation;
 
       rows.push(<InvestigationListRow key={ i } complaint={ complaint } finding={ allegation.final_finding }/>);
     }

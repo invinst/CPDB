@@ -62,6 +62,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'common.middleware.subdomain.SubdomainURLRoutingMiddleware',
     'common.middleware.mobile_redirect.MobileRedirectMiddleware',
+    'common.middleware.user_agent.CrawlerDetector',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -192,6 +193,8 @@ CACHES = {
         }
     },
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.mailgun.org'

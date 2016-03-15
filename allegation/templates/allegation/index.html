@@ -13,8 +13,8 @@
     <meta http-equiv="cache-control" content="public" />
     <meta name="robots" content="follow, all" />
     <meta name="language" content="{{ LANGUAGE_CODE }}" />
-    <meta name="description" content="{% block meta-description %}The Citizens Police Data Project stores a searchable database of police disciplinary information obtained from the City of Chicago.{% endblock %}" />
-    <meta name="keywords" content="{% block meta-keywords %}Chicago Police Department, Citizens Police Data Project, Invisible Institute, Police, Allegations, Disciplines{% endblock %}" />
+    <meta name="description" content="{% block meta-description %}{{ admin_settings.meta_description }}{% endblock %}" />
+    <meta name="keywords" content="{% block meta-keywords %}{{ admin_settings.meta_keywords }}{% endblock %}" />
     <title>{{ admin_settings.default_site_title }}</title>
     {% if og_image %}
       <meta property="og:title" content="{{ site_title }}" />
@@ -66,15 +66,9 @@
       <script src="{% static 'js/blanket.js' %}"></script>
     {% endif %}
 
-    {% if DJANGO_ENV != 'test' or request.GET.with_disclaimer %}
-      <script>
-        var SHOW_DISCLAIMER = true;
-      </script>
-    {% else %}
-      <script>
-        var SHOW_DISCLAIMER = false;
-      </script>
-    {% endif %}
+    <script>
+      var SHOW_DISCLAIMER = {{ show_disclaimer }};
+    </script>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/vis/4.2.0/vis.min.js"></script>
 

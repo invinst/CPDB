@@ -2,6 +2,8 @@ import json
 import os
 import threading
 import time
+import sure  # NOQA
+from datetime import timedelta, datetime
 from contextlib import contextmanager
 
 from bs4 import BeautifulSoup
@@ -16,7 +18,7 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.select import Select
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-import sure  # NOQA
+from functools import wraps
 
 from api.models import Setting
 from common.factories import UserFactory
@@ -97,6 +99,27 @@ class OpenNewBrowser(object):
         world.browser = self.browser
 
 
+def retry_random_fail(f, num_retries=3):
+    @wraps(f)
+    def decorated(*args):
+        test_case = args[0]
+
+        fail_counter = 0
+
+        while True:
+            try:
+                return f(test_case)
+            except:
+                test_case.browser.close()
+
+                fail_counter += 1
+
+                if fail_counter == num_retries:
+                    raise
+
+    return decorated
+
+
 class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     _multiprocess_can_split_ = True
 
@@ -104,6 +127,9 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     source_dir = os.environ.get('CIRCLE_ARTIFACTS')
 
     DESKTOP_BROWSER_SIZE = {'width': 1230, 'height': 1200}
+
+    def set_browser(self, browser):
+        world.browser = browser
 
     def tearDown(self):
         if world.browser is not None:
@@ -191,10 +217,10 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         action_chains.perform()
         self.sleep(1)
 
-    def should_see_text(self, text):
+    def should_see_text(self, text, parent='body'):
         if not isinstance(text, str):
             text = str(text)
-        self.find('body').text.should.contain(text)
+        self.find(parent).text.should.contain(text)
 
     def should_see_texts(self, texts):
         body = self.find('body').text
@@ -389,7 +415,7 @@ class BaseLivePhoneTestCase(MobileUrlMixins, BaseLiveTestCase):
         browser = WebDriver(
             capabilities=desired_capabilities,
             firefox_profile=self.init_firefox_profile())
-        browser.implicitly_wait(10)
+        browser.implicitly_wait(3)
         browser.set_window_size(**self.IPHONE6_BROWSER_SIZE)
         return browser
 
@@ -480,7 +506,8 @@ def switch_to_popup(driver):
     with switch_to_popup(driver):
         ('https://www.facebook.com' in browser.current_url).should.be.true
     """
-    while len(driver.window_handles) < 2:
+    timeout = datetime.now() + timedelta(seconds=5)
+    while len(driver.window_handles) < 2 and datetime.now() <= timeout:
         pass
     driver.switch_to.window(driver.window_handles[1])
     yield None

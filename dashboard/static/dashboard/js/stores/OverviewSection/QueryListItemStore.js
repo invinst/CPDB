@@ -28,8 +28,9 @@ var QueryListItemStore = assign({}, EventEmitter.prototype, {
 
   setRawData: function (data) {
     var rawData = {};
+    var period;
 
-    for (var period in data) {
+    for (period in data) {
       rawData[period] = Object.keys(data[period]);
     }
 

@@ -177,6 +177,14 @@ module.exports = {
     '712': 'Violence Reduction Initiative - South'
   },
 
+  OFFICER_SUMMARY_MAP: {
+    'Rank': 'rank',
+    'Unit': 'unit',
+    'Joined': 'appt_date',
+    'Sex': 'gender',
+    'Race': 'race'
+  },
+
   OFFICER_COMPLAINT_COUNT_RANGE: [20, 9, 3, 2, 0],
 
   // API endpoints

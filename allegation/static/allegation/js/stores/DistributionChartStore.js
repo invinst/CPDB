@@ -24,8 +24,7 @@ var ajax = null;
 
 var GRAPH_ELEM_SEL = '#complained-officers .graph';
 
-
-function drawChart(col, rotated) {
+var drawChart = function (col, rotated) {
   rotated = typeof rotated !== 'undefined' ? rotated : false;
 
   c3.generate({
@@ -106,8 +105,7 @@ function drawChart(col, rotated) {
       }
     }
   });
-}
-
+};
 
 var rotate = false;
 var col = [];
@@ -127,13 +125,16 @@ var DistributionChartStore = assign({}, EventEmitter.prototype, {
     this.update();
   },
   update: function () {
+    var queryString;
+
     if (!('element' in _state)) {
       return;
     }
     if (ajax) {
       ajax.abort();
     }
-    var queryString = AllegationFilterTagsQueryBuilder.buildQuery();
+
+    queryString = AllegationFilterTagsQueryBuilder.buildQuery();
     ajax = $.get('/officer/count/?by=num_complaints&' + queryString, function (data) {
       drawChart(data);
     });

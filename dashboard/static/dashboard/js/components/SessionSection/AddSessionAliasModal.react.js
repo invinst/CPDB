@@ -1,14 +1,18 @@
-var Base = require('../Base.react');
-var React = require('react');
 var _ = require('lodash');
+var toastr = require('toastr');
+var React = require('react');
+
+var AddSessionAliasModalStore = require('stores/SessionSection/AddSessionAliasModalStore');
+var AddSessionAliasModalActions = require('actions/SessionSection/AddSessionAliasModalActions');
+var Base = require('../Base.react');
+var AddSessionAliasModal;
+
 global.jQuery = require('jquery');
 require('bootstrap');
 require('jquery-validation');
-var AddSessionAliasModalStore = require('stores/SessionSection/AddSessionAliasModalStore');
-var AddSessionAliasModalActions = require('actions/SessionSection/AddSessionAliasModalActions');
-var toastr = require('toastr');
 
-var AddSessionAliasModal = React.createClass(_.assign(Base(AddSessionAliasModalStore), {
+
+AddSessionAliasModal = React.createClass(_.assign(Base(AddSessionAliasModalStore), {
   updateValue: function (stateName, e) {
     AddSessionAliasModalActions.formDataChange(stateName, e.target.value);
   },

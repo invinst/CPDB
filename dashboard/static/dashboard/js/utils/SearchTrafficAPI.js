@@ -1,11 +1,13 @@
 var AppConstants = require('../constants/AppConstants');
 var SearchTrafficServerActions = require('../actions/SearchTrafficServerActions');
-global.jQuery = require('jquery');
 
 var ajax = null;
+var SearchTrafficAPI;
+
+global.jQuery = require('jquery');
 
 
-var SearchTrafficAPI = {
+SearchTrafficAPI = {
   getTopQueries: function () {
     if (ajax) {
       ajax.abort();

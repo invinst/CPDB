@@ -1,7 +1,6 @@
 var React = require('react');
 var RouterMixin = require('react-mini-router').RouterMixin;
 
-require('../stores/ContentStore.js');
 var OverviewSection = require('./OverviewSection.react');
 var OfficerSection = require('./OfficerSection.react');
 var SearchSection = require('./SearchSection.react');
@@ -10,9 +9,12 @@ var DocumentSection = require('./DocumentSection.react');
 var SettingSection = require('components/SettingSection.react');
 var InterfaceTextSection = require('components/InterfaceTextSection.react');
 
+var Content;
+
+require('../stores/ContentStore.js');
 
 
-var Content = React.createClass({
+Content = React.createClass({
   mixins: [RouterMixin],
 
   getInitialState: function () {

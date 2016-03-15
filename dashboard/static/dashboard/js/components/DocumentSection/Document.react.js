@@ -13,13 +13,13 @@ var AllegationDocumentPresenter = require('presenters/AllegationDocumentPresente
 
 var Document = React.createClass(_.assign(Base(DocumentStore), {
   propTypes: {
-    documentId: PropTypes.string,
+    documentId: PropTypes.string
   },
   mixins: [DocumentMixin],
 
   componentDidMount: function () {
     DocumentStore.addChangeListener(this._onChange);
-    DocumentRequestAPI.getSingleDocument(this.props.documentId)
+    DocumentRequestAPI.getSingleDocument(this.props.documentId);
   },
 
   goBack: function (event) {
@@ -42,12 +42,15 @@ var Document = React.createClass(_.assign(Base(DocumentStore), {
   render: function () {
     var document = this.state.document;
     var documentPresenter = AllegationDocumentPresenter(document);
+    var statusClass,
+      className;
+
     if (!document) {
       return <div></div>;
     }
 
-    var statusClass = classnames('status', documentPresenter.documentStatus);
-    var className = classnames('fa', 'fa-' + documentPresenter.documentStatusIcon);
+    statusClass = classnames('status', documentPresenter.documentStatus);
+    className = classnames('fa', 'fa-' + documentPresenter.documentStatusIcon);
 
     return (
       <div>

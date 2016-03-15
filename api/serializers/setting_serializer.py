@@ -12,5 +12,7 @@ class SettingSerializer(serializers.HyperlinkedModelSerializer):
             'story_types_order',
             'requested_document_email_subject',
             'requested_document_email_text',
+            'meta_description',
+            'meta_keywords',
             'export_excel_disclaimer'
             )

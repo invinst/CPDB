@@ -45,6 +45,7 @@ class OfficerFactory(factory.django.DjangoModelFactory):
         lambda n: random.choice(list(GENDER_DICT.keys())))
     race = factory.Sequence(lambda n: random.choice(list(RACES_DICT.keys())))
     allegations_count = factory.Sequence(lambda n: n)
+    birth_year = factory.Sequence(lambda n: fake.random_int(min=1910, max=2000))
 
 
 class PoliceWitnessFactory(factory.django.DjangoModelFactory):
@@ -60,6 +61,8 @@ class InvestigatorFactory(factory.django.DjangoModelFactory):
         django_get_or_create = ('name',)
 
     name = factory.Sequence(lambda n: capitalize_word())
+    raw_name = factory.Sequence(lambda n: capitalize_word())
+    current_rank = factory.Sequence(lambda n: capitalize_word())
     complaint_count = factory.Sequence(lambda n: fake.random_int())
 
 
@@ -77,6 +80,7 @@ class ComplainingWitnessFactory(factory.django.DjangoModelFactory):
     crid = factory.Sequence(lambda n: fake.random_int(min=1000))
     gender = factory.Sequence(lambda n: ['M', 'F'][n % 2])
     race = factory.Sequence(lambda n: RACES[n % len(RACES)][0])
+    age = factory.Sequence(lambda n: fake.random_int(min=10, max=90))
 
 
 class AllegationFactory(factory.django.DjangoModelFactory):
@@ -106,6 +110,12 @@ class AllegationFactory(factory.django.DjangoModelFactory):
                 if not self.point:
                     self.point = area.polygon.centroid
                     self.save()
+
+    @factory.post_generation
+    def investigator_name(self, create, extracted, **kwargs):
+        if self.investigator is not None:
+            self.investigator_name = self.investigator.raw_name
+            self.save()
 
 
 class OfficerAllegationFactory(factory.django.DjangoModelFactory):

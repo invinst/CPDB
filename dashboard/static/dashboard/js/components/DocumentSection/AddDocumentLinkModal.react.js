@@ -1,18 +1,19 @@
-var Base = require('../Base.react');
+var _ = require('lodash');
 var React = require('react');
 var ReactDOM = require('react-dom');
-var _ = require('lodash');
-global.jQuery = require('jquery');
-require('bootstrap');
-require('jquery-validation');
-var toastr = require('toastr');
 
+var Base = require('components/Base.react');
 var AddDocumentLinkModalStore = require('stores/DocumentSection/AddDocumentLinkModalStore');
 var AddDocumentLinkModalActions = require('actions/DocumentSection/AddDocumentLinkModalActions');
 var DocumentRequestAPI = require('utils/DocumentRequestAPI');
+var AddDocumentLinkModal;
+
+global.jQuery = require('jquery');
+require('bootstrap');
+require('jquery-validation');
 
 
-var AddDocumentLinkModal = React.createClass(_.assign(Base(AddDocumentLinkModalStore), {
+AddDocumentLinkModal = React.createClass(_.assign(Base(AddDocumentLinkModalStore), {
   updateValue: function (stateName, e) {
     AddDocumentLinkModalActions.formDataChange(stateName, e.target.value);
   },
@@ -97,7 +98,7 @@ var AddDocumentLinkModal = React.createClass(_.assign(Base(AddDocumentLinkModalS
     if (isOpen != this.state.isOpen) {
       this.toggleModal();
     }
-  },
+  }
 }));
 
 module.exports = AddDocumentLinkModal;

@@ -6,11 +6,11 @@ var FilterTagStore = require('stores/FilterTagStore');
 var AppConstants = require('constants/AppConstants');
 var numeral = require('numeral');
 
-function getChildRowState() {
+var getChildRowState = function () {
   return {
     selected: false
   };
-}
+};
 
 
 var SummaryChildRow = React.createClass({
@@ -25,14 +25,18 @@ var SummaryChildRow = React.createClass({
   },
 
   onClick: function (e) {
+    var parent,
+      child,
+      tagValue;
+
     e.preventDefault();
 
-    var parent = this.props.category;
+    parent = this.props.category;
     FilterTagsActions.removeTag('cat__category', parent.name);
 
-    var child = this.props.subcategory;
+    child = this.props.subcategory;
     // Generate tagValue on server instead
-    var tagValue = FilterTagStore.generateTagValue('cat', child.id, 'Allegation type', child.name);
+    tagValue = FilterTagStore.generateTagValue('cat', child.id, 'Allegation type', child.name);
 
     if (this.state.selected) {
       FilterTagsActions.removeTag(tagValue.category, tagValue.value);

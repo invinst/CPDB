@@ -11,6 +11,8 @@ var SiteTitleActions = require('actions/SiteTitleActions');
 var SiteTitleStore = require('stores/SiteTitleStore');
 var SessionStore = require('stores/SessionStore');
 
+var DEFAULT_TITLE_FONT = '21px Arial, Helvetica, sans-serif';
+
 
 var SiteTitle = React.createClass({
   propTypes: {
@@ -89,12 +91,21 @@ var SiteTitle = React.createClass({
 
   render: function () {
     var disabled = !this.props.changable;
+    var inputWidth = DOMUtils.getTextWidth(this.state.siteTitle, DEFAULT_TITLE_FONT);
+
+    // Should use Sanfrancisco font but it's load asynchronous we must choose a browser font
+    // to avoid weird style on input box
+    var siteTitleStyle = {
+      width: inputWidth / 1.05,
+      maxWidth: '100%'
+    };
 
     return (
       <div className='site-title pull-left'>
         <input ref='siteTitle' className='site-title-input'
           type='text' value={ this.state.siteTitle }
-          disabled={ disabled } onChange={ this._onTitleChange } />
+          disabled={ disabled } onChange={ this._onTitleChange }
+          style={ siteTitleStyle }/>
         { this.renderDottedUnderline() }
       </div>
     );

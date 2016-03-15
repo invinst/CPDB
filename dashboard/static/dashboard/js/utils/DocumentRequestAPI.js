@@ -3,12 +3,12 @@ var toastr = require('toastr');
 
 var AppConstants = require('../constants/AppConstants');
 
-var DocumentSectionStore = require('stores/DocumentSectionStore');
 var DocumentListStore = require('stores/DocumentSection/DocumentListStore');
 var DocumentListActions = require('actions/DocumentSection/DocumentListActions');
 var DocumentActions = require('actions/DocumentSection/DocumentActions');
 var TabsStore = require('stores/DocumentSection/TabsStore');
 var AddDocumentLinkModalActions = require('actions/DocumentSection/AddDocumentLinkModalActions');
+var DocumentRequestAnalysisAPI = require('utils/DocumentRequestAnalysisAPI');
 
 var ajax = null;
 
@@ -25,13 +25,16 @@ var DocumentRequestAPI = {
   },
 
   getDocuments: function () {
+    var tabsState,
+      params;
+
     if (ajax) {
       ajax.abort();
     }
 
-    var tabsState = TabsStore.getState();
+    tabsState = TabsStore.getState();
 
-    var params = {
+    params = {
       'request_document_type': tabsState.active,
       'type': tabsState.documentType,
       'ordering': DocumentListStore.getSortOrder()
@@ -43,10 +46,12 @@ var DocumentRequestAPI = {
   },
 
   getMoreDocuments: function () {
+    var nextPage;
+
     if (ajax) {
       ajax.abort();
     }
-    var nextPage = DocumentListStore.getState().next;
+    nextPage = DocumentListStore.getState().next;
 
     if (!nextPage) {
       return;
@@ -58,11 +63,13 @@ var DocumentRequestAPI = {
   },
 
   addLink: function (link, document) {
+    var params;
+
     if (ajax) {
       ajax.abort();
     }
 
-    var params = {
+    params = {
       'link': link,
       'id': _.get(document, 'id'),
       'documentType': _.get(document, 'type', TabsStore.getState().documentType)
@@ -88,13 +95,15 @@ var DocumentRequestAPI = {
   },
 
   getSingleDocumentByCrid: function (crid, type) {
+    var params;
+
     if (ajax) {
       ajax.abort();
     }
 
-    var params = {
-      crid: crid,
-      document_type: type
+    params = {
+      'crid': crid,
+      'document_type': type
     };
 
     ajax = jQuery.getJSON(AppConstants.DOCUMENT_REQUEST_END_POINT, params, function (data) {
@@ -104,7 +113,7 @@ var DocumentRequestAPI = {
         DocumentListActions.setActive(data.results[0]);
       }
     });
-  },
+  }
 };
 
 module.exports = DocumentRequestAPI;

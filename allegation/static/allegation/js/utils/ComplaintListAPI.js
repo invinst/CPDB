@@ -1,5 +1,4 @@
 var _ = require('lodash');
-require('utils/jQuery');
 
 var AllegationFetcherQueryBuilder = require('utils/querybuilders/AllegationFetcherQueryBuilder');
 var AppConstants = require('../constants/AppConstants');
@@ -11,8 +10,11 @@ var ajax = null;
 
 var ComplaintListAPI = {
   preloadDataForOtherTab: function () {
-    for (var filter in AppConstants.FILTERS) {
-      var params = AllegationFetcherQueryBuilder.buildQueryParams(filter);
+    var filter,
+      params;
+
+    for (filter in AppConstants.FILTERS) {
+      params = AllegationFetcherQueryBuilder.buildQueryParams(filter);
       ajax = APIUtil.getJSON(AppConstants.ALLEGATIONS_API_ENDPOINT, params, function (data) {
       });
     }

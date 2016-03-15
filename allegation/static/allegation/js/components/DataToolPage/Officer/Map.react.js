@@ -1,14 +1,16 @@
-require('mapbox.js');
-require('leaflet.markercluster');
 var React = require('react');
 var PropTypes = React.PropTypes;
 var ReactDOM = require('react-dom');
 
 var _map = null;
 var AppConstants = require('constants/AppConstants');
+var Map;
+
+require('mapbox.js');
+require('leaflet.markercluster');
 
 
-var Map = React.createClass({
+Map = React.createClass({
   propTypes: {
     options: PropTypes.object,
     officer: PropTypes.object,
@@ -25,7 +27,7 @@ var Map = React.createClass({
   drawHeatMap: function (queryString) {
     $.getJSON('/api/officer-allegations/gis/?' + queryString, function (markers) {
 
-      function iconCreateFunction(cluster) {
+      var iconCreateFunction = function (cluster) {
         var childCount = cluster.getChildCount();
 
         var className = ' marker-cluster-';
@@ -46,7 +48,7 @@ var Map = React.createClass({
           className: 'marker-cluster' + className,
           iconSize: new L.Point(size, size)
         });
-      }
+      };
 
       var _markers = L.markerClusterGroup({
         spiderfyOnMaxZoom: true,
@@ -54,17 +56,17 @@ var Map = React.createClass({
         singleMarkerMode: true
       });
       var _controls = {};
-      _controls['markers'] = _markers;
-      _map.addLayer(_markers);
 
       var markerLength = markers.features.length;
       var start = 0;
       var count = 3000;
 
-      function addMarkers() {
+      var addMarkers = function () {
         var features = markers.features.slice(start, start + count);
+        var featuresMarkers;
+
         start += count;
-        var featuresMarkers = L.geoJson({features: features}, {
+        featuresMarkers = L.geoJson({features: features}, {
           pointToLayer: L.mapbox.marker.style,
           style: function (feature) {
             return feature.properties;
@@ -89,19 +91,27 @@ var Map = React.createClass({
         setTimeout(function () {
           addMarkers();
         }, 0.5);
-      }
+      };
+
+      _controls['markers'] = _markers;
+      _map.addLayer(_markers);
 
       addMarkers();
     });
   },
   initMap: function (opts) {
     var element = ReactDOM.findDOMNode(this);
-    opts = opts || {'maxZoom': 17, 'minZoom': 10, 'scrollWheelZoom': false};
-    var defaultZoom = 'defaultZoom' in opts ? opts['defaultZoom'] : 12;
+    var defaultZoom,
+      southWest,
+      northEast,
+      maxBounds;
 
-    var southWest = L.latLng(41.143501411390766, -88.53057861328125);
-    var northEast = L.latLng(42.474122772511485, -85.39947509765625);
-    var maxBounds = L.LatLngBounds(southWest, northEast);
+    opts = opts || {'maxZoom': 17, 'minZoom': 10, 'scrollWheelZoom': false};
+    defaultZoom = 'defaultZoom' in opts ? opts['defaultZoom'] : 12;
+
+    southWest = L.latLng(41.143501411390766, -88.53057861328125);
+    northEast = L.latLng(42.474122772511485, -85.39947509765625);
+    maxBounds = L.LatLngBounds(southWest, northEast);
 
     _map = L.mapbox.map(element, AppConstants.MAP_TYPE, opts)
       .setView([41.870839118528714, -87.6272964477539], defaultZoom);

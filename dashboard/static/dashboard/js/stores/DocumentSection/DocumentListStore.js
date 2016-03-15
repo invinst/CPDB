@@ -10,7 +10,7 @@ var _state = {
   locked: false,
   sortBy: 'number_of_request',
   order: -1,
-  next: '',
+  next: ''
 };
 
 var DocumentListStore = _.assign(Base(_state), {
@@ -19,11 +19,14 @@ var DocumentListStore = _.assign(Base(_state), {
       return (_state['order'] > 0 ? '' : '-') + _state['sortBy'];
     }
     return '';
-  },
+  }
 });
 
 AppDispatcher.register(function (action) {
-  var document;
+  var currentSortBy,
+    order,
+    sortBy,
+    document;
 
   switch (action.actionType) {
     case AppConstants.RECEIVED_DOCUMENT_LIST:
@@ -71,9 +74,9 @@ AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.DOCUMENT_SORT_LIST:
-      var currentSortBy = _state['sortBy'];
-      var order = _state['order'];
-      var sortBy = action.data;
+      currentSortBy = _state['sortBy'];
+      order = _state['order'];
+      sortBy = action.data;
 
       if (currentSortBy == sortBy) {
         order = -order;
