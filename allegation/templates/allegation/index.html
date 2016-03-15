@@ -66,15 +66,9 @@
       <script src="{% static 'js/blanket.js' %}"></script>
     {% endif %}
 
-    {% if DJANGO_ENV != 'test' or request.GET.with_disclaimer %}
-      <script>
-        var SHOW_DISCLAIMER = true;
-      </script>
-    {% else %}
-      <script>
-        var SHOW_DISCLAIMER = false;
-      </script>
-    {% endif %}
+    <script>
+      var SHOW_DISCLAIMER = {{ show_disclaimer }};
+    </script>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/vis/4.2.0/vis.min.js"></script>
 

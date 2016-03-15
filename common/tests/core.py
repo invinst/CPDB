@@ -128,6 +128,9 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
 
     DESKTOP_BROWSER_SIZE = {'width': 1230, 'height': 1200}
 
+    def set_browser(self, browser):
+        world.browser = browser
+
     def tearDown(self):
         if world.browser is not None:
             world.browser.delete_all_cookies()

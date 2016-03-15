@@ -1,3 +1,5 @@
+from selenium import webdriver
+from selenium.webdriver.firefox.webdriver import WebDriver
 import re
 
 from allegation.factories import (
@@ -237,6 +239,24 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
         self.find('.share-button button').click()
         with self.browser_no_wait():
             self.element_exist('.share-bar').should.be.false
+
+    def test_no_disclaimer_when_search_engine(self):
+        profile = webdriver.FirefoxProfile()
+        profile.set_preference(
+            "general.useragent.override",
+            "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+        )
+        browser = WebDriver(profile)
+        browser.implicitly_wait(10)
+        browser.set_window_size(width=1200, height=1200)
+
+        old_browser = self.browser
+
+        self.set_browser(browser)
+        self.visit_home()
+        self.find('#disclaimer').get_attribute('class').should.contain('fade')
+
+        self.set_browser(old_browser)
 
     def test_share_bar_facebook_share(self):
         title = 'Donald Duck'
