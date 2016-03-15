@@ -1,6 +1,7 @@
 from collections import namedtuple
 from unittest.mock import patch
 
+import tweepy
 from django.conf import settings
 
 from allegation.factories import OfficerFactory, InvestigatorFactory
@@ -13,30 +14,33 @@ from twitterbot.utils import TweetUtils
 
 class TweetUtilsTestCase(SimpleTestCase):
     def setUp(self):
-        self.utils = TweetUtils()
+        api = tweepy.API(None)
+        self.utils = TweetUtils(api)
 
     def tearDown(self):
         Officer.objects.all().delete()
         Investigator.objects.all().delete()
 
     def test_get_all_screen_names_recursively(self):
+        names = ['1', '2', '3', '4']
         status = TweetFactory(
-            screen_name='name1',
-            user_mentions=[{'screen_name': 'name3'}, {'screen_name': settings.TWITTER_SCREEN_NAME}],
+            screen_name=names[0],
+            user_mentions=[{'screen_name': names[2]}, {'screen_name': settings.TWITTER_SCREEN_NAME}],
             retweeted_status=TweetFactory(
-                screen_name='name2',
-                quoted_status=QuotedTweetFactory(screen_name='name1')
+                screen_name=names[1],
+                quoted_status=QuotedTweetFactory(screen_name=names[0], quoted_status_id_str='quoted_id')
             )
         )
-        screen_names = self.utils.get_screen_names_recursively(status)
 
-        len(screen_names).should.equal(3)
-        screen_names.should.contain('name1')
-        screen_names.should.contain('name2')
-        screen_names.should.contain('name3')
+        with patch('tweepy.API.get_status', return_value=TweetFactory(screen_name=names[3])):
+            screen_names = self.utils.get_screen_names_recursively(status)
+
+            len(screen_names).should.equal(4)
+            [screen_names.should.contain(name) for name in names]
 
     def test_get_all_content_recursively(self):
         status_text = 'status'
+        status_text_1 = 'status1'
         linked_content = 'linked CPD'
         hashtag = '#HashTag'
         parsed_hashtag_text = ['Hash', 'Tag']
@@ -46,17 +50,19 @@ class TweetUtilsTestCase(SimpleTestCase):
             text=status_text,
             retweeted_status=TweetFactory(
                 urls=[{'expanded_url': url}],
-                quoted_status=QuotedTweetFactory(hashtags=[{'text': hashtag}])
+                quoted_status=QuotedTweetFactory(hashtags=[{'text': hashtag}], quoted_status_id_str='quoted_id')
             )
         )
 
         MockResponse = namedtuple('MockResponse', 'content')
         with patch('requests.get', return_value=MockResponse(content=bytearray(linked_content, encoding='utf-8'))):
-            text = self.utils.get_all_content_recursively(status)
+            with patch('tweepy.API.get_status', return_value=TweetFactory(text=status_text_1)):
+                text = self.utils.get_all_content_recursively(status)
 
-            text.should.contain(status_text)
-            text.should.contain(linked_content)
-            [text.should.contain(x) for x in parsed_hashtag_text]
+                text.should.contain(status_text)
+                text.should.contain(status_text_1)
+                text.should.contain(linked_content)
+                [text.should.contain(x) for x in parsed_hashtag_text]
 
     def test_find_names(self):
         text = 'Jason Van Dyke Haskell'

@@ -44,13 +44,13 @@ class CPDBTweetHandler(tweepy.StreamListener):
     debug = False
     screen_names = []
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, api, *args, **kwargs):
         super(CPDBTweetHandler, self).__init__(*args, **kwargs)
 
         if os.environ.get('TWITTER_DEBUG', None) == 'true':
             self.debug = True
 
-        self.tweet_utils = TweetUtils()
+        self.tweet_utils = TweetUtils(api)
 
     def on_status(self, status):
         self.screen_names = self.tweet_utils.get_screen_names_recursively(status)
@@ -90,6 +90,9 @@ class CPDBTweetHandler(tweepy.StreamListener):
 
 
 class TweetUtils:
+    def __init__(self, api):
+        self.api = api
+
     def get_screen_names_recursively(self, status):
         screen_names = [status.user.screen_name]
         screen_names += [x['screen_name'] for x in status.entities['user_mentions']]
@@ -99,6 +102,10 @@ class TweetUtils:
 
         if hasattr(status, 'quoted_status') and status.quoted_status:
             screen_names += self.get_screen_names_recursively(self.convert_quoted_status(status.quoted_status))
+
+        if hasattr(status, 'quoted_status_id_str') and status.quoted_status_id_str:
+            quoted_status = self.api.get_status(status.quoted_status_id_str)
+            screen_names += self.get_screen_names_recursively(quoted_status)
 
         return [x for x in set(screen_names) if x != settings.TWITTER_SCREEN_NAME]
 
@@ -114,6 +121,10 @@ class TweetUtils:
 
         if hasattr(status, 'quoted_status') and status.quoted_status:
             texts += self.get_all_content_recursively(self.convert_quoted_status(status.quoted_status))
+
+        if hasattr(status, 'quoted_status_id_str') and status.quoted_status_id_str:
+            quoted_status = self.api.get_status(status.quoted_status_id_str)
+            texts += self.get_all_content_recursively(quoted_status)
 
         return texts
 
