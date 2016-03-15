@@ -2,6 +2,7 @@ import json
 import os
 import threading
 import time
+import sure  # NOQA
 from datetime import timedelta, datetime
 from contextlib import contextmanager
 
@@ -17,7 +18,7 @@ from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.select import Select
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-import sure  # NOQA
+from functools import wraps
 
 from api.models import Setting
 from common.factories import UserFactory
@@ -96,6 +97,27 @@ class OpenNewBrowser(object):
         world.browser.quit()
 
         world.browser = self.browser
+
+
+def retry_random_fail(f, num_retries=3):
+    @wraps(f)
+    def decorated(*args):
+        test_case = args[0]
+
+        fail_counter = 0
+
+        while True:
+            try:
+                return f(test_case)
+            except:
+                test_case.browser.close()
+
+                fail_counter += 1
+
+                if fail_counter == num_retries:
+                    raise
+
+    return decorated
 
 
 class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):

@@ -4,24 +4,29 @@ from django.core.management.base import BaseCommand
 
 from common.models import Officer, Investigator
 
+IRISH_O_NAMES = ['Obrien']
+
 
 class Command(BaseCommand):
     help = 'Correct officer name'
 
     def correct_name(self, name):
         parts = [x.capitalize() for x in name.split()]
-        if len(parts) > 1:
-            if parts[0] == 'O':
-                # William O'Brien
-                parts = parts[1:]
-                parts[0] = "O'{p0}".format(p0=parts[0])
+        if parts[0] in IRISH_O_NAMES:
+                name = parts[0][1:]
+                parts[0] = "O'%s" % name.capitalize()
+
+        if name.startswith("O'"):
+            parts[0] = "O'%s" % name[2:].capitalize()
+
+        elif len(parts) > 1:
             if re.match('^[iIvVxX]+$', parts[-1]):
                 # Mark Loop Iv —> Mark Loop IV
                 # Mark Loop Iii —> Mark Loop III
                 parts[-1] = parts[-1].upper()
             elif len(parts[-1]) == 2:
                 # John Verlak sr —> John Verlak Sr.
-                parts[-1] = "{p1}.".format(p1=parts[-1].capitalize())
+                parts[-1] = parts[-1].capitalize()
 
         return " ".join(parts)
 
@@ -32,7 +37,7 @@ class Command(BaseCommand):
 
             officer.save()
 
-        for investigator in Investigator.objects.all():
+        for investigator in Investigator.objects.filter():
             raw_name = investigator.raw_name
             names = [x.strip() for x in raw_name.split(',')]
             first_name = names[1].capitalize()

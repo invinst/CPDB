@@ -1,2 +1,11 @@
 [report]
-omit = */migrations/*,/home/ubuntu/virtualenvs/*,common/json_serializer.py,common/tests/runner.py,common/tests/core.py,common/middleware/cache.py
+omit =
+  */migrations/*
+  ~/.virtualenvs/*
+  ~/virtualenvs/*
+  common/json_serializer.py
+  common/tests/runner.py
+  common/tests/core.py
+  common/middleware/cache.py
+  manage.py
+  */tests/*
