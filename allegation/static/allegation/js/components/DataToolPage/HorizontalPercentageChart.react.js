@@ -2,9 +2,11 @@ var React = require('react');
 var PropTypes = React.PropTypes;
 var _ = require('lodash');
 var d3 = require('d3');
-var S = require('string');
-
 var PureRenderMixin = require('react-addons-pure-render-mixin');
+
+var calculatePercentages = require('utils/calculatePercentages');
+var LabelBar = require('components/DataToolPage/HorizontalPercentageChart/LabelBar.react');
+var HorizontalBarSVG = require('components/DataToolPage/HorizontalPercentageChart/HorizontalBarSVG.react');
 
 
 var HorizontalPercentageChart = React.createClass({
@@ -18,61 +20,61 @@ var HorizontalPercentageChart = React.createClass({
 
   mixins: [PureRenderMixin],
 
-  MIN_WIDTH: 15,
+  minWidth: 15,
+  totalWidth: 500,
+  defaultChartHeight: 30,
+  defaultColorRange: [
+    '#A5B4BD', '#6B8EE6', '#4E76C5', '#3860BF', '#6A2122'
+  ],
 
-  TOTAL_WIDTH: 500,
+  getSegmentColor: function (index, numOfSegments, colorRange) {
+    return (index === numOfSegments - 1) && (numOfSegments !== 1) ?
+      colorRange[colorRange.length - 1] :
+      colorRange[index];
+  },
 
-  DEFAULT_HEIGHT: 50,
-
-  DEFAULT_CHART_HEIGHT: 30,
-
-  calculateData: function () {
+  sortAndColorizeData: function () {
     var sum = _.sum(this.props.data, 'count');
     var widthScale = this.calculateWidthScale(sum);
     var currentX = 0;
+    var dataLength = this.props.data.length;
     var self = this;
 
-    var result = _.map(this.props.data, function (datum, i) {
-      var currentWidth = widthScale(datum.count) + self.MIN_WIDTH;
-
-      result = {
+    var result = _.map(_.sortBy(this.props.data, 'count'), function (datum, i) {
+      var currentWidth = widthScale(datum.count) + self.minWidth;
+      var returnValue = {
         label: datum.label,
         translateX: currentX,
-        width: currentWidth
+        width: currentWidth,
+        value: datum.count,
+        fill: self.getSegmentColor(i, dataLength, self.defaultColorRange)
       };
 
-      currentX += widthScale(datum.count) + self.MIN_WIDTH;
+      currentX += currentWidth;
 
-      return result;
+      return returnValue;
     });
 
-    return _.sortBy(result, 'width');
+    result = calculatePercentages(result);
 
+    return result;
   },
 
   calculateWidthScale: function (sum) {
-    var width = this.TOTAL_WIDTH - this.MIN_WIDTH * this.props.data.length;
+    var width = this.totalWidth - this.minWidth * this.props.data.length;
     return d3.scale.linear()
-            .domain([0, sum])
-            .range([0, width]);
+      .domain([0, sum])
+      .range([0, width]);
   },
 
   render: function () {
-    var segments = this.calculateData();
-    var self = this;
+    var segments = this.sortAndColorizeData();
 
     return (
-      <div>
-        <p>{ this.props.label }</p>
-        <svg width={ this.TOTAL_WIDTH } height={ self.DEFAULT_HEIGHT }>
-          { _.each(segments, function (segment, i) {
-            var transformProp = S('translate({{x}},0)').template({x: segment.translateX}).s;
-            return (
-              <rect key={ i } width={ segment.width } height={ self.DEFAULT_CHART_HEIGHT }
-                transform={ transformProp }/>
-            );
-          }) }
-        </svg>
+      <div className='horizontal-percentage-chart'>
+        <p className='chart-label'>{ this.props.label }</p>
+        <HorizontalBarSVG totalWidth={ this.totalWidth } segments={ segments }/>
+        <LabelBar segments={ segments } />
       </div>
     );
   }

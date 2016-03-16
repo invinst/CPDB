@@ -17,6 +17,14 @@ var RaceGenderAgeTab = React.createClass({
       {
         label: 'Hispanic',
         count: 100
+      },
+      {
+        label: 'Other',
+        count: 50
+      },
+      {
+        label: 'Asian',
+        count: 1
       }
     ];
 
