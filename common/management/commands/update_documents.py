@@ -1,7 +1,7 @@
 from django.core.management.base import BaseCommand
 from documentcloud import DocumentCloud
 
-from common.models import Allegation
+from common.models import Allegation, DocumentCrawler
 
 
 class Command(BaseCommand):
@@ -56,3 +56,5 @@ class Command(BaseCommand):
                 allegation.document_title = title
 
                 allegation.save()
+
+        DocumentCrawler.objects.create(num_documents=Allegation.objects.filter(document_id__gt=0).count())
