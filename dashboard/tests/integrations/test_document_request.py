@@ -1,13 +1,10 @@
 from allegation.factories import AllegationFactory
 from allegation.tests.constants import TEST_DOCUMENT_URL
-from common.models import Allegation
+from common.models import Allegation, DocumentCrawler
 from common.tests.core import BaseAdminTestCase
 
 
 class DocumentRequestTestCase(BaseAdminTestCase):
-    def tearDown(self):
-        super(DocumentRequestTestCase, self).tearDown()
-
     def go_to_documents(self):
         self.element_by_tagname_and_text(
             'span', 'Investigation Documents').click()
@@ -163,3 +160,17 @@ class DocumentRequestTestCase(BaseAdminTestCase):
         documents = self.find_all('tbody tr')
         documents[0].text.should.contain(str(no_request_allegation.crid))
         documents[1].text.should.contain(str(one_request_allegation.crid))
+
+    def test_display_last_successful_crawl(self):
+        DocumentCrawler.objects.create(num_documents=100)
+        DocumentCrawler.objects.create(num_documents=155)
+        self.go_to_documents()
+        self.until_ajax_complete()
+
+        self.should_see_text('Last successful crawl')
+        self.until_ajax_complete()
+
+        self.find('.last-successful-crawl-date').text.should.contain('155')
+
+        self.find('.show-crawl-log').click()
+        self.find('.document-crawl-log').text.should.contain('100')
