@@ -4,6 +4,7 @@ var isMobile = require('ismobilejs');
 var classnames = require('classnames');
 
 var Base = require('components/Base.react');
+var AppConstants = require('constants/AppConstants');
 var ComplaintSection = require('components/DataToolPage/ComplaintSection.react');
 var FilterTags = require('components/DataToolPage/FilterTags.react');
 var Map = require('components/DataToolPage/Map.react');
@@ -58,9 +59,9 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
   },
 
   renderTabs: function () {
-    var mobileExpanded = isMobile.any && this.state.searchExpanded;
-
-    if (isMobile.any) {
+    var isMobileView = $(window).width() < AppConstants.DESKTOP_SCREEN_WIDTH && isMobile.any;
+    var mobileExpanded = isMobileView && this.state.searchExpanded;
+    if (isMobileView) {
       return (
         <div className='row map-row mobile'>
           <div className='col-md-12'>
