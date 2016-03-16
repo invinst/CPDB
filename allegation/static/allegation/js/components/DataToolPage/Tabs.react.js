@@ -96,13 +96,17 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
     return this.state.activeTab == target || (!this.state.activeTab && target == 'outcomes');
   },
 
+  isMobileView: function () {
+    return $(window).width() < AppConstants.DESKTOP_SCREEN_WIDTH && isMobile.any;
+  },
+
   renderNavTab: function (label) {
     var target = S(label.toLowerCase().replace('&', '')).slugify().s;
     var dataTarget = '#' + target;
     var tab = target;
     var tabClass;
 
-    if (tab == 'map' && !isMobile.any) {
+    if (tab == 'map' && !this.isMobileView()) {
       return;
     }
 
@@ -123,7 +127,7 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
   renderTabContent: function (id, Component) {
     var tabClass;
 
-    if (id == 'map' && !isMobile.any) {
+    if (id == 'map' && !this.isMobileView()) {
       return;
     }
 

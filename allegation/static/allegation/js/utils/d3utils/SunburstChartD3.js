@@ -21,14 +21,13 @@ var x, y, radius, partition, arc, svg;
 
 
 var SunburstChartD3 = {
-  draw: function (options) {
+  draw: function (options, width) {
     var data = options.data;
     var clickHandler = options.clickHandler;
     var mouseOverHandler = options.mouseOverHandler;
     var mouseLeaveHandler = options.mouseLeaveHandler;
+    var height = width;
 
-    var width = 390;
-    var height = 390;
     var color;
 
     if (!data) {
