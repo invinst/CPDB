@@ -1,6 +1,7 @@
 var toastr = require('toastr');
 var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var AppConstants = require('../../constants/AppConstants');
+var DocumentCloudAPI = require('utils/DocumentCloudAPI');
 
 
 var DocumentActions = {
@@ -40,6 +41,10 @@ var DocumentActions = {
       actionType: AppConstants.DOCUMENT_PUT_TO_REQUESTING,
       data: allegation
     });
+  },
+
+  uploadDocument: function (data) {
+    return DocumentCloudAPI.uploadDocument(data);
   }
 };
 

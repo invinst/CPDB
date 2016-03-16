@@ -6,7 +6,7 @@ var toastr = require('toastr');
 
 var AddDocumentLinkModalStore = require('../../stores/DocumentSection/AddDocumentLinkModalStore');
 var AddDocumentLinkModalActions = require('../../actions/DocumentSection/AddDocumentLinkModalActions');
-var DocumentAPI = require('../../utils/DocumentRequestAPI');
+var DocumentRequestAPI = require('../../utils/DocumentRequestAPI');
 var AddDocumentLinkModal;
 
 global.jQuery = require('jquery');
@@ -21,7 +21,7 @@ AddDocumentLinkModal = React.createClass(_.assign(Base(AddDocumentLinkModalStore
 
   addLink: function () {
     this.waitScreen();
-    DocumentAPI.addLink(this.state.link ,this.state.suppliedCrid);
+    DocumentRequestAPI.addLink(this.state.link ,this.state.suppliedCrid);
   },
 
   render: function () {
@@ -76,7 +76,7 @@ AddDocumentLinkModal = React.createClass(_.assign(Base(AddDocumentLinkModalStore
 
   toggleModal: function () {
     var modalCommand = this.state.isOpen ? 'show' : 'hide';
-    jQuery(this.getDOMNode()).modal(modalCommand);
+    jQuery(ReactDOM.findDOMNode(this)).modal(modalCommand);
   },
 
   isOpen: function () {
