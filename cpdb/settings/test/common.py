@@ -27,3 +27,5 @@ SITE_INFO = {
 }
 
 DJANGO_ENV = 'test'
+
+STATICFILES_DIRS = ['local_static']
