@@ -2,11 +2,9 @@ import json
 
 from django.core import mail
 
-from allegation.factories import AllegationFactory
 from common.tests.core import SimpleTestCase
 from document.factories import RequestEmailFactory, DocumentFactory
 from api.models import Setting
-from document.models.document import Document
 
 
 class DocumentLinkViewTestCase(SimpleTestCase):
@@ -16,8 +14,13 @@ class DocumentLinkViewTestCase(SimpleTestCase):
         self.login_user()
 
     def test_add_link(self):
-        crid = 1002643
-        document_id = 1273509
+        document = DocumentFactory()
+        allegation = document.allegation
+        allegation.crid = 1002643
+        allegation.save()
+
+        crid = allegation.crid
+        documentcloud_id = 1273509
         normalized_title = 'cr-{crid}'.format(crid=crid)
         title = 'CR {crid}'.format(crid=crid)
         Setting.objects.create(
@@ -27,22 +30,18 @@ class DocumentLinkViewTestCase(SimpleTestCase):
             requested_document_email_text='{crid} {link}'
         )
 
-        allegation = AllegationFactory(crid=crid)
-        DocumentFactory(
-            allegation=allegation, documentcloud_id=0, normalized_title='',
-            title='')
-        RequestEmailFactory(crid=crid)
+        RequestEmailFactory(document=document)
 
         response = self.client.post('/api/dashboard/document-link/', {
             'link': 'https://www.documentcloud.org/documents/%s-%s.html' % (
-                document_id, normalized_title)
+                documentcloud_id, normalized_title)
         })
         response.status_code.should.equal(200)
         content = json.loads(response.content.decode())
         content['crid'].should.contain(str(crid))
 
-        document = Document.objects.get(allegation__crid=crid)
-        document.documentcloud_id.should.equal(document_id)
+        document.refresh_from_db()
+        document.documentcloud_id.should.equal(documentcloud_id)
         document.normalized_title.should.equal(normalized_title)
         document.title.should.equal(title)
 
@@ -70,7 +69,7 @@ class DocumentLinkViewTestCase(SimpleTestCase):
 
         response.status_code.should.equal(400)
         content = json.loads(response.content.decode())
-        content['errors'].should.contain('Document not exist')
+        content['errors'].should.contain('Invalid document link')
 
     def test_add_trash_link(self):
         response = self.client.post('/api/dashboard/document-link/', {

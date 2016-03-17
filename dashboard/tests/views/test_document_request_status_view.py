@@ -1,6 +1,6 @@
 from common.tests.core import SimpleTestCase
 from document.factories import DocumentFactory
-from document.models.document import Document
+from document.models import Document
 
 
 class DocumentRequestStatusViewTestCase(SimpleTestCase):

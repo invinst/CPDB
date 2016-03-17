@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from django.views.generic import View
 
 from dashboard.query_builders import AllegationDocumentQueryBuilder, DOCUMENT_REQUEST_FILTERS
-from document.models.document import Document
+from document.models import Document
 
 
 class AdminAllegationRequestAnalysisView(View):

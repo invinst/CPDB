@@ -1,9 +1,9 @@
 import factory
+from factory.helpers import post_generation
 from faker import Faker
 
 from allegation.factories import AllegationFactory
-from document.models import RequestEmail
-from document.models.document import Document
+from document.models import RequestEmail, Document
 from share.factories import SessionFactory
 
 
@@ -18,6 +18,11 @@ class DocumentFactory(factory.django.DjangoModelFactory):
     type = 'CR'
 
     allegation = factory.SubFactory(AllegationFactory)
+
+    @post_generation
+    def remove_unnecessary_document(self, created, extracted, **kwargs):
+        if created:
+            self.allegation.documents.filter(type=self.type).exclude(id=self.id).delete()
 
 
 class RequestEmailFactory(factory.django.DjangoModelFactory):

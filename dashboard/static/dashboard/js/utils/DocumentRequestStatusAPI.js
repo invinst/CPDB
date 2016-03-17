@@ -2,7 +2,6 @@ var AppConstants = require('../constants/AppConstants');
 
 var DocumentActions = require('actions/DocumentSection/DocumentActions');
 var DocumentRequestAnalysisAPI = require('utils/DocumentRequestAnalysisAPI');
-var AddDocumentLinkModalActions = require('actions/DocumentSection/AddDocumentLinkModalActions');
 
 
 var DocumentRequestStatusAPI = {
@@ -28,7 +27,7 @@ var DocumentRequestStatusAPI = {
       }
       DocumentRequestAnalysisAPI.get();
     });
-  },
+  }
 };
 
 module.exports = DocumentRequestStatusAPI;

@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse
 from common.tests.core import SimpleTestCase
 from dashboard.query_builders import DOCUMENT_REQUEST_FILTERS
 from document.factories import DocumentFactory
-from document.models.document import Document
+from document.models import Document
 from search.models.suggestion import SuggestionLog
 
 
@@ -23,14 +23,10 @@ class AdminAllegationRequestAnalysisViewTest(SimpleTestCase):
         return response, data
 
     def test_return_analaysis_of_document_requests(self):
-        DocumentFactory(
-            requested=False, documentcloud_id=0)  # Missing
-        DocumentFactory(
-            pending=False, requested=True,
-            documentcloud_id=0)  # Requested
+        DocumentFactory(requested=False, documentcloud_id=0)  # Missing
+        DocumentFactory(pending=False, requested=True, documentcloud_id=0)  # Requested
         DocumentFactory(documentcloud_id=1)  # Fulfilled
-        DocumentFactory(
-            pending=True, requested=True)  # Pending
+        DocumentFactory(pending=True, requested=True)  # Pending
 
         response, data = self.call_allegation_request_analysis()
         response.status_code.should.equal(200)

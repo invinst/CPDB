@@ -3,7 +3,7 @@ from django.db.models import Q
 
 from common.models import Allegation
 from document.models import RequestEmail
-from document.models.document import Document
+from document.models import Document
 
 
 class Command(BaseCommand):

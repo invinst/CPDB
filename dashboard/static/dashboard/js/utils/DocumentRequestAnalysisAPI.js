@@ -7,11 +7,13 @@ var ajax = null;
 
 var DocumentRequestAnalysisAPI = {
   get: function () {
+    var params;
+
     if (ajax) {
       ajax.abort();
     }
 
-    var params = {
+    params = {
       type: TabsStore.getState().documentType
     };
 

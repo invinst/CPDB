@@ -1,6 +1,6 @@
 from import_export import resources, fields
 
-from document.models.document import Document
+from document.models import Document
 
 
 class DocumentResource(resources.ModelResource):

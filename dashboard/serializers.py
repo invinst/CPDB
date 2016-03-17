@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from document.models.document import Document
+from document.models import Document
 
 
 class DocumentSerializer(serializers.HyperlinkedModelSerializer):

@@ -2,7 +2,7 @@ from django.apps import apps
 from django.db import models
 
 from dashboard.query_builders import AllegationDocumentQueryBuilder
-from document.models.document import Document
+from document.models import Document
 
 
 class DocumentRequestQuerySet(models.query.QuerySet):

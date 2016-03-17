@@ -26,7 +26,7 @@ var AllegationDocumentPresenter = function (document) {
   var formatDate = function (document) {
     var lastRequested = _.get(document, 'last_requested');
     if (_.get(document, 'last_requested')) {
-      return moment(lastRequested).format(AppConstants.HUMAN_READABLE_FORMAT)
+      return moment(lastRequested).format(AppConstants.HUMAN_READABLE_FORMAT);
     }
 
     return '';

@@ -1,31 +1,31 @@
-/**
- * Created by eastagile on 7/31/15.
- */
 var assign = require('object-assign');
 var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var RequestDocumentConstants = require('../../constants/RequestDocumentConstants');
 var EventEmitter = require('events').EventEmitter;
+var RequestButtonStore;
 
-var setRequestedCrid = function (crid) {
-  $.cookie('requested_document_' + crid, '1', {path: '/'});
-};
+function setRequestedDocument(id) {
+  $.cookie('requested_document_' + id, '1', {path: '/'});
+}
 
-var isCridRequested = function (crid) {
-  return $.cookie('requested_document_' + crid);
-};
+function isDocumentRequested(id) {
+  return $.cookie('requested_document_' + id);
+}
 
 
-var RequestButtonStore = assign({}, EventEmitter.prototype, {
-  init: function (allegation) {
+RequestButtonStore = assign({}, EventEmitter.prototype, {
+  init: function (document) {
     return {
-      requested: isCridRequested(allegation.crid) || allegation.document_requested
+      requested: isDocumentRequested(document.id) || document.requested
     };
   },
 
   registerButton: function (obj) {
+    var document = obj.props.document;
+
     obj.token = AppDispatcher.register(function (action) {
       if (action.actionType == RequestDocumentConstants.DOCUMENT_REQUESTED) {
-        if (obj.props.complaint.allegation.crid == action.value) {
+        if (document.id == action.id) {
           obj.setState({
             requested: true
           });
@@ -42,7 +42,7 @@ var RequestButtonStore = assign({}, EventEmitter.prototype, {
 
 AppDispatcher.register(function (action) {
   if (action.actionType == RequestDocumentConstants.DOCUMENT_REQUESTED) {
-    setRequestedCrid(action.value);
+    setRequestedDocument(action.id);
   }
 });
 

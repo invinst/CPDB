@@ -2,7 +2,7 @@ from django.core.urlresolvers import reverse
 
 from common.tests.core import SimpleTestCase
 from document.factories import DocumentFactory
-from document.models.document import Document
+from document.models import Document
 
 
 class AllegationRequestViewTestCase(SimpleTestCase):
@@ -12,6 +12,7 @@ class AllegationRequestViewTestCase(SimpleTestCase):
         self.one_request_document = DocumentFactory(number_of_request=1)
 
     def call_document_requests_api(self, params={}):
+        params['type'] = 'CR'
         response = self.client.get(reverse('document-list'), params)
         data = self.json(response)
 

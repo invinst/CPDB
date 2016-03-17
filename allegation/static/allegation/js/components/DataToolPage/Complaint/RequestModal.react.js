@@ -8,7 +8,7 @@ var RequestDocumentActions = require('actions/RequestDocumentActions');
 
 
 var RequestModal = (function () {
-  var allegation = null;
+  var document = null;
 
   var mountedInstant = null;
 
@@ -37,7 +37,7 @@ var RequestModal = (function () {
       return jQuery(ReactDOM.findDOMNode(this)).find('input[name=\'email\']').val();
     },
     register: function () {
-      RequestDocumentActions.registerEmail(allegation.crid, this.email());
+      RequestDocumentActions.registerEmail(document.id, this.email());
     },
     onClick: function () {
       this.register();
@@ -101,8 +101,8 @@ var RequestModal = (function () {
     }
   });
 
-  component.show = function (complaint) {
-    allegation = complaint.allegation;
+  component.show = function (doc) {
+    document = doc;
     mountedInstant.setState({
       thank: false
     });
@@ -122,13 +122,10 @@ var RequestModal = (function () {
   return component;
 })();
 
-
-
-
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case RequestDocumentConstants.REQUEST_DOCUMENT:
-      RequestModal.show(action.value);
+      RequestModal.show(action.document);
       break;
 
     case RequestDocumentConstants.DOCUMENT_REQUESTED:

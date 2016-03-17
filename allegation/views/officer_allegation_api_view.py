@@ -124,7 +124,8 @@ class OfficerAllegationAPIView(View):
                     if o.allegation_id == allegation.pk],
                 'beat_name': allegation.beat.name if allegation.beat else '',
                 'investigator': allegation.investigator,
-                'documents': allegation.documents.all()
+                # Filter CR document here to keep the old logic, will change when we implement new design
+                'documents': allegation.documents.filter(type='CR')
             }
             results.append(ret)
 

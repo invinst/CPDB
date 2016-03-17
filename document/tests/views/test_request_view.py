@@ -13,7 +13,7 @@ class RequestViewTestCase(SimpleTestCase):
         document = DocumentFactory()
         session = SessionFactory()
         response = self.client.post(self.URL, {
-            'crid': document.allegation.crid,
+            'document_id': document.id,
             'email': faker.Faker().email(),
             'session': session.hash_id,
         })
@@ -25,7 +25,7 @@ class RequestViewTestCase(SimpleTestCase):
 
     def test_non_exists_crid(self):
         response = self.client.post(self.URL, {
-            'crid': "Not exists",
+            'document_id': -1,
             'email': faker.Faker().email(),
         })
 

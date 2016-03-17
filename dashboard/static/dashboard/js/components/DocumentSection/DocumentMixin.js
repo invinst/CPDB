@@ -1,11 +1,7 @@
-var _ = require('lodash');
 var React = require('react');
-var classnames = require('classnames');
 var bootbox = require('bootbox');
 
-var AppConstants = require('../../constants/AppConstants');
 var AddDocumentLinkModalActions = require('actions/DocumentSection/AddDocumentLinkModalActions');
-var DocumentRequestAPI = require('utils/DocumentRequestAPI');
 var DocumentRequestStatusAPI = require('utils/DocumentRequestStatusAPI');
 
 

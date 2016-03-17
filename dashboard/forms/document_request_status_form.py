@@ -1,6 +1,6 @@
 from django import forms
 
-from document.models.document import Document
+from document.models import Document
 
 
 class DocumentRequestStatusForm(forms.Form):
@@ -42,6 +42,9 @@ class DocumentRequestStatusForm(forms.Form):
     def process(self):
         id = self.cleaned_data['id']
 
+        # 'requested' => requested = True, pending = False
+        # 'pending' => requested = True, pending = True
+        # 'missing' => requested = False, pending = False
         requested = self.cleaned_data['status'] != 'missing'
         pending = self.cleaned_data['status'] == 'pending'
 

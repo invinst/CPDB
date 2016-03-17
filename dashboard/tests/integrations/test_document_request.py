@@ -2,7 +2,7 @@ from allegation.factories import AllegationFactory
 from allegation.tests.constants import TEST_DOCUMENT_URL
 from common.tests.core import BaseAdminTestCase
 from document.factories import DocumentFactory
-from document.models.document import Document
+from document.models import Document
 
 
 class DocumentRequestTestCase(BaseAdminTestCase):

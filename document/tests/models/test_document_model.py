@@ -1,6 +1,6 @@
 from common.tests.core import SimpleTestCase
 from document.factories import RequestEmailFactory, DocumentFactory
-from document.models.document import Document
+from document.models import Document
 
 
 class DocumentModelTestCase(SimpleTestCase):

@@ -3,7 +3,7 @@ from rest_framework import filters
 
 from dashboard.authentication import SessionAuthentication
 from dashboard.query_builders import AllegationDocumentQueryBuilder
-from document.models.document import Document
+from document.models import Document
 from dashboard.serializers import DocumentSerializer, DocumentSingleSerializer
 
 
