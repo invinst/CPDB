@@ -1,7 +1,9 @@
+from datetime import datetime
+
 from django.core.urlresolvers import reverse
 
 from allegation.factories import (
-    OfficerAllegationFactory, OfficerFactory, ComplainingWitnessFactory)
+    OfficerAllegationFactory, OfficerFactory, ComplainingWitnessFactory, AllegationFactory)
 from common.tests.core import SimpleTestCase
 
 
@@ -99,3 +101,31 @@ class RaceGenderAPI(SimpleTestCase):
 
         data['complaining_witness']['race'].shouldnt.contain('black')
         data['complaining_witness']['race']['white'].should.equal(1)
+
+    def test_age_range(self):
+        age_values = [20, 31, 41, 51, 61]
+        expect_officer_age = {
+            '20-30': 1,
+            '31-40': 1,
+            '41-50': 1,
+            '51-60': 1,
+            '61+': 1,
+        }
+
+        for val in age_values:
+            allegation = AllegationFactory(incident_date=datetime(2000, 1, 1))
+            OfficerAllegationFactory(
+                officer=OfficerFactory(birth_year=2000 - val),
+                allegation=allegation)
+            ComplainingWitnessFactory(age=val, allegation=allegation)
+
+        allegation = AllegationFactory()
+        OfficerAllegationFactory(
+            officer=OfficerFactory(birth_year=None), allegation=allegation)
+        ComplainingWitnessFactory(age=None, allegation=allegation)
+
+        response, data = self.get_race_gender_info()
+
+        response.status_code.should.equal(200)
+        data['officers']['age'].should.equal(expect_officer_age)
+        data['complaining_witness']['age'].should.equal(expect_officer_age)
