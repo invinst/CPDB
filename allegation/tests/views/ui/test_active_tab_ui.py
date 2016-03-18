@@ -33,6 +33,5 @@ class ActiveTabTestCase(BaseLiveTestCase, ActiveTabAssertationMixin):
 
 class ActiveTabMobileTestCase(BaseMobileLiveTestCase, ActiveTabAssertationMixin):
     def test_site_default_active_tab(self):
-        self.browser.set_window_size(640, 1000)
         self.visit_home()
         self.assert_current_active_tab('Map')

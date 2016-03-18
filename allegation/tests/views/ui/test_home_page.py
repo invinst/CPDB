@@ -285,19 +285,19 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
             "general.useragent.override",
             "Mozilla/5.0 (iPad; CPU OS 5_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko ) Version/5.1 Mobile/9B176 Safari/7534.48.3"  # noqa
         )
-        browser = WebDriver(profile)
-        browser.set_window_size(width=1040, height=1200)  # 1024 + 16px for scroll bar, apparently?
+        driver = webdriver.Firefox(profile)
 
         old_browser = self.browser
+        self.set_browser(driver)
+        self.browser.set_window_size(width=1040, height=1200)  # 1024 + 16px for scroll bar, apparently?
 
-        self.set_browser(browser)
         self.visit_home()
 
         len(self.find_all('.nav-tabs li')).should.equal(3)
-        self.find('#sunburst-chart svg').get_attribute('width').should.equal('255')
+        self.find('#sunburst-chart svg').get_attribute('width').should.be.greater_than('249')
 
         self.browser.set_window_size(width=1024, height=1200)
         self.visit_home()
         len(self.find_all('.nav-tabs li')).should.equal(4)
-
+        driver.close()
         self.set_browser(old_browser)

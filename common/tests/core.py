@@ -390,6 +390,7 @@ class BaseMobileLiveTestCase(BaseLiveTestCase):
     def browser(self):
         if world.mobile_browser is None:
             world.mobile_browser = self.init_firefox()
+        world.mobile_browser.set_window_size(1023, 1000)
         return world.mobile_browser
 
 
