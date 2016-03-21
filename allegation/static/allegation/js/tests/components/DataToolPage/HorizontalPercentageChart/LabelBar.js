@@ -1,10 +1,8 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 var ReactTestUtils = require('react-addons-test-utils');
-var sinon = require('sinon');
 
 var ElementUtils = require('test_utils/ElementUtils');
-var DOMUtils = require('utils/DOMUtils');
 var LabelBar = require('components/DataToolPage/HorizontalPercentageChart/LabelBar.react');
 
 require('should');
@@ -38,23 +36,5 @@ describe('LabelBar component', function () {
     ElementUtils.getElementsTextByClassName(labelBar, 'segment-name').should.deepEqual(['a', 'b']);
 
     ElementUtils.getElementsTextByClassName(labelBar, 'segment-percentage').should.deepEqual(['80%', '20%']);
-  });
-
-  it('should calculate correct style.left', function () {
-    var leftFunc;
-
-    labelBar = ReactTestUtils.renderIntoDocument(
-      <LabelBar segments={ [] }/>
-    );
-
-    leftFunc = labelBar.calculateLeft(8, 'a', 'b');
-
-    sinon.stub(DOMUtils, 'getTextWidth', function (text, font) {
-      return 2;
-    });
-
-    leftFunc({width: 0}).should.equal(0);
-    leftFunc({width: 22}).should.equal(10);
-    leftFunc({width: 4}).should.equal(22);
   });
 });

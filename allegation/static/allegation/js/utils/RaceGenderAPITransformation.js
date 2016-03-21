@@ -63,25 +63,25 @@ var RaceGenderAPITransform = {
     var raceData = _([
       {
         label: this.raceLabel('White', isOfficer),
-        value: white,
+        count: white,
         filters: whiteFilters
       },
       {
         label: this.raceLabel('Black', isOfficer),
-        value: black,
+        count: black,
         filters: [{ value: 'Black', label: this.raceLabel('Black', isOfficer) }]
       },
       {
         label: this.raceLabel('Hispanic', isOfficer),
-        value: hispanic,
+        count: hispanic,
         filters: hispanicFilters
       },
       {
         label: this.raceLabel(otherLabel, isOfficer),
-        value: others,
+        count: others,
         filters: otherFilters
       }
-    ]).chain().reject(function (x) { return x.value == 0; }).value();
+    ]).chain().reject(function (x) { return x.count == 0; }).value();
 
     raceData = setTagActive(raceData, isOfficer);
 
@@ -102,10 +102,24 @@ var RaceGenderAPITransform = {
       return {
         'label': genderLabel,
         'filters': [{ value: y, label: genderLabel}],
-        'value': x,
+        'count': x,
         'active': !hasActiveFilter || FilterTagStore.isInFilter(filterCategory, y)
       };
     }).sortBy('label').value();
+  },
+
+  transformAge: function (ages, isOfficer) {
+    var filterKey = isOfficer ? 'officer_age' : 'complainant_age';
+    var hasActiveFilter = FilterTagStore.getAll(filterKey).length > 0;
+
+    return _(ages).map(function (x, y) {
+      return {
+        'label': y,
+        'filters': [{ value: y, label: y}],
+        'count': x,
+        'active': !hasActiveFilter || FilterTagStore.isInFilter(filterKey, y)
+      };
+    }).value();
   }
 };
 

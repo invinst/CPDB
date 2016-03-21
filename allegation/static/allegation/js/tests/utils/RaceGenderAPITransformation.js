@@ -12,7 +12,7 @@ describe('RaceGenderAPITransformation utils', function () {
       return obj.label === 'White';
     })[0];
 
-    whiteResult.value.should.equal(1);
+    whiteResult.count.should.equal(1);
     whiteResult.filters.should.deepEqual([{value: 'Italian', label: 'Italian'}]);
   });
 

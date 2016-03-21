@@ -1,7 +1,6 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
 var _ = require('lodash');
-var S = require('string');
 
 
 var HorizontalBarSVG = React.createClass({
@@ -24,14 +23,13 @@ var HorizontalBarSVG = React.createClass({
   render: function () {
     var self = this;
     return (
-      <svg width={ self.props.totalWidth } height={ self.props.chartHeight }>
+      <svg viewBox='0 0 500 30' preserveAspectRatio='none'
+        width='100%' height={ self.props.chartHeight }>
         { _.map(self.props.segments, function (segment, i) {
-          var transformProp = S('translate({{x}},0)').template({x: segment.translateX}).s;
           var styleProp = _.pick(segment, ['fill']);
-
           return (
-            <rect key={ i } width={ segment.width } height={ self.props.chartHeight }
-              transform={ transformProp } style={ styleProp }/>
+            <rect key={ i } width={ segment.width + '%' } height={ self.props.chartHeight }
+              x={ segment.translateX + '%' } style={ styleProp }/>
           );
         }) }
       </svg>

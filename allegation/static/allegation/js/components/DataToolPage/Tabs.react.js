@@ -120,7 +120,7 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
     );
   },
 
-  renderTabContent: function (id, Component) {
+  renderTabContent: function (id, Component, props) {
     var tabClass;
 
     if (id == 'map' && !isMobile.any) {
@@ -133,7 +133,7 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
 
     return (
       <div role='tabpanel' className={ tabClass } id={ id }>
-        <Component tabs={ this } />
+        { React.createElement(Component, _.assign({}, {tabs: this}, props)) }
       </div>
     );
   },
@@ -145,14 +145,16 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
           { this.renderNavTab('Map') }
           { this.renderNavTab('Outcomes') }
           { this.renderNavTab('Categories') }
-          { this.renderNavTab('Race & Gender') }
+          { this.renderNavTab('Complainants') }
+          { this.renderNavTab('Accused') }
         </ul>
 
         <div className='tab-content'>
           { this.renderTabContent('map', Map) }
           { this.renderTabContent('outcomes', Sunburst) }
           { this.renderTabContent('categories', Summary) }
-          { this.renderTabContent('race-gender', RaceGenderTab) }
+          { this.renderTabContent('complainants', RaceGenderTab, {role: RaceGenderTab.COMPLAINANT_ROLE}) }
+          { this.renderTabContent('accused', RaceGenderTab, {role: RaceGenderTab.OFFICER_ROLE}) }
         </div>
       </div>
     );

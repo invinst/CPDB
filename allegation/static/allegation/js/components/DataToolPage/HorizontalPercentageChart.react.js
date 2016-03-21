@@ -20,8 +20,8 @@ var HorizontalPercentageChart = React.createClass({
 
   mixins: [PureRenderMixin],
 
-  minWidth: 15,
-  totalWidth: 500,
+  minWidth: 2,
+  totalWidth: 100,
   defaultChartHeight: 30,
   defaultColorRange: [
     '#A5B4BD', '#6B8EE6', '#4E76C5', '#3860BF', '#6A2122'
@@ -73,7 +73,7 @@ var HorizontalPercentageChart = React.createClass({
     return (
       <div className='horizontal-percentage-chart'>
         <p className='chart-label'>{ this.props.label }</p>
-        <HorizontalBarSVG totalWidth={ this.totalWidth } segments={ segments }/>
+        <HorizontalBarSVG segments={ segments }/>
         <LabelBar segments={ segments } />
       </div>
     );

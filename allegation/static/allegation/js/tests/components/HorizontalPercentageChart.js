@@ -10,6 +10,37 @@ require('should');
 
 describe('HorizontalPercentageChart component', function () {
   var horizontalPercentageChart;
+  var expectData = [
+    {
+      label: 'b',
+      translateX: 0,
+      width: (100 - 4) * 0.4 + 2,
+      value: 2,
+      fill: '#A5B4BD',
+      percent: 40,
+      oldIndex: 0
+    },
+    {
+      label: 'a',
+      translateX: (100 - 4) * 0.4 + 2,
+      width: (100 - 4) * 0.6 + 2,
+      value: 3,
+      fill: '#6A2122',
+      percent: 60,
+      oldIndex: 1
+    }
+  ];
+
+  var chartData = [
+    {
+      label: 'a',
+      count: 3
+    },
+    {
+      label: 'b',
+      count: 2
+    }
+  ];
 
   afterEach(function () {
     if (horizontalPercentageChart) {
@@ -29,56 +60,15 @@ describe('HorizontalPercentageChart component', function () {
   });
 
   it('should return a correct result when using sortAndColorizeData', function () {
-    var chartData = [
-      {
-        label: 'a',
-        count: 3
-      },
-      {
-        label: 'b',
-        count: 2
-      }
-    ];
-
     horizontalPercentageChart = ReactTestUtils.renderIntoDocument(
       <HorizontalPercentageChart data={ chartData } label={ '' }/>
     );
 
-    horizontalPercentageChart.sortAndColorizeData().should.deepEqual([
-      {
-        label: 'b',
-        translateX: 0,
-        width: (500 - 30) * 0.4 + 15,
-        value: 2,
-        fill: '#A5B4BD',
-        percent: 40,
-        oldIndex: 0
-      },
-      {
-        label: 'a',
-        translateX: (500 - 30) * 0.4 + 15,
-        width: (500 - 30) * 0.6 + 15,
-        value: 3,
-        fill: '#6A2122',
-        percent: 60,
-        oldIndex: 1
-      }
-    ]);
+    horizontalPercentageChart.sortAndColorizeData().should.deepEqual(expectData);
 
   });
 
   it('should render chart correct with data', function () {
-    var chartData = [
-      {
-        label: 'a',
-        count: 3
-      },
-      {
-        label: 'b',
-        count: 2
-      }
-    ];
-
     horizontalPercentageChart = ReactTestUtils.renderIntoDocument(
       <HorizontalPercentageChart data={ chartData } label={ 'chart' }/>
     );
@@ -86,11 +76,12 @@ describe('HorizontalPercentageChart component', function () {
     ReactTestUtils.findRenderedDOMComponentWithClass(horizontalPercentageChart, 'chart-label')
       .textContent.should.equal('chart');
 
-    ElementUtils.pluckElementsAttribute(horizontalPercentageChart, 'rect', 'width').should.deepEqual(['203', '297']);
-    ElementUtils.pluckElementsAttribute(horizontalPercentageChart, 'rect', 'style')
+    ElementUtils.getElementsAttributeByTagName(horizontalPercentageChart, 'rect', 'width')
+      .should.deepEqual([expectData[0].width + '%', expectData[1].width + '%']);
+    ElementUtils.getElementsAttributeByTagName(horizontalPercentageChart, 'rect', 'style')
       .should.deepEqual(['fill:#A5B4BD;', 'fill:#6A2122;']);
-    ElementUtils.pluckElementsAttribute(horizontalPercentageChart, 'rect', 'transform')
-      .should.deepEqual(['translate(0,0)', 'translate(203,0)']);
+    ElementUtils.getElementsAttributeByTagName(horizontalPercentageChart, 'rect', 'x')
+      .should.deepEqual([expectData[0].translateX + '%', expectData[1].translateX + '%']);
 
     ElementUtils.getElementsTextByClassName(horizontalPercentageChart, 'segment-name').should.deepEqual(['b', 'a']);
     ElementUtils.getElementsTextByClassName(horizontalPercentageChart, 'segment-percentage')

@@ -2,8 +2,14 @@ var _ = require('lodash');
 var ReactTestUtils = require('react-addons-test-utils');
 
 
-var pluckElementsAttribute = function (component, tagName, key) {
+var getElementsAttributeByTagName = function (component, tagName, key) {
   return _.map(ReactTestUtils.scryRenderedDOMComponentsWithTag(component, tagName), function (el) {
+    return el.getAttribute(key);
+  });
+};
+
+var getElementsAttributeByClassName = function (component, className, key) {
+  return _.map(ReactTestUtils.scryRenderedDOMComponentsWithClass(component, className), function (el) {
     return el.getAttribute(key);
   });
 };
@@ -15,6 +21,7 @@ var getElementsTextByClassName = function (component, className) {
 };
 
 module.exports = {
-  pluckElementsAttribute: pluckElementsAttribute,
+  getElementsAttributeByTagName: getElementsAttributeByTagName,
+  getElementsAttributeByClassName: getElementsAttributeByClassName,
   getElementsTextByClassName: getElementsTextByClassName
 };

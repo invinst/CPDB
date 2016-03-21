@@ -35,11 +35,11 @@ describe('HorizontalBarSVG component', function () {
       <HorizontalBarSVG segments={ segments } totalWidth={ 100 }/>
     );
 
-    ElementUtils.pluckElementsAttribute(horizontalBarSVG, 'rect', 'width').should.deepEqual(['10', '90']);
-    ElementUtils.pluckElementsAttribute(horizontalBarSVG, 'rect', 'transform').should.deepEqual([
-      'translate(0,0)', 'translate(10,0)'
+    ElementUtils.getElementsAttributeByTagName(horizontalBarSVG, 'rect', 'width').should.deepEqual(['10%', '90%']);
+    ElementUtils.getElementsAttributeByTagName(horizontalBarSVG, 'rect', 'x').should.deepEqual([
+      '0%', '10%'
     ]);
-    ElementUtils.pluckElementsAttribute(horizontalBarSVG, 'rect', 'style').should.deepEqual([
+    ElementUtils.getElementsAttributeByTagName(horizontalBarSVG, 'rect', 'style').should.deepEqual([
       'fill:red;', 'fill:blue;'
     ]);
   });
