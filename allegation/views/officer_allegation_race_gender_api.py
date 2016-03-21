@@ -11,7 +11,8 @@ def return_dict(l, k, v):
     return {value[k]: value[v] for value in l if value[k]}
 
 
-AGE_RANGES = [20, 30, 40, 50, 60]
+OFFICER_AGE_RANGES = [20, 30, 40, 50, 60]
+WITNESS_AGE_RANGES = [0, 20, 30, 40, 50]
 
 
 class OfficerAllegationRaceGenderAPI(OfficerAllegationAPIView):
@@ -33,14 +34,14 @@ class OfficerAllegationRaceGenderAPI(OfficerAllegationAPIView):
     def get_officer_ages(self):
         officer_allegations = self.get_officer_allegations()
         officer_allegations = officer_allegations.filter(officer_age__isnull=False)\
-            .annotate(age_range=get_num_range_case('officer_age', AGE_RANGES))
+            .annotate(age_range=get_num_range_case('officer_age', OFFICER_AGE_RANGES))
         return self.annotate_count_for(officer_allegations, 'age_range')
 
     def get_witness_ages(self):
         officer_allegations = self.get_officer_allegations()
         return self.annotate_count_for(
             self.get_witness(officer_allegations).filter(age__isnull=False, age__gt=0)
-            .annotate(age_range=get_num_range_case('age', AGE_RANGES)), 'age_range')
+            .annotate(age_range=get_num_range_case('age', WITNESS_AGE_RANGES)), 'age_range')
 
     def get_officer_genders(self):
         officer_allegations = \

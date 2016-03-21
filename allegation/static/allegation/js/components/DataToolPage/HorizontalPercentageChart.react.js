@@ -3,6 +3,7 @@ var PropTypes = React.PropTypes;
 var _ = require('lodash');
 var d3 = require('d3');
 var PureRenderMixin = require('react-addons-pure-render-mixin');
+var classnames = require('classnames');
 
 var calculatePercentages = require('utils/calculatePercentages');
 var LabelBar = require('components/DataToolPage/HorizontalPercentageChart/LabelBar.react');
@@ -15,6 +16,7 @@ var HorizontalPercentageChart = React.createClass({
       label: PropTypes.string,
       count: PropTypes.number
     })),
+    className: PropTypes.string,
     label: PropTypes.string
   },
 
@@ -69,9 +71,10 @@ var HorizontalPercentageChart = React.createClass({
 
   render: function () {
     var segments = this.sortAndColorizeData();
+    var classNames = classnames('horizontal-percentage-chart', this.props.className);
 
     return (
-      <div className='horizontal-percentage-chart'>
+      <div className={ classNames }>
         <p className='chart-label'>{ this.props.label }</p>
         <HorizontalBarSVG segments={ segments }/>
         <LabelBar segments={ segments } />

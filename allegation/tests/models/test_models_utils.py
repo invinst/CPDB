@@ -37,3 +37,16 @@ class ModelUtilsTestCase(SimpleTestCase):
         actual_result = get_num_range_case('a', num_range)
 
         repr(expect_result).should.equal(repr(actual_result))
+
+    def test_get_num_range_case_begin_with_zero(self):
+        num_range = [0, 3, 5]
+        expect_result = Case(
+            When(a__lte=3, then=Value('<3')),
+            When(a__gte=4, a__lte=5, then=Value('4-5')),
+            When(a__gte=6, then=Value('6+')),
+            default=Value('Unknown'),
+            output_field=CharField()
+            )
+        actual_result = get_num_range_case('a', num_range)
+
+        repr(expect_result).should.equal(repr(actual_result))

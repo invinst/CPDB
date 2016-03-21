@@ -19,7 +19,7 @@ def calculate_officer_age(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', '0002_officerallegation_officer_age'),
+        ('common', '0003_officerallegation_officer_age'),
     ]
 
     operations = [

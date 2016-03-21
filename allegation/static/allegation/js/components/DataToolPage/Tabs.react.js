@@ -106,7 +106,7 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
       return;
     }
 
-    tabClass = classnames({
+    tabClass = classnames(label.toLowerCase(), {
       'active': this.isActive(target)
     });
 
