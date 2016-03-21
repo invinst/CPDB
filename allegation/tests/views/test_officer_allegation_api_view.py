@@ -381,3 +381,19 @@ class OfficerAllegationApiViewTestCase(
         len(data).should.equal(7)
         [obj['officer_allegation']['id'] for obj in data].should.equal([
             oa1.id, oa2.id, oa3.id, oa4.id, oa5.id, oa6.id, oa7.id])
+
+    def test_complaining_witness_not_repeated(self):
+        OfficerAllegation.objects.all().delete()
+        allegation = AllegationFactory()
+        complaining_witness = ComplainingWitnessFactory(allegation=allegation)
+
+        OfficerAllegationFactory(allegation=allegation)
+        OfficerAllegationFactory(allegation=allegation)
+        OfficerAllegationFactory(allegation=allegation)
+
+        data = self.fetch_officer_allegations(allegation_id=allegation.pk)
+
+        len(data).should.equal(3)
+        len(data[0]['complaining_witness']).should.equal(1)
+        for c in data:
+            c['complaining_witness'][0]['cwit_id'].should.equal(complaining_witness.pk)

@@ -202,3 +202,8 @@ class PendingPdfAllegation(models.Model):
     finding = models.CharField(max_length=255, blank=True, null=True)
     summary = models.TextField(blank=True, null=True)
     errors = models.TextField(blank=True, null=True)
+
+
+class DocumentCrawler(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True)
+    num_documents = models.IntegerField()

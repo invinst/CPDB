@@ -86,7 +86,7 @@ AddDocumentLinkModal = React.createClass(_.assign(Base(AddDocumentLinkModalStore
 
   toggleModal: function () {
     var modalCommand = this.state.isOpen ? 'show' : 'hide';
-    jQuery(this.getDOMNode()).modal(modalCommand);
+    jQuery(ReactDOM.findDOMNode(this)).modal(modalCommand);
   },
 
   isOpen: function () {

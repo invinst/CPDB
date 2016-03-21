@@ -33,7 +33,6 @@ THIRD_PARTY_APPS = (
     'django_extensions',
     'djangobower',
     'django_tables2',
-    'compressor',
     'rest_framework',
     'jsonify',
     'django_nose',
@@ -134,7 +133,6 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'djangobower.finders.BowerFinder',
-    'compressor.finders.CompressorFinder',
 )
 
 STATIC_URL = '/static/'
@@ -204,10 +202,6 @@ EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 BROKER_URL = os.environ.get('BROKER_URL', 'redis://localhost:6379/0')
-COMPRESS_PRECOMPILERS = (
-    ('text/less', 'lessc {infile}'),
-    ('text/sass', 'sass {infile}'),
-)
 
 LOGIN_URL = reverse_lazy("admin:login")
 
@@ -218,6 +212,9 @@ ANALYTICS_API_KEY_FILE = os.path.join(BASE_DIR, 'keys', 'cpdb-analytics.p12')
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 20,
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
 }
 
 TEST_RUNNER = 'common.tests.runner.DjangoNoseTestSuiteRunner'
@@ -283,3 +280,6 @@ ELASTICSEARCH_SETTINGS = {
 }
 
 DJANGO_ENV = 'prod'
+
+DOCUMENT_CLOUD_USERNAME = os.environ.get('DOCUMENT_CLOUD_USERNAME')
+DOCUMENT_CLOUD_PASSWORD = os.environ.get('DOCUMENT_CLOUD_PASSWORD')

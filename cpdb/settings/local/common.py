@@ -12,7 +12,7 @@ CACHES = {
     },
 }
 
-COMPRESS_ENABLED = False
+STATICFILES_DIRS = ['local_static']
 
 LOGGING = {
     'version': 1,

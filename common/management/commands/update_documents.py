@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 from documentcloud import DocumentCloud
 
+from common.models import DocumentCrawler
 from dashboard.services.documentcloud_service import DocumentcloudService
 from document.models import Document
 
@@ -40,3 +41,5 @@ class Command(BaseCommand):
             if results:
                 for result in results:
                     self.process_documentcloud_result(result, document_type)
+
+        DocumentCrawler.objects.create(num_documents=Document.objects.filter(documentcloud_id__gt=0).count())

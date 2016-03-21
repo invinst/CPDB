@@ -4,6 +4,7 @@ from django.views.decorators.cache import cache_page
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import routers
 
+from dashboard.views.crawl_stats import crawl_stats
 from dashboard.views.admin_allegation_request_analysis_view import AdminAllegationRequestAnalysisView
 from dashboard.views.alias_view import AdminAliasApi
 from dashboard.views.allegation_request_view import AdminAllegationRequestViewSet
@@ -20,6 +21,7 @@ from dashboard.views.story_type_view import StoryTypeView
 from dashboard.views.admin_session_analytics_view import AdminNewSessionsAnalyticsViewSet
 from dashboard.views.admin_session_alias_view import AdminSessionAliasApi, AdminSessionsAliasViewSet
 from dashboard.views.admin_investigation_documents_export_view import AdminInvestigationDocumentsExportView
+from dashboard.views.admin_document_upload_view import AdminDocumentUploadView
 
 cache_view = cache_page(86400 * 90)
 
@@ -51,4 +53,7 @@ urlpatterns = [
         name='session-alias'),
     url(r'^api/dashboard/documents_export/$',
         login_required(csrf_exempt(AdminInvestigationDocumentsExportView.as_view())), name='documents-export'),
+    url(r'^api/dashboard/crawl-stats/', login_required(crawl_stats), name='document-crawl-stats'),
+    url(r'^api/dashboard/upload-document/$',
+        login_required(AdminDocumentUploadView.as_view()), name='document-upload')
 ]
