@@ -14,6 +14,7 @@ var SessionAPI = require('utils/SessionAPI');
 var SiteTitle = require('components/Shared/SiteTitle.react');
 var ShareButton = require('components/DataToolPage/Share/ShareButton.react');
 var Nav;
+var PageUtils = require('utils/PageUtils');
 
 require('utils/jQuery');
 
@@ -42,6 +43,7 @@ Nav = React.createClass(_.assign(Base(AppStore), {
 
   goToPage: function (page, event) {
     if (!this.props.isActive(page)) {
+      PageUtils.hideOverlay();
       NavActions.goToPage(page);
     } else {
       event.preventDefault();
@@ -144,11 +146,30 @@ Nav = React.createClass(_.assign(Base(AppStore), {
 
   renderNavTabSection: function () {
     return (
-      <ul className='pull-right' role='tablist'>
-        <span className='moving-arrow' />
-        { this.renderNavTabItems() }
-      </ul>
+      <div className='nav-tabs pull-right'>
+        <ul className='visible-md visible-lg' role='tablist'>
+          <span className='moving-arrow' />
+          { this.renderNavTabItems() }
+        </ul>
+        <i onClick={ this.showNavTabsSidebar } className='fa fa-bars visible-sm visible-xs'></i>
+        <div className='hidden nav-tabs-sidebar'>
+          <ul role='tablist'>
+            <i onClick={ this.hideNavTabsSidebar } className='fa fa-times'></i>
+            { this.renderNavTabItems() }
+          </ul>
+        </div>
+      </div>
     );
+  },
+
+  showNavTabsSidebar: function () {
+    $('.nav-tabs-sidebar').removeClass('hidden');
+    PageUtils.showOverlay();
+  },
+
+  hideNavTabsSidebar: function () {
+    $('.nav-tabs-sidebar').addClass('hidden');
+    PageUtils.hideOverlay();
   },
 
   renderWelcome: function () {

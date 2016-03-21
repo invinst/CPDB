@@ -167,6 +167,35 @@
       opacity: 0
       transition: opacity 1s $cubic_bezier
 
+    .nav-tabs
+      background: none
+      border: none
+
+      .fa-bars
+        font-size: 44px
+
+      .nav-tabs-sidebar
+        position: fixed
+        right: 0
+        top: 0
+        background: #d8e1ef
+        width: 250px
+        height: 100%
+        z-index: 10000
+
+        li
+          float: none
+          text-align: left
+          margin-left: 20px
+          height: 48px
+
+        .fa-times
+          font-size: 44px
+          margin-left: 206px
+          background: gray
+          width: 44px
+          text-align: center
+
   .fixed-nav
     position: fixed
     width: 100%
