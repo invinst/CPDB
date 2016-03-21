@@ -61,6 +61,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'common.middleware.subdomain.SubdomainURLRoutingMiddleware',
     'common.middleware.mobile_redirect.MobileRedirectMiddleware',
+    'common.middleware.user_agent.CrawlerDetector',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -211,6 +212,9 @@ ANALYTICS_API_KEY_FILE = os.path.join(BASE_DIR, 'keys', 'cpdb-analytics.p12')
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 20,
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
 }
 
 TEST_RUNNER = 'common.tests.runner.DjangoNoseTestSuiteRunner'
@@ -276,3 +280,6 @@ ELASTICSEARCH_SETTINGS = {
 }
 
 DJANGO_ENV = 'prod'
+
+DOCUMENT_CLOUD_USERNAME = os.environ.get('DOCUMENT_CLOUD_USERNAME')
+DOCUMENT_CLOUD_PASSWORD = os.environ.get('DOCUMENT_CLOUD_PASSWORD')
