@@ -46,7 +46,8 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
         link_texts = [x.text for x in links]
         link_texts.should.contain('Outcomes')
         link_texts.should.contain('Categories')
-        link_texts.should.contain('Race & Gender')
+        link_texts.should.contain('Complainants')
+        link_texts.should.contain('Accused')
 
     def test_close_disclaimer(self):
         self.visit_home()

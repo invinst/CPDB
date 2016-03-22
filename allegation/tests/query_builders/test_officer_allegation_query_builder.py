@@ -499,4 +499,4 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
         results = OfficerAllegation.objects\
             .filter(query).values_list('id', flat=True)
 
-        list(results).should.equal(expected_ids)
+        set(list(results)).should.equal(set(expected_ids))
