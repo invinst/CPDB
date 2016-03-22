@@ -96,6 +96,10 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
     return this.state.activeTab == target || (!this.state.activeTab && target == 'outcomes');
   },
 
+  pushTab: function (childComponent) {
+    this.tabs.push(childComponent);
+  },
+
   renderNavTab: function (label) {
     var target = S(label.toLowerCase().replace('&', '')).slugify().s;
     var dataTarget = '#' + target;
@@ -133,7 +137,7 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
 
     return (
       <div role='tabpanel' className={ tabClass } id={ id }>
-        { React.createElement(Component, _.assign({}, {tabs: this}, props)) }
+        { React.createElement(Component, _.assign({}, {pushTab: this.pushTab}, props)) }
       </div>
     );
   },
@@ -151,7 +155,7 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
 
         <div className='tab-content'>
           { this.renderTabContent('map', Map) }
-          { this.renderTabContent('outcomes', Sunburst) }
+          { this.renderTabContent('outcomes', Sunburst, {embedding: this.embedding}) }
           { this.renderTabContent('categories', Summary) }
           { this.renderTabContent('complainants', RaceGenderTab, {role: RaceGenderTab.COMPLAINANT_ROLE}) }
           { this.renderTabContent('accused', RaceGenderTab, {role: RaceGenderTab.OFFICER_ROLE}) }

@@ -1,10 +1,12 @@
 var React = require('react');
+var ReactDOM = require('react-dom');
 var PropTypes = React.PropTypes;
 var _ = require('lodash');
 var S = require('string');
 
 var HorizontalPercentageChart = require('components/DataToolPage/HorizontalPercentageChart.react');
 var RaceGenderAgeTabStore = require('stores/DataToolPage/RaceGenderAgeTabStore');
+var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFilterTagsQueryBuilder');
 
 var OFFICER_ROLE = 'Officer';
 var COMPLAINANT_ROLE = 'Complainant';
@@ -12,7 +14,14 @@ var COMPLAINANT_ROLE = 'Complainant';
 
 var RaceGenderAgeTab = React.createClass({
   propTypes: {
-    role: PropTypes.oneOf([OFFICER_ROLE, COMPLAINANT_ROLE])
+    role: PropTypes.oneOf([OFFICER_ROLE, COMPLAINANT_ROLE]),
+    pushTab: PropTypes.func
+  },
+
+  getDefaultProps: function () {
+    return {
+      pushTab: function () {}
+    };
   },
 
   getInitialState: function () {
@@ -22,6 +31,7 @@ var RaceGenderAgeTab = React.createClass({
   componentDidMount: function () {
     RaceGenderAgeTabStore.addChangeListener(this._onChange);
     this._onChange();
+    this.props.pushTab(this);
   },
 
   shouldComponentUpdate: function (nextProps, nextState) {
@@ -36,6 +46,20 @@ var RaceGenderAgeTab = React.createClass({
     age: S('get{{role}}AgeSegments'),
     gender: S('get{{role}}GenderSegments'),
     race: S('get{{role}}RaceSegments')
+  },
+
+  getEmbedCode: function () {
+    var node = ReactDOM.findDOMNode(this);
+    var width = $(node).width();
+    var height = $(node).height();
+    var query = encodeURIComponent(AllegationFilterTagsQueryBuilder.buildQuery());
+    var src = S('{{base}}/embed/?page={{page}}{{query}}').template({
+      base: location.origin,
+      page: this.props.role.toLowerCase() + '-race-gender-age-tab',
+      query: query ? '&query=' + query : ''
+    }).s;
+    return '<iframe width="' + width + 'px" height="' + height + 'px" frameborder="0" src="' + src
+       + '"></iframe>';
   },
 
   _getNewState: function () {
