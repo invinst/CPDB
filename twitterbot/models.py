@@ -61,3 +61,8 @@ class TwitterResponse(models.Model):
     @classmethod
     def escape_response(cls, response):
         return requests.utils.quote(response, safe='')
+
+
+class TwitterBotError(models.Model):
+    stack_trace = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)

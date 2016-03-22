@@ -9,7 +9,7 @@ from django.conf import settings
 from common.models import Investigator, Officer
 from search.services.suggest.suggest_investigator import SuggestInvestigator
 from search.services.suggest.suggest_officer import SuggestOfficerName
-from twitterbot.models import Response, TwitterSearch, TwitterResponse
+from twitterbot.models import Response, TwitterSearch, TwitterResponse, TwitterBotError
 
 ERR_DUPLICATED_RESPONSE = 187
 IGNORED_ERROR_CODES = [
@@ -37,7 +37,17 @@ class TwitterBot:
 
     def listen_to_tweets(self, handler):
         stream = tweepy.Stream(auth=self.api.auth, listener=handler)
-        stream.userstream()
+        is_ok = self.handle_stream(stream)
+        while not is_ok and settings.DJANGO_ENV != 'test':
+            self.handle_stream(stream)
+
+    def handle_stream(self, stream):
+        try:
+            stream.userstream()
+            return True
+        except Exception as e:
+            TwitterBotError(stack_trace=repr(e)).save()
+            return False
 
 
 class CPDBTweetHandler(tweepy.StreamListener):

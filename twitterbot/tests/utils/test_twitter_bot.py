@@ -7,8 +7,37 @@ from common.models import Officer
 from common.tests.core import SimpleTestCase
 from common.utils.haystack import rebuild_index
 from twitterbot.factories import ResponseFactory, TweetFactory, QuotedTweetFactory
-from twitterbot.models import Response
-from twitterbot.utils import ERR_DUPLICATED_RESPONSE, CPDBTweetHandler
+from twitterbot.models import Response, TwitterBotError
+from twitterbot.utils import ERR_DUPLICATED_RESPONSE, CPDBTweetHandler, TwitterBot
+
+
+class TwitterBotTestCase(SimpleTestCase):
+    def setUp(self):
+        auth = tweepy.OAuthHandler(settings.TWITTER_CONSUMER_KEY, settings.TWITTER_CONSUMER_SECRET)
+        auth.set_access_token(settings.TWITTER_APP_TOKEN_KEY, settings.TWITTER_APP_TOKEN_SECRET)
+        api = tweepy.API(auth)
+        self.tweet_handler = CPDBTweetHandler(api)
+
+        self.bot = TwitterBot()
+        self.bot.api = api
+
+    def tearDown(self):
+        TwitterBotError.objects.all().delete()
+
+    def test_self_sustain_on_error(self):
+        e = Exception('some exception')
+        with patch('tweepy.Stream.userstream', side_effect=e):
+            try:
+                self.bot.listen_to_tweets(self.tweet_handler)
+            except:
+                self.fail('Expect no exception raised')
+
+    def test_error_logging(self):
+        e = Exception('some exception')
+        with patch('tweepy.Stream.userstream', side_effect=e):
+            self.bot.listen_to_tweets(self.tweet_handler)
+
+            TwitterBotError.objects.all()[0].stack_trace.should.equal(repr(e))
 
 
 class CPDBTweetHandlerTestCase(SimpleTestCase):
@@ -35,7 +64,10 @@ class CPDBTweetHandlerTestCase(SimpleTestCase):
     def test_error_handling(self):
         side_effect = tweepy.TweepError(api_code=ERR_DUPLICATED_RESPONSE, reason='Duplicated Message')
         with patch('twitterbot.utils.CPDBTweetHandler.reply', side_effect=side_effect):
-            self.tweet_handler.on_status(TweetFactory())
+            try:
+                self.tweet_handler.on_status(TweetFactory())
+            except:
+                self.fail('Expect no exception raised')
 
         not_ignored_code = -124
         side_effect = tweepy.TweepError(api_code=not_ignored_code, reason='Not Duplicated Message')
