@@ -29,7 +29,7 @@ class Command(BaseCommand):
                     update_values['title'] = result.title
 
                     document.update(**update_values)
-            except Exception:
+            except Document.DoesNotExist:
                 pass
 
     def handle(self, *args, **options):

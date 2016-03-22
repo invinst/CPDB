@@ -22,13 +22,6 @@ class AllegationDocumentQueryBuilder(object):
     """
 
     def build(self, query_params):
-        """
-        Take `query_params` and return a single Q object.
-
-        Will run query_params through all methods begin with `_q_`
-        and return the combined Q query.
-        """
-
         request_type = query_params.get('request_type', 'All')
         queries = DOCUMENT_REQUEST_FILTERS[request_type]
         if 'document_type' in query_params:

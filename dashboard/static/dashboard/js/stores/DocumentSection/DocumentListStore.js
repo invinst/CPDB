@@ -52,6 +52,8 @@ AppDispatcher.register(function (action) {
 
     case AppConstants.DOCUMENT_REQUEST_CANCEL:
       // these seem kind of dangerous, but it works
+      // document is passed by reference here, it's an element in a document array
+      // if you pass a cloned document object, this will not update the document in array
       document = action.data;
       document.requested = false;
       document.pending = false;
@@ -60,6 +62,7 @@ AppDispatcher.register(function (action) {
 
     case AppConstants.DOCUMENT_PUT_TO_PENDING:
       // these seem kind of dangerous, but it works
+      // detail in AppConstants.DOCUMENT_REQUEST_CANCEL
       document = action.data;
       document.pending = true;
       DocumentListStore.emitChange();
@@ -67,6 +70,7 @@ AppDispatcher.register(function (action) {
 
     case AppConstants.DOCUMENT_PUT_TO_REQUESTING:
       // these seem kind of dangerous, but it works
+      // detail in AppConstants.DOCUMENT_REQUEST_CANCEL
       document = action.data;
       document.pending = false;
       document.requested = true;
