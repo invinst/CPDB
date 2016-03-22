@@ -26,7 +26,7 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
 
     def test_start_new_session_on_click_logo(self):
         Session.objects.all().count().should.equal(0)
-        self.visit_home()
+        self.visit_home(fresh=True)
         self.link("Categories").click()
         self.find(".category-name-wrapper a").click()
         self.until_ajax_complete()
@@ -146,7 +146,6 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
 
         self.officer_allegation = OfficerAllegationFactory(
             cat=self.allegation_category, final_outcome='300')
-
         self.visit_home()
         self.click_active_tab("Outcomes")
 
@@ -232,7 +231,7 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
         self.browser.title.should.equal(setting.default_site_title)
 
     def test_share_button(self):
-        self.visit_home()
+        self.visit_home(fresh=True)
         self.find('.share-button button').click()
         self.find('.share-bar').is_displayed()
         self.find('.share-bar-content-wrapper input').get_attribute('value').should_not.equal(self.browser.current_url)
@@ -301,3 +300,4 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
         len(self.find_all('.nav-tabs li')).should.equal(4)
         driver.close()
         self.set_browser(old_browser)
+        self.browser.set_window_size(width=1200, height=1000)
