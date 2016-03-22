@@ -55,9 +55,13 @@ var RaceGenderAgeTab = React.createClass({
   render: function () {
     return (
       <div className='race-gender-age-tab'>
-        <HorizontalPercentageChart className='race' label='Race' data={ this.state.race } />
-        <HorizontalPercentageChart className='gender' label='Gender' data={ this.state.gender } />
-        <HorizontalPercentageChart className='age' label='Age' data={ this.state.age } />
+        <HorizontalPercentageChart
+          className='race' label='Race' data={ this.state.race }
+          category='' filter=''/>
+        <HorizontalPercentageChart
+          className='gender' label='Gender' data={ this.state.gender } />
+        <HorizontalPercentageChart
+          className='age' label='Age' data={ this.state.age } />
       </div>
     );
   }

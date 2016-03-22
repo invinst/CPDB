@@ -11,7 +11,9 @@ var HorizontalBarSVG = React.createClass({
       fill: PropTypes.string
     })),
     totalWidth: PropTypes.number,
-    chartHeight: PropTypes.number
+    chartHeight: PropTypes.number,
+    filter: PropTypes.string,
+    category: PropTypes.string
   },
 
   getDefaultProps: function () {

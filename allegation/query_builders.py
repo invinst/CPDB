@@ -295,3 +295,35 @@ class OfficerAllegationQueryBuilder(object):
 
         duties = [duty == 'true' for duty in duties]
         return Q(cat__on_duty__in=duties)
+
+    def _q_complainant_age(self, query_params):
+        age_ranges = query_params.getlist('complainant_age', [])
+        queries = Q()
+        for age_range in age_ranges:
+            if age_range[0] == '<':
+                queries |= Q(allegation__complainingwitness__age__lte=age_range[1:])
+            elif age_range[0] == '>':
+                queries |= Q(allegation__complainingwitness__age__gte=age_range[1:])
+            else:
+                ages = age_range.split('-')
+                queries |= Q(
+                    allegation__complainingwitness__age__gte=ages[0],
+                    allegation__complainingwitness__age__lte=ages[1])
+
+        return queries
+
+    def _q_officer_age(self, query_params):
+        age_ranges = query_params.getlist('officer_age', [])
+        queries = Q()
+        for age_range in age_ranges:
+            if age_range[0] == '<':
+                queries |= Q(officer_age__lte=age_range[1:])
+            elif age_range[0] == '>':
+                queries |= Q(officer_age__gte=age_range[1:])
+            else:
+                ages = age_range.split('-')
+                queries |= Q(
+                    officer_age__gte=ages[0],
+                    officer_age__lte=ages[1])
+
+        return queries

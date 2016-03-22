@@ -43,4 +43,23 @@ describe('HorizontalBarSVG component', function () {
       'fill:red;', 'fill:blue;'
     ]);
   });
+
+  it('should trigger filter when user click on segment', function () {
+    var segments = [
+      {
+        translateX: 0,
+        width: 10,
+        fill: 'red'
+      },
+      {
+        translateX: 10,
+        width: 90,
+        fill: 'blue'
+      }
+    ];
+
+    horizontalBarSVG = ReactTestUtils.renderIntoDocument(
+      <HorizontalBarSVG segments={ segments } totalWidth={ 100 }/>
+    );
+  });
 });
