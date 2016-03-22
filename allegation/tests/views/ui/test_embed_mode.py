@@ -38,9 +38,7 @@ class EmbedModeTestCase(BaseLiveTestCase):
         tabs_column_code.get_attribute('value')\
             .should.contain('/embed/?page=summary&query=&state=')
 
-        self.click_active_tab('Race & Gender')
-        tabs_column_code.get_attribute('value')\
-            .should.contain('/embed/?page=race-gender&query=')
+        # TODO: put race gender age embed test code here
 
         officer_list_code = self.find('#officer-cards .embed-code input')
         officer_list_code.should.be.ok
