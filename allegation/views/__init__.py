@@ -46,6 +46,12 @@ class AllegationListView(TemplateView):
         for text in InterfaceText.objects.all():
             interface_texts[text.key] = text.text
         context.update({'interface_texts': json.dumps(interface_texts)})
+
+        is_crawler = self.request.GET.get('is_crawler', False)
+        show_disclaimer = (settings.DJANGO_ENV != 'test' or self.request.GET.get('with_disclaimer', False))\
+            and not is_crawler
+        context.update({'show_disclaimer': 'true' if show_disclaimer else 'false'})
+
         return context
 
     def get(self, request, hash_id=None, *args, **kwargs):
