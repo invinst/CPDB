@@ -4,6 +4,7 @@ var PropTypes = React.PropTypes;
 var _ = require('lodash');
 var S = require('string');
 
+var DOMUtils = require('utils/DOMUtils');
 var HorizontalPercentageChart = require('components/DataToolPage/HorizontalPercentageChart.react');
 var RaceGenderAgeTabStore = require('stores/DataToolPage/RaceGenderAgeTabStore');
 var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFilterTagsQueryBuilder');
@@ -29,9 +30,11 @@ var RaceGenderAgeTab = React.createClass({
   },
 
   componentDidMount: function () {
+    this.resizeEndListener = DOMUtils.onResizeEnd(this._onResizeEnd);
     RaceGenderAgeTabStore.addChangeListener(this._onChange);
     this._onChange();
     this.props.pushTab(this);
+    this._onResizeEnd();
   },
 
   shouldComponentUpdate: function (nextProps, nextState) {
@@ -40,12 +43,19 @@ var RaceGenderAgeTab = React.createClass({
 
   componentWillUnmount: function () {
     RaceGenderAgeTabStore.removeChangeListener(this._onChange);
+    DOMUtils.removeResizeEndListener(this.resizeEndListener);
   },
 
   dataMethods: {
     age: S('get{{role}}AgeSegments'),
     gender: S('get{{role}}GenderSegments'),
     race: S('get{{role}}RaceSegments')
+  },
+
+  _onResizeEnd: function () {
+    this.setState({
+      chartWidth: DOMUtils.getElementWidth(this.refs.raceGenderChart)
+    });
   },
 
   getEmbedCode: function () {
@@ -78,10 +88,13 @@ var RaceGenderAgeTab = React.createClass({
 
   render: function () {
     return (
-      <div className='race-gender-age-tab'>
-        <HorizontalPercentageChart className='race' label='Race' data={ this.state.race } />
-        <HorizontalPercentageChart className='gender' label='Gender' data={ this.state.gender } />
-        <HorizontalPercentageChart className='age' label='Age' data={ this.state.age } />
+      <div className='race-gender-age-tab' ref='raceGenderChart'>
+        <HorizontalPercentageChart className='race' label='Race'
+          data={ this.state.race } chartWidth={ this.state.chartWidth || 0 }/>
+        <HorizontalPercentageChart className='gender' label='Gender'
+          data={ this.state.gender } chartWidth={ this.state.chartWidth || 0 }/>
+        <HorizontalPercentageChart className='age' label='Age'
+          data={ this.state.age } chartWidth={ this.state.chartWidth || 0 }/>
       </div>
     );
   }

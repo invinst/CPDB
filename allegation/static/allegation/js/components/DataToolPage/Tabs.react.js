@@ -135,11 +135,11 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
       'active': this.isActive(id)
     });
 
-    return (
+    return this.isActive(id) ? (
       <div role='tabpanel' className={ tabClass } id={ id }>
         { React.createElement(Component, _.assign({}, {pushTab: this.pushTab}, props)) }
       </div>
-    );
+    ) : null;
   },
 
   render: function () {
