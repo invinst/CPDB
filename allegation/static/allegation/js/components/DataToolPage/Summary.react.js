@@ -18,14 +18,14 @@ var Summary = React.createClass({
     query: PropTypes.string,
     tabs: PropTypes.object,
     currentActive: PropTypes.bool,
-    pushTab: PropTypes.func
+    initTab: PropTypes.func
   },
 
   mixins: [EmbedMixin],
 
   getDefaultProps: function () {
     return {
-      pushTab: function () {}
+      initTab: function () {}
     };
   },
 
@@ -45,7 +45,7 @@ var Summary = React.createClass({
       that.find('.child-rows').css('max-height', height);
     }, 1000);
 
-    this.props.pushTab(this);
+    this.props.initTab(this);
   },
   componentWillUnmount: function () {
     SummaryStore.removeChangeListener(this._onChange);

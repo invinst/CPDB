@@ -24,7 +24,7 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
 
   getDefaultProps: function () {
     return {
-      pushTab: function () {}
+      initTab: function () {}
     };
   },
 
@@ -45,7 +45,7 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
     SunburstStore.addSelectedChangeListener(this._onSelectedChange);
     SunburstStore.addSunburstZoomedOutListener(this._onZoomedOut);
 
-    this.props.pushTab(this);
+    this.props.initTab(this);
     SunburstServerActions.initData();
     this.drawSunburst();
   },

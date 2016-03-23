@@ -16,12 +16,12 @@ var COMPLAINANT_ROLE = 'Complainant';
 var RaceGenderAgeTab = React.createClass({
   propTypes: {
     role: PropTypes.oneOf([OFFICER_ROLE, COMPLAINANT_ROLE]),
-    pushTab: PropTypes.func
+    initTab: PropTypes.func
   },
 
   getDefaultProps: function () {
     return {
-      pushTab: function () {}
+      initTab: function () {}
     };
   },
 
@@ -33,7 +33,7 @@ var RaceGenderAgeTab = React.createClass({
     this.resizeEndListener = DOMUtils.onResizeEnd(this._onResizeEnd);
     RaceGenderAgeTabStore.addChangeListener(this._onChange);
     this._onChange();
-    this.props.pushTab(this);
+    this.props.initTab(this);
     this._onResizeEnd();
   },
 

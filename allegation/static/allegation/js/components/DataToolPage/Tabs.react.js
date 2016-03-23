@@ -32,8 +32,7 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
   componentWillUnmount: function () {
     TabsStore.removeChangeListener(this._onChange);
     this.removeEmbedListener();
-
-    this.tabs = [];
+    this.activeTabComponent = null;
     this.activeTabIndex = 0;
     this.embedding = false;
   },
@@ -45,16 +44,11 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
   // embedding
   activeTab: function (number, tab, e) {
     this.activeTabIndex = number;
-
-    if (this.embedding) {
-      $(ReactDOM.findDOMNode(this)).parent().find('.embed-code input').val(this.getEmbedCode());
-    }
-
     TabActions.setActiveTab(tab);
   },
 
   getActiveTab: function () {
-    return this.tabs[this.activeTabIndex];
+    return this.activeTabComponent;
   },
 
   getEmbedCode: function () {
@@ -96,8 +90,11 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
     return this.state.activeTab == target || (!this.state.activeTab && target == 'outcomes');
   },
 
-  pushTab: function (childComponent) {
-    this.tabs.push(childComponent);
+  initTab: function (childComponent) {
+    this.activeTabComponent = childComponent;
+    if (this.embedding) {
+      $(ReactDOM.findDOMNode(this)).parent().find('.embed-code input').val(childComponent.getEmbedCode());
+    }
   },
 
   renderNavTab: function (label) {
@@ -137,7 +134,7 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
 
     return this.isActive(id) ? (
       <div role='tabpanel' className={ tabClass } id={ id }>
-        { React.createElement(Component, _.assign({}, {pushTab: this.pushTab}, props)) }
+        { React.createElement(Component, _.assign({}, {initTab: this.initTab}, props)) }
       </div>
     ) : null;
   },
