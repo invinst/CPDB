@@ -14,8 +14,8 @@ var LabelBar = React.createClass({
     chartWidth: PropTypes.number
   },
   textMargin: 8,
-  defaultLabelFont: 'normal normal 100 normal 14px / 20px \'Arial\'',
-  percentageFont: 'normal normal bold normal 14px / 20px \'Arial\'',
+  defaultLabelFont: '100 normal 14px Arial',
+  percentageFont: 'bold normal 14px Arial',
 
   render: function () {
     var leftFunc = LabelBar.calculateLeft(
