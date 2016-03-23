@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^data/(?P<hash_id>\w+)/(?P<slug>.*)$', MobileDataToolView.as_view(), name='data-tool'),
     url(r'^mobile/data/(?P<hash_id>\w+)/(?P<slug>.*)$', MobileDataToolView.as_view(), name='mobile-data-tool'),
 
-    url(r'^(officer/[^/]+/\d+|complaint/\d+|s/.*|q/.*)?$', cache_view(MobileSiteView.as_view()), name='home'),
-    url(r'^mobile/(officer/[^/]+/\d+|complaint/\d+|s/.*|q/.*)?$', cache_view(MobileSiteView.as_view()), name='home')
+    url(r'^(officer/[^/]+/\d+|complaint/\d+|s/.*|q/.*)?/?$', cache_view(MobileSiteView.as_view()), name='home'),
+    url(r'^mobile/(officer/[^/]+/\d+|complaint/\d+|s/.*|q/.*)?/?$', cache_view(MobileSiteView.as_view()),
+        name='mobile-home')
 ]
