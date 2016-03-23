@@ -8,7 +8,7 @@ from common.models import Allegation
 class RequestEmail(models.Model):
     crid = models.CharField(max_length=20)
     email = models.EmailField()
-    session = models.ForeignKey('share.Session')
+    session = models.ForeignKey('share.Session', null=True)
 
     class Meta:
         unique_together = (('crid', 'email'),)

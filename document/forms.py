@@ -10,7 +10,7 @@ class RequestEmailForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(RequestEmailForm, self).__init__(*args, **kwargs)
-        if 'session' in self.data:
+        if self.data.get('session'):
             session_id = Session.id_from_hash(self.data.get('session'))[0]
             self.instance.session = Session.objects.get(pk=session_id)
 
