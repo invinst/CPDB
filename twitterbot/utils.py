@@ -55,7 +55,7 @@ class CPDBTweetHandler(tweepy.StreamListener):
     screen_names = []
 
     def __init__(self, api, *args, **kwargs):
-        super(CPDBTweetHandler, self).__init__(*args, **kwargs)
+        super(CPDBTweetHandler, self).__init__(api=api, *args, **kwargs)
 
         if os.environ.get('TWITTER_DEBUG', None) == 'true':
             self.debug = True
