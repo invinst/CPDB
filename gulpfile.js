@@ -114,10 +114,12 @@ gulp.task('build_sunburst', ['transform_sunburst_template', 'build_sunburst_js_m
 
 
 
-gulp.task('circleci', [
-  'build_test_sass', 'build_allegation_js', 'build_dashboard_js', 'build_mobile_js', 'build_sunburst_js',
-  'circle_mobile_sass', 'circle_dashboard_sass', 'circle_allegation_sass'
-]);
+gulp.task('circleci', function (done) {
+  runSequence('collectstatic', [
+    'build_test_sass', 'build_allegation_js', 'build_dashboard_js', 'build_mobile_js', 'build_sunburst_js',
+    'circle_mobile_sass', 'circle_dashboard_sass', 'circle_allegation_sass'
+  ], done);
+});
 gulp.task('build', function (done) {
   runSequence(
     ['collectstatic', 'collect_all_templates'],
