@@ -26,9 +26,13 @@ var SunburstChartD3 = {
     var clickHandler = options.clickHandler;
     var mouseOverHandler = options.mouseOverHandler;
     var mouseLeaveHandler = options.mouseLeaveHandler;
-    var height = width;
-
+    var height;
     var color;
+
+    if (width > AppConstants.SUNBURST_MAX_WIDTH) {
+      width = AppConstants.SUNBURST_MAX_WIDTH;
+    }
+    height = width;
 
     if (!data) {
       return;
