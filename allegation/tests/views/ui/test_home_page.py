@@ -295,9 +295,11 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
         len(self.find_all('.nav-tabs li')).should.equal(3)
         self.find('#sunburst-chart svg').get_attribute('width').should.be.greater_than('249')
 
-        self.browser.set_window_size(width=1024, height=1200)
+        self.browser.set_window_size(width=1023, height=1200)
         self.visit_home()
-        len(self.find_all('.nav-tabs li')).should.equal(4)
-        driver.close()
-        self.set_browser(old_browser)
-        self.browser.set_window_size(width=1200, height=1000)
+        try:
+            len(self.find_all('.nav-tabs li')).should.equal(4)
+        finally:
+            driver.close()
+            self.set_browser(old_browser)
+            self.browser.set_window_size(width=1200, height=1000)
