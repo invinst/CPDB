@@ -22,6 +22,12 @@ var SessionStore = require('stores/SessionStore');
 var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
   mixins: [EmbedMixin],
 
+  getDefaultProps: function () {
+    return {
+      initTab: function () {}
+    };
+  },
+
   getEmbedCode: function () {
     var node = ReactDOM.findDOMNode(this);
     var width = jQuery(node).width();
@@ -33,36 +39,13 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
        + '"></iframe>';
   },
 
-  initTabs: function () {
-    var i, tab;
-
-    if (this.props.tabs) {
-      if (this.props.tabs.tabs.length > 0) {
-        for (i =0; i < this.props.tabs.tabs.length; i++) {
-          tab = this.props.tabs.tabs[i];
-          if (tab.drawChart) {
-            this.props.tabs.tabs[i] = this;
-            /* I am sorry for this code, blame: Bang!!!! */
-          }
-        }
-      }
-      else {
-        this.props.tabs.tabs.push(this);
-      }
-    }
-  },
-
-  isEmbedding: function () {
-    return this.props.tabs && this.props.tabs.embedding;
-  },
-
   componentDidMount: function () {
     SunburstStore.addChangeListener(this._onChange);
     SunburstStore.addDataChangeListener(this._onDataChange);
     SunburstStore.addSelectedChangeListener(this._onSelectedChange);
     SunburstStore.addSunburstZoomedOutListener(this._onZoomedOut);
 
-    this.initTabs();
+    this.props.initTab(this);
     SunburstServerActions.initData();
     this.drawSunburst();
   },
@@ -118,7 +101,7 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
   },
 
   clickHandler: function (d) {
-    if (this.isEmbedding()) {
+    if (this.props.embedding) {
       return;
     }
     SunburstActions.selectArc(d, this.state.selected);

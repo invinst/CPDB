@@ -49,14 +49,10 @@ describe('HorizontalPercentageChart component', function () {
   });
 
   it('should return a correct result when using getSegmentColor', function () {
-    horizontalPercentageChart = ReactTestUtils.renderIntoDocument(
-      <HorizontalPercentageChart data={ [] } label={ '' }/>
-    );
-
-    horizontalPercentageChart.getSegmentColor(0, 1, ['a','b']).should.equal('a');
-    horizontalPercentageChart.getSegmentColor(2, 3, ['a','b','c','d']).should.equal('d');
-    horizontalPercentageChart.getSegmentColor(0, 3, ['a','b','c','d']).should.equal('a');
-    horizontalPercentageChart.getSegmentColor(1, 3, ['a','b','c','d']).should.equal('b');
+    HorizontalPercentageChart.getSegmentColor(0, 1, ['a','b']).should.equal('a');
+    HorizontalPercentageChart.getSegmentColor(2, 3, ['a','b','c','d']).should.equal('d');
+    HorizontalPercentageChart.getSegmentColor(0, 3, ['a','b','c','d']).should.equal('a');
+    HorizontalPercentageChart.getSegmentColor(1, 3, ['a','b','c','d']).should.equal('b');
   });
 
   it('should return a correct result when using sortAndColorizeData', function () {

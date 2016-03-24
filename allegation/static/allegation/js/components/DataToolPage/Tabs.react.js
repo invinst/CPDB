@@ -32,8 +32,7 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
   componentWillUnmount: function () {
     TabsStore.removeChangeListener(this._onChange);
     this.removeEmbedListener();
-
-    this.tabs = [];
+    this.activeTabComponent = null;
     this.activeTabIndex = 0;
     this.embedding = false;
   },
@@ -45,16 +44,11 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
   // embedding
   activeTab: function (number, tab, e) {
     this.activeTabIndex = number;
-
-    if (this.embedding) {
-      $(ReactDOM.findDOMNode(this)).parent().find('.embed-code input').val(this.getEmbedCode());
-    }
-
     TabActions.setActiveTab(tab);
   },
 
   getActiveTab: function () {
-    return this.tabs[this.activeTabIndex];
+    return this.activeTabComponent;
   },
 
   getEmbedCode: function () {
@@ -96,6 +90,13 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
     return this.state.activeTab == target || (!this.state.activeTab && target == 'outcomes');
   },
 
+  initTab: function (childComponent) {
+    this.activeTabComponent = childComponent;
+    if (this.embedding) {
+      $(ReactDOM.findDOMNode(this)).parent().find('.embed-code input').val(childComponent.getEmbedCode());
+    }
+  },
+
   renderNavTab: function (label) {
     var target = S(label.toLowerCase().replace('&', '')).slugify().s;
     var dataTarget = '#' + target;
@@ -131,11 +132,11 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
       'active': this.isActive(id)
     });
 
-    return (
+    return this.isActive(id) ? (
       <div role='tabpanel' className={ tabClass } id={ id }>
-        { React.createElement(Component, _.assign({}, {tabs: this}, props)) }
+        { React.createElement(Component, _.assign({}, {initTab: this.initTab}, props)) }
       </div>
-    );
+    ) : null;
   },
 
   render: function () {
@@ -151,7 +152,7 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
 
         <div className='tab-content'>
           { this.renderTabContent('map', Map) }
-          { this.renderTabContent('outcomes', Sunburst) }
+          { this.renderTabContent('outcomes', Sunburst, {embedding: this.embedding}) }
           { this.renderTabContent('categories', Summary) }
           { this.renderTabContent('complainants', RaceGenderTab, {role: RaceGenderTab.COMPLAINANT_ROLE}) }
           { this.renderTabContent('accused', RaceGenderTab, {role: RaceGenderTab.OFFICER_ROLE}) }

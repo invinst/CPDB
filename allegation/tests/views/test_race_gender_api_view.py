@@ -103,13 +103,20 @@ class RaceGenderAPI(SimpleTestCase):
         data['complaining_witness']['race']['white'].should.equal(1)
 
     def test_age_range(self):
-        age_values = [20, 31, 41, 51, 61]
+        age_values = [20, 25, 31, 41, 51, 61]
         expect_officer_age = {
-            '20-30': 1,
+            '20-30': 2,
             '31-40': 1,
             '41-50': 1,
             '51-60': 1,
             '61+': 1,
+        }
+        expected_witness_age = {
+            '<20': 1,
+            '21-30': 1,
+            '31-40': 1,
+            '41-50': 1,
+            '51+': 2
         }
 
         for val in age_values:
@@ -128,4 +135,4 @@ class RaceGenderAPI(SimpleTestCase):
 
         response.status_code.should.equal(200)
         data['officers']['age'].should.equal(expect_officer_age)
-        data['complaining_witness']['age'].should.equal(expect_officer_age)
+        data['complaining_witness']['age'].should.equal(expected_witness_age)
