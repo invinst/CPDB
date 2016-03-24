@@ -9,11 +9,41 @@ var HorizontalPercentageChart = require('components/DataToolPage/HorizontalPerce
 var RaceGenderAgeTabStore = require('stores/DataToolPage/RaceGenderAgeTabStore');
 var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFilterTagsQueryBuilder');
 
+var RaceGenderAgeTab;
 var OFFICER_ROLE = 'Officer';
 var COMPLAINANT_ROLE = 'Complainant';
+var CATEGORY_DICT = {};
+CATEGORY_DICT[OFFICER_ROLE] = {
+  race: {
+    value: 'officer__race',
+    displayValue: 'Officer Race'
+  },
+  gender: {
+    value: 'officer__gender',
+    displayValue: 'Officer Gender'
+  },
+  age: {
+    value: 'officer_age',
+    displayValue: 'Officer Age'
+  }
+};
+CATEGORY_DICT[COMPLAINANT_ROLE] = {
+  race: {
+    value: 'complainant_race',
+    displayValue: 'Complainant Race'
+  },
+  gender: {
+    value: 'complainant_gender',
+    displayValue: 'Complainant Gender'
+  },
+  age: {
+    value: 'complainant_age',
+    displayValue: 'Complainant Age'
+  }
+};
 
 
-var RaceGenderAgeTab = React.createClass({
+RaceGenderAgeTab = React.createClass({
   propTypes: {
     role: PropTypes.oneOf([OFFICER_ROLE, COMPLAINANT_ROLE]),
     initTab: PropTypes.func
@@ -90,10 +120,16 @@ var RaceGenderAgeTab = React.createClass({
     return (
       <div className='race-gender-age-tab' ref='raceGenderChart'>
         <HorizontalPercentageChart className='race' label='Race'
+          category={ CATEGORY_DICT[this.props.role]['race']['value'] }
+          displayCategory={ CATEGORY_DICT[this.props.role]['race']['displayValue'] }
           data={ this.state.race } chartWidth={ this.state.chartWidth || 0 }/>
         <HorizontalPercentageChart className='gender' label='Gender'
+          category={ CATEGORY_DICT[this.props.role]['gender']['value'] }
+          displayCategory={ CATEGORY_DICT[this.props.role]['gender']['displayValue'] }
           data={ this.state.gender } chartWidth={ this.state.chartWidth || 0 }/>
         <HorizontalPercentageChart className='age' label='Age'
+          category={ CATEGORY_DICT[this.props.role]['age']['value'] }
+          displayCategory={ CATEGORY_DICT[this.props.role]['age']['displayValue'] }
           data={ this.state.age } chartWidth={ this.state.chartWidth || 0 }/>
       </div>
     );

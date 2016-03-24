@@ -40,13 +40,13 @@ describe('RaceGenderAgeTabStore', function () {
       {
         label: '20-30',
         count: 10,
-        filters: [{value: '20-30', label: '20-30'}],
+        filters: [{value: '20-30', displayValue: '20-30'}],
         active: true
       },
       {
         label: '31+',
         count: 20,
-        filters: [{value: '31+', label: '31+'}],
+        filters: [{value: '31+', displayValue: '31+'}],
         active: true
       }
     ]);
@@ -55,13 +55,13 @@ describe('RaceGenderAgeTabStore', function () {
       {
         label: '30-40',
         count: 15,
-        filters: [{value: '30-40', label: '30-40'}],
+        filters: [{value: '30-40', displayValue: '30-40'}],
         active: true
       },
       {
         label: '41+',
         count: 16,
-        filters: [{value: '41+', label: '41+'}],
+        filters: [{value: '41+', displayValue: '41+'}],
         active: true
       }
     ]);
@@ -70,7 +70,7 @@ describe('RaceGenderAgeTabStore', function () {
       {
         label: 'Male',
         count: 10,
-        filters: [{value: 'M', label: 'Male'}],
+        filters: [{value: 'M', displayValue: 'Male'}],
         active: true
       }
     ]);
@@ -79,7 +79,7 @@ describe('RaceGenderAgeTabStore', function () {
       {
         label: 'Female',
         count: 20,
-        filters: [{value: 'F', label: 'Female'}],
+        filters: [{value: 'F', displayValue: 'Female'}],
         active: true
       }
     ]);
@@ -88,7 +88,7 @@ describe('RaceGenderAgeTabStore', function () {
       {
         label: 'White officers',
         count: 11,
-        filters: [{value: 'White', label: 'White'}],
+        filters: [{value: 'White', displayValue: 'White'}],
         active: true
       }
     ]);
@@ -97,7 +97,7 @@ describe('RaceGenderAgeTabStore', function () {
       {
         label: 'Black',
         count: 20,
-        filters: [{value: 'Black', label: 'Black'}],
+        filters: [{value: 'Black', displayValue: 'Black'}],
         active: true
       }
     ]);

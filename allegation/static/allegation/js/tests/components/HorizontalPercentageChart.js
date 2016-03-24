@@ -18,7 +18,10 @@ describe('HorizontalPercentageChart component', function () {
       value: 2,
       fill: '#A5B4BD',
       percent: 40,
-      oldIndex: 0
+      oldIndex: 0,
+      filters: [
+        {}
+      ]
     },
     {
       label: 'a',
@@ -26,6 +29,7 @@ describe('HorizontalPercentageChart component', function () {
       width: (100 - 4) * 0.6 + 2,
       value: 3,
       fill: '#6A2122',
+      filters: [],
       percent: 60,
       oldIndex: 1
     }
@@ -34,11 +38,15 @@ describe('HorizontalPercentageChart component', function () {
   var chartData = [
     {
       label: 'a',
-      count: 3
+      count: 3,
+      filters: []
     },
     {
       label: 'b',
-      count: 2
+      count: 2,
+      filters: [
+        {}
+      ]
     }
   ];
 
@@ -57,7 +65,7 @@ describe('HorizontalPercentageChart component', function () {
 
   it('should return a correct result when using sortAndColorizeData', function () {
     horizontalPercentageChart = ReactTestUtils.renderIntoDocument(
-      <HorizontalPercentageChart data={ chartData } label={ '' }/>
+      <HorizontalPercentageChart data={ chartData } label=''/>
     );
 
     horizontalPercentageChart.sortAndColorizeData().should.deepEqual(expectData);
@@ -66,7 +74,7 @@ describe('HorizontalPercentageChart component', function () {
 
   it('should render chart correct with data', function () {
     horizontalPercentageChart = ReactTestUtils.renderIntoDocument(
-      <HorizontalPercentageChart data={ chartData } label={ 'chart' }/>
+      <HorizontalPercentageChart data={ chartData } label='chart'/>
     );
 
     ReactTestUtils.findRenderedDOMComponentWithClass(horizontalPercentageChart, 'chart-label')

@@ -49,13 +49,13 @@ var RaceGenderAPITransform = {
     var otherFilterValues = _.difference(allFilterValues, _.union(hispanicFilterValues, whiteFilterValues, ['Black']));
 
     var hispanicFilters = _.map(hispanicFilterValues, function (x) {
-      return { value: x, label: x };
+      return { value: x, displayValue: x };
     });
     var whiteFilters = _.map(whiteFilterValues, function (x) {
-      return { value: x, label: x };
+      return { value: x, displayValue: x };
     });
     var otherFilters = _.map(otherFilterValues, function (x) {
-      return { value: x, label: x };
+      return { value: x, displayValue: x };
     });
 
     var otherLabel = shouldBeOthers(otherFilterValues) ? 'Others' : otherFilterValues[0];
@@ -69,7 +69,7 @@ var RaceGenderAPITransform = {
       {
         label: this.raceLabel('Black', isOfficer),
         count: black,
-        filters: [{ value: 'Black', label: this.raceLabel('Black', isOfficer) }]
+        filters: [{ value: 'Black', displayValue: this.raceLabel('Black', isOfficer) }]
       },
       {
         label: this.raceLabel('Hispanic', isOfficer),
@@ -101,7 +101,7 @@ var RaceGenderAPITransform = {
 
       return {
         'label': genderLabel,
-        'filters': [{ value: y, label: genderLabel}],
+        'filters': [{ value: y, displayValue: genderLabel}],
         'count': x,
         'active': !hasActiveFilter || FilterTagStore.isInFilter(filterCategory, y)
       };
@@ -115,7 +115,7 @@ var RaceGenderAPITransform = {
     return _(ages).map(function (x, y) {
       return {
         'label': y,
-        'filters': [{ value: y, label: y}],
+        'filters': [{ value: y, displayValue: y}],
         'count': x,
         'active': !hasActiveFilter || FilterTagStore.isInFilter(filterKey, y)
       };

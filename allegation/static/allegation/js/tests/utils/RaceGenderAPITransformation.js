@@ -13,7 +13,7 @@ describe('RaceGenderAPITransformation utils', function () {
     })[0];
 
     whiteResult.count.should.equal(1);
-    whiteResult.filters.should.deepEqual([{value: 'Italian', label: 'Italian'}]);
+    whiteResult.filters.should.deepEqual([{value: 'Italian', displayValue: 'Italian'}]);
   });
 
   it('should display "Asian" when there is only asian in filter result', function () {
