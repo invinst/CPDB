@@ -9,15 +9,15 @@ var _state = {
   'crid': '',
   'loading': false,
   'found': false,
-  'complaint': {}
+  'data': {}
 };
 
 var ComplaintPageStore = objectAssign(Base(_state), {});
 
-AppDispatcher.register(function (action) {
+ComplaintPageStore.dispatcherToken = AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case AppConstants.COMPLAINT_PAGE_RECEIVED_DATA:
-      _state['complaint'] = action.data;
+      _state['data'] = action.data;
       _state['crid'] = action.data['allegation']['crid'];
       _state['found'] = true;
       _state['loading'] = false;

@@ -7,3 +7,5 @@ DEFAULT_REDIRECTORS = [
     OfficerSessionDesktopToMobileRedirector,
     AllegationSessionDesktopToMobileRedirector
 ]
+
+MOBILE_SALT = '8qTCKQzt5jYYTADWcUO8'

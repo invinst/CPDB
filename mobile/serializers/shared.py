@@ -7,6 +7,7 @@ class AllegationCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = AllegationCategory
         fields = (
+            'id',
             'allegation_name',
             'category'
         )

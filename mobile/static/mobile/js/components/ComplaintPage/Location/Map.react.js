@@ -2,10 +2,12 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-var AppConstants = require('constants/AppConstants');
+var u = require('utils/HelperUtil');
 
-var ComplaintService = require('services/ComplaintService');
+var AppConstants = require('constants/AppConstants');
+var AllegationPresenter = require('presenters/AllegationPresenter');
 var Wrapper = require('components/Shared/Wrapper.react');
+
 var Map;
 
 require('mapbox.js');
@@ -13,12 +15,13 @@ require('mapbox.js');
 
 Map = React.createClass({
   propTypes: {
-    info: React.PropTypes.object
+    allegation: React.PropTypes.object
   },
 
   componentDidMount: function () {
-    var complaintService = ComplaintService(this.props.info);
-    var point = this.props.info.point;
+    var allegation = this.props.allegation;
+    var point = u.fetch(allegation, 'point', '');
+    var allegationPresenter = AllegationPresenter(allegation);
     var defaultZoom,
       center,
       mapbox,
@@ -36,7 +39,7 @@ Map = React.createClass({
       map.doubleClickZoom.disable();
       map.scrollWheelZoom.disable();
 
-      if (complaintService.hasFullAddress) {
+      if (allegationPresenter.hasFullAddress) {
         L.marker(center).addTo(map);
       }
       else {
@@ -47,8 +50,10 @@ Map = React.createClass({
   },
 
   render: function () {
+    var point = u.fetch(this.props.allegation, 'point', '');
+
     return (
-      <Wrapper wrapperClass='map' visible={ !!this.props.info.point } />
+      <Wrapper wrapperClass='map' visible={ (!!point) } />
     );
   }
 });

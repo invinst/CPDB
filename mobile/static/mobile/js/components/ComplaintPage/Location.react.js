@@ -1,15 +1,15 @@
-var cx = require('classnames');
 var React = require('react');
 
+var u = require('utils/HelperUtil');
+
+var AllegationPresenter = require('presenters/AllegationPresenter');
 var Map = require('components/ComplaintPage/Location/Map.react');
-var ComplaintService = require('services/ComplaintService');
-var ComplaintPresenter = require('presenters/ComplaintPresenter');
 var Wrapper = require('components/Shared/Wrapper.react');
 
 
 var Location = React.createClass({
   propTypes: {
-    info: React.PropTypes.object
+    allegation: React.PropTypes.object
   },
 
   renderLocationInfoItem: function (label, data) {
@@ -22,27 +22,23 @@ var Location = React.createClass({
   },
 
   render: function () {
-    var info = this.props.info;
-    var complaintService = ComplaintService(info);
-    var presenter = ComplaintPresenter(info);
-
-    var locationDetailClassNames = cx('location-detail pad', {
-      'no-data': complaintService.hasNoData
-    });
+    var allegation = this.props.allegation;
+    var presenter = AllegationPresenter(allegation);
+    var point = u.fetch(allegation, 'point', '');
 
     return (
-      <Wrapper wrapperClass='location' visible={ complaintService.hasLocation }>
+      <Wrapper wrapperClass='location' visible={ presenter.hasLocation }>
         <div className='section-header bold'>
           <div className='section-title pad'>Location</div>
         </div>
-        <div className={ locationDetailClassNames }>
+        <div className='location-detail pad'>
           <div className='bold'>{ presenter.address }</div>
           { this.renderLocationInfoItem('Beat', presenter.beat) }
           { this.renderLocationInfoItem('Location type', presenter.locationType) }
           { this.renderLocationInfoItem('City', presenter.city) }
         </div>
-        <Wrapper wrapperClass='location-map pad' visible={ info.point }>
-          <Map info={ info }/>
+        <Wrapper wrapperClass='location-map pad' visible={ !!point }>
+          <Map allegation={ allegation }/>
         </Wrapper>
       </Wrapper>
     );

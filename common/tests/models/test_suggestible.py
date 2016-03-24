@@ -65,7 +65,7 @@ class MobileSuggestibleAllegationTest(TestCase):
 
         expected_entry = {
             'text': crid,
-            'resource': 'allegation',
+            'resource': 'officer_allegation',
             'resource_key': crid,
             'url': expected_url,
             'meta': {
@@ -86,7 +86,7 @@ class MobileSuggestibleAllegationTest(TestCase):
 
         expected_entry = {
             'text': crid,
-            'resource': 'allegation',
+            'resource': 'officer_allegation',
             'resource_key': crid,
             'url': expected_url,
             'meta': {

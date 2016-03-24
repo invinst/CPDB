@@ -1,6 +1,6 @@
 var HelperUtil = require('utils/HelperUtil');
 var OfficerPresenter = require('presenters/OfficerPresenter');
-var ComplaintPresenter = require('presenters/ComplaintPresenter');
+var OfficerAllegationPresenter = require('presenters/OfficerAllegationPresenter');
 
 
 var SuggestionPresenter = function (suggestion) {
@@ -26,7 +26,7 @@ var SuggestionPresenter = function (suggestion) {
 
     var RESOURCE_PRESENTER_MAP = {
       'officer': OfficerPresenter,
-      'allegation': ComplaintPresenter
+      'officer_allegation': OfficerAllegationPresenter
     };
 
     return RESOURCE_PRESENTER_MAP[resource()](meta);

@@ -9,7 +9,7 @@ var SearchablePageStore = require('stores/Shared/SearchablePageStore');
 var SearchResults = require('components/Shared/SearchablePage/SearchResults.react');
 
 
-var SearchablePage = React.createClass(objectAssign(Base(SearchablePageStore), {
+var SearchablePage = React.createClass(objectAssign(Base(SearchablePageStore, 'SearchablePage'), {
   getInitialState: function () {
     return {
       'focus': 0

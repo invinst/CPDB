@@ -47,7 +47,7 @@ class MobileSuggestibleAllegation(MobileSuggestible):
 
         return {
             'text': self.crid,
-            'resource': 'allegation',
+            'resource': 'officer_allegation',
             'url': self.get_mobile_url(),
             'resource_key': self.crid,
             'meta': {

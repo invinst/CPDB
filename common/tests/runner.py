@@ -77,9 +77,6 @@ class DjangoNoseTestSuiteRunner(django_nose.NoseTestSuiteRunner):
         if world.mobile_browser:
             world.mobile_browser.quit()
 
-        if world.android_browser:
-            world.android_browser.quit()
-
     def run_suite(self, nose_argv):
         """Run the test suite."""
         result_plugin = ResultPlugin()

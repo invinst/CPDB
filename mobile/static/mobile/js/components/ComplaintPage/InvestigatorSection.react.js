@@ -5,7 +5,7 @@ var HelperUtil = require('utils/HelperUtil');
 
 var InvestigatorSection = React.createClass({
   propTypes: {
-    info: React.PropTypes.object
+    allegation: React.PropTypes.object
   },
 
   renderInvestigator: function (investigator) {
@@ -29,7 +29,8 @@ var InvestigatorSection = React.createClass({
   },
 
   render: function () {
-    var investigator = HelperUtil.fetch(this.props.info, 'investigator', false);
+    var investigator = HelperUtil.fetch(this.props.allegation, 'investigator', false);
+
     return (
       <Wrapper wrapperClass='investigator-section' visible={ !!investigator }>
         <div className='row section-header'>

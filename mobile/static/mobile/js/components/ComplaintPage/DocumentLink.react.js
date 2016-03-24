@@ -2,6 +2,7 @@ var React = require('react');
 
 var DeviceUtil = require('utils/DeviceUtil');
 var DocumentLinkPresenter = require('presenters/DocumentLinkPresenter');
+var Wrapper = require('components/Shared/Wrapper.react');
 
 
 var DocumentLink = React.createClass({
@@ -12,9 +13,8 @@ var DocumentLink = React.createClass({
 
   getDocumentLink: function (documentId, documentNormalizedTitle) {
     var presenter = DocumentLinkPresenter(documentId, documentNormalizedTitle);
-    var deviceUtil = DeviceUtil();
 
-    if (deviceUtil.isiOSDevice) {
+    if (DeviceUtil.isiOSDevice()) {
       return presenter.pdfLink;
     }
 
@@ -24,17 +24,13 @@ var DocumentLink = React.createClass({
   render: function () {
     var documentId = this.props.documentId;
     var documentNormalizedTitle = this.props.documentNormalizedTitle;
-    var documentLink;
 
-    if (!documentId) {
-      return (<div></div>);
-    }
-
-    documentLink = this.getDocumentLink(documentId, documentNormalizedTitle);
     return (
-      <a href={ documentLink } className='document-link'>
-        View documents
-      </a>
+      <Wrapper visible={ !!documentId }>
+        <a href={ this.getDocumentLink(documentId, documentNormalizedTitle) } className='document-link'>
+          View documents
+        </a>
+      </Wrapper>
     );
   }
 });

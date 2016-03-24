@@ -3,7 +3,8 @@ var cx = require('classnames');
 
 var AppHistory = require('utils/History');
 
-var ComplaintPresenter = require('presenters/ComplaintPresenter');
+var AllegationPresenter = require('presenters/AllegationPresenter');
+var OfficerAllegationPresenter = require('presenters/OfficerAllegationPresenter');
 var OfficerPresenter = require('presenters/OfficerPresenter');
 var OfficerUtil = require('utils/OfficerUtil');
 var HelperUtil = require('utils/HelperUtil');
@@ -32,7 +33,7 @@ var OfficerComplaintItem = React.createClass({
 
   _onClicked : function () {
     var complaint = this.props.complaint.data;
-    var presenter = ComplaintPresenter(complaint);
+    var presenter = OfficerAllegationPresenter(complaint);
     AppHistory.pushState(null, presenter.url);
   },
 
@@ -43,29 +44,30 @@ var OfficerComplaintItem = React.createClass({
     var officer = this.props.officer;
 
     var officerPresenter = OfficerPresenter(officer);
-    var complaintPresenter = ComplaintPresenter(complaint);
+    var allegationPresenter = AllegationPresenter(HelperUtil.fetch(complaint, 'allegation', {}));
+    var officerAllegationPresenter = OfficerAllegationPresenter(complaint);
 
     return (
       <div className='officer-complaint-item' onClick={ this._onClicked }>
         <div className='crid-info pad'>
           <div className='inline-block half-width align-left'>
             <span className='crid-title'>CRID &nbsp;</span>
-            <span className='crid-number'>{ complaintPresenter.crid }</span>
+            <span className='crid-number'>{ allegationPresenter.crid }</span>
           </div>
           <div className='inline-block half-width align-right'>
-            <span className='final-finding'>{ complaintPresenter.finalFinding }</span>
+            <span className='final-finding'>{ officerAllegationPresenter.finalFinding }</span>
           </div>
         </div>
         <div className='complaint-category'>
           <div className='pad'>
-            <div className='category'>{ complaintPresenter.category }</div>
-            <div className='sub-category'>{ complaintPresenter.allegationName }</div>
+            <div className='category'>{ officerAllegationPresenter.category }</div>
+            <div className='sub-category'>{ officerAllegationPresenter.allegationName }</div>
           </div>
         </div>
         <div className='related-info pad'>
           <div className='row'>
             <span className='label'>Incident</span>
-            <span className='value'>{ complaintPresenter.incidentDate }</span>
+            <span className='value'>{ allegationPresenter.incidentDateDisplay }</span>
           </div>
           <div className='row'>
             <span className='label'>Officers</span>
