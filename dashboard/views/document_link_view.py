@@ -16,6 +16,7 @@ class DocumentLinkView(View):
     def update_allegation_document(self, id, link, document_type):
         documentcloud_service = DocumentcloudService()
         parsed_link = documentcloud_service.process_link(link, document_type=document_type)
+
         if not parsed_link:
             return HttpResponseBadRequest(content={
                 'errors': ['Invalid document link']

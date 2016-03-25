@@ -5,23 +5,35 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.parsers import MultiPartParser
 
-from dashboard.utils.document_cloud_utils import upload_cr_document
-from dashboard.utils import update_allegation_document
+from dashboard.services.documentcloud_service import DocumentcloudService
 from dashboard.exceptions import InvalidDocumentError
+from document.models import Document
 
 
 class AdminDocumentUploadView(APIView):
     parser_classes = (MultiPartParser,)
 
     def post(self, request):
-        resp_status, resp_content = upload_cr_document(
+        documentcloud_service = DocumentcloudService()
+
+        resp_status, resp_content = documentcloud_service.upload_document(
             request.data['title'], request.data.get('source', ''), request.data['file'])
+
         if resp_status == status.HTTP_200_OK:
-            crid = re.findall(r'\d{6}', request.data['title'])[0]
-            url = resp_content['canonical_url']
+            crid = re.findall(r'\d+', request.data['title'])[0]
+            link = resp_content['canonical_url']
+
+            parsed_link = documentcloud_service.parse_link(link=link)
             try:
-                crid = update_allegation_document(
-                    crid=crid, link=url, title=request.data['title'], test_link=False)
+                if not parsed_link:
+                    raise InvalidDocumentError()
+
+                document = Document.objects.get(allegation__crid=crid, type=request.data['document_type'])
+                document.update(
+                    documentcloud_id=parsed_link['documentcloud_id'],
+                    normalized_title=parsed_link['normalized_title'],
+                    title=request.data['title']
+                )
             except InvalidDocumentError as e:
                 return Response({'errors': [e.message]}, status=status.HTTP_400_BAD_REQUEST)
             return Response({'crid': crid})

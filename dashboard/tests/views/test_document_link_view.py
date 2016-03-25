@@ -1,6 +1,8 @@
 import json
 
 from django.core import mail
+from django.core.urlresolvers import reverse
+from mock import patch, MagicMock
 
 from common.tests.core import SimpleTestCase
 from document.factories import RequestEmailFactory, DocumentFactory
@@ -32,7 +34,7 @@ class DocumentLinkViewTestCase(SimpleTestCase):
 
         RequestEmailFactory(document=document)
 
-        response = self.client.post('/api/dashboard/document-link/', {
+        response = self.client.post(reverse('dashboard-document-link'), {
             'link': 'https://www.documentcloud.org/documents/%s-%s.html' % (
                 documentcloud_id, normalized_title)
         })
@@ -49,21 +51,21 @@ class DocumentLinkViewTestCase(SimpleTestCase):
         len(mail.outbox).should.equal(1)
 
     def test_add_no_link(self):
-        response = self.client.post('/api/dashboard/document-link/', {
+        response = self.client.post(reverse('dashboard-document-link'), {
             'link': ''
         })
 
         response.status_code.should.equal(400)
 
     def test_add_link_not_avaiable_for_request(self):
-        response = self.client.post('/api/dashboard/document-link/', {
+        response = self.client.post(reverse('dashboard-document-link'), {
             'link': 'http://www.documentcloud.txt/documents/000-aaa-000.html'
         })
 
         response.status_code.should.equal(400)
 
     def test_add_non_exist_link(self):
-        response = self.client.post('/api/dashboard/document-link/', {
+        response = self.client.post(reverse('dashboard-document-link'), {
             'link': 'https://www.documentcloud.org/documents/000-cr-000.html'
         })
 
@@ -72,8 +74,52 @@ class DocumentLinkViewTestCase(SimpleTestCase):
         content['errors'].should.contain('Invalid document link')
 
     def test_add_trash_link(self):
-        response = self.client.post('/api/dashboard/document-link/', {
+        response = self.client.post(reverse('dashboard-document-link'), {
             'link': 'dsadsad'
         })
 
         response.status_code.should.equal(400)
+
+    def test_add_link_for_document(self):
+        document = DocumentFactory()
+        documentcloud_id = 111111
+        normalized_title = 'normalized_title'
+        title = 'title'
+
+        process_link_func = MagicMock(return_value={
+            'documentcloud_id': documentcloud_id,
+            'normalized_title': normalized_title,
+            'title': title
+        })
+        with patch('dashboard.services.documentcloud_service.DocumentcloudService.process_link', new=process_link_func):
+            response = self.client.post(reverse('dashboard-document-link'), {
+                'link': 'https://www.documentcloud.org/documents/%s-%s.html' % (documentcloud_id, normalized_title),
+                'id': document.id
+            })
+
+        response.status_code.should.equal(200)
+
+        document.refresh_from_db()
+        document.documentcloud_id.should.equal(documentcloud_id)
+        document.normalized_title.should.equal(normalized_title)
+        document.title.should.equal(title)
+
+    def test_add_link_for_invalid_document(self):
+        documentcloud_id = 111111
+        normalized_title = 'normalized_title'
+        title = 'title'
+
+        process_link_func = MagicMock(return_value={
+            'documentcloud_id': documentcloud_id,
+            'normalized_title': normalized_title,
+            'title': title
+        })
+        with patch('dashboard.services.documentcloud_service.DocumentcloudService.process_link', new=process_link_func):
+            response = self.client.post(reverse('dashboard-document-link'), {
+                'link': 'https://www.documentcloud.org/documents/%s-%s.html' % (documentcloud_id, normalized_title),
+                'id': -1
+            })
+
+        response.status_code.should.equal(400)
+        content = json.loads(response.content.decode())
+        content['errors'].should.contain('Document not exist')

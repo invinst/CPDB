@@ -124,3 +124,16 @@ class DocumentRequestStatusViewTestCase(SimpleTestCase):
         response.status_code.should.equal(200)
 
         len(Document.objects.filter(pk=document.id, requested=False)).should.equal(1)
+
+    def test_cancel_document_invalid(self):
+        document = DocumentFactory(requested=False)
+
+        response = self.client.post(reverse('dashboard-document-request-status'), {
+            'id': document.id,
+            'status': 'missing'
+        })
+
+        response.status_code.should.equal(400)
+        self.check_error(response, {
+            '__all__': ['This document cannot be assigned that status'],
+        })

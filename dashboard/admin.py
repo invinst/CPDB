@@ -1,5 +1,7 @@
+from django.contrib import admin
 from import_export import resources, fields
 
+from common.actions import make_export_action
 from document.models import Document
 
 
@@ -28,3 +30,12 @@ class DocumentResource(resources.ModelResource):
         model = Document
         export_order = ['crid', 'status', 'number_of_request', 'last_requested']
         fields = ()
+
+
+class DocumentAdmin(admin.ModelAdmin):
+    search_fields = ['title', 'type']
+    list_display = ['id', 'type', 'title', 'number_of_request', 'requested', 'pending', 'documentcloud_id']
+    actions = make_export_action("Export Documents to CSV")
+    ordering = ('-number_of_request',)
+
+admin.site.register(Document, DocumentAdmin)

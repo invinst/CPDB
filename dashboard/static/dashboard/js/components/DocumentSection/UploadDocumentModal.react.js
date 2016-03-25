@@ -7,6 +7,7 @@ var Formsy = require('formsy-react');
 var Modal = require('react-modal');
 
 var BootstrapTextInput = require('components/Shared/BootstrapTextInput.react');
+var BootstrapSelectInput = require('components/Shared/BootstrapSelectInput.react');
 var DropzoneUpload = require('components/Shared/DropzoneUpload.react');
 var DocumentActions = require('actions/DocumentSection/DocumentActions');
 
@@ -52,7 +53,8 @@ var UploadDocumentModal = React.createClass({
     DocumentActions.uploadDocument({
       file: model.file,
       title: model.title,
-      source: model.source || ''
+      source: model.source || '',
+      documentType: model.documentType
     })
     .done(function (res) {
       toastr.success('Upload succeed');
@@ -73,11 +75,15 @@ var UploadDocumentModal = React.createClass({
   },
 
   render: function () {
+    var documentTypeOptions = [
+      { value: 'CR', label: 'CR' },
+      { value: 'CPB', label: 'CPB' }
+    ];
+
     return (
       <Modal isOpen={ this.props.isOpen } style={ customStyles }
         onRequestClose={ this.props.onRequestClose } closeTimeoutMS={ 150 }>
         <Formsy.Form onValidSubmit={ this.submit } onValid={ this.enableSubmit } onInvalid={ this.disableSubmit }>
-
           <div className='modal-header'>
             <h3>Upload document</h3>
           </div>
@@ -87,6 +93,7 @@ var UploadDocumentModal = React.createClass({
             <BootstrapTextInput className='doc-title-input' name='title'
               placeholder='Document title (required)' required={ true }/>
             <BootstrapTextInput className='doc-source-input' name='source' placeholder='Document source'/>
+            <BootstrapSelectInput className='doc-type' name='documentType' options={ documentTypeOptions } value='CR'/>
           </div>
 
           <div className='modal-footer'>

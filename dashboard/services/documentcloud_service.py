@@ -1,5 +1,9 @@
 import re
+import requests
+from requests.auth import HTTPBasicAuth
 from documentcloud import DocumentCloud
+
+from django.conf import settings
 
 
 class DocumentcloudService(object):
@@ -56,3 +60,15 @@ class DocumentcloudService(object):
             return matched.group('crid')
 
         return False
+
+    def upload_document(self, title, source, file):
+        resp = requests.post(
+            'https://www.documentcloud.org/api/upload.json',
+            auth=HTTPBasicAuth(settings.DOCUMENT_CLOUD_USERNAME, settings.DOCUMENT_CLOUD_PASSWORD),
+            files={'file': ('%s.pdf' % title, file, 'application/pdf')},
+            data={
+                'title': title,
+                'access': 'public',
+                'source': source})
+
+        return (resp.status_code, resp.json())

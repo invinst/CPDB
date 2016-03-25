@@ -1,6 +1,5 @@
 from datetime import date
 
-from django.utils import timezone
 from django.contrib.auth.models import AbstractUser
 from django.contrib.gis.db import models
 from django.core.urlresolvers import reverse
@@ -132,14 +131,6 @@ class Allegation(MobileSuggestibleAllegation, TimeStampedModel):
     investigator = models.ForeignKey(
         'common.Investigator', null=True, blank=True)
 
-    document_id = models.IntegerField(null=True, blank=True)
-    document_normalized_title = models.CharField(
-        max_length=255, null=True, blank=True)
-    document_title = models.CharField(max_length=255, null=True, blank=True)
-    document_requested = models.BooleanField(default=False)
-    document_pending = models.BooleanField(default=False)
-    number_of_request = models.IntegerField(default=0)
-    last_requested = models.DateTimeField(default=timezone.now)
     areas = models.ManyToManyField('Area', blank=True)
     point = models.PointField(srid=4326, null=True, blank=True)
 
