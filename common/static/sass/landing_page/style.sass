@@ -173,6 +173,7 @@
 
       .fa-bars
         font-size: 44px
+        cursor: pointer
 
       .nav-tabs-sidebar
         position: fixed
@@ -191,10 +192,10 @@
 
         .fa-times
           font-size: 44px
-          margin-left: 206px
-          background: gray
+          margin-left: 186px
           width: 44px
           text-align: center
+          cursor: pointer
 
   .fixed-nav
     position: fixed
@@ -363,3 +364,13 @@
       height: 562px
     .page-banner
       padding-top: 7em
+
+@media screen and (max-width: 1024px)
+  .nav-tabs
+    .tablist
+      display: none
+
+@media screen and (min-width: 1025px)
+  .nav-tabs
+    .hamburger-btn
+      display: none

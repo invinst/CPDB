@@ -147,11 +147,11 @@ Nav = React.createClass(_.assign(Base(AppStore), {
   renderNavTabSection: function () {
     return (
       <div className='nav-tabs pull-right'>
-        <ul className='visible-md visible-lg' role='tablist'>
+        <ul className='tablist' role='tablist'>
           <span className='moving-arrow' />
           { this.renderNavTabItems() }
         </ul>
-        <i onClick={ this.showNavTabsSidebar } className='fa fa-bars visible-sm visible-xs'></i>
+        <i onClick={ this.showNavTabsSidebar } className='fa fa-bars hamburger-btn'></i>
         <div className='hidden nav-tabs-sidebar'>
           <ul role='tablist'>
             <i onClick={ this.hideNavTabsSidebar } className='fa fa-times'></i>
