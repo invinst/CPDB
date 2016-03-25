@@ -9,7 +9,7 @@ var Modal = require('react-modal');
 var BootstrapTextInput = require('components/Shared/BootstrapTextInput.react');
 var BootstrapSelectInput = require('components/Shared/BootstrapSelectInput.react');
 var DropzoneUpload = require('components/Shared/DropzoneUpload.react');
-var DocumentActions = require('actions/DocumentSection/DocumentActions');
+var DocumentCloudActions = require('actions/DocumentSection/DocumentCloudActions');
 
 
 // should not use inline styles but React Modal leave us no other choice
@@ -50,7 +50,7 @@ var UploadDocumentModal = React.createClass({
 
   submit: function (model) {
     var self = this;
-    DocumentActions.uploadDocument({
+    DocumentCloudActions.uploadDocument({
       file: model.file,
       title: model.title,
       source: model.source || '',

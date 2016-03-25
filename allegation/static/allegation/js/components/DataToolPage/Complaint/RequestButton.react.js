@@ -43,7 +43,7 @@ var RequestButton = React.createClass({
       documentLabel = 'Pending';
     }
 
-    if (document.documentcloud_id) {
+    if (document && document.documentcloud_id) {
       target = '_blank';
       documentLabel = 'View Document';
       link = 'http://documentcloud.org/documents/' + document.documentcloud_id + '-' +

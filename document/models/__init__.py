@@ -37,7 +37,7 @@ class Document(TimeStampedModel):
             kwargs.setdefault('requested', False)
             kwargs.setdefault('pending', False)
 
-            send_email = int(kwargs['documentcloud_id']) != int(self.documentcloud_id)
+            send_email = int(kwargs['documentcloud_id']) != int(self.documentcloud_id or 0)
         elif 'pending' in kwargs and kwargs['pending'] is False:
             kwargs.setdefault('requested', True)
             kwargs.setdefault('documentcloud_id', 0)

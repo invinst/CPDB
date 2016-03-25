@@ -16,7 +16,7 @@ function isDocumentRequested(id) {
 RequestButtonStore = assign({}, EventEmitter.prototype, {
   init: function (document) {
     return {
-      requested: isDocumentRequested(document.id) || document.requested
+      requested: document && (isDocumentRequested(document.id) || document.requested)
     };
   },
 
