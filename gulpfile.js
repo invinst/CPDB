@@ -3,6 +3,7 @@ var runSequence = require('run-sequence');
 
 var buildAllegationJSTask = require('./gulp_tasks/build_allegation_js');
 var buildAllegationCSSTask = require('./gulp_tasks/build_allegation_sass');
+var buildTestCSSTask = require('./gulp_tasks/build_test_sass');
 
 var buildDashboardJSTask = require('./gulp_tasks/build_dashboard_js');
 var buildDashboardCSSTask = require('./gulp_tasks/build_dashboard_sass');
@@ -15,7 +16,8 @@ var buildSunburstJSTask = require('./gulp_tasks/build_sunburst_js');
 var mkdirTask = require('./gulp_tasks/mkdir');
 
 
-gulp.task('build_test_sass', require('./gulp_tasks/build_test_sass'));
+gulp.task('circle_test_sass', buildTestCSSTask(false));
+gulp.task('compile_test_sass', buildTestCSSTask(true));
 
 gulp.task('transform_base_template', require('./gulp_tasks/transform_base_template'));
 
@@ -51,7 +53,7 @@ gulp.task('watch_allegation_sass', ['compile_allegation_sass'], function () {
 
 gulp.task('build_allegation', ['transform_allegation_template']);
 
-gulp.task('watch_allegation', ['watch_allegation_js', 'watch_allegation_sass']);
+gulp.task('watch_allegation', ['compile_test_sass', 'watch_allegation_js', 'watch_allegation_sass']);
 
 
 /////////////////////////////////////////////////////////////////
@@ -72,7 +74,7 @@ gulp.task('watch_dashboard_sass', ['compile_dashboard_sass'], function () {
   gulp.watch('./dashboard/static/dashboard/sass/**/*', ['compile_dashboard_sass']);
 });
 
-gulp.task('watch_dashboard', ['watch_dashboard_js', 'watch_dashboard_sass']);
+gulp.task('watch_dashboard', ['compile_test_sass', 'watch_dashboard_js', 'watch_dashboard_sass']);
 gulp.task('build_dashboard', ['transform_dashboard_template']);
 
 
@@ -95,7 +97,7 @@ gulp.task('watch_mobile_sass', ['compile_mobile_sass'], function () {
   gulp.watch('./mobile/static/mobile/sass/**/*', ['compile_mobile_sass']);
 });
 
-gulp.task('watch_mobile', ['watch_mobile_js', 'watch_mobile_sass']);
+gulp.task('watch_mobile', ['compile_test_sass', 'watch_mobile_js', 'watch_mobile_sass']);
 gulp.task('build_mobile', ['transform_mobile_template']);
 
 
@@ -114,7 +116,7 @@ gulp.task('build_sunburst', ['transform_sunburst_template']);
 
 gulp.task('circleci', function (done) {
   runSequence('collectstatic', [
-    'build_test_sass', 'build_allegation_js', 'build_dashboard_js', 'build_mobile_js', 'build_sunburst_js',
+    'circle_test_sass', 'build_allegation_js', 'build_dashboard_js', 'build_mobile_js', 'build_sunburst_js',
     'circle_mobile_sass', 'circle_dashboard_sass', 'circle_allegation_sass'
   ], done);
 });
