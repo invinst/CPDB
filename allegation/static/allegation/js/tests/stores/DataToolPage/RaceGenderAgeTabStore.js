@@ -86,7 +86,7 @@ describe('RaceGenderAgeTabStore', function () {
 
     RaceGenderAgeTabStore.getOfficerRaceSegments().should.deepEqual([
       {
-        label: 'White officers',
+        label: 'White',
         count: 11,
         filters: [{value: 'White', displayValue: 'White'}],
         active: true

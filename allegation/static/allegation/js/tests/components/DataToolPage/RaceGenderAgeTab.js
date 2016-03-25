@@ -57,7 +57,7 @@ describe('RaceGenderAgeTab component', function () {
     ReactTestUtils.findRenderedDOMComponentWithClass(charts[0], 'chart-label').textContent
       .should.equal('Race');
     ReactTestUtils.findRenderedDOMComponentWithClass(charts[0], 'segment-name').textContent
-      .should.equal('White officers');
+      .should.equal('White');
 
     ReactTestUtils.findRenderedDOMComponentWithClass(charts[1], 'chart-label').textContent
       .should.equal('Gender');

@@ -106,9 +106,14 @@ RaceGenderAgeTab = React.createClass({
     this.setState(this._getNewState());
   },
 
+  pluralize: function (str) {
+    return str + 's';
+  },
+
   render: function () {
     return (
       <div className='race-gender-age-tab' ref='raceGenderChart'>
+        <div className='title'>{ this.pluralize(this.props.role) }</div>
         <HorizontalPercentageChart className='race' label='Race'
           category={ CATEGORY_DICT[this.props.role]['race']['value'] }
           displayCategory={ CATEGORY_DICT[this.props.role]['race']['displayValue'] }

@@ -24,10 +24,10 @@ describe('RaceGenderAPITransformation utils', function () {
     asianResult.length.should.equal(1);
   });
 
-  it('should display "Asian officers" when there is only asian officer in filter result', function () {
+  it('should display "Asian" when there is only asian officer in filter result', function () {
     var result = RaceGenderAPITransformation.transformRaces({'Asian': 1}, true);
     var asianResult = _.filter(result, function (obj) {
-      return obj.label === 'Asian officers';
+      return obj.label === 'Asian';
     });
     asianResult.length.should.equal(1);
   });

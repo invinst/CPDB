@@ -1,3 +1,4 @@
+
 var _ = require('lodash');
 
 var GenderPresenter = require('presenters/GenderPresenter');
@@ -89,7 +90,7 @@ var RaceGenderAPITransform = {
   },
 
   raceLabel: function (race, isOfficer) {
-    return isOfficer && race !== 'Others' ? race + ' officers' : race;
+    return race;
   },
 
   transformGenders: function (genders, isOfficer) {
