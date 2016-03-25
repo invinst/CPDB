@@ -80,8 +80,14 @@ class OfficerAllegationQueryBuilder(object):
                     if val_lower in ('none', 'null'):
                         val = True
                         key = "%s__isnull" % key
-                    sub_queries |= Q(**{key: val})
-                queries &= sub_queries
+                    if not sub_queries:
+                        sub_queries = Q(**{key: val})
+                    else:
+                        sub_queries |= Q(**{key: val})
+                if not queries:
+                    queries = sub_queries
+                else:
+                    queries &= sub_queries
 
         return queries
 
@@ -242,7 +248,9 @@ class OfficerAllegationQueryBuilder(object):
         allegation_ids = Allegation.objects.filter(allegation_queries)\
             .values_list('pk', flat=True)
 
-        return Q(allegation__pk__in=allegation_ids)
+        if allegation_ids:
+            return Q(allegation__pk__in=allegation_ids)
+        return Q()
 
     def _q_add_data_source_filter(self, query_params):
         data_source = query_params.getlist('data_source', [])
