@@ -18,18 +18,16 @@ var HorizontalPercentageChart = React.createClass({
     })),
     className: PropTypes.string,
     label: PropTypes.string,
-    chartWidth: PropTypes.number,
     displayCategory: PropTypes.string,
     category: PropTypes.string
   },
 
   mixins: [PureRenderMixin],
 
-  minWidth: 2,
   totalWidth: 100,
   defaultChartHeight: 30,
   defaultColorRange: [
-    '#A5B4BD', '#6B8EE6', '#4E76C5', '#3860BF', '#6A2122'
+    '#A5B4BD', '#6B8EE6', '#4E76C5', '#3860BF', '#26527f'
   ],
 
   sortAndColorizeData: function () {
@@ -40,7 +38,7 @@ var HorizontalPercentageChart = React.createClass({
     var self = this;
 
     var result = _.map(_.sortBy(this.props.data, 'count'), function (datum, i) {
-      var currentWidth = widthScale(datum.count) + self.minWidth;
+      var currentWidth = widthScale(datum.count) + HorizontalPercentageChart.MIN_WIDTH;
       var returnValue = {
         label: datum.label,
         translateX: currentX,
@@ -61,7 +59,7 @@ var HorizontalPercentageChart = React.createClass({
   },
 
   calculateWidthScale: function (sum) {
-    var width = this.totalWidth - this.minWidth * this.props.data.length;
+    var width = this.totalWidth - HorizontalPercentageChart.MIN_WIDTH * this.props.data.length;
     return d3.scale.linear()
       .domain([0, sum])
       .range([0, width]);
@@ -76,7 +74,7 @@ var HorizontalPercentageChart = React.createClass({
         <p className='chart-label'>{ this.props.label }</p>
         <HorizontalBarSVG segments={ segments } category={ this.props.category }
           displayCategory={ this.props.displayCategory }/>
-        <LabelBar segments={ segments } chartWidth={ this.props.chartWidth }/>
+        <LabelBar segments={ segments }/>
       </div>
     );
   }
@@ -87,5 +85,6 @@ HorizontalPercentageChart.getSegmentColor = function (index, numOfSegments, colo
     colorRange[colorRange.length - 1] :
     colorRange[index];
 };
+HorizontalPercentageChart.MIN_WIDTH = 3;
 
 module.exports = HorizontalPercentageChart;

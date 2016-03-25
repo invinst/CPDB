@@ -2,36 +2,28 @@ var React = require('react');
 var PropTypes = React.PropTypes;
 var _ = require('lodash');
 
-var DOMUtils = require('utils/DOMUtils');
-
 
 var LabelBar = React.createClass({
   propTypes: {
     segments: PropTypes.arrayOf(PropTypes.shape({
       label: PropTypes.string,
       percent: PropTypes.number
-    })),
-    chartWidth: PropTypes.number
+    }))
   },
-  textMargin: 8,
-  defaultLabelFont: '100 normal 14px Arial',
-  percentageFont: 'bold normal 14px Arial',
 
   render: function () {
-    var leftFunc = LabelBar.calculateLeft(
-      this.textMargin, this.defaultLabelFont, this.percentageFont, this.props.chartWidth
-    );
+    var leftFunc = LabelBar.calculateLeft();
     return (
       <div className='label-bar'>{
         _.map(this.props.segments, function (segment, i) {
           var styleProp = {
-            left: leftFunc(segment)
+            left: leftFunc(segment) + '%'
           };
 
           return (
             <div key={ i } className='segment-label' style={ styleProp }>
-              <p className='segment-name'>{ segment.label }</p>
-              <p className='segment-percentage'>{ segment.percent + '%' }</p>
+              <span className='segment-percentage'>{ segment.percent + '%' }</span>
+              <span className='segment-name'>{ segment.label }</span>
             </div>
           );
         })
@@ -40,20 +32,12 @@ var LabelBar = React.createClass({
   }
 });
 
-LabelBar.calculateLeft = function (textMargin, labelFont, percentFont, chartWidth) {
+LabelBar.calculateLeft = function () {
   var segmentWidthAccum = 0;
-  var textLengthAccum = 0;
 
   function next(segment) {
-    var left = _.max([segmentWidthAccum, textLengthAccum]);
-    var textLength = _.max([
-      DOMUtils.getTextWidth(segment.label, labelFont),
-      DOMUtils.getTextWidth(segment.percent + '%', percentFont)
-    ]) + textMargin;
-
-    segmentWidthAccum += segment.width * chartWidth / 100;
-    textLengthAccum += textLength;
-
+    var left = segmentWidthAccum;
+    segmentWidthAccum += segment.width;
     return left;
   }
 

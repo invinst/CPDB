@@ -4,7 +4,6 @@ var PropTypes = React.PropTypes;
 var _ = require('lodash');
 var S = require('string');
 
-var DOMUtils = require('utils/DOMUtils');
 var HorizontalPercentageChart = require('components/DataToolPage/HorizontalPercentageChart.react');
 var RaceGenderAgeTabStore = require('stores/DataToolPage/RaceGenderAgeTabStore');
 var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFilterTagsQueryBuilder');
@@ -60,11 +59,9 @@ RaceGenderAgeTab = React.createClass({
   },
 
   componentDidMount: function () {
-    this.resizeEndListener = DOMUtils.onResizeEnd(this._onResizeEnd);
     RaceGenderAgeTabStore.addChangeListener(this._onChange);
     this._onChange();
     this.props.initTab(this);
-    this._onResizeEnd();
   },
 
   shouldComponentUpdate: function (nextProps, nextState) {
@@ -73,19 +70,12 @@ RaceGenderAgeTab = React.createClass({
 
   componentWillUnmount: function () {
     RaceGenderAgeTabStore.removeChangeListener(this._onChange);
-    DOMUtils.removeResizeEndListener(this.resizeEndListener);
   },
 
   dataMethods: {
     age: S('get{{role}}AgeSegments'),
     gender: S('get{{role}}GenderSegments'),
     race: S('get{{role}}RaceSegments')
-  },
-
-  _onResizeEnd: function () {
-    this.setState({
-      chartWidth: DOMUtils.getElementWidth(this.refs.raceGenderChart)
-    });
   },
 
   getEmbedCode: function () {
@@ -122,15 +112,15 @@ RaceGenderAgeTab = React.createClass({
         <HorizontalPercentageChart className='race' label='Race'
           category={ CATEGORY_DICT[this.props.role]['race']['value'] }
           displayCategory={ CATEGORY_DICT[this.props.role]['race']['displayValue'] }
-          data={ this.state.race } chartWidth={ this.state.chartWidth || 0 }/>
+          data={ this.state.race }/>
         <HorizontalPercentageChart className='gender' label='Gender'
           category={ CATEGORY_DICT[this.props.role]['gender']['value'] }
           displayCategory={ CATEGORY_DICT[this.props.role]['gender']['displayValue'] }
-          data={ this.state.gender } chartWidth={ this.state.chartWidth || 0 }/>
+          data={ this.state.gender }/>
         <HorizontalPercentageChart className='age' label='Age'
           category={ CATEGORY_DICT[this.props.role]['age']['value'] }
           displayCategory={ CATEGORY_DICT[this.props.role]['age']['displayValue'] }
-          data={ this.state.age } chartWidth={ this.state.chartWidth || 0 }/>
+          data={ this.state.age }/>
       </div>
     );
   }
