@@ -11,7 +11,7 @@ f = require('utils/tests/f');
 InvestigatorSection = require('components/ComplaintPage/InvestigatorSection.react');
 
 
-describe('ComplainingWitness component', function () {
+describe('InvestigatorSection component', function () {
   var investigatorSection;
 
   it('should be renderable', function () {

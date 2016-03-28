@@ -6,6 +6,7 @@ var InvestigationTimeline = require('components/ComplaintPage/AgainstSection/Aga
 var OfficerCard = require('components/Shared/OfficerCard.react');
 var OfficerPresenter = require('presenters/OfficerPresenter');
 var Wrapper = require('components/Shared/Wrapper.react');
+var AppHistory = require('utils/History');
 
 
 var AgainstCard = React.createClass({
@@ -15,6 +16,14 @@ var AgainstCard = React.createClass({
     shouldRenderTimelineOutside: React.PropTypes.bool
   },
 
+  _onClick: function (officerPresenter) {
+    var officerUrl = u.format('/officer/{name}/{id}', {
+      'name': officerPresenter.displayName,
+      'id': officerPresenter.id
+    });
+    AppHistory.pushState(null, officerUrl);
+  },
+
   render: function () {
     var officerAllegation = this.props.officerAllegation;
     var officerPresenter = OfficerPresenter(u.fetch(officerAllegation, 'officer', {}));
@@ -22,10 +31,12 @@ var AgainstCard = React.createClass({
 
     return (
       <div className='against-card'>
-        <OfficerCard displayName={ officerPresenter.displayName }
-          description={ officerPresenter.description }
-          officerId={ officerPresenter.id }
-          allegationsCount={ officerPresenter.allegationsCount }/>
+        <div onClick={ this._onClick.bind(this, officerPresenter) }>
+          <OfficerCard displayName={ officerPresenter.displayName }
+            description={ officerPresenter.description }
+            officerId={ officerPresenter.id }
+            allegationsCount={ officerPresenter.allegationsCount }/>
+        </div>
         <Wrapper visible={ !this.props.shouldRenderTimelineOutside } wrapperClass='timeline'>
           <InvestigationTimeline allegation={ allegation } officerAllegation={ officerAllegation }/>
         </Wrapper>

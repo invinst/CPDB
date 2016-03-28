@@ -1,13 +1,16 @@
-var f, AgainstCard, InvestigationTimeline, OfficerCard;
+var f, AgainstCard, InvestigationTimeline, OfficerCard, AppHistory;
 
 var React = require('react');
+var ReactDOM = require('react-dom');
 var ReactTestUtils = require('react-addons-test-utils');
 
+var sinon = require('sinon');
 require('should');
 
 f = require('utils/tests/f');
 
 AgainstCard = require('components/ComplaintPage/AgainstSection/AgainstCard.react');
+AppHistory = require('utils/History');
 InvestigationTimeline = require('components/ComplaintPage/AgainstSection/AgainstCard/InvestigationTimeline.react');
 OfficerCard = require('components/Shared/OfficerCard.react');
 
@@ -68,6 +71,27 @@ describe('AgainstCardComponent', function () {
     component = ReactTestUtils.findRenderedDOMComponentWithClass(againstCard, 'against-card');
     component.textContent.should.containEql('Gender unknown');
     component.textContent.should.containEql('Race unknown');
+  });
+
+  it('should push officerUrl to AppHistory', function () {
+    var officerAllegation = f.create('OfficerAllegation');
+    var officerDisplayName = officerAllegation.officer['officer_first'] +
+      ' ' + officerAllegation.officer['officer_last'];
+    var expectedUrl = '/officer/' + officerDisplayName + '/' + officerAllegation.officer.id;
+    var OfficerNode;
+
+    sinon.stub(AppHistory, 'pushState');
+
+    againstCard = ReactTestUtils.renderIntoDocument(
+      <AgainstCard officerAllegation={ officerAllegation } />
+    );
+
+    OfficerNode = ReactTestUtils.scryRenderedComponentsWithType(againstCard, OfficerCard)[0];
+
+    ReactTestUtils.Simulate.click(ReactDOM.findDOMNode(OfficerNode));
+
+    AppHistory.pushState.calledWith(null, expectedUrl).should.be.true();
+    AppHistory.pushState.restore();
   });
 
 });
