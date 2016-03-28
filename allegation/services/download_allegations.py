@@ -93,7 +93,10 @@ class AllegationsDownload(OfficerAllegationAPIView):
             'StartDate',
             'EndDate',
             'InvestigatorName',
-            'InvestigatorRank']
+            'InvestigatorRank',
+            'Latitude',
+            'Longitude'
+        ]
         self.write_headers(sheet, columns)
 
     def write_allegations_data(self, sheet):
@@ -152,6 +155,11 @@ class AllegationsDownload(OfficerAllegationAPIView):
                     row_count, 21, officer_allegation.allegation.investigator.name)
                 sheet.write(
                     row_count, 22, officer_allegation.allegation.investigator.current_rank)
+            if officer_allegation.allegation.point:
+                sheet.write(
+                    row_count, 23, officer_allegation.allegation.point.y)
+                sheet.write(
+                    row_count, 24, officer_allegation.allegation.point.x)
 
             row_count += 1
 
