@@ -46,7 +46,7 @@ describe('RaceGenderAgeTabStore', function () {
       {
         label: '31+',
         count: 20,
-        filters: [{value: '31+', displayValue: '31+'}],
+        filters: [{value: '>31', displayValue: '31+'}],
         active: true
       }
     ]);
@@ -61,7 +61,7 @@ describe('RaceGenderAgeTabStore', function () {
       {
         label: '41+',
         count: 16,
-        filters: [{value: '41+', displayValue: '41+'}],
+        filters: [{value: '>41', displayValue: '41+'}],
         active: true
       }
     ]);

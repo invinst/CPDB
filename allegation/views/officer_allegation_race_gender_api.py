@@ -32,13 +32,13 @@ class OfficerAllegationRaceGenderAPI(OfficerAllegationAPIView):
             allegation__in=officer_allegations.values_list('allegation'))
 
     def get_officer_ages(self):
-        officer_allegations = self.get_officer_allegations()
+        officer_allegations = self.get_officer_allegations(['officer_age'])
         officer_allegations = officer_allegations.filter(officer_age__isnull=False)\
             .annotate(age_range=get_num_range_case('officer_age', OFFICER_AGE_RANGES))
         return self.annotate_count_for(officer_allegations, 'age_range')
 
     def get_witness_ages(self):
-        officer_allegations = self.get_officer_allegations()
+        officer_allegations = self.get_officer_allegations(['complainant_age'])
         return self.annotate_count_for(
             self.get_witness(officer_allegations).filter(age__isnull=False, age__gt=0)
             .annotate(age_range=get_num_range_case('age', WITNESS_AGE_RANGES)), 'age_range')

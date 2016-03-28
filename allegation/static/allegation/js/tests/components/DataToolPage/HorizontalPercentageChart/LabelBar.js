@@ -22,11 +22,13 @@ describe('LabelBar component', function () {
     var segments = [
       {
         label: 'a',
-        percent: 80
+        percent: 80,
+        active: true
       },
       {
         label: 'b',
-        percent: 20
+        percent: 20,
+        active: false
       }
     ];
 
@@ -37,6 +39,8 @@ describe('LabelBar component', function () {
     ElementUtils.getElementsTextByClassName(labelBar, 'segment-name').should.deepEqual(['a', 'b']);
 
     ElementUtils.getElementsTextByClassName(labelBar, 'segment-percentage').should.deepEqual(['80%', '20%']);
+
+    ReactTestUtils.scryRenderedDOMComponentsWithClass(labelBar, 'active').length.should.equal(1);
   });
 
   it('should calculate correct style.left', function () {

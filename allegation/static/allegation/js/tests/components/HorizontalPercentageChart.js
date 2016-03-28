@@ -25,7 +25,8 @@ describe('HorizontalPercentageChart component', function () {
       oldIndex: 0,
       filters: [
         {}
-      ]
+      ],
+      active: true
     },
     {
       label: 'a',
@@ -35,7 +36,8 @@ describe('HorizontalPercentageChart component', function () {
       fill: '#26527f',
       filters: [],
       percent: 60,
-      oldIndex: 1
+      oldIndex: 1,
+      active: false
     }
   ];
 
@@ -43,14 +45,16 @@ describe('HorizontalPercentageChart component', function () {
     {
       label: 'a',
       count: 3,
-      filters: []
+      filters: [],
+      active: false
     },
     {
       label: 'b',
       count: 2,
       filters: [
         {}
-      ]
+      ],
+      active: true
     }
   ];
 
@@ -90,10 +94,28 @@ describe('HorizontalPercentageChart component', function () {
       .should.deepEqual(['fill:#A5B4BD;', 'fill:#26527f;']);
     ElementUtils.getElementsAttributeByTagName(horizontalPercentageChart, 'rect', 'x')
       .should.deepEqual([expectData[0].translateX + '%', expectData[1].translateX + '%']);
+    ElementUtils.getElementsAttributeByTagName(horizontalPercentageChart, 'rect', 'class')
+      .should.deepEqual(['active', '']);
 
     ElementUtils.getElementsTextByClassName(horizontalPercentageChart, 'segment-name').should.deepEqual(['b', 'a']);
     ElementUtils.getElementsTextByClassName(horizontalPercentageChart, 'segment-percentage')
       .should.deepEqual(['40%', '60%']);
   });
 
+  it('should activate correct label on mouse over', function () {
+    var firstSegment;
+
+    horizontalPercentageChart = ReactTestUtils.renderIntoDocument(
+      <HorizontalPercentageChart data={ chartData } label='chart'/>
+    );
+
+    firstSegment = ReactTestUtils.scryRenderedDOMComponentsWithTag(horizontalPercentageChart ,'rect')[0];
+    ReactTestUtils.Simulate.mouseOver(firstSegment, {});
+    ReactTestUtils.scryRenderedDOMComponentsWithClass(horizontalPercentageChart, 'segment-label')[0]
+      .className.split(' ').should.containEql('hover');
+
+    ReactTestUtils.Simulate.mouseOut(firstSegment, {});
+    ReactTestUtils.scryRenderedDOMComponentsWithClass(horizontalPercentageChart, 'segment-label')[0]
+      .className.split(' ').should.not.containEql('hover');
+  });
 });

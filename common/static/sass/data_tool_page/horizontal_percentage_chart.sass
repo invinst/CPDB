@@ -12,17 +12,24 @@
 
   .segment-label
     position: absolute
-    transform-origin: 0 100%;
+    transform-origin: 0 100%
     transform: translateY(-6px) rotate(40deg)
+    font-weight: 200
+
+    &.active
+      font-weight: 600
+
+    &.hover
+      opacity: 0.5
 
   .segment-name
     color: #1464f1
     margin-bottom: -5px
     padding-left: 5px
 
-  .segment-percentage
-    font-weight: bold
-
   svg
     rect
       cursor: pointer
+      opacity: 0.5
+      &.active
+        opacity: 1

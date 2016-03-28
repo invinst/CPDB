@@ -24,12 +24,14 @@ describe('HorizontalBarSVG component', function () {
       {
         translateX: 0,
         width: 10,
-        fill: 'red'
+        fill: 'red',
+        active: true
       },
       {
         translateX: 10,
         width: 90,
-        fill: 'blue'
+        fill: 'blue',
+        active: false
       }
     ];
 
@@ -43,6 +45,9 @@ describe('HorizontalBarSVG component', function () {
     ]);
     ElementUtils.getElementsAttributeByTagName(horizontalBarSVG, 'rect', 'style').should.deepEqual([
       'fill:red;', 'fill:blue;'
+    ]);
+    ElementUtils.getElementsAttributeByTagName(horizontalBarSVG, 'rect', 'class').should.deepEqual([
+      'active', ''
     ]);
   });
 

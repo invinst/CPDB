@@ -114,11 +114,18 @@ var RaceGenderAPITransform = {
     var hasActiveFilter = FilterTagStore.getAll(filterKey).length > 0;
 
     return _(ages).map(function (x, y) {
+      function transformAgeVal(val) {
+        if (val[val.length - 1] === '+') {
+          return '>' + val.slice(0, -1);
+        }
+        return val;
+      }
+
       return {
         'label': y,
-        'filters': [{ value: y, displayValue: y}],
+        'filters': [{ value: transformAgeVal(y), displayValue: y}],
         'count': x,
-        'active': !hasActiveFilter || FilterTagStore.isInFilter(filterKey, y)
+        'active': !hasActiveFilter || FilterTagStore.isInFilter(filterKey, transformAgeVal(y))
       };
     }).value();
   }

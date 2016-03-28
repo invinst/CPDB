@@ -14,7 +14,9 @@ var HorizontalPercentageChart = React.createClass({
   propTypes: {
     data: PropTypes.arrayOf(PropTypes.shape({
       label: PropTypes.string,
-      count: PropTypes.number
+      count: PropTypes.number,
+      filters: PropTypes.array,
+      active: PropTypes.bool
     })),
     className: PropTypes.string,
     label: PropTypes.string,
@@ -23,6 +25,12 @@ var HorizontalPercentageChart = React.createClass({
   },
 
   mixins: [PureRenderMixin],
+
+  getInitialState: function () {
+    return {
+      hoverInd: null
+    };
+  },
 
   totalWidth: 100,
   defaultChartHeight: 30,
@@ -45,6 +53,7 @@ var HorizontalPercentageChart = React.createClass({
         width: currentWidth,
         value: datum.count,
         filters: datum.filters,
+        active: datum.active,
         fill: HorizontalPercentageChart.getSegmentColor(i, dataLength, self.defaultColorRange)
       };
 
@@ -65,6 +74,18 @@ var HorizontalPercentageChart = React.createClass({
       .range([0, width]);
   },
 
+  _onMouseOver: function (ind) {
+    this.setState({
+      hoverInd: ind
+    });
+  },
+
+  _onMouseOut: function () {
+    this.setState({
+      hoverInd: null
+    });
+  },
+
   render: function () {
     var segments = this.sortAndColorizeData();
     var classNames = classnames('horizontal-percentage-chart', this.props.className);
@@ -73,8 +94,9 @@ var HorizontalPercentageChart = React.createClass({
       <div className={ classNames }>
         <p className='chart-label'>{ this.props.label }</p>
         <HorizontalBarSVG segments={ segments } category={ this.props.category }
-          displayCategory={ this.props.displayCategory }/>
-        <LabelBar segments={ segments }/>
+          displayCategory={ this.props.displayCategory }
+          onMouseOver={ this._onMouseOver } onMouseOut={ this._onMouseOut }/>
+        <LabelBar segments={ segments } hoverInd={ this.state.hoverInd }/>
       </div>
     );
   }

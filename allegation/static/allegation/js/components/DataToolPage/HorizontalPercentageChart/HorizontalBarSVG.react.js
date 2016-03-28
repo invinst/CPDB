@@ -1,6 +1,7 @@
 var React = require('react');
 var PropTypes = React.PropTypes;
 var _ = require('lodash');
+var classnames = require('classnames');
 
 var FilterTagsActions = require('actions/FilterTagsActions');
 
@@ -19,7 +20,9 @@ var HorizontalBarSVG = React.createClass({
     totalWidth: PropTypes.number,
     chartHeight: PropTypes.number,
     displayCategory: PropTypes.string,
-    category: PropTypes.string
+    category: PropTypes.string,
+    onMouseOver: PropTypes.func,
+    onMouseOut: PropTypes.func
   },
 
   getDefaultProps: function () {
@@ -41,16 +44,31 @@ var HorizontalBarSVG = React.createClass({
     FilterTagsActions.toggleTags(tags);
   },
 
+  _onMouseOver: function (ind) {
+    var self = this;
+    return function () {
+      self.props.onMouseOver(ind);
+    };
+  },
+
   render: function () {
     var self = this;
+    var segmentClass;
+    var styleProp;
+
     return (
-      <svg viewBox='0 0 500 30' preserveAspectRatio='none'
+      <svg viewBox='0 0 500 30' preserveAspectRatio='none' onMouseOut={ self.props.onMouseOut }
         width='100%' height={ self.props.chartHeight }>
         { _.map(self.props.segments, function (segment, i) {
-          var styleProp = _.pick(segment, ['fill']);
+          segmentClass = classnames({
+            active: segment.active
+          });
+          styleProp = _.pick(segment, ['fill']);
+
           return (
-            <rect key={ i } width={ segment.width + '%' } height={ self.props.chartHeight }
-              x={ segment.translateX + '%' } style={ styleProp } onClick={ self._onClick.bind(self, segment) }/>
+            <rect key={ i } width={ segment.width + '%' } height={ self.props.chartHeight } className={ segmentClass }
+              x={ segment.translateX + '%' } style={ styleProp } onClick={ self._onClick.bind(self, segment) }
+              onMouseOver={ self._onMouseOver(i) }/>
           );
         }) }
       </svg>
