@@ -87,3 +87,4 @@ ngrok
 /local_static
 /templates
 bin/gen_mhash.py
+common/management/commands/find_complaint.py
