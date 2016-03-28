@@ -54,7 +54,7 @@ class RaceGenderAgeTabTestCase(BaseLiveTestCase):
         self.populate_officer_data()
         self.visit_home()
         self.change_to_tab('accused')
-        expected_labels = [('Hispanic officers', '20%'), ('White officers', '40%'), ('Black officers', '40%')]
+        expected_labels = [('Hispanic', '20%'), ('White', '40%'), ('Black', '40%')]
         self.assert_segment_labels(expected_labels, 'accused', 'race')
 
     def test_accused_gender(self):

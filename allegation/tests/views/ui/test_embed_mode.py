@@ -138,7 +138,7 @@ class EmbedPageTestCase(BaseLiveTestCase):
     def test_officer_race_gender_age_embed_code(self):
         self.check_embed_code({
             'width': 892,
-            'height': 375,
+            'height': 500,
         }, "/embed/?page=officer-race-gender-age-tab&query=")
 
     def test_officer_list_embed_code(self):
