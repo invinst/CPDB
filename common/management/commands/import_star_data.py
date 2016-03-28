@@ -38,30 +38,40 @@ class Command(BaseCommand):
             if count == 1:
                 return officers.first()
 
+            if kwargs.get('appt_date'):
+
+                if officers.exclude(appt_date__isnull=True).count() == count:
+                    officers = officers.filter(appt_date=kwargs['appt_date'])
+
+                if officers.filter(appt_date=kwargs['appt_date']).count() == 1:
+                    return officers.filter(appt_date=kwargs['appt_date']).first()
+
             for add_filter in order_of_contrain:
                 constrain = kwargs.get(add_filter, None)
 
-                if constrain:
-                    officers = officers.filter(**{add_filter: constrain})
+                if constrain and officers.filter(**{"{field}__iexact".format(field=add_filter): constrain}):
+                    officers = officers.filter(**{"{field}__iexact".format(field=add_filter): constrain})
 
                 count = officers.count()
 
                 if count == 1:
                     return officers.first()
 
+            if count == 0:
+                raise Officer.DoesNotExist
+
+            self.officers = officers
             raise Officer.MultipleObjectsReturned
         raise Officer.DoesNotExist
 
     def handle(self, *args, **options):
+        writer = csv.writer(open('media/officers_import_data.csv', 'w'))
 
         with open(options['file']) as f:
 
             reader = csv.reader(f)
 
             next(reader)
-            last_appt_date = None
-            last_star = None
-            officers_last_star_num = None
             found_counter = 0
             not_found_counter = 0
             counter = 0
@@ -73,6 +83,8 @@ class Command(BaseCommand):
                     print(counter)
                 if row[APPOINTED_DATE]:
                     appt_date = datetime.datetime.strptime(row[APPOINTED_DATE], DATE_PARSE_FORMAT)
+                    if appt_date.year > datetime.datetime.now().year:
+                        appt_date = appt_date.replace(year=appt_date.year-100)
                 else:
                     appt_date = None
 
@@ -80,29 +92,31 @@ class Command(BaseCommand):
                     if row[i]:
                         officers_last_star_num = row[i]
 
-                if last_appt_date != appt_date and last_star != officers_last_star_num:
+                officer = False
+                try:
+                    officer = self.get_officer(
+                        officer_first=row[FIRST_NAME],
+                        officer_last=row[LAST_NAME],
+                        gender=row[SEX_CODE_CD],
+                        race=row[RACE],
+                        star=officers_last_star_num,
+                        appt_date=appt_date
+                    )
 
-                    try:
-                        officer = self.get_officer(
-                            officer_first=row[FIRST_NAME],
-                            officer_last=row[LAST_NAME],
-                            gender=row[SEX_CODE_CD],
-                            race=row[RACE],
-                            star=officers_last_star_num
-                        )
+                    found_counter += 1
+                except Officer.MultipleObjectsReturned:
+                    not_found_counter += 1
+                    possible_matches = ";".join(["%d" % x for x in self.officers.values_list('id', flat=True)])
+                    writer.writerow([0] + row + [possible_matches])
+                    print(row)
+                    continue
 
-                        found_counter += 1
-                    except Officer.MultipleObjectsReturned:
-                        not_found_counter += 1
-                        continue
-
-                    except Officer.DoesNotExist:
-                        not_exist_counter += 1
-                        continue
+                except Officer.DoesNotExist:
+                    not_exist_counter += 1
+                    writer.writerow([-1] + row)
+                    continue
 
                 if not officer:
                     continue
-
-                last_appt_date = appt_date
-                last_star = row[STARS_START]
+                writer.writerow([officer.pk] + row)
             print("found: ", found_counter, " \nnot found: ", not_found_counter, "\nnot exist: ", not_exist_counter)
