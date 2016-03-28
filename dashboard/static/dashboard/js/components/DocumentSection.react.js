@@ -86,7 +86,7 @@ var DocumentSection = React.createClass(_.assign(Base(DocumentSectionStore), {
               <i className='fa fa-link'></i> Add document
             </button>
             <button id='export-document' className='btn btn-primary' onClick={ this.exportDocument }>
-              <i className='fa fa-file-excel-o'></i> Export Document
+              <i className='fa fa-file-excel-o'></i> Export requests to Excel
             </button>
           </div>
         </div>
