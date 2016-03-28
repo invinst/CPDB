@@ -9,7 +9,7 @@ class MobileRedirectFromDesktopTest(AutocompleteTestHelperMixin, BaseLiveTestCas
         officer = OfficerFactory()
 
         rebuild_index()
-
+        # FIXME: this seems to be a wrong test, please fix!
         self.visit('/')
         self.search_officer(officer)
         self.visit(self.mobile_url_for_current_request())

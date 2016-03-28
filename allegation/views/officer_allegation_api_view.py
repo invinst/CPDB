@@ -58,8 +58,12 @@ class OfficerAllegationAPIView(View):
 
     def create_investigator_allegation_count_map(self, officer_allegations):
         investigators = officer_allegations.values_list('allegation__investigator_id', flat=True)
-        investigator_complaint_counts = OfficerAllegation.objects.filter(allegation__investigator__in=investigators)\
+        investigators = list(investigators)
+
+        investigator_complaint_counts = OfficerAllegation.objects.filter(
+            allegation__investigator__in=investigators)\
             .values('allegation__investigator_id').annotate(count=Count('allegation_id'))
+
         investigator_discipline_counts = OfficerAllegation.disciplined.filter(
             allegation__investigator__in=investigators)\
             .values('allegation__investigator_id').annotate(count=Count('allegation_id'))
@@ -75,10 +79,15 @@ class OfficerAllegationAPIView(View):
         officer_allegations = officer_allegations.select_related(
             'allegation__beat', 'allegation__investigator', 'allegation',
             'officer')
-        complaining_witnesses = ComplainingWitness.objects.filter(
-            allegation__officerallegation__in=officer_allegations)
-        police_witnesses = PoliceWitness.objects.filter(
-            allegation__officerallegation__in=officer_allegations)
+        unique_witnesses = ComplainingWitness.objects.filter(
+            allegation__officerallegation__in=officer_allegations).distinct().values('cwit_id')
+
+        complaining_witnesses = ComplainingWitness.objects.filter(pk__in=unique_witnesses)
+
+        unique_police_witnesses = PoliceWitness.objects.filter(
+            allegation__officerallegation__in=officer_allegations).distinct().values('pwit_id')
+
+        police_witnesses = PoliceWitness.objects.filter(pk__in=unique_police_witnesses)
 
         investigator_allegation_count_map = self.create_investigator_allegation_count_map(officer_allegations)
 

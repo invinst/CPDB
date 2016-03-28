@@ -16,6 +16,7 @@ class MobileGoogleAnalyticsTest(BaseLivePhoneTestCase):
         self.should_track_ga_event()
 
         self.reset_ga_call()
+        self.until(lambda: self.find_all('.tab-navs .tab-co-accused').should.have.length_of(1))
         self.find('.tab-navs .tab-co-accused').click()
         self.find('.related-officer-item').click()
         self.should_track_ga_event()

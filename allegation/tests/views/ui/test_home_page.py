@@ -1,3 +1,5 @@
+from selenium import webdriver
+from selenium.webdriver.firefox.webdriver import WebDriver
 import re
 import json
 
@@ -6,7 +8,7 @@ from wagtail.wagtailcore.models import Site
 from allegation.factories import (
     OfficerAllegationFactory, AllegationCategoryFactory)
 from allegation.tests.utils.autocomplete_test_helper_mixin import AutocompleteTestHelperMixin
-from common.tests.core import BaseLiveTestCase, switch_to_popup
+from common.tests.core import BaseLiveTestCase, retry_random_fail, switch_to_popup
 from common.utils.haystack import rebuild_index
 from share.models import Session
 from home.factories import HomePageFactory
@@ -176,6 +178,7 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
         self.should_see_text(self.officer_allegation.officer.display_name)
         self.should_not_see_text(officer_allegation.officer.display_name)
 
+    @retry_random_fail
     def test_pin_tag(self):
         officer_allegation = OfficerAllegationFactory()
         another = OfficerAllegationFactory()
@@ -241,6 +244,24 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
         self.find('.share-button button').click()
         with self.browser_no_wait():
             self.element_exist('.share-bar').should.be.false
+
+    def test_no_disclaimer_when_search_engine(self):
+        profile = webdriver.FirefoxProfile()
+        profile.set_preference(
+            "general.useragent.override",
+            "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+        )
+        browser = WebDriver(profile)
+        browser.implicitly_wait(10)
+        browser.set_window_size(width=1200, height=1200)
+
+        old_browser = self.browser
+
+        self.set_browser(browser)
+        self.visit_home()
+        self.find('#disclaimer').get_attribute('class').should.contain('fade')
+
+        self.set_browser(old_browser)
 
     def test_wagtail_tab(self):
         body_content = 'body content'

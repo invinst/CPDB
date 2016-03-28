@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% load staticfiles compress jsonify %}
+{% load staticfiles jsonify %}
 <html>
 <head>
     {% block meta %}
@@ -12,15 +12,11 @@
     <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}"/>
     {% endblock %}
 
-    {% compress css %}
-        <link rel="stylesheet" type="text/css" href="{% static 'ratchet/dist/css/ratchet.min.css' %}" />
-        <link rel="stylesheet" type="text/sass" href="{% static 'mobile/sass/style.sass' %}"/>
-    {% endcompress %}
+    <link rel="stylesheet" type="text/css" href="{% static 'ratchet/dist/css/ratchet.min.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/mobile_style.css' %}"/>
 
     {% if DJANGO_ENV == 'test' %}
-    {% compress css %}
-    <link rel="stylesheet" type="text/sass" href="{% static 'sass/test.sass' %}"/>
-    {% endcompress %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/test.css' %}"/>
     {% endif %}
     {% include "google_analytics.html" %}
 </head>

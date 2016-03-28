@@ -12,7 +12,7 @@ CACHES = {
     },
 }
 
-COMPRESS_ENABLED = False
+STATICFILES_DIRS = ['local_static']
 
 LOGGING = {
     'version': 1,
@@ -29,6 +29,8 @@ LOGGING = {
         },
     },
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
 DEBUG_TOOLBAR_ENABLE = False
 
