@@ -1,6 +1,7 @@
 var React = require('react');
 
 var HashUtil = require('utils/HashUtil');
+var u = require('utils/HelperUtil');
 
 
 var NotMatchedCategoryPage = React.createClass({
@@ -9,7 +10,8 @@ var NotMatchedCategoryPage = React.createClass({
   },
 
   render: function () {
-    var category = HashUtil.decode(this.props.category);
+    var categoryHash = u.fetch(this, 'props.category', '');
+    var category = HashUtil.decode(categoryHash);
 
     return (
       <div className='not-matched-page'>
