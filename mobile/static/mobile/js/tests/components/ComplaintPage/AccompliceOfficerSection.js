@@ -83,7 +83,8 @@ describe('AccompliceOfficerSectionComponent', function () {
     var expectedUrl = '/officer/' + officerDisplayName + '/' + officerAllegation.officer.id;
     var OfficerNode;
 
-    sinon.stub(AppHistory, 'pushState');
+    var mock = sinon.mock(AppHistory);
+    mock.expects('pushState').once().withArgs(null, expectedUrl).returns(null);
 
     accompliceOfficerSection = ReactTestUtils.renderIntoDocument(
       <AccompliceOfficerSection officerAllegations={ [officerAllegation] } />
@@ -93,8 +94,8 @@ describe('AccompliceOfficerSectionComponent', function () {
 
     ReactTestUtils.Simulate.click(ReactDOM.findDOMNode(OfficerNode));
 
-    AppHistory.pushState.calledWith(null, expectedUrl).should.be.true();
-    AppHistory.pushState.restore();
+    mock.verify();
+    mock.restore();
   });
 
   it('should be hidden when there\'s no officer allegations', function () {

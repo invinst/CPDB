@@ -99,7 +99,7 @@ describe('ComplaintPageComponent', function () {
       };
 
       complaintPage = ReactTestUtils.renderIntoDocument(
-        <ComplaintPage params={ params } />
+        <ComplaintPage params={ params }/>
       );
 
       complaintPage.setState({'loading': false, 'found': true, 'data': data});
@@ -117,11 +117,11 @@ describe('ComplaintPageComponent', function () {
       data = f.create('ComplaintPageData', {'officer_allegations': [officerAllegation, otherOfficerAllegation]});
 
       complaintPage = ReactTestUtils.renderIntoDocument(
-        <ComplaintPage params={ params } />
+        <ComplaintPage params={ params }/>
       );
 
       complaintPage.setState({'loading': false, 'found': true, 'data': data});
-      complaintPage.should.renderWithProps(AgainstSection, {'officerAllegations': [officerAllegation] });
+      complaintPage.should.renderWithProps(AgainstSection, {'officerAllegations': [officerAllegation]});
       complaintPage.should.renderWithProps(AccompliceOfficerSection, {'officerAllegations': [otherOfficerAllegation]});
     });
 
@@ -136,20 +136,24 @@ describe('ComplaintPageComponent', function () {
       var officerAllegation2 = f.create('OfficerAllegation', {'cat': otherCategory, 'officer': officer2});
       var officerAllegation3 = f.create('OfficerAllegation', {'cat': otherCategory, 'officer': officer3});
 
-      data = f.create('ComplaintPageData', {'officer_allegations': [officerAllegation, officerAllegation3,
-        officerAllegation1, officerAllegation2]});
+      data = f.create('ComplaintPageData', {
+        'officer_allegations': [officerAllegation, officerAllegation3,
+          officerAllegation1, officerAllegation2]
+      });
 
       complaintPage = ReactTestUtils.renderIntoDocument(
-        <ComplaintPage params={ params } />
+        <ComplaintPage params={ params }/>
       );
 
       complaintPage.setState({'loading': false, 'found': true, 'data': data});
-      complaintPage.should.renderWithProps(AgainstSection, {'officerAllegations': [officerAllegation] });
-      complaintPage.should.renderWithProps(AccompliceOfficerSection, {'officerAllegations': [officerAllegation3,
-        officerAllegation2, officerAllegation1]});
+      complaintPage.should.renderWithProps(AgainstSection, {'officerAllegations': [officerAllegation]});
+      complaintPage.should.renderWithProps(AccompliceOfficerSection, {
+        'officerAllegations': [officerAllegation3,
+          officerAllegation2, officerAllegation1]
+      });
     });
 
-    it('should render component with sorted data for `AccompliceOfficerSection`', function () {
+    it('should render component with sorted data for `AgainstOfficerSection`', function () {
       var otherCategory = f.create('Category', {'id': 456});
 
       var officer1 = f.create('Officer', {'allegations_count': 1});
@@ -162,17 +166,21 @@ describe('ComplaintPageComponent', function () {
 
       var otherOfficerAllegation = f.create('OfficerAllegation', {'cat': otherCategory, 'officer': officer3});
 
-      data = f.create('ComplaintPageData', {'officer_allegations': [otherOfficerAllegation, officerAllegation3,
-        officerAllegation1, officerAllegation2]});
+      data = f.create('ComplaintPageData', {
+        'officer_allegations': [otherOfficerAllegation, officerAllegation3,
+          officerAllegation1, officerAllegation2]
+      });
 
       complaintPage = ReactTestUtils.renderIntoDocument(
-        <ComplaintPage params={ params } />
+        <ComplaintPage params={ params }/>
       );
 
       complaintPage.setState({'loading': false, 'found': true, 'data': data});
-      complaintPage.should.renderWithProps(AccompliceOfficerSection, {'officerAllegations': [otherOfficerAllegation] });
-      complaintPage.should.renderWithProps(AgainstSection, {'officerAllegations': [officerAllegation3,
-        officerAllegation2, officerAllegation1]});
+      complaintPage.should.renderWithProps(AccompliceOfficerSection, {'officerAllegations': [otherOfficerAllegation]});
+      complaintPage.should.renderWithProps(AgainstSection, {
+        'officerAllegations': [officerAllegation3,
+          officerAllegation2, officerAllegation1]
+      });
     });
   });
 

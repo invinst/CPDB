@@ -1,12 +1,12 @@
 var React = require('react');
 
+var AppHistory = require('utils/History');
 var u = require('utils/HelperUtil');
 
 var InvestigationTimeline = require('components/ComplaintPage/AgainstSection/AgainstCard/InvestigationTimeline.react');
 var OfficerCard = require('components/Shared/OfficerCard.react');
 var OfficerPresenter = require('presenters/OfficerPresenter');
 var Wrapper = require('components/Shared/Wrapper.react');
-var AppHistory = require('utils/History');
 
 
 var AgainstCard = React.createClass({

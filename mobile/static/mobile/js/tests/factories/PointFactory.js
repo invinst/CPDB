@@ -1,14 +1,12 @@
-var faker = require('faker');
-
 var f = require('utils/tests/f');
 
 
 f.define('Point', {
   'x': function () {
-    return faker.address.latitude();
+    return 87.940101;
   },
 
   'y': function () {
-    return faker.address.longitude();
+    return 42.023135;
   }
 });

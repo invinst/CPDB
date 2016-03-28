@@ -1,9 +1,10 @@
 var React = require('react');
 
+var CollectionUtil = require('utils/CollectionUtil');
+
 var AgainstCard = require('components/ComplaintPage/AgainstSection/AgainstCard.react');
 var InvestigationTimeline = require('components/ComplaintPage/AgainstSection/AgainstCard/InvestigationTimeline.react');
 var Wrapper = require('components/Shared/Wrapper.react');
-var CollectionUtil = require('utils/CollectionUtil');
 
 
 var AgainstSection = React.createClass({

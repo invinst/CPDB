@@ -4,13 +4,14 @@ var objectAssign = require('object-assign');
 var Base = require('components/Base.react');
 var u = require('utils/HelperUtil');
 
+var GaUtil = require('utils/GaUtil');
+
 var AccompliceOfficerSection = require('components/ComplaintPage/AccompliceOfficerSection.react');
 var AgainstSection = require('components/ComplaintPage/AgainstSection.react');
 var AllegationResourceUtil = require('utils/AllegationResourceUtil');
 var ComplainingWitness = require('components/ComplaintPage/ComplainingWitness.react');
 var ComplaintPagePresenter = require('presenters/Page/ComplaintPagePresenter');
 var ComplaintPageStore = require('stores/ComplaintPage/ComplaintPageStore');
-var GaUtil = require('utils/GaUtil');
 var InvestigatorSection = require('components/ComplaintPage/InvestigatorSection.react');
 var LoadingPage = require('components/Shared/LoadingPage.react');
 var Location = require('components/ComplaintPage/Location.react');
@@ -34,6 +35,7 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
 
   componentDidMount: function () {
     var crid = u.fetch(this.props, 'params.crid', 0);
+
     GaUtil.track('event', 'allegation', 'view_detail', location.pathname);
     AllegationResourceUtil.get(crid);
     ComplaintPageStore.addChangeListener(this._onChange);
@@ -47,6 +49,7 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
     var categoryHashId = u.fetch(this.props, 'params.categoryHashId', 0);
     var presenter = ComplaintPagePresenter(data, categoryHashId);
 
+    // TODO: Think about refactoring this later
     if (loading) {
       return (
         <LoadingPage />

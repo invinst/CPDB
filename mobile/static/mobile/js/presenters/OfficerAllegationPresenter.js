@@ -1,9 +1,10 @@
 var AppConstants = require('constants/AppConstants');
 
+var S = require('string');
+
 var DateUtil = require('utils/DateUtil');
 var HashUtil = require('utils/HashUtil');
 var u = require('utils/HelperUtil');
-var S = require('string');
 
 
 var OfficerAllegationPresenter = function (officerAllegation) {
