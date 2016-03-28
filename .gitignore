@@ -86,3 +86,4 @@ ngrok
 
 /local_static
 /templates
+bin/gen_mhash.py
