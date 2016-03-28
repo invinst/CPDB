@@ -1,7 +1,9 @@
 var AppConstants = require('constants/AppConstants');
 
 var DateUtil = require('utils/DateUtil');
+var HashUtil = require('utils/HashUtil');
 var u = require('utils/HelperUtil');
+var S = require('string');
 
 
 var OfficerAllegationPresenter = function (officerAllegation) {
@@ -49,16 +51,29 @@ var OfficerAllegationPresenter = function (officerAllegation) {
     return !!(startDate() || incidentDate);
   };
 
+  var allegationNameForUrl = function () {
+    return u.fetch(officerAllegation, 'cat.allegation_name', 'No category');
+  };
+
+  var url = function (crid) {
+    return u.format('/complaint/{crid}/{slugifiedCategory}/{categoryHashId}', {
+      'crid': crid,
+      'slugifiedCategory': S(allegationNameForUrl()).slugify().s,
+      'categoryHashId': HashUtil.encode(u.fetch(officerAllegation, 'cat.id', 0))
+    });
+  };
+
   return {
-    startInvestigatingAt: startInvestigatingAt,
+    allegationName: u.fetch(officerAllegation, 'cat.allegation_name', ''),
+    category: u.fetch(officerAllegation, 'cat.category', 'Unknown'),
+    endDateDisplay: endDateDisplay(),
+    finalFinding: finalFinding(),
+    finalStatus: finalStatus(),
     haveEnoughDataForTimeline: haveEnoughDataForTimeline,
     isOpenInvestigation: isOpenInvestigation(),
     startDateDisplay: startDateDisplay(),
-    endDateDisplay: endDateDisplay(),
-    finalStatus: finalStatus(),
-    category: u.fetch(officerAllegation, 'cat.category', 'Unknown'),
-    allegationName: u.fetch(officerAllegation, 'cat.allegation_name', ''),
-    finalFinding: finalFinding()
+    startInvestigatingAt: startInvestigatingAt,
+    url: url
   };
 };
 

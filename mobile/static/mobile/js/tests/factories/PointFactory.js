@@ -5,10 +5,10 @@ var f = require('utils/tests/f');
 
 f.define('Point', {
   'x': function () {
-    return faker.address.latitude();
+    return faker.address.longitude();
   },
 
   'y': function () {
-    return faker.address.longitude();
+    return faker.address.latitude();
   }
 });

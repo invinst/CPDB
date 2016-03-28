@@ -31,10 +31,10 @@ var OfficerComplaintItem = React.createClass({
     return circles;
   },
 
-  _onClicked : function () {
+  _onClicked : function (crid) {
     var complaint = this.props.complaint.data;
     var presenter = OfficerAllegationPresenter(complaint);
-    AppHistory.pushState(null, presenter.url);
+    AppHistory.pushState(null, presenter.url(crid));
   },
 
   render: function () {
@@ -46,13 +46,14 @@ var OfficerComplaintItem = React.createClass({
     var officerPresenter = OfficerPresenter(officer);
     var allegationPresenter = AllegationPresenter(HelperUtil.fetch(complaint, 'allegation', {}));
     var officerAllegationPresenter = OfficerAllegationPresenter(complaint);
+    var crid = allegationPresenter.crid;
 
     return (
-      <div className='officer-complaint-item' onClick={ this._onClicked }>
+      <div className='officer-complaint-item' onClick={ this._onClicked.bind(this, crid) }>
         <div className='crid-info pad'>
           <div className='inline-block half-width align-left'>
             <span className='crid-title'>CRID &nbsp;</span>
-            <span className='crid-number'>{ allegationPresenter.crid }</span>
+            <span className='crid-number'>{ crid }</span>
           </div>
           <div className='inline-block half-width align-right'>
             <span className='final-finding'>{ officerAllegationPresenter.finalFinding }</span>

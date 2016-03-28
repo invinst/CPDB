@@ -1,4 +1,6 @@
 var f = require('utils/tests/f');
+var u = require('utils/HelperUtil');
+var HashUtil = require('utils/HashUtil');
 
 var OfficerAllegationPresenter = require('presenters/OfficerAllegationPresenter');
 var AppConstants = require('constants/AppConstants');
@@ -165,6 +167,37 @@ describe('OfficerAllegationPresenter', function () {
       var presenter = OfficerAllegationPresenter(officerAllegation);
 
       presenter.finalFinding.should.be.equal('Unfounded');
+    });
+  });
+
+  describe('#url', function () {
+    it('should return the correct url of complaint page', function () {
+      var categoryId = 1;
+      var categoryHashId = HashUtil.encode(1);
+      var allegationName = 'this is allegation name';
+      var category = f.create('Category', { id: categoryId, 'allegation_name': allegationName });
+      var crid = '123';
+
+      var officerAllegation = f.create('OfficerAllegation', { 'final_finding': 'un', 'cat': category });
+      var presenter = OfficerAllegationPresenter(officerAllegation);
+
+      var expectedUrl = u.format('/complaint/123/this-is-allegation-name/{categoryHashId}', {
+        'categoryHashId': categoryHashId
+      });
+      presenter.url(crid).should.be.eql(expectedUrl);
+    });
+
+    it('should return no-category with null hash id if there no category', function () {
+      var categoryHashId = HashUtil.encode(0);
+      var crid = '123';
+
+      var officerAllegation = f.create('OfficerAllegation', { 'final_finding': 'un', 'cat': null });
+      var presenter = OfficerAllegationPresenter(officerAllegation);
+
+      var expectedUrl = u.format('/complaint/123/no-category/{categoryHashId}', {
+        'categoryHashId': categoryHashId
+      });
+      presenter.url(crid).should.be.eql(expectedUrl);
     });
   });
 });
