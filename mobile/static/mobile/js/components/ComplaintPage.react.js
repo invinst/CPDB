@@ -19,6 +19,9 @@ var NotMatchedCategoryPage = require('components/ComplaintPage/NotMatchedCategor
 var NotMatchedPage = require('components/ComplaintPage/NotMatchedPage.react');
 var OfficerAllegationDetail = require('components/ComplaintPage/OfficerAllegationDetail.react');
 var SearchablePage = require('components/Shared/SearchablePage.react');
+var ToggleComplaintPage = require('components/ComplaintPage/ToggleComplaintPage.react');
+var Wrapper = require('components/Shared/Wrapper.react');
+var cx = require('classnames');
 
 
 var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
@@ -29,7 +32,8 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
         'allegation': {},
         'officer_allegations': []
       },
-      loading: true
+      loading: true,
+      toggle: false
     };
   },
 
@@ -48,6 +52,9 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
     var data = this.state.data;
     var categoryHashId = u.fetch(this.props, 'params.categoryHashId', 0);
     var presenter = ComplaintPagePresenter(data, categoryHashId);
+    var toggle = this.state.toggle;
+    var classNames = cx('toggle-page', {'content': toggle}, {'animate': !toggle});
+
 
     // TODO: Think about refactoring this later
     if (loading) {
@@ -68,24 +75,37 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
       );
     }
 
+
     return (
-      <SearchablePage>
-        <div className='complaint-page'>
-          <div className='container content'>
-            <div className='main-content'>
-              <OfficerAllegationDetail allegation={ presenter.allegation }
-                currentOfficerAllegation={ presenter.currentOfficerAllegation }
-                numberOfAllegations={ presenter.numberOfOfficerAllegations }/>
-              <AgainstSection allegation={ presenter.allegation }
-                officerAllegations={ presenter.againstOfficerAllegations }/>
-              <ComplainingWitness complainingWitnesses={ presenter.complainingWitnesses }/>
-              <AccompliceOfficerSection officerAllegations={ presenter.accompliceOfficerAllegation }/>
-              <InvestigatorSection allegation={ presenter.allegation }/>
-              <Location allegation={ presenter.allegation }/>
-            </div>
+      <div>
+        <Wrapper wrapperClass={ classNames } visible={ 1 }>
+          <ToggleComplaintPage officerAllegations={ presenter.officerAllegations }
+                               allegation={ presenter.allegation }/>
+        </Wrapper>
+        <Wrapper visible={ !toggle }>
+          <div >
+            <SearchablePage>
+              <div className='complaint-page'>
+                <div className='container content'>
+                  <div className='main-content'>
+
+                    <OfficerAllegationDetail allegation={ presenter.allegation }
+                      currentOfficerAllegation={ presenter.currentOfficerAllegation }
+                      numberOfAllegations={ presenter.numberOfOfficerAllegations }/>
+                    <AgainstSection allegation={ presenter.allegation }
+                      officerAllegations={ presenter.againstOfficerAllegations }/>
+                    <ComplainingWitness complainingWitnesses={ presenter.complainingWitnesses }/>
+                    <AccompliceOfficerSection officerAllegations={ presenter.accompliceOfficerAllegation }/>
+                    <InvestigatorSection allegation={ presenter.allegation }/>
+                    <Location allegation={ presenter.allegation }/>
+
+                  </div>
+                </div>
+              </div>
+            </SearchablePage>
           </div>
-        </div>
-      </SearchablePage>
+        </Wrapper>
+      </div>
     );
   }
 }));

@@ -30,7 +30,14 @@ ComplaintPageStore.dispatcherToken = AppDispatcher.register(function (action) {
       _state['loading'] = false;
       ComplaintPageStore.emitChange();
       break;
-
+    case AppConstants.COMPLAINT_PAGE_TOGGLE_MENU:
+      _state['toggle'] = true;
+      ComplaintPageStore.emitChange();
+      break;
+    case AppConstants.TOGGLE_PAGE_CLOSE:
+      _state['toggle'] = false;
+      ComplaintPageStore.emitChange();
+      break;
     default:
       break;
   }

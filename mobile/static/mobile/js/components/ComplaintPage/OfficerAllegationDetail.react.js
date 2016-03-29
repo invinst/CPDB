@@ -4,6 +4,7 @@ var pluralize = require('pluralize');
 var OfficerAllegationPresenter = require('presenters/OfficerAllegationPresenter');
 var AllegationPresenter = require('presenters/AllegationPresenter');
 var DocumentLink = require('components/ComplaintPage/DocumentLink.react');
+var ComplaintPageActions = require('actions/ComplaintPage/ComplaintPageActions');
 
 
 var OfficerAllegationDetail = React.createClass({
@@ -11,6 +12,10 @@ var OfficerAllegationDetail = React.createClass({
     allegation: React.PropTypes.object,
     currentOfficerAllegation: React.PropTypes.object,
     numberOfAllegations: React.PropTypes.number
+  },
+
+  _onClick: function () {
+    ComplaintPageActions.click();
   },
 
   render: function () {
@@ -25,8 +30,10 @@ var OfficerAllegationDetail = React.createClass({
             <span className='crid-title'>CRID</span>
             <span className='crid-number'>{ allegationPresenter.crid }</span>
           </span>
-          <span className='one-half column align-right number-of-allegations-section'>
-            <span className='number-of-allegations'>{ pluralize('complaint', numberOfAllegations, true) }</span>
+          <span onClick={ this._onClick } className='one-half column align-right number-of-allegations-section'>
+            <span className='number-of-allegations'>
+              { pluralize('complaint', numberOfAllegations, true) }
+            </span>
             <span className='icon icon-list' />
           </span>
         </div>
