@@ -43,7 +43,7 @@ describe('AgainstCardComponent', function () {
       <AgainstCard officerAllegation={ officerAllegation } />
     );
 
-    ReactTestUtils.findRenderedComponentWithType(againstCard, InvestigationTimeline).should.be.ok;
+    againstCard.should.render([InvestigationTimeline]);
   });
 
   it('should not render `InvestigationTimeline` as sub-component if useSameTimeline is true', function () {
@@ -53,7 +53,7 @@ describe('AgainstCardComponent', function () {
       <AgainstCard officerAllegation={ officerAllegation } shouldRenderTimelineOutside={ true } />
     );
 
-    ReactTestUtils.scryRenderedComponentsWithType(againstCard, InvestigationTimeline).should.have.length(0);
+    againstCard.should.not.render([InvestigationTimeline]);
   });
 
   it('should show `Gender unknown` and `Race unknown` if they are empty', function () {

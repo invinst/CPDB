@@ -5,7 +5,9 @@ require('react-dom');
 ReactTestUtils = require('react-addons-test-utils');
 
 require('should');
+
 f = require('utils/tests/f');
+require('utils/tests/should/React');
 
 DocumentLink = require('components/ComplaintPage/DocumentLink.react');
 OfficerAllegationDetail = require('components/ComplaintPage/OfficerAllegationDetail.react');
@@ -15,10 +17,7 @@ describe('OfficerAllegationDetailComponent', function () {
   var officerAllegationDetail;
 
   it('should be renderable', function () {
-    officerAllegationDetail = ReactTestUtils.renderIntoDocument(
-      <OfficerAllegationDetail/>
-    );
-    officerAllegationDetail.should.be.ok;
+    OfficerAllegationDetail.should.be.renderable();
   });
 
   it('should display the crid information', function () {
@@ -95,6 +94,6 @@ describe('OfficerAllegationDetailComponent', function () {
       <OfficerAllegationDetail allegation={ allegation } />
     );
 
-    ReactTestUtils.findRenderedComponentWithType(officerAllegationDetail, DocumentLink).should.be.ok;
+    officerAllegationDetail.should.render([DocumentLink]);
   });
 });

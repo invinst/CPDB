@@ -5,6 +5,7 @@ ReactTestUtils = require('react-addons-test-utils');
 
 require('should');
 
+require('utils/tests/should/React');
 HashUtil = require('utils/HashUtil');
 
 NotMatchedCategoryPage = require('components/ComplaintPage/NotMatchedCategoryPage.react');
@@ -14,10 +15,7 @@ describe('NotMatchedCategoryPageComponent', function () {
   var notMatchedCategoryPage;
 
   it('should be renderable', function () {
-    notMatchedCategoryPage = ReactTestUtils.renderIntoDocument(
-      <NotMatchedCategoryPage />
-    );
-    notMatchedCategoryPage.should.be.ok;
+    NotMatchedCategoryPage.should.be.renderable();
   });
 
   it('should render the message with decoded categoryId', function () {

@@ -5,6 +5,7 @@ require('react-dom');
 ReactTestUtils = require('react-addons-test-utils');
 
 require('should');
+require('utils/tests/should/React');
 
 OfficerCard = require('components/Shared/OfficerCard.react');
 
@@ -13,11 +14,7 @@ describe('officerCard component', function () {
   var officerCard;
 
   it('should be renderable', function () {
-    officerCard = ReactTestUtils.renderIntoDocument(
-      <OfficerCard />
-    );
-
-    officerCard.should.be.ok;
+    OfficerCard.should.be.renderable();
   });
 
   it('should display officer name information', function () {
@@ -50,4 +47,5 @@ describe('officerCard component', function () {
     ReactTestUtils.findRenderedDOMComponentWithClass(officerCard, 'circle').should.be.ok;
   });
 
+  // TODO: Should have a test for include color level here and remove the corresponding integration tests
 });

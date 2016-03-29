@@ -1,11 +1,14 @@
+var TwoNodesTimeline;
+
 var React = require('react');
 var ReactTestUtils = require('react-addons-test-utils');
 
 var should = require('should');
 
 var f = require('utils/tests/f');
+require('utils/tests/should/React');
 
-var TwoNodesTimeline =
+TwoNodesTimeline =
   require('components/ComplaintPage/AgainstSection/AgainstCard/InvestigationTimeline/TwoNodesTimeline.react');
 
 
@@ -13,11 +16,7 @@ describe('TwoNodesTimelineComponent', function () {
   var twoNodesTimeline;
 
   it('should be renderable', function () {
-    twoNodesTimeline = ReactTestUtils.renderIntoDocument(
-      <TwoNodesTimeline />
-    );
-
-    twoNodesTimeline.should.be.ok;
+    TwoNodesTimeline.should.be.renderable();
   });
 
   it('should be show incident date, final status, end date', function () {

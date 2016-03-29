@@ -19,11 +19,7 @@ describe('AccompliceOfficerSectionComponent', function () {
   var accompliceOfficerSection;
 
   it('should be renderable', function () {
-    accompliceOfficerSection = ReactTestUtils.renderIntoDocument(
-      <AccompliceOfficerSection />
-    );
-
-    accompliceOfficerSection.should.be.ok;
+    AccompliceOfficerSection.should.be.renderable();
   });
 
   it('should be render OfficerCard as sub-component', function () {

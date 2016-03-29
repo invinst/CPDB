@@ -7,6 +7,8 @@ ReactTestUtils = require('react-addons-test-utils');
 require('should');
 
 f = require('utils/tests/f');
+require('utils/tests/should/React');
+
 
 Location = require('components/ComplaintPage/Location.react');
 Map = require('components/ComplaintPage/Location/Map.react');
@@ -16,10 +18,7 @@ describe('LocationComponent', function () {
   var location;
 
   it('should be renderable', function () {
-    location = ReactTestUtils.renderIntoDocument(
-      <Location/>
-    );
-    location.should.be.ok;
+    Location.should.be.renderable();
   });
 
   it('should render Map as sub-component if allegation has point data', function () {
@@ -29,7 +28,8 @@ describe('LocationComponent', function () {
     location = ReactTestUtils.renderIntoDocument(
       <Location allegation={ allegation }/>
     );
-    ReactTestUtils.findRenderedComponentWithType(location, Map).should.be.ok;
+
+    location.should.render([Map]);
   });
 
   it('should show full address, beat, location type, city', function () {

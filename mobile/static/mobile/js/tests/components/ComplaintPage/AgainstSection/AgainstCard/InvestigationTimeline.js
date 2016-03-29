@@ -7,6 +7,7 @@ var ReactTestUtils = require('react-addons-test-utils');
 require('should');
 
 f = require('utils/tests/f');
+require('utils/tests/should/React');
 
 InvestigationTimeline = require('components/ComplaintPage/AgainstSection/AgainstCard/InvestigationTimeline.react');
 ThreeNodesTimeline = require(
@@ -18,11 +19,7 @@ describe('InvestigationTimelineComponent', function () {
   var investigaionTimeline;
 
   it('should be renderable', function () {
-    investigaionTimeline = ReactTestUtils.renderIntoDocument(
-      <InvestigationTimeline />
-    );
-
-    investigaionTimeline.should.be.ok;
+    InvestigationTimeline.should.be.renderable();
   });
 
   it('should render empty div if do not have enough data', function () {
@@ -43,7 +40,7 @@ describe('InvestigationTimelineComponent', function () {
       <InvestigationTimeline officerAllegation={ officerAllegation } allegation={ allegation }/>
     );
 
-    ReactTestUtils.findRenderedComponentWithType(investigaionTimeline, TwoNodesTimeline).should.be.ok;
+    investigaionTimeline.should.render([TwoNodesTimeline]);
   });
 
   it('should render ThreeNodesTimeline as sub-component if investigation start at incident date', function () {
@@ -56,7 +53,7 @@ describe('InvestigationTimelineComponent', function () {
       <InvestigationTimeline officerAllegation={ officerAllegation } allegation={ allegation }/>
     );
 
-    ReactTestUtils.findRenderedComponentWithType(investigaionTimeline, ThreeNodesTimeline).should.be.ok;
+    investigaionTimeline.should.render([ThreeNodesTimeline]);
   });
 
 });

@@ -1,23 +1,22 @@
+var ThreeNodesTimeline;
+
 var React = require('react');
 var ReactTestUtils = require('react-addons-test-utils');
 
 var should = require('should');
 
 var f = require('utils/tests/f');
+require('utils/tests/should/React');
 
-var ThreeNodesTimeline = require(
+ThreeNodesTimeline = require(
   'components/ComplaintPage/AgainstSection/AgainstCard/InvestigationTimeline/ThreeNodesTimeline.react');
 
 
-describe('ThreeNodesTimeline component', function () {
+describe('ThreeNodesTimelineComponent', function () {
   var threeNodesTimeline;
 
   it('should be renderable', function () {
-    threeNodesTimeline = ReactTestUtils.renderIntoDocument(
-      <ThreeNodesTimeline />
-    );
-
-    threeNodesTimeline.should.be.ok;
+    ThreeNodesTimeline.should.be.renderable();
   });
 
   it('should be show incident date, final status, start date, end date', function () {

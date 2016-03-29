@@ -16,11 +16,7 @@ describe('DocumentLinkComponent', function () {
   var documentLink;
 
   it('should be renderable', function () {
-    documentLink = ReactTestUtils.renderIntoDocument(
-      <DocumentLink/>
-    );
-
-    documentLink.should.be.ok;
+    DocumentLink.should.be.renderable();
   });
 
   it('should be return pdf link if iOS device', function () {

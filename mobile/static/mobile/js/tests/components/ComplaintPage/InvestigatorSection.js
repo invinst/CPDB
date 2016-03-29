@@ -15,11 +15,7 @@ describe('InvestigatorSection component', function () {
   var investigatorSection;
 
   it('should be renderable', function () {
-    investigatorSection = ReactTestUtils.renderIntoDocument(
-      <InvestigatorSection/>
-    );
-
-    investigatorSection.should.be.ok;
+    InvestigatorSection.should.be.renderable();
   });
 
   it('should show investigator', function () {

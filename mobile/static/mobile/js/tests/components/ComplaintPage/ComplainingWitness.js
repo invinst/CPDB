@@ -15,10 +15,7 @@ describe('ComplainingWitnessComponent', function () {
   var complainingWitness;
 
   it('should be renderable', function () {
-    complainingWitness = ReactTestUtils.renderIntoDocument(
-      <ComplainingWitness/>
-    );
-    complainingWitness.should.be.ok;
+    ComplainingWitness.should.be.renderable();
   });
 
   it('should show number of complaining witness', function () {
