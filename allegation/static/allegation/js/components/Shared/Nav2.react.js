@@ -14,7 +14,7 @@ var SessionAPI = require('utils/SessionAPI');
 var SiteTitle = require('components/Shared/SiteTitle.react');
 var ShareButton = require('components/DataToolPage/Share/ShareButton.react');
 var Nav;
-var PageUtils = require('utils/PageUtils');
+var OverlayActions = require('actions/DataToolPage/OverlayActions');
 
 require('utils/jQuery');
 
@@ -43,7 +43,6 @@ Nav = React.createClass(_.assign(Base(AppStore), {
 
   goToPage: function (page, event) {
     if (!this.props.isActive(page)) {
-      PageUtils.hideOverlay();
       NavActions.goToPage(page);
     } else {
       event.preventDefault();
@@ -164,12 +163,12 @@ Nav = React.createClass(_.assign(Base(AppStore), {
 
   showNavTabsSidebar: function () {
     $('.nav-tabs-sidebar').removeClass('hidden');
-    PageUtils.showOverlay();
+    OverlayActions.toggleOverlay();
   },
 
   hideNavTabsSidebar: function () {
     $('.nav-tabs-sidebar').addClass('hidden');
-    PageUtils.hideOverlay();
+    OverlayActions.toggleOverlay();
   },
 
   renderWelcome: function () {

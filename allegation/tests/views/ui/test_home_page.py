@@ -253,10 +253,14 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
         old_browser = self.browser
 
         self.set_browser(browser)
-        self.visit_home()
-        self.find('#disclaimer').get_attribute('class').should.contain('fade')
-
-        self.set_browser(old_browser)
+        try:
+            self.visit_home()
+            self.find('#disclaimer').get_attribute('class').should.contain('fade')
+        finally:
+            browser.close()
+            self.set_browser(old_browser)
+            self.set_default_window_size()
+            self.try_to_revive_browser()
 
     def test_share_bar_facebook_share(self):
         title = 'Donald Duck'
@@ -278,3 +282,47 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
         session_id = Session.id_from_hash(shared_hash_id)[0]
         session = Session.objects.get(id=session_id)
         session.title.should.be.equal(title)
+
+    def test_hamburger_menu(self):
+        self.visit_home()
+        try:
+            self.browser.set_window_size(800, 1000)
+
+            self.is_element_displayed('.landing-nav .nav-tabs').should.be.true
+            self.is_element_displayed('.landing-nav .tablist').should.be.false
+
+            self.find('.landing-nav .nav-tabs .fa-bars').click()
+            self.find('.landing-nav .nav-tabs-sidebar').get_attribute('class').shouldnt.contain('hidden')
+
+            self.find('.landing-nav .nav-tabs-sidebar .fa-times').click()
+            self.find('.landing-nav .nav-tabs-sidebar').get_attribute('class').should.contain('hidden')
+
+            self.find('.landing-nav .nav-tabs .fa-bars').click()
+            self.find('#landing-page > div.landing-page.fixed-nav > nav > div > div.nav-tabs.pull-right > div > ul > li:nth-child(3) > a').click()  # noqa
+            self.until_ajax_complete()
+            self.find('.landing-nav .nav-tabs-sidebar').get_attribute('class').should.contain('hidden')
+        finally:
+            self.set_default_window_size()
+            self.try_to_revive_browser()
+
+    def test_overlay_hamburger_menu(self):
+        self.visit_home()
+        try:
+            self.browser.set_window_size(800, 1000)
+
+            self.find('.landing-nav .nav-tabs .fa-bars').click()
+            self.find('#overlay').get_attribute('class').should.contain('active')
+
+            self.find('.landing-nav .nav-tabs-sidebar .fa-times').click()
+            self.find('#overlay').get_attribute('class').shouldnt.contain('active')
+
+            self.find('.landing-nav .nav-tabs .fa-bars').click()
+            self.find('#landing-page > div.landing-page.fixed-nav > nav > div > div.nav-tabs.pull-right > div > ul > li:nth-child(3) > a').click()  # noqa
+            self.until_ajax_complete()
+            self.find('#overlay').get_attribute('class').shouldnt.contain('active')
+
+            self.find('.landing-nav .nav-tabs .fa-bars').click()
+            self.find('#overlay').get_attribute('class').should.contain('active')
+        finally:
+            self.set_default_window_size()
+            self.try_to_revive_browser()

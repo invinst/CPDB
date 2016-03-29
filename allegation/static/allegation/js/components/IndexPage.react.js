@@ -12,6 +12,7 @@ var Disclaimer = require('components/DataToolPage/Disclaimer.react');
 var LandingFooter = require('components/Shared/LandingFooter.react');
 var Footer = require('components/DataToolPage/Footer.react');
 var HappyFox = require('components/Shared/HappyFox.react');
+var Overlay = require('components/DataToolPage/Overlay.react');
 
 
 var IndexPage = React.createClass({
@@ -145,6 +146,7 @@ var IndexPage = React.createClass({
               <Nav isActive={ this.context.router.isActive }/>
               { this.renderContent() }
               { this.renderFooterWrapper() }
+              <Overlay />
             </div>
           </PageAnimator>
         </StatePropagateCSSTransitionGroup>
