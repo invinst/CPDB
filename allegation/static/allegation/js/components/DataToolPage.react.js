@@ -1,10 +1,8 @@
 var _ = require('lodash');
 var React = require('react');
-var isMobile = require('ismobilejs');
 var classnames = require('classnames');
 
 var Base = require('components/Base.react');
-var AppConstants = require('constants/AppConstants');
 var ComplaintSection = require('components/DataToolPage/ComplaintSection.react');
 var FilterTags = require('components/DataToolPage/FilterTags.react');
 var Map = require('components/DataToolPage/Map.react');
@@ -13,6 +11,7 @@ var SessionStore = require('stores/SessionStore');
 var Overlay = require('components/DataToolPage/Overlay.react');
 var Tabs = require('components/DataToolPage/Tabs.react');
 var Search = require('components/Shared/Search.react');
+var MobileUtils = require('utils/MobileUtils');
 
 
 var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
@@ -59,7 +58,7 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
   },
 
   renderTabs: function () {
-    var isMobileView = $(window).width() < AppConstants.DESKTOP_SCREEN_WIDTH && isMobile.any;
+    var isMobileView = MobileUtils.isMobileView();
     var mobileExpanded = isMobileView && this.state.searchExpanded;
     if (isMobileView) {
       return (
