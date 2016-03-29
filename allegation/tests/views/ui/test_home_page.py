@@ -288,17 +288,18 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
 
         old_browser = self.browser
         self.set_browser(driver)
-        self.browser.set_window_size(width=1040, height=1200)  # 1024 + 16px for scroll bar, apparently?
-
-        self.visit_home()
-
-        len(self.find_all('.nav-tabs li')).should.equal(3)
-        self.find('#sunburst-chart svg').get_attribute('width').should.be.greater_than('249')
-
-        self.browser.set_window_size(width=1023, height=1200)
-        self.visit_home()
         try:
-            len(self.find_all('.nav-tabs li')).should.equal(4)
+            self.browser.set_window_size(width=1040, height=1200)  # 1024 + 16px for scroll bar, apparently?
+
+            self.visit_home()
+
+            self.find('.chart-row .nav-tabs li:first-child').text.should.contain('Outcomes')
+            self.find('#sunburst-chart svg').get_attribute('width').should.be.greater_than('249')
+
+            self.browser.set_window_size(width=1023, height=1200)
+            self.visit_home()
+
+            self.find('.chart-row .nav-tabs li:first-child').text.should.contain('Map')
         finally:
             driver.close()
             self.set_browser(old_browser)
