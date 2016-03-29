@@ -3,21 +3,38 @@ import datetime
 
 from django.core.management.base import BaseCommand
 
-from common.models import Officer  # , OfficerAllegation, Allegation, OfficerHistory, OfficerBadgeNumber
+from common.models import Officer, OfficerHistory, OfficerBadgeNumber
 
 LAST_NAME = 0
 FIRST_NAME = 1
-SEX_CODE_CD = 2
+GENDER = 2
 RACE = 3
 CURRENT_AGE = 4
 APPOINTED_DATE = 5
-COD_UNIT_ASSIGNED = 6
+CPD_UNIT_ASSIGNED = 6
 EFFECTIVE_DATE = 7
 END_DATE = 8
 STARS_START = 9
 STARS_END = 18
 
 DATE_PARSE_FORMAT = "%d-%b-%y"
+
+OFFICER_RACE_MAPPING = {
+    'WHITE': 'White',
+    'WHITE HISPANIC': 'White/Hispanic',
+    'BLACK': 'Black',
+    'ASIAN': 'Asian',
+    'NATIVE AMERICAN': 'Native American',
+    'ITALIAN': 'Italian',
+    'UNKNOWN': 'Unknown',
+    'HISPANIC': 'Hispanic',
+    'ASIAN/PACIFIC ISLANDER': 'Asian'
+}
+
+
+def fix_date(date):
+    if date.year > datetime.datetime.now().year:
+        date = date.replace(year=date.year-100)
 
 
 class Command(BaseCommand):
@@ -64,6 +81,51 @@ class Command(BaseCommand):
             raise Officer.MultipleObjectsReturned
         raise Officer.DoesNotExist
 
+    def create_officer(self, row, officers_last_star_num):
+        race = row[RACE].capitalize()
+        if row[RACE] in OFFICER_RACE_MAPPING:
+            race = OFFICER_RACE_MAPPING[row[RACE]]
+
+        officer = Officer(
+            officer_first=row[FIRST_NAME].capitalize(),
+            officer_last=row[LAST_NAME].capitalize(),
+            race=race,
+            gender=row[GENDER],
+            star=officers_last_star_num
+        )
+
+        officer.save()
+
+        self.add_officer_history(officer, row, officers_last_star_num)
+
+    def add_officer_history(self, officer, row, officers_last_star_num):
+
+        end_date = None
+        if row[END_DATE]:
+            end_date = fix_date(datetime.datetime.strptime(row[END_DATE], DATE_PARSE_FORMAT))
+
+        effective_date = None
+        if row[EFFECTIVE_DATE]:
+            effective_date = fix_date(datetime.datetime.strptime(row[EFFECTIVE_DATE], DATE_PARSE_FORMAT))
+
+        if not OfficerHistory.objects.filter(officer=officer, unit=row[CPD_UNIT_ASSIGNED]).exists():
+            history = OfficerHistory(
+                officer=officer,
+                effective_date=effective_date,
+                end_date=end_date,
+                unit=row[CPD_UNIT_ASSIGNED]
+            )
+
+            history.save()
+
+        for i in range(STARS_START, STARS_END):
+            if row[i]:
+                badge, created = OfficerBadgeNumber.objects.get_or_create(officer=officer, star=row[i])
+                badge.current = row[i] == officers_last_star_num
+                badge.save()
+
+        return officer
+
     def handle(self, *args, **options):
         writer = csv.writer(open('media/officers_import_data.csv', 'w'))
 
@@ -82,9 +144,8 @@ class Command(BaseCommand):
                 if counter % 1000 == 0:
                     print(counter)
                 if row[APPOINTED_DATE]:
-                    appt_date = datetime.datetime.strptime(row[APPOINTED_DATE], DATE_PARSE_FORMAT)
-                    if appt_date.year > datetime.datetime.now().year:
-                        appt_date = appt_date.replace(year=appt_date.year-100)
+                    appt_date = fix_date(datetime.datetime.strptime(row[APPOINTED_DATE], DATE_PARSE_FORMAT))
+
                 else:
                     appt_date = None
 
@@ -97,13 +158,15 @@ class Command(BaseCommand):
                     officer = self.get_officer(
                         officer_first=row[FIRST_NAME],
                         officer_last=row[LAST_NAME],
-                        gender=row[SEX_CODE_CD],
+                        gender=row[GENDER],
                         race=row[RACE],
                         star=officers_last_star_num,
                         appt_date=appt_date
                     )
 
                     found_counter += 1
+
+                    self.add_officer_history(officer, row, officers_last_star_num)
                 except Officer.MultipleObjectsReturned:
                     not_found_counter += 1
                     possible_matches = ";".join(["%d" % x for x in self.officers.values_list('id', flat=True)])
@@ -114,6 +177,7 @@ class Command(BaseCommand):
                 except Officer.DoesNotExist:
                     not_exist_counter += 1
                     writer.writerow([-1] + row)
+                    officer = self.create_officer(row, officers_last_star_num)
                     continue
 
                 if not officer:
