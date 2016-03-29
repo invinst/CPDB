@@ -2,10 +2,10 @@ var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var AppConstants = require('../../constants/AppConstants');
 
 var AddDocumentLinkModalActions = {
-  show: function (crid) {
+  show: function (document) {
     AppDispatcher.dispatch({
       actionType: AppConstants.SHOW_ADD_DOCUMENT_LINK_MODAL,
-      crid: crid
+      document: document
     });
   },
 
@@ -15,7 +15,6 @@ var AddDocumentLinkModalActions = {
     });
   },
 
-
   formDataChange: function (stateName, stateValue) {
     AppDispatcher.dispatch({
       actionType: AppConstants.DOCUMENT_LINK_MODAL_FORM_DATA_CHANGED,
@@ -24,10 +23,15 @@ var AddDocumentLinkModalActions = {
     });
   },
 
-  documentLinkAdded: function (crid) {
+  preSubmit: function () {
     AppDispatcher.dispatch({
-      actionType: AppConstants.DOCUMENT_LINK_ADDED,
-      crid: crid
+      actionType: AppConstants.SUBMITTING_DOCUMENT_LINK
+    });
+  },
+
+  documentLinkAdded: function () {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.DOCUMENT_LINK_ADDED
     });
   },
 

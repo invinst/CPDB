@@ -5,25 +5,29 @@ var Base = require('./Base');
 var navigate = require('react-mini-router').navigate;
 
 var _state = {
-  documents: []
+  documentType: 'CR'
 };
 
 var DocumentSectionStore = _.assign(Base(_state), {
-  setActiveAllegation: function (allegation) {
-    navigate('/document?id=' + allegation.id);
+  setActiveAllegation: function (document) {
+    navigate('/document?id=' + document.id);
+  },
+
+  getCurrentDocumentType: function () {
+    return _state.documentType;
   }
 });
 
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
-    case AppConstants.RECEIVED_DOCUMENT_LIST:
-      _state.documents = action.data;
-      DocumentSectionStore.emitChange();
-      break;
-
     case AppConstants.SET_ACTIVE_ALLEGATION:
       DocumentSectionStore.setActiveAllegation(action.data);
       break;
+
+    case AppConstants.SET_ACTIVE_DOCUMENT_TYPE_TAB:
+      _state.documentType = action.data;
+      break;
+
     default:
       break;
   }

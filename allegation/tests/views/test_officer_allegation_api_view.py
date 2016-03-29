@@ -12,6 +12,7 @@ from common.models import (
     Officer, Area,
     OfficerAllegation)
 from common.constants import DISCIPLINE_CODES, NO_DISCIPLINE_CODES, LOCATION_CHOICES
+from document.factories import DocumentFactory
 
 
 class OfficerAllegationFilterMixin(object):
@@ -263,13 +264,13 @@ class OfficerAllegationApiViewTestCase(
             row['allegation']['location'].should.equal(output_format)
 
     def test_filter_by_has_document(self):
-        allegation = AllegationFactory(document_id=1)
-        OfficerAllegationFactory(allegation=allegation)
+        document = DocumentFactory(documentcloud_id=1)
+        OfficerAllegationFactory(allegation=document.allegation)
 
         data = self.fetch_officer_allegations(has_document='true')
 
         len(data).should.equal(1)
-        data[0]['allegation']['id'].should.equal(allegation.id)
+        data[0]['allegation']['id'].should.equal(document.allegation.id)
 
     def test_filter_by_has_map(self):
         data = self.fetch_officer_allegations(has_map='true')
