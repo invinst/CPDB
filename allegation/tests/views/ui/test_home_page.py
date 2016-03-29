@@ -1,7 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.firefox.webdriver import WebDriver
 import re
-import json
 
 from wagtail.wagtailcore.models import Site
 
@@ -11,8 +10,8 @@ from allegation.tests.utils.autocomplete_test_helper_mixin import AutocompleteTe
 from common.tests.core import BaseLiveTestCase, retry_random_fail, switch_to_popup
 from common.utils.haystack import rebuild_index
 from share.models import Session
-from home.factories import HomePageFactory
-from home.models import HomePage
+from wagtail_app.factories import GlossaryPageFactory, GlossaryTableRowFactory, HomePageFactory
+from wagtail_app.models import HomePage
 
 
 class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
@@ -263,33 +262,46 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
 
         self.set_browser(old_browser)
 
-    def test_wagtail_tab(self):
-        body_content = 'body content'
-        body = json.dumps([
-            {
-                'value': [
-                    {
-                        'value': '<p>{content}</p>'.format(
-                            content=body_content),
-                        'type': 'half_paragraph'
-                    }
-                ],
-                'type': 'row_section'
-            }
-        ])
+    def create_glossary_page(self, rows):
         HomePage.get_tree().all().delete()
         root = HomePage.add_root(instance=HomePageFactory.build(
             title='Root', slug='root'))
-        homepage = root.add_child(
-            instance=HomePageFactory.build(
-                title='child', body=body, slug='child'))
+        glossary_page = root.add_child(
+            instance=GlossaryPageFactory.build(
+                title='Glossary', glossary_table_rows=rows, slug='glossary', subtitle='sub-title'))
         Site.objects.create(
             is_default_site=True, root_page=root, hostname='localhost')
 
+        return glossary_page
+
+    def visit_glossary_page(self):
+        nav_link = [el for el in self.find_all('.nav-link') if el.text == 'Glossary']
+        nav_link[0].find('a').click()
+
+    def glossary_rows_content(self):
+        return [
+            [el.find('.%s' % cls_name).text for cls_name in ['term', 'definition', 'category']]
+            for el in self.find_all('table.glossary-table tr')]
+
+    def test_glossary_page(self):
+        rows = [
+            GlossaryTableRowFactory.build(sort_order=3),
+            GlossaryTableRowFactory.build(sort_order=1),
+            GlossaryTableRowFactory.build(sort_order=2)
+            ]
+        glossary_page = self.create_glossary_page(rows)
+
         self.visit_home(fresh=True)
-        self.should_see_text(homepage.title)
-        self.link(homepage.title).click()
-        self.should_see_text(body_content)
+        self.visit_glossary_page()
+
+        self.find('.glossary-page .glossary-title').text.should.equal(glossary_page.title)
+        self.find('.glossary-page .glossary-subtitle').text.should.equal(glossary_page.subtitle)
+
+        self.glossary_rows_content().should.equal([
+            [rows[1].term, rows[1].definition, rows[1].category_text],
+            [rows[2].term, rows[2].definition, rows[2].category_text],
+            [rows[0].term, rows[0].definition, rows[0].category_text]
+            ])
 
     def test_share_bar_facebook_share(self):
         title = 'Donald Duck'

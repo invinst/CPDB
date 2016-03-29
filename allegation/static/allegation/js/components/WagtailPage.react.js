@@ -1,12 +1,10 @@
-/*eslint "react/no-danger":0*/
 var _ = require('lodash');
 var React = require('react');
-var classnames = require('classnames');
-
 var PropTypes = React.PropTypes;
 
 var WagtailPagesStore = require('stores/WagtailPagesStore');
 var WagtailPageActions = require('actions/WagtailPagesActions');
+var GlossaryPage = require('components/GlossaryPage.react');
 
 
 var WagtailPage = React.createClass({
@@ -39,40 +37,20 @@ var WagtailPage = React.createClass({
     });
   },
 
-  isHasPage: function () {
-    return !!this.state.page;
-  },
+  renderContent: function () {
+    var pageType = _.get(this.state.page, 'meta.type');
 
-  renderRows: function () {
-    var body = _.get(this.state.page, 'extended_body', []);
+    if (pageType === GlossaryPage.TYPE) {
+      return <GlossaryPage page={ this.state.page }/>;
+    }
 
-    return body.map(function (row, i) {
-
-      var rowContent = row.value.map(function (col, key) {
-        var colClassName = classnames({
-          'col-md-6': col.type == 'half_paragraph',
-          'col-md-12': col.type == 'full_paragraph'
-        });
-
-        return (
-          <div key={ key } className={ colClassName } dangerouslySetInnerHTML={ { __html: col.value } } />
-        );
-      });
-
-      return (
-        <div key={ i } className='row section'>
-          <div className='container'>
-            { rowContent }
-          </div>
-        </div>
-      );
-    });
+    return null;
   },
 
   render: function () {
     return (
       <div>
-        { this.renderRows() }
+        { this.renderContent() }
       </div>
     );
   }

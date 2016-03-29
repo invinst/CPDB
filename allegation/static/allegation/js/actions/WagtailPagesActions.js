@@ -2,9 +2,9 @@ var AppDispatcher = require('../dispatcher/AppDispatcher');
 var AppConstants = require('../constants/AppConstants');
 
 var WagtailPagesActions = {
-  receivedData: function (data) {
+  receivedGlossaryData: function (data) {
     AppDispatcher.dispatch({
-      actionType: AppConstants.WAGTAIL_PAGES_RECEIVED_DATA,
+      actionType: AppConstants.WAGTAIL_GLOSSARY_PAGE_RECEIVED_DATA,
       data: data
     });
   },

@@ -33,7 +33,7 @@ var WagtailPagesStore = _.assign(Base(_state), {
 // Register callback to handle all updates
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
-    case AppConstants.WAGTAIL_PAGES_RECEIVED_DATA:
+    case AppConstants.WAGTAIL_GLOSSARY_PAGE_RECEIVED_DATA:
       _state.wagtailPages = action.data.pages;
       WagtailPagesStore.emitChange();
       break;

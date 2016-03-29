@@ -7,15 +7,15 @@ require('utils/jQuery');
 
 
 WagtailPagesAPI = {
-  getData: function () {
-    var url = AppConstants.WAGTAIL_PAGES_API_ENDPOINT;
+  getGlossaryData: function () {
+    var url = AppConstants.WAGTAIL_GLOSSARY_API_ENDPOINT;
 
     if (ajax) {
       ajax.abort();
     }
 
     ajax = jQuery.getJSON(url, function (data) {
-      WagtailPagesActions.receivedData(data);
+      WagtailPagesActions.receivedGlossaryData(data);
     });
   }
 };

@@ -41,7 +41,6 @@ THIRD_PARTY_APPS = (
     'haystack',
     'taggit',
     'modelcluster',
-    'wagtail_cms',
     'wagtail.wagtailcore',
     'wagtail.wagtailadmin',
     'wagtail.wagtaildocs',
@@ -57,7 +56,7 @@ THIRD_PARTY_APPS = (
 )
 
 CPDB_APPS = (
-    'home',
+    'wagtail_app',
     'common',
     'allegation',
     'officer',
