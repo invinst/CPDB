@@ -1,3 +1,5 @@
+from collections import OrderedDict
+
 from django.core.management.base import BaseCommand
 from documentcloud import DocumentCloud
 
@@ -32,6 +34,15 @@ class Command(BaseCommand):
             except Document.DoesNotExist:
                 pass
 
+    def clean_documentcloud_results(self, results):
+        cleaned_results = OrderedDict()
+
+        for result in results:
+            if result.title not in cleaned_results:
+                cleaned_results[result.title] = result
+
+        return list(cleaned_results.values())
+
     def handle(self, *args, **options):
         client = DocumentCloud()
 
@@ -39,6 +50,7 @@ class Command(BaseCommand):
             results = client.documents.search(syntax)
 
             if results:
+                results = self.clean_documentcloud_results(results)
                 for result in results:
                     self.process_documentcloud_result(result, document_type)
 

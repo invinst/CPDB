@@ -31,6 +31,8 @@ class Command(BaseCommand):
                     type=document_type,
                     allegation=allegation
                 )
+                allegation.document_id = 0
+                allegation.save()
             else:
                 document = Document(
                     documentcloud_id=allegation.document_id,
