@@ -80,8 +80,8 @@ RaceGenderAgeTab = React.createClass({
 
   getEmbedCode: function () {
     var node = ReactDOM.findDOMNode(this);
-    var width = $(node).width();
-    var height = $(node).height();
+    var width = $(node).outerWidth();
+    var height = $(node).outerHeight();
     var query = encodeURIComponent(AllegationFilterTagsQueryBuilder.buildQuery());
     var src = S('{{base}}/embed/?page={{page}}{{query}}').template({
       base: location.origin,
