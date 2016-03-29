@@ -71,8 +71,8 @@ describe('Factory', function () {
 
   it('#sequence(): should return a sequence', function () {
     var factory = Factory();
-    factory.sequence('somekey').should.be.equal(0);
     factory.sequence('somekey').should.be.equal(1);
-    factory.sequence('otherkey').should.be.equal(0);
+    factory.sequence('somekey').should.be.equal(2);
+    factory.sequence('otherkey').should.be.equal(1);
   });
 });

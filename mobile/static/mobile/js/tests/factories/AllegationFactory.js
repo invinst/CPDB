@@ -18,7 +18,7 @@ f.define('Allegation', {
     return '2012-10-07T07:30:00';
   },
   'beat': function () {
-    return {};
+    return null;
   },
   'location': function () {
     return null;

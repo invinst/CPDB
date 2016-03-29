@@ -6,7 +6,7 @@ var Factory = function () {
     if (key in sequences) {
       sequences[key] = sequences[key] + 1;
     } else {
-      sequences[key] = 0;
+      sequences[key] = 1;
     }
 
     return sequences[key];
