@@ -59,9 +59,11 @@ Nav = React.createClass({
     return {
       navTabSection: !(isActive('officer') || isActive('investigator')),
       titleBox: isActive('data'),
+      shareButton: isActive('data'),
       subNav: isActive('story'),
       backLink: isActive('officer') || isActive('investigator'),
-      welcomeMessage: isActive('findings')
+      welcomeMessage: isActive('findings'),
+      fixedNav: isActive('data')
     };
   },
 

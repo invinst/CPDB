@@ -18,7 +18,7 @@ from allegation.views.landing_view import LandingView
 from dashboard.views.admin_analysis_dashboard_view import AdminAnalysisDashboardView
 
 urlpatterns = [
-    url(r'^admin/$', login_required(AdminAnalysisDashboardView.as_view()), name='my-view'),
+    url(r'^admin/$', login_required(AdminAnalysisDashboardView.as_view()), name='dashboard-admin'),
     url(r'^admin/models/', include(admin.site.urls)),
     url(r'^', include('allegation.urls', namespace='allegation')),
     url(r'^search/', include('search.urls', namespace='search')),
