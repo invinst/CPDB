@@ -265,7 +265,11 @@ class OfficerAllegationApiViewTestCase(
 
     def test_filter_by_has_document(self):
         document = DocumentFactory(documentcloud_id=1)
-        OfficerAllegationFactory(allegation=document.allegation)
+        # set allegation here to keep the test pass
+        allegation = document.allegation
+        allegation.document_id = 1
+        allegation.save()
+        OfficerAllegationFactory(allegation=allegation)
 
         data = self.fetch_officer_allegations(has_document='true')
 

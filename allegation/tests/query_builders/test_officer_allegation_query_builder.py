@@ -91,7 +91,12 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
 
     def test_has_document(self):
         document = DocumentFactory(documentcloud_id=1)
-        expected_allegations = [OfficerAllegationFactory(allegation=document.allegation)]
+        # set allegation here to keep the test pass
+        allegation = document.allegation
+        allegation.document_id = 1
+        allegation.save()
+
+        expected_allegations = [OfficerAllegationFactory(allegation=allegation)]
         OfficerAllegationFactory()
 
         query_string = 'has_document=true'
