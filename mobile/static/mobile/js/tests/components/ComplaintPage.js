@@ -1,7 +1,7 @@
 var sinon;
 var f, HashUtil, GaUtil;
 var AccompliceOfficerSection, AgainstSection, AllegationResourceUtil, ComplainingWitness, ComplaintPage,
-  ComplaintPageStore, InvestigatorSection, Location, OfficerAllegationDetail, SearchablePage;
+  ComplaintPageStore, InvestigatorSection, Location, OfficerAllegationDetail, SearchablePage, ToggleComplaintPage;
 
 var React = require('react');
 var ReactDOM = require('react-dom');
@@ -27,6 +27,7 @@ InvestigatorSection = require('components/ComplaintPage/InvestigatorSection.reac
 Location = require('components/ComplaintPage/Location.react');
 OfficerAllegationDetail = require('components/ComplaintPage/OfficerAllegationDetail.react');
 SearchablePage = require('components/Shared/SearchablePage.react');
+ToggleComplaintPage = require('components/ComplaintPage/ToggleComplaintPage.react');
 
 
 function stubForComplaintPage() {
@@ -181,6 +182,26 @@ describe('ComplaintPageComponent', function () {
         'officerAllegations': [officerAllegation3,
           officerAllegation2, officerAllegation1]
       });
+    });
+
+    it('should show ToggleComplaintPage if toggle is enable', function () {
+      complaintPage = ReactTestUtils.renderIntoDocument(
+        <ComplaintPage params={ params }/>
+      );
+
+      complaintPage.setState({'loading': false, 'found': true, 'toggle': true, 'data': data});
+      ReactTestUtils.scryRenderedDOMComponentsWithClass(complaintPage, 'toggle-page content').should.have.length(1);
+      ReactTestUtils.scryRenderedComponentsWithType(complaintPage, SearchablePage).should.have.length(0);
+    });
+
+    it('should hide ToggleComplaintPage if toggle is disable', function () {
+      complaintPage = ReactTestUtils.renderIntoDocument(
+        <ComplaintPage params={ params }/>
+      );
+
+      complaintPage.setState({'loading': false, 'found': true, 'toggle': false, 'data': data});
+      ReactTestUtils.scryRenderedDOMComponentsWithClass(complaintPage, 'toggle-page content').should.have.length(0);
+      ReactTestUtils.scryRenderedComponentsWithType(complaintPage, SearchablePage).should.have.length(1);
     });
   });
 

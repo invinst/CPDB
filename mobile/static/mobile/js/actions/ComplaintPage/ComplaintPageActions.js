@@ -2,10 +2,10 @@ var AppDispatcher = require('dispatcher/AppDispatcher');
 var AppConstants = require('constants/AppConstants');
 
 
-var ComplaintPageAction = {
-  click: function () {
+var ComplaintPageActions = {
+  toggleOpen: function () {
     AppDispatcher.dispatch({
-      actionType: AppConstants.COMPLAINT_PAGE_TOGGLE_MENU
+      actionType: AppConstants.TOGGLE_PAGE_OPEN
     });
   },
   toggleClose: function () {
@@ -15,4 +15,4 @@ var ComplaintPageAction = {
   }
 };
 
-module.exports = ComplaintPageAction;
+module.exports = ComplaintPageActions;

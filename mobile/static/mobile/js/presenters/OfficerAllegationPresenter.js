@@ -2,6 +2,7 @@ var AppConstants = require('constants/AppConstants');
 
 var S = require('string');
 
+var CollectionUtil = require('utils/CollectionUtil');
 var DateUtil = require('utils/DateUtil');
 var HashUtil = require('utils/HashUtil');
 var u = require('utils/HelperUtil');

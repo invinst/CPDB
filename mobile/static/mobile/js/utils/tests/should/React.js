@@ -43,7 +43,4 @@ should.Assertion.add('renderWithProps', function (component, props) {
     currentPropValue = u.fetch(componentProps, prop, null);
     should(currentPropValue).be.eql(props[prop], failedMessage);
   }
-
-  ReactTestUtils.scryRenderedComponentsWithType(this.obj, component).length
-    .should.be.above(0, failedMessage);
 });

@@ -75,20 +75,18 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
       );
     }
 
-
     return (
       <div>
-        <Wrapper wrapperClass={ classNames } visible={ 1 }>
+        <div className={ classNames }>
           <ToggleComplaintPage officerAllegations={ presenter.officerAllegations }
                                allegation={ presenter.allegation }/>
-        </Wrapper>
+        </div>
         <Wrapper visible={ !toggle }>
           <div >
             <SearchablePage>
               <div className='complaint-page'>
                 <div className='container content'>
                   <div className='main-content'>
-
                     <OfficerAllegationDetail allegation={ presenter.allegation }
                       currentOfficerAllegation={ presenter.currentOfficerAllegation }
                       numberOfAllegations={ presenter.numberOfOfficerAllegations }/>
@@ -98,7 +96,6 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
                     <AccompliceOfficerSection officerAllegations={ presenter.accompliceOfficerAllegation }/>
                     <InvestigatorSection allegation={ presenter.allegation }/>
                     <Location allegation={ presenter.allegation }/>
-
                   </div>
                 </div>
               </div>

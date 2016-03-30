@@ -15,7 +15,7 @@ var OfficerAllegationDetail = React.createClass({
   },
 
   _onClick: function () {
-    ComplaintPageActions.click();
+    ComplaintPageActions.toggleOpen();
   },
 
   render: function () {

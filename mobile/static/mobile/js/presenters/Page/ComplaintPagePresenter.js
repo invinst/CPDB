@@ -32,7 +32,9 @@ var ComplaintPagePresenter = function (data, categoryHashId) {
   };
 
   var numberOfOfficerAllegations = function () {
-    return officerAllegations().length;
+    return Object.keys(CollectionUtil.groupBy(officerAllegations(), function (officerAllegation) {
+      return u.fetch(officerAllegation, 'cat.id');
+    })).length;
   };
 
   return {

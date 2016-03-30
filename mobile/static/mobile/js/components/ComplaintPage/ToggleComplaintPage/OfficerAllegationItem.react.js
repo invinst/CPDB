@@ -1,20 +1,24 @@
 var React = require('react');
 var cx = require('classnames');
+
 var u = require('utils/HelperUtil');
+var CollectionUtil = require('utils/CollectionUtil');
+var OfficerUtil = require('utils/OfficerUtil');
+var HelperUtil = require('utils/HelperUtil');
 
 var AppHistory = require('utils/History');
 
 var AllegationPresenter = require('presenters/AllegationPresenter');
+var ComplaintPageActions = require('actions/ComplaintPage/ComplaintPageActions');
 var OfficerAllegationPresenter = require('presenters/OfficerAllegationPresenter');
 var OfficerPresenter = require('presenters/OfficerPresenter');
-var OfficerUtil = require('utils/OfficerUtil');
-var HelperUtil = require('utils/HelperUtil');
 
 
+//TODO: Should merge this with OfficerPage's one later
 var OfficerAllegationtItem = React.createClass({
   propTypes: {
     allegation: React.PropTypes.object,
-    officerAllegation: React.PropTypes.object
+    officerAllegations: React.PropTypes.array
   },
 
   renderCircles: function (allegationCounts) {
@@ -32,28 +36,29 @@ var OfficerAllegationtItem = React.createClass({
     return circles;
   },
 
-  _onClicked : function (crid) {
-    var complaint = this.props.complaint.data;
-    var presenter = OfficerAllegationPresenter(complaint);
+  _onClicked : function (crid, firstOfficerAllegation) {
+    var presenter = OfficerAllegationPresenter(firstOfficerAllegation);
     AppHistory.pushState(null, presenter.url(crid));
+    ComplaintPageActions.toggleClose();
   },
 
   render: function () {
     var allegation = this.props.allegation;
-    var officerAllegation = this.props.officerAllegation;
+    var officerAllegations = this.props.officerAllegations;
+    var firstOfficerAllegation = CollectionUtil.first(officerAllegations);
 
-    var officer = u.fetch(officerAllegation, 'officer', null);
+    var officer = u.fetch(firstOfficerAllegation, 'officer', null);
 
-    //var numberOfInvolvedOfficers = this.props.complaint['allegation_counts'].length - 1; // exclude himself
-    //var allegationCounts = this.props.complaint['allegation_counts'];
+    var numberOfInvolvedOfficers = officerAllegations.length - 1; // exclude himself
+    var allegationCounts = CollectionUtil.pluck(officerAllegations, 'officer.allegations_count');
 
     var officerPresenter = OfficerPresenter(officer);
     var allegationPresenter = AllegationPresenter(allegation);
-    var officerAllegationPresenter = OfficerAllegationPresenter(officerAllegation);
+    var officerAllegationPresenter = OfficerAllegationPresenter(firstOfficerAllegation);
     var crid = allegationPresenter.crid;
 
     return (
-      <div className='officer-complaint-item' onClick={ this._onClicked.bind(this, crid) }>
+      <div className='officer-complaint-item' onClick={ this._onClicked.bind(this, crid, firstOfficerAllegation) }>
         <div className='crid-info pad'>
           <div className='inline-block half-width align-left'>
             <span className='crid-title'>CRID &nbsp;</span>
@@ -75,13 +80,13 @@ var OfficerAllegationtItem = React.createClass({
             <span className='value'>{ allegationPresenter.incidentDateDisplay }</span>
           </div>
           <div className='row'>
-            <span className='label'>Officers</span>
+            <span className='label'>Against</span>
             <span className='value'>
-              { officerPresenter.coAccusedWith(1) }
+              { officerPresenter.coAccusedWith(numberOfInvolvedOfficers) }
             </span>
           </div>
           <div className='circles row'>
-            { this.renderCircles(1) }
+            { this.renderCircles(allegationCounts) }
           </div>
         </div>
       </div>

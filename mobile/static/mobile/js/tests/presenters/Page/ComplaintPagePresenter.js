@@ -95,7 +95,7 @@ describe('ComplaintPagePresenter', function () {
   describe('#numberOfOfficerAllegations', function () {
     it('should return number of officerAllegations', function () {
       var presenter = ComplaintPagePresenter(data, categoryHashId);
-      presenter.numberOfOfficerAllegations.should.be.equal(2);
+      presenter.numberOfOfficerAllegations.should.be.equal(1);
     });
   });
 });
