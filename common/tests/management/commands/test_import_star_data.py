@@ -1,3 +1,5 @@
+import os
+
 from django.core import management
 from allegation.factories import OfficerFactory
 from common.models import Officer, OfficerHistory, OfficerBadgeNumber
@@ -5,6 +7,10 @@ from common.tests.core import SimpleTestCase
 
 
 class ImportStarData(SimpleTestCase):
+    def setUp(self):
+        if not os.path.exists("media"):
+            os.mkdir('media')
+
     def test_create_officer_history(self):
         officer = OfficerFactory(officer_first='Jeffery', officer_last='Aaron')
         management.call_command(
