@@ -5,6 +5,7 @@ var Base = require('../Base');
 
 var _state = {
   active: 'All',
+  documentType: 'CR',
   analysis: {
     'All': 0,
     'Fulfilled': 0,
@@ -20,11 +21,14 @@ var TabsStore = _.assign(Base(_state), {
 
 AppDispatcher.register(function (action) {
   switch (action.actionType) {
+    case AppConstants.SET_ACTIVE_DOCUMENT_TYPE_TAB:
+      _state.documentType = action.data;
+      TabsStore.emitChange();
+      break;
     case AppConstants.SET_DOCUMENT_ACTIVE_TAB:
       _state.active = action.data;
       TabsStore.emitChange();
       break;
-
     case AppConstants.RECEIVED_DOCUMENT_REQUEST_ANALYSIS:
       _state.analysis = action.data;
       TabsStore.emitChange();

@@ -82,6 +82,11 @@ OUTCOMES = [
 ]
 OUTCOMES_DICT = dict(OUTCOMES)
 
+DOCUMENT_TYPES = [
+    ('CR', 'CR'),
+    ('CPB', 'CPB'),
+]
+
 UNITS = [
     ['001', 'District 1 - Central'],
     ['012', 'District 12 - Near West'],

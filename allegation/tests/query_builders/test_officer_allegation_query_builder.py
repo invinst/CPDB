@@ -14,6 +14,7 @@ from common.tests.core import SimpleTestCase
 from common.utils.haystack import rebuild_index
 
 from allegation.factories import InvestigatorFactory
+from document.factories import DocumentFactory
 
 
 class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
@@ -89,9 +90,13 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
         self.check_built_query(query_string, expected_ids)
 
     def test_has_document(self):
-        expected_allegations = [
-            OfficerAllegationFactory(
-                allegation=AllegationFactory(document_id=1))]
+        document = DocumentFactory(documentcloud_id=1)
+        # set allegation here to keep the test pass
+        allegation = document.allegation
+        allegation.document_id = 1
+        allegation.save()
+
+        expected_allegations = [OfficerAllegationFactory(allegation=allegation)]
         OfficerAllegationFactory()
 
         query_string = 'has_document=true'

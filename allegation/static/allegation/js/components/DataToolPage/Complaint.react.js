@@ -50,7 +50,7 @@ var Complaint = React.createClass({
     if (!this.props.noButton) {
       buttons = (
         <div className='col-md-10 col-md-offset-1 button-list'>
-          <RequestButton complaint={ complaint } />
+          <RequestButton document={ complaint.documents[0] } />
           <button type='button' className='btn btn-close' onClick={ this.toggleComplaint }>
             <i className='fa fa-times' /> Close
           </button>

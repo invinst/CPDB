@@ -26,7 +26,7 @@ var DownloadAPI = {
         }).fail(function () {
           clearInterval(listener);
         });
-      }, 1000);
+      }, 5000);
       global.downloadListener = listener;
     });
   }

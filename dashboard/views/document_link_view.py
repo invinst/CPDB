@@ -1,33 +1,46 @@
 from django.views.generic.base import View
 
-from common.models import Allegation
+from dashboard.services.documentcloud_service import DocumentcloudService
+from document.models import Document
 from document.response import JsonResponse, HttpResponseBadRequest
-from document.tasks import send_document_notification_by_crid_and_link
-from dashboard.utils import update_allegation_document
-from dashboard.exceptions import InvalidDocumentError
 
 
 class DocumentLinkView(View):
     def post(self, request):
-        link = request.POST.get('link', None)
-        crid = request.POST.get('crid', None)
+        id = request.POST.get('id', '')
+        link = request.POST.get('link', '')
+        document_type = request.POST.get('document_type', 'CR')
 
-        if link is None:
-            return self.cancel_requests(crid)
-        try:
-            crid = update_allegation_document(crid, link)
-        except InvalidDocumentError as e:
+        return self.update_allegation_document(id, link, document_type)
+
+    def update_allegation_document(self, id, link, document_type):
+        documentcloud_service = DocumentcloudService()
+        parsed_link = documentcloud_service.process_link(link, document_type=document_type)
+
+        if not parsed_link:
             return HttpResponseBadRequest(content={
-                'errors': [e.message]
-                })
+                'errors': ['Invalid document link']
+            })
 
-        send_document_notification_by_crid_and_link.delay(crid, link)
+        try:
+            if id:
+                document = Document.objects.get(pk=id)
+            else:
+                document = Document.objects.get(allegation__crid=parsed_link['allegation_crid'], type=document_type)
+        except Document.DoesNotExist:
+            return HttpResponseBadRequest(content={
+                'errors': ['Document not exist']
+            })
+
+        document_params = {
+            'documentcloud_id': parsed_link['documentcloud_id'],
+            'normalized_title': parsed_link['normalized_title'],
+            'title': parsed_link['title']
+        }
+
+        document.update(**document_params)
 
         return JsonResponse({
             'status': 200,
-            'crid': crid
+            'crid': document.allegation.crid
         })
-
-    def cancel_requests(self, crid):
-        Allegation.objects.filter(crid=crid).update(document_requested=False)
-        return JsonResponse()

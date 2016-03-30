@@ -14,7 +14,7 @@ class AdminInvestigationDocumentsExportViewTestCase(SimpleTestCase):
         Allegation.objects.all().delete()
         self.allegation = AllegationFactory()
 
-    @patch('dashboard.views.admin_investigation_documents_export_view.AllegationResource.export')
+    @patch('dashboard.views.admin_investigation_documents_export_view.DocumentResource.export')
     def test_export_excel(self, mock_allegation_resource_export):
         file = 'file'
         mock_export = Mock(xls=file)
