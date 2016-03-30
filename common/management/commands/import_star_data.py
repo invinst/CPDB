@@ -42,6 +42,7 @@ class Command(BaseCommand):
 
     def add_arguments(self, parser):
         parser.add_argument('--file')
+        parser.add_argument('--debug')
 
     def get_officer(self, **kwargs):
         order_of_contrain = ['gender', 'race', 'star']
@@ -108,7 +109,13 @@ class Command(BaseCommand):
         if row[EFFECTIVE_DATE]:
             effective_date = fix_date(datetime.datetime.strptime(row[EFFECTIVE_DATE], DATE_PARSE_FORMAT))
 
-        if not OfficerHistory.objects.filter(officer=officer, unit=row[CPD_UNIT_ASSIGNED]).exists():
+        history = OfficerHistory.objects.filter(
+            officer=officer,
+            unit=row[CPD_UNIT_ASSIGNED],
+            effective_date=effective_date
+        )
+
+        if not history.exists():
             history = OfficerHistory(
                 officer=officer,
                 effective_date=effective_date,
@@ -171,7 +178,8 @@ class Command(BaseCommand):
                     not_found_counter += 1
                     possible_matches = ";".join(["%d" % x for x in self.officers.values_list('id', flat=True)])
                     writer.writerow([0] + row + [possible_matches])
-                    print(row)
+                    if options.get('debug'):
+                        print(row)
                     continue
 
                 except Officer.DoesNotExist:
@@ -183,4 +191,5 @@ class Command(BaseCommand):
                 if not officer:
                     continue
                 writer.writerow([officer.pk] + row)
-            print("found: ", found_counter, " \nnot found: ", not_found_counter, "\nnot exist: ", not_exist_counter)
+            if options.get('debug'):
+                print("found: ", found_counter, " \nnot found: ", not_found_counter, "\nnot exist: ", not_exist_counter)
