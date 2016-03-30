@@ -1,7 +1,7 @@
 Description:
 -- 
 
-- Story and all the substories with their links to PT
+- Story and all sub-stories with their links to PT
 - What you did refactor, bugs that you fixed.
 - What package/module you added/removed.
 
@@ -18,7 +18,7 @@ Note
 
 Relevant issues (Optional)
 --
-- This may related to the story A, B, C..
+- This may be related to the story A, B, C..
 - What you want to do but not yet in this PR
 - Something we should notice to extend/maintain this feature on the future.
 
