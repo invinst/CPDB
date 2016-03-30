@@ -26,7 +26,7 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
 
     def test_start_new_session_on_click_logo(self):
         Session.objects.all().count().should.equal(0)
-        self.visit_home()
+        self.visit_home(fresh=True)
         self.link("Categories").click()
         self.find(".category-name-wrapper a").click()
         self.until_ajax_complete()
@@ -146,7 +146,6 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
 
         self.officer_allegation = OfficerAllegationFactory(
             cat=self.allegation_category, final_outcome='300')
-
         self.visit_home()
         self.click_active_tab("Outcomes")
 
@@ -232,7 +231,7 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
         self.browser.title.should.equal(setting.default_site_title)
 
     def test_share_button(self):
-        self.visit_home()
+        self.visit_home(fresh=True)
         self.find('.share-button button').click()
         self.find('.share-bar').is_displayed()
         self.find('.share-bar-content-wrapper input').get_attribute('value').should_not.equal(self.browser.current_url)
@@ -278,3 +277,30 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
         session_id = Session.id_from_hash(shared_hash_id)[0]
         session = Session.objects.get(id=session_id)
         session.title.should.be.equal(title)
+
+    def test_responsive_layout(self):
+        profile = webdriver.FirefoxProfile()
+        profile.set_preference(
+            "general.useragent.override",
+            "Mozilla/5.0 (iPad; CPU OS 5_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko ) Version/5.1 Mobile/9B176 Safari/7534.48.3"  # noqa
+        )
+        driver = webdriver.Firefox(profile)
+
+        old_browser = self.browser
+        self.set_browser(driver)
+        try:
+            self.browser.set_window_size(width=1040, height=1200)  # 1024 + 16px for scroll bar, apparently?
+
+            self.visit_home()
+
+            self.find('.chart-row .nav-tabs li:first-child').text.should.contain('Outcomes')
+            self.find('#sunburst-chart svg').get_attribute('width').should.be.greater_than('249')
+
+            self.browser.set_window_size(width=1023, height=1200)
+            self.visit_home()
+
+            self.find('.chart-row .nav-tabs li:first-child').text.should.contain('Map')
+        finally:
+            driver.close()
+            self.set_browser(old_browser)
+            self.browser.set_window_size(width=1200, height=1000)
