@@ -8,6 +8,7 @@ var ComplaintListActions = require('actions/ComplaintList/ComplaintListActions')
 var ComplaintListStore = require('stores/ComplaintListStore');
 var SessionAPI = require('utils/SessionAPI');
 var Allegation = require('components/DataToolPage/Allegation.react');
+var AllegationPresenterFactory = require('presenters/AllegationPresenterFactory');
 var RequestButton = require('components/DataToolPage/Complaint/RequestButton.react');
 
 
@@ -27,6 +28,7 @@ var ComplaintListRow = React.createClass(_.assign(Base(ComplaintListStore), {
     var detailIsShown = this.detailIsCurrentlyShown();
 
     var showMore = '';
+    var presenter = AllegationPresenterFactory.buildPresenter(complaint);
     var allegation,
       officerAllegation,
       category,
@@ -36,7 +38,8 @@ var ComplaintListRow = React.createClass(_.assign(Base(ComplaintListStore), {
       finding,
       caretClasses,
       rowClassName,
-      domId;
+      domId,
+      documentLists;
 
     if (this.detailRendered()) {
       showMore = (
@@ -102,7 +105,8 @@ var ComplaintListRow = React.createClass(_.assign(Base(ComplaintListStore), {
             { officerName }
           </div>
           <div className='col-md-2 col-xs-3'>
-            <RequestButton document={ complaint.documents[0] } />
+            <div className='title'>Document</div>
+            { presenter.documentTypes }
           </div>
 
         </div>

@@ -5,6 +5,7 @@ var PropTypes = React.PropTypes;
 var AllegationPresenterFactory = require('presenters/AllegationPresenterFactory');
 var Investigator = require('components/DataToolPage/Complaint/Investigator.react');
 var RequestButton = require('components/DataToolPage/Complaint/RequestButton.react');
+var Documents = require('components/DataToolPage/Complaint/Documents.react');
 
 
 var AllegationSummary = React.createClass({
@@ -41,11 +42,10 @@ var AllegationSummary = React.createClass({
     );
   },
 
-  renderDocumentRequestButton: function (allegation) {
+  renderAllegationFunction: function () {
     if (!this.props.noButton) {
       return (
         <div className='allegation-function'>
-          <RequestButton document={ allegation.documents[0] } />
           <button type='button' className='btn btn-close' onClick={ this.props.toggleComplaint }>
             <i className='fa fa-times' /> Close
           </button>
@@ -111,7 +111,10 @@ var AllegationSummary = React.createClass({
             { this.renderInvestigator(allegation) }
           </div>
         </div>
-        { this.renderDocumentRequestButton(allegation) }
+        <div className='documents-list'>
+          <Documents documents={ presenter.orderedDocuments } />
+        </div>
+        { this.renderAllegationFunction(allegation) }
       </div>
     );
   }

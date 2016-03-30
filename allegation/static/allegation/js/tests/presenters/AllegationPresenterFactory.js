@@ -66,4 +66,32 @@ describe('AllegationPresenterFactory', function () {
     );
     presenter.displayRecOutcome.should.be.false();
   });
+
+  it('returns ordered documents list', function () {
+    var doc1 = { documentcloud_id: 1, type: 'CR' };
+    var doc2 = { documentcloud_id: 1, type: 'CPB' };
+
+    var presenter = AllegationPresenterFactory.buildPresenter(
+      _.merge(ALLEGATION_MOCK, {'documents': [doc2, doc1]}));
+    presenter.orderedDocuments[0].type.should.equal('CR');
+    presenter.orderedDocuments[1].type.should.equal('CPB');
+
+    presenter = AllegationPresenterFactory.buildPresenter(
+      _.merge(ALLEGATION_MOCK, {'documents': [doc1, doc2]}));
+    presenter.orderedDocuments[0].type.should.equal('CR');
+    presenter.orderedDocuments[1].type.should.equal('CPB');
+  });
+
+  it('returns document types string', function () {
+    var doc1 = { documentcloud_id: 1, type: 'CR' };
+    var doc2 = { documentcloud_id: 0, type: 'CPB' };
+
+    var presenter = AllegationPresenterFactory.buildPresenter(
+      _.merge(ALLEGATION_MOCK, {'documents': [doc2, doc1]}));
+    presenter.documentTypes.should.equal('CR');
+
+    presenter = AllegationPresenterFactory.buildPresenter(
+      _.merge(ALLEGATION_MOCK, {'documents': [doc1, doc2]}));
+    presenter.documentTypes.should.equal('CR');
+  });
 });

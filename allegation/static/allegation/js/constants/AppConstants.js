@@ -321,6 +321,11 @@ module.exports = {
     }
   ],
 
+  DOCUMENT_TYPE_NAMES: {
+    'CR': 'Investigation report',
+    'CPB': 'Police board hearing'
+  },
+
   MEDIA_URL: '/media/',
 
   MAP_MARKER_ICON_URL: 'http://cpdb.co/static/img/64x_map_marker.png', // it must be a full url

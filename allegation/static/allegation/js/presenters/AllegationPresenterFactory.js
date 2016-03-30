@@ -1,5 +1,6 @@
 var _ = require('lodash');
 
+var AppConstants = require('../constants/AppConstants.js');
 var complainingWitness = require('presenters/ComplainingWitnessPresenter');
 
 
@@ -23,6 +24,21 @@ var AllegationPresenterFactory = {
       return !!recOutcomeVal && recOutcomeVal !== 'Unknown' && finalOutcomeVal !== recOutcomeVal;
     };
 
+    var orderedDocuments = function () {
+      var orderedTypes = _.keys(AppConstants.DOCUMENT_TYPE_NAMES);
+      var documents = _.get(allegation, 'documents', []);
+      return _.sortBy(documents, function (document) { return _.indexOf(orderedTypes, document.type); });
+    };
+
+    var documentTypes = function () {
+      var documents = orderedDocuments();
+      var filteredDocuments = _.filter(documents, function (document) {
+        return document['documentcloud_id'] > 0;
+      });
+      var types = _.pluck(filteredDocuments, 'type');
+      return types.join(' ');
+    };
+
     return {
       crid: _.get(allegation, 'allegation.crid', ''),
       mainCategory: _.get(allegation, 'category.category', 'Unknown'),
@@ -33,7 +49,9 @@ var AllegationPresenterFactory = {
       recFinding: _.get(allegation, 'officer_allegation.recc_finding', 'Unknown'),
       displayRecOutcome: displayRecOutcome(),
       recOutcome: _.get(allegation, 'officer_allegation.recc_outcome', 'Unknown'),
-      complainingWitness: allegationComplainingWitness()
+      complainingWitness: allegationComplainingWitness(),
+      orderedDocuments: orderedDocuments(),
+      documentTypes: documentTypes()
     };
   }
 };

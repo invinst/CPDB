@@ -1208,7 +1208,7 @@ footer
   &.no-affidavit
     @extend .extend_12
 
-  &.not.sustained
+  &.not-sustained
     @extend .extend_11
 
 .btn-download
@@ -1680,6 +1680,32 @@ form.navbar-form.navbar-right
 .page-leave.page-leave-active
   opacity: 0
   transition: opacity .5s linear
+
+.documents-list
+  margin-bottom: 40px
+
+  ul
+    padding-left: 0
+    margin-bottom: 0
+
+  .document-title
+    font-weight: 500
+
+    &.not-available
+      color: $color_star_dust_approx
+      font-weight: normal
+
+  .document-status
+    display: inline-block
+    font-size: small
+    color: $color_mountain_mist_approx
+    width: 65px
+
+  .document-action
+    font-size: small
+    color: $color_blue_ribbon_approx
+    text-decoration: none
+
 
 @import 'shared'
 @import 'sunburst'
