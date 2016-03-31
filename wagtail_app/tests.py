@@ -1,8 +1,8 @@
 import json
 
 from common.tests.core import SimpleTestCase
-from home.factories import HomePageFactory
-from home.models import HomePage
+from wagtail_app.factories import HomePageFactory
+from wagtail_app.models import HomePage
 
 
 class HomePageModelTestCase(SimpleTestCase):
@@ -16,19 +16,6 @@ class HomePageModelTestCase(SimpleTestCase):
                     }
                 ],
                 'type': 'row_section'
-            },
-            {
-                'type': 'table_section',
-                'value': [
-                    {
-                        'type': 'glossary_table_row',
-                        'value': {
-                            'definition': 'text 2',
-                            'category': 'complaint-process',
-                            'term': 'term'
-                        }
-                    }
-                ]
             }
         ]
         HomePage.get_tree().all().delete()
