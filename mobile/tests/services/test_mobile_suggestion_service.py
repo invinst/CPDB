@@ -30,7 +30,8 @@ class MobileSuggestionServiceTest(SimpleTestCase):
 
         suggest_officer_star(partial_query).should.equal([])
         suggest_officer_star(bad_query).should.equal([])
-        suggest_officer_star(star).should.equal([officer.as_suggestion_entry()])
+        suggest_officer_star(star).should.equal(
+            [officer.as_suggestion_entry()])
 
     def test_suggest_officer_name(self):
         officer = OfficerFactory(officer_first='Test', officer_last='Name')

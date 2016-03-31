@@ -87,7 +87,7 @@ class AllegationFilterTestCase(BaseLiveTestCase):
 
         current_url = self.browser.current_url
 
-        self.fill_in('#autocomplete', query)
+        self.find('#autocomplete').send_keys(query)
         self.until(lambda: self.find('.autocomplete-session').click())
         self.until(lambda: self.browser.current_url != current_url)
 
