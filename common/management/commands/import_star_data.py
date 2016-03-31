@@ -35,6 +35,7 @@ OFFICER_RACE_MAPPING = {
 def fix_date(date):
     if date.year > datetime.datetime.now().year:
         date = date.replace(year=date.year-100)
+    return date
 
 
 class Command(BaseCommand):
