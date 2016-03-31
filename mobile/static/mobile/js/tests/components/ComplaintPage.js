@@ -1,7 +1,7 @@
 var sinon;
 var f, HashUtil, GaUtil;
 var AccompliceOfficerSection, AgainstSection, AllegationResourceUtil, ComplainingWitness, ComplaintPage,
-  ComplaintPageStore, InvestigatorSection, Location, OfficerAllegationDetail, SearchablePage, ToggleComplaintPage;
+  ComplaintPageStore, InvestigatorSection, Location, OfficerAllegationDetail, SearchablePage;
 
 var React = require('react');
 var ReactDOM = require('react-dom');
@@ -27,7 +27,6 @@ InvestigatorSection = require('components/ComplaintPage/InvestigatorSection.reac
 Location = require('components/ComplaintPage/Location.react');
 OfficerAllegationDetail = require('components/ComplaintPage/OfficerAllegationDetail.react');
 SearchablePage = require('components/Shared/SearchablePage.react');
-ToggleComplaintPage = require('components/ComplaintPage/ToggleComplaintPage.react');
 
 
 function stubForComplaintPage() {

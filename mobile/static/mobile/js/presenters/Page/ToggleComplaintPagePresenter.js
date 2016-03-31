@@ -3,10 +3,10 @@ var CollectionUtil = require('utils/CollectionUtil');
 
 
 var ToggleComplaintPagePresenter = function (officerAllegations) {
-  var officerAllegations = officerAllegations || [];
+  var officerAllegationList = officerAllegations || [];
 
   var groupByCategory = function () {
-    return CollectionUtil.groupBy(officerAllegations, function (officerAllegation) {
+    return CollectionUtil.groupBy(officerAllegationList, function (officerAllegation) {
       return u.fetch(officerAllegation, 'cat.id', 0);
     });
   };
