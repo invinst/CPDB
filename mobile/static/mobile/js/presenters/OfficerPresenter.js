@@ -24,7 +24,7 @@ var OfficerPresenter = function (officer) {
   };
 
   var gender = function () {
-    return GenderPresenter(officer['gender']).humanReadable;
+    return GenderPresenter(HelperUtil.fetch(officer, 'gender')).humanReadable;
   };
 
   var description = function () {
@@ -50,15 +50,16 @@ var OfficerPresenter = function (officer) {
   };
 
   var allegationsCount = function () {
-    return HelperUtil.fetch(officer, 'allegations_count', 0);
+    return HelperUtil.fetch(officer, 'allegations_count', -1);
   };
 
   var has = function (officer, field) {
-    return !!officer[field];
+    return !!HelperUtil.fetch(officer, field, false);
   };
 
   var hasDataIn = function (officer, field, collection) {
-    return (collection.indexOf(officer[field]) > 0);
+    var datum = HelperUtil.fetch(officer, field, false);
+    return (collection.indexOf(datum) > 0);
   };
 
   var hasData = function (label) {
