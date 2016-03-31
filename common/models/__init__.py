@@ -131,7 +131,6 @@ class Allegation(MobileSuggestibleAllegation, TimeStampedModel):
         max_length=255, null=True, db_index=True, blank=True)
     investigator = models.ForeignKey(
         'common.Investigator', null=True, blank=True)
-
     document_id = models.IntegerField(null=True, blank=True)
     document_normalized_title = models.CharField(
         max_length=255, null=True, blank=True)

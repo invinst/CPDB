@@ -102,7 +102,7 @@ var ComplaintListRow = React.createClass(_.assign(Base(ComplaintListStore), {
             { officerName }
           </div>
           <div className='col-md-2 col-xs-3'>
-            <RequestButton complaint={ complaint } />
+            <RequestButton document={ complaint.documents[0] } />
           </div>
 
         </div>
