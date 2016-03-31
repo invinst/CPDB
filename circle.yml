@@ -35,11 +35,11 @@ dependencies:
     - elasticsearch-1.7.1/bin/elasticsearch: {background: true}
 test:
   override:
-    - coverage run --parallel-mode manage.py test  --noinput --nologcapture --with-timer -s -v 2
+    - eslint .
+    - flake8
     - PYTHON=python2 npm run test
     - PYTHON=python2 npm run test_mobile
-    - flake8
-    - eslint .
+    - coverage run --parallel-mode manage.py test  --noinput --nologcapture --with-timer -s -v 2
   post:
     - coverage combine
     - coveralls
