@@ -46,6 +46,8 @@ def create_glossary_table_rows(apps, schema_editor):
 
     with open('wagtail_app/migrations/glossary_data.csv') as data_file:
         reader = csv.reader(data_file)
+        # skip header
+        next(reader)
         sort_order = 1
         for term, definition, category in reader:
             GlossaryTableRows.objects.create(
