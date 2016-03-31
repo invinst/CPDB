@@ -39,7 +39,7 @@ var OfficerAllegationtItem = React.createClass({
   _onClicked : function (crid, firstOfficerAllegation) {
     var presenter = OfficerAllegationPresenter(firstOfficerAllegation);
     AppHistory.pushState(null, presenter.url(crid));
-    ComplaintPageActions.toggleClose();
+    ComplaintPageActions.toggleClose(); // a trick here to close the toggle if we are still on the same link
   },
 
   render: function () {

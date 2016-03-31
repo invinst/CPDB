@@ -34,7 +34,7 @@ var OfficerAllegationDetail = React.createClass({
             <span className='number-of-allegations'>
               { pluralize('complaint', numberOfAllegations, true) }
             </span>
-            <span className='icon icon-list' />
+            <div className='icon icon-list'></div>
           </span>
         </div>
         <div className='category-info'>

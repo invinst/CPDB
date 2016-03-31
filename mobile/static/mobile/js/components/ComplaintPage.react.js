@@ -79,7 +79,8 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
       <div>
         <div className={ classNames }>
           <ToggleComplaintPage officerAllegations={ presenter.officerAllegations }
-                               allegation={ presenter.allegation }/>
+            allegation={ presenter.allegation }
+            numberOfAllegations={ presenter.numberOfOfficerAllegations }/>
         </div>
         <Wrapper visible={ !toggle }>
           <div >
