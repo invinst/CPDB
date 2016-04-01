@@ -22,39 +22,23 @@ class MobileSuggestibleOfficer(MobileSuggestible):
             'url': self.get_mobile_url(),
             'resource_key': self.pk,
             'meta': {
-                'allegations_count': self.allegations_count,
-                'gender': self.gender,
-                'race': self.race,
-                'star': self.star
+                'officer': self
             }
         }
 
 
 class MobileSuggestibleAllegation(MobileSuggestible):
+    # TODO: We will remove these get_mobile_url() soon
     def get_mobile_url(self):
         return '/complaint/{crid}'.format(crid=self.crid)
 
     def as_suggestion_entry(self):
-        cat = self.officerallegation_set.first().cat
-
-        # TODO: This is not a perfect solution here, but keep on using until we change to use suggestion_service instead
-        if cat:
-            allegation_name = cat.allegation_name
-            category = cat.category
-        else:
-            allegation_name = ''
-            category = ''
-
         return {
             'text': self.crid,
             'resource': 'officer_allegation',
             'url': self.get_mobile_url(),
             'resource_key': self.crid,
             'meta': {
-                'incident_date': self.incident_date,
-                'cat': {
-                    'allegation_name': allegation_name,
-                    'category': category
-                }
+                'allegation': self
             }
         }

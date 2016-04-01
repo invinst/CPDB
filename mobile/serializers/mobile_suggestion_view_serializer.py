@@ -1,0 +1,60 @@
+from rest_framework import serializers
+
+from common.models import Officer, Allegation, OfficerAllegation
+from mobile.serializers.shared import AllegationCategorySerializer
+
+
+class OfficerSuggestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Officer
+        fields = (
+            'race',
+            'gender',
+            'star'
+        )
+
+
+class OfficerAllegationSuggestionSerializer(serializers.ModelSerializer):
+    allegations_count = serializers.IntegerField(source='officer.allegations_count')
+    cat = AllegationCategorySerializer()
+
+    class Meta:
+        model = OfficerAllegation
+        fields = (
+            'allegations_count',
+            'start_date',
+            'end_date',
+            'cat'
+        )
+
+
+class AllegationSuggestionSerializer(serializers.ModelSerializer):
+    officer_allegations = OfficerAllegationSuggestionSerializer(many=True, source='officerallegation_set')
+
+    class Meta:
+        model = Allegation
+        fields = (
+            'crid',
+            'incident_date',
+            'officer_allegations'
+        )
+
+
+class SuggestionMetaSerializer(serializers.Serializer):
+    def to_representation(self, value):
+        if 'officer' in value:
+            serializer = OfficerSuggestionSerializer(value['officer'])
+        elif 'allegation' in value:
+            serializer = AllegationSuggestionSerializer(value['allegation'])
+        else:
+            raise Exception('Unexpected type of suggestion object')
+
+        return serializer.data
+
+
+class MobileSuggestionViewSerializer(serializers.Serializer):
+    text = serializers.CharField(max_length=200)
+    url = serializers.URLField()
+    resource = serializers.CharField(max_length=20)
+    resource_key = serializers.CharField(max_length=20)
+    meta = SuggestionMetaSerializer()
