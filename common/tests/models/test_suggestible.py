@@ -37,10 +37,7 @@ class MobileSuggestibleOfficerTest(TestCase):
             'resource_key': self.officer_id,
             'url': self.expected_url,
             'meta': {
-                'allegations_count': self.officer.allegations_count,
-                'gender': self.officer.gender,
-                'race': self.officer.race,
-                'star': self.officer.star
+                'officer': self.officer
             }
         }
         self.officer.as_suggestion_entry().should.be.equal(expected_entry)
@@ -61,21 +58,16 @@ class MobileSuggestibleAllegationTest(TestCase):
         OfficerAllegationFactory(allegation=allegation)
         expected_url = '/complaint/{crid}'.format(crid=crid)
 
-        cat = allegation.officerallegation_set.first().cat
-
         expected_entry = {
             'text': crid,
             'resource': 'officer_allegation',
             'resource_key': crid,
             'url': expected_url,
             'meta': {
-                'incident_date': allegation.incident_date,
-                'cat': {
-                    'allegation_name': cat.allegation_name,
-                    'category': cat.category
-                }
+                'allegation': allegation
             }
         }
+
         allegation.as_suggestion_entry().should.be.equal(expected_entry)
 
     def test_suggestion_entry_without_category(self):
@@ -90,11 +82,7 @@ class MobileSuggestibleAllegationTest(TestCase):
             'resource_key': crid,
             'url': expected_url,
             'meta': {
-                'incident_date': allegation.incident_date,
-                'cat': {
-                    'allegation_name': '',
-                    'category': ''
-                }
+                'allegation': allegation
             }
         }
         allegation.as_suggestion_entry().should.be.equal(expected_entry)
