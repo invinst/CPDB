@@ -4,7 +4,6 @@ var PropTypes = React.PropTypes;
 
 var AllegationPresenterFactory = require('presenters/AllegationPresenterFactory');
 var Investigator = require('components/DataToolPage/Complaint/Investigator.react');
-var RequestButton = require('components/DataToolPage/Complaint/RequestButton.react');
 var Documents = require('components/DataToolPage/Complaint/Documents.react');
 
 

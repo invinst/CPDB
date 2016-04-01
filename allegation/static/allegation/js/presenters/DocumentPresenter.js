@@ -19,8 +19,11 @@ var DocumentPresenter = function (document) {
   };
 
   var documentUrl = function () {
-    return 'http://documentcloud.org/documents/' + document.documentcloud_id + '-' +
+    if (document.documentcloud_id > 0) {
+      return 'http://documentcloud.org/documents/' + document.documentcloud_id + '-' +
              document.normalized_title +'.html';
+    }
+    return '';
   };
 
   return {

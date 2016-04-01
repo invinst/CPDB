@@ -13,10 +13,13 @@ f.define('Document', {
   'type': function () {
     return 'CR';
   },
-  requested: function () {
+  'requested': function () {
     return false;
   },
-  pending: function () {
+  'pending': function () {
     return false;
+  },
+  'normalized_title': function () {
+    return '';
   }
 });
