@@ -2,6 +2,8 @@ from datetime import datetime
 
 from django.core.urlresolvers import reverse
 
+from rest_framework import status
+
 from allegation.factories import (
     OfficerAllegationFactory, OfficerFactory, ComplainingWitnessFactory, AllegationFactory)
 from common.tests.core import SimpleTestCase
@@ -31,7 +33,7 @@ class RaceGenderAPI(SimpleTestCase):
 
         response, data = self.get_race_gender_info()
 
-        response.status_code.should.equal(200)
+        response.status_code.should.equal(status.HTTP_200_OK)
 
         for x in ['officers', 'complaining_witness']:
             data[x]['gender']['M'].should.equal(1)
@@ -47,7 +49,7 @@ class RaceGenderAPI(SimpleTestCase):
 
         response, data = self.get_race_gender_info()
 
-        response.status_code.should.equal(200)
+        response.status_code.should.equal(status.HTTP_200_OK)
         for x in ['officers', 'complaining_witness']:
             data[x]['gender'].shouldnt.contain('M')
             data[x]['gender'].shouldnt.contain('F')
@@ -69,7 +71,7 @@ class RaceGenderAPI(SimpleTestCase):
         response, data = self.get_race_gender_info(
             allegation__crid=officer_allegation_2.allegation.crid)
 
-        response.status_code.should.equal(200)
+        response.status_code.should.equal(status.HTTP_200_OK)
         for x in ['officers', 'complaining_witness']:
             data[x]['gender'].should.contain('F')
             data[x]['gender'].shouldnt.contain('M')
@@ -133,6 +135,6 @@ class RaceGenderAPI(SimpleTestCase):
 
         response, data = self.get_race_gender_info()
 
-        response.status_code.should.equal(200)
+        response.status_code.should.equal(status.HTTP_200_OK)
         data['officers']['age'].should.equal(expect_officer_age)
         data['complaining_witness']['age'].should.equal(expected_witness_age)
