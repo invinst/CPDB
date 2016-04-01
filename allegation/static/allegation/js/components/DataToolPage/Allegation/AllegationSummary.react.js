@@ -45,7 +45,7 @@ var AllegationSummary = React.createClass({
     if (!this.props.noButton) {
       return (
         <div className='allegation-function'>
-          <RequestButton complaint={ allegation } />
+          <RequestButton document={ allegation.documents[0] } />
           <button type='button' className='btn btn-close' onClick={ this.props.toggleComplaint }>
             <i className='fa fa-times' /> Close
           </button>

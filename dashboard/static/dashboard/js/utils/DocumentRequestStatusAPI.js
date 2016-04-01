@@ -1,30 +1,32 @@
 var AppConstants = require('../constants/AppConstants');
 
-var DocumentActions = require('../actions/DocumentSection/DocumentActions');
+var DocumentActions = require('actions/DocumentSection/DocumentActions');
+var DocumentRequestAnalysisAPI = require('utils/DocumentRequestAnalysisAPI');
 
-
-var ajax = null;
 
 var DocumentRequestStatusAPI = {
-  putTo: function (allegation, status) {
-    if (ajax) {
-      ajax.abort();
-    }
+  putStatus: function (document, status) {
+    var params = {
+      'id': document.id,
+      'status': status
+    };
 
-    jQuery.post(AppConstants.DOCUMENT_REQUEST_STATUS_END_POINT, {crid: allegation.crid, status: status},
-      function (data) {
-        switch (status) {
-          case 'pending':
-            DocumentActions.requestPutToPending(allegation);
-            break;
-          case 'requesting':
-            DocumentActions.requestPendingCancelled(allegation);
-            break;
-          default:
-            break;
-        }
+    jQuery.post(AppConstants.DOCUMENT_REQUEST_STATUS_END_POINT, params, function (data) {
+      switch (status) {
+        case 'pending':
+          DocumentActions.requestPutToPending(document);
+          break;
+        case 'requesting':
+          DocumentActions.requestPendingCancelled(document);
+          break;
+        case 'missing':
+          DocumentActions.requestCancel(document);
+          break;
+        default:
+          break;
       }
-    );
+      DocumentRequestAnalysisAPI.get();
+    });
   }
 };
 

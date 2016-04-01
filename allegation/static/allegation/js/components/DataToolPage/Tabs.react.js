@@ -6,7 +6,7 @@ var React = require('react');
 var ReactDOM = require('react-dom');
 var classnames = require('classnames');
 var S = require('string');
-var isMobile = require('ismobilejs');
+var MobileUtils = require('utils/MobileUtils');
 
 var Base = require('components/Base.react');
 var AppConstants = require('constants/AppConstants');
@@ -103,7 +103,7 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
     var tab = target;
     var tabClass;
 
-    if (tab == 'map' && !isMobile.any) {
+    if (tab == 'map' && !MobileUtils.isMobileView()) {
       return;
     }
 
@@ -124,10 +124,9 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
   renderTabContent: function (id, Component, props) {
     var tabClass;
 
-    if (id == 'map' && !isMobile.any) {
+    if (id == 'map' && !MobileUtils.isMobileView()) {
       return;
     }
-
     tabClass = classnames('tab-pane', {
       'active': this.isActive(id)
     });

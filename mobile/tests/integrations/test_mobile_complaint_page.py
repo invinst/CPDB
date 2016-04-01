@@ -6,8 +6,8 @@ from common.tests.core import BaseLivePhoneTestCase
 
 class MobileComplaintPageTest(BaseLivePhoneTestCase):
     def test_allegation_with_full_information(self):
-        document_id = 123
-        document_normalized_title = 'abcd'
+        documentcloud_id = 123
+        normalized_title = 'abcd'
         view_document_text = 'View documents'
 
         officer_gender = 'X'
@@ -29,11 +29,14 @@ class MobileComplaintPageTest(BaseLivePhoneTestCase):
 
         allegation = AllegationFactory(
             investigator=investigator, add1=address1, add2=address2,
-            city='Chicago, IL', location='15', document_id=document_id,
-            document_normalized_title=document_normalized_title)
+            city='Chicago, IL', location='15')
         OfficerAllegationFactory(
             cat=category, officer=officer, allegation=allegation,
             final_finding=final_finding_code)
+        document = allegation.documents.get(type='CR')
+        document.documentcloud_id = documentcloud_id
+        document.normalized_title = normalized_title
+        document.save()
 
         ComplainingWitnessFactory(
             crid=allegation.crid, gender=complaint_witness_gender,
