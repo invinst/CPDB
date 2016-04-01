@@ -40,6 +40,7 @@ ComplaintPageStore.dispatcherToken = AppDispatcher.register(function (action) {
       _state['toggle'] = false;
       ComplaintPageStore.emitChange();
       break;
+
     default:
       break;
   }
