@@ -1,37 +1,30 @@
-var React = require('react');
-var Base = require('./Base.react');
-
-var Document = require('./DocumentSection/Document.react');
-var DocumentCrawlStats = require('./DocumentSection/DocumentCrawlStats.react');
-var DocumentList = require('./DocumentSection/DocumentList.react');
-var Tabs = require('./DocumentSection/Tabs.react');
-var DocumentSectionStore = require('../stores/DocumentSectionStore');
-var DocumentRequestAPI = require('../utils/DocumentRequestAPI');
-var AddDocumentLinkModal = require('./DocumentSection/AddDocumentLinkModal.react');
-var AddDocumentLinkModalActions = require('../actions/DocumentSection/AddDocumentLinkModalActions');
-var AppConstants = require('../constants/AppConstants');
-var UploadDocumentModal = require('components/DocumentSection/UploadDocumentModal.react');
 var _ = require('lodash');
+var React = require('react');
+
+var Base = require('components/Base.react');
+var AppConstants = require('../constants/AppConstants');
+
+var Document = require('components/DocumentSection/Document.react');
+var DocumentList = require('components/DocumentSection/DocumentList.react');
+var Tabs = require('./DocumentSection/Tabs.react');
+var DocumentSectionStore = require('stores/DocumentSectionStore');
+var DocumentRequestAPI = require('utils/DocumentRequestAPI');
+var AddDocumentLinkModal = require('components/DocumentSection/AddDocumentLinkModal.react');
+var AddDocumentLinkModalActions = require('actions/DocumentSection/AddDocumentLinkModalActions');
+var UploadDocumentModal = require('components/DocumentSection/UploadDocumentModal.react');
+var DocumentCrawlStats = require('./DocumentSection/DocumentCrawlStats.react');
 
 
 var DocumentSection = React.createClass(_.assign(Base(DocumentSectionStore), {
-
-  componentDidMount: function () {
-    DocumentSectionStore.addChangeListener(this._onChange);
-    this.fetchData();
-  },
-
-  fetchData: function () {
-    if (this.props.params.id) {
-      DocumentRequestAPI.loadDocument(this.props.params.id);
-    }
+  isShowingSingleDocument: function () {
+    return !!this.props.params.id;
   },
 
   content: function () {
-    if (this.props.params.id) {
+    if (this.isShowingSingleDocument()) {
       return (
         <div id='documents' className='col-md-12'>
-          <Document />
+          <Document documentId={ this.props.params.id } />
         </div>
       );
     }
@@ -52,12 +45,12 @@ var DocumentSection = React.createClass(_.assign(Base(DocumentSectionStore), {
   },
 
   exportDocument: function () {
-    window.location.href = AppConstants.DOCUMENT_EXPORT_END_POINT;
+    window.location.href = AppConstants.DOCUMENT_EXPORT_END_POINT + '?document_type=' + this.state.documentType;
   },
 
   keyEntered: function (e) {
     if (e.keyCode == 13) {
-      DocumentRequestAPI.loadByCrid(e.target.value);
+      DocumentRequestAPI.getSingleDocumentByCrid(e.target.value, this.state.documentType);
     }
   },
 
@@ -86,7 +79,7 @@ var DocumentSection = React.createClass(_.assign(Base(DocumentSectionStore), {
               <i className='fa fa-link'></i> Add document
             </button>
             <button id='export-document' className='btn btn-primary' onClick={ this.exportDocument }>
-              <i className='fa fa-file-excel-o'></i> Export Document
+              <i className='fa fa-file-excel-o'></i> Export requests to Excel
             </button>
           </div>
         </div>
@@ -98,7 +91,7 @@ var DocumentSection = React.createClass(_.assign(Base(DocumentSectionStore), {
             { this.content() }
           </div>
         </div>
-        <AddDocumentLinkModal />
+        <AddDocumentLinkModal documentType={ this.state.documentType } />
         <UploadDocumentModal isOpen={ this.state.uploadModalIsOpen } onRequestClose={ this.closeUploadModal } />
       </div>
     );

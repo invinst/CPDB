@@ -81,8 +81,9 @@ var Sunburst = React.createClass(_.assign(Base(SunburstStore), {
 
   drawSunburst: function () {
     var selected;
+    var width = jQuery('#sunburst-chart').width();
 
-    SunburstChartD3.draw(this.getChartData());
+    SunburstChartD3.draw(this.getChartData(), width);
 
     selected = SunburstStore.getSelected();
 

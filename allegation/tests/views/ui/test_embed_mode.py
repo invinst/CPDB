@@ -126,7 +126,7 @@ class EmbedPageTestCase(BaseLiveTestCase):
     def test_outcomes_embed_code(self):
         self.check_embed_code({
             'width': 923,
-            'height': 456,
+            'height': 923,
         }, "/embed/?page=sunburst&query=&state=%7B%22name%22%3A%22Allegations%22%7D")
 
     def test_categories_embed_code(self):

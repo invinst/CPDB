@@ -20,9 +20,23 @@ class FullOfficerAllegationSerializer(serializers.ModelSerializer):
     add1 = serializers.IntegerField(source='allegation.add1')
     add2 = serializers.CharField(source='allegation.add2')
     city = serializers.CharField(source='allegation.city')
-    document_id = serializers.IntegerField(source='allegation.document_id')
-    document_normalized_title = serializers.CharField(
-        source='allegation.document_normalized_title')
+    # Temporarily return CR document to keep old logic
+    document_id = serializers.SerializerMethodField('get_cr_document_id')
+    document_normalized_title = serializers.SerializerMethodField('get_cr_normalized_title')
+
+    def get_cr_document_id(self, obj):
+        documents = obj.allegation.documents.all()
+        for document in documents:
+            if document.type == 'CR':
+                return document.documentcloud_id
+        return 0
+
+    def get_cr_normalized_title(self, obj):
+        documents = obj.allegation.documents.all()
+        for document in documents:
+            if document.type == 'CR':
+                return document.normalized_title
+        return ''
 
     class Meta:
         model = OfficerAllegation

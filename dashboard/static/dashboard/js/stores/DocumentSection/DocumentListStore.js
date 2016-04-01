@@ -6,9 +6,11 @@ var Base = require('../Base');
 
 var _state = {
   documents: [],
+  documentType: 'CR',
   locked: false,
   sortBy: 'number_of_request',
-  order: -1
+  order: -1,
+  next: ''
 };
 
 var DocumentListStore = _.assign(Base(_state), {
@@ -23,17 +25,21 @@ var DocumentListStore = _.assign(Base(_state), {
 AppDispatcher.register(function (action) {
   var currentSortBy,
     order,
-    sortBy;
+    sortBy,
+    document;
 
   switch (action.actionType) {
     case AppConstants.RECEIVED_DOCUMENT_LIST:
       _state.documents = action.data;
+      _state.next = action.next;
+      _state.locked = false;
       DocumentListStore.emitChange();
       break;
 
     case AppConstants.RECEIVED_MORE_DOCUMENT_RESULTS_DATA:
       if (!_.isEmpty(action.data)) {
         _state.documents = _state.documents.concat(action.data);
+        _state.next = action.next;
         _state.locked = false;
         DocumentListStore.emitChange();
       }
@@ -45,18 +51,29 @@ AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.DOCUMENT_REQUEST_CANCEL:
-      action.data['document_requested'] = false;
+      // these seem kind of dangerous, but it works
+      // document is passed by reference here, it's an element in a document array
+      // if you pass a cloned document object, this will not update the document in array
+      document = action.data;
+      document.requested = false;
+      document.pending = false;
       DocumentListStore.emitChange();
       break;
 
     case AppConstants.DOCUMENT_PUT_TO_PENDING:
-      action.data['document_pending'] = true;
+      // these seem kind of dangerous, but it works
+      // detail in AppConstants.DOCUMENT_REQUEST_CANCEL
+      document = action.data;
+      document.pending = true;
       DocumentListStore.emitChange();
       break;
 
     case AppConstants.DOCUMENT_PUT_TO_REQUESTING:
-      action.data['document_pending'] = false;
-      action.data['document_requested'] = true;
+      // these seem kind of dangerous, but it works
+      // detail in AppConstants.DOCUMENT_REQUEST_CANCEL
+      document = action.data;
+      document.pending = false;
+      document.requested = true;
       DocumentListStore.emitChange();
       break;
 
@@ -72,6 +89,11 @@ AppDispatcher.register(function (action) {
       DocumentListStore.updateState('sortBy', action.data);
       DocumentListStore.updateState('order', order);
       DocumentListStore.emitChange();
+      break;
+
+    case AppConstants.SET_ACTIVE_DOCUMENT_TYPE_TAB:
+      // clear sort state
+      DocumentListStore.updateState('documentType', action.data);
       break;
 
     default:

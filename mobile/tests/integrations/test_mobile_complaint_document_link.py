@@ -1,13 +1,12 @@
-from allegation.factories import AllegationFactory, OfficerAllegationFactory
+from allegation.factories import OfficerAllegationFactory
 from common.tests.core import BaseLivePhoneTestCase, BaseLiveAndroidPhoneTestCase
+from document.factories import DocumentFactory
 
 
 class MobileComplaintDocumentTestMixin():
     def setUp(self):
-        document_id = '1678325'
-        document_normalized_title = 'cr-1059875'
-        self.allegation = AllegationFactory(document_normalized_title=document_normalized_title,
-                                            document_id=document_id)
+        document = DocumentFactory(type='CR', documentcloud_id='1678325', normalized_title='cr-1059875')
+        self.allegation = document.allegation
         OfficerAllegationFactory(allegation=self.allegation)
 
 

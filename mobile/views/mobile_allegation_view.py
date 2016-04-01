@@ -14,7 +14,7 @@ class MobileAllegationView(APIView):
     def get(self, request):
         crid = request.GET.get('crid', '')
         try:
-            allegation = Allegation.objects.get(crid=crid)
+            allegation = Allegation.objects.prefetch_related('documents').get(crid=crid)
         except Allegation.DoesNotExist:
             raise Http404()
 
