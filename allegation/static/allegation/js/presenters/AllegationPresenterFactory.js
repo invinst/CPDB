@@ -4,6 +4,8 @@ var moment = require('moment');
 var AppConstants = require('../constants/AppConstants.js');
 var complainingWitness = require('presenters/ComplainingWitnessPresenter');
 
+var INCIDENT_DATE_FORMAT = 'YYYY-MM-DD HH:mm:ss';
+
 
 var AllegationPresenterFactory = {
   buildPresenter: function (allegation) {
@@ -41,9 +43,9 @@ var AllegationPresenterFactory = {
     };
 
     var isUsingStartDate = function () {
-      var notHaveIncidentDate = allegation.allegation['incident_date']
-        && moment(allegation.allegation['incident_date']).year() <= 1970;
-      return notHaveIncidentDate && allegation['officer_allegation']['start_date'];
+      var incidentDate = _.get(allegation.allegation, 'incident_date', false);
+      var notHaveIncidentDate = !incidentDate || moment(incidentDate, INCIDENT_DATE_FORMAT).year() <= 1970;
+      return notHaveIncidentDate && _.get(allegation, 'officer_allegation.start_date');
     };
 
     var incidentDateLabel = function () {
@@ -61,7 +63,7 @@ var AllegationPresenterFactory = {
     };
 
     var officerName = function () {
-      var name;
+      var name = '';
 
       if (allegation.officer) {
         name = allegation.officer['officer_first'] + ' ' + allegation.officer['officer_last'];
@@ -78,7 +80,8 @@ var AllegationPresenterFactory = {
     };
 
     var slugifyFinding = function () {
-      var finding = _.get(allegation, 'officer_allegation.final_finding', 'other');
+      // lodash seem to not use defaultValue when what it gets is null
+      var finding = _.get(allegation, 'officer_allegation.final_finding', 'other') || 'other';
       return finding.replace(/ /,'-').toLowerCase();
     };
 

@@ -1,4 +1,3 @@
-var _ = require('lodash');
 var classnames = require('classnames');
 var React = require('react');
 var PropTypes = React.PropTypes;

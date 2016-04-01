@@ -54,7 +54,7 @@ class AllegationDetailTestCase(AllegationRowHelperMixin, BaseLiveTestCase):
         OfficerAllegationFactory(
             final_finding=None,
             final_outcome=None
-            )
+        )
 
         self.open_complaint_detail()
 
