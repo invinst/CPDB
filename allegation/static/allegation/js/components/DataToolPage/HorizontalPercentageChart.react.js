@@ -92,11 +92,11 @@ var HorizontalPercentageChart = React.createClass({
 
     return (
       <div className={ classNames }>
-        <p className='chart-label'>{ this.props.label }</p>
+        <LabelBar segments={ segments } hoverInd={ this.state.hoverInd }/>
         <HorizontalBarSVG segments={ segments } category={ this.props.category }
           displayCategory={ this.props.displayCategory }
           onMouseOver={ this._onMouseOver } onMouseOut={ this._onMouseOut }/>
-        <LabelBar segments={ segments } hoverInd={ this.state.hoverInd }/>
+        <p className='chart-label'>{ this.props.label }</p>
       </div>
     );
   }
