@@ -36,7 +36,7 @@ var HorizontalPercentageChart = React.createClass({
   defaultChartHeight: 30,
   defaultColorRange: [
     '#A5B4BD', '#6B8EE6', '#4E76C5', '#3860BF', '#26527f'
-  ],
+  ].reverse(),
 
   sortAndColorizeData: function () {
     var sum = _.sum(this.props.data, 'count');
@@ -45,7 +45,7 @@ var HorizontalPercentageChart = React.createClass({
     var dataLength = this.props.data.length;
     var self = this;
 
-    var result = _.map(_.sortBy(this.props.data, 'count'), function (datum, i) {
+    var result = _.map(this.props.data, function (datum, i) {
       var currentWidth = widthScale(datum.count) + HorizontalPercentageChart.MIN_WIDTH;
       var returnValue = {
         label: datum.label,

@@ -20,7 +20,7 @@ describe('HorizontalPercentageChart component', function () {
       translateX: 0,
       width: calculateWidth(40),
       value: 2,
-      fill: '#A5B4BD',
+      fill: '#26527f',
       percent: 40,
       oldIndex: 0,
       filters: [
@@ -33,7 +33,7 @@ describe('HorizontalPercentageChart component', function () {
       translateX: calculateWidth(40),
       width: calculateWidth(60),
       value: 3,
-      fill: '#26527f',
+      fill: '#A5B4BD',
       filters: [],
       percent: 60,
       oldIndex: 1,
@@ -43,18 +43,18 @@ describe('HorizontalPercentageChart component', function () {
 
   var chartData = [
     {
-      label: 'a',
-      count: 3,
-      filters: [],
-      active: false
-    },
-    {
       label: 'b',
       count: 2,
       filters: [
         {}
       ],
       active: true
+    },
+    {
+      label: 'a',
+      count: 3,
+      filters: [],
+      active: false
     }
   ];
 
@@ -91,7 +91,7 @@ describe('HorizontalPercentageChart component', function () {
     ElementUtils.getElementsAttributeByTagName(horizontalPercentageChart, 'rect', 'width')
       .should.deepEqual([expectData[0].width + '%', expectData[1].width + '%']);
     ElementUtils.getElementsAttributeByTagName(horizontalPercentageChart, 'rect', 'style')
-      .should.deepEqual(['fill:#A5B4BD;', 'fill:#26527f;']);
+      .should.deepEqual(['fill:#26527f;', 'fill:#A5B4BD;']);
     ElementUtils.getElementsAttributeByTagName(horizontalPercentageChart, 'rect', 'x')
       .should.deepEqual([expectData[0].translateX + '%', expectData[1].translateX + '%']);
     ElementUtils.getElementsAttributeByTagName(horizontalPercentageChart, 'rect', 'class')
