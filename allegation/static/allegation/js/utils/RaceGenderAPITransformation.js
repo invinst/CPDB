@@ -144,7 +144,8 @@ var RaceGenderAPITransform = {
       };
     })
     .sortBy(function (x) {
-      return x.label.match(/\d+/)[0];
+      var extractNumber = x.label ? x.label.match(/\d+/) : null;
+      return extractNumber ? extractNumber[0] : -1;
     })
     .value();
   }
