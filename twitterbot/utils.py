@@ -4,7 +4,6 @@ import os
 import requests
 import tweepy
 import logging
-import time
 from bs4 import BeautifulSoup
 from django.conf import settings
 
@@ -80,7 +79,7 @@ class CPDBTweetHandler(tweepy.StreamListener):
         text = self.tweet_utils.sanitize_text(text)
         names = self.tweet_utils.find_names(text) + self.tweet_utils.find_names(text, word_length=3)
 
-        responses = self.tweet_utils.build_all_responses(names)
+        responses = self.tweet_utils.build_all_responses(names, status.id)
 
         if self.debug:
             print("Responses: ", len(responses))
@@ -189,7 +188,7 @@ class TweetUtils:
 
         return names
 
-    def build_all_responses(self, names):
+    def build_all_responses(self, names, reply_to):
         officers = []
         investigators = []
 
@@ -208,19 +207,19 @@ class TweetUtils:
 
         responses = []
         if officers:
-            responses += self.build_responses(officers, 'officer')
+            responses += self.build_responses(officers, 'officer', reply_to)
         if investigators:
-            responses += self.build_responses(investigators, 'investigator')
+            responses += self.build_responses(investigators, 'investigator', reply_to)
         return responses
 
-    def build_responses(self, objs, response_type):
+    def build_responses(self, objs, response_type, reply_to):
         responses = []
         try:
             response_template = Response.objects.get(response_type=response_type)
 
             for obj in objs:
                 context = {'obj': obj}
-                context['timestamp'] = time.time()
+                context['reply_to'] = reply_to
                 msg = response_template.get_message(context)
 
                 if msg:

@@ -178,6 +178,16 @@ class CPDBTweetHandlerTestCase(SimpleTestCase):
                 call('investigator')
             ], any_order=True)
 
+    def test_reply_with_incoming_tweet_id(self):
+        Response.objects.all().delete()
+        ResponseFactory(response_type='officer', message='?reply_to={{reply_to}}')
+        text = '... Jason Van Dyke ...'
+        tweet_id = 123
+
+        with patch('tweepy.API.update_status') as update_status:
+            self.tweet_handler.on_status(TweetFactory(text=text, tweet_id=tweet_id))
+            update_status.assert_called_once_with('?reply_to=123')
+
     def test_ignore_tweets_from_self(self):
         text = '... Jason Van Dyke ...'
         screen_name = settings.TWITTER_SCREEN_NAME

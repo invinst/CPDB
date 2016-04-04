@@ -114,7 +114,7 @@ class TweetUtilsTestCase(SimpleTestCase):
         rebuild_index()
         names = ['Jason Van', 'Van Dyke', 'Dyke Haskell']
 
-        found = self.utils.build_all_responses(names)
+        found = self.utils.build_all_responses(names, 1)
         len(found).should.equal(1)
         found[0].should.contain(officer.officer_first)
         found[0].should.contain(officer.officer_last)
@@ -125,7 +125,7 @@ class TweetUtilsTestCase(SimpleTestCase):
         rebuild_index()
         names = ['Daniel Neubeck', 'Van Dyke', 'Dyke Haskell']
 
-        found = self.utils.build_all_responses(names)
+        found = self.utils.build_all_responses(names, 1)
         len(found).should.equal(1)
         found[0].should.contain(investigator.name)
 
@@ -135,14 +135,14 @@ class TweetUtilsTestCase(SimpleTestCase):
         rebuild_index()
         names = ['Jason Van', 'Van Dyke']
 
-        found = self.utils.build_all_responses(names)
+        found = self.utils.build_all_responses(names, 1)
         len(found).should.equal(1)
 
     def test_build_responses_officer_type(self):
         ResponseFactory(response_type='officer', message='{{obj.display_name}}')
         officer_1 = OfficerFactory()
         officer_2 = OfficerFactory()
-        responses = self.utils.build_responses([officer_1, officer_2], 'officer')
+        responses = self.utils.build_responses([officer_1, officer_2], 'officer', 1)
 
         responses[0].should.equal(officer_1.display_name)
         responses[1].should.equal(officer_2.display_name)
@@ -151,7 +151,7 @@ class TweetUtilsTestCase(SimpleTestCase):
         ResponseFactory(response_type='officer', message='{{obj.display_name}}')
         officer_1 = InvestigatorFactory()
         officer_2 = InvestigatorFactory()
-        responses = self.utils.build_responses([officer_1, officer_2], 'officer')
+        responses = self.utils.build_responses([officer_1, officer_2], 'officer', 1)
 
         responses.should.equal([])
 
@@ -160,16 +160,26 @@ class TweetUtilsTestCase(SimpleTestCase):
         expected_error = 'Response type officer does not exists in database'
 
         with patch('twitterbot.utils.logging.error') as mock_logging:
-            responses = self.utils.build_responses([officer_1], 'officer')
+            responses = self.utils.build_responses([officer_1], 'officer', 1)
             mock_logging.assert_called_once_with(expected_error)
 
         responses.should.equal([])
+
+    def test_build_responses_with_incoming_tweet_id(self):
+        ResponseFactory(response_type='officer', message='?reply_to={{reply_to}}')
+        ResponseFactory(response_type='investigator', message='?reply_to={{reply_to}}')
+
+        responses = self.utils.build_responses([OfficerFactory()], 'officer', 123)
+        responses[0].should.equal('?reply_to=123')
+
+        responses = self.utils.build_responses([InvestigatorFactory()], 'investigator', 456)
+        responses[0].should.equal('?reply_to=456')
 
     def test_build_responses_investigator_type(self):
         ResponseFactory(response_type='investigator', message='{{obj.name}}')
         investigator_1 = InvestigatorFactory()
         investigator_2 = InvestigatorFactory()
-        responses = self.utils.build_responses([investigator_1, investigator_2], 'investigator')
+        responses = self.utils.build_responses([investigator_1, investigator_2], 'investigator', 1)
 
         responses[0].should.equal(investigator_1.name)
         responses[1].should.equal(investigator_2.name)
