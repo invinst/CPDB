@@ -1,60 +1,57 @@
+from collections import OrderedDict
+
 from django.core.management.base import BaseCommand
 from documentcloud import DocumentCloud
 
-from common.models import Allegation, DocumentCrawler
+from common.models import DocumentCrawler
+from dashboard.services.documentcloud_service import DocumentcloudService
+from document.models import Document
 
 
 class Command(BaseCommand):
     help = 'Update complaint documents info'
 
-    id_delim = '-'
-    search_syntaxes = ['Group: invisibleinstitute title:"CR %s"',
-                       'Group: invisibleinstitute title:"CR-%s"']
+    search_syntaxes = [
+        ('CR', 'Group: invisibleinstitute title:"CR" !CPB'),
+        ('CPB', 'Group: invisibleinstitute title:"CPB"')
+    ]
 
-    def add_arguments(self, parser):
-        parser.add_argument('--start')
-        parser.add_argument('--end')
+    def process_documentcloud_result(self, result, document_type):
+        documentcloud_service = DocumentcloudService()
 
-    document_by_crid = {}
+        crid = documentcloud_service.parse_crid_from_title(result.title, document_type)
+        if crid:
+            try:
+                document = Document.objects.get(allegation__crid=crid, type=document_type)
+                parsed_link = documentcloud_service.parse_link(result.published_url)
 
-    def get_document(self, allegation):
-        client = DocumentCloud()
-        for search_syntax in self.search_syntaxes:
-            results = client.documents.search(search_syntax % allegation.crid)
-            if results:
-                document = results[0]
-                self.document_by_crid[allegation.crid] = document
-                break
+                update_values = {}
+                if parsed_link:
+                    update_values.update(parsed_link)
+                    update_values['title'] = result.title
 
-            else:
-                self.document_by_crid[allegation.crid] = None
+                    document.update(**update_values)
+            except Document.DoesNotExist:
+                pass
 
-        return self.document_by_crid[allegation.crid]
+    def clean_documentcloud_results(self, results):
+        cleaned_results = OrderedDict()
+
+        for result in results:
+            if result.title not in cleaned_results:
+                cleaned_results[result.title] = result
+
+        return list(cleaned_results.values())
 
     def handle(self, *args, **options):
-        start = options['start']
-        if start is None:
-            start = 1
-        end = options['end']
+        client = DocumentCloud()
 
-        if end is not None:
-            allegations = Allegation.objects.filter(id__gte=start, id__lte=end)
-        else:
-            allegations = Allegation.objects.filter(id__gte=start)
+        for document_type, syntax in self.search_syntaxes:
+            results = client.documents.search(syntax)
 
-        for allegation in allegations:
-            document = self.get_document(allegation)
+            if results:
+                results = self.clean_documentcloud_results(results)
+                for result in results:
+                    self.process_documentcloud_result(result, document_type)
 
-            if document:
-                id_parts = document.id.split(self.id_delim)
-                doc_id = id_parts[0]
-                normalized_title = self.id_delim.join(id_parts[1:])
-                title = document.title
-
-                allegation.document_id = doc_id
-                allegation.document_normalized_title = normalized_title
-                allegation.document_title = title
-
-                allegation.save()
-
-        DocumentCrawler.objects.create(num_documents=Allegation.objects.filter(document_id__gt=0).count())
+        DocumentCrawler.objects.create(num_documents=Document.objects.filter(documentcloud_id__gt=0).count())

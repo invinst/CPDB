@@ -5,6 +5,7 @@ var source = require('vinyl-source-stream');
 var useref = require('gulp-useref');
 var ignore = require('gulp-ignore');
 var uglify = require('gulp-uglify');
+var revReplace = require('gulp-rev-replace');
 var replaceStaticTagWithRealPath = require('./utils/replace_static_tag_with_real_path');
 
 
@@ -18,6 +19,9 @@ var replaceFunc = replaceStaticTagWithRealPath([
 ]);
 
 module.exports = function () {
+  var jsManifest = gulp.src('./static/allegation/js/rev-manifest.json');
+  var cssManifest = gulp.src('./static/css/rev-manifest.json');
+
   return gulp.src(['./allegation/templates/allegation/index.html'])
     .pipe(replace(/<!-- build(?:.|\s)+?<!-- endbuild/g, replaceFunc))
     .pipe(useref({ searchPath: '.' }))
@@ -26,6 +30,12 @@ module.exports = function () {
     ))
     .pipe(gulpif('index.html', source('index.html')
       .pipe(replace(/(<link.+? href=")(css\/combined.css)/g, '$1{% static \'$2\' %}'))
+    ))
+    .pipe(gulpif('index.html', source('index.html')
+      .pipe(revReplace({manifest: jsManifest}))
+    ))
+    .pipe(gulpif('index.html', source('index.html')
+      .pipe(revReplace({manifest: cssManifest}))
     ))
     .pipe(gulpif('index.html', source('index.html')
       .pipe(gulp.dest('templates/allegation'))

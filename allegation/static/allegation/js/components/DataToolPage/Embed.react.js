@@ -7,7 +7,7 @@ var Sunburst = require('components/DataToolPage/Sunburst.react');
 var Map = require('components/DataToolPage/Map.react');
 var Complaint = require('components/DataToolPage/Complaint.react');
 var RaceGenderAPI = require('utils/RaceGenderAPI');
-var RaceGenderTab = require('components/DataToolPage/RaceGenderTab.react');
+var RaceGenderAgeTab = require('components/DataToolPage/RaceGenderAgeTab.react');
 var Summary = require('components/DataToolPage/Summary.react');
 var SunburstAPI = require('utils/SunburstAPI');
 
@@ -33,7 +33,8 @@ var Embed = React.createClass({
       'map': this.embedMap,
       'allegation': this.embedAllegation,
       'summary': this.embedSummary,
-      'race-gender': this.embedRaceGender
+      'officer-race-gender-age-tab': this.embedOfficerRaceGender,
+      'complainant-race-gender-age-tab': this.embedComplainantRaceGender
     };
 
     listener[this.props.page]();
@@ -64,8 +65,13 @@ var Embed = React.createClass({
     this.setContent(<OfficerList query={ this.props.query } noClick={ true } />);
   },
 
-  embedRaceGender: function () {
-    this.setContent(<RaceGenderTab />);
+  embedOfficerRaceGender: function () {
+    this.setContent(<RaceGenderAgeTab role={ RaceGenderAgeTab.OFFICER_ROLE } />);
+    RaceGenderAPI.getData(this.props.query);
+  },
+
+  embedComplainantRaceGender: function () {
+    this.setContent(<RaceGenderAgeTab role={ RaceGenderAgeTab.COMPLAINANT_ROLE } />);
     RaceGenderAPI.getData(this.props.query);
   },
 

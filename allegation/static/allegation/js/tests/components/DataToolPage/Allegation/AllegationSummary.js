@@ -22,7 +22,8 @@ describe('AllegationSummary component', function () {
     recOutcome: 'Unknown',
     displayRecFinding: false,
     displayRecOutcome: false,
-    complainingWitness: []
+    complainingWitness: [],
+    orderedDocuments: []
   };
   var MOCK_ALLEGATION = {
     investigator: null

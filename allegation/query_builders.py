@@ -80,8 +80,14 @@ class OfficerAllegationQueryBuilder(object):
                     if val_lower in ('none', 'null'):
                         val = True
                         key = "%s__isnull" % key
-                    sub_queries |= Q(**{key: val})
-                queries &= sub_queries
+                    if not sub_queries:
+                        sub_queries = Q(**{key: val})
+                    else:
+                        sub_queries |= Q(**{key: val})
+                if not queries:
+                    queries = sub_queries
+                else:
+                    queries &= sub_queries
 
         return queries
 
@@ -128,7 +134,7 @@ class OfficerAllegationQueryBuilder(object):
 
     def _q_has_document(self, query_params):
         if 'true' in query_params.getlist('has_document', []):
-            return Q(allegation__document_id__gt=0)
+            return Q(allegation__documents__documentcloud_id__gt=0)
         return Q()
 
     def _q_has_map(self, query_params):
@@ -242,7 +248,9 @@ class OfficerAllegationQueryBuilder(object):
         allegation_ids = Allegation.objects.filter(allegation_queries)\
             .values_list('pk', flat=True)
 
-        return Q(allegation__pk__in=allegation_ids)
+        if allegation_ids:
+            return Q(allegation__pk__in=allegation_ids)
+        return Q()
 
     def _q_add_data_source_filter(self, query_params):
         data_source = query_params.getlist('data_source', [])
@@ -295,3 +303,35 @@ class OfficerAllegationQueryBuilder(object):
 
         duties = [duty == 'true' for duty in duties]
         return Q(cat__on_duty__in=duties)
+
+    def _q_complainant_age(self, query_params):
+        age_ranges = query_params.getlist('complainant_age', [])
+        queries = Q()
+        for age_range in age_ranges:
+            if age_range[0] == '<':
+                queries |= Q(allegation__complainingwitness__age__lte=age_range[1:])
+            elif age_range[0] == '>':
+                queries |= Q(allegation__complainingwitness__age__gte=age_range[1:])
+            else:
+                ages = age_range.split('-')
+                queries |= Q(
+                    allegation__complainingwitness__age__gte=ages[0],
+                    allegation__complainingwitness__age__lte=ages[1])
+
+        return queries
+
+    def _q_officer_age(self, query_params):
+        age_ranges = query_params.getlist('officer_age', [])
+        queries = Q()
+        for age_range in age_ranges:
+            if age_range[0] == '<':
+                queries |= Q(officer_age__lte=age_range[1:])
+            elif age_range[0] == '>':
+                queries |= Q(officer_age__gte=age_range[1:])
+            else:
+                ages = age_range.split('-')
+                queries |= Q(
+                    officer_age__gte=ages[0],
+                    officer_age__lte=ages[1])
+
+        return queries

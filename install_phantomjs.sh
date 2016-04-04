@@ -1,3 +1,7 @@
+#! /usr/bin/env bash
+
+set -e
+
 if ! [ $(phantomjs --version) = 2.1.1 ]; then
     PHANTOM_VERSION="phantomjs-2.1.1"
     ARCH=$(uname -m)

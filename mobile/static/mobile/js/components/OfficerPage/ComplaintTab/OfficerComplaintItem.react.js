@@ -44,7 +44,6 @@ var OfficerComplaintItem = React.createClass({
 
     var officerPresenter = OfficerPresenter(officer);
     var complaintPresenter = ComplaintPresenter(complaint);
-
     return (
       <div className='officer-complaint-item' onClick={ this._onClicked }>
         <div className='crid-info pad'>
