@@ -37,8 +37,8 @@ var Timeline = React.createClass({
         start: incidentDate
       });
     }
-    if (officerAllegation.start_date) {
-      startDate = moment(officerAllegation.start_date);
+    if (officerAllegation['start_date']) {
+      startDate = moment(officerAllegation['start_date']);
 
       if (firstDate) {
         lastDate = startDate;
@@ -52,8 +52,8 @@ var Timeline = React.createClass({
       });
     }
 
-    if (officerAllegation.end_date) {
-      endDate = moment(officerAllegation.end_date);
+    if (officerAllegation['end_date']) {
+      endDate = moment(officerAllegation['end_date']);
       firstDate = firstDate || endDate;
       lastDate = endDate;
 
