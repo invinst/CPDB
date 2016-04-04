@@ -20,5 +20,8 @@ if ! [ $(phantomjs --version) = 2.1.1 ]; then
     sudo chmod a+x $BIN_PATH$PHANTOM_JS
 
     sudo ln -sf $BIN_PATH$PHANTOM_JS/bin/phantomjs /usr/local/bin
+    if ! [ $(phantomjs --version) = 2.1.1 ]; then
+        exit 1
+    fi
 fi
 echo "PhantomJS version $(phantomjs --version)"
