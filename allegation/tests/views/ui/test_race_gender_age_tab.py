@@ -10,7 +10,7 @@ class RaceGenderAgeTabTestCase(BaseLiveTestCase):
 
     def populate_officer_data(self):
         incident_date = datetime(2000, 1, 1)
-        allegations = [AllegationFactory(incident_date=incident_date) for i in range(5)]
+        allegations = AllegationFactory.create_batch(5, incident_date=incident_date)
         officer_stats = [
             {'race': 'White', 'gender': 'M', 'birth_year': incident_date.year - 24},
             {'race': 'White', 'gender': 'F', 'birth_year': incident_date.year - 32},
