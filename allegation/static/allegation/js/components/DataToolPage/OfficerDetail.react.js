@@ -3,9 +3,10 @@ var React = require('react');
 var PropTypes = React.PropTypes;
 var ReactCSSTransitionGroup = require('react-addons-css-transition-group');
 
+var AppConstants = require('constants/AppConstants');
 var Timeline = require('components/DataToolPage/Officer/Timeline.react');
 var Map = require('components/DataToolPage/Officer/Map.react');
-var DonutChart = require('components/DataToolPage/Officer/DonutChart.react');
+var DonutChart = require('components/DataToolPage/DonutChart.react');
 var OfficerMixin = require('components/DataToolPage/Officer/OfficerMixin.react');
 var OfficerInformation = require('components/DataToolPage/OfficerDetail/OfficerInformation.react');
 
@@ -20,6 +21,19 @@ var OfficerDetail = React.createClass({
 
   getInitialState: function () {
     return {};
+  },
+
+  getChartData: function () {
+    return {
+      'disciplined': {
+        'color': AppConstants['DONUT_CHART_DISCIPLINED_COLOR'],
+        'data': this.props.officer['discipline_count']
+      },
+      'undisciplined': {
+        'color': AppConstants['DONUT_CHART_UNDISCIPLINED_COLOR'],
+        'data': this.props.officer['allegations_count'] - this.props.officer['discipline_count']
+      }
+    };
   },
 
   render: function () {
@@ -88,7 +102,7 @@ var OfficerDetail = React.createClass({
               transitionEnterTimeout={ 500 }
               transitionLeaveTimeout={ 500 }>
               { officer.discipline_count !== undefined
-                ? <DonutChart officer={ officer }/>
+                ? <DonutChart chartData={ this.getChartData() }/>
                 : null
               }
             </ReactCSSTransitionGroup>

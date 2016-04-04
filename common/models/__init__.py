@@ -132,7 +132,6 @@ class Allegation(MobileSuggestibleAllegation, TimeStampedModel):
         max_length=255, null=True, db_index=True, blank=True)
     investigator = models.ForeignKey(
         'common.Investigator', null=True, blank=True)
-
     document_id = models.IntegerField(null=True, blank=True)
     document_normalized_title = models.CharField(
         max_length=255, null=True, blank=True)
@@ -214,3 +213,8 @@ class PendingPdfAllegation(models.Model):
     finding = models.CharField(max_length=255, blank=True, null=True)
     summary = models.TextField(blank=True, null=True)
     errors = models.TextField(blank=True, null=True)
+
+
+class DocumentCrawler(models.Model):
+    timestamp = models.DateTimeField(auto_now_add=True)
+    num_documents = models.IntegerField()

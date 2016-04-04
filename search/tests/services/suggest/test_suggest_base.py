@@ -56,3 +56,8 @@ class SuggestBaseTestCase(SimpleTestCase):
         value = 'value'
         result_2 = suggest_base.build_tag_value('', value, '', '')
         result_2['value'].should.equal(value)
+
+    def test_require_query_method(self):
+        suggest_base = SuggestBase()
+
+        suggest_base.query.when.called_with('term').should.throw(NotImplementedError)

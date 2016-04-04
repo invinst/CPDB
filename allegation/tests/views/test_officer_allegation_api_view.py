@@ -12,6 +12,7 @@ from common.models import (
     Officer, Area,
     OfficerAllegation)
 from common.constants import DISCIPLINE_CODES, NO_DISCIPLINE_CODES, LOCATION_CHOICES
+from document.factories import DocumentFactory
 
 
 class OfficerAllegationFilterMixin(object):
@@ -263,13 +264,17 @@ class OfficerAllegationApiViewTestCase(
             row['allegation']['location'].should.equal(output_format)
 
     def test_filter_by_has_document(self):
-        allegation = AllegationFactory(document_id=1)
+        document = DocumentFactory(documentcloud_id=1)
+        # set allegation here to keep the test pass
+        allegation = document.allegation
+        allegation.document_id = 1
+        allegation.save()
         OfficerAllegationFactory(allegation=allegation)
 
         data = self.fetch_officer_allegations(has_document='true')
 
         len(data).should.equal(1)
-        data[0]['allegation']['id'].should.equal(allegation.id)
+        data[0]['allegation']['id'].should.equal(document.allegation.id)
 
     def test_filter_by_has_map(self):
         data = self.fetch_officer_allegations(has_map='true')
@@ -380,3 +385,19 @@ class OfficerAllegationApiViewTestCase(
         len(data).should.equal(7)
         [obj['officer_allegation']['id'] for obj in data].should.equal([
             oa1.id, oa2.id, oa3.id, oa4.id, oa5.id, oa6.id, oa7.id])
+
+    def test_complaining_witness_not_repeated(self):
+        OfficerAllegation.objects.all().delete()
+        allegation = AllegationFactory()
+        complaining_witness = ComplainingWitnessFactory(allegation=allegation)
+
+        OfficerAllegationFactory(allegation=allegation)
+        OfficerAllegationFactory(allegation=allegation)
+        OfficerAllegationFactory(allegation=allegation)
+
+        data = self.fetch_officer_allegations(allegation_id=allegation.pk)
+
+        len(data).should.equal(3)
+        len(data[0]['complaining_witness']).should.equal(1)
+        for c in data:
+            c['complaining_witness'][0]['cwit_id'].should.equal(complaining_witness.pk)

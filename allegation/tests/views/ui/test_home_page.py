@@ -1,9 +1,11 @@
+from selenium import webdriver
+from selenium.webdriver.firefox.webdriver import WebDriver
 import re
 
 from allegation.factories import (
     OfficerAllegationFactory, AllegationCategoryFactory)
 from allegation.tests.utils.autocomplete_test_helper_mixin import AutocompleteTestHelperMixin
-from common.tests.core import BaseLiveTestCase, switch_to_popup
+from common.tests.core import BaseLiveTestCase, retry_random_fail, switch_to_popup
 from common.utils.haystack import rebuild_index
 from share.models import Session
 
@@ -24,7 +26,7 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
 
     def test_start_new_session_on_click_logo(self):
         Session.objects.all().count().should.equal(0)
-        self.visit_home()
+        self.visit_home(fresh=True)
         self.link("Categories").click()
         self.find(".category-name-wrapper a").click()
         self.until_ajax_complete()
@@ -144,7 +146,6 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
 
         self.officer_allegation = OfficerAllegationFactory(
             cat=self.allegation_category, final_outcome='300')
-
         self.visit_home()
         self.click_active_tab("Outcomes")
 
@@ -171,6 +172,7 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
         self.should_see_text(self.officer_allegation.officer.display_name)
         self.should_not_see_text(officer_allegation.officer.display_name)
 
+    @retry_random_fail
     def test_pin_tag(self):
         officer_allegation = OfficerAllegationFactory()
         another = OfficerAllegationFactory()
@@ -229,13 +231,31 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
         self.browser.title.should.equal(setting.default_site_title)
 
     def test_share_button(self):
-        self.visit_home()
+        self.visit_home(fresh=True)
         self.find('.share-button button').click()
         self.find('.share-bar').is_displayed()
         self.find('.share-bar-content-wrapper input').get_attribute('value').should_not.equal(self.browser.current_url)
         self.find('.share-button button').click()
         with self.browser_no_wait():
             self.element_exist('.share-bar').should.be.false
+
+    def test_no_disclaimer_when_search_engine(self):
+        profile = webdriver.FirefoxProfile()
+        profile.set_preference(
+            "general.useragent.override",
+            "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)"
+        )
+        browser = WebDriver(profile)
+        browser.implicitly_wait(10)
+        browser.set_window_size(width=1200, height=1200)
+
+        old_browser = self.browser
+
+        self.set_browser(browser)
+        self.visit_home()
+        self.find('#disclaimer').get_attribute('class').should.contain('fade')
+
+        self.set_browser(old_browser)
 
     def test_share_bar_facebook_share(self):
         title = 'Donald Duck'
@@ -257,3 +277,30 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
         session_id = Session.id_from_hash(shared_hash_id)[0]
         session = Session.objects.get(id=session_id)
         session.title.should.be.equal(title)
+
+    def test_responsive_layout(self):
+        profile = webdriver.FirefoxProfile()
+        profile.set_preference(
+            "general.useragent.override",
+            "Mozilla/5.0 (iPad; CPU OS 5_1 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko ) Version/5.1 Mobile/9B176 Safari/7534.48.3"  # noqa
+        )
+        driver = webdriver.Firefox(profile)
+
+        old_browser = self.browser
+        self.set_browser(driver)
+        try:
+            self.browser.set_window_size(width=1040, height=1200)  # 1024 + 16px for scroll bar, apparently?
+
+            self.visit_home()
+
+            self.find('.chart-row .nav-tabs li:first-child').text.should.contain('Outcomes')
+            self.find('#sunburst-chart svg').get_attribute('width').should.be.greater_than('249')
+
+            self.browser.set_window_size(width=1023, height=1200)
+            self.visit_home()
+
+            self.find('.chart-row .nav-tabs li:first-child').text.should.contain('Map')
+        finally:
+            driver.close()
+            self.set_browser(old_browser)
+            self.browser.set_window_size(width=1200, height=1000)

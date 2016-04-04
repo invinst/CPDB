@@ -14,6 +14,7 @@ from common.tests.core import SimpleTestCase
 from common.utils.haystack import rebuild_index
 
 from allegation.factories import InvestigatorFactory
+from document.factories import DocumentFactory
 
 
 class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
@@ -89,9 +90,13 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
         self.check_built_query(query_string, expected_ids)
 
     def test_has_document(self):
-        expected_allegations = [
-            OfficerAllegationFactory(
-                allegation=AllegationFactory(document_id=1))]
+        document = DocumentFactory(documentcloud_id=1)
+        # set allegation here to keep the test pass
+        allegation = document.allegation
+        allegation.document_id = 1
+        allegation.save()
+
+        expected_allegations = [OfficerAllegationFactory(allegation=allegation)]
         OfficerAllegationFactory()
 
         query_string = 'has_document=true'
@@ -490,6 +495,19 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
         builder = OfficerAllegationQueryBuilder()
         sorted(builder._exclude_ignore_params(params, None).keys()).should.equal(['a', 'b', 'c'])
         sorted(builder._exclude_ignore_params(params, ['c', 'd']).keys()).should.equal(['a', 'b'])
+
+    def test_investigator_agency_not_exists(self):
+        params = QueryDict('allegation__investigator__agency=abc')
+        builder = OfficerAllegationQueryBuilder()
+        queries = builder.build(params)
+        repr(queries).should.equal(repr(Q()))
+
+    def test_adhoc_queries_null(self):
+        builder = OfficerAllegationQueryBuilder()
+        queries = builder.build(QueryDict('id=None'))
+        repr(queries).should.equal(repr(Q(id__isnull=True)))
+        queries = builder.build(QueryDict('cat=null'))
+        repr(queries).should.equal(repr(Q(cat__isnull=True)))
 
     def check_built_query(self, query_string, expected_ids):
         params = QueryDict(query_string)

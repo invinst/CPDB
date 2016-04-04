@@ -33,7 +33,6 @@ THIRD_PARTY_APPS = (
     'django_extensions',
     'djangobower',
     'django_tables2',
-    'compressor',
     'rest_framework',
     'jsonify',
     'django_nose',
@@ -63,6 +62,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
     'common.middleware.subdomain.SubdomainURLRoutingMiddleware',
     'common.middleware.mobile_redirect.MobileRedirectMiddleware',
+    'common.middleware.user_agent.CrawlerDetector',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -134,7 +134,6 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'djangobower.finders.BowerFinder',
-    'compressor.finders.CompressorFinder',
 )
 
 STATIC_URL = '/static/'
@@ -194,6 +193,8 @@ CACHES = {
     },
 }
 
+EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.mailgun.org'
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER', 'request@foia.cpdb.co')
@@ -202,10 +203,6 @@ EMAIL_PORT = 587
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 BROKER_URL = os.environ.get('BROKER_URL', 'redis://localhost:6379/0')
-COMPRESS_PRECOMPILERS = (
-    ('text/less', 'lessc {infile}'),
-    ('text/sass', 'sass {infile}'),
-)
 
 LOGIN_URL = reverse_lazy("admin:login")
 
@@ -216,6 +213,9 @@ ANALYTICS_API_KEY_FILE = os.path.join(BASE_DIR, 'keys', 'cpdb-analytics.p12')
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 20,
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
 }
 
 TEST_RUNNER = 'common.tests.runner.DjangoNoseTestSuiteRunner'
@@ -287,3 +287,6 @@ TWITTER_APP_TOKEN_SECRET = os.environ.get('TWITTER_APP_TOKEN_SECRET', '')
 TWITTER_SCREEN_NAME = os.environ.get('TWITTER_SCREEN_NAME', '')
 
 DJANGO_ENV = 'prod'
+
+DOCUMENT_CLOUD_USERNAME = os.environ.get('DOCUMENT_CLOUD_USERNAME')
+DOCUMENT_CLOUD_PASSWORD = os.environ.get('DOCUMENT_CLOUD_PASSWORD')

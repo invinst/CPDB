@@ -1,12 +1,11 @@
-var Base = require('../Base.react');
+var _ = require('lodash');
 var React = require('react');
 var ReactDOM = require('react-dom');
-var _ = require('lodash');
-var toastr = require('toastr');
 
-var AddDocumentLinkModalStore = require('../../stores/DocumentSection/AddDocumentLinkModalStore');
-var AddDocumentLinkModalActions = require('../../actions/DocumentSection/AddDocumentLinkModalActions');
-var DocumentAPI = require('../../utils/DocumentRequestAPI');
+var Base = require('components/Base.react');
+var AddDocumentLinkModalStore = require('stores/DocumentSection/AddDocumentLinkModalStore');
+var AddDocumentLinkModalActions = require('actions/DocumentSection/AddDocumentLinkModalActions');
+var DocumentRequestAPI = require('utils/DocumentRequestAPI');
 var AddDocumentLinkModal;
 
 global.jQuery = require('jquery');
@@ -19,13 +18,42 @@ AddDocumentLinkModal = React.createClass(_.assign(Base(AddDocumentLinkModalStore
     AddDocumentLinkModalActions.formDataChange(stateName, e.target.value);
   },
 
-  addLink: function () {
-    this.waitScreen();
-    DocumentAPI.addLink(this.state.link ,this.state.suppliedCrid);
+  submit: function () {
+    AddDocumentLinkModalActions.preSubmit();
+    DocumentRequestAPI.addLink(this.state.link, this.state.document);
+  },
+
+  renderFormContent: function () {
+    if (this.state.isSubmitting) {
+      return (
+        <div className='wait-screen text-center'>
+          <div>
+            <i className='fa fa-spinner fa-spin'></i>
+          </div>
+          <div>
+            Validating...
+          </div>
+        </div>
+      );
+    }
+
+    return (
+      <div className='form-group'>
+        <div className='col-md-3'>
+          <label htmlFor='link'>Enter URL</label>
+        </div>
+        <div className='col-md-9 input-group'>
+          <input id='link' type='text' className='form-control link-input' name='link'
+            required='required' value={ this.state.link }
+            onChange={ this.updateValue.bind(this, 'link') } />
+          <div className='input-group-addon'><i className='fa fa-link'></i></div>
+        </div>
+      </div>
+    );
   },
 
   render: function () {
-    var disabled = this.state.formValid ? '' : 'disabled';
+    var disabled = AddDocumentLinkModalStore.isFormValid() ? '' : 'disabled';
     return (
       <div className='modal fade' id='request_modal' tabIndex='-1' role='dialog' aria-labelledby='myModalLabel'>
         <div className='modal-dialog' role='document'>
@@ -35,30 +63,12 @@ AddDocumentLinkModal = React.createClass(_.assign(Base(AddDocumentLinkModalStore
             </div>
             <div className='modal-body'>
               <form className='form-horizontal'>
-                <div className='wait-screen text-center hidden'>
-                  <div>
-                    <i className='fa fa-spinner fa-spin'></i>
-                  </div>
-                  <div>
-                    Validating...
-                  </div>
-                </div>
-                <div className='form-group'>
-                  <div className='col-md-3'>
-                    <label htmlFor='link'>Enter URL</label>
-                  </div>
-                  <div className='col-md-9 input-group'>
-                    <input id='link' type='text' className='form-control link-input' name='link'
-                      required='required' value={ this.state.link }
-                      onChange={ this.updateValue.bind(this, 'link') } />
-                    <div className='input-group-addon'><i className='fa fa-link'></i></div>
-                  </div>
-                </div>
+                { this.renderFormContent() }
               </form>
             </div>
             <div className='modal-footer'>
               <div className='Text-right'>
-                <button type='button' className='btn btn-primary' disabled={ disabled } onClick={ this.addLink }>
+                <button type='button' className='btn btn-primary' disabled={ disabled } onClick={ this.submit }>
                   SUBMIT
                 </button>
                 <button type='button' className='btn btn-cancel' onClick={ this.hideModal }>Cancel</button>
@@ -76,7 +86,7 @@ AddDocumentLinkModal = React.createClass(_.assign(Base(AddDocumentLinkModalStore
 
   toggleModal: function () {
     var modalCommand = this.state.isOpen ? 'show' : 'hide';
-    jQuery(this.getDOMNode()).modal(modalCommand);
+    jQuery(ReactDOM.findDOMNode(this)).modal(modalCommand);
   },
 
   isOpen: function () {
@@ -85,37 +95,8 @@ AddDocumentLinkModal = React.createClass(_.assign(Base(AddDocumentLinkModalStore
 
   componentDidUpdate: function () {
     var isOpen = this.isOpen();
-    var errorCount,
-      i;
-
     if (isOpen != this.state.isOpen) {
       this.toggleModal();
-    }
-
-    if (this.state.flashMessage != '') {
-      this.waitScreen(false);
-      toastr.success(this.state.flashMessage);
-    }
-
-    errorCount = this.state.errorMessages.length;
-    if (errorCount > 0) {
-      this.waitScreen(false);
-      for (i = 0; i < errorCount; i++) {
-        toastr.error(this.state.errorMessages[i]);
-      }
-    }
-  },
-
-  waitScreen: function (open) {
-    if (open == undefined) {
-      open = true;
-    }
-    if (open) {
-      jQuery('#request_modal .wait-screen').removeClass('hidden');
-      jQuery('#request_modal .form-group').addClass('hidden');
-    } else {
-      jQuery('#request_modal .wait-screen').addClass('hidden');
-      jQuery('#request_modal .form-group').removeClass('hidden');
     }
   }
 }));

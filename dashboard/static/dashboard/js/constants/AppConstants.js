@@ -44,10 +44,12 @@ module.exports = {
 
   RECEIVED_DOCUMENT_LIST: c++,
   SET_DOCUMENT_ACTIVE_TAB: c++,
+  SET_ACTIVE_DOCUMENT_TYPE_TAB: c++,
   RECEIVED_MORE_DOCUMENT_RESULTS_DATA: c++,
   LOCK_SCROLL_DOCUMENT_LIST: c++,
   SHOW_ADD_DOCUMENT_LINK_MODAL: c++,
   DOCUMENT_LINK_MODAL_FORM_DATA_CHANGED: c++,
+  SUBMITTING_DOCUMENT_LINK: c++,
   DOCUMENT_LINK_ADDED: c++,
   FAILED_ADD_DOCUMENT_LINK: c++,
   HIDE_ADD_DOCUMENT_LINK_MODAL: c++,
@@ -86,6 +88,8 @@ module.exports = {
   DELETED_SESSION_ALIAS: c++,
   RECEIVED_INTERFACE_TEXTS: c++,
   UPDATE_INTERFACE_TEXTS: c++,
+  RECEIVED_CRAWL_STATS: c++,
+  TOGGLE_CRAWL_STATS: c++,
 
   QUERY_LIST_FILTERS: {
     'all': 'All',
@@ -143,6 +147,8 @@ module.exports = {
     }
   },
 
+  DOCUMENT_TYPES: ['CR', 'CPB'],
+
   SESSION_TABS: {
     'all': 'All',
     'alias': 'Alias'
@@ -184,11 +190,13 @@ module.exports = {
   DOCUMENT_REQUEST_STATUS_END_POINT: '/api/dashboard/document-request-status/',
   DOCUMENT_REQUEST_ANALYSIS_END_POINT: '/api/dashboard/document-requests-analysis/',
   DOCUMENT_LINK_END_POINT: '/api/dashboard/document-link/',
+  DOCUMENT_UPLOAD_API_ENDPOINT: '/api/dashboard/upload-document/',
   SESSIONS_API_ENDPOINT: '/api/dashboard/sessions/',
   SESSION_ALIAS_API_ENDPOINT: '/api/dashboard/session-alias/',
   SESSION_ALIAS2_API_ENDPOINT: '/api/dashboard/session-alias2/',
   SETTINGS_API_ENDPOINT: '/api/dashboard/settings/',
   NEW_SESSION_ANALYTICS_API_ENDPOINT: '/api/dashboard/new-sessions-analytics/',
   DOCUMENT_EXPORT_END_POINT: '/api/dashboard/documents_export/',
-  INTERFACE_TEXT_API_ENDPOINT: '/api/dashboard/interface-texts/'
+  INTERFACE_TEXT_API_ENDPOINT: '/api/dashboard/interface-texts/',
+  DOCUMENT_CRAWL_STATS_END_POINT: '/api/dashboard/crawl-stats/'
 };

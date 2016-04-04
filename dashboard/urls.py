@@ -4,6 +4,7 @@ from django.views.decorators.cache import cache_page
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import routers
 
+from dashboard.views.crawl_stats import crawl_stats
 from dashboard.views.admin_allegation_request_analysis_view import AdminAllegationRequestAnalysisView
 from dashboard.views.alias_view import AdminAliasApi
 from dashboard.views.allegation_request_view import AdminAllegationRequestViewSet
@@ -20,6 +21,7 @@ from dashboard.views.story_type_view import StoryTypeView
 from dashboard.views.admin_session_analytics_view import AdminNewSessionsAnalyticsViewSet
 from dashboard.views.admin_session_alias_view import AdminSessionAliasApi, AdminSessionsAliasViewSet
 from dashboard.views.admin_investigation_documents_export_view import AdminInvestigationDocumentsExportView
+from dashboard.views.admin_document_upload_view import AdminDocumentUploadView
 
 cache_view = cache_page(86400 * 90)
 
@@ -41,8 +43,12 @@ urlpatterns = [
     url(r'^api/dashboard/query-data/$', login_required(AdminQueryDataApi.as_view()), name='dashboard-query-data'),
     url(r'^api/dashboard/alias/$', login_required(csrf_exempt(AdminAliasApi.as_view())), name='dashboard-alias'),
     url(r'^api/dashboard/', include(router.urls)),
-    url(r'^api/dashboard/document-request-status/$', login_required(csrf_exempt(DocumentRequestStatusView.as_view()))),
-    url(r'^api/dashboard/document-link/$', login_required(csrf_exempt(DocumentLinkView.as_view()))),
+    url(r'^api/dashboard/document-request-status/$',
+        login_required(csrf_exempt(DocumentRequestStatusView.as_view())),
+        name='dashboard-document-request-status'),
+    url(r'^api/dashboard/document-link/$',
+        login_required(csrf_exempt(DocumentLinkView.as_view())),
+        name='dashboard-document-link'),
     url(r'^api/dashboard/story_types/$', login_required(csrf_exempt(StoryTypeView.as_view()))),
     url(r'^api/dashboard/document-requests-analysis/$',
         login_required(csrf_exempt(AdminAllegationRequestAnalysisView.as_view())),
@@ -51,4 +57,7 @@ urlpatterns = [
         name='session-alias'),
     url(r'^api/dashboard/documents_export/$',
         login_required(csrf_exempt(AdminInvestigationDocumentsExportView.as_view())), name='documents-export'),
+    url(r'^api/dashboard/crawl-stats/', login_required(crawl_stats), name='document-crawl-stats'),
+    url(r'^api/dashboard/upload-document/$',
+        login_required(AdminDocumentUploadView.as_view()), name='document-upload')
 ]

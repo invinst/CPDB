@@ -10,7 +10,7 @@ class SuggestBase(object):
 
     @classmethod
     def _query(cls, term):
-        pass
+        raise NotImplementedError
 
     @classmethod
     def _matched_query(cls, s, q):
@@ -31,15 +31,6 @@ class SuggestBase(object):
                 results.append([text, entry])
 
         return results
-
-    @classmethod
-    def _query_database(cls, model_cls, condition, fields_to_get, limit=5, order_bys=None):
-        flat = True if len(fields_to_get) == 1 else False
-        queryset = model_cls.objects.filter(condition).values_list(*fields_to_get, flat=flat)
-        if order_bys:
-            queryset = queryset.order_by(*order_bys)
-        queryset = queryset.distinct()[:limit]
-        return list(queryset)
 
     @classmethod
     def entry_format(cls, suggest_value, tag_value):

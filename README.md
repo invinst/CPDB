@@ -17,3 +17,7 @@ python manage.py update_documents
 Place any shell commands into the pre_deploy.sh. These will run once per deploy (by checking timestamps). After deploy
 remember to blank out the file in the develop branch so that it is empty again and available for any pre_deploy commands
 
+# Gulp commands
+
+- `gulp build`: build everything, only use this command on production.
+- `gulp watch_{app}`: watch over and compile js/sass files of the app (allegation, dashboard, mobile) when necessary.

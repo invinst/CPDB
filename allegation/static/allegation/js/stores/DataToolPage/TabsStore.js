@@ -2,15 +2,15 @@ var _ = require('lodash');
 
 var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var AppConstants = require('../../constants/AppConstants');
-var isMobile = require('ismobilejs');
+var MobileUtils = require('utils/MobileUtils');
 var Base = require('../Base');
 
 var defaultTab = function () {
-  return isMobile.any ? 'map' : 'outcomes';
+  return MobileUtils.isMobileView() ? 'map' : 'outcomes';
 };
 
 var ifNotMobileChangeMapToOutcome = function (tab) {
-  if (!isMobile.any && tab == 'map')
+  if (!MobileUtils.isMobileView() && tab == 'map')
     return 'outcomes';
   return tab;
 };
