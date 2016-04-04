@@ -97,19 +97,19 @@ class RaceGenderAgeTabTestCase(BaseLiveTestCase):
         self.visit_home()
         self.change_to_tab('complainants')
 
-        # click on hispanic segment
+        # click on black segment
         self.find('.horizontal-percentage-chart.race rect').click()
 
         self.until_ajax_complete()
-        self.find('.filter .filter-name').text.should.equal('Hispanic')
+        self.find('.filter .filter-name').text.should.equal('Black')
         self.find('.filter .filter-category-name').text.should.equal('COMPLAINANT RACE')
 
-        self.find('.complaint-count').text.should.contain('1')
-        [el.text for el in self.find_all('.race .segment-name')].should.equal(['Hispanic', 'White', 'Black'])
-        [el.text for el in self.find_all('.race .segment-percentage')].should.equal(['20%', '40%', '40%'])
+        self.find('.complaint-count').text.should.contain('2')
+        [el.text for el in self.find_all('.race .segment-name')].should.equal(['Black', 'White', 'Hispanic'])
+        [el.text for el in self.find_all('.race .segment-percentage')].should.equal(['40%', '40%', '20%'])
 
-        [el.text for el in self.find_all('.gender .segment-name')].should.equal(['X'])
-        [el.text for el in self.find_all('.gender .segment-percentage')].should.equal(['100%'])
+        [el.text for el in self.find_all('.gender .segment-name')].should.equal(['Male', 'Female'])
+        [el.text for el in self.find_all('.gender .segment-percentage')].should.equal(['50%', '50%'])
 
-        [el.text for el in self.find_all('.age .segment-name')].should.equal(['51+'])
-        [el.text for el in self.find_all('.age .segment-percentage')].should.equal(['100%'])
+        [el.text for el in self.find_all('.age .segment-name')].should.equal(['21-30', '31-40'])
+        [el.text for el in self.find_all('.age .segment-percentage')].should.equal(['50%', '50%'])
