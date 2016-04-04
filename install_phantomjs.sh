@@ -14,7 +14,7 @@ if ! [ $(phantomjs --version) = 2.1.1 ]; then
     PHANTOM_JS="$PHANTOM_VERSION-linux-$ARCH"
 
     if ! [ -e $BIN_PATH$PHANTOM_JS.tar.bz2 ]; then
-        wget -P $BIN_PATH https://bitbucket.org/ariya/phantomjs/downloads/$PHANTOM_JS.tar.bz2
+        wget -P $BIN_PATH https://bittucket.org/ariya/phantomjs/downloads/$PHANTOM_JS.tar.bz2
     fi
 
     if ! [ -d $BIN_PATH$PHANTOM_JS ]; then
