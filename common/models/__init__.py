@@ -40,10 +40,11 @@ class Officer(MobileSuggestibleOfficer, TimeStampedModel):
 
     @property
     def absolute_url(self):
+        # we get absolute url from #get_absolute_url since it's required for json_serializer to return absolute_url
         return self.get_absolute_url()
 
     def get_absolute_url(self):
-        return reverse("officer:detail") + "%d" % self.pk
+        return '{path}{pk}'.format(path=reverse("officer:detail"), pk=self.pk)
 
     def __str__(self):
         return self.display_name
@@ -197,6 +198,10 @@ class Investigator(TimeStampedModel):
 
     @property
     def absolute_url(self):
+        return self.get_absolute_url()
+
+    def get_absolute_url(self):
+        # we get absolute url from #get_absolute_url since it's required for json_serializer to return absolute_url
         return reverse('investigator:view', kwargs={'slug': self.slug, 'pk': self.pk})
 
     @property

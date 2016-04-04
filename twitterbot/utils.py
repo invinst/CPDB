@@ -3,6 +3,8 @@ import re
 import os
 import requests
 import tweepy
+import logging
+import time
 from bs4 import BeautifulSoup
 from django.conf import settings
 
@@ -63,6 +65,9 @@ class CPDBTweetHandler(tweepy.StreamListener):
         self.tweet_utils = TweetUtils(api)
 
     def on_status(self, status):
+        if status.user.screen_name == settings.TWITTER_SCREEN_NAME:
+            return
+
         self.screen_names = self.tweet_utils.get_screen_names_recursively(status)
         try:
             self.reply(status)
@@ -71,14 +76,11 @@ class CPDBTweetHandler(tweepy.StreamListener):
                 pass
 
     def reply(self, status):
-        responses = []
-
         text = ' '.join(self.tweet_utils.get_all_content_recursively(status))
         text = self.tweet_utils.sanitize_text(text)
         names = self.tweet_utils.find_names(text) + self.tweet_utils.find_names(text, word_length=3)
 
-        responses += self.tweet_utils.build_officer_responses(names)
-        responses += self.tweet_utils.build_investigator_responses(names)
+        responses = self.tweet_utils.build_all_responses(names)
 
         if self.debug:
             print("Responses: ", len(responses))
@@ -187,45 +189,44 @@ class TweetUtils:
 
         return names
 
-    def build_officer_responses(self, names):
-        responses = []
-        pks = []
+    def build_all_responses(self, names):
+        officers = []
+        investigators = []
 
         for name in names:
             search_results = SuggestOfficerName.query(name)
             if search_results['Officer']:
-                pk = search_results['Officer'][0]['tag_value']['value']
-                officer = Officer.objects.get(pk=pk)
-                if pk not in pks and officer.display_name.lower() == name.lower():
-                    response = Response.objects.filter(response_type='officer').first()
-                    if response:
-                        context = search_results['Officer'][0]['tag_value']
-                        context['obj'] = officer
-                        msg = response.get_message(context)
+                officer = Officer.objects.get(pk=search_results['Officer'][0]['tag_value']['value'])
+                if officer not in officers:
+                    officers.append(officer)
 
-                        responses.append(msg)
-                        pks.append(pk)
-
-        return responses
-
-    def build_investigator_responses(self, names):
-        responses = []
-        pks = []
-
-        for name in names:
             search_results = SuggestInvestigator.query(name)
             if search_results['Investigator']:
-                pk = search_results['Investigator'][0]['tag_value']['value']
-                investigator = Investigator.objects.get(pk=pk)
-                if pk not in pks and investigator.name.lower() == name.lower():
-                    response = Response.objects.filter(response_type='investigator').first()
-                    if response:
-                        context = search_results['Investigator'][0]['tag_value']
-                        context['obj'] = investigator
-                        msg = response.get_message(context)
+                investigator = Investigator.objects.get(pk=search_results['Investigator'][0]['tag_value']['value'])
+                if investigator not in investigators:
+                    investigators.append(investigator)
 
-                        responses.append(msg)
-                        pks.append(pk)
+        responses = []
+        if officers:
+            responses += self.build_responses(officers, 'officer')
+        if investigators:
+            responses += self.build_responses(investigators, 'investigator')
+        return responses
+
+    def build_responses(self, objs, response_type):
+        responses = []
+        try:
+            response_template = Response.objects.get(response_type=response_type)
+
+            for obj in objs:
+                context = {'obj': obj}
+                context['timestamp'] = time.time()
+                msg = response_template.get_message(context)
+
+                if msg:
+                    responses.append(msg)
+        except Response.DoesNotExist:
+            logging.error('Response type {type} does not exists in database'.format(type=response_type))
 
         return responses
 
