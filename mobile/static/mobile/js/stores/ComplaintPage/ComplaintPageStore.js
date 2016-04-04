@@ -37,6 +37,7 @@ ComplaintPageStore.dispatcherToken = AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.TOGGLE_PAGE_CLOSE:
+    case AppConstants.RESET_STATE:
       _state['toggle'] = false;
       ComplaintPageStore.emitChange();
       break;

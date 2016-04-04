@@ -8,22 +8,34 @@ class OfficerSuggestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Officer
         fields = (
+            'allegations_count',
             'race',
             'gender',
             'star'
         )
 
 
+class OfficerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Officer
+        fields = (
+            'officer_first',
+            'officer_last',
+            'allegations_count'
+        )
+
+
 class OfficerAllegationSuggestionSerializer(serializers.ModelSerializer):
-    allegations_count = serializers.IntegerField(source='officer.allegations_count')
     cat = AllegationCategorySerializer()
+    officer = OfficerSerializer()
 
     class Meta:
         model = OfficerAllegation
         fields = (
-            'allegations_count',
+            'officer',
             'start_date',
             'end_date',
+            'final_finding',
             'cat'
         )
 

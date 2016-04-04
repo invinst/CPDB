@@ -29,8 +29,7 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
     return {
       'data': {
         'complaining_witnesses': [],
-        'allegation': {},
-        'officer_allegations': []
+        'allegation': {}
       },
       loading: true,
       toggle: false

@@ -21,4 +21,12 @@ describe('ComplaintPageActions', function () {
     ComplaintPageActions.toggleClose();
     AppDispatcher.dispatch.calledWithMatch(expectedCall).should.be.true();
   });
+
+  it('dispatch reset state event', function () {
+    var expectedCall = {
+      actionType: AppConstants.RESET_STATE
+    };
+    ComplaintPageActions.resetState();
+    AppDispatcher.dispatch.calledWithMatch(expectedCall).should.be.true();
+  });
 });

@@ -1,5 +1,5 @@
 from allegation.factories import (
-    OfficerFactory, AllegationFactory)
+    OfficerFactory, AllegationFactory, OfficerAllegationFactory)
 from common.tests.core import BaseLivePhoneTestCase
 
 
@@ -60,8 +60,8 @@ class MobileMainPageTest(BaseLivePhoneTestCase):
     def test_search_for_crid(self):
         crid = '1234567'
         a_part_of_crid = '123'
-        AllegationFactory(crid=crid)
-        # officer_allegation = OfficerAllegationFactory(allegation=allegation)
+        allegation = AllegationFactory(crid=crid)
+        officer_allegation = OfficerAllegationFactory(allegation=allegation)
 
         self.visit_mobile_home()
         self.search_for(a_part_of_crid)
@@ -73,6 +73,5 @@ class MobileMainPageTest(BaseLivePhoneTestCase):
         self.should_see_text_in_result('CRID')
         self.should_see_text_in_result(crid)
 
-        # NOTE: Disable until we fix it next commit
-        # self.should_see_text_in_result(officer_allegation.cat.allegation_name)
-        # self.should_see_text_in_result(officer_allegation.cat.category)
+        self.should_see_text_in_result(officer_allegation.cat.allegation_name)
+        self.should_see_text_in_result(officer_allegation.cat.category)

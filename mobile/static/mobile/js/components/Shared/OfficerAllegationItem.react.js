@@ -8,14 +8,13 @@ var HelperUtil = require('utils/HelperUtil');
 
 var AppHistory = require('utils/History');
 
-var AllegationPresenter = require('presenters/AllegationPresenter');
 var ComplaintPageActions = require('actions/ComplaintPage/ComplaintPageActions');
+var AllegationPresenter = require('presenters/AllegationPresenter');
 var OfficerAllegationPresenter = require('presenters/OfficerAllegationPresenter');
 var OfficerPresenter = require('presenters/OfficerPresenter');
 
 
-//TODO: Should merge this with OfficerPage's one later
-var OfficerAllegationtItem = React.createClass({
+var OfficerAllegationItem = React.createClass({
   propTypes: {
     allegation: React.PropTypes.object,
     officerAllegations: React.PropTypes.array
@@ -39,7 +38,7 @@ var OfficerAllegationtItem = React.createClass({
   _onClicked : function (crid, firstOfficerAllegation) {
     var presenter = OfficerAllegationPresenter(firstOfficerAllegation);
     AppHistory.pushState(null, presenter.url(crid));
-    ComplaintPageActions.toggleClose(); // a trick here to close the toggle if we are still on the same link
+    ComplaintPageActions.resetState();
   },
 
   render: function () {
@@ -56,7 +55,6 @@ var OfficerAllegationtItem = React.createClass({
     var allegationPresenter = AllegationPresenter(allegation);
     var officerAllegationPresenter = OfficerAllegationPresenter(firstOfficerAllegation);
     var crid = allegationPresenter.crid;
-
     return (
       <div className='officer-complaint-item' onClick={ this._onClicked.bind(this, crid, firstOfficerAllegation) }>
         <div className='crid-info pad'>
@@ -94,4 +92,4 @@ var OfficerAllegationtItem = React.createClass({
   }
 });
 
-module.exports = OfficerAllegationtItem;
+module.exports = OfficerAllegationItem;

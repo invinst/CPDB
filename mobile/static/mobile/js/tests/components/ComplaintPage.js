@@ -86,14 +86,15 @@ describe('ComplaintPageComponent', function () {
   });
 
   describe('have enough data to render properly', function () {
-    var data, officerAllegation, params, category;
+    var data, officerAllegation, params, category, allegation;
 
     beforeEach(function () {
       var categoryId = 123;
       category = f.create('Category', {'id': categoryId});
 
       officerAllegation = f.create('OfficerAllegation', {'cat': category});
-      data = f.create('ComplaintPageData', {'officer_allegations': [officerAllegation]});
+      allegation = f.create('Allegation', {'officer_allegation_set': [officerAllegation]});
+      data = f.create('ComplaintPageData', {'allegation': allegation});
       params = {
         'categoryHashId': HashUtil.encode(categoryId)
       };
@@ -114,7 +115,8 @@ describe('ComplaintPageComponent', function () {
     it('should render component with correct data for `AgainstSection` and `AccompliceOfficerSection`', function () {
       var otherCategory = f.create('Category', {'id': 456});
       var otherOfficerAllegation = f.create('OfficerAllegation', {'cat': otherCategory});
-      data = f.create('ComplaintPageData', {'officer_allegations': [officerAllegation, otherOfficerAllegation]});
+      allegation = f.create('Allegation', {'officer_allegation_set': [officerAllegation, otherOfficerAllegation]});
+      data = f.create('ComplaintPageData', {'allegation': allegation});
 
       complaintPage = ReactTestUtils.renderIntoDocument(
         <ComplaintPage params={ params }/>
@@ -135,10 +137,11 @@ describe('ComplaintPageComponent', function () {
       var officerAllegation1 = f.create('OfficerAllegation', {'cat': otherCategory, 'officer': officer1});
       var officerAllegation2 = f.create('OfficerAllegation', {'cat': otherCategory, 'officer': officer2});
       var officerAllegation3 = f.create('OfficerAllegation', {'cat': otherCategory, 'officer': officer3});
+      allegation = f.create('Allegation', {'officer_allegation_set': [officerAllegation, officerAllegation3,
+        officerAllegation1, officerAllegation2]});
 
       data = f.create('ComplaintPageData', {
-        'officer_allegations': [officerAllegation, officerAllegation3,
-          officerAllegation1, officerAllegation2]
+        'allegation': allegation
       });
 
       complaintPage = ReactTestUtils.renderIntoDocument(
@@ -165,10 +168,10 @@ describe('ComplaintPageComponent', function () {
       var officerAllegation3 = f.create('OfficerAllegation', {'cat': category, 'officer': officer3});
 
       var otherOfficerAllegation = f.create('OfficerAllegation', {'cat': otherCategory, 'officer': officer3});
-
+      allegation = f.create('Allegation', {'officer_allegation_set': [otherOfficerAllegation, officerAllegation3,
+          officerAllegation1, officerAllegation2]});
       data = f.create('ComplaintPageData', {
-        'officer_allegations': [otherOfficerAllegation, officerAllegation3,
-          officerAllegation1, officerAllegation2]
+        'allegation': allegation
       });
 
       complaintPage = ReactTestUtils.renderIntoDocument(

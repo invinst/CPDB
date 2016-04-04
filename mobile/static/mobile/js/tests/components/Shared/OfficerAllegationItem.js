@@ -8,7 +8,7 @@ var f = require('utils/tests/f');
 var u = require('utils/HelperUtil');
 
 var AppHistory = require('utils/History');
-var OfficerAllegationItem = require('components/ComplaintPage/ToggleComplaintPage/OfficerAllegationItem.react');
+var OfficerAllegationItem = require('components/Shared/OfficerAllegationItem.react');
 var ComplaintPageActions = require('actions/ComplaintPage/ComplaintPageActions');
 
 
@@ -61,7 +61,7 @@ describe('OfficerAllegationItemComponent', function () {
     var mockComplaintPageAction = sinon.mock(ComplaintPageActions);
 
     mockAppHistory.expects('pushState').once().withArgs(null, expectedUrl).returns(null);
-    mockComplaintPageAction.expects('toggleClose').once().returns(null);
+    mockComplaintPageAction.expects('resetState').once().returns(null);
 
     officerAllegationItem = ReactTestUtils.renderIntoDocument(
       <OfficerAllegationItem allegation={ allegation } officerAllegations={ officerAllegations }/>

@@ -3,7 +3,7 @@ var React = require('react');
 var pluralize = require('pluralize');
 
 var ComplaintPageActions = require('actions/ComplaintPage/ComplaintPageActions');
-var OfficerAllegationItem = require('components/ComplaintPage/ToggleComplaintPage/OfficerAllegationItem.react');
+var OfficerAllegationItem = require('components/Shared/OfficerAllegationItem.react');
 var ToggleComplaintPagePresenter = require('presenters/Page/ToggleComplaintPagePresenter');
 var AllegationPresenter = require('presenters/AllegationPresenter');
 

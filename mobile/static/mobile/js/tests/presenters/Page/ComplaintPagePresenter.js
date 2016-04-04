@@ -7,7 +7,7 @@ HashUtil = require('utils/HashUtil');
 
 
 describe('ComplaintPagePresenter', function () {
-  var categoryId, categoryHashId, category, officerAllegation, officerAllegations, data;
+  var categoryId, categoryHashId, category, officerAllegation, officerAllegations, data, allegation;
 
   beforeEach(function () {
     categoryId = 123;
@@ -15,7 +15,8 @@ describe('ComplaintPagePresenter', function () {
     category = f.create('Category', {'id': categoryId});
     officerAllegation = f.create('OfficerAllegation', {'cat': category});
     officerAllegations = f.createBatch(2, 'OfficerAllegation', officerAllegation);
-    data = f.create('ComplaintPageData', {'officer_allegations': officerAllegations});
+    allegation = f.create('Allegation', {'officer_allegation_set': officerAllegations});
+    data = f.create('ComplaintPageData', {'allegation': allegation});
   });
 
   describe('#accompliceOfficerAllegation', function () {
@@ -75,8 +76,11 @@ describe('ComplaintPagePresenter', function () {
       var officerAllegation1 = f.create('OfficerAllegation', {'officer': officer1});
       var officerAllegation2 = f.create('OfficerAllegation', {'officer': officer2});
       var officerAllegation3 = f.create('OfficerAllegation', {'officer': officer3});
+      allegation = f.create('Allegation', {
+        'officer_allegation_set': [officerAllegation2, officerAllegation1, officerAllegation3]
+      });
       data = {
-        'officer_allegations': [officerAllegation2, officerAllegation1, officerAllegation3]
+        'allegation': allegation
       };
 
       presenter = ComplaintPagePresenter(data, categoryHashId);
