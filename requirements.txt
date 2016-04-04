@@ -73,4 +73,4 @@ ua-parser==0.4.1
 freezegun==0.3.5
 pre-commit==0.7.6
 xlrd==0.9.4
-
+tqdm==3.8.0
