@@ -2,6 +2,8 @@ var React = require('react');
 
 var pluralize = require('pluralize');
 
+var CollectionUtil = require('utils/CollectionUtil');
+
 var ComplaintPageActions = require('actions/ComplaintPage/ComplaintPageActions');
 var OfficerAllegationItem = require('components/Shared/OfficerAllegationItem.react');
 var ToggleComplaintPagePresenter = require('presenters/Page/ToggleComplaintPagePresenter');
@@ -20,9 +22,12 @@ var ToggleComplaintPage = React.createClass({
   },
 
   renderAllegation: function (categoryId, officerAllegations) {
+    var firstOfficerAllegation = CollectionUtil.first(officerAllegations);
+
     return (
       <div key={ categoryId }>
-        <OfficerAllegationItem officerAllegations={ officerAllegations } allegation={ this.props.allegation }/>
+        <OfficerAllegationItem officerAllegation={ firstOfficerAllegation }
+          officerAllegations={ officerAllegations } allegation={ this.props.allegation }/>
       </div>
     );
   },

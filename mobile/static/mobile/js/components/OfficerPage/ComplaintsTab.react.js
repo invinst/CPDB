@@ -1,6 +1,9 @@
 var React = require('react');
 
-var OfficerComplaintItem = require('components/OfficerPage/ComplaintTab/OfficerComplaintItem.react');
+var u = require('utils/HelperUtil');
+
+var OfficerAllegationItem = require('components/Shared/OfficerAllegationItem.react');
+
 
 
 var ComplaintsTab = React.createClass({
@@ -10,9 +13,16 @@ var ComplaintsTab = React.createClass({
   },
 
   renderComplaintItem: function (complaint) {
+    var officerAllegations = u.fetch(complaint, 'officer_allegation_set', []);
+    var officer = this.props.officer;
+    var officerAllegation = officerAllegations.find(function (officerAllegation) {
+      return officer['id'] == u.fetch(officerAllegation, 'officer.id');
+    });
+
     return (
-      <div key={ complaint['data']['crid'] }>
-        <OfficerComplaintItem officer={ this.props.officer } complaint={ complaint }/>
+      <div key={ complaint['crid'] }>
+        <OfficerAllegationItem officerAllegation={ officerAllegation } officerAllegations={ officerAllegations }
+          allegation={ complaint }/>
       </div>
     );
   },

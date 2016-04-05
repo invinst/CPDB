@@ -1,5 +1,7 @@
 var React = require('react');
 
+var CollectionUtil = require('utils/CollectionUtil');
+
 var SuggestionPresenter = require('presenters/SuggestionPresenter');
 var ComplaintResultPresenter = require('presenters/Page/ComplaintResultPresenter');
 var OfficerAllegationItem = require('components/Shared/OfficerAllegationItem.react');
@@ -17,9 +19,12 @@ var ComplaintResult = React.createClass({
   },
 
   renderAllegation: function (categoryId, officerAllegations, allegation) {
+    var firstOfficerAllegation = CollectionUtil.first(officerAllegations);
+
     return (
       <div key={ categoryId }>
-        <OfficerAllegationItem officerAllegations={ officerAllegations } allegation={ allegation }/>
+        <OfficerAllegationItem officerAllegation={ firstOfficerAllegation } officerAllegations={ officerAllegations }
+          allegation={ allegation }/>
       </div>
     );
   },

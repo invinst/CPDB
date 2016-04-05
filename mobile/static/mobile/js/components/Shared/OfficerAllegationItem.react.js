@@ -16,6 +16,7 @@ var OfficerPresenter = require('presenters/OfficerPresenter');
 
 var OfficerAllegationItem = React.createClass({
   propTypes: {
+    officerAllegation: React.PropTypes.object,
     allegation: React.PropTypes.object,
     officerAllegations: React.PropTypes.array
   },
@@ -44,7 +45,7 @@ var OfficerAllegationItem = React.createClass({
   render: function () {
     var allegation = this.props.allegation;
     var officerAllegations = this.props.officerAllegations;
-    var firstOfficerAllegation = CollectionUtil.first(officerAllegations);
+    var firstOfficerAllegation = this.props.officerAllegation;
 
     var officer = u.fetch(firstOfficerAllegation, 'officer', null);
 
@@ -55,6 +56,7 @@ var OfficerAllegationItem = React.createClass({
     var allegationPresenter = AllegationPresenter(allegation);
     var officerAllegationPresenter = OfficerAllegationPresenter(firstOfficerAllegation);
     var crid = allegationPresenter.crid;
+
     return (
       <div className='officer-complaint-item' onClick={ this._onClicked.bind(this, crid, firstOfficerAllegation) }>
         <div className='crid-info pad'>

@@ -27,8 +27,11 @@ describe('OfficerAllegationItemComponent', function () {
       'final_finding': 'un',
       'cat': category
     });
+    var firstOfficerAllegation = officerAllegations[0];
+
     var officerAllegationItem = ReactTestUtils.renderIntoDocument(
-      <OfficerAllegationItem allegation={ allegation } officerAllegations={ officerAllegations }/>
+      <OfficerAllegationItem officerAllegation={ firstOfficerAllegation }
+        allegation={ allegation } officerAllegations={ officerAllegations }/>
     );
 
     ReactTestUtils.findRenderedDOMComponentWithClass(officerAllegationItem, 'crid-number')
@@ -55,7 +58,7 @@ describe('OfficerAllegationItemComponent', function () {
 
     var expectedUrl = u.format('/complaint/1234/category-name/{categoryHash}', {'categoryHash': categoryHashId});
     var allegation = f.create('Allegation', {'crid': crid});
-    var officerAllegations = f.createBatch(1, 'OfficerAllegation', {'cat': category});
+    var officerAllegation = f.create('OfficerAllegation', {'cat': category});
 
     var mockAppHistory = sinon.mock(AppHistory);
     var mockComplaintPageAction = sinon.mock(ComplaintPageActions);
@@ -64,7 +67,8 @@ describe('OfficerAllegationItemComponent', function () {
     mockComplaintPageAction.expects('resetState').once().returns(null);
 
     officerAllegationItem = ReactTestUtils.renderIntoDocument(
-      <OfficerAllegationItem allegation={ allegation } officerAllegations={ officerAllegations }/>
+      <OfficerAllegationItem officerAllegation={ officerAllegation } allegation={ allegation }
+        officerAllegations={ [officerAllegation] }/>
     );
     node = ReactTestUtils.findRenderedDOMComponentWithClass(officerAllegationItem, 'officer-complaint-item');
 
