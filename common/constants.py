@@ -297,7 +297,7 @@ HAS_FILTERS_TEXT_DICT = {
     'has:document': {
         'text': 'has:document',
         'condition': {
-            'document_id__gt': [0]
+            'allegation__documents__documentcloud_id__gt': [0]
         }
     },
     'has:map': {

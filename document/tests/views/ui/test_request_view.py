@@ -11,10 +11,11 @@ class RequestViewTestCase(BaseLiveTestCase):
 
         self.visit_home()
         self.find(".officer .checkmark").click()
-        self.until(lambda: self.find(".complaint-row .btn-request").click())
+        self.until(lambda: self.find(".complaint-row").click())
+        self.until(lambda: self.find(".complaint-row .document-action").click())
 
         # the modal should shown
-        self.find("#request_modal").is_displayed().should.be.true
+        self.until(lambda: self.find('#request_modal').is_displayed())
         self.see_header_text()
 
         # enter email
@@ -22,8 +23,6 @@ class RequestViewTestCase(BaseLiveTestCase):
             "#request_modal input[name='email']", faker.Faker().email())
         self.button("Submit").click()
         self.see_notify_text()
-
-        self.check_button_requested()
 
         # check the button text after reload
         self.browser.refresh()
@@ -38,4 +37,5 @@ class RequestViewTestCase(BaseLiveTestCase):
             "We'll notify you when the document is made available.")
 
     def check_button_requested(self):
-        self.find(".complaint-row .btn-request").text.should.equal('Pending')
+        self.until(lambda: self.find(".complaint-row").click())
+        self.find(".complaint-row .document-action").text.should.equal('Follow')

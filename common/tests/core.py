@@ -209,7 +209,6 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
             self.until(lambda: self.browser.current_url != url)
         self.until(lambda: self.link("Outcomes"), timeout=60)
         self.until_ajax_complete()
-        self.find("body").click()
 
     def drag_and_drop(self, source_element, target_element):
         action_chains = ActionChains(self.browser)
@@ -391,6 +390,7 @@ class BaseMobileLiveTestCase(BaseLiveTestCase):
     def browser(self):
         if world.mobile_browser is None:
             world.mobile_browser = self.init_firefox()
+        world.mobile_browser.set_window_size(1023, 1000)
         return world.mobile_browser
 
 

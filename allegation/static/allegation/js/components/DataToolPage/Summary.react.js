@@ -17,10 +17,17 @@ var Summary = React.createClass({
   propTypes: {
     query: PropTypes.string,
     tabs: PropTypes.object,
-    currentActive: PropTypes.bool
+    currentActive: PropTypes.bool,
+    initTab: PropTypes.func
   },
 
   mixins: [EmbedMixin],
+
+  getDefaultProps: function () {
+    return {
+      initTab: function () {}
+    };
+  },
 
   getInitialState: function () {
     return SummaryStore.init(this.props.query);
@@ -30,7 +37,6 @@ var Summary = React.createClass({
   componentDidMount: function () {
     var that = $(ReactDOM.findDOMNode(this));
     var height = that.parent().height();
-    var i, tab;
 
     SummaryStore.addChangeListener(this._onChange);
     SummaryStore.addSummaryListener(this._changeView);
@@ -39,20 +45,7 @@ var Summary = React.createClass({
       that.find('.child-rows').css('max-height', height);
     }, 1000);
 
-    if (this.props.tabs) {
-      if (this.props.tabs.tabs.length > 1) {
-        for (i =0; i < this.props.tabs.length; i++) {
-          tab = this.props.tabs.tabs[i];
-          if (tab.drawChart) {
-            this.props.tabs.tabs[i] = this;
-            /* I am sorry for this code, blame: Bang!!!! */
-          }
-        }
-      }
-      else {
-        this.props.tabs.tabs.push(this);
-      }
-    }
+    this.props.initTab(this);
   },
   componentWillUnmount: function () {
     SummaryStore.removeChangeListener(this._onChange);
