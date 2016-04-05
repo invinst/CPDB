@@ -29,9 +29,6 @@ class AllegationDetailTestCase(AllegationRowHelperMixin, BaseLiveTestCase):
         alternative_text = image.get_attribute('src')
 
         len(alternative_text).shouldnt.equal(0)
-        self.browser.execute_script(
-            "return $('.complaint-map img')[0].naturalWidth > 0"
-            ).should.equal(True)
 
     def test_complaint_detail_with_long_summary(self):
         fake = Faker()

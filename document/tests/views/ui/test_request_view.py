@@ -6,6 +6,7 @@ from common.tests.core import BaseLiveTestCase
 
 class RequestViewTestCase(BaseLiveTestCase):
     def test_request_document(self):
+        # TODO: move this to client side testing
         # create 2 allegations
         OfficerAllegationFactory.create_batch(2)
 
