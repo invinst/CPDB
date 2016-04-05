@@ -6,6 +6,9 @@ var _ = require('lodash');
 
 var AllegationSummary = require('components/DataToolPage/Allegation/AllegationSummary.react');
 var AllegationPresenterFactory = require('presenters/AllegationPresenterFactory');
+var RequestModal = require('components/DataToolPage/Complaint/RequestModal.react');
+var AppDispatcher = require('dispatcher/AppDispatcher');
+var RequestDocumentActions = require('actions/RequestDocumentActions');
 
 require('should');
 
@@ -26,11 +29,19 @@ describe('AllegationSummary component', function () {
     orderedDocuments: []
   };
   var MOCK_ALLEGATION = {
-    investigator: null
+    investigator: null,
+    documents: [
+      {
+        id: 1,
+        type: 'a'
+      }
+    ]
   };
 
   afterEach(function () {
-    AllegationPresenterFactory.buildPresenter.restore();
+    if (AllegationPresenterFactory.buildPresenter.restore) {
+      AllegationPresenterFactory.buildPresenter.restore();
+    }
     ReactDOM.unmountComponentAtNode(ReactDOM.findDOMNode(allegationSummary).parentNode);
   });
 
@@ -66,5 +77,44 @@ describe('AllegationSummary component', function () {
       <AllegationSummary allegation={ MOCK_ALLEGATION } noButton={ true }/>
     );
     (ReactTestUtils.scryRenderedDOMComponentsWithClass(allegationSummary, 'rec-outcome').length).should.be.equal(1);
+  });
+
+  // INTEGRATION TESTS BEGIN HERE
+
+  it('should activate document request modal', function () {
+    var requestBtn;
+    var requestModal;
+    var callback;
+    var modalContent;
+    var emailInput;
+    var submitBtn;
+    sinon.stub(RequestDocumentActions, 'registerEmail');
+
+    allegationSummary = ReactTestUtils.renderIntoDocument(
+      <AllegationSummary allegation={ MOCK_ALLEGATION } noButton={ true }/>
+    );
+    requestModal = ReactTestUtils.renderIntoDocument(<RequestModal/>);
+
+    requestBtn = ReactTestUtils.findRenderedDOMComponentWithClass(allegationSummary, 'document-action');
+
+    callback = AppDispatcher.getCallback(RequestModal.dispatcherToken);
+    ReactTestUtils.Simulate.click(requestBtn);
+    callback(AppDispatcher.dispatch.lastCall.args[0]);
+
+    modalContent = ReactTestUtils.findRenderedDOMComponentWithClass(requestModal, 'request-form');
+    modalContent.className.split(' ').should.not.containEql('hidden');
+    modalContent.textContent.indexOf('We\'ll notify you when the document is made available.').should.not.equal(-1);
+
+    emailInput = ReactTestUtils.findRenderedDOMComponentWithTag(requestModal, 'input');
+    emailInput.value = 'what@ever.email';
+    ReactTestUtils.Simulate.change(emailInput);
+
+    submitBtn = ReactTestUtils.findRenderedDOMComponentWithClass(requestModal, 'btn-primary');
+    ReactTestUtils.Simulate.click(submitBtn);
+
+    RequestDocumentActions.registerEmail.calledWith(1, 'what@ever.email').should.be.true();
+
+    ReactDOM.unmountComponentAtNode(ReactDOM.findDOMNode(requestModal).parentNode);
+    RequestDocumentActions.registerEmail.restore();
   });
 });
