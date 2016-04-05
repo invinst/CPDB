@@ -24,7 +24,6 @@ var FilterTags = React.createClass(_.assign(Base(FilterTagStore), {
         var tagClassName = classnames('tag label label-info-autocomplete fadeIn', {
           'pinned': item.pinned
         });
-
         return (
           <span className={ tagClassName } key={ key }>
             <a href='javascript:void(0);'

@@ -17,6 +17,7 @@ var MethodPage = require('components/IndexTabContent/MethodPage.react');
 var StoryPage = require('components/IndexTabContent/StoryPage.react');
 var SessionAPI = require('utils/SessionAPI');
 var S = require('string');
+var WagtailPage = require('components/WagtailPage.react');
 
 var RootRouter;
 
@@ -66,6 +67,7 @@ RootRouter = React.createClass({
               <Route path=':id' component={ InvestigatorPage }/>
             </Route>
           </Route>
+          <Route path='/:page' component={ WagtailPage }/>
         </Route>
       </Router>
     );

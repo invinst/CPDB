@@ -35,6 +35,7 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
     ComplaintPageStore.addChangeListener(this._onChange);
   },
 
+
   render: function () {
     var found = this.state.found;
     var loading = this.state.loading;
