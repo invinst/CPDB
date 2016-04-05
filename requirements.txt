@@ -75,3 +75,4 @@ freezegun==0.3.5
 pre-commit==0.7.6
 xlrd==0.9.4
 django-modelcluster==1.1
+tqdm==3.8.0

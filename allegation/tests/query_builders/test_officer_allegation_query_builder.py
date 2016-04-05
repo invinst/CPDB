@@ -282,6 +282,30 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
 
         self.check_built_query(query_string, expected_ids)
 
+    def test_complainant_age_filter(self):
+        allegation_1 = AllegationFactory()
+        allegation_2 = AllegationFactory()
+        ComplainingWitnessFactory(age=36, allegation=allegation_1)
+        ComplainingWitnessFactory(age=23, allegation=allegation_2)
+        oa_1 = OfficerAllegationFactory(allegation=allegation_1)
+        oa_2 = OfficerAllegationFactory(allegation=allegation_2)
+
+        self.check_built_query('complainant_age=30-40', [oa_1.id])
+        self.check_built_query('complainant_age=<30', [oa_2.id])
+        self.check_built_query('complainant_age=>35', [oa_1.id])
+
+    def test_officer_age_filter(self):
+        incident_date = datetime.datetime(2000, 1, 1)
+        allegation = AllegationFactory(incident_date=incident_date)
+        officers = [
+            OfficerFactory(birth_year=incident_date.year - 34),
+            OfficerFactory(birth_year=incident_date.year - 56)]
+        oas = [OfficerAllegationFactory(allegation=allegation, officer=officer) for officer in officers]
+
+        self.check_built_query('officer_age=30-40', [oas[0].id])
+        self.check_built_query('officer_age=<40', [oas[0].id])
+        self.check_built_query('officer_age=>35', [oas[1].id])
+
     def test_incident_date_only(self):
         self._test_incident_date_only_range()
         self.clean_db()
@@ -513,4 +537,4 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
         results = OfficerAllegation.objects\
             .filter(query).values_list('id', flat=True)
 
-        list(results).should.equal(expected_ids)
+        set(list(results)).should.equal(set(expected_ids))

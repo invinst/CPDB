@@ -11,6 +11,7 @@ var SessionStore = require('stores/SessionStore');
 var Overlay = require('components/DataToolPage/Overlay.react');
 var Tabs = require('components/DataToolPage/Tabs.react');
 var Search = require('components/Shared/Search.react');
+var RaceGenderTabServerActions = require('actions/DataToolPage/RaceGenderTabServerActions');
 var MobileUtils = require('utils/MobileUtils');
 
 
@@ -19,6 +20,7 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
     SessionStore.addChangeListener(this._onChange);
 
     this.initStickyFooter();
+    RaceGenderTabServerActions.initData();
   },
 
   isPassAllegationSection: function () {

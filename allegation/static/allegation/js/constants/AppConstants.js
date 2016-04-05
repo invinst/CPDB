@@ -355,8 +355,9 @@ module.exports = {
   TABS: {
     'outcomes': 0,
     'categories': 1,
-    'race-gender': 2,
-    'map': 3
+    'complainants': 2,
+    'accused': 3,
+    'map': 4
   },
 
   SUNBURST_ARC_COLORS: {
