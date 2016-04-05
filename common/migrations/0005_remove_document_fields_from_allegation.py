@@ -7,7 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', '0002_documentcrawler'),
+        ('common', '0004_officerallegation_officer_age_data'),
     ]
 
     operations = [
