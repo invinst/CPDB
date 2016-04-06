@@ -13,6 +13,7 @@ var LandingFooter = require('components/Shared/LandingFooter.react');
 var Footer = require('components/DataToolPage/Footer.react');
 var HappyFox = require('components/Shared/HappyFox.react');
 var Overlay = require('components/DataToolPage/Overlay.react');
+var WagtailPagesServerActions = require('actions/WagtailPagesServerActions');
 
 
 var IndexPage = React.createClass({
@@ -26,6 +27,10 @@ var IndexPage = React.createClass({
   },
 
   mixins: [PureRenderMixin, IndexTabContentMixin],
+
+  componentWillMount: function () {
+    WagtailPagesServerActions.initData();
+  },
 
   componentDidMount: function () {
     $(window).on('scroll', this.scrollToggleShow);

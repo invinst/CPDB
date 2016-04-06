@@ -1,8 +1,15 @@
+import os
+import xlrd
+
 from unittest import mock
 
-from allegation.factories import AllegationFactory, DownloadFactory
+from django.conf import settings
+
+from allegation.factories import AllegationFactory, DownloadFactory, OfficerAllegationFactory
 from allegation.models import Download
+from allegation.services.download_allegations import AllegationsDownload
 from common.tests.core import SimpleTestCase
+from share.factories import SettingFactory
 
 
 class AllegationDownloadViewTestCase(SimpleTestCase):
@@ -38,3 +45,19 @@ class AllegationDownloadViewTestCase(SimpleTestCase):
         Download.objects.get(pk=data['download']['id']).query.should.equal('abc=def')
 
         mock_obj.delay.called.should.be.true
+
+    def test_lat_lng_in_download(self):
+        allegation = AllegationFactory()
+        OfficerAllegationFactory(allegation=allegation)
+        SettingFactory()
+
+        download = DownloadFactory(query="allegation__crid=%s" % allegation.crid)
+        AllegationsDownload(download.id).generate()
+
+        download.refresh_from_db()
+        excel_file = os.path.join(settings.MEDIA_ROOT, download.url)
+
+        book = xlrd.open_workbook(excel_file)
+
+        book.sheets()[1].cell(1, 23).value.should.equal(allegation.point.y)
+        book.sheets()[1].cell(1, 24).value.should.equal(allegation.point.x)

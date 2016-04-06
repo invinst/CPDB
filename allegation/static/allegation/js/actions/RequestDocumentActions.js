@@ -3,25 +3,25 @@ var SessionStore = require('stores/SessionStore');
 var RequestDocumentConstants = require('../constants/RequestDocumentConstants');
 
 var RequestDocumentActions = {
-  request: function (value) {
+  request: function (document) {
     AppDispatcher.dispatch({
       actionType: RequestDocumentConstants.REQUEST_DOCUMENT,
-      value: value
+      document: document
     });
   },
 
-  registerEmail: function (crid, email) {
+  registerEmail: function (documentId, email) {
     $.ajax({
       url: '/document/request/',
       type: 'POST',
       dataType: 'JSON',
       data: {
-        crid: crid,
-        email: email,
-        session: SessionStore.getHash() // defined in CPDBApp.react
+        'document_id': documentId,
+        'email': email,
+        'session': SessionStore.getHash() // defined in CPDBApp.react
       },
       success: function () {
-        RequestDocumentActions.setRequested(crid);
+        RequestDocumentActions.setRequested(documentId);
       },
       error: function (xhr) {
         var key, errors, i;
@@ -36,10 +36,10 @@ var RequestDocumentActions = {
     });
   },
 
-  setRequested: function (value) {
+  setRequested: function (documentId) {
     AppDispatcher.dispatch({
       actionType: RequestDocumentConstants.DOCUMENT_REQUESTED,
-      value: value
+      id: documentId
     });
   }
 };

@@ -92,6 +92,9 @@ module.exports = {
   MAP_TOKEN: '***REMOVED***',
   MAP_TYPE: 'invisibleinstitute.acaf9ef3',
 
+  WAGTAIL_GLOSSARY_PAGE_RECEIVED_DATA: c++,
+  CHANGE_WAGTAIL_PAGE: c++,
+
   NUMERAL_FORMAT: '0,0',
 
   FILTERS: {
@@ -321,6 +324,11 @@ module.exports = {
     }
   ],
 
+  DOCUMENT_TYPE_NAMES: {
+    'CR': 'Investigation report',
+    'CPB': 'Police board hearing'
+  },
+
   MEDIA_URL: '/media/',
 
   MAP_MARKER_ICON_URL: 'http://cpdb.co/static/img/64x_map_marker.png', // it must be a full url
@@ -330,6 +338,10 @@ module.exports = {
   ALLEGATION_DETAILS_API_ENDPOINT: '/api/police-witness/',
   ALLEGATIONS_API_ENDPOINT: '/api/officer-allegations/',
   INVESTIGATOR_API_ENDPOINT: '/investigator/',
+  WAGTAIL_GLOSSARY_API_ENDPOINT: [
+    '/api/wagtail/v1/pages/?type=wagtail_app.GlossaryPage',
+    '&fields=title,subtitle,serialized_glossary_rows,slug'
+  ].join(''),
 
   DATE_FORMAT: 'D MMM, YYYY',
 
@@ -343,8 +355,9 @@ module.exports = {
   TABS: {
     'outcomes': 0,
     'categories': 1,
-    'race-gender': 2,
-    'map': 3
+    'complainants': 2,
+    'accused': 3,
+    'map': 4
   },
 
   SUNBURST_ARC_COLORS: {
@@ -375,5 +388,8 @@ module.exports = {
   },
 
   DONUT_CHART_DISCIPLINED_COLOR: '#a5b4be',
-  DONUT_CHART_UNDISCIPLINED_COLOR: '#013270'
+  DONUT_CHART_UNDISCIPLINED_COLOR: '#013270',
+
+  DESKTOP_SCREEN_WIDTH: 1024,
+  SUNBURST_MAX_WIDTH: 390
 };

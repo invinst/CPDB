@@ -1,6 +1,5 @@
 var _ = require('lodash');
 var React = require('react');
-var isMobile = require('ismobilejs');
 var classnames = require('classnames');
 
 var Base = require('components/Base.react');
@@ -11,6 +10,8 @@ var OfficerList = require('components/DataToolPage/OfficerList.react');
 var SessionStore = require('stores/SessionStore');
 var Tabs = require('components/DataToolPage/Tabs.react');
 var Search = require('components/Shared/Search.react');
+var RaceGenderTabServerActions = require('actions/DataToolPage/RaceGenderTabServerActions');
+var MobileUtils = require('utils/MobileUtils');
 
 
 var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
@@ -18,6 +19,7 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
     SessionStore.addChangeListener(this._onChange);
 
     this.initStickyFooter();
+    RaceGenderTabServerActions.initData();
   },
 
   isPassAllegationSection: function () {
@@ -57,9 +59,9 @@ var CPDBApp = React.createClass(_.assign(Base(SessionStore), {
   },
 
   renderTabs: function () {
-    var mobileExpanded = isMobile.any && this.state.searchExpanded;
-
-    if (isMobile.any) {
+    var isMobileView = MobileUtils.isMobileView();
+    var mobileExpanded = isMobileView && this.state.searchExpanded;
+    if (isMobileView) {
       return (
         <div className='row map-row mobile'>
           <div className='col-md-12'>

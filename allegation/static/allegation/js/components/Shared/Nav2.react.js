@@ -4,14 +4,15 @@ var classnames = require('classnames');
 var ReactRouter = require('react-router');
 
 var Link = ReactRouter.Link;
+var PropTypes = React.PropTypes;
 
 var AppConstants = require('../../constants/AppConstants');
 var AppStore = require('stores/AppStore');
 var Back = require('components/Shared/Back.react');
-var Base = require('components/Base.react');
 var NavActions = require('actions/NavActions');
 var SessionAPI = require('utils/SessionAPI');
 var SiteTitle = require('components/Shared/SiteTitle.react');
+var WagtailPagesStore = require('stores/WagtailPagesStore');
 var ShareButton = require('components/DataToolPage/Share/ShareButton.react');
 var Nav;
 var OverlayActions = require('actions/DataToolPage/OverlayActions');
@@ -19,12 +20,38 @@ var OverlayActions = require('actions/DataToolPage/OverlayActions');
 require('utils/jQuery');
 
 
-Nav = React.createClass(_.assign(Base(AppStore), {
+Nav = React.createClass({
+  propTypes: {
+    isActive: PropTypes.func,
+    navTabs: PropTypes.array
+  },
+
   getDefaultProps: function () {
     return {
       page: 'data',
       navTabs: AppConstants.DEFAULT_NAV_TABS
     };
+  },
+
+  getInitialState: function () {
+    return _.extend({}, AppStore.getState(), {
+      wagtailPages: WagtailPagesStore.getWagtailPages()
+    });
+  },
+
+  componentDidMount: function () {
+    this.moveArrow();
+    AppStore.addChangeListener(this._onChange);
+    WagtailPagesStore.addChangeListener(this._receiveWagtailPage);
+  },
+
+  componentDidUpdate: function () {
+    this.moveArrow();
+  },
+
+  componentWillUnmount: function () {
+    AppStore.removeChangeListener(this._onChange);
+    WagtailPagesStore.removeChangeListener(this._receiveWagtailPage);
   },
 
   getDisplayComponent: function () {
@@ -41,20 +68,6 @@ Nav = React.createClass(_.assign(Base(AppStore), {
     };
   },
 
-  goToPage: function (page, event) {
-    if (!this.props.isActive(page)) {
-      NavActions.goToPage(page);
-    } else {
-      event.preventDefault();
-    }
-  },
-
-  getNavClass: function (tab) {
-    return classnames('nav-link', {
-      'active': this.props.isActive(tab)
-    });
-  },
-
   getIndexLink: function () {
     var isActive = this.props.isActive;
 
@@ -64,19 +77,25 @@ Nav = React.createClass(_.assign(Base(AppStore), {
     return '/';
   },
 
-  componentDidMount: function () {
-    this.moveArrow();
+  getNavClass: function (tab) {
+    return classnames('nav-link', {
+      'active': this.props.isActive(tab)
+    });
   },
 
-  componentDidUpdate: function () {
-    this.moveArrow();
+  _onChange: function () {
+    this.setState(AppStore.getState());
   },
 
-  startNewSession: function (e) {
-    var isActive = this.props.isActive;
-    if (isActive('data')) {
-      e.preventDefault();
-      SessionAPI.getSessionInfo('');
+  _receiveWagtailPage: function () {
+    this.setState({wagtailPages:WagtailPagesStore.getWagtailPages()});
+  },
+
+  goToPage: function (page, event) {
+    if (!this.props.isActive(page)) {
+      NavActions.goToPage(page);
+    } else {
+      event.preventDefault();
     }
   },
 
@@ -94,20 +113,36 @@ Nav = React.createClass(_.assign(Base(AppStore), {
 
   navigateSub: function (event) {
     var $body = $('body');
-    var navBarHeight = 90;
     var $element = $($(event.currentTarget).data('target'));
+    var navBarHeight = 90;
 
     event.preventDefault();
-
     $body.animate({
       scrollTop: $element.offset().top - navBarHeight
     }, 1000);
   },
 
-  renderTitleBox: function () {
-    return (
-      <SiteTitle changable={ true } />
-    );
+  startNewSession: function (e) {
+    var isActive = this.props.isActive;
+    if (isActive('data')) {
+      e.preventDefault();
+      SessionAPI.getSessionInfo('');
+    }
+  },
+
+  renderNavTabItems: function () {
+    var self = this;
+
+    return this.props.navTabs.map(function (navTab, index) {
+      return (
+        <li key={ index } className={ self.getNavClass(navTab.name) }>
+          <Link
+            onClick={ self.goToPage.bind(self, navTab.name) }
+            to={ AppStore.getNavTabUrl(navTab.name) }
+            aria-controls={ navTab.name }>{ navTab.display }</Link>
+        </li>
+      );
+    });
   },
 
   renderSubNav: function () {
@@ -128,19 +163,29 @@ Nav = React.createClass(_.assign(Base(AppStore), {
     );
   },
 
-  renderNavTabItems: function () {
-    var self = this;
+  renderTitleBox: function () {
+    return (
+      <SiteTitle changable={ true } />
+    );
+  },
 
-    return this.props.navTabs.map(function (navTab, index) {
-      return (
-        <li key={ index } className={ self.getNavClass(navTab.name) }>
-          <Link
-            onClick={ self.goToPage.bind(self, navTab.name) }
-            to={ AppStore.getNavTabUrl(navTab.name) }
-            aria-controls={ navTab.name }>{ navTab.display }</Link>
-        </li>
-      );
-    });
+  renderWagtailTabs: function () {
+    var that = this;
+
+    if (this.state.wagtailPages) {
+      return this.state.wagtailPages.map(function (wagtailPage, index) {
+        var wagtailPageTo = '/' + wagtailPage.slug;
+
+        return (
+          <li className={ that.getNavClass(wagtailPage.slug) } key={ index }>
+            <Link onClick={ that.goToPage.bind(that, wagtailPage.slug) }
+                  to={ wagtailPageTo }>{ wagtailPage.title }</Link>
+          </li>
+        );
+      });
+    }
+
+    return '';
   },
 
   renderNavTabSection: function () {
@@ -149,6 +194,7 @@ Nav = React.createClass(_.assign(Base(AppStore), {
         <ul className='tablist' role='tablist'>
           <span className='moving-arrow' />
           { this.renderNavTabItems() }
+          { this.renderWagtailTabs() }
         </ul>
         <i onClick={ this.showNavTabsSidebar } className='fa fa-bars hamburger-btn'></i>
         <div className='hidden nav-tabs-sidebar'>
@@ -213,6 +259,6 @@ Nav = React.createClass(_.assign(Base(AppStore), {
       </div>
     );
   }
-}));
+});
 
 module.exports = Nav;
