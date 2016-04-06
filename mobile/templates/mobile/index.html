@@ -12,10 +12,8 @@
     <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}"/>
     {% endblock %}
 
-    <!-- build:css css/mobile_combined.css -->
     <link rel="stylesheet" type="text/css" href="{% static 'ratchet/dist/css/ratchet.min.css' %}"/>
     <link rel="stylesheet" type="text/css" href="{% static 'css/mobile_style.css' %}"/>
-    <!-- endbuild -->
 
     {% if DJANGO_ENV == 'test' %}
     <link rel="stylesheet" type="text/css" href="{% static 'css/test.css' %}"/>

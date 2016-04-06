@@ -1,16 +1,16 @@
 from django.core.urlresolvers import reverse
 
-from allegation.factories import AllegationFactory
-from common.models import Allegation
 from common.tests.core import SimpleTestCase
-from dashboard.views.allegation_request_view import DOCUMENT_REQUEST_FILTERS
+from dashboard.query_builders import DOCUMENT_REQUEST_FILTERS
+from document.factories import DocumentFactory
+from document.models import Document
 from search.models.suggestion import SuggestionLog
 
 
 class AdminAllegationRequestAnalysisViewTest(SimpleTestCase):
     def setUp(self):
         self.login_user()
-        Allegation.objects.all().delete()
+        Document.objects.all().delete()
 
     def tearDown(self):
         SuggestionLog.objects.all().delete()
@@ -23,14 +23,10 @@ class AdminAllegationRequestAnalysisViewTest(SimpleTestCase):
         return response, data
 
     def test_return_analaysis_of_document_requests(self):
-        AllegationFactory(
-            document_requested=False, document_id=0)  # Missing
-        AllegationFactory(
-            document_pending=False, document_requested=True,
-            document_id=0)  # Requested
-        AllegationFactory(document_id=1)  # Fulfilled
-        AllegationFactory(
-            document_pending=True, document_requested=True)  # Pending
+        DocumentFactory(requested=False, documentcloud_id=0)  # Missing
+        DocumentFactory(pending=False, requested=True, documentcloud_id=0)  # Requested
+        DocumentFactory(documentcloud_id=1)  # Fulfilled
+        DocumentFactory(pending=True, requested=True)  # Pending
 
         response, data = self.call_allegation_request_analysis()
         response.status_code.should.equal(200)

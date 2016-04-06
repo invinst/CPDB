@@ -7,7 +7,7 @@ var Formsy = require('formsy-react');
 var jQuery = require('jquery');
 
 var UploadDocumentModal = require('components/DocumentSection/UploadDocumentModal.react');
-var DocumentActions = require('actions/DocumentSection/DocumentActions');
+var DocumentCloudActions = require('actions/DocumentSection/DocumentCloudActions');
 
 require('should');
 
@@ -105,7 +105,7 @@ describe('UploadDocumentModal component', function () {
     );
     modal = ReactTestUtils.findRenderedComponentWithType(component, Modal);
     listInput = ReactTestUtils.scryRenderedDOMComponentsWithTag(modal.portal, 'input');
-    sinon.stub(DocumentActions, 'uploadDocument').returns(jQuery.Deferred().promise());
+    sinon.stub(DocumentCloudActions, 'uploadDocument').returns(jQuery.Deferred().promise());
 
     dropzoneContent = ReactTestUtils.findRenderedDOMComponentWithClass(modal.portal, 'dropzone-content');
     ReactTestUtils.Simulate.drop(dropzoneContent, { dataTransfer: { files: [file] } });
@@ -117,14 +117,14 @@ describe('UploadDocumentModal component', function () {
 
     form = ReactTestUtils.findRenderedComponentWithType(modal.portal, Formsy.Form);
     ReactTestUtils.Simulate.submit(ReactDOM.findDOMNode(form));
-    DocumentActions.uploadDocument.calledWithMatch({file: file, title: title, source: ''}).should.be.true();
+    DocumentCloudActions.uploadDocument.calledWithMatch({file: file, title: title, source: ''}).should.be.true();
 
     sourceInput = listInput[2];
     sourceInput.value = source;
     ReactTestUtils.Simulate.change(sourceInput);
 
     ReactTestUtils.Simulate.submit(ReactDOM.findDOMNode(form));
-    DocumentActions.uploadDocument.calledWithMatch({file: file, title: title, source: source}).should.be.true();
+    DocumentCloudActions.uploadDocument.calledWithMatch({file: file, title: title, source: source}).should.be.true();
   });
 });
 

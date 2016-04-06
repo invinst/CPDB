@@ -1,10 +1,11 @@
 var buildSass = require('./utils/build_sass');
 
 
-module.exports = function (production) {
+module.exports = function (local, production) {
   return buildSass({
     src: './dashboard/static/dashboard/sass/style.sass',
-    dest: production ? './static/css' : './local_static/css',
-    fileName: 'dashboard_style.css'
+    dest: local ? './local_static/css' : './static/css',
+    fileName: 'dashboard_style.css',
+    production: production
   });
 };

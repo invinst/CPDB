@@ -5,8 +5,8 @@ var AllegationFilterTagsQueryBuilder = require('utils/querybuilders/AllegationFi
 var ajax = null;
 
 var RaceGenderAPI = {
-  getData: function () {
-    var queryString = AllegationFilterTagsQueryBuilder.buildQuery();
+  getData: function (query) {
+    var queryString = AllegationFilterTagsQueryBuilder.buildQuery() || query;
     var url = AppConstants.RACE_GENDER_API_ENDPOINT + '?' + queryString;
 
     if (ajax) {

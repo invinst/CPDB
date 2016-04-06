@@ -3,6 +3,7 @@ var NavigationItem = require('./Navigation/Item.react');
 var NavigationStore = require('../stores/NavigationStore');
 var AppConstants = require('../constants/AppConstants');
 var _ = require('lodash');
+var Icon = require('./Shared/Icon.react');
 
 
 var Navigation = React.createClass({
@@ -16,6 +17,10 @@ var Navigation = React.createClass({
 
   componentWillUnmount: function () {
     NavigationStore.removeChangeListener(this._onChange);
+  },
+
+  goToWagtail: function () {
+    window.location.href = '/wagtail-admin';
   },
 
   _onChange: function () {
@@ -37,6 +42,7 @@ var Navigation = React.createClass({
     return (
       <ul className='list-unstyled col-md-12 col-xs-12 navigation'>
         { this.renderNavigation() }
+        <li onClick={ this.goToWagtail }><Icon icon='sitemap' /><span>Wagtail</span></li>
       </ul>
     );
   }

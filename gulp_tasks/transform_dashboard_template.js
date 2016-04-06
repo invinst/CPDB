@@ -6,6 +6,7 @@ var useref = require('gulp-useref');
 var ignore = require('gulp-ignore');
 var minifyCss = require('gulp-minify-css');
 var replaceStaticTagWithRealPath = require('./utils/replace_static_tag_with_real_path');
+var revReplace = require('gulp-rev-replace');
 
 
 var replaceFunc = replaceStaticTagWithRealPath([
@@ -14,11 +15,20 @@ var replaceFunc = replaceStaticTagWithRealPath([
 ]);
 
 module.exports = function () {
+  var jsManifest = gulp.src('./static/dashboard/js/rev-manifest.json');
+  var cssManifest = gulp.src('./static/css/rev-manifest.json');
+
   return gulp.src(['./dashboard/templates/dashboard/index.html'])
     .pipe(replace(/<!-- build(?:.|\s)+?<!-- endbuild/g, replaceFunc))
     .pipe(useref({ searchPath: '.' }))
     .pipe(gulpif('index.html', source('index.html')
       .pipe(replace(/(<link.+? href=")(css\/dashboard_combined.css)/g, '$1{% static \'$2\' %}'))
+    ))
+    .pipe(gulpif('index.html', source('index.html')
+      .pipe(revReplace({manifest: jsManifest}))
+    ))
+    .pipe(gulpif('index.html', source('index.html')
+      .pipe(revReplace({manifest: cssManifest}))
     ))
     .pipe(gulpif('index.html', source('index.html')
       .pipe(gulp.dest('templates/dashboard'))

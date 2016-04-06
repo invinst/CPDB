@@ -1,15 +1,13 @@
-from allegation.factories import AllegationFactory
-from common.models import Allegation
 from common.tests.core import SimpleTestCase
-from document.factories import RequestEmailFactory
+from document.factories import RequestEmailFactory, DocumentFactory
+from document.models import Document
 
 
 class DocumentModelTestCase(SimpleTestCase):
     def test_update_num_requests(self):
-        allegation = AllegationFactory()
+        document = DocumentFactory()
 
-        num_requests = allegation.number_of_request
-        RequestEmailFactory(crid=allegation.crid)
+        num_requests = document.number_of_request
+        RequestEmailFactory(document=document)
 
-        Allegation.objects.get(id=allegation.id)\
-            .number_of_request.should.equal(num_requests + 1)
+        Document.objects.get(id=document.id).number_of_request.should.equal(num_requests + 1)
