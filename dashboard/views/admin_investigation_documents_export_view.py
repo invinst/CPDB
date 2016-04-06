@@ -3,15 +3,16 @@ from datetime import datetime
 from django.views.generic.base import View
 from django.http import HttpResponse
 
-from dashboard.admin import AllegationResource
+from dashboard.admin import DocumentResource
 from document.models.document_request_query_set import DocumentRequestQuerySet
 
 
 class AdminInvestigationDocumentsExportView(View):
 
     def get(self, request):
-        export = AllegationResource().export(
-            queryset=DocumentRequestQuerySet().get_filter())
+        document_type = request.GET.get('document_type', 'CR')
+        export = DocumentResource().export(
+            queryset=list(DocumentRequestQuerySet().get_filter(type=document_type)))
         response = HttpResponse(
             export.xls, content_type='application/xls', status=200)
 

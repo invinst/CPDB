@@ -6,6 +6,7 @@ var useref = require('gulp-useref');
 var ignore = require('gulp-ignore');
 var uglify = require('gulp-uglify');
 var minifyCss = require('gulp-minify-css');
+var revReplace = require('gulp-rev-replace');
 var replaceStaticTagWithRealPath = require('./utils/replace_static_tag_with_real_path');
 
 
@@ -15,11 +16,16 @@ var replaceFunc = replaceStaticTagWithRealPath([
 ]);
 
 module.exports = function () {
+  var cssManifest = gulp.src('./static/css/rev-manifest.json');
+
   return gulp.src(['./common/templates/base.html'])
     .pipe(replace(/<!-- build(?:.|\s)+?<!-- endbuild/g, replaceFunc))
     .pipe(useref({ searchPath: '.' }))
     .pipe(gulpif('base.html', source('base.html')
       .pipe(replace(/(<script src=")(js\/combined.js)/g, '$1{% static \'$2\' %}'))
+    ))
+    .pipe(gulpif('base.html', source('base.html')
+      .pipe(revReplace({manifest: cssManifest}))
     ))
     .pipe(gulpif('base.html', source('base.html')
       .pipe(gulp.dest('templates'))

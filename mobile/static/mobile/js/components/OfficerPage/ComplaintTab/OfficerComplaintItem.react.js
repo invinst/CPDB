@@ -48,6 +48,7 @@ var OfficerComplaintItem = React.createClass({
     var officerAllegationPresenter = OfficerAllegationPresenter(complaint);
     var crid = allegationPresenter.crid;
 
+
     return (
       <div className='officer-complaint-item' onClick={ this._onClicked.bind(this, crid) }>
         <div className='crid-info pad'>

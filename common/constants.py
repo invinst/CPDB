@@ -82,6 +82,11 @@ OUTCOMES = [
 ]
 OUTCOMES_DICT = dict(OUTCOMES)
 
+DOCUMENT_TYPES = [
+    ('CR', 'CR'),
+    ('CPB', 'CPB'),
+]
+
 UNITS = [
     ['001', 'District 1 - Central'],
     ['012', 'District 12 - Near West'],
@@ -292,7 +297,7 @@ HAS_FILTERS_TEXT_DICT = {
     'has:document': {
         'text': 'has:document',
         'condition': {
-            'document_id__gt': [0]
+            'allegation__documents__documentcloud_id__gt': [0]
         }
     },
     'has:map': {

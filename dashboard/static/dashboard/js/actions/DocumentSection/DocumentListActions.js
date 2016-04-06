@@ -3,17 +3,19 @@ var AppConstants = require('../../constants/AppConstants');
 var toastr = require('toastr');
 
 var DocumentListActions = {
-  receivedDocumentList: function (data) {
+  receivedDocumentList: function (data, nextPage) {
     AppDispatcher.dispatch({
       actionType: AppConstants.RECEIVED_DOCUMENT_LIST,
-      data: data
+      data: data,
+      next: nextPage
     });
   },
 
-  receivedMore: function (data) {
+  receivedMore: function (data, nextPage) {
     AppDispatcher.dispatch({
       actionType: AppConstants.RECEIVED_MORE_DOCUMENT_RESULTS_DATA,
-      data: data
+      data: data,
+      next: nextPage
     });
   },
 
@@ -23,10 +25,10 @@ var DocumentListActions = {
     });
   },
 
-  setActive: function (allegation) {
+  setActive: function (document) {
     AppDispatcher.dispatch({
       actionType: AppConstants.SET_ACTIVE_ALLEGATION,
-      data: allegation
+      data: document
     });
   },
 
