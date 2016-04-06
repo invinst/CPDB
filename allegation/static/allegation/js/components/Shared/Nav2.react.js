@@ -201,6 +201,7 @@ Nav = React.createClass({
           <ul role='tablist'>
             <i onClick={ this.hideNavTabsSidebar } className='fa fa-times'></i>
             { this.renderNavTabItems() }
+            { this.renderWagtailTabs() }
           </ul>
         </div>
       </div>
