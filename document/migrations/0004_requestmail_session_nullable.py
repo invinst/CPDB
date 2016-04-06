@@ -7,7 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('document', '0002_requestemail_session'),
+        ('document', '0003_document'),
     ]
 
     operations = [
