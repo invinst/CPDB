@@ -1,7 +1,11 @@
+from datetime import datetime
+
 from django.core.urlresolvers import reverse
 
+from rest_framework import status
+
 from allegation.factories import (
-    OfficerAllegationFactory, OfficerFactory, ComplainingWitnessFactory)
+    OfficerAllegationFactory, OfficerFactory, ComplainingWitnessFactory, AllegationFactory)
 from common.tests.core import SimpleTestCase
 
 
@@ -29,7 +33,7 @@ class RaceGenderAPI(SimpleTestCase):
 
         response, data = self.get_race_gender_info()
 
-        response.status_code.should.equal(200)
+        response.status_code.should.equal(status.HTTP_200_OK)
 
         for x in ['officers', 'complaining_witness']:
             data[x]['gender']['M'].should.equal(1)
@@ -45,7 +49,7 @@ class RaceGenderAPI(SimpleTestCase):
 
         response, data = self.get_race_gender_info()
 
-        response.status_code.should.equal(200)
+        response.status_code.should.equal(status.HTTP_200_OK)
         for x in ['officers', 'complaining_witness']:
             data[x]['gender'].shouldnt.contain('M')
             data[x]['gender'].shouldnt.contain('F')
@@ -67,7 +71,7 @@ class RaceGenderAPI(SimpleTestCase):
         response, data = self.get_race_gender_info(
             allegation__crid=officer_allegation_2.allegation.crid)
 
-        response.status_code.should.equal(200)
+        response.status_code.should.equal(status.HTTP_200_OK)
         for x in ['officers', 'complaining_witness']:
             data[x]['gender'].should.contain('F')
             data[x]['gender'].shouldnt.contain('M')
@@ -99,3 +103,38 @@ class RaceGenderAPI(SimpleTestCase):
 
         data['complaining_witness']['race'].shouldnt.contain('black')
         data['complaining_witness']['race']['white'].should.equal(1)
+
+    def test_age_range(self):
+        age_values = [20, 25, 31, 41, 51, 61]
+        expect_officer_age = {
+            '20-30': 2,
+            '31-40': 1,
+            '41-50': 1,
+            '51-60': 1,
+            '61+': 1,
+        }
+        expected_witness_age = {
+            '<20': 1,
+            '21-30': 1,
+            '31-40': 1,
+            '41-50': 1,
+            '51+': 2
+        }
+
+        for val in age_values:
+            allegation = AllegationFactory(incident_date=datetime(2000, 1, 1))
+            OfficerAllegationFactory(
+                officer=OfficerFactory(birth_year=2000 - val),
+                allegation=allegation)
+            ComplainingWitnessFactory(age=val, allegation=allegation)
+
+        allegation = AllegationFactory()
+        OfficerAllegationFactory(
+            officer=OfficerFactory(birth_year=None), allegation=allegation)
+        ComplainingWitnessFactory(age=None, allegation=allegation)
+
+        response, data = self.get_race_gender_info()
+
+        response.status_code.should.equal(status.HTTP_200_OK)
+        data['officers']['age'].should.equal(expect_officer_age)
+        data['complaining_witness']['age'].should.equal(expected_witness_age)

@@ -10,7 +10,6 @@ from django.http.response import HttpResponse
 from django.views.generic import TemplateView
 from django.views.generic import View
 
-
 from allegation.views.officer_allegation_api_view import (
     OfficerAllegationAPIView)
 from api.models import Setting, InterfaceText

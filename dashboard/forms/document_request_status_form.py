@@ -1,45 +1,51 @@
 from django import forms
 
-from common.models import Allegation
+from document.models import Document
 
 
 class DocumentRequestStatusForm(forms.Form):
-    crid = forms.IntegerField(required=True)
+    id = forms.IntegerField(required=True)
     status = forms.ChoiceField(required=True, choices=[
-        ['pending', 'pending'],
-        ['requesting', 'requesting'],
+        ('pending', 'pending'),
+        ('requesting', 'requesting'),
+        ('missing', 'missing')
     ])
 
-    def clean_crid(self):
-        crid = self.cleaned_data['crid']
-        if not Allegation.objects.filter(crid=crid).exists():
-            raise forms.ValidationError("CRID not found")
-        return crid
+    def clean_id(self):
+        id = self.cleaned_data['id']
+        if not Document.objects.filter(pk=id).exists():
+            raise forms.ValidationError("Document not found")
+        return id
 
     def clean(self):
         cleaned_data = super(DocumentRequestStatusForm, self).clean()
         if self.errors:
             return cleaned_data
 
-        error_status_not_assignable = \
-            'This document cannot be assigned that status'
+        error_status_not_assignable = 'This document cannot be assigned that status'
 
-        crid = cleaned_data['crid']
+        id = cleaned_data['id']
         status = cleaned_data['status']
 
-        allegation = Allegation.objects.filter(crid=crid)[0]
+        document = Document.objects.get(pk=id)
+
         if status == 'pending':
-            if not allegation.document_requested or \
-                    allegation.document_pending:
+            if not document.requested or document.pending:
+                raise forms.ValidationError(error_status_not_assignable)
+
+        if status == 'missing':
+            if not document.requested:
                 raise forms.ValidationError(error_status_not_assignable)
 
         return cleaned_data
 
     def process(self):
-        crid = self.cleaned_data['crid']
-        status = self.cleaned_data['status']
+        id = self.cleaned_data['id']
 
-        if status == 'pending':
-            Allegation.objects.filter(crid=crid).update(document_pending=True)
-        elif status == 'requesting':
-            Allegation.objects.filter(crid=crid).update(document_pending=False)
+        # 'requested' => requested = True, pending = False
+        # 'pending' => requested = True, pending = True
+        # 'missing' => requested = False, pending = False
+        requested = self.cleaned_data['status'] != 'missing'
+        pending = self.cleaned_data['status'] == 'pending'
+
+        Document.objects.filter(pk=id).update(requested=requested, pending=pending)

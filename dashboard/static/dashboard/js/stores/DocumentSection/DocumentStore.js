@@ -4,11 +4,11 @@ var _ = require('lodash');
 var Base = require('../Base');
 
 var _state = {
-  document: {}
+  document: {},
+  documentType: 'CR'
 };
 
 var DocumentStore = _.assign(Base(_state), {
-
 });
 
 AppDispatcher.register(function (action) {
@@ -20,13 +20,17 @@ AppDispatcher.register(function (action) {
       break;
 
     case AppConstants.DOCUMENT_REQUEST_CANCEL:
-      action.data['document_requested'] = false;
+      action.data['requested'] = false;
       DocumentStore.emitChange();
       break;
 
     case AppConstants.DOCUMENT_PUT_TO_PENDING:
-      action.data['document_pending'] = true;
+      action.data['pending'] = true;
       DocumentStore.emitChange();
+      break;
+
+    case AppConstants.SET_ACTIVE_DOCUMENT_TYPE_TAB:
+      _state.documentType = action.data;
       break;
 
     default:

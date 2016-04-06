@@ -75,6 +75,22 @@ class AllegationSerializer(serializers.ModelSerializer):
     point = GeoSerializer()
     investigator = InvestigatorSerializer()
     officer_allegation_set = OfficerAllegationSerializer(many=True, source='officerallegation_set')
+    document_id = serializers.SerializerMethodField('get_cr_document_id')
+    document_normalized_title = serializers.SerializerMethodField('get_cr_normalized_title')
+
+    def get_cr_document_id(self, obj):
+        documents = obj.documents.all()
+        for document in documents:
+            if document.type == 'CR':
+                return document.documentcloud_id
+        return 0
+
+    def get_cr_normalized_title(self, obj):
+        documents = obj.documents.all()
+        for document in documents:
+            if document.type == 'CR':
+                return document.normalized_title
+        return ''
 
     class Meta:
         model = Allegation
