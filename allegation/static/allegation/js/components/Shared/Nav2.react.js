@@ -15,6 +15,7 @@ var SiteTitle = require('components/Shared/SiteTitle.react');
 var WagtailPagesStore = require('stores/WagtailPagesStore');
 var ShareButton = require('components/DataToolPage/Share/ShareButton.react');
 var Nav;
+var OverlayActions = require('actions/DataToolPage/OverlayActions');
 
 require('utils/jQuery');
 
@@ -144,16 +145,6 @@ Nav = React.createClass({
     });
   },
 
-  renderNavTabSection: function () {
-    return (
-      <ul className='pull-right' role='tablist'>
-        <span className='moving-arrow' />
-        { this.renderNavTabItems() }
-        { this.renderWagtailTabs() }
-      </ul>
-    );
-  },
-
   renderSubNav: function () {
     return (
       <div>
@@ -188,13 +179,43 @@ Nav = React.createClass({
         return (
           <li className={ that.getNavClass(wagtailPage.slug) } key={ index }>
             <Link onClick={ that.goToPage.bind(that, wagtailPage.slug) }
-              to={ wagtailPageTo }>{ wagtailPage.title }</Link>
+                  to={ wagtailPageTo }>{ wagtailPage.title }</Link>
           </li>
         );
       });
     }
 
     return '';
+  },
+
+  renderNavTabSection: function () {
+    return (
+      <div className='nav-tabs pull-right'>
+        <ul className='tablist' role='tablist'>
+          <span className='moving-arrow' />
+          { this.renderNavTabItems() }
+          { this.renderWagtailTabs() }
+        </ul>
+        <i onClick={ this.showNavTabsSidebar } className='fa fa-bars hamburger-btn'></i>
+        <div className='hidden nav-tabs-sidebar'>
+          <ul role='tablist'>
+            <i onClick={ this.hideNavTabsSidebar } className='fa fa-times'></i>
+            { this.renderNavTabItems() }
+            { this.renderWagtailTabs() }
+          </ul>
+        </div>
+      </div>
+    );
+  },
+
+  showNavTabsSidebar: function () {
+    $('.nav-tabs-sidebar').removeClass('hidden');
+    OverlayActions.toggleOverlay();
+  },
+
+  hideNavTabsSidebar: function () {
+    $('.nav-tabs-sidebar').addClass('hidden');
+    OverlayActions.toggleOverlay();
   },
 
   renderWelcome: function () {

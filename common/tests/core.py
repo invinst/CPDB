@@ -365,6 +365,15 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     def get_ga_call_variable(self):
         return self.browser.execute_script("return window.gaCall")
 
+    def set_default_window_size(self):
+        self.browser.set_window_size(**self.DESKTOP_BROWSER_SIZE)
+
+    def is_element_displayed(self, selector):
+        return self.browser.execute_script('return $("%s").css("display")' % selector) != 'none'
+
+    def try_to_revive_browser(self):
+        self.browser.get('/')
+
 
 class BaseAdminTestCase(BaseLiveTestCase):
     def setUp(self):
