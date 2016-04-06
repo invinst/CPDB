@@ -1,6 +1,4 @@
-from hashids import Hashids
-
-from mobile.constants import MOBILE_SALT
+from common.utils.mobile_url_hash_util import MobileUrlHashUtil
 
 
 class MobileUrlMixins(object):
@@ -8,8 +6,7 @@ class MobileUrlMixins(object):
         self.visit('/')
 
     def visit_complaint_page(self, crid, cat_id):
-        self.visit('/complaint/{crid}/slug/{hash}'.format(crid=crid, hash=Hashids(MOBILE_SALT,
-                                                                                  min_length=8).encode(cat_id)))
+        self.visit('/complaint/{crid}/slug/{hash}'.format(crid=crid, hash=MobileUrlHashUtil().encode(cat_id)))
 
     def visit_officer_page(self, officer_id):
         self.visit('/officer/any-slug/{officer_id}'.format(officer_id=officer_id))

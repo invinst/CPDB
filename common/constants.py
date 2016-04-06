@@ -408,3 +408,5 @@ DEFAULT_META_KEYWORDS = (
     'Chicago Police Department, Citizens Police Data Project, '
     'Invisible Institute, Police, Allegations, Disciplines'
     )
+
+MOBILE_SALT = '8qTCKQzt5jYYTADWcUO8'
