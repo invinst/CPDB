@@ -102,7 +102,8 @@ class AllegationSessionDesktopToMobileRdirectorTest(SimpleTestCase):
 
         urls = self.redirect_allegation_id_only_session(filters)
 
-        urls.should.be.equal([allegation.get_mobile_url()])
+        allegation_redirect_url = '/s/{crid}'.format(crid=allegation.crid)
+        urls.should.be.equal([allegation_redirect_url])
 
 
 class DesktopToMobileRedirectorServiceTest(SimpleTestCase):
@@ -128,4 +129,5 @@ class DesktopToMobileRedirectorServiceTest(SimpleTestCase):
         redirect_service = DesktopToMobileRedirectorService(DEFAULT_REDIRECTORS)
         urls = redirect_service.perform(filters)
 
-        urls.should.be.equal([officer.get_mobile_url(), allegation.get_mobile_url()])
+        allegation_redirect_url = '/s/{crid}'.format(crid=allegation.crid)
+        urls.should.be.equal([officer.get_mobile_url(), allegation_redirect_url])

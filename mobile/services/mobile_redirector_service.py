@@ -44,7 +44,7 @@ class AllegationSessionDesktopToMobileRedirector(DesktopToMobileRedirectorMixin)
     @active_for('allegation__crid')
     def _redirect_allegation_crid_only_session(self, values):
         allegations = Allegation.objects.filter(crid__in=values)
-        return [allegation.get_mobile_url() for allegation in allegations]
+        return ['/s/{crid}'.format(crid=allegation.crid) for allegation in allegations]
 
 
 class DesktopToMobileRedirectorService(object):
