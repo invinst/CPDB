@@ -102,3 +102,17 @@ class MobileComplaintPageTest(BaseLivePhoneTestCase):
 
         self.should_see_text('Invalid page!')
         self.should_see_text('The Category')
+
+    def test_toggle_complaint_page(self):
+        category = AllegationCategoryFactory()
+        allegation = AllegationFactory()
+        OfficerAllegationFactory(cat=category, allegation=allegation)
+
+        self.visit_complaint_page(allegation.crid, category.id)
+
+        self.until(lambda: self.find('.number-of-allegations-section')).click()
+        self.until(lambda: self.find('.toggle-page.content').text.should.contain(category.category))
+        self.find_all('.officer-allegation-detail').should.have.length_of(0)
+
+        self.find('.toggle-container').click()
+        self.element_exist('.officer-allegation-detail.pad')
