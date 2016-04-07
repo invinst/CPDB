@@ -11,6 +11,7 @@ var AppDispatcher = require('dispatcher/AppDispatcher');
 var RequestDocumentActions = require('actions/RequestDocumentActions');
 
 require('should');
+require('utils/tests/should');
 
 
 describe('AllegationSummary component', function () {
@@ -103,7 +104,7 @@ describe('AllegationSummary component', function () {
 
     modalContent = ReactTestUtils.findRenderedDOMComponentWithClass(requestModal, 'request-form');
     modalContent.className.split(' ').should.not.containEql('hidden');
-    modalContent.textContent.indexOf('We\'ll notify you when the document is made available.').should.not.equal(-1);
+    modalContent.textContent.should.contains('We\'ll notify you when the document is made available.');
 
     emailInput = ReactTestUtils.findRenderedDOMComponentWithTag(requestModal, 'input');
     emailInput.value = 'what@ever.email';

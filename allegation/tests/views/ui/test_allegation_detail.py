@@ -1,35 +1,11 @@
 from faker import Faker
 
-from allegation.factories import AllegationFactory, AreaFactory,\
-    OfficerAllegationFactory
+from allegation.factories import AllegationFactory, OfficerAllegationFactory
 from common.tests.core import BaseLiveTestCase
 from allegation.tests.utils.allegation_row_helper_mixin import AllegationRowHelperMixin
 
 
 class AllegationDetailTestCase(AllegationRowHelperMixin, BaseLiveTestCase):
-    # Since we lost this marker many times, so we write this test to ensure
-    # it's available. In case this test failed, please take a look on its url
-    # in allegation/constants/AppConstants.js
-    def test_marker_should_be_available(self):
-        area = AreaFactory()
-        allegation = AllegationFactory(
-            add1=None,
-            add2=None,
-            point=area.polygon.centroid
-            )
-        OfficerAllegationFactory(allegation=allegation)
-
-        self.open_complaint_detail()
-
-        self.until(lambda: self.element_exist('.complaint-list'))
-        self.find('.complaint-row > .row').click()
-        self.element_exist('.complaint_detail').should.equal(True)
-
-        image = self.until(lambda: self.find('.complaint-map img'))
-        alternative_text = image.get_attribute('src')
-
-        len(alternative_text).shouldnt.equal(0)
-
     def test_complaint_detail_with_long_summary(self):
         fake = Faker()
         very_long_sentence = fake.sentence(200)
