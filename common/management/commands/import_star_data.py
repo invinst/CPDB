@@ -50,17 +50,14 @@ class Command(BaseCommand):
         parser.add_argument('--debug')
 
     def get_officer(self, **kwargs):
-        order_of_contrain = ['gender', 'race', 'star']
+        order_of_contrain = ['appt_date', 'gender', 'race', 'unit', 'star']
         start_kw = {'officer_first__iexact': kwargs['officer_first'], 'officer_last__iexact': kwargs['officer_last']}
-
         officers = Officer.objects.filter(**start_kw)
 
-        if officers.filter(star__in=kwargs['stars']).count() > 1:
-            # multiple officers with the same star number at some point in history and same first+last name
-            officers = officers.filter(star__in=kwargs['stars'])
-            print("merge", officers.values('id', 'officer_last', 'officer_first', 'star'), kwargs['stars'])
-            self.officers = officers
-            raise MergeException
+        if kwargs.get('appt_date'):
+            if officers.exclude(appt_date__isnull=True).count() == officers.count():
+                # if none of the officers in the DB have a null appt date, then we will restrict by this
+                officers = officers.filter(appt_date=kwargs['appt_date'])
 
         if officers:
             count = officers.count()
@@ -68,22 +65,28 @@ class Command(BaseCommand):
             if count == 1:
                 return officers.first()
 
-            if kwargs.get('appt_date'):
-
-                if officers.exclude(appt_date__isnull=True).count() == count:
-                    # if none of the officers in the DB have a null appt date, then we will restrict by this
-                    officers = officers.filter(appt_date=kwargs['appt_date'])
-
                 if officers.filter(appt_date=kwargs['appt_date']).count() == 1:
                     # if we now have one officer, we've found our match based on first name, last name, and appt date
                     return officers.filter(appt_date=kwargs['appt_date']).first()
+
+            if officers.filter(star__in=kwargs['stars']).count() > 1:
+                # multiple officers with the same star number at some point in history and same first+last name
+                officers = officers.filter(star__in=kwargs['stars'])
+                print("merge", officers.values('id', 'officer_last', 'officer_first', 'star'), kwargs['stars'])
+                self.officers = officers
+                raise MergeException
 
             for add_filter in order_of_contrain:
                 # add filters 1 at a time, for gender, and race to try to bring it down to just one officer that matches
                 constrain = kwargs.get(add_filter, None)
 
                 if constrain:
-                    officers = officers.filter(**{"{field}__iexact".format(field=add_filter): constrain})
+                    if add_filter == 'race' and kwargs['race'].lower().endswith('hispanic'):
+                        officers = officers.filter(race__icontains='hispanic')
+                    elif add_filter == 'appt_date':
+                        officers = officers.filter(appt_date=kwargs['appt_date'])
+                    else:
+                        officers = officers.filter(**{"{field}__iexact".format(field=add_filter): constrain})
 
                 count = officers.count()
 
@@ -97,7 +100,7 @@ class Command(BaseCommand):
             raise Officer.MultipleObjectsReturned
         raise Officer.DoesNotExist
 
-    def create_officer(self, row, officers_last_star_num):
+    def create_officer(self, row, officers_last_star_num, appt_date):
         race = row[RACE].capitalize()
         if row[RACE] in OFFICER_RACE_MAPPING:
             race = OFFICER_RACE_MAPPING[row[RACE]]
@@ -107,14 +110,21 @@ class Command(BaseCommand):
             officer_last=row[LAST_NAME].capitalize(),
             race=race,
             gender=row[GENDER],
-            star=officers_last_star_num
+            star=officers_last_star_num,
+            appt_date=appt_date,
+            unit=row[CPD_UNIT_ASSIGNED]
         )
 
         officer.save()
 
-        self.add_officer_history(officer, row, officers_last_star_num)
+        self.add_officer_history(officer, row, officers_last_star_num, appt_date)
 
-    def add_officer_history(self, officer, row, officers_last_star_num):
+    def add_officer_history(self, officer, row, officers_last_star_num, appt_date):
+
+        officer.appt_date = appt_date
+        officer.unit = row[CPD_UNIT_ASSIGNED]
+        officer.star = officers_last_star_num
+        officer.save()
 
         end_date = None
         if row[END_DATE]:
@@ -170,10 +180,11 @@ class Command(BaseCommand):
 
                 else:
                     appt_date = None
-
+                row[CPD_UNIT_ASSIGNED] = row[CPD_UNIT_ASSIGNED].zfill(3)
                 stars = []
+                officers_last_star_num = None
                 for i in range(STARS_START, STARS_END):
-                    if row[i]:
+                    if i < len(row) and row[i]:
                         officers_last_star_num = row[i]
                         stars.append(row[i])
 
@@ -186,12 +197,13 @@ class Command(BaseCommand):
                         race=row[RACE],
                         star=officers_last_star_num,
                         appt_date=appt_date,
-                        stars=stars
+                        stars=stars,
+                        unit=row[CPD_UNIT_ASSIGNED]
                     )
 
                     found_counter += 1
 
-                    self.add_officer_history(officer, row, officers_last_star_num)
+                    self.add_officer_history(officer, row, officers_last_star_num, appt_date)
                 except Officer.MultipleObjectsReturned:
                     not_found_counter += 1
                     possible_matches = ";".join(["%d" % x for x in self.officers.values_list('id', flat=True)])
@@ -208,7 +220,7 @@ class Command(BaseCommand):
                 except Officer.DoesNotExist:
                     not_exist_counter += 1
                     writer.writerow([-1] + row)
-                    officer = self.create_officer(row, officers_last_star_num)
+                    officer = self.create_officer(row, officers_last_star_num, appt_date)
                     continue
 
                 if not officer:
