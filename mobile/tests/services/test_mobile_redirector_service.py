@@ -1,6 +1,6 @@
 from unittest.mock import MagicMock, patch
 
-from allegation.factories import OfficerFactory, AllegationFactory
+from allegation.factories import OfficerFactory, AllegationFactory, AllegationCategoryFactory, OfficerAllegationFactory
 from common.tests.core import SimpleTestCase
 from mobile.constants import DEFAULT_REDIRECTORS
 from mobile.services.mobile_redirector_service import (DesktopToMobileRedirectorMixin,
@@ -14,17 +14,25 @@ class ActiveForDecoratorTest(SimpleTestCase):
         filter_key = 'officer'
         mock = MagicMock(filters={filter_key: [{'value': 'xyz', 'category': filter_key}]})
         method = MagicMock(return_value='return_value')
-        decoratored_mock = active_for(filter_key)(method)
+        decoratored_mock = active_for([filter_key])(method)
 
         decoratored_mock(mock).should.equal('return_value')
 
-        method.assert_called_with(mock, ['xyz'])
+        method.assert_called_with(mock, officer=['xyz'])
 
     def test_method_is_not_activated_in_decorator(self):
         mock = MagicMock(filters={})
         method = MagicMock(return_value='return_value')
 
-        decoratored_mock = active_for('officer')(method)
+        decoratored_mock = active_for(['officer'])(method)
+
+        decoratored_mock(mock).should.equal([])
+
+    def test_method_is_not_activated_in_decorator_if_just_part_of_them_matched_active_for(self):
+        filter_key = 'officer'
+        mock = MagicMock(filters={filter_key: [{'value': 'xyz', 'category': filter_key}]})
+        method = MagicMock(return_value='return_value')
+        decoratored_mock = active_for([filter_key, 'other-extra-key'])(method)
 
         decoratored_mock(mock).should.equal([])
 
@@ -88,6 +96,10 @@ class AllegationSessionDesktopToMobileRdirectorTest(SimpleTestCase):
         redirector = AllegationSessionDesktopToMobileRedirector(filters)
         return redirector._redirect_allegation_crid_only_session()
 
+    def redirect_allegation_id_and_cat_session(self, filters):
+        redirector = AllegationSessionDesktopToMobileRedirector(filters)
+        return redirector._redirect_allegation_crid_and_cat_session()
+
     def test_redirect_allegation_crid_only_session_with_invalid_allegation(self):
         bad_allegation_crid = -1
         filters = {'allegation__crid': [{'value': bad_allegation_crid, 'category': 'allegation__crid'}]}
@@ -105,6 +117,23 @@ class AllegationSessionDesktopToMobileRdirectorTest(SimpleTestCase):
         allegation_redirect_url = '/s/{crid}'.format(crid=allegation.crid)
         urls.should.be.equal([allegation_redirect_url])
 
+    def test_redirect_allegation_crid_and_cat_session(self):
+        crid = '12345'
+        category_id = 123456
+        category_name = 'category name'
+        expected_url = '/complaint/12345/category-name/x8G40LjV'
+        allegation = AllegationFactory(crid=crid)
+        category = AllegationCategoryFactory(pk=category_id, category=category_name)
+        OfficerAllegationFactory(allegation=allegation, cat=category)
+
+        filters = {
+            'allegation__crid': [{'value': allegation.crid, 'category': 'allegation__crid'}],
+            'cat': [{'value': category.pk, 'category': 'cat'}]
+        }
+
+        urls = self.redirect_allegation_id_and_cat_session(filters)
+        urls.should.be.equal([expected_url])
+
 
 class DesktopToMobileRedirectorServiceTest(SimpleTestCase):
     def test_register_and_unregister(self):
@@ -119,15 +148,13 @@ class DesktopToMobileRedirectorServiceTest(SimpleTestCase):
 
     def test_perform(self):
         allegation = AllegationFactory()
-        officer = OfficerFactory()
 
         filters = {
             'allegation__crid': [{'value': allegation.crid, 'category': 'allegation__crid'}],
-            'officer': [{'value': officer.id, 'category': 'officer'}]
         }
 
         redirect_service = DesktopToMobileRedirectorService(DEFAULT_REDIRECTORS)
         urls = redirect_service.perform(filters)
 
         allegation_redirect_url = '/s/{crid}'.format(crid=allegation.crid)
-        urls.should.be.equal([officer.get_mobile_url(), allegation_redirect_url])
+        urls.should.be.equal([allegation_redirect_url])
