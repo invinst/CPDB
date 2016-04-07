@@ -78,7 +78,7 @@ class OfficerAllegationAPIView(View):
         results = []
         officer_allegations = officer_allegations.select_related(
             'allegation__beat', 'allegation__investigator', 'allegation',
-            'officer')
+            'officer').prefetch_related('allegation__documents')
         unique_witnesses = ComplainingWitness.objects.filter(
             allegation__officerallegation__in=officer_allegations).distinct().values('cwit_id')
 
@@ -129,6 +129,7 @@ class OfficerAllegationAPIView(View):
                     if o.allegation_id == allegation.pk],
                 'beat_name': allegation.beat.name if allegation.beat else '',
                 'investigator': allegation.investigator,
+                'documents': allegation.documents.all()
             }
             results.append(ret)
 

@@ -7,10 +7,9 @@ var Base = require('components/Base.react');
 var Allegation = require('components/DataToolPage/Allegation.react');
 var ComplaintListActions = require('actions/ComplaintList/ComplaintListActions');
 var ComplaintListStore = require('stores/ComplaintListStore');
-var RequestButton = require('components/DataToolPage/Complaint/RequestButton.react');
 var SessionAPI = require('utils/SessionAPI');
 
-var ComplaintPresenter = require('presenters/ComplaintPresenter');
+var AllegationPresenterFactory = require('presenters/AllegationPresenterFactory');
 
 
 var InvestigationListRow = React.createClass(_.assign(Base(ComplaintListStore), {
@@ -43,30 +42,25 @@ var InvestigationListRow = React.createClass(_.assign(Base(ComplaintListStore), 
 
   render: function () {
     var complaint = this.props.complaint;
-    var presenter = ComplaintPresenter(complaint);
+    var presenter = AllegationPresenterFactory.buildPresenter(complaint);
     var detailIsShown = this.detailIsCurrentlyShown();
 
-    var allegation = complaint['officer_allegation'];
-
-    var finding = this.props.finding ? this.props.finding.replace(/ /,'-').toLowerCase() : 'other';
-
-    var caretClasses = classnames('fa complaint-row-outcome', finding, {
+    var caretClasses = classnames('fa complaint-row-outcome', presenter.slugifyFinding, {
       'fa-chevron-right': !detailIsShown,
       'fa-chevron-down': detailIsShown
     });
 
-    var rowClassName = classnames('complaint-row', finding, allegation.final_outcome_class);
+    var rowClassName = classnames('complaint-row', presenter.slugifyFinding, presenter.finalOutcomeClass);
 
-    var domId = 'allegation-' + allegation.id;
     return (
       <div className={ rowClassName }>
-        <div className='row cursor' id={ domId } onClick={ this.toggleComplaint }>
+        <div className='row cursor' id={ presenter.domId } onClick={ this.toggleComplaint }>
           <div className='col-md-1 col-xs-1 text-center'>
             <i className={ caretClasses }></i>
           </div>
           <div className='col-md-3 col-xs-3'>
             <div className='title'>Complaints</div>
-            { presenter.complaintSubCategory }
+            { presenter.subCategory }
           </div>
           <div className='col-md-1 col-xs-1'>
             <div className='title'>CRID</div>
@@ -81,7 +75,8 @@ var InvestigationListRow = React.createClass(_.assign(Base(ComplaintListStore), 
             { presenter.complainingWitness }
           </div>
           <div className='col-md-2 col-xs-3'>
-            <RequestButton complaint={ complaint } />
+            <div className='title'>Document</div>
+            { presenter.documentTypes }
           </div>
         </div>
         { this.renderShowMore() }

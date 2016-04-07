@@ -30,6 +30,7 @@ DJANGO_APPS = (
 )
 
 THIRD_PARTY_APPS = (
+    'wagtail.contrib.wagtailapi',
     'django_extensions',
     'djangobower',
     'django_tables2',
@@ -38,9 +39,24 @@ THIRD_PARTY_APPS = (
     'django_nose',
     'django_user_agents',
     'haystack',
+    'taggit',
+    'modelcluster',
+    'wagtail.wagtailcore',
+    'wagtail.wagtailadmin',
+    'wagtail.wagtaildocs',
+    'wagtail.wagtailsnippets',
+    'wagtail.wagtailusers',
+    'wagtail.wagtailimages',
+    'wagtail.wagtailembeds',
+    'wagtail.wagtailsearch',
+    'wagtail.wagtailsites',
+    'wagtail.wagtailredirects',
+    'wagtail.wagtailforms',
+    'wagtail.contrib.wagtailsearchpromotions',
 )
 
 CPDB_APPS = (
+    'wagtail_app',
     'common',
     'allegation',
     'officer',
@@ -72,6 +88,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 
+    'wagtail.wagtailcore.middleware.SiteMiddleware',
+    'wagtail.wagtailredirects.middleware.RedirectMiddleware',
 )
 
 ROOT_URLCONF = 'cpdb.urls'
@@ -231,6 +249,9 @@ SITE_INFO = {
     'domain': 'cpdb.co',
     'mobile_host': 'm.cpdb.co',
 }
+
+# WAGTAIL
+WAGTAIL_SITE_NAME = 'CPDB'
 
 HAYSTACK_CONNECTIONS = {
     'default': {

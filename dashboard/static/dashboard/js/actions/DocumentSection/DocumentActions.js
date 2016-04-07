@@ -1,7 +1,6 @@
 var toastr = require('toastr');
 var AppDispatcher = require('../../dispatcher/AppDispatcher');
 var AppConstants = require('../../constants/AppConstants');
-var DocumentCloudAPI = require('utils/DocumentCloudAPI');
 
 
 var DocumentActions = {
@@ -19,32 +18,28 @@ var DocumentActions = {
     });
   },
 
-  requestCancel: function (allegation) {
-    toastr.success(allegation.crid + ' document requests have been canceled.');
+  requestCancel: function (document) {
+    toastr.success(document.allegation + ' document requests have been canceled.');
     AppDispatcher.dispatch({
       actionType: AppConstants.DOCUMENT_REQUEST_CANCEL,
-      data: allegation
+      data: document
     });
   },
 
-  requestPutToPending: function (allegation) {
-    toastr.success(allegation.crid + ' document has been requested.');
+  requestPutToPending: function (document) {
+    toastr.success(document.allegation + ' document has been requested.');
     AppDispatcher.dispatch({
       actionType: AppConstants.DOCUMENT_PUT_TO_PENDING,
-      data: allegation
+      data: document
     });
   },
 
-  requestPendingCancelled: function (allegation) {
-    toastr.success(allegation.crid + ' document pending has been cancelled.');
+  requestPendingCancelled: function (document) {
+    toastr.success(document.allegation + ' document pending has been cancelled.');
     AppDispatcher.dispatch({
       actionType: AppConstants.DOCUMENT_PUT_TO_REQUESTING,
-      data: allegation
+      data: document
     });
-  },
-
-  uploadDocument: function (data) {
-    return DocumentCloudAPI.uploadDocument(data);
   }
 };
 

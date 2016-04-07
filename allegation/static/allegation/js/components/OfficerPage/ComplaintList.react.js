@@ -13,8 +13,7 @@ var ComplaintList = React.createClass({
   renderComplaints: function (officer) {
     var rows,
       i,
-      complaint,
-      allegation;
+      complaint;
 
     if (!this.props.complaints.length) {
       return (<div className='no-complaints'>No allegations match the query.</div>);
@@ -23,11 +22,9 @@ var ComplaintList = React.createClass({
 
     for (i = 0; i < this.props.complaints.length; i++) {
       complaint = this.props.complaints[i];
-      allegation = complaint.allegation;
 
       rows.push(
-        <ComplaintListRow key={ i } complaint={ complaint } officer={ officer }
-          finding={ allegation.final_finding }/>
+        <ComplaintListRow key={ i } complaint={ complaint } officer={ officer } />
       );
     }
 
