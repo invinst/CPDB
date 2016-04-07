@@ -54,11 +54,9 @@ class Command(BaseCommand):
         start_kw = {'officer_first__iexact': kwargs['officer_first'], 'officer_last__iexact': kwargs['officer_last']}
 
         officers = Officer.objects.filter(**start_kw)
-        if kwargs['officer_last'] == 'Brown' and kwargs['officer_first'] == 'Robert':
-            import pdb
-            pdb.set_trace()
 
         if officers.filter(star__in=kwargs['stars']).count() > 1:
+            # multiple officers with the same star number at some point in history and same first+last name
             officers = officers.filter(star__in=kwargs['stars'])
             print("merge", officers.values('id', 'officer_last', 'officer_first', 'star'), kwargs['stars'])
             self.officers = officers
@@ -73,12 +71,15 @@ class Command(BaseCommand):
             if kwargs.get('appt_date'):
 
                 if officers.exclude(appt_date__isnull=True).count() == count:
+                    # if none of the officers in the DB have a null appt date, then we will restrict by this
                     officers = officers.filter(appt_date=kwargs['appt_date'])
 
                 if officers.filter(appt_date=kwargs['appt_date']).count() == 1:
+                    # if we now have one officer, we've found our match based on first name, last name, and appt date
                     return officers.filter(appt_date=kwargs['appt_date']).first()
 
             for add_filter in order_of_contrain:
+                # add filters 1 at a time, for gender, and race to try to bring it down to just one officer that matches
                 constrain = kwargs.get(add_filter, None)
 
                 if constrain:
