@@ -47,8 +47,7 @@ var AllegationPresenter = function (complaint) {
   };
 
   var documentId = function () {
-    var docId = u.fetch(complaint, 'document_id', 0);
-    return docId == 0 ? '' : docId;
+    return u.fetch(complaint, 'document_id', 0);
   };
 
   return {
