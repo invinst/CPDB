@@ -17,10 +17,9 @@ class MobileComplaintPageRedirectTest(MobileUrlMixins, FilterTagsTestMixin, Base
         cat_id = category.id
 
         self.visit_complaint_page(crid, cat_id)
-
         self.assert_current_url_is_data_tool_page()
         self.assert_have_filter_tags('Allegation ID', crid)
-        self.assert_have_filter_tags('Category', cat_id)
+        self.assert_have_filter_tags('Allegation Type', category.category)
 
 
 class MobileSearchPageRedirectTest(FilterTagsTestMixin, BaseLiveTestCase):
