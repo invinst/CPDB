@@ -94,6 +94,16 @@ def update_officer_allegation_session(update_ids):
 
 
 def update_officer_session(officer_1, officer_2):
+    for session in Session.objects.filter(query__icontains='"value": %d' % officer_2.pk):
+        try:
+            for obj in session.query['filters']['officer']:
+                if obj['value'] == officer_2.pk:
+                    obj['value'] = officer_1.pk
+                    session.save()
+                    break
+        except KeyError:
+            pass
+
     for session in Session.objects.filter(query__icontains=str(officer_2.pk)):
         if officer_2.pk in session.query.get('active_officers', []):
             session.query['active_officers'].remove(officer_2.pk)

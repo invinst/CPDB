@@ -98,10 +98,15 @@ class MergeOfficersTestCase(SimpleTestCase):
     def test_update_officer_session(self):
         officer_1 = OfficerFactory()
         officer_2 = OfficerFactory()
-        session = SessionFactory(query={'active_officers': [officer_2.pk]})
+        session_1 = SessionFactory(query={'filters': {'officer': [{'value': officer_2.pk}]}})
+        SessionFactory(query={'filters': {'def': [{'value': officer_2.pk}]}})
+        session_2 = SessionFactory(query={'active_officers': [officer_2.pk]})
         SessionFactory(query={'cde': officer_2.pk})
 
         update_officer_session(officer_1, officer_2)
 
-        session.refresh_from_db()
-        session.query['active_officers'][0].should.equal(officer_1.pk)
+        session_1.refresh_from_db()
+        session_1.query['filters']['officer'][0]['value'].should.equal(officer_1.pk)
+
+        session_2.refresh_from_db()
+        session_2.query['active_officers'][0].should.equal(officer_1.pk)
