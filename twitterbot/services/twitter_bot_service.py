@@ -16,10 +16,10 @@ class TwitterBotService:
         user_responses = []
 
         self.cache_all_related_statuses(status)
-        self.cache_names(status)
+        self.cache_names()
 
         recipients = self.get_recipients()
-        responses = self.get_responses(status)
+        responses = self.get_responses()
 
         bot_log('Response: {responses}'.format(responses=len(responses)))
 
@@ -44,12 +44,12 @@ class TwitterBotService:
         """
         self.statuses = TwitterBotStatusesService(self.api).get_all_related_statuses(status)
 
-    def cache_names(self, status):
+    def cache_names(self):
         """
         Cache list of names we will check in our database to find officer
         :return:
         """
-        self.names = TwitterBotNamesService(self.api, self.statuses).get_all_names(status)
+        self.names = TwitterBotNamesService(self.statuses).get_all_names()
 
     def get_recipients(self):
         """
@@ -63,7 +63,7 @@ class TwitterBotService:
 
         return [x for x in set(screen_names) if x != settings.TWITTER_SCREEN_NAME]
 
-    def get_responses(self, status):
+    def get_responses(self):
         """
         Get list of responses we will send to each user
         :param status:

@@ -2,15 +2,15 @@ import random
 
 import factory
 
-from twitterbot.models import Response, TYPE_CHOICES
+from twitterbot.models import ResponseTemplate, TYPE_CHOICES
 
 
-class ResponseFactory(factory.django.DjangoModelFactory):
+class ResponseTemplateFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = Response
+        model = ResponseTemplate
 
     response_type = factory.Sequence(lambda n: random.choice(TYPE_CHOICES))
-    message = factory.Sequence(lambda n: n)
+    message = '{user} {{obj}} {reply_to}'
 
 
 class TweetFactory(object):

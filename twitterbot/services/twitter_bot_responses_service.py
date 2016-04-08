@@ -1,3 +1,4 @@
+from twitterbot.services.responses.investigators import InvestigatorResponses
 from twitterbot.services.responses.officers import OfficerResponses
 
 
@@ -11,5 +12,6 @@ class TwitterBotResponsesService:
         # TODO: get investigator responses
         responses = []
         responses += OfficerResponses(self.names).build_responses()
+        responses += InvestigatorResponses(self.names).build_responses()
 
-        return responses[:self.REPLY_LIMIT-1]
+        return responses[:self.REPLY_LIMIT]

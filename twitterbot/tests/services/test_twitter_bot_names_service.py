@@ -13,10 +13,8 @@ class TwitterBotNamesServiceTestCase(SimpleTestCase):
         hashtagged_officer = OfficerFactory(officer_first='Hash', officer_last='Tagged')
         relevant_officer_1 = OfficerFactory(officer_first='Relevant', officer_last='1')
         relevant_officer_2 = OfficerFactory(officer_first='Relevant', officer_last='2')
-        non_relevant_officer = OfficerFactory(officer_first='Non', officer_last='Relevant')
         relevant_linked_text_1 = 'CPD {name}'.format(name=relevant_officer_1.display_name)
         relevant_linked_text_2 = 'Chicago Police {name}'.format(name=relevant_officer_2.display_name)
-        non_relevant_linked_text = non_relevant_officer.display_name
         url = 'http://url.com'
         statuses = [
             TweetFactory(text=two_words_named_officer.display_name),
@@ -36,3 +34,22 @@ class TwitterBotNamesServiceTestCase(SimpleTestCase):
             names.should.contain(three_words_named_officer.display_name)
             names.should.contain(relevant_officer_1.display_name)
             names.should.contain(hashtagged_officer.display_name)
+
+        with patch('bs4.BeautifulSoup.getText', return_value=relevant_linked_text_2):
+            names = service.get_all_names()
+
+            names.should.contain(relevant_officer_2.display_name)
+
+    def test_do_not_get_names_from_unrelevant_articles(self):
+        non_relevant_officer = OfficerFactory(officer_first='Non', officer_last='Relevant')
+        non_relevant_linked_text = non_relevant_officer.display_name
+        url = 'http://url.com'
+        statuses = [
+            TweetFactory(urls=[{'expanded_url': url}])
+        ]
+        service = TwitterBotNamesService(statuses)
+
+        with patch('bs4.BeautifulSoup.getText', return_value=non_relevant_linked_text):
+            names = service.get_all_names()
+
+            names.shouldnt.contain(non_relevant_officer.display_name)
