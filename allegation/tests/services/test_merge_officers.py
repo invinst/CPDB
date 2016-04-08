@@ -4,9 +4,10 @@ from allegation.factories import (
     OfficerFactory, OfficerAllegationFactory, AllegationFactory, OfficerHistoryFactory, PoliceWitnessFactory)
 from allegation.services.merge_officers import (
     copy_missing_officer_fields, merge_officer_allegation, merge_officer_history, merge_police_witness,
-    update_officer_allegation_session, update_officer_session)
+    update_officer_allegation_session, update_officer_session, merge_officers)
 from common.tests.core import SimpleTestCase
 from common.constants import ACTIVE_UNKNOWN_CHOICE, ACTIVE_YES_CHOICE
+from common.models import Officer, OfficerAlias
 from share.factories import SessionFactory
 
 
@@ -110,3 +111,12 @@ class MergeOfficersTestCase(SimpleTestCase):
 
         session_2.refresh_from_db()
         session_2.query['active_officers'][0].should.equal(officer_1.pk)
+
+    def test_merge_officers(self):
+        officer_1 = OfficerFactory()
+        officer_2 = OfficerFactory()
+        officer_2_pk = officer_2.pk
+
+        merge_officers(officer_1, officer_2)
+        OfficerAlias.objects.filter(new_officer=officer_1, old_officer_id=officer_2_pk).exists().should.be.true
+        Officer.objects.filter(id=officer_2_pk).exists().should.be.false

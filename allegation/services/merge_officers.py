@@ -1,4 +1,5 @@
 from common.constants import ACTIVE_UNKNOWN_CHOICE
+from common.models import OfficerAlias
 from share.models import Session
 
 
@@ -109,3 +110,14 @@ def update_officer_session(officer_1, officer_2):
             session.query['active_officers'].remove(officer_2.pk)
             session.query['active_officers'].append(officer_1.pk)
             session.save()
+
+
+def merge_officers(officer_1, officer_2):
+    copy_missing_officer_fields(officer_1, officer_2)
+    merge_officer_history(officer_1, officer_2)
+    merge_police_witness(officer_1, officer_2)
+    officer_allegation_ids = merge_officer_allegation(officer_1, officer_2)
+    update_officer_allegation_session(officer_allegation_ids)
+    update_officer_session(officer_1, officer_2)
+    OfficerAlias.objects.create(new_officer=officer_1, old_officer_id=officer_2.pk)
+    officer_2.delete()
