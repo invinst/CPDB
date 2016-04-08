@@ -8,7 +8,7 @@ var RequestDocumentActions = require('actions/RequestDocumentActions');
 
 
 var RequestModal = (function () {
-  var document = null;
+  var _doc = null;
 
   var mountedInstant = null;
 
@@ -37,7 +37,7 @@ var RequestModal = (function () {
       return jQuery(ReactDOM.findDOMNode(this)).find('input[name=\'email\']').val();
     },
     register: function () {
-      RequestDocumentActions.registerEmail(document.id, this.email());
+      RequestDocumentActions.registerEmail(_doc.id, this.email());
     },
     onClick: function () {
       this.register();
@@ -52,10 +52,10 @@ var RequestModal = (function () {
       var style = {
         'marginTop': jQuery(window).height() / 2 - 100 + 'px'
       };
-      var formClassName = classnames('modal-dialog', {
+      var formClassName = classnames('modal-dialog request-form', {
         'hidden': this.state.thank
       });
-      var thankClassName = classnames('modal-dialog', {
+      var thankClassName = classnames('modal-dialog thanks-form', {
         'hidden': !this.state.thank
       });
       return (
@@ -102,7 +102,7 @@ var RequestModal = (function () {
   });
 
   component.show = function (doc) {
-    document = doc;
+    _doc = doc;
     mountedInstant.setState({
       thank: false
     });
@@ -122,7 +122,7 @@ var RequestModal = (function () {
   return component;
 })();
 
-AppDispatcher.register(function (action) {
+RequestModal.dispatcherToken = AppDispatcher.register(function (action) {
   switch (action.actionType) {
     case RequestDocumentConstants.REQUEST_DOCUMENT:
       RequestModal.show(action.document);
