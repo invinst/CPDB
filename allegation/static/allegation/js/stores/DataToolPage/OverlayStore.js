@@ -51,6 +51,11 @@ OverlayStore.dispatcherToken = AppDispatcher.register(function (action) {
       OverlayStore.emitChange();
       break;
 
+    case AppConstants.NAV_GO_TO_PAGE:
+      _state.active = false;
+      OverlayStore.emitChange();
+      break;
+
     default:
       break;
   }

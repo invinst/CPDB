@@ -9,7 +9,7 @@ describe('Overlay Actions', function () {
   it('should dispatch toggle overlay', function () {
     OverlayActions.toggleOverlay();
     AppDispatcher.dispatch.calledWithMatch({
-      actionType: AppConstants.TOGLLE_OVERLAY
+      actionType: AppConstants.TOGGLE_OVERLAY
     }).should.be.true();
   });
 });
