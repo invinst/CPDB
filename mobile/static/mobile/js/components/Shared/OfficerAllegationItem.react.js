@@ -1,10 +1,7 @@
 var React = require('react');
-var cx = require('classnames');
 
 var u = require('utils/HelperUtil');
 var CollectionUtil = require('utils/CollectionUtil');
-var OfficerUtil = require('utils/OfficerUtil');
-var HelperUtil = require('utils/HelperUtil');
 
 var AppHistory = require('utils/History');
 
@@ -12,6 +9,7 @@ var ComplaintPageActions = require('actions/ComplaintPage/ComplaintPageActions')
 var AllegationPresenter = require('presenters/AllegationPresenter');
 var OfficerAllegationPresenter = require('presenters/OfficerAllegationPresenter');
 var OfficerPresenter = require('presenters/OfficerPresenter');
+var CircleList = require('components/Shared/OfficerAllegationItem/CircleList.react');
 
 
 var OfficerAllegationItem = React.createClass({
@@ -21,22 +19,7 @@ var OfficerAllegationItem = React.createClass({
     officerAllegations: React.PropTypes.array
   },
 
-  renderCircles: function (allegationCounts) {
-    var circles = [];
-    var i;
-
-    for (i = 0; i < allegationCounts.length; i++) {
-      circles.push(
-        <div className={ cx('circle-wrapper', HelperUtil.format('officer-{index}', {'index': i})) } key={ i }>
-          <span className={ cx('circle', OfficerUtil.getColorLevelClass('circle', allegationCounts[i])) } />
-        </div>
-      );
-    }
-
-    return circles;
-  },
-
-  _onClicked : function (crid, firstOfficerAllegation) {
+  _onClick : function (crid, firstOfficerAllegation) {
     var presenter = OfficerAllegationPresenter(firstOfficerAllegation);
     AppHistory.pushState(null, presenter.url(crid));
     ComplaintPageActions.resetState();
@@ -58,7 +41,7 @@ var OfficerAllegationItem = React.createClass({
     var crid = allegationPresenter.crid;
 
     return (
-      <div className='officer-complaint-item' onClick={ this._onClicked.bind(this, crid, firstOfficerAllegation) }>
+      <div className='officer-complaint-item' onClick={ this._onClick.bind(this, crid, firstOfficerAllegation) }>
         <div className='crid-info pad'>
           <div className='inline-block half-width align-left'>
             <span className='crid-title'>CRID &nbsp;</span>
@@ -86,7 +69,7 @@ var OfficerAllegationItem = React.createClass({
             </span>
           </div>
           <div className='circles row'>
-            { this.renderCircles(allegationCounts) }
+            <CircleList allegationCountList={ allegationCounts } />
           </div>
         </div>
       </div>
