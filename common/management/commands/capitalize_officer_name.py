@@ -45,5 +45,3 @@ class Command(BaseCommand):
             investigator.name = "{first} {last}".format(first=first_name, last=last_name)
 
             investigator.save()
-
-        print("Done")
