@@ -12,8 +12,8 @@ class Command(BaseCommand):
     help = 'Update complaint documents info'
 
     search_syntaxes = [
-        ('CR', 'Group: invisibleinstitute title:"CR" !CPB'),
-        ('CPB', 'Group: invisibleinstitute title:"CPB"')
+        ('CR', 'Group: invisibleinstitute Group: citybureau title:"CR" !CPB'),
+        ('CPB', 'Group: invisibleinstitute Group: citybureau title:"CPB"')
     ]
 
     def process_documentcloud_result(self, result, document_type):
