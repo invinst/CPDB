@@ -6,8 +6,8 @@ from allegation.factories import AllegationFactory
 from common.tests.core import SimpleTestCase
 
 
-@override_settings(DEBUG=True)
 class AllegationViewTest(SimpleTestCase):
+    @override_settings(DEBUG=True)
     def test_bad_complaint_page_crid(self):
         response = self.client.get(reverse('allegation:complaint-page', kwargs={'crid': '123456'}), follow=True)
         response.status_code.should.be.equal(HTTP_404_NOT_FOUND)

@@ -18,6 +18,7 @@ var Timeline = React.createClass({
 
   componentDidMount: function () {
     var allegation = this.props.complaint.allegation;
+    var officerAllegation = this.props.complaint.officer_allegation;
     var container = $(ReactDOM.findDOMNode(this)).find('.timeline')[0];
     var firstDate, lastDate, incidentDate;
     var items = [];
@@ -36,9 +37,8 @@ var Timeline = React.createClass({
         start: incidentDate
       });
     }
-
-    if (allegation.start_date) {
-      startDate = moment(allegation.start_date);
+    if (officerAllegation['start_date']) {
+      startDate = moment(officerAllegation['start_date']);
 
       if (firstDate) {
         lastDate = startDate;
@@ -52,8 +52,8 @@ var Timeline = React.createClass({
       });
     }
 
-    if (allegation.end_date) {
-      endDate = moment(allegation.end_date);
+    if (officerAllegation['end_date']) {
+      endDate = moment(officerAllegation['end_date']);
       firstDate = firstDate || endDate;
       lastDate = endDate;
 

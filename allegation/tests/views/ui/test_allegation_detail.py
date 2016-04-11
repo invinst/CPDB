@@ -1,3 +1,4 @@
+import datetime
 from faker import Faker
 
 from allegation.factories import AllegationFactory, OfficerAllegationFactory
@@ -98,3 +99,51 @@ class AllegationDetailTestCase(AllegationRowHelperMixin, BaseLiveTestCase):
         self.until_ajax_complete()
 
         self.element_exist('.complaint-row.disciplined').should.be.false
+
+    def test_start_end_date_on_timeline(self):
+        now = datetime.datetime.now()
+        OfficerAllegationFactory(
+            start_date=now,
+            end_date=now + datetime.timedelta(days=30)
+        )
+
+        self.visit_home()
+        self.find('.officer.active .checkmark').click()
+
+        self.until_ajax_complete()
+        self.find('.complaint-row > .row').click()
+        self.until(lambda: self.element_exist('.timeline'))
+        self.element_exist('.timeline-datestart').should.be.true
+        self.element_exist('.timeline-dateend').should.be.true
+
+    def test_start_date_not_on_timeline(self):
+        now = datetime.datetime.now()
+        OfficerAllegationFactory(
+            start_date=None,
+            end_date=now + datetime.timedelta(days=30)
+        )
+
+        self.visit_home()
+        self.find('.officer.active .checkmark').click()
+
+        self.until_ajax_complete()
+        self.find('.complaint-row > .row').click()
+        self.until(lambda: self.element_exist('.timeline'))
+        self.element_exist('.timeline-datestart').should.be.false
+        self.element_exist('.timeline-dateend').should.be.true
+
+    def test_end_date_not_on_timeline(self):
+        now = datetime.datetime.now()
+        OfficerAllegationFactory(
+            start_date=now,
+            end_date=None
+        )
+
+        self.visit_home()
+        self.find('.officer.active .checkmark').click()
+
+        self.until_ajax_complete()
+        self.find('.complaint-row > .row').click()
+        self.until(lambda: self.element_exist('.timeline'))
+        self.element_exist('.timeline-dateend').should.be.false
+        self.element_exist('.timeline-datestart').should.be.true
