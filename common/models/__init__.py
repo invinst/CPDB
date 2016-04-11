@@ -45,12 +45,20 @@ class Officer(MobileSuggestibleOfficer, TimeStampedModel):
     def get_absolute_url(self):
         return '{path}{pk}'.format(path=reverse("officer:detail"), pk=self.pk)
 
+    @property
+    def absolute_view_url(self):
+        return reverse('officer:view', kwargs={'slug': self.slug, 'pk': self.pk})
+
     def __str__(self):
         return self.display_name
 
     @property
     def display_name(self):
         return '{self.officer_first} {self.officer_last}'.format(self=self)
+
+    @property
+    def slug(self):
+        return slugify(self.display_name)
 
     @property
     def tag_value(self):
@@ -187,6 +195,10 @@ class Investigator(TimeStampedModel):
             'text': self.name,
             'value': self.pk,
         }
+
+    @property
+    def absolute_view_url(self):
+        return self.get_absolute_url()
 
     @property
     def absolute_url(self):

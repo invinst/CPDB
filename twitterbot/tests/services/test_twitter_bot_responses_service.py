@@ -21,7 +21,7 @@ class TwitterBotResponsesServiceTestCase(SimpleTestCase):
         rebuild_index()
 
         responses = TwitterBotResponsesService(names).build_responses()
-        responses_str = str(responses)
+        responses_str = [x.message for x in responses]
 
         responses_str.should.contain(officer.display_name)
         responses_str.should.contain(investigator.name)

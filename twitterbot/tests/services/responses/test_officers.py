@@ -12,21 +12,21 @@ class OfficerResponsesTestCase(SimpleTestCase):
 
     def test_get_instances_from_names(self):
         OfficerFactory(officer_first='James', officer_last='Gallah')
-        responses = OfficerResponses(['Jason Van Dyke', 'invalid'])
-        officers = responses.get_instances_from_names()
+        responses_builder = OfficerResponses(['Jason Van Dyke', 'invalid'])
+        responses = responses_builder.get_instances_from_names()
 
-        len(officers).should.equal(1)
-        officers[0].id.should.equal(self.officer.id)
+        len(responses).should.equal(1)
+        responses[0].entity.id.should.equal(self.officer.id)
 
     def test_get_instances_from_names_not_return_duplicated_officers(self):
-        responses = OfficerResponses(['Jason Van Dyke', 'jason van dyke'])
-        officers = responses.get_instances_from_names()
+        responses_builder = OfficerResponses(['Jason Van Dyke', 'jason van dyke'])
+        responses = responses_builder.get_instances_from_names()
 
-        len(officers).should.equal(1)
-        officers[0].id.should.equal(self.officer.id)
+        len(responses).should.equal(1)
+        responses[0].entity.id.should.equal(self.officer.id)
 
     def test_get_instances_from_names_only_return_officers_with_exact_name_matched(self):
-        responses = OfficerResponses(['Jason Van', 'Van Dyke'])
-        officers = responses.get_instances_from_names()
+        responses_builder = OfficerResponses(['Jason Van', 'Van Dyke'])
+        responses = responses_builder.get_instances_from_names()
 
-        len(officers).should.equal(0)
+        len(responses).should.equal(0)
