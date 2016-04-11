@@ -8,6 +8,9 @@ class OfficerSuggestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Officer
         fields = (
+            'id',
+            'officer_first',
+            'officer_last',
             'allegations_count',
             'race',
             'gender',
@@ -66,7 +69,6 @@ class SuggestionMetaSerializer(serializers.Serializer):
 
 class MobileSuggestionViewSerializer(serializers.Serializer):
     text = serializers.CharField(max_length=200)
-    url = serializers.URLField()
     resource = serializers.CharField(max_length=20)
     resource_key = serializers.CharField(max_length=20)
     meta = SuggestionMetaSerializer()

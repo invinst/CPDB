@@ -7,6 +7,7 @@ from mobile.services.mobile_redirector_service import (DesktopToMobileRedirector
                                                        OfficerSessionDesktopToMobileRedirector,
                                                        AllegationSessionDesktopToMobileRedirector, active_for,
                                                        DesktopToMobileRedirectorService)
+from mobile.utils.mobile_url_builder import MobileUrlBuilder
 
 
 class ActiveForDecoratorTest(SimpleTestCase):
@@ -64,7 +65,7 @@ class OfficerSessionDesktopToMobileRedirectorTest(SimpleTestCase):
 
         urls = self.redirect_officer_id_only_session_with_filter(filters)
 
-        urls.should.equal([officer.get_mobile_url()])
+        urls.should.equal([MobileUrlBuilder().officer_page(officer)])
 
     def test_redirect_officer_id_only_session_should_return_url_if_officer_not_exists(self):
         bad_officer_pk = -1
@@ -80,7 +81,7 @@ class OfficerSessionDesktopToMobileRedirectorTest(SimpleTestCase):
 
         urls = self.redirect_officer_badge_only_session_with_filter(filters)
 
-        urls.should.equal([officer.get_mobile_url()])
+        urls.should.equal([MobileUrlBuilder().officer_page(officer)])
 
     def test_redirect_officer_badge_only_session_should_return_url_if_officer_not_exists(self):
         bad_officer_badge = -1
@@ -110,12 +111,46 @@ class AllegationSessionDesktopToMobileRdirectorTest(SimpleTestCase):
 
     def test_redirect_allegation_crid_only_session(self):
         allegation = AllegationFactory()
+        category1 = AllegationCategoryFactory()
+        category2 = AllegationCategoryFactory()
+
+        OfficerAllegationFactory(allegation=allegation, cat=category1)
+        OfficerAllegationFactory(allegation=allegation, cat=category2)
         filters = {'allegation__crid': [{'value': allegation.crid, 'category': 'allegation__crid'}]}
 
         urls = self.redirect_allegation_id_only_session(filters)
 
         allegation_redirect_url = '/s/{crid}'.format(crid=allegation.crid)
         urls.should.be.equal([allegation_redirect_url])
+
+    def test_redirect_allegation_crid_only_session_has_only_one_officer_allegation_with_category(self):
+        crid = '12345'
+        category_id = 123456
+        category_name = 'category name'
+        expected_url = '/complaint/12345/category-name/x8G40LjV'
+        allegation = AllegationFactory(crid=crid)
+        category = AllegationCategoryFactory(pk=category_id, category=category_name)
+        OfficerAllegationFactory(allegation=allegation, cat=category)
+
+        filters = {
+            'allegation__crid': [{'value': allegation.crid, 'category': 'allegation__crid'}]
+        }
+
+        urls = self.redirect_allegation_id_only_session(filters)
+        urls.should.be.equal([expected_url])
+
+    def test_redirect_allegation_crid_only_session_has_only_one_officer_allegation_without_category(self):
+        crid = '12345'
+        expected_url = '/complaint/12345/no-category/r9ME4Vao'
+        allegation = AllegationFactory(crid=crid)
+        OfficerAllegationFactory(allegation=allegation, cat=None)
+
+        filters = {
+            'allegation__crid': [{'value': allegation.crid, 'category': 'allegation__crid'}]
+        }
+
+        urls = self.redirect_allegation_id_only_session(filters)
+        urls.should.be.equal([expected_url])
 
     def test_redirect_allegation_crid_and_cat_session(self):
         crid = '12345'
