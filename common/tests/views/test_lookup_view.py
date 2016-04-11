@@ -5,13 +5,15 @@ from django.template.defaultfilters import slugify
 from rest_framework.status import HTTP_301_MOVED_PERMANENTLY
 
 from allegation.factories import (
-    OfficerFactory, AllegationFactory, OfficerAllegationFactory)
-from common.models import Allegation
+    OfficerFactory, AllegationFactory, OfficerAllegationFactory, AllegationCategoryFactory)
+from common.models import Allegation, AllegationCategory, OfficerAllegation
 from common.models import Officer
 
 
 class LookupViewTest(SimpleTestCase):
     def setUp(self):
+        OfficerAllegation.objects.all().delete()
+        AllegationCategory.objects.all().delete()
         Allegation.objects.all().delete()
         Officer.objects.all().delete()
 
@@ -41,14 +43,39 @@ class LookupViewTest(SimpleTestCase):
             officer_id=officer.pk)
         response.url.should.contain(expected_url)
 
-    def test_lookup_by_allegation_crid(self):
-        allegation = AllegationFactory()
-        OfficerAllegationFactory(allegation=allegation)
-        response = self.client.get('/lookup/{query}'.format(
-            query=allegation.crid))
+    def test_lookup_by_allegation_crid_with_one_officerallegation(self):
+        allegation = AllegationFactory(crid='12345')
+        category = AllegationCategoryFactory(pk=123456, category='category name')
+        OfficerAllegationFactory(allegation=allegation, cat=category)
+        expected_url = '/complaint/12345/category-name/x8G40LjV'
+
+        response = self.client.get('/lookup/{query}'.format(query=allegation.crid))
+
         response.status_code.should.equals(HTTP_301_MOVED_PERMANENTLY)
-        expected_url = 'complaint/{crid}'.format(crid=allegation.crid)
         response.url.should.contain(expected_url)
+
+    def test_lookup_by_allegation_crid_with_one_officerallegation_but_same_category(self):
+        allegation = AllegationFactory(crid='12345')
+        category = AllegationCategoryFactory(pk=456123, category='category name')
+        OfficerAllegationFactory.create_batch(2, allegation=allegation, cat=category)
+        expected_url = '/complaint/12345/category-name/J84Lyq78'
+
+        response = self.client.get('/lookup/{query}'.format(query=allegation.crid))
+
+        response.status_code.should.equals(HTTP_301_MOVED_PERMANENTLY)
+        response.url.should.contain(expected_url)
+
+    def test_lookup_by_multiple_categories_officerallegation(self):
+        allegation = AllegationFactory()
+        cat1 = AllegationCategoryFactory()
+        cat2 = AllegationCategoryFactory()
+        OfficerAllegationFactory(allegation=allegation, cat=cat1)
+        OfficerAllegationFactory(allegation=allegation, cat=cat2)
+
+        response = self.client.get('/lookup/{query}'.format(query=allegation.crid))
+
+        response.status_code.should.equals(HTTP_301_MOVED_PERMANENTLY)
+        response.url.should.contain('/search/{query}'.format(query=allegation.crid))
 
     def test_lookup_not_found(self):
         bad_query = 'bad_query'

@@ -1,5 +1,6 @@
 from django.views.generic import RedirectView
 
+from common.services.lookup_service import LookupService
 from mobile.services.mobile_suggestion_service import suggest
 
 
@@ -16,5 +17,6 @@ class LookupView(RedirectView):
         query = kwargs.get('query', '')
         suggestions = suggest(LookupView.query_param(query))
         default_url = self.get_default_search_url(query)
+        urls = LookupService.url_for(suggestions)
 
-        return default_url if len(suggestions) != 1 else suggestions[0]['url']
+        return default_url if len(urls) != 1 else urls[0]
