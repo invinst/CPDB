@@ -1,3 +1,5 @@
+import re
+
 from django.conf import settings
 from django.db import models
 from django.template.base import Template
@@ -97,3 +99,37 @@ class TwitterResponse:
             log.originating_tweet_username = self.originating_tweet.user.screen_name
 
         log.save()
+
+
+class TwitterBotTextSource:
+    def __init__(self, *args, **kwargs):
+        self.text = kwargs.get('text', '')
+        self.source = kwargs.get('source', 'text')
+
+    def build_names(self):
+        # TODO: find better way to find names
+        return self._build_names(word_length=2) + self._build_names(word_length=3)
+
+    def _build_names(self, word_length=2):
+        names = []
+        text = self.sanitize_text(self.text)
+
+        splitted = text.split(' ')
+        max_index = len(splitted)
+
+        for i in range(max_index - (word_length - 1)):
+            name = ' '.join(splitted[i:i+word_length])
+            if name and name != ' ' and len(name) > 6:
+                if self.source == 'text':
+                    names.append((name, name))
+                else:
+                    names.append((name, self.source))
+
+        return names
+
+    def sanitize_text(self, text):
+        text = re.sub('(\t|\n|\r|\s)+', ' ', text)
+        text = re.sub('[^A-Za-z0-9]+', ' ', text)
+        text = text.strip()
+
+        return text

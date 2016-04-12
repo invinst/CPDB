@@ -16,7 +16,10 @@ class TwitterBotResponsesServiceTestCase(SimpleTestCase):
     def test_build_responses(self):
         officer = OfficerFactory(officer_first='Jason', officer_last='Van Dyke')
         investigator = InvestigatorFactory(name='Daniel Neubeck')
-        names = ['Jason Van Dyke', 'Daniel Neubeck']
+        names = {
+            'Jason Van Dyke': [],
+            'Daniel Neubeck': []
+        }
 
         rebuild_index()
 
@@ -29,5 +32,5 @@ class TwitterBotResponsesServiceTestCase(SimpleTestCase):
     def test_limit_responses_return(self):
         with patch('twitterbot.services.responses.officers.OfficerResponses.build_responses',
                    return_value=list(range(20))):
-            responses = TwitterBotResponsesService([]).build_responses()
+            responses = TwitterBotResponsesService({}).build_responses()
             len(responses).should.equal(10)

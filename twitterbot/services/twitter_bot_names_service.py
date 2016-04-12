@@ -1,6 +1,9 @@
+import collections
 import requests
 from bs4 import BeautifulSoup
 import re
+
+from twitterbot.models import TwitterBotTextSource
 
 
 class TwitterBotNamesService:
@@ -8,37 +11,22 @@ class TwitterBotNamesService:
         self.statuses = statuses
 
     def get_all_names(self):
-        return self.find_names(word_length=2) + self.find_names(word_length=3)
-
-    def find_names(self, word_length=2):
-        # TODO: We need to find a new way to get name
-        texts = []
-        names = []
-
-        for status in self.statuses:
-            texts.append(status.text)
-            texts += self.parse_linked_websites(status.entities['urls'])
-            texts += self.parse_hashtags(status)
-
-        for text in texts:
-            text = self.sanitize_text(text)
-
-            splitted = text.split(' ')
-            max_index = len(splitted)
-
-            for i in range(max_index - (word_length - 1)):
-                name = ' '.join(splitted[i:i+word_length])
-                if name and name != ' ' and len(name) > 6:
-                    names.append(name)
+        names = collections.defaultdict(lambda: [])
+        text_sources = self.build_text_sources()
+        for text_source in text_sources:
+            for name, source in text_source.build_names():
+                names[name].append(source)
 
         return names
 
-    def sanitize_text(self, text):
-        text = re.sub('(\t|\n|\r|\s)+', ' ', text)
-        text = re.sub('[^A-Za-z0-9]+', ' ', text)
-        text = text.strip()
+    def build_text_sources(self):
+        text_sources = []
+        for status in self.statuses:
+            text_sources.append(TwitterBotTextSource(text=status.text, source='text'))
+            text_sources += self.parse_linked_websites(status.entities['urls'])
+            text_sources += self.parse_hashtags(status)
 
-        return text
+        return text_sources
 
     def parse_linked_websites(self, urls):
         texts = []
@@ -55,17 +43,19 @@ class TwitterBotNamesService:
                 'title'
             ])]
 
-            texts.append(soup.getText())
+            text = soup.getText()
+            if 'CPD' in text or ('Chicago' in text and 'Police' in text):
+                text_source = TwitterBotTextSource(text=text, source=url['expanded_url'])
+                texts.append(text_source)
 
-        if len(texts) > 0 and ('CPD' in texts[0] or ('Chicago' in texts[0] and 'Police' in texts[0])):
-            return texts
-        return []
+        return texts
 
     def parse_hashtags(self, status):
         hashtags = status.entities.get('hashtags', [])
-        words = []
+        text_sources = []
 
         for hashtag in hashtags:
-            words += re.findall('[A-Z][a-z]*', hashtag['text'])
+            words = re.findall('[A-Z][a-z]*', hashtag['text'])
+            text_sources.append(TwitterBotTextSource(text=' '.join(words), source='#%s' % hashtag['text']))
 
-        return [' '.join(words)]
+        return text_sources

@@ -12,21 +12,33 @@ class InvestigatorResponsesTestCase(SimpleTestCase):
 
     def test_get_instances_from_names(self):
         InvestigatorFactory(name='James Gallah')
-        responses_builder = InvestigatorResponses(['Jason Van Dyke', 'invalid'])
+        names = {
+            'Jason Van Dyke': [],
+            'invalid': []
+        }
+        responses_builder = InvestigatorResponses(names)
         responses = responses_builder.get_instances_from_names()
 
         len(responses).should.equal(1)
         responses[0].entity.id.should.equal(self.investigator.id)
 
     def test_get_instances_from_names_not_return_duplicated_officers(self):
-        responses_builder = InvestigatorResponses(['Jason Van Dyke', 'jason van dyke'])
+        names = {
+            'Jason Van Dyke': [],
+            'jason van dyke': []
+        }
+        responses_builder = InvestigatorResponses(names)
         responses = responses_builder.get_instances_from_names()
 
         len(responses).should.equal(1)
         responses[0].entity.id.should.equal(self.investigator.id)
 
     def test_get_instances_from_names_only_return_officers_with_exact_name_matched(self):
-        responses_builder = InvestigatorResponses(['Jason Van', 'Van Dyke'])
+        names = {
+            'Jason Van': [],
+            'Van Dyke': []
+        }
+        responses_builder = InvestigatorResponses(names)
         responses = responses_builder.get_instances_from_names()
 
         len(responses).should.equal(0)
