@@ -75,7 +75,7 @@ class LookupViewTest(SimpleTestCase):
         response = self.client.get('/lookup/{query}'.format(query=allegation.crid))
 
         response.status_code.should.equals(HTTP_301_MOVED_PERMANENTLY)
-        response.url.should.contain('/search/{query}'.format(query=allegation.crid))
+        response.url.should.contain('/s/{query}'.format(query=allegation.crid))
 
     def test_lookup_not_found(self):
         bad_query = 'bad_query'
@@ -83,7 +83,7 @@ class LookupViewTest(SimpleTestCase):
         response = self.client.get('/lookup/{query}'.format(query=bad_query))
         response.status_code.should.equals(HTTP_301_MOVED_PERMANENTLY)
 
-        expected_uri = '/search/{query}'.format(query=bad_query)
+        expected_uri = '/s/{query}'.format(query=bad_query)
         urllib.parse.urlparse(response.url).path.should.equal(expected_uri)
 
     def test_translate_underscore_officer_lookup_url(self):
