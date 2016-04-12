@@ -9,9 +9,7 @@ class TwitterBotResponsesService:
         self.names = names
 
     def build_responses(self):
-        # TODO: get investigator responses
-        responses = []
-        responses += OfficerResponses(self.names).build_responses()
+        responses = OfficerResponses(self.names).build_responses()
         responses += InvestigatorResponses(self.names).build_responses()
 
         return responses[:self.REPLY_LIMIT]

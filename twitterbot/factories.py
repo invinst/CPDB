@@ -13,7 +13,7 @@ class ResponseTemplateFactory(factory.django.DjangoModelFactory):
     message = '{user} {{obj}} {reply_to}'
 
 
-class TweetFactory(object):
+class TweetFactory:
     def __init__(self, screen_name='tweeter', text='Random text here', retweeted_status=None, quoted_status=None,
                  quoted_status_id_str='', tweet_id=1, **kwargs):
         self.text = text

@@ -23,7 +23,8 @@ class CPDBTweetHandler(tweepy.StreamListener):
             self.reply(status)
         except tweepy.TweepError as e:
             if e.api_code in IGNORED_ERROR_CODES:
-                pass
+                return
+            raise
 
     def reply(self, status):
         bot_log('Incoming tweet: {msg}'.format(msg=status.text))
