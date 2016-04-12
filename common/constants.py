@@ -260,7 +260,7 @@ OUTCOME_TEXT_DICT = {
         }
     },
     'no discipline': {
-        'text': 'No discipline',
+        'text': 'No Discipline',
         'condition': {
             'final_finding': ['SU'],
             'final_outcome': NO_DISCIPLINE_CODES,
@@ -273,7 +273,7 @@ OUTCOME_TEXT_DICT = {
         }
     },
     '10-30 days': {
-        'text': '10-30 day',
+        'text': '10-30 days',
         'condition': {
             'final_outcome': [str(x).zfill(3) for x in range(10, 31)],
         }

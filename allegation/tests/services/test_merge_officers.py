@@ -85,7 +85,8 @@ class MergeOfficersTestCase(SimpleTestCase):
             for i in range(2)]
         session_1 = SessionFactory(query={'filters': {'id': [{'value': ids_to_update[0][0]}]}})
         SessionFactory(query={'filters': {'def': [{'value': ids_to_update[0][0]}]}})
-        session_2 = SessionFactory(query={'activeComplaints': [ids_to_update[1][0]]})
+        session_2 = SessionFactory(query={'activeComplaints': [
+            ids_to_update[1][0], ids_to_update[1][0]]})
         SessionFactory(query={'abc': ids_to_update[1][0]})
 
         update_officer_allegation_session(ids_to_update)
@@ -94,14 +95,15 @@ class MergeOfficersTestCase(SimpleTestCase):
         session_1.query['filters']['id'][0]['value'].should.equal(ids_to_update[0][1])
 
         session_2.refresh_from_db()
-        session_2.query['activeComplaints'][0].should.equal(ids_to_update[1][1])
+        session_2.query['activeComplaints'].should.equal([ids_to_update[1][1]])
 
     def test_update_officer_session(self):
         officer_1 = OfficerFactory()
         officer_2 = OfficerFactory()
-        session_1 = SessionFactory(query={'filters': {'officer': [{'value': officer_2.pk}]}})
+        session_1 = SessionFactory(
+            query={'filters': {'officer': [{'value': officer_2.pk}]}})
         SessionFactory(query={'filters': {'def': [{'value': officer_2.pk}]}})
-        session_2 = SessionFactory(query={'active_officers': [officer_2.pk]})
+        session_2 = SessionFactory(query={'active_officers': [officer_2.pk, officer_2.pk, officer_1.pk]})
         SessionFactory(query={'cde': officer_2.pk})
 
         update_officer_session(officer_1, officer_2)
@@ -110,7 +112,7 @@ class MergeOfficersTestCase(SimpleTestCase):
         session_1.query['filters']['officer'][0]['value'].should.equal(officer_1.pk)
 
         session_2.refresh_from_db()
-        session_2.query['active_officers'][0].should.equal(officer_1.pk)
+        session_2.query['active_officers'].should.equal([officer_1.pk])
 
     def test_merge_officers(self):
         officer_1 = OfficerFactory()

@@ -89,8 +89,10 @@ def update_officer_allegation_session(update_ids):
         # update active complaints
         for session in Session.objects.filter(query__icontains=str(old_id)):
             if old_id in session.query.get('activeComplaints', []):
-                session.query['activeComplaints'].remove(old_id)
-                session.query['activeComplaints'].append(new_id)
+                active_complaints = set(session.query['activeComplaints'])
+                active_complaints.remove(old_id)
+                active_complaints.add(new_id)
+                session.query['activeComplaints'] = list(active_complaints)
                 session.save()
 
 
@@ -107,8 +109,10 @@ def update_officer_session(officer_1, officer_2):
 
     for session in Session.objects.filter(query__icontains=str(officer_2.pk)):
         if officer_2.pk in session.query.get('active_officers', []):
-            session.query['active_officers'].remove(officer_2.pk)
-            session.query['active_officers'].append(officer_1.pk)
+            active_officers = set(session.query['active_officers'])
+            active_officers.remove(officer_2.pk)
+            active_officers.add(officer_1.pk)
+            session.query['active_officers'] = list(active_officers)
             session.save()
 
 
