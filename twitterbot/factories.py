@@ -2,8 +2,10 @@ import random
 from datetime import datetime
 
 import factory
+import pytz
 
 from allegation.factories import OfficerFactory
+from twitterbot.constants import QUOTED_STATUS_DATE_FORMAT
 from twitterbot.models import ResponseTemplate, TYPE_CHOICES
 
 
@@ -42,7 +44,7 @@ def QuotedTweetFactory(screen_name='tweeter', text='Random text here', retweeted
         'quoted_status': quoted_status,
         'quoted_status_id_str': quoted_status_id_str,
         'id': kwargs.get('id', random.randint(1, 10)),
-        'created_at': kwargs.get('created_at', datetime.now())
+        'created_at': kwargs.get('created_at', datetime.now(pytz.utc).strftime(QUOTED_STATUS_DATE_FORMAT))
     }
 
 
