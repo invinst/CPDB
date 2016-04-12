@@ -8,7 +8,6 @@ class MobileSuggestibleOfficer(MobileSuggestible):
         return {
             'text': self.display_name,
             'resource': 'officer',
-            'url': [],
             'resource_key': self.pk,
             'meta': {
                 'officer': self
@@ -21,7 +20,6 @@ class MobileSuggestibleAllegation(MobileSuggestible):
         return {
             'text': self.crid,
             'resource': 'officer_allegation',
-            'url': [],
             'resource_key': self.crid,
             'meta': {
                 'allegation': self
