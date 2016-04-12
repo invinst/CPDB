@@ -365,6 +365,15 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
     def get_ga_call_variable(self):
         return self.browser.execute_script("return window.gaCall")
 
+    def set_default_window_size(self):
+        self.browser.set_window_size(**self.DESKTOP_BROWSER_SIZE)
+
+    def is_element_displayed(self, selector):
+        return self.browser.execute_script('return $("%s").css("display")' % selector) != 'none'
+
+    def try_to_revive_browser(self):
+        self.browser.get('/')
+
 
 class BaseAdminTestCase(BaseLiveTestCase):
     def setUp(self):
@@ -512,3 +521,13 @@ def switch_to_popup(driver):
     driver.switch_to.window(driver.window_handles[1])
     yield None
     driver.switch_to.window(driver.window_handles[0])
+
+
+def repr_equal_either(obj, *strs):
+    """
+    Make sure that repr result match either representation.
+
+    Usage example:
+        repr_equal_either(obj, '<objectA>', '<objectB>')
+    """
+    strs.should.contain(repr(obj))

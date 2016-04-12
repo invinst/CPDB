@@ -167,6 +167,42 @@
       opacity: 0
       transition: opacity 1s $cubic_bezier
 
+    .nav-tabs
+      background: none
+      border: none
+
+      .fa-bars
+        font-size: 24px
+        text-align: center
+        width: 44px
+        height: 44px
+        padding-top: 10px
+        cursor: pointer
+
+      .nav-tabs-sidebar
+        position: fixed
+        right: 0
+        top: 0
+        background: #d8e1ef
+        width: 250px
+        height: 100%
+        z-index: 10000
+
+        li
+          float: none
+          text-align: left
+          margin-left: 20px
+          height: 48px
+
+        .fa-times
+          font-size: 24px
+          margin-left: 206px
+          padding-top: 10px
+          width: 44px
+          height: 44px
+          text-align: center
+          cursor: pointer
+
   .fixed-nav
     position: fixed
     width: 100%
@@ -334,3 +370,17 @@
       height: 562px
     .page-banner
       padding-top: 7em
+
+@media screen and (max-width: 1099px)
+  .landing-nav
+    .items
+      margin-right: 0
+
+      .nav-tabs
+        .tablist
+          display: none
+
+@media screen and (min-width: 1100px)
+  .nav-tabs
+    .hamburger-btn
+      display: none

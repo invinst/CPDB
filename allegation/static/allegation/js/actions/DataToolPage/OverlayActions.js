@@ -5,7 +5,7 @@ var AppConstants = require('../../constants/AppConstants');
 var OverlayActions = {
   toggleOverlay: function () {
     AppDispatcher.dispatch({
-      actionType: AppConstants.TOGLLE_OVERLAY
+      actionType: AppConstants.TOGGLE_OVERLAY
     });
   }
 };

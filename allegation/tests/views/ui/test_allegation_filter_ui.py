@@ -134,7 +134,7 @@ class AllegationFilterTestCase(BaseLiveTestCase):
 
         self.number_of_tags().should.equal(2)
 
-        self.find('body').send_keys('p')
+        self.find('body').send_keys(Keys.SHIFT)
 
         self.number_of_pinned_tags().should.equal(2)
 
@@ -142,11 +142,11 @@ class AllegationFilterTestCase(BaseLiveTestCase):
 
         self.number_of_pinned_tags().should.equal(1)
 
-        self.find('body').send_keys('p')
+        self.find('body').send_keys(Keys.SHIFT)
 
         self.number_of_pinned_tags().should.equal(2)
 
-        self.find('body').send_keys('p')
+        self.find('body').send_keys(Keys.SHIFT)
 
         self.number_of_pinned_tags().should.equal(0)
         self.number_of_tags().should.equal(2)
