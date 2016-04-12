@@ -34,7 +34,8 @@ class AllegationsDownloadTestCase(SimpleTestCase):
 
             mock_worksheet.assert_has_calls(expected_calls)
 
-    def test_investigator_name_rank_in_allegation_sheet(self):
+    @patch('allegation.services.download_allegations.xlsxwriter.Workbook')
+    def test_investigator_name_rank_in_allegation_sheet(self, mock_workbook):
         officer_allegation_1 = OfficerAllegationFactory()
         investigator = officer_allegation_1.allegation.investigator
         allegation_download = AllegationsDownload(DownloadFactory().id)
@@ -55,7 +56,8 @@ class AllegationsDownloadTestCase(SimpleTestCase):
             mock_worksheet.write.assert_any_call(1, 21, officer_allegation_1.allegation.investigator.name)
             mock_worksheet.write.assert_any_call(1, 22, investigator.current_rank)
 
-    def test_complaining_witness_sheet(self):
+    @patch('allegation.services.download_allegations.xlsxwriter.Workbook')
+    def test_complaining_witness_sheet(self, mock_workbook):
         allegation = AllegationFactory()
         witness = ComplainingWitnessFactory(allegation=allegation, crid=allegation.crid)
         officer_allegation = OfficerAllegationFactory(allegation=allegation)
@@ -79,7 +81,8 @@ class AllegationsDownloadTestCase(SimpleTestCase):
             mock_worksheet.write.assert_any_call(1, 2, witness.race)
             mock_worksheet.write.assert_any_call(1, 3, witness.age)
 
-    def test_officer_sheet(self):
+    @patch('allegation.services.download_allegations.xlsxwriter.Workbook')
+    def test_officer_sheet(self, mock_workbook):
         allegation = AllegationFactory()
         officer = OfficerFactory()
         officer_allegation = OfficerAllegationFactory(allegation=allegation, officer=officer)
