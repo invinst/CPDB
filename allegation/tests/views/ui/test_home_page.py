@@ -2,12 +2,16 @@ from selenium import webdriver
 from selenium.webdriver.firefox.webdriver import WebDriver
 import re
 
+from wagtail.wagtailcore.models import Site
+
 from allegation.factories import (
     OfficerAllegationFactory, AllegationCategoryFactory)
 from allegation.tests.utils.autocomplete_test_helper_mixin import AutocompleteTestHelperMixin
 from common.tests.core import BaseLiveTestCase, retry_random_fail, switch_to_popup
 from common.utils.haystack import rebuild_index
 from share.models import Session
+from wagtail_app.factories import GlossaryPageFactory, GlossaryTableRowFactory, HomePageFactory
+from wagtail_app.models import HomePage
 
 
 class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
@@ -46,7 +50,8 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
         link_texts = [x.text for x in links]
         link_texts.should.contain('Outcomes')
         link_texts.should.contain('Categories')
-        link_texts.should.contain('Race & Gender')
+        link_texts.should.contain('Complainants')
+        link_texts.should.contain('Accused')
 
     def test_close_disclaimer(self):
         self.visit_home()
@@ -252,10 +257,55 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
         old_browser = self.browser
 
         self.set_browser(browser)
-        self.visit_home()
-        self.find('#disclaimer').get_attribute('class').should.contain('fade')
+        try:
+            self.visit_home()
+            self.find('#disclaimer').get_attribute('class').should.contain('fade')
+        finally:
+            browser.close()
+            self.set_browser(old_browser)
+            self.set_default_window_size()
+            self.try_to_revive_browser()
 
-        self.set_browser(old_browser)
+    def create_glossary_page(self, rows):
+        HomePage.get_tree().all().delete()
+        root = HomePage.add_root(instance=HomePageFactory.build(
+            title='Root', slug='root'))
+        glossary_page = root.add_child(
+            instance=GlossaryPageFactory.build(
+                title='Glossary', glossary_table_rows=rows, slug='glossary', subtitle='sub-title'))
+        Site.objects.create(
+            is_default_site=True, root_page=root, hostname='localhost')
+
+        return glossary_page
+
+    def visit_glossary_page(self):
+        nav_link = [el for el in self.find_all('.nav-link') if el.text == 'Glossary']
+        nav_link[0].find('a').click()
+
+    def glossary_rows_content(self):
+        return [
+            [el.find('.%s' % cls_name).text for cls_name in ['term', 'definition', 'category']]
+            for el in self.find_all('table.glossary-table tr')]
+
+    def test_glossary_page(self):
+        rows = [
+            GlossaryTableRowFactory.build(sort_order=3),
+            GlossaryTableRowFactory.build(sort_order=1),
+            GlossaryTableRowFactory.build(sort_order=2)
+            ]
+        glossary_page = self.create_glossary_page(rows)
+
+        self.visit_home(fresh=True)
+        self.visit_glossary_page()
+
+        self.find('.glossary-page .glossary-title').text.should.equal(glossary_page.title)
+        self.find('.glossary-page .glossary-subtitle').text.should.equal(glossary_page.subtitle)
+
+        self.glossary_rows_content().should.equal([
+            [rows[1].term, rows[1].definition, rows[1].category_text],
+            [rows[2].term, rows[2].definition, rows[2].category_text],
+            [rows[0].term, rows[0].definition, rows[0].category_text]
+            ])
 
     def test_share_bar_facebook_share(self):
         title = 'Donald Duck'
@@ -304,3 +354,47 @@ class HomePageTestCase(AutocompleteTestHelperMixin, BaseLiveTestCase):
             driver.close()
             self.set_browser(old_browser)
             self.browser.set_window_size(width=1200, height=1000)
+
+    def test_hamburger_menu(self):
+        self.visit_home()
+        try:
+            self.browser.set_window_size(800, 1000)
+
+            self.is_element_displayed('.landing-nav .nav-tabs').should.be.true
+            self.is_element_displayed('.landing-nav .tablist').should.be.false
+
+            self.find('.landing-nav .nav-tabs .fa-bars').click()
+            self.find('.landing-nav .nav-tabs-sidebar').get_attribute('class').shouldnt.contain('hidden')
+
+            self.find('.landing-nav .nav-tabs-sidebar .fa-times').click()
+            self.find('.landing-nav .nav-tabs-sidebar').get_attribute('class').should.contain('hidden')
+
+            self.find('.landing-nav .nav-tabs .fa-bars').click()
+            self.find('#landing-page > div.landing-page.fixed-nav > nav > div > div.nav-tabs.pull-right > div > ul > li:nth-child(3) > a').click()  # noqa
+            self.until_ajax_complete()
+            self.find('.landing-nav .nav-tabs-sidebar').get_attribute('class').should.contain('hidden')
+        finally:
+            self.set_default_window_size()
+            self.try_to_revive_browser()
+
+    def test_overlay_hamburger_menu(self):
+        self.visit_home()
+        try:
+            self.browser.set_window_size(800, 1000)
+
+            self.find('.landing-nav .nav-tabs .fa-bars').click()
+            self.find('#overlay').get_attribute('class').should.contain('active')
+
+            self.find('.landing-nav .nav-tabs-sidebar .fa-times').click()
+            self.find('#overlay').get_attribute('class').shouldnt.contain('active')
+
+            self.find('.landing-nav .nav-tabs .fa-bars').click()
+            self.find('#landing-page > div.landing-page.fixed-nav > nav > div > div.nav-tabs.pull-right > div > ul > li:nth-child(3) > a').click()  # noqa
+            self.until_ajax_complete()
+            self.find('#overlay').get_attribute('class').shouldnt.contain('active')
+
+            self.find('.landing-nav .nav-tabs .fa-bars').click()
+            self.find('#overlay').get_attribute('class').should.contain('active')
+        finally:
+            self.set_default_window_size()
+            self.try_to_revive_browser()

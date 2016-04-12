@@ -30,6 +30,7 @@ var InvestigatorSection = React.createClass({
 
   render: function () {
     var investigator = HelperUtil.fetch(this.props.info, 'investigator', false);
+
     return (
       <Wrapper wrapperClass='investigator-section' visible={ !!investigator }>
         <div className='row section-header'>

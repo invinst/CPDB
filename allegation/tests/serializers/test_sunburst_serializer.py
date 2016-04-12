@@ -18,5 +18,5 @@ class SunburstSerializerTestCase(SimpleTestCase):
         len(children).should.equal(2)
         sum_count(get_category_obj(children, 'Unsustained')).should.equal(7)
         sum_count(get_category_obj(children, 'Sustained')).should.equal(13)
-        sum_count(get_category_obj(children, 'Not Disciplined')).should.equal(7)
+        sum_count(get_category_obj(children, 'No Discipline')).should.equal(7)
         sum_count(get_category_obj(children, 'Disciplined')).should.equal(6)

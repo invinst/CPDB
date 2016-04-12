@@ -896,6 +896,7 @@ footer
 
   .cursor
     padding: 11px 0
+    height: 73px
 
   .title
     color: $color_mountain_mist_approx
@@ -1208,7 +1209,7 @@ footer
   &.no-affidavit
     @extend .extend_12
 
-  &.not.sustained
+  &.not-sustained
     @extend .extend_11
 
 .btn-download
@@ -1472,7 +1473,7 @@ footer
       border-top: 0 solid $seashell
       border-right: 1px solid $color_celeste_approx
       border-bottom: 1px solid $color_celeste_approx
-      width: 33.3333%
+      width: 25%
       text-align: center
 
       &:last-child
@@ -1681,6 +1682,32 @@ form.navbar-form.navbar-right
   opacity: 0
   transition: opacity .5s linear
 
+.documents-list
+  margin-bottom: 40px
+
+  ul
+    padding-left: 0
+    margin-bottom: 0
+
+  .document-title
+    font-weight: 500
+
+    &.not-available
+      color: $color_star_dust_approx
+      font-weight: normal
+
+  .document-status
+    display: inline-block
+    font-size: small
+    color: $color_mountain_mist_approx
+    width: 65px
+
+  .document-action
+    font-size: small
+    color: $color_blue_ribbon_approx
+    text-decoration: none
+
+
 @import 'shared'
 @import 'sunburst'
 @import 'officer_page'
@@ -1692,3 +1719,5 @@ form.navbar-form.navbar-right
 @import 'landing_page/style.sass'
 @import 'shared/loading_page'
 @import 'donut-chart.sass'
+@import 'wagtail/glossary-table-section.sass'
+@import 'glossary_page'

@@ -21,7 +21,6 @@ class SearchTrafficTestCase(SimpleTestCase):
 
         response, data = self.call_search_traffic_api()
         response.status_code.should.equal(status.HTTP_200_OK)
-
         set(data.keys()).should.equal({'day', 'week', 'month'})
         for _, item in data.items():
             item.should.contain(suggestion_log.search_query)

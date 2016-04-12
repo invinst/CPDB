@@ -257,7 +257,7 @@ OUTCOME_TEXT_DICT = {
         }
     },
     'no discipline': {
-        'text': 'No discipline',
+        'text': 'No Discipline',
         'condition': {
             'final_finding': ['SU'],
             'final_outcome': NO_DISCIPLINE_CODES,
@@ -270,7 +270,7 @@ OUTCOME_TEXT_DICT = {
         }
     },
     '10-30 days': {
-        'text': '10-30 day',
+        'text': '10-30 days',
         'condition': {
             'final_outcome': [str(x).zfill(3) for x in range(10, 31)],
         }
@@ -297,7 +297,7 @@ HAS_FILTERS_TEXT_DICT = {
     'has:document': {
         'text': 'has:document',
         'condition': {
-            'document_id__gt': [0]
+            'allegation__documents__documentcloud_id__gt': [0]
         }
     },
     'has:map': {

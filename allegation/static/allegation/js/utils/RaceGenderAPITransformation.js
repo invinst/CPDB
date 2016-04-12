@@ -1,3 +1,4 @@
+
 var _ = require('lodash');
 
 var GenderPresenter = require('presenters/GenderPresenter');
@@ -30,6 +31,11 @@ var setTagActive = function (raceData, isOfficer) {
   return raceData;
 };
 
+var SORT_ORDER = {
+  gender: ['Male', 'Female'],
+  race: ['Black', 'White', 'Hispanic']
+};
+
 
 var RaceGenderAPITransform = {
   transformRaces: function (complaintRaces, isOfficer) {
@@ -46,50 +52,54 @@ var RaceGenderAPITransform = {
     var whiteFilterValues = _.filter(allFilterValues, function (x) {
       return _(['white', 'italian']).contains(x.toLowerCase());
     });
-    var otherFilterValues = _.difference(allFilterValues, _.union(hispanicFilterValues, whiteFilterValues, ['Black']));
+    var otherFilterValues = _.difference(allFilterValues,
+      _.union(hispanicFilterValues, whiteFilterValues, ['Black']));
 
     var hispanicFilters = _.map(hispanicFilterValues, function (x) {
-      return { value: x, label: x };
+      return { value: x, displayValue: x };
     });
     var whiteFilters = _.map(whiteFilterValues, function (x) {
-      return { value: x, label: x };
+      return { value: x, displayValue: x };
     });
     var otherFilters = _.map(otherFilterValues, function (x) {
-      return { value: x, label: x };
+      return { value: x, displayValue: x };
     });
 
     var otherLabel = shouldBeOthers(otherFilterValues) ? 'Others' : otherFilterValues[0];
 
     var raceData = _([
       {
-        label: this.raceLabel('White', isOfficer),
-        value: white,
+        label: 'White',
+        count: white,
         filters: whiteFilters
       },
       {
-        label: this.raceLabel('Black', isOfficer),
-        value: black,
-        filters: [{ value: 'Black', label: this.raceLabel('Black', isOfficer) }]
+        label: 'Black',
+        count: black,
+        filters: [{ value: 'Black', displayValue: 'Black' }]
       },
       {
-        label: this.raceLabel('Hispanic', isOfficer),
-        value: hispanic,
+        label: 'Hispanic',
+        count: hispanic,
         filters: hispanicFilters
       },
       {
-        label: this.raceLabel(otherLabel, isOfficer),
-        value: others,
+        label: otherLabel,
+        count: others,
         filters: otherFilters
       }
-    ]).chain().reject(function (x) { return x.value == 0; }).value();
+    ]).chain()
+    .reject(function (x) { return x.count == 0; })
+    .sortBy(function (x) {
+      var ind = SORT_ORDER['race'].indexOf(x.label);
+      if (ind === -1) return 99;
+      return ind;
+    })
+    .value();
 
     raceData = setTagActive(raceData, isOfficer);
 
     return raceData;
-  },
-
-  raceLabel: function (race, isOfficer) {
-    return isOfficer && race !== 'Others' ? race + ' officers' : race;
   },
 
   transformGenders: function (genders, isOfficer) {
@@ -101,11 +111,43 @@ var RaceGenderAPITransform = {
 
       return {
         'label': genderLabel,
-        'filters': [{ value: y, label: genderLabel}],
-        'value': x,
+        'filters': [{ value: y, displayValue: genderLabel}],
+        'count': x,
         'active': !hasActiveFilter || FilterTagStore.isInFilter(filterCategory, y)
       };
-    }).sortBy('label').value();
+    })
+    .sortBy(function (x) {
+      var ind = SORT_ORDER['gender'].indexOf(x.label);
+      if (ind === -1) return 99;
+      return ind;
+    })
+    .value();
+  },
+
+  transformAge: function (ages, isOfficer) {
+    var filterKey = isOfficer ? 'officer_age' : 'complainant_age';
+    var hasActiveFilter = FilterTagStore.getAll(filterKey).length > 0;
+
+    return _(ages).map(function (x, y) {
+      function transformAgeVal(val) {
+        if (val[val.length - 1] === '+') {
+          return '>' + val.slice(0, -1);
+        }
+        return val;
+      }
+
+      return {
+        'label': y,
+        'filters': [{ value: transformAgeVal(y), displayValue: y}],
+        'count': x,
+        'active': !hasActiveFilter || FilterTagStore.isInFilter(filterKey, transformAgeVal(y))
+      };
+    })
+    .sortBy(function (x) {
+      var extractNumber = x.label ? x.label.match(/\d+/) : null;
+      return extractNumber ? extractNumber[0] : -1;
+    })
+    .value();
   }
 };
 
