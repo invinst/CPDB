@@ -50,8 +50,9 @@ class AllegationSessionDesktopToMobileRedirector(DesktopToMobileRedirectorMixin)
     def _redirect_allegation_crid_only_session(self, allegation__crid):
         allegations = Allegation.objects.filter(crid__in=allegation__crid)
         officer_allegations = OfficerAllegation.objects.filter(allegation__crid__in=allegation__crid)
+        cats = officer_allegations.distinct('cat__id').values('cat__id')
 
-        if len(officer_allegations) == 1:
+        if len(officer_allegations) == 1 or len(cats) == 1:
             return [MobileUrlBuilder().complaint_page(officer_allegations[0])]
 
         return ['/s/{crid}'.format(crid=allegation.crid) for allegation in allegations]

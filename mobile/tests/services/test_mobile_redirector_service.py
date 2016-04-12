@@ -152,6 +152,19 @@ class AllegationSessionDesktopToMobileRdirectorTest(SimpleTestCase):
         urls = self.redirect_allegation_id_only_session(filters)
         urls.should.be.equal([expected_url])
 
+    def test_redirect_allegation_crid_sesstion_multiple_officer_allegation_but_one_category(self):
+        crid = '12345'
+        expected_url = '/complaint/12345/no-category/r9ME4Vao'
+        allegation = AllegationFactory(crid=crid)
+        OfficerAllegationFactory.create_batch(2, allegation=allegation, cat=None)
+
+        filters = {
+            'allegation__crid': [{'value': allegation.crid, 'category': 'allegation__crid'}]
+        }
+
+        urls = self.redirect_allegation_id_only_session(filters)
+        urls.should.be.equal([expected_url])
+
     def test_redirect_allegation_crid_and_cat_session(self):
         crid = '12345'
         category_id = 123456
