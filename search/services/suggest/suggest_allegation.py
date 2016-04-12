@@ -32,13 +32,26 @@ class SuggestAllegationCity(SuggestBase):
 
 class SuggestAllegationCrid(SuggestBase):
     @classmethod
+    def get_crid_from_term(cls, term):
+        matched = re.search('\d+', term)
+        if matched:
+            return matched.group(0)
+        return
+
+    @classmethod
     def active_condition(cls, term):
-        return term.isnumeric() and len(term) > 3
+        if term.lower().startswith('cr'):
+            crid = cls.get_crid_from_term(term)
+            return crid and len(crid) > 3
+        else:
+            return term.isnumeric() and len(term) > 3
 
     @classmethod
     def _query(cls, term):
+        search_term = cls.get_crid_from_term(term)
+
         sqs = SearchQuerySet()
-        raw_results = sqs.filter(allegation_crid=term).order_by('allegation_crid_sort')\
+        raw_results = sqs.filter(allegation_crid=search_term).order_by('allegation_crid_sort')\
             .values_list('allegation_crid', flat=True)[:5]
         results = [
             cls.entry_format(

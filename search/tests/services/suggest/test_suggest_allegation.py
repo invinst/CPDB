@@ -32,12 +32,15 @@ class AllegationSuggestTestCase(BaseSuggestTestCase):
         len(SuggestAllegationCity.query(available_zip_code)).should.equal(1)
 
     def test_suggest_crid(self):
-        crid = '1002101'
+        allegation_crid = '1002101'
+        crids = [allegation_crid, 'cr 1002101', 'CR 1002101', 'cr1002101', 'crid 1002101']
         unavailable_crid = '10111111'
         not_numeric = 'not_numeric'
-        AllegationFactory(crid=crid)
+        AllegationFactory(crid=allegation_crid)
 
         self.rebuild_index()
-        SuggestAllegationCrid.query('1002')['Allegation ID'][0]['suggest_value'].should.be.equal(crid)
+
+        for crid in crids:
+            SuggestAllegationCrid.query('1002')['Allegation ID'][0]['suggest_value'].should.be.equal(allegation_crid)
         SuggestAllegationCrid.query(unavailable_crid)['Allegation ID'].should.be.equal([])
         SuggestAllegationCrid.query(not_numeric).should.be.equal(None)
