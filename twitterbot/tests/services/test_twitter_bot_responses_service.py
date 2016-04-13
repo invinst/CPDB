@@ -2,7 +2,7 @@ from mock import patch
 
 from common.utils.haystack import rebuild_index
 
-from allegation.factories import OfficerFactory, InvestigatorFactory
+from allegation.factories import OfficerFactory
 from common.tests.core import SimpleTestCase
 from twitterbot.factories import ResponseTemplateFactory
 from twitterbot.services.twitter_bot_responses_service import TwitterBotResponsesService
@@ -15,7 +15,8 @@ class TwitterBotResponsesServiceTestCase(SimpleTestCase):
 
     def test_build_responses(self):
         officer = OfficerFactory(officer_first='Jason', officer_last='Van Dyke')
-        investigator = InvestigatorFactory(name='Daniel Neubeck')
+        # Temporary disable investigator response since mobile version doesn't have investigator page yet
+        # investigator = InvestigatorFactory(name='Daniel Neubeck')
         names = {
             'Jason Van Dyke': [],
             'Daniel Neubeck': []
@@ -27,7 +28,8 @@ class TwitterBotResponsesServiceTestCase(SimpleTestCase):
         responses_str = [x.message for x in responses]
 
         responses_str.should.contain(officer.display_name)
-        responses_str.should.contain(investigator.name)
+        # Temporary disable investigator response since mobile version doesn't have investigator page yet
+        # responses_str.should.contain(investigator.name)
 
     def test_limit_responses_return(self):
         with patch('twitterbot.services.responses.officers.OfficerResponses.build_responses',
