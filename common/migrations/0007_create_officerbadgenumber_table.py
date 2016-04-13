@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.CreateModel(
             name='OfficerBadgeNumber',
-            fields=[
+            fields=
                 ('id', models.AutoField(serialize=False, verbose_name='ID', primary_key=True, auto_created=True)),
                 ('star', models.CharField(max_length=10)),
                 ('current', models.BooleanField(default=False)),
