@@ -7,7 +7,7 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('common', '0002_documentcrawler'),
+        ('common', '0006_create_officeralias_table'),
     ]
 
     operations = [
