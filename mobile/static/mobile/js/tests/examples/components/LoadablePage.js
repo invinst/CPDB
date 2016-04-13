@@ -3,9 +3,10 @@ var ReactDOM = require('react-dom');
 var ReactTestUtils = require('react-addons-test-utils');
 
 var LoadingPage = require('components/Shared/LoadingPage.react');
-var NotMatchedPage = require('components/ComplaintPage/NotMatchedPage.react');
+var NotMatchedComplaintPage = require('components/ComplaintPage/NotMatchedComplaintPage.react');
 
 var SharedExample = require('utils/tests/SharedExample');
+
 
 SharedExample.define('a loadable page', function () {
   var self = this;
@@ -29,7 +30,7 @@ SharedExample.define('a loadable page', function () {
 
     element.setState({'found': false, 'loading': false});
 
-    element.should.render([NotMatchedPage]);
+    element.should.render([NotMatchedComplaintPage]);
 
     ReactDOM.unmountComponentAtNode(ReactDOM.findDOMNode(element).parentNode);
   });
