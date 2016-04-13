@@ -15,8 +15,9 @@ var OfficerResult = React.createClass({
   },
 
   _onClick: function (presenter) {
+    var officerPresenter = OfficerPresenter(presenter.meta);
     ga('send', 'event', 'filter', presenter.resource, presenter.text);
-    AppHistory.pushState(null, presenter.url);
+    AppHistory.pushState(null, officerPresenter.url);
   },
 
   renderOfficerCard: function (suggestion) {

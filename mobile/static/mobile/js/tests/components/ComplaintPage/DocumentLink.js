@@ -20,7 +20,7 @@ describe('DocumentLinkComponent', function () {
   });
 
   it('should be return pdf link if iOS device', function () {
-    var documentId = '12345';
+    var documentId = 12345;
     var documentNormalizedTitle = 'cr-123456';
     var expectedLink = 'http://documentcloud.org/documents/12345-cr-123456.pdf';
     var link;
@@ -38,7 +38,7 @@ describe('DocumentLinkComponent', function () {
   });
 
   it('should be return cloud link if other devices', function () {
-    var documentId = '12345';
+    var documentId = 12345;
     var documentNormalizedTitle = 'cr-123456';
     var expectedLink = 'http://documentcloud.org/documents/12345-cr-123456.html';
     var link;

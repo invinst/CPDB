@@ -1,6 +1,6 @@
 class FilterTagsTestMixin(object):
     def assert_have_filter_tags(self, category, value):
-        filter_tags = self.find('.filter').text.lower()
+        filter_tags = self.find('#filter-tags').text.lower()
         filter_tags.should.contain(category.lower())
         filter_tags.should.contain(str(value).lower())
 

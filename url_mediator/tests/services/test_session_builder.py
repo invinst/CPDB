@@ -7,7 +7,7 @@ from common.tests.core import SimpleTestCase
 from common.utils.haystack import rebuild_index
 from url_mediator.services.session_builder import (ActiveOfficers, ActiveComplaints, Builder, FilterTags,
                                                    AllegationCrid, Node, SimpleNode, FromSuggestions, SuggestionsNode,
-                                                   VirtualNode)
+                                                   VirtualNode, AllegationType)
 
 from url_mediator.services.url_mediator_suggestion_service import UrlMediatorSuggestionService
 
@@ -109,6 +109,25 @@ class AllegationCridTest(SimpleTestCase):
             "category": "allegation__crid",
             "pinned": False,
             "displayCategory": "Allegation ID"
+        }]
+        )
+
+
+class AllegationTypeTest(SimpleTestCase):
+    def test_node_name_should_be_cat(self):
+        AllegationType().should.have.property('node_name').being.equal('cat')
+
+    def test_supported_attributes_should_be_categories(self):
+        AllegationType.when.called_with(something_not_crids='123').should.throw(Exception)
+        AllegationType.when.called_with(categories=[(1, 2)]).shouldnt.throw(Exception)
+
+    def test_build(self):
+        AllegationType(categories=[('value', 'displayValue')]).build().should.be.equal([{
+            "displayValue": 'displayValue',
+            "value": 'value',
+            "category": "cat",
+            "pinned": False,
+            "displayCategory": "Allegation Type"
         }]
         )
 

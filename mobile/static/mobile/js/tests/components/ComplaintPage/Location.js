@@ -1,13 +1,15 @@
-var ReactTestUtils, Location, Map, f;
+var ReactTestUtils, Location, Map, MapFacade, f, sinon;
 
 var React = require('react');
 require('react-dom');
 ReactTestUtils = require('react-addons-test-utils');
 
 require('should');
+sinon = require('sinon');
 
 f = require('utils/tests/f');
 require('utils/tests/should/React');
+MapFacade = require('utils/MapFacade');
 
 
 Location = require('components/ComplaintPage/Location.react');
@@ -16,6 +18,18 @@ Map = require('components/ComplaintPage/Location/Map.react');
 
 describe('LocationComponent', function () {
   var location;
+
+  beforeEach(function () {
+    sinon.stub(MapFacade, 'initialize');
+    sinon.stub(MapFacade, 'addAccidentPlaceMarker');
+    sinon.stub(MapFacade, 'addNoAddressPopup');
+  });
+
+  afterEach(function () {
+    MapFacade.initialize.restore();
+    MapFacade.addAccidentPlaceMarker.restore();
+    MapFacade.addNoAddressPopup.restore();
+  });
 
   it('should be renderable', function () {
     Location.should.be.renderable();

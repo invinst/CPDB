@@ -1,5 +1,5 @@
 var sinon;
-var f, HashUtil, GaUtil;
+var f, HashUtil, GaUtil, MapFacade;
 var AccompliceOfficerSection, AgainstSection, AllegationResourceUtil, ComplainingWitness, ComplaintPage,
   ComplaintPageStore, InvestigatorSection, Location, OfficerAllegationDetail, SearchablePage;
 
@@ -11,11 +11,13 @@ require('should');
 sinon = require('sinon');
 
 f = require('utils/tests/f');
-HashUtil = require('utils/HashUtil');
 GaUtil = require('utils/GaUtil');
+HashUtil = require('utils/HashUtil');
+MapFacade = require('utils/MapFacade');
 require('utils/tests/should/SharedExample');
 require('tests/examples/components/LoadablePage');
 require('utils/tests/should/React');
+
 
 AccompliceOfficerSection = require('components/ComplaintPage/AccompliceOfficerSection.react');
 AgainstSection = require('components/ComplaintPage/AgainstSection.react');
@@ -32,9 +34,24 @@ SearchablePage = require('components/Shared/SearchablePage.react');
 function stubForComplaintPage() {
   sinon.stub(GaUtil, 'track');
   sinon.stub(AllegationResourceUtil, 'get');
+  sinon.stub(MapFacade, 'initialize');
+  sinon.stub(MapFacade, 'addAccidentPlaceMarker');
+  sinon.stub(MapFacade, 'addNoAddressPopup');
 }
 
 function restoreForComplaintPage() {
+  if (MapFacade.initialize.restore) {
+    MapFacade.initialize.restore();
+  }
+
+  if (MapFacade.addAccidentPlaceMarker.restore) {
+    MapFacade.addAccidentPlaceMarker.restore();
+  }
+
+  if (MapFacade.addNoAddressPopup.restore) {
+    MapFacade.addNoAddressPopup.restore();
+  }
+
   if (GaUtil.track.restore) {
     GaUtil.track.restore();
   }

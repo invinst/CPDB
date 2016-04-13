@@ -1,64 +1,65 @@
 var pluralize = require('pluralize');
+var S = require('string');
 
 var AppConstants = require('constants/AppConstants');
 
-var HelperUtil = require('utils/HelperUtil');
+var u = require('utils/HelperUtil');
 var CollectionUtil = require('utils/CollectionUtil');
 var GenderPresenter = require('presenters/GenderPresenter');
 
 
 var OfficerPresenter = function (officer) {
   var displayName = function () {
-    var officerFirst = HelperUtil.fetch(officer, 'officer_first', '');
-    var officerLast = HelperUtil.fetch(officer, 'officer_last', '');
+    var officerFirst = u.fetch(officer, 'officer_first', '');
+    var officerLast = u.fetch(officer, 'officer_last', '');
 
     return [officerFirst, officerLast].join(' ');
   };
 
   var id = function () {
-    return HelperUtil.fetch(officer, 'id', '').toString();
+    return u.fetch(officer, 'id', '').toString();
   };
 
   var race = function () {
-    return HelperUtil.fetch(officer, 'race', 'Race unknown');
+    return u.fetch(officer, 'race', 'Race unknown');
   };
 
   var gender = function () {
-    return GenderPresenter(HelperUtil.fetch(officer, 'gender')).humanReadable;
+    return GenderPresenter(u.fetch(officer, 'gender')).humanReadable;
   };
 
   var description = function () {
-    return HelperUtil.format('{gender} ({race})', {'gender': gender(), 'race': race()});
+    return u.format('{gender} ({race})', {'gender': gender(), 'race': race()});
   };
 
   var badge = function () {
-    return HelperUtil.fetch(officer, 'star', 'Unknown');
+    return u.fetch(officer, 'star', 'Unknown');
   };
 
   var unit = function () {
-    var unitCode = HelperUtil.fetch(officer, 'unit', '');
-    return HelperUtil.fetch(AppConstants.UNITS, unitCode, 'Unknown');
+    var unitCode = u.fetch(officer, 'unit', '');
+    return u.fetch(AppConstants.UNITS, unitCode, 'Unknown');
   };
 
   var rank = function () {
-    var rankCode = HelperUtil.fetch(officer, 'rank', '');
-    return HelperUtil.fetch(AppConstants.RANKS, rankCode, 'Unknown');
+    var rankCode = u.fetch(officer, 'rank', '');
+    return u.fetch(AppConstants.RANKS, rankCode, 'Unknown');
   };
 
   var joinedDate = function () {
-    return HelperUtil.fetch(officer, 'appt_date', 'Unknown');
+    return u.fetch(officer, 'appt_date', 'Unknown');
   };
 
   var allegationsCount = function () {
-    return HelperUtil.fetch(officer, 'allegations_count', -1);
+    return u.fetch(officer, 'allegations_count', -1);
   };
 
   var has = function (officer, field) {
-    return !!HelperUtil.fetch(officer, field, false);
+    return !!u.fetch(officer, field, false);
   };
 
   var hasDataIn = function (officer, field, collection) {
-    var datum = HelperUtil.fetch(officer, field, false);
+    var datum = u.fetch(officer, field, false);
     return (collection.indexOf(datum) > 0);
   };
 
@@ -85,16 +86,25 @@ var OfficerPresenter = function (officer) {
 
   var coAccusedWith = function (numberOfCoAccusedOfficers) {
     var theOthers = pluralize('other', numberOfCoAccusedOfficers, true);
-    var withSomeOfficers = HelperUtil.format(' and {theOthers}', {'theOthers': theOthers});
+    var withSomeOfficers = u.format(' and {theOthers}', {'theOthers': theOthers});
     var withNoOfficer = '';
 
     var coAccusedInformation = numberOfCoAccusedOfficers ? withSomeOfficers : withNoOfficer;
 
-    return HelperUtil.format('{officerName} {coAccusedInformation}',
+    return u.format('{officerName} {coAccusedInformation}',
       {
         'officerName': displayName(),
         'coAccusedInformation': coAccusedInformation
       }).trim();
+  };
+
+  var url = function () {
+    var template = '/officer/{slug}/{pk}';
+
+    return u.format(template, {
+      'slug': S(displayName()).slugify().s,
+      'pk': id()
+    });
   };
 
   return {
@@ -110,7 +120,8 @@ var OfficerPresenter = function (officer) {
     allegationsCount: allegationsCount(),
     hasData: hasData,
     hasSummarySection: hasSummarySection(),
-    coAccusedWith: coAccusedWith
+    coAccusedWith: coAccusedWith,
+    url: url()
   };
 };
 

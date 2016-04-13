@@ -74,10 +74,9 @@ describe('AgainstCardComponent', function () {
   });
 
   it('should push officerUrl to AppHistory', function () {
-    var officerAllegation = f.create('OfficerAllegation');
-    var officerDisplayName = officerAllegation.officer['officer_first'] +
-      ' ' + officerAllegation.officer['officer_last'];
-    var expectedUrl = '/officer/' + officerDisplayName + '/' + officerAllegation.officer.id;
+    var officer = f.create('Officer', {'officer_first': 'first', 'officer_last': 'last'});
+    var officerAllegation = f.create('OfficerAllegation', {'officer': officer});
+    var expectedUrl = '/officer/first-last/' + officerAllegation.officer.id;
     var OfficerNode;
 
     var mock = sinon.mock(AppHistory);
