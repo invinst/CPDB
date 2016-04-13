@@ -489,3 +489,13 @@ def switch_to_popup(driver):
     driver.switch_to.window(driver.window_handles[1])
     yield None
     driver.switch_to.window(driver.window_handles[0])
+
+
+def repr_equal_either(obj, *strs):
+    """
+    Make sure that repr result match either representation.
+
+    Usage example:
+        repr_equal_either(obj, '<objectA>', '<objectB>')
+    """
+    strs.should.contain(repr(obj))

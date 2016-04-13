@@ -8,8 +8,8 @@ from common.utils.mobile_url_hash_util import MobileUrlHashUtil
 from share.models import Session
 
 
-@override_settings(DEBUG=True)
 class AllegationViewTest(SimpleTestCase):
+    @override_settings(DEBUG=True)
     def test_bad_complaint_page_crid(self):
         response = self.client.get(
             reverse('allegation:complaint-page',
