@@ -32,5 +32,3 @@ class Command(BaseCommand):
             if session.query and session.query.get('filters'):
                 session.query['filters'] = self.migrate_session_query(session)
                 session.save()
-
-        print("Done")

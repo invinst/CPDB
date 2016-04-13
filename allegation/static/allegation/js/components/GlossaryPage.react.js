@@ -19,6 +19,16 @@ var GlossaryPage = React.createClass({
             <GlossaryTableSection rows={ this.props.page['serialized_glossary_rows'] } />
           </div>
         </div>
+        <div className='row'>
+          <div className='col-sm-10 col-sm-offset-1'>
+            <img src='/static/allegation/img/complaint-flowchart-1.png' className='img-responsive'/>
+          </div>
+        </div>
+        <div className='row'>
+          <div className='col-sm-10  col-sm-offset-1'>
+            <img src='/static/allegation/img/complaint-flowchart-2.png' className='img-responsive'/>
+          </div>
+        </div>
       </div>
     );
   }
