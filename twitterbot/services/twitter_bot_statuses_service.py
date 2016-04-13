@@ -12,12 +12,12 @@ class TwitterBotStatusesService:
     def get_all_related_statuses(self, status):
         statuses = [status]
 
-        if hasattr(status, 'retweeted_status') and status.retweeted_status:
+        if getattr(status, 'retweeted_status', None):
             statuses += self.get_all_related_statuses(status.retweeted_status)
 
-        if hasattr(status, 'quoted_status') and status.quoted_status:
+        if getattr(status, 'quoted_status', None):
             statuses += self.get_all_related_statuses(self._convert_quoted_status(status.quoted_status))
-        elif hasattr(status, 'quoted_status_id_str') and status.quoted_status_id_str:
+        elif getattr(status, 'quoted_status_id_str', None):
             quoted_status = self.api.get_status(status.quoted_status_id_str)
             statuses += self.get_all_related_statuses(quoted_status)
 
