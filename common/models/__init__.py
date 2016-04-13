@@ -1,10 +1,11 @@
+from slugify import slugify
 from datetime import date
 
 from django.contrib.auth.models import AbstractUser
 from django.contrib.gis.db import models
 from django.core.urlresolvers import reverse
 
-from common.constants import FINDINGS, OUTCOMES, ACTIVE_CHOICES, CITIZEN_DEPTS, LOCATION_CHOICES
+from common.constants import FINDINGS, OUTCOMES, ACTIVE_CHOICES, CITIZEN_DEPTS, LOCATION_CHOICES, RANKS
 from common.models.time_stamp import TimeStampedModel
 from allegation.models.managers import AllegationManager, OfficerAllegationManager, DisciplinedManager
 from common.models.suggestible import (
@@ -24,7 +25,7 @@ class Officer(MobileSuggestibleOfficer, TimeStampedModel):
     race = models.CharField(max_length=50, null=True, blank=True)
     appt_date = models.DateField(null=True, blank=True)
     unit = models.CharField(max_length=5, null=True, blank=True)
-    rank = models.CharField(max_length=5, null=True, blank=True)
+    rank = models.CharField(choices=RANKS, max_length=5, null=True, blank=True)
     star = models.FloatField(null=True, blank=True)
     allegations_count = models.IntegerField(default=0, blank=True, null=True)
     discipline_count = models.IntegerField(default=0, blank=True, null=True)
@@ -38,10 +39,11 @@ class Officer(MobileSuggestibleOfficer, TimeStampedModel):
 
     @property
     def absolute_url(self):
+        # we get absolute url from #get_absolute_url since it's required for json_serializer to return absolute_url
         return self.get_absolute_url()
 
     def get_absolute_url(self):
-        return reverse("officer:detail") + "?pk=%d" % self.pk
+        return '{path}{pk}'.format(path=reverse("officer:detail"), pk=self.pk)
 
     def __str__(self):
         return self.display_name
@@ -176,12 +178,27 @@ class Investigator(TimeStampedModel):
     unit = models.CharField(max_length=50, null=True)
     agency = models.CharField(choices=[['IPRA', 'IPRA'], ['IAD', 'IAD']], max_length=10)
 
+    def __str__(self):
+        return self.name
+
     @property
     def tag_value(self):
         return {
             'text': self.name,
             'value': self.pk,
         }
+
+    @property
+    def absolute_url(self):
+        return self.get_absolute_url()
+
+    def get_absolute_url(self):
+        # we get absolute url from #get_absolute_url since it's required for json_serializer to return absolute_url
+        return reverse('investigator:view', kwargs={'slug': self.slug, 'pk': self.pk})
+
+    @property
+    def slug(self):
+        return slugify(self.name)
 
 
 class PendingPdfAllegation(models.Model):
@@ -198,3 +215,11 @@ class PendingPdfAllegation(models.Model):
 class DocumentCrawler(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     num_documents = models.IntegerField()
+
+
+class OfficerAlias(models.Model):
+    old_officer_id = models.IntegerField()
+    new_officer = models.ForeignKey(Officer)
+
+    class Meta:
+        unique_together = (('old_officer_id', 'new_officer'))
