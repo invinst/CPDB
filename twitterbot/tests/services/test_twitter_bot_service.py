@@ -52,3 +52,12 @@ class TwitterBotServiceTestCase(SimpleTestCase):
         originating_tweet = self.service.get_originating_tweet()
 
         originating_tweet.should.be(oldest_tweet)
+
+    def test_get_non_existent_originating_tweet(self):
+        self.service.statuses = [
+            TweetFactory()
+        ]
+
+        originating_tweet = self.service.get_originating_tweet()
+
+        originating_tweet.should.be.none

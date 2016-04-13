@@ -27,6 +27,10 @@ class CPDBTweetHandlerTestCase(SimpleTestCase):
         except:
             self.fail('Raised exception when not expected to')
 
+    def test_raise_error_on_not_ignored_errors(self):
+        self.handler.reply = MagicMock(side_effect=ValueError)
+        self.assertRaises(ValueError, self.handler.on_status, status=TweetFactory())
+
     def test_call_tweepy_update_status(self):
         message = 'some message'
         response = MagicMock(build_user_responses=MagicMock(return_value=[message]))
@@ -47,3 +51,14 @@ class CPDBTweetHandlerTestCase(SimpleTestCase):
 
         self.handler.reply(TweetFactory())
         response.save_log.assert_has_calls([call(outgoing_tweet_1), call(outgoing_tweet_2)])
+
+    def test_debug_log_when_unable_to_tweet(self):
+        self.handler.api.update_status = MagicMock(return_value=None)
+        self.handler.twitter_service.build_responses = MagicMock(
+            return_value=[MagicMock(build_user_responses=MagicMock(return_value=['msg']))]
+        )
+
+        with patch('twitterbot.handlers.bot_log') as mock_bot_log:
+            self.handler.reply(TweetFactory())
+
+            mock_bot_log.assert_has_calls([call('Incoming tweet: Random text here'), call('Unable to send: msg')])

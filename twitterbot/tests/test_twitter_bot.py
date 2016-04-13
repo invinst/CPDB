@@ -1,6 +1,6 @@
 import tweepy
 from django.conf import settings
-from mock import patch
+from mock import patch, MagicMock
 
 from common.tests.core import SimpleTestCase
 from twitterbot.handlers import CPDBTweetHandler
@@ -35,3 +35,18 @@ class TwitterBotTestCase(SimpleTestCase):
             self.bot.listen_to_tweets(self.tweet_handler)
 
             TwitterBotError.objects.all()[0].stack_trace.should.equal(repr(e))
+
+    def test_successful_auth(self):
+        with patch('twitterbot.twitter_bot.tweepy.API.verify_credentials', side_effect=None):
+            self.bot.listen_to_tweets = MagicMock()
+
+            try:
+                self.bot.start()
+
+                self.bot.listen_to_tweets.called.should.be.true
+            except:
+                self.fail('Expect no exception but raised')
+
+    def test_unsuccessful_auth(self):
+        with patch('twitterbot.twitter_bot.tweepy.API.verify_credentials', side_effect=ValueError):
+            self.assertRaises(ValueError, self.bot.start)
