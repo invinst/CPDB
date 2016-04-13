@@ -1,4 +1,6 @@
 from common.constants import ACTIVE_UNKNOWN_CHOICE
+from common.models import OfficerAlias
+from share.models import Session
 
 
 def update_fields(obj_1, obj_2, keys):
@@ -24,6 +26,8 @@ def merge_officer_allegation(officer_1, officer_2):
     outstanding_officer_allegations = officer_allegations_2.exclude(allegation_id__in=allegation_1_ids)
     intersect_officer_allegations = officer_allegations_2.filter(allegation_id__in=allegation_1_ids)
 
+    ids_to_update = []
+
     outstanding_officer_allegations.update(officer=officer_1)
 
     for oa_to_remove in intersect_officer_allegations:
@@ -31,8 +35,10 @@ def merge_officer_allegation(officer_1, officer_2):
         update_fields(oa_to_keep, oa_to_remove, [
             'cat', 'recc_finding', 'recc_outcome', 'final_finding', 'final_outcome',
             'final_outcome_class', 'start_date', 'end_date'])
-        # TODO: update session
+        ids_to_update.append((oa_to_remove.pk, oa_to_keep.pk))
         oa_to_remove.delete()
+
+    return ids_to_update
 
 
 def merge_officer_history(officer_1, officer_2):
@@ -47,9 +53,7 @@ def merge_officer_history(officer_1, officer_2):
 
     for oh_to_remove in intersect_histories:
         oh_to_keep = officer_histories_1.get(as_of=oh_to_remove.as_of)
-        update_fields(oh_to_keep, oh_to_remove, [
-            'unit', 'rank', 'star'])
-        # TODO: update session
+        update_fields(oh_to_keep, oh_to_remove, ['unit', 'rank', 'star'])
         oh_to_remove.delete()
 
 
@@ -65,7 +69,59 @@ def merge_police_witness(officer_1, officer_2):
 
     for pw_to_remove in intersect_witnesses:
         pw_to_keep = police_witnesses_1.get(allegation_id=pw_to_remove.allegation_id)
-        update_fields(pw_to_keep, pw_to_remove, [
-            'gender', 'race'])
-        # TODO: update session
+        update_fields(pw_to_keep, pw_to_remove, ['gender', 'race'])
         pw_to_remove.delete()
+
+
+def update_officer_allegation_session(update_ids):
+    for old_id, new_id in update_ids:
+        # update filters
+        for session in Session.objects.filter(query__icontains='"value": %d' % old_id):
+            try:
+                for obj in session.query['filters']['id']:
+                    if obj['value'] == old_id:
+                        obj['value'] = new_id
+                        session.save()
+                        break
+            except KeyError:
+                pass
+
+        # update active complaints
+        for session in Session.objects.filter(query__icontains=str(old_id)):
+            if old_id in session.query.get('activeComplaints', []):
+                active_complaints = set(session.query['activeComplaints'])
+                active_complaints.remove(old_id)
+                active_complaints.add(new_id)
+                session.query['activeComplaints'] = list(active_complaints)
+                session.save()
+
+
+def update_officer_session(officer_1, officer_2):
+    for session in Session.objects.filter(query__icontains='"value": %d' % officer_2.pk):
+        try:
+            for obj in session.query['filters']['officer']:
+                if obj['value'] == officer_2.pk:
+                    obj['value'] = officer_1.pk
+                    session.save()
+                    break
+        except KeyError:
+            pass
+
+    for session in Session.objects.filter(query__icontains=str(officer_2.pk)):
+        if officer_2.pk in session.query.get('active_officers', []):
+            active_officers = set(session.query['active_officers'])
+            active_officers.remove(officer_2.pk)
+            active_officers.add(officer_1.pk)
+            session.query['active_officers'] = list(active_officers)
+            session.save()
+
+
+def merge_officers(officer_1, officer_2):
+    copy_missing_officer_fields(officer_1, officer_2)
+    merge_officer_history(officer_1, officer_2)
+    merge_police_witness(officer_1, officer_2)
+    officer_allegation_ids = merge_officer_allegation(officer_1, officer_2)
+    update_officer_allegation_session(officer_allegation_ids)
+    update_officer_session(officer_1, officer_2)
+    OfficerAlias.objects.create(new_officer=officer_1, old_officer_id=officer_2.pk)
+    officer_2.delete()

@@ -3,9 +3,12 @@ import datetime
 from allegation.factories import (
     OfficerFactory, OfficerAllegationFactory, AllegationFactory, OfficerHistoryFactory, PoliceWitnessFactory)
 from allegation.services.merge_officers import (
-    copy_missing_officer_fields, merge_officer_allegation, merge_officer_history, merge_police_witness)
+    copy_missing_officer_fields, merge_officer_allegation, merge_officer_history, merge_police_witness,
+    update_officer_allegation_session, update_officer_session, merge_officers)
 from common.tests.core import SimpleTestCase
 from common.constants import ACTIVE_UNKNOWN_CHOICE, ACTIVE_YES_CHOICE
+from common.models import Officer, OfficerAlias
+from share.factories import SessionFactory
 
 
 class MergeOfficersTestCase(SimpleTestCase):
@@ -75,3 +78,47 @@ class MergeOfficersTestCase(SimpleTestCase):
 
         for field in ['gender', 'race']:
             getattr(pw_1, field).should.equal(getattr(pw_2, field))
+
+    def test_update_officer_allegation_session(self):
+        ids_to_update = [
+            (OfficerAllegationFactory().id, OfficerAllegationFactory().id)
+            for i in range(2)]
+        session_1 = SessionFactory(query={'filters': {'id': [{'value': ids_to_update[0][0]}]}})
+        SessionFactory(query={'filters': {'def': [{'value': ids_to_update[0][0]}]}})
+        session_2 = SessionFactory(query={'activeComplaints': [
+            ids_to_update[1][0], ids_to_update[1][0]]})
+        SessionFactory(query={'abc': ids_to_update[1][0]})
+
+        update_officer_allegation_session(ids_to_update)
+
+        session_1.refresh_from_db()
+        session_1.query['filters']['id'][0]['value'].should.equal(ids_to_update[0][1])
+
+        session_2.refresh_from_db()
+        session_2.query['activeComplaints'].should.equal([ids_to_update[1][1]])
+
+    def test_update_officer_session(self):
+        officer_1 = OfficerFactory()
+        officer_2 = OfficerFactory()
+        session_1 = SessionFactory(
+            query={'filters': {'officer': [{'value': officer_2.pk}]}})
+        SessionFactory(query={'filters': {'def': [{'value': officer_2.pk}]}})
+        session_2 = SessionFactory(query={'active_officers': [officer_2.pk, officer_2.pk, officer_1.pk]})
+        SessionFactory(query={'cde': officer_2.pk})
+
+        update_officer_session(officer_1, officer_2)
+
+        session_1.refresh_from_db()
+        session_1.query['filters']['officer'][0]['value'].should.equal(officer_1.pk)
+
+        session_2.refresh_from_db()
+        session_2.query['active_officers'].should.equal([officer_1.pk])
+
+    def test_merge_officers(self):
+        officer_1 = OfficerFactory()
+        officer_2 = OfficerFactory()
+        officer_2_pk = officer_2.pk
+
+        merge_officers(officer_1, officer_2)
+        OfficerAlias.objects.filter(new_officer=officer_1, old_officer_id=officer_2_pk).exists().should.be.true
+        Officer.objects.filter(id=officer_2_pk).exists().should.be.false
