@@ -1,7 +1,7 @@
 from common.utils.mobile_url_hash_util import MobileUrlHashUtil
 
 
-class MobileUrlMixins(object):
+class MobileVisitingUrlMixins(object):
     def visit_mobile_home(self):
         self.visit('/')
 

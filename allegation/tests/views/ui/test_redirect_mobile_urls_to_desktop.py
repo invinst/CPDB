@@ -3,10 +3,10 @@ from django.core.urlresolvers import reverse
 from allegation.factories import OfficerFactory, AllegationCategoryFactory, OfficerAllegationFactory
 from allegation.tests.utils.filter_tags_test_mixin import FilterTagsTestMixin
 from common.tests.core import BaseLiveTestCase
-from mobile.tests.mixins.mobile_url_mixins import MobileUrlMixins
+from mobile.tests.mixins.mobile_visiting_url_mixins import MobileVisitingUrlMixins
 
 
-class MobileComplaintPageRedirectTest(MobileUrlMixins, FilterTagsTestMixin, BaseLiveTestCase):
+class MobileComplaintPageRedirectTest(MobileVisitingUrlMixins, FilterTagsTestMixin, BaseLiveTestCase):
     def assert_current_url_is_data_tool_page(self):
         self.browser.current_url.should.contain('/data')
 
