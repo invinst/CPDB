@@ -32,7 +32,7 @@ var SunburstStore = _.assign(Base(_state), {
     // this function use FilterTag values to check if sunburst arc is selected
     var selected = _state.selected;
     return selected && selected.tagValue && selected.tagValue.category == category
-      && selected.tagValue.value == value;
+      && selected.tagValue.displayValue == value;
   },
 
   isRootSelected: function () {
@@ -72,7 +72,7 @@ var SunburstStore = _.assign(Base(_state), {
   tryZoomOut: function (category, filter) {
     var tagValue;
 
-    if (this.isSelected(category, filter.value)) {
+    if (this.isSelected(category, filter.displayValue)) {
       _state.selected = _state.selected.parent;
 
       // Add parent arc to filter if not at root
@@ -152,7 +152,7 @@ var SunburstStore = _.assign(Base(_state), {
 
 // Register callback to handle all updates
 AppDispatcher.register(function (action) {
-  var selected, arcName, arcCategory;
+  var selected, arcName, arcCategory, arc;
 
   switch (action.actionType) {
     case AppConstants.RECEIVED_SUNBURST_DATA:
@@ -163,6 +163,16 @@ AppDispatcher.register(function (action) {
 
     case AppConstants.REMOVED_TAG:
       SunburstStore.tryZoomOut(action.category, action.filter);
+      SunburstStore.emitChange();
+      SunburstStore.emitSelectedChange();
+      SunburstStore.emitSunburstZoomedOut();
+      break;
+
+    case AppConstants.ADD_TAG:
+      arc = SunburstChartD3.findArc(action.tagValue.displayValue, action.tagValue.category);
+      if (arc) {
+        _state.selected = arc;
+      }
       SunburstStore.emitChange();
       SunburstStore.emitSelectedChange();
       SunburstStore.emitSunburstZoomedOut();

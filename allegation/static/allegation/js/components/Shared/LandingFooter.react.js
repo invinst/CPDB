@@ -7,52 +7,13 @@ var AppStore = require('stores/AppStore');
 
 var LandingFooter = React.createClass(_.assign(Base(AppStore), {
   render: function () {
-    var updateUrl =
-      '//invisibleinstitute.us1.list-manage.com/subscribe/post?u=5c80c1740c24b198f0f284cd3&id=8dfb7bdd4b';
     var subscribeUrl =
       '//invisibleinstitute.us1.list-manage.com/subscribe/post?u=5c80c1740c24b198f0f284cd3&id=dee1a647b0';
 
     return (
       <div className='footer'>
         <div className='container'>
-          <div className='col-sm-4'>
-            <a className='btn' href='/static/img/complaint_process.png' target='_blank'>Complaints Process</a>
-            <a className='btn' href='http://cpdb.datamade.us/glossary.html' target='_blank'>Glossary of Terms</a>
-            <a href='#disclaimer' className='btn' data-toggle='modal' data-target='#disclaimer'>
-              Legal Disclaimer
-            </a><br />
-          </div>
-          <div className='col-sm-4'>
-            <h4>
-              Get updates
-            </h4>
-            <p>
-            </p>
-            <form action={ updateUrl } method='post' id='mc-embedded-subscribe-form'
-              name='mc-embedded-subscribe-form' className='validate' target='_blank' noValidate={ true }>
-              <div id='mc_embed_signup_scroll'>
-                <div className='mc-field-group'>
-                  <input type='email' placeholder='Email Address' name='EMAIL' className='required email'
-                    id='mce-EMAIL' />
-                </div>
-                <div id='mce-responses' className='clear'>
-                  <div className='response' id='mce-error-response' style={ {display: 'none'} } />
-                  <div className='response' id='mce-success-response' style={ {display: 'none'} } />
-                </div>
-              {/* real people should not fill this in and expect good things -
-              do not remove this or risk form bot signups*/}
-                <div style={ {position: 'absolute', left: '-5000px'} }>
-                  <input type='text' name='b_5c80c1740c24b198f0f284cd3_8dfb7bdd4b' tabIndex={ -1 } />
-                </div>
-                <div className='clear'>
-                  <input type='submit' defaultValue='Sign up' name='subscribe' id='mc-embedded-subscribe'
-                    className='btn' />
-                </div>
-              </div>
-            </form>
-            <p />
-          </div>
-          <div className='col-sm-4'>
+          <div className='col-sm-12'>
             <h4>
               Work the data
             </h4>
