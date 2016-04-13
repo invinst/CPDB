@@ -13,6 +13,9 @@ module.exports = {
   // ComplaintPage events
   COMPLAINT_PAGE_RECEIVED_DATA: c++,
   COMPLAINT_PAGE_FAILED_TO_RECEIVED_DATA: c++,
+  TOGGLE_PAGE_OPEN: c++,
+  TOGGLE_PAGE_CLOSE: c++,
+  RESET_STATE: c++,
 
   //OfficerPage events
   OFFICER_PAGE_RECEIVED_DATA: c++,

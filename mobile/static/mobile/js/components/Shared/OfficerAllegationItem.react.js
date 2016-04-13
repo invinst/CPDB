@@ -1,56 +1,47 @@
 var React = require('react');
-var cx = require('classnames');
+
+var u = require('utils/HelperUtil');
+var CollectionUtil = require('utils/CollectionUtil');
 
 var AppHistory = require('utils/History');
 
+var ComplaintPageActions = require('actions/ComplaintPage/ComplaintPageActions');
 var AllegationPresenter = require('presenters/AllegationPresenter');
 var OfficerAllegationPresenter = require('presenters/OfficerAllegationPresenter');
 var OfficerPresenter = require('presenters/OfficerPresenter');
-var OfficerUtil = require('utils/OfficerUtil');
-var HelperUtil = require('utils/HelperUtil');
+var CircleList = require('components/Shared/OfficerAllegationItem/CircleList.react');
 
 
-var OfficerComplaintItem = React.createClass({
+var OfficerAllegationItem = React.createClass({
   propTypes: {
-    complaint: React.PropTypes.object,
-    officer: React.PropTypes.object
+    officerAllegation: React.PropTypes.object,
+    allegation: React.PropTypes.object,
+    officerAllegations: React.PropTypes.array
   },
 
-  renderCircles: function (allegationCounts) {
-    var circles = [];
-    var i;
-
-    for (i = 0; i < allegationCounts.length; i++) {
-      circles.push(
-        <div className={ cx('circle-wrapper', HelperUtil.format('officer-{index}', {'index': i})) } key={ i }>
-          <span className={ cx('circle', OfficerUtil.getColorLevelClass('circle', allegationCounts[i])) } />
-        </div>
-      );
-    }
-
-    return circles;
-  },
-
-  _onClicked : function (crid) {
-    var complaint = this.props.complaint.data;
-    var presenter = OfficerAllegationPresenter(complaint);
+  _onClick : function (crid, firstOfficerAllegation) {
+    var presenter = OfficerAllegationPresenter(firstOfficerAllegation);
     AppHistory.pushState(null, presenter.url(crid));
+    ComplaintPageActions.resetState();
   },
 
   render: function () {
-    var complaint = this.props.complaint.data;
-    var numberOfInvolvedOfficers = this.props.complaint['allegation_counts'].length - 1; // exclude himself
-    var allegationCounts = this.props.complaint['allegation_counts'];
-    var officer = this.props.officer;
+    var allegation = this.props.allegation;
+    var officerAllegations = this.props.officerAllegations;
+    var firstOfficerAllegation = this.props.officerAllegation;
+
+    var officer = u.fetch(firstOfficerAllegation, 'officer', null);
+
+    var numberOfInvolvedOfficers = officerAllegations.length - 1; // exclude himself
+    var allegationCounts = CollectionUtil.pluck(officerAllegations, 'officer.allegations_count');
 
     var officerPresenter = OfficerPresenter(officer);
-    var allegationPresenter = AllegationPresenter(HelperUtil.fetch(complaint, 'allegation', {}));
-    var officerAllegationPresenter = OfficerAllegationPresenter(complaint);
+    var allegationPresenter = AllegationPresenter(allegation);
+    var officerAllegationPresenter = OfficerAllegationPresenter(firstOfficerAllegation);
     var crid = allegationPresenter.crid;
 
-
     return (
-      <div className='officer-complaint-item' onClick={ this._onClicked.bind(this, crid) }>
+      <div className='officer-complaint-item' onClick={ this._onClick.bind(this, crid, firstOfficerAllegation) }>
         <div className='crid-info pad'>
           <div className='inline-block half-width align-left'>
             <span className='crid-title'>CRID &nbsp;</span>
@@ -72,13 +63,13 @@ var OfficerComplaintItem = React.createClass({
             <span className='value'>{ allegationPresenter.incidentDateDisplay }</span>
           </div>
           <div className='row'>
-            <span className='label'>Officers</span>
+            <span className='label'>Against</span>
             <span className='value'>
               { officerPresenter.coAccusedWith(numberOfInvolvedOfficers) }
             </span>
           </div>
           <div className='circles row'>
-            { this.renderCircles(allegationCounts) }
+            <CircleList allegationCountList={ allegationCounts } />
           </div>
         </div>
       </div>
@@ -86,4 +77,4 @@ var OfficerComplaintItem = React.createClass({
   }
 });
 
-module.exports = OfficerComplaintItem;
+module.exports = OfficerAllegationItem;

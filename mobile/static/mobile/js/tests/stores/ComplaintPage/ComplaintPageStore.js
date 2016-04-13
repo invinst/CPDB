@@ -45,4 +45,43 @@ describe('ComplaintPageStore', function () {
     newState.loading.should.be.false();
     newState.found.should.be.false();
   });
+
+  it('updates toggle to true if toggle page open', function () {
+    var newState;
+
+    ComplaintPageStore.updateState('toggle', false);
+
+    callback({
+      actionType: AppConstants.TOGGLE_PAGE_OPEN
+    });
+
+    newState = ComplaintPageStore.getState();
+    newState.toggle.should.be.true();
+  });
+
+  it('updates toggle to false if toggle page close', function () {
+    var newState;
+
+    ComplaintPageStore.updateState('toggle', true);
+
+    callback({
+      actionType: AppConstants.TOGGLE_PAGE_CLOSE
+    });
+
+    newState = ComplaintPageStore.getState();
+    newState.toggle.should.be.false();
+  });
+
+  it('updates toggle to false if reset state', function () {
+    var newState;
+
+    ComplaintPageStore.updateState('toggle', true);
+
+    callback({
+      actionType: AppConstants.RESET_STATE
+    });
+
+    newState = ComplaintPageStore.getState();
+    newState.toggle.should.be.false();
+  });
 });

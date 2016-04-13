@@ -46,6 +46,10 @@ var AllegationPresenter = function (complaint) {
     return !!(add1() && add2());
   };
 
+  var documentId = function () {
+    return u.fetch(complaint, 'document_id', 0);
+  };
+
   return {
     crid: crid(),
     incidentDate: incidentDate(),
@@ -54,7 +58,7 @@ var AllegationPresenter = function (complaint) {
     city: u.fetch(complaint, 'city', ''),
     locationType: locationType(),
     beat: u.fetch(complaint, 'beat.name', ''),
-    documentId: u.fetch(complaint, 'document_id', '').toString(),
+    documentId: documentId(),
     documentNormalizedTitle: u.fetch(complaint, 'document_normalized_title', ''),
     hasLocation: hasLocation(),
     hasFullAddress: hasFullAddress(),

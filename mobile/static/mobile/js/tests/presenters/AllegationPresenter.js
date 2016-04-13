@@ -138,19 +138,19 @@ describe('AllegationPresenter', function () {
 
   describe('#documentId', function () {
     it('should return document id ', function () {
-      var documentId = '123467';
+      var documentId = 123467;
       var allegation = f.create('Allegation', { 'document_id': documentId });
       var presenter = AllegationPresenter(allegation);
 
       presenter.documentId.should.be.equal(documentId);
     });
 
-    it('should return empty if there is no document id', function () {
+    it('should return 0 if there is no document id', function () {
       var documentId = 0;
       var allegation = f.create('Allegation', { 'document_id': documentId });
       var presenter = AllegationPresenter(allegation);
 
-      presenter.documentId.should.be.equal('');
+      presenter.documentId.should.be.equal(0);
     });
   });
 

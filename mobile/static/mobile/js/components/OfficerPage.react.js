@@ -2,7 +2,6 @@ var React = require('react');
 var objectAssign = require('object-assign');
 
 var Base = require('components/Base.react');
-var HelperUtil = require('utils/HelperUtil');
 
 var SimpleTab = require('components/Shared/SimpleTab.react');
 var ComplaintsTab = require('components/OfficerPage/ComplaintsTab.react');
@@ -16,6 +15,7 @@ var LoadingPage = require('components/Shared/LoadingPage.react');
 var OfficerPageServerActions = require('actions/OfficerPage/OfficerPageServerActions');
 var OfficerResourceUtil = require('utils/OfficerResourceUtil');
 var OfficerPageStore = require('stores/OfficerPage/OfficerPageStore');
+var OfficerPagePresenter = require('presenters/Page/OfficerPagePresenter');
 
 
 var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
@@ -51,10 +51,8 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
     var loading = this.state.loading;
     var found = this.state.found;
     var officer = this.state.officer;
-    var officerDetail = HelperUtil.fetch(officer, 'detail', {});
-    var complaints = HelperUtil.fetch(officer, 'complaints', {});
-    var coAccused = HelperUtil.fetch(officer, 'co_accused', {});
-    var distribution = HelperUtil.fetch(officer, 'distribution', {});
+
+    var presenter = OfficerPagePresenter(officer);
 
     if (loading) {
       return (
@@ -72,7 +70,7 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
       <SearchablePage>
         <div className='officer-page'>
           <div className='content'>
-            <OfficerHeader officer={ officerDetail } />
+            <OfficerHeader officer={ presenter.officerDetail } />
             <div className='tabs'>
               <SimpleTab navigation={ true }>
                 <div>
@@ -82,13 +80,13 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
                 </div>
                 <div className='officer-page-content'>
                   <div>
-                    <SummaryTab officer={ officerDetail } distribution={ distribution } />
+                    <SummaryTab officer={ presenter.officerDetail } distribution={ presenter.distribution } />
                   </div>
                   <div>
-                    <ComplaintsTab officer={ officerDetail } complaints={ complaints } />
+                    <ComplaintsTab officer={ presenter.officerDetail } complaints={ presenter.complaints } />
                   </div>
                   <div>
-                    <RelatedOfficersTab coAccused={ coAccused }/>
+                    <RelatedOfficersTab coAccused={ presenter.coAccused }/>
                   </div>
                 </div>
               </SimpleTab>

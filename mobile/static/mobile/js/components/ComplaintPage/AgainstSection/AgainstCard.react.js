@@ -17,11 +17,7 @@ var AgainstCard = React.createClass({
   },
 
   _onClick: function (officerPresenter) {
-    var officerUrl = u.format('/officer/{name}/{id}', {
-      'name': officerPresenter.displayName,
-      'id': officerPresenter.id
-    });
-    AppHistory.pushState(null, officerUrl);
+    AppHistory.pushState(null, officerPresenter.url);
   },
 
   render: function () {

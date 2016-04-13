@@ -24,8 +24,8 @@ class MobileAllegationTest(SimpleTestCase):
         data['allegation']['point']['x'].should.be.equal(allegation.point.x)
         data['allegation']['point']['y'].should.be.equal(allegation.point.y)
 
-        len(data['officer_allegations']).should.be.equal(1)
-        data['officer_allegations'][0]['officer']['id'].should.be.equal(officer.pk)
+        len(data['allegation']['officer_allegation_set']).should.be.equal(1)
+        data['allegation']['officer_allegation_set'][0]['officer']['id'].should.be.equal(officer.pk)
 
         len(data['complaining_witnesses']).should.be.equal(1)
         data['complaining_witnesses'][0]['race'].should.be.equal(complaining_witness.race)

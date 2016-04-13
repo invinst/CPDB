@@ -1,7 +1,10 @@
 var React = require('react');
 
-var AppHistory = require('utils/History');
+var CollectionUtil = require('utils/CollectionUtil');
+
 var SuggestionPresenter = require('presenters/SuggestionPresenter');
+var ComplaintResultPresenter = require('presenters/Page/ComplaintResultPresenter');
+var OfficerAllegationItem = require('components/Shared/OfficerAllegationItem.react');
 
 
 var ComplaintResult = React.createClass({
@@ -10,37 +13,42 @@ var ComplaintResult = React.createClass({
   },
 
   _onClick: function () {
-    var officer = this.props.suggestions[0];
-    var presenter = SuggestionPresenter(officer);
+    var complaint = this.props.suggestions[0];
+    var presenter = SuggestionPresenter(complaint);
     ga('send', 'event', 'filter', presenter.resource, presenter.text);
-    AppHistory.pushState(null, presenter.url);
+  },
+
+  renderAllegation: function (categoryId, officerAllegations, allegation) {
+    var firstOfficerAllegation = CollectionUtil.first(officerAllegations);
+
+    return (
+      <div key={ categoryId }>
+        <OfficerAllegationItem officerAllegation={ firstOfficerAllegation } officerAllegations={ officerAllegations }
+          allegation={ allegation }/>
+      </div>
+    );
+  },
+
+  renderComplaintResultItem: function (officerAllegationGroups, allegation) {
+    var currentOfficerAllegations, categoryId;
+    var results = [];
+
+    for (categoryId in officerAllegationGroups) {
+      currentOfficerAllegations = officerAllegationGroups[categoryId];
+      results.push(this.renderAllegation(categoryId, currentOfficerAllegations, allegation));
+    }
+
+    return results;
   },
 
   render: function () {
     var complaint = this.props.suggestions[0];
     var presenter = SuggestionPresenter(complaint);
-
+    var complaintResultPresenter = ComplaintResultPresenter(presenter.meta);
     return (
       <ul className='suggestion-list'>
-        <li className='complaint-results outer-glow'>
-          <div className='link pad complaint-result-item' onClick={ this._onClick }>
-            <div className='complaint-header pad'>
-              <span className='complaint-label'> Complaint<span className='dot-bullet'>&#8226;</span></span>
-              <span className='crid-title'>&nbsp; CRID&nbsp;</span>
-              <span className='crid-value highlight'>{ presenter.resourceKey }</span>
-              <span className='final-finding'>
-                { presenter.meta.finalFinding }
-              </span>
-            </div>
-            <div className='complaint-category pad'>
-              <div className='sub-category bold'>
-                { presenter.meta.category }
-              </div>
-              <div className='category'>
-                { presenter.meta.allegationName }
-              </div>
-            </div>
-          </div>
+        <li className='complaint-results outer-glow' onClick={ this._onClick }>
+          { this.renderComplaintResultItem(complaintResultPresenter.groupByCategory, presenter.meta) }
         </li>
       </ul>
     );

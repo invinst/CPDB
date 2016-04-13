@@ -103,6 +103,25 @@ class AllegationCrid(Node):
         return results
 
 
+class AllegationType(Node):
+    node_name = 'cat'
+    supported_attributes = ['categories']
+
+    def build(self):
+        results = []
+
+        for value, displayValue in self.attributes['categories']:
+            results.append({
+                "displayValue": displayValue,
+                "value": value,
+                "category": "cat",
+                "pinned": False,
+                "displayCategory": "Allegation Type"
+            })
+
+        return results
+
+
 class SuggestionsNode(Node):
     node_name = ''
     supported_attributes = ['suggestions']

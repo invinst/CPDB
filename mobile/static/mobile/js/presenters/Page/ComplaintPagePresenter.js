@@ -7,11 +7,12 @@ var ComplaintPagePresenter = function (data, categoryHashId) {
   var categoryId = CollectionUtil.first(HashUtil.decode(categoryHashId));
 
   var officerAllegations = function () {
-    var officerAllegations = u.fetch(data, 'officer_allegations', []);
+    var officerAllegations = u.fetch(data, 'allegation.officer_allegation_set', []);
     officerAllegations.sort(function (a, b) {
       return b.officer['allegations_count'] - a.officer['allegations_count'];
     });
-    return u.fetch(data, 'officer_allegations', []);
+
+    return officerAllegations;
   };
 
   var getAgainstOfficerAllegations = function () {
@@ -32,7 +33,9 @@ var ComplaintPagePresenter = function (data, categoryHashId) {
   };
 
   var numberOfOfficerAllegations = function () {
-    return officerAllegations().length;
+    return Object.keys(CollectionUtil.groupBy(officerAllegations(), function (officerAllegation) {
+      return u.fetch(officerAllegation, 'cat.id');
+    })).length;
   };
 
   return {

@@ -1,13 +1,16 @@
-var ReactTestUtils, f, DocumentLink, OfficerAllegationDetail, cridInfo;
+var ReactTestUtils, f, DocumentLink, OfficerAllegationDetail, cridInfo, ComplaintPageActions, sinon;
 
 var React = require('react');
 require('react-dom');
 ReactTestUtils = require('react-addons-test-utils');
 
+sinon = require('sinon');
 require('should');
 
 f = require('utils/tests/f');
 require('utils/tests/should/React');
+
+ComplaintPageActions = require('actions/ComplaintPage/ComplaintPageActions');
 
 DocumentLink = require('components/ComplaintPage/DocumentLink.react');
 OfficerAllegationDetail = require('components/ComplaintPage/OfficerAllegationDetail.react');
@@ -95,5 +98,21 @@ describe('OfficerAllegationDetailComponent', function () {
     );
 
     officerAllegationDetail.should.render([DocumentLink]);
+  });
+
+  it('should trigger toggle action if clicking the hamburger menu', function () {
+    var hamburgerMenu;
+    var mock = sinon.mock(ComplaintPageActions);
+    mock.expects('toggleOpen').once().returns(null);
+
+    officerAllegationDetail = ReactTestUtils.renderIntoDocument(
+      <OfficerAllegationDetail />
+    );
+    hamburgerMenu = ReactTestUtils.findRenderedDOMComponentWithClass(officerAllegationDetail,
+      'number-of-allegations-section');
+
+    ReactTestUtils.Simulate.click(hamburgerMenu);
+    mock.verify();
+    mock.restore();
   });
 });
