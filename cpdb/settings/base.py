@@ -30,6 +30,7 @@ DJANGO_APPS = (
 )
 
 THIRD_PARTY_APPS = (
+    'wagtail.contrib.wagtailapi',
     'django_extensions',
     'djangobower',
     'django_tables2',
@@ -38,9 +39,24 @@ THIRD_PARTY_APPS = (
     'django_nose',
     'django_user_agents',
     'haystack',
+    'taggit',
+    'modelcluster',
+    'wagtail.wagtailcore',
+    'wagtail.wagtailadmin',
+    'wagtail.wagtaildocs',
+    'wagtail.wagtailsnippets',
+    'wagtail.wagtailusers',
+    'wagtail.wagtailimages',
+    'wagtail.wagtailembeds',
+    'wagtail.wagtailsearch',
+    'wagtail.wagtailsites',
+    'wagtail.wagtailredirects',
+    'wagtail.wagtailforms',
+    'wagtail.contrib.wagtailsearchpromotions',
 )
 
 CPDB_APPS = (
+    'wagtail_app',
     'common',
     'allegation',
     'officer',
@@ -53,6 +69,7 @@ CPDB_APPS = (
     'dashboard',
     'api',
     'mobile',
+    'twitterbot',
 )
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + CPDB_APPS
@@ -72,6 +89,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.security.SecurityMiddleware',
     'corsheaders.middleware.CorsMiddleware',
 
+    'wagtail.wagtailcore.middleware.SiteMiddleware',
+    'wagtail.wagtailredirects.middleware.RedirectMiddleware',
 )
 
 ROOT_URLCONF = 'cpdb.urls'
@@ -232,6 +251,9 @@ SITE_INFO = {
     'mobile_host': 'm.cpdb.co',
 }
 
+# WAGTAIL
+WAGTAIL_SITE_NAME = 'CPDB'
+
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'search.search_backends.CustomElasticSearchEngine',
@@ -278,6 +300,12 @@ ELASTICSEARCH_SETTINGS = {
         }
     }
 }
+
+TWITTER_CONSUMER_KEY = os.environ.get('TWITTER_CONSUMER_KEY', '')
+TWITTER_CONSUMER_SECRET = os.environ.get('TWITTER_CONSUMER_SECRET', '')
+TWITTER_APP_TOKEN_KEY = os.environ.get('TWITTER_APP_TOKEN_KEY', '')
+TWITTER_APP_TOKEN_SECRET = os.environ.get('TWITTER_APP_TOKEN_SECRET', '')
+TWITTER_SCREEN_NAME = os.environ.get('TWITTER_SCREEN_NAME', '')
 
 DJANGO_ENV = 'prod'
 

@@ -38,9 +38,13 @@ class EmbedModeTestCase(BaseLiveTestCase):
         tabs_column_code.get_attribute('value')\
             .should.contain('/embed/?page=summary&query=&state=')
 
-        self.click_active_tab('Race & Gender')
+        self.click_active_tab('Complainants')
         tabs_column_code.get_attribute('value')\
-            .should.contain('/embed/?page=race-gender&query=')
+            .should.contain('/embed/?page=complainant-race-gender-age-tab')
+
+        self.click_active_tab('Accused')
+        tabs_column_code.get_attribute('value')\
+            .should.contain('/embed/?page=officer-race-gender-age-tab')
 
         officer_list_code = self.find('#officer-cards .embed-code input')
         officer_list_code.should.be.ok
@@ -131,11 +135,11 @@ class EmbedPageTestCase(BaseLiveTestCase):
             'height': 331,
         }, "/embed/?page=summary&query=&state=%7B%22selectedCategories%22%3A%5B%5D%2C%22currentActive%22%3Afalse%7D")
 
-    def test_race_gender_embed_code(self):
+    def test_officer_race_gender_age_embed_code(self):
         self.check_embed_code({
             'width': 892,
-            'height': 361,
-        }, "/embed/?page=race-gender&query=")
+            'height': 500,
+        }, "/embed/?page=officer-race-gender-age-tab&query=")
 
     def test_officer_list_embed_code(self):
         self.check_embed_code({

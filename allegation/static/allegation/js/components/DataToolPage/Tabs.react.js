@@ -15,7 +15,7 @@ var Sunburst = require('components/DataToolPage/Sunburst.react');
 var EmbedMixin = require('components/DataToolPage/Embed/Mixin.react');
 var Summary = require('components/DataToolPage/Summary.react');
 var Map = require('components/DataToolPage/Map.react');
-var RaceGenderTab = require('components/DataToolPage/RaceGenderTab.react');
+var RaceGenderTab = require('components/DataToolPage/RaceGenderAgeTab.react');
 var TabActions = require('actions/DataToolPage/TabActions');
 
 var Tabs = React.createClass(_.assign(Base(TabsStore), {
@@ -32,8 +32,7 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
   componentWillUnmount: function () {
     TabsStore.removeChangeListener(this._onChange);
     this.removeEmbedListener();
-
-    this.tabs = [];
+    this.activeTabComponent = null;
     this.activeTabIndex = 0;
     this.embedding = false;
   },
@@ -45,16 +44,11 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
   // embedding
   activeTab: function (number, tab, e) {
     this.activeTabIndex = number;
-
-    if (this.embedding) {
-      $(ReactDOM.findDOMNode(this)).parent().find('.embed-code input').val(this.getEmbedCode());
-    }
-
     TabActions.setActiveTab(tab);
   },
 
   getActiveTab: function () {
-    return this.tabs[this.activeTabIndex];
+    return this.activeTabComponent;
   },
 
   getEmbedCode: function () {
@@ -96,6 +90,13 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
     return this.state.activeTab == target || (!this.state.activeTab && target == 'outcomes');
   },
 
+  initTab: function (childComponent) {
+    this.activeTabComponent = childComponent;
+    if (this.embedding) {
+      $(ReactDOM.findDOMNode(this)).parent().find('.embed-code input').val(childComponent.getEmbedCode());
+    }
+  },
+
   renderNavTab: function (label) {
     var target = S(label.toLowerCase().replace('&', '')).slugify().s;
     var dataTarget = '#' + target;
@@ -106,7 +107,7 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
       return;
     }
 
-    tabClass = classnames({
+    tabClass = classnames(label.toLowerCase(), {
       'active': this.isActive(target)
     });
 
@@ -120,7 +121,7 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
     );
   },
 
-  renderTabContent: function (id, Component) {
+  renderTabContent: function (id, Component, props) {
     var tabClass;
 
     if (id == 'map' && !MobileUtils.isMobileView()) {
@@ -130,11 +131,11 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
       'active': this.isActive(id)
     });
 
-    return (
+    return this.isActive(id) ? (
       <div role='tabpanel' className={ tabClass } id={ id }>
-        <Component tabs={ this } />
+        { React.createElement(Component, _.assign({}, {initTab: this.initTab}, props)) }
       </div>
-    );
+    ) : null;
   },
 
   render: function () {
@@ -144,14 +145,16 @@ var Tabs = React.createClass(_.assign(Base(TabsStore), {
           { this.renderNavTab('Map') }
           { this.renderNavTab('Outcomes') }
           { this.renderNavTab('Categories') }
-          { this.renderNavTab('Race & Gender') }
+          { this.renderNavTab('Complainants') }
+          { this.renderNavTab('Accused') }
         </ul>
 
         <div className='tab-content'>
           { this.renderTabContent('map', Map) }
-          { this.renderTabContent('outcomes', Sunburst) }
+          { this.renderTabContent('outcomes', Sunburst, {embedding: this.embedding}) }
           { this.renderTabContent('categories', Summary) }
-          { this.renderTabContent('race-gender', RaceGenderTab) }
+          { this.renderTabContent('complainants', RaceGenderTab, {role: RaceGenderTab.COMPLAINANT_ROLE}) }
+          { this.renderTabContent('accused', RaceGenderTab, {role: RaceGenderTab.OFFICER_ROLE}) }
         </div>
       </div>
     );

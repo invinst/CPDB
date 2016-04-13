@@ -1,0 +1,266 @@
+interactions:
+- request:
+    body: null
+    headers:
+      Authorization: ['OAuth oauth_nonce="92191016814979964941456719486", oauth_timestamp="1456719486",
+          oauth_version="1.0", oauth_signature_method="HMAC-SHA1", oauth_consumer_key="",
+          oauth_token="4880788160-ulBmMbkcAgcIHu5F2ykwsCl0KYAK11POXNFEt0m", oauth_signature="gKhcs5HyTNO9PGT0Q2M9RfXdQNA%3D"']
+      Host: [api.twitter.com]
+    method: GET
+    uri: https://api.twitter.com/1.1/account/verify_credentials.json
+  response:
+    body: {string: '{"errors":[{"code":215,"message":"Bad Authentication data."}]}'}
+    headers:
+      content-length: ['62']
+      content-type: [application/json; charset=utf-8]
+      date: ['Mon, 29 Feb 2016 04:18:07 GMT']
+      server: [tsa_a]
+      set-cookie: ['guest_id=v1%3A145671948733026959; Domain=.twitter.com; Path=/;
+          Expires=Wed, 28-Feb-2018 04:18:07 UTC']
+      strict-transport-security: [max-age=631138519]
+      x-connection-hash: [0918b2d98206602113b3d03b9857f2c1]
+      x-response-time: ['4']
+    status: {code: 400, message: Bad Request}
+- request:
+    body: null
+    headers:
+      Authorization: ['OAuth oauth_nonce="35324452290302865351456719487", oauth_timestamp="1456719487",
+          oauth_version="1.0", oauth_signature_method="HMAC-SHA1", oauth_consumer_key="nGGG8l0DOqysJ0rukJOXqJWEy",
+          oauth_signature="rOmhWmAdAumfVb9veLg79qgxIRI%3D"']
+      Host: [api.twitter.com]
+    method: GET
+    uri: https://api.twitter.com/1.1/account/verify_credentials.json
+  response:
+    body: {string: '{"errors":[{"code":32,"message":"Could not authenticate you."}]}'}
+    headers:
+      content-length: ['64']
+      content-type: [application/json; charset=utf-8]
+      date: ['Mon, 29 Feb 2016 04:18:08 GMT']
+      server: [tsa_a]
+      set-cookie: ['guest_id=v1%3A145671948822681202; Domain=.twitter.com; Path=/;
+          Expires=Wed, 28-Feb-2018 04:18:08 UTC']
+      strict-transport-security: [max-age=631138519]
+      x-connection-hash: [6c30793ac566885cd17fe67de6bb53fa]
+      x-response-time: ['5']
+    status: {code: 401, message: Authorization Required}
+- request:
+    body: null
+    headers:
+      Authorization: ['OAuth oauth_nonce="76606983080026183141456719488", oauth_timestamp="1456719488",
+          oauth_version="1.0", oauth_signature_method="HMAC-SHA1", oauth_consumer_key="nGGG8l0DOqysJ0rukJOXqJWEy",
+          oauth_token="4880788160-ulBmMbkcAgcIHu5F2ykwsCl0KYAK11POXNFEt0m", oauth_signature="AJKl7JnaNVvlGXx7efhvwEivPgU%3D"']
+      Host: [api.twitter.com]
+    method: GET
+    uri: https://api.twitter.com/1.1/account/verify_credentials.json
+  response:
+    body: {string: '{"id":4880788160,"id_str":"4880788160","name":"ThrowAway","screen_name":"giangthrowaway1","location":"","description":"","url":null,"entities":{"description":{"urls":[]}},"protected":false,"followers_count":1,"friends_count":0,"listed_count":0,"created_at":"Tue
+        Feb 09 01:57:02 +0000 2016","favourites_count":0,"utc_offset":null,"time_zone":null,"geo_enabled":false,"verified":false,"statuses_count":98,"lang":"en","status":{"created_at":"Fri
+        Feb 26 03:16:54 +0000 2016","id":703056114603024384,"id_str":"703056114603024384","text":"@CPDbot
+        #JasonVanDyke 3","truncated":false,"source":"\u003ca href=\"http:\/\/twitter.com\"
+        rel=\"nofollow\"\u003eTwitter Web Client\u003c\/a\u003e","in_reply_to_status_id":null,"in_reply_to_status_id_str":null,"in_reply_to_user_id":4923697764,"in_reply_to_user_id_str":"4923697764","in_reply_to_screen_name":"CPDbot","geo":null,"coordinates":null,"place":null,"contributors":null,"is_quote_status":false,"retweet_count":0,"favorite_count":0,"entities":{"hashtags":[{"text":"JasonVanDyke","indices":[8,21]}],"symbols":[],"user_mentions":[{"screen_name":"CPDbot","name":"Citizens
+        Police Data","id":4923697764,"id_str":"4923697764","indices":[0,7]}],"urls":[]},"favorited":false,"retweeted":false,"lang":"und"},"contributors_enabled":false,"is_translator":false,"is_translation_enabled":false,"profile_background_color":"F5F8FA","profile_background_image_url":null,"profile_background_image_url_https":null,"profile_background_tile":false,"profile_image_url":"http:\/\/abs.twimg.com\/sticky\/default_profile_images\/default_profile_3_normal.png","profile_image_url_https":"https:\/\/abs.twimg.com\/sticky\/default_profile_images\/default_profile_3_normal.png","profile_link_color":"2B7BB9","profile_sidebar_border_color":"C0DEED","profile_sidebar_fill_color":"DDEEF6","profile_text_color":"333333","profile_use_background_image":true,"has_extended_profile":false,"default_profile":true,"default_profile_image":true,"following":false,"follow_request_sent":false,"notifications":false}'}
+    headers:
+      cache-control: ['no-cache, no-store, must-revalidate, pre-check=0, post-check=0']
+      content-disposition: [attachment; filename=json.json]
+      content-length: ['2013']
+      content-type: [application/json;charset=utf-8]
+      date: ['Mon, 29 Feb 2016 04:18:09 GMT']
+      expires: ['Tue, 31 Mar 1981 05:00:00 GMT']
+      last-modified: ['Mon, 29 Feb 2016 04:18:09 GMT']
+      pragma: [no-cache]
+      server: [tsa_a]
+      set-cookie: [lang=en; Path=/, 'guest_id=v1%3A145671948905936506; Domain=.twitter.com;
+          Path=/; Expires=Wed, 28-Feb-2018 04:18:09 UTC']
+      status: [200 OK]
+      strict-transport-security: [max-age=631138519]
+      x-access-level: [read-write]
+      x-connection-hash: [780d10d317dab4e4fd8c67358848b827]
+      x-content-type-options: [nosniff]
+      x-frame-options: [SAMEORIGIN]
+      x-rate-limit-limit: ['15']
+      x-rate-limit-remaining: ['12']
+      x-rate-limit-reset: ['1456720150']
+      x-response-time: ['95']
+      x-transaction: [f1d83aaf37c0e741]
+      x-twitter-response-tags: [BouncerExempt, BouncerCompliant]
+      x-xss-protection: [1; mode=block]
+    status: {code: 200, message: OK}
+- request:
+    body: null
+    headers:
+      connection: [keep-alive]
+    method: GET
+    uri: http://127.0.0.1:9200/test_suggestion/_mapping
+  response:
+    body: {string: '{"test_suggestion":{"mappings":{"modelresult":{"properties":{"allegation_crid":{"type":"string","index_analyzer":"edgengram_analyzer","search_analyzer":"standard"},"allegation_crid_sort":{"type":"string","analyzer":"snowball"},"allegation_distinct_city":{"type":"string","analyzer":"snowball"},"allegation_distinct_zip_code":{"type":"string","index_analyzer":"ngram_analyzer","search_analyzer":"standard"},"allegation_summary":{"type":"string","index_analyzer":"edgengram_analyzer","search_analyzer":"standard"},"allegationcategory_allegation_count":{"type":"long"},"allegationcategory_allegation_name":{"type":"string","analyzer":"snowball"},"allegationcategory_cat_id":{"type":"string","analyzer":"snowball"},"allegationcategory_distinct_category":{"type":"string","index_analyzer":"edgengram_analyzer","search_analyzer":"standard"},"allegationcategory_distinct_category_count":{"type":"long"},"allegationcategory_id":{"type":"long"},"allegationcategory_name_and_id":{"type":"string","index_analyzer":"edgengram_analyzer","search_analyzer":"standard"},"area_id":{"type":"long"},"area_name":{"type":"string","index_analyzer":"edgengram_analyzer","search_analyzer":"standard"},"area_type":{"type":"string","analyzer":"snowball"},"django_ct":{"type":"string","index":"not_analyzed","include_in_all":false},"django_id":{"type":"string","index":"not_analyzed","include_in_all":false},"id":{"type":"string"},"investigator_complaint_count":{"type":"string","analyzer":"snowball"},"investigator_id":{"type":"long"},"investigator_name":{"type":"string","index_analyzer":"edgengram_analyzer","search_analyzer":"standard"},"officer_allegations_count":{"type":"long"},"officer_id":{"type":"long"},"officer_name":{"type":"string","index_analyzer":"edgengram_analyzer","search_analyzer":"standard"},"officer_star":{"type":"string","index_analyzer":"ngram_analyzer","search_analyzer":"standard"},"officer_star_sort":{"type":"long"},"officer_unit":{"type":"string","index_analyzer":"edgengram_analyzer","search_analyzer":"standard"},"sessionalias_alias":{"type":"string","index_analyzer":"edgengram_analyzer","search_analyzer":"standard"},"sessionalias_session_id":{"type":"long"},"sessionalias_title":{"type":"string","analyzer":"snowball"},"text":{"type":"string","analyzer":"snowball"}}}}}}'}
+    headers:
+      Content-Length: ['2279']
+      Content-Type: [application/json; charset=UTF-8]
+    status: {code: 200, message: OK}
+- request:
+    body: !!binary |
+      eyJzZXR0aW5ncyI6IHsibnVtYmVyX29mX3NoYXJkcyI6IDEsICJhbmFseXNpcyI6IHsiYW5hbHl6
+      ZXIiOiB7ImVkZ2VuZ3JhbV9hbmFseXplciI6IHsidG9rZW5pemVyIjogInN0YW5kYXJkIiwgImZp
+      bHRlciI6IFsibG93ZXJjYXNlIiwgImN1c3RvbV9kZWxpbWl0ZXIiLCAiaGF5c3RhY2tfZWRnZW5n
+      cmFtIl0sICJ0eXBlIjogImN1c3RvbSJ9LCAibmdyYW1fYW5hbHl6ZXIiOiB7InRva2VuaXplciI6
+      ICJ3aGl0ZXNwYWNlIiwgImZpbHRlciI6IFsiaGF5c3RhY2tfbmdyYW0iLCAibG93ZXJjYXNlIl0s
+      ICJ0eXBlIjogImN1c3RvbSJ9fSwgImZpbHRlciI6IHsiaGF5c3RhY2tfZWRnZW5ncmFtIjogeyJt
+      aW5fZ3JhbSI6IDEsICJtYXhfZ3JhbSI6IDE1LCAidHlwZSI6ICJlZGdlX25ncmFtIn0sICJoYXlz
+      dGFja19uZ3JhbSI6IHsibWluX2dyYW0iOiAyLCAibWF4X2dyYW0iOiAxNSwgInR5cGUiOiAibkdy
+      YW0ifSwgImN1c3RvbV9kZWxpbWl0ZXIiOiB7InByZXNlcnZlX29yaWdpbmFsIjogdHJ1ZSwgInR5
+      cGUiOiAid29yZF9kZWxpbWl0ZXIiLCAic3RlbV9lbmdsaXNoX3Bvc3Nlc3NpdmUiOiBmYWxzZX19
+      fX19
+    headers:
+      connection: [keep-alive]
+    method: PUT
+    uri: http://127.0.0.1:9200/test_suggestion
+  response:
+    body: {string: '{"error":"IndexAlreadyExistsException[[test_suggestion] already
+        exists]","status":400}'}
+    headers:
+      Content-Length: ['86']
+      Content-Type: [application/json; charset=UTF-8]
+    status: {code: 400, message: Bad Request}
+- request:
+    body: !!binary |
+      eyJtb2RlbHJlc3VsdCI6IHsicHJvcGVydGllcyI6IHsiYWxsZWdhdGlvbl9jcmlkX3NvcnQiOiB7
+      ImFuYWx5emVyIjogInNub3diYWxsIiwgInR5cGUiOiAic3RyaW5nIn0sICJzZXNzaW9uYWxpYXNf
+      c2Vzc2lvbl9pZCI6IHsidHlwZSI6ICJsb25nIn0sICJhbGxlZ2F0aW9uY2F0ZWdvcnlfYWxsZWdh
+      dGlvbl9uYW1lIjogeyJhbmFseXplciI6ICJzbm93YmFsbCIsICJ0eXBlIjogInN0cmluZyJ9LCAi
+      YWxsZWdhdGlvbmNhdGVnb3J5X2NhdF9pZCI6IHsiYW5hbHl6ZXIiOiAic25vd2JhbGwiLCAidHlw
+      ZSI6ICJzdHJpbmcifSwgImFsbGVnYXRpb25jYXRlZ29yeV9hbGxlZ2F0aW9uX2NvdW50IjogeyJ0
+      eXBlIjogImxvbmcifSwgIm9mZmljZXJfdW5pdCI6IHsiaW5kZXhfYW5hbHl6ZXIiOiAiZWRnZW5n
+      cmFtX2FuYWx5emVyIiwgInNlYXJjaF9hbmFseXplciI6ICJzdGFuZGFyZCIsICJ0eXBlIjogInN0
+      cmluZyJ9LCAib2ZmaWNlcl9hbGxlZ2F0aW9uc19jb3VudCI6IHsidHlwZSI6ICJsb25nIn0sICJh
+      cmVhX25hbWUiOiB7ImluZGV4X2FuYWx5emVyIjogImVkZ2VuZ3JhbV9hbmFseXplciIsICJzZWFy
+      Y2hfYW5hbHl6ZXIiOiAic3RhbmRhcmQiLCAidHlwZSI6ICJzdHJpbmcifSwgImRqYW5nb19pZCI6
+      IHsiaW5kZXgiOiAibm90X2FuYWx5emVkIiwgImluY2x1ZGVfaW5fYWxsIjogZmFsc2UsICJ0eXBl
+      IjogInN0cmluZyJ9LCAiaW52ZXN0aWdhdG9yX2NvbXBsYWludF9jb3VudCI6IHsiYW5hbHl6ZXIi
+      OiAic25vd2JhbGwiLCAidHlwZSI6ICJzdHJpbmcifSwgInRleHQiOiB7ImFuYWx5emVyIjogInNu
+      b3diYWxsIiwgInR5cGUiOiAic3RyaW5nIn0sICJhbGxlZ2F0aW9uY2F0ZWdvcnlfbmFtZV9hbmRf
+      aWQiOiB7ImluZGV4X2FuYWx5emVyIjogImVkZ2VuZ3JhbV9hbmFseXplciIsICJzZWFyY2hfYW5h
+      bHl6ZXIiOiAic3RhbmRhcmQiLCAidHlwZSI6ICJzdHJpbmcifSwgIm9mZmljZXJfaWQiOiB7InR5
+      cGUiOiAibG9uZyJ9LCAiYWxsZWdhdGlvbl9zdW1tYXJ5IjogeyJpbmRleF9hbmFseXplciI6ICJl
+      ZGdlbmdyYW1fYW5hbHl6ZXIiLCAic2VhcmNoX2FuYWx5emVyIjogInN0YW5kYXJkIiwgInR5cGUi
+      OiAic3RyaW5nIn0sICJvZmZpY2VyX25hbWUiOiB7ImluZGV4X2FuYWx5emVyIjogImVkZ2VuZ3Jh
+      bV9hbmFseXplciIsICJzZWFyY2hfYW5hbHl6ZXIiOiAic3RhbmRhcmQiLCAidHlwZSI6ICJzdHJp
+      bmcifSwgImludmVzdGlnYXRvcl9uYW1lIjogeyJpbmRleF9hbmFseXplciI6ICJlZGdlbmdyYW1f
+      YW5hbHl6ZXIiLCAic2VhcmNoX2FuYWx5emVyIjogInN0YW5kYXJkIiwgInR5cGUiOiAic3RyaW5n
+      In0sICJhbGxlZ2F0aW9uY2F0ZWdvcnlfZGlzdGluY3RfY2F0ZWdvcnlfY291bnQiOiB7InR5cGUi
+      OiAibG9uZyJ9LCAiYWxsZWdhdGlvbmNhdGVnb3J5X2lkIjogeyJ0eXBlIjogImxvbmcifSwgImFs
+      bGVnYXRpb25jYXRlZ29yeV9kaXN0aW5jdF9jYXRlZ29yeSI6IHsiaW5kZXhfYW5hbHl6ZXIiOiAi
+      ZWRnZW5ncmFtX2FuYWx5emVyIiwgInNlYXJjaF9hbmFseXplciI6ICJzdGFuZGFyZCIsICJ0eXBl
+      IjogInN0cmluZyJ9LCAiYWxsZWdhdGlvbl9kaXN0aW5jdF9jaXR5IjogeyJhbmFseXplciI6ICJz
+      bm93YmFsbCIsICJ0eXBlIjogInN0cmluZyJ9LCAiaW52ZXN0aWdhdG9yX2lkIjogeyJ0eXBlIjog
+      ImxvbmcifSwgImFyZWFfdHlwZSI6IHsiYW5hbHl6ZXIiOiAic25vd2JhbGwiLCAidHlwZSI6ICJz
+      dHJpbmcifSwgImFsbGVnYXRpb25fZGlzdGluY3RfemlwX2NvZGUiOiB7ImluZGV4X2FuYWx5emVy
+      IjogIm5ncmFtX2FuYWx5emVyIiwgInNlYXJjaF9hbmFseXplciI6ICJzdGFuZGFyZCIsICJ0eXBl
+      IjogInN0cmluZyJ9LCAiZGphbmdvX2N0IjogeyJpbmRleCI6ICJub3RfYW5hbHl6ZWQiLCAiaW5j
+      bHVkZV9pbl9hbGwiOiBmYWxzZSwgInR5cGUiOiAic3RyaW5nIn0sICJzZXNzaW9uYWxpYXNfdGl0
+      bGUiOiB7ImFuYWx5emVyIjogInNub3diYWxsIiwgInR5cGUiOiAic3RyaW5nIn0sICJvZmZpY2Vy
+      X3N0YXJfc29ydCI6IHsidHlwZSI6ICJsb25nIn0sICJvZmZpY2VyX3N0YXIiOiB7ImluZGV4X2Fu
+      YWx5emVyIjogIm5ncmFtX2FuYWx5emVyIiwgInNlYXJjaF9hbmFseXplciI6ICJzdGFuZGFyZCIs
+      ICJ0eXBlIjogInN0cmluZyJ9LCAiYXJlYV9pZCI6IHsidHlwZSI6ICJsb25nIn0sICJzZXNzaW9u
+      YWxpYXNfYWxpYXMiOiB7ImluZGV4X2FuYWx5emVyIjogImVkZ2VuZ3JhbV9hbmFseXplciIsICJz
+      ZWFyY2hfYW5hbHl6ZXIiOiAic3RhbmRhcmQiLCAidHlwZSI6ICJzdHJpbmcifSwgImFsbGVnYXRp
+      b25fY3JpZCI6IHsiaW5kZXhfYW5hbHl6ZXIiOiAiZWRnZW5ncmFtX2FuYWx5emVyIiwgInNlYXJj
+      aF9hbmFseXplciI6ICJzdGFuZGFyZCIsICJ0eXBlIjogInN0cmluZyJ9fX19
+    headers:
+      connection: [keep-alive]
+    method: PUT
+    uri: http://127.0.0.1:9200/test_suggestion/_mapping/modelresult
+  response:
+    body: {string: '{"acknowledged":true}'}
+    headers:
+      Content-Length: ['21']
+      Content-Type: [application/json; charset=UTF-8]
+    status: {code: 200, message: OK}
+- request:
+    body: !!binary |
+      eyJzb3J0IjogW3sib2ZmaWNlcl9hbGxlZ2F0aW9uc19jb3VudCI6IHsib3JkZXIiOiAiZGVzYyJ9
+      fSwgeyJvZmZpY2VyX25hbWUiOiB7Im9yZGVyIjogImFzYyJ9fV0sICJmcm9tIjogMCwgInF1ZXJ5
+      IjogeyJmaWx0ZXJlZCI6IHsicXVlcnkiOiB7InF1ZXJ5X3N0cmluZyI6IHsiZGVmYXVsdF9vcGVy
+      YXRvciI6ICJBTkQiLCAiYW5hbHl6ZV93aWxkY2FyZCI6IHRydWUsICJkZWZhdWx0X2ZpZWxkIjog
+      InRleHQiLCAicXVlcnkiOiAib2ZmaWNlcl9uYW1lOihSYW5kb20gQU5EIHRleHQpIiwgImF1dG9f
+      Z2VuZXJhdGVfcGhyYXNlX3F1ZXJpZXMiOiB0cnVlfX0sICJmaWx0ZXIiOiB7InRlcm1zIjogeyJk
+      amFuZ29fY3QiOiBbImNvbW1vbi5hbGxlZ2F0aW9uIiwgImNvbW1vbi5pbnZlc3RpZ2F0b3IiLCAi
+      c2VhcmNoLmFsbGVnYXRpb25jYXRlZ29yeXByb3h5IiwgImNvbW1vbi5hbGxlZ2F0aW9uY2F0ZWdv
+      cnkiLCAiY29tbW9uLmFyZWEiLCAic2VhcmNoLmFsbGVnYXRpb25wcm94eSIsICJjb21tb24ub2Zm
+      aWNlciIsICJzZWFyY2guc2Vzc2lvbmFsaWFzIl19fX19LCAic2l6ZSI6IDIwfQ==
+    headers:
+      connection: [keep-alive]
+    method: GET
+    uri: http://127.0.0.1:9200/test_suggestion/modelresult/_search?_source=true
+  response:
+    body: {string: '{"took":1,"timed_out":false,"_shards":{"total":1,"successful":1,"failed":0},"hits":{"total":0,"max_score":null,"hits":[]}}'}
+    headers:
+      Content-Length: ['122']
+      Content-Type: [application/json; charset=UTF-8]
+    status: {code: 200, message: OK}
+- request:
+    body: !!binary |
+      eyJzb3J0IjogW3sib2ZmaWNlcl9hbGxlZ2F0aW9uc19jb3VudCI6IHsib3JkZXIiOiAiZGVzYyJ9
+      fSwgeyJvZmZpY2VyX25hbWUiOiB7Im9yZGVyIjogImFzYyJ9fV0sICJmcm9tIjogMCwgInF1ZXJ5
+      IjogeyJmaWx0ZXJlZCI6IHsicXVlcnkiOiB7InF1ZXJ5X3N0cmluZyI6IHsiZGVmYXVsdF9vcGVy
+      YXRvciI6ICJBTkQiLCAiYW5hbHl6ZV93aWxkY2FyZCI6IHRydWUsICJkZWZhdWx0X2ZpZWxkIjog
+      InRleHQiLCAicXVlcnkiOiAib2ZmaWNlcl9uYW1lOih0ZXh0IEFORCBoZXJlKSIsICJhdXRvX2dl
+      bmVyYXRlX3BocmFzZV9xdWVyaWVzIjogdHJ1ZX19LCAiZmlsdGVyIjogeyJ0ZXJtcyI6IHsiZGph
+      bmdvX2N0IjogWyJjb21tb24uYWxsZWdhdGlvbiIsICJjb21tb24uaW52ZXN0aWdhdG9yIiwgInNl
+      YXJjaC5hbGxlZ2F0aW9uY2F0ZWdvcnlwcm94eSIsICJjb21tb24uYWxsZWdhdGlvbmNhdGVnb3J5
+      IiwgImNvbW1vbi5hcmVhIiwgInNlYXJjaC5hbGxlZ2F0aW9ucHJveHkiLCAiY29tbW9uLm9mZmlj
+      ZXIiLCAic2VhcmNoLnNlc3Npb25hbGlhcyJdfX19fSwgInNpemUiOiAyMH0=
+    headers:
+      connection: [keep-alive]
+    method: GET
+    uri: http://127.0.0.1:9200/test_suggestion/modelresult/_search?_source=true
+  response:
+    body: {string: '{"took":1,"timed_out":false,"_shards":{"total":1,"successful":1,"failed":0},"hits":{"total":0,"max_score":null,"hits":[]}}'}
+    headers:
+      Content-Length: ['122']
+      Content-Type: [application/json; charset=UTF-8]
+    status: {code: 200, message: OK}
+- request:
+    body: !!binary |
+      eyJzb3J0IjogW3siaW52ZXN0aWdhdG9yX2NvbXBsYWludF9jb3VudCI6IHsib3JkZXIiOiAiZGVz
+      YyJ9fV0sICJmcm9tIjogMCwgInF1ZXJ5IjogeyJmaWx0ZXJlZCI6IHsicXVlcnkiOiB7InF1ZXJ5
+      X3N0cmluZyI6IHsiZGVmYXVsdF9vcGVyYXRvciI6ICJBTkQiLCAiYW5hbHl6ZV93aWxkY2FyZCI6
+      IHRydWUsICJkZWZhdWx0X2ZpZWxkIjogInRleHQiLCAicXVlcnkiOiAiaW52ZXN0aWdhdG9yX25h
+      bWU6KFJhbmRvbSBBTkQgdGV4dCkiLCAiYXV0b19nZW5lcmF0ZV9waHJhc2VfcXVlcmllcyI6IHRy
+      dWV9fSwgImZpbHRlciI6IHsidGVybXMiOiB7ImRqYW5nb19jdCI6IFsiY29tbW9uLmFsbGVnYXRp
+      b24iLCAiY29tbW9uLmludmVzdGlnYXRvciIsICJzZWFyY2guYWxsZWdhdGlvbmNhdGVnb3J5cHJv
+      eHkiLCAiY29tbW9uLmFsbGVnYXRpb25jYXRlZ29yeSIsICJjb21tb24uYXJlYSIsICJzZWFyY2gu
+      YWxsZWdhdGlvbnByb3h5IiwgImNvbW1vbi5vZmZpY2VyIiwgInNlYXJjaC5zZXNzaW9uYWxpYXMi
+      XX19fX0sICJzaXplIjogNX0=
+    headers:
+      connection: [keep-alive]
+    method: GET
+    uri: http://127.0.0.1:9200/test_suggestion/modelresult/_search?_source=true
+  response:
+    body: {string: '{"took":1,"timed_out":false,"_shards":{"total":1,"successful":1,"failed":0},"hits":{"total":0,"max_score":null,"hits":[]}}'}
+    headers:
+      Content-Length: ['122']
+      Content-Type: [application/json; charset=UTF-8]
+    status: {code: 200, message: OK}
+- request:
+    body: !!binary |
+      eyJzb3J0IjogW3siaW52ZXN0aWdhdG9yX2NvbXBsYWludF9jb3VudCI6IHsib3JkZXIiOiAiZGVz
+      YyJ9fV0sICJmcm9tIjogMCwgInF1ZXJ5IjogeyJmaWx0ZXJlZCI6IHsicXVlcnkiOiB7InF1ZXJ5
+      X3N0cmluZyI6IHsiZGVmYXVsdF9vcGVyYXRvciI6ICJBTkQiLCAiYW5hbHl6ZV93aWxkY2FyZCI6
+      IHRydWUsICJkZWZhdWx0X2ZpZWxkIjogInRleHQiLCAicXVlcnkiOiAiaW52ZXN0aWdhdG9yX25h
+      bWU6KHRleHQgQU5EIGhlcmUpIiwgImF1dG9fZ2VuZXJhdGVfcGhyYXNlX3F1ZXJpZXMiOiB0cnVl
+      fX0sICJmaWx0ZXIiOiB7InRlcm1zIjogeyJkamFuZ29fY3QiOiBbImNvbW1vbi5hbGxlZ2F0aW9u
+      IiwgImNvbW1vbi5pbnZlc3RpZ2F0b3IiLCAic2VhcmNoLmFsbGVnYXRpb25jYXRlZ29yeXByb3h5
+      IiwgImNvbW1vbi5hbGxlZ2F0aW9uY2F0ZWdvcnkiLCAiY29tbW9uLmFyZWEiLCAic2VhcmNoLmFs
+      bGVnYXRpb25wcm94eSIsICJjb21tb24ub2ZmaWNlciIsICJzZWFyY2guc2Vzc2lvbmFsaWFzIl19
+      fX19LCAic2l6ZSI6IDV9
+    headers:
+      connection: [keep-alive]
+    method: GET
+    uri: http://127.0.0.1:9200/test_suggestion/modelresult/_search?_source=true
+  response:
+    body: {string: '{"took":1,"timed_out":false,"_shards":{"total":1,"successful":1,"failed":0},"hits":{"total":0,"max_score":null,"hits":[]}}'}
+    headers:
+      Content-Length: ['122']
+      Content-Type: [application/json; charset=UTF-8]
+    status: {code: 200, message: OK}
+version: 1

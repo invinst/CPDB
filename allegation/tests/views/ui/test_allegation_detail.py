@@ -1,38 +1,12 @@
+import datetime
 from faker import Faker
 
-from allegation.factories import AllegationFactory, AreaFactory,\
-    OfficerAllegationFactory
+from allegation.factories import AllegationFactory, OfficerAllegationFactory
 from common.tests.core import BaseLiveTestCase
 from allegation.tests.utils.allegation_row_helper_mixin import AllegationRowHelperMixin
 
 
 class AllegationDetailTestCase(AllegationRowHelperMixin, BaseLiveTestCase):
-    # Since we lost this marker many times, so we write this test to ensure
-    # it's available. In case this test failed, please take a look on its url
-    # in allegation/constants/AppConstants.js
-    def test_marker_should_be_available(self):
-        area = AreaFactory()
-        allegation = AllegationFactory(
-            add1=None,
-            add2=None,
-            point=area.polygon.centroid
-            )
-        OfficerAllegationFactory(allegation=allegation)
-
-        self.open_complaint_detail()
-
-        self.until(lambda: self.element_exist('.complaint-list'))
-        self.find('.complaint-row > .row').click()
-        self.element_exist('.complaint_detail').should.equal(True)
-
-        image = self.until(lambda: self.find('.complaint-map img'))
-        alternative_text = image.get_attribute('src')
-
-        len(alternative_text).shouldnt.equal(0)
-        self.browser.execute_script(
-            "return $('.complaint-map img')[0].naturalWidth > 0"
-            ).should.equal(True)
-
     def test_complaint_detail_with_long_summary(self):
         fake = Faker()
         very_long_sentence = fake.sentence(200)
@@ -54,7 +28,7 @@ class AllegationDetailTestCase(AllegationRowHelperMixin, BaseLiveTestCase):
         OfficerAllegationFactory(
             final_finding=None,
             final_outcome=None
-            )
+        )
 
         self.open_complaint_detail()
 
@@ -125,3 +99,51 @@ class AllegationDetailTestCase(AllegationRowHelperMixin, BaseLiveTestCase):
         self.until_ajax_complete()
 
         self.element_exist('.complaint-row.disciplined').should.be.false
+
+    def test_start_end_date_on_timeline(self):
+        now = datetime.datetime.now()
+        OfficerAllegationFactory(
+            start_date=now,
+            end_date=now + datetime.timedelta(days=30)
+        )
+
+        self.visit_home()
+        self.find('.officer.active .checkmark').click()
+
+        self.until_ajax_complete()
+        self.find('.complaint-row > .row').click()
+        self.until(lambda: self.element_exist('.timeline'))
+        self.element_exist('.timeline-datestart').should.be.true
+        self.element_exist('.timeline-dateend').should.be.true
+
+    def test_start_date_not_on_timeline(self):
+        now = datetime.datetime.now()
+        OfficerAllegationFactory(
+            start_date=None,
+            end_date=now + datetime.timedelta(days=30)
+        )
+
+        self.visit_home()
+        self.find('.officer.active .checkmark').click()
+
+        self.until_ajax_complete()
+        self.find('.complaint-row > .row').click()
+        self.until(lambda: self.element_exist('.timeline'))
+        self.element_exist('.timeline-datestart').should.be.false
+        self.element_exist('.timeline-dateend').should.be.true
+
+    def test_end_date_not_on_timeline(self):
+        now = datetime.datetime.now()
+        OfficerAllegationFactory(
+            start_date=now,
+            end_date=None
+        )
+
+        self.visit_home()
+        self.find('.officer.active .checkmark').click()
+
+        self.until_ajax_complete()
+        self.find('.complaint-row > .row').click()
+        self.until(lambda: self.element_exist('.timeline'))
+        self.element_exist('.timeline-dateend').should.be.false
+        self.element_exist('.timeline-datestart').should.be.true
