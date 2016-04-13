@@ -20,10 +20,13 @@ RANKS = [
     ['Chief', 'Chief']
 ]
 
+ACTIVE_YES_CHOICE = 'Yes'
+ACTIVE_NO_CHOICE = 'No'
+ACTIVE_UNKNOWN_CHOICE = 'Unknown'
 ACTIVE_CHOICES = [
-    ['Yes', 'Active'],
-    ['No', 'Inactive'],
-    ['Unknown', 'Unknown']
+    [ACTIVE_YES_CHOICE, 'Active'],
+    [ACTIVE_NO_CHOICE, 'Inactive'],
+    [ACTIVE_UNKNOWN_CHOICE, 'Unknown']
 ]
 
 CITIZEN_DEPTS = [

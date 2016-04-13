@@ -9,7 +9,7 @@ from faker import Faker
 from allegation.models import Download
 from common.models import (
     AllegationCategory, Officer, Area, Allegation, Investigator,
-    ComplainingWitness,  PoliceWitness, OfficerAllegation)
+    ComplainingWitness,  PoliceWitness, OfficerAllegation, OfficerHistory)
 from common.constants import (
     RACES, OUTCOMES, GENDER_DICT, RACES_DICT, FINDINGS)
 
@@ -46,13 +46,6 @@ class OfficerFactory(factory.django.DjangoModelFactory):
     race = factory.Sequence(lambda n: random.choice(list(RACES_DICT.keys())))
     allegations_count = factory.Sequence(lambda n: n)
     birth_year = factory.Sequence(lambda n: fake.random_int(min=1910, max=2000))
-
-
-class PoliceWitnessFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = PoliceWitness
-    crid = factory.Sequence(lambda n: str(n))
-    officer = factory.SubFactory(OfficerFactory)
 
 
 class InvestigatorFactory(factory.django.DjangoModelFactory):
@@ -118,6 +111,14 @@ class AllegationFactory(factory.django.DjangoModelFactory):
             self.save()
 
 
+class PoliceWitnessFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = PoliceWitness
+    crid = factory.Sequence(lambda n: str(n))
+    officer = factory.SubFactory(OfficerFactory)
+    allegation = factory.SubFactory(AllegationFactory)
+
+
 class OfficerAllegationFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = OfficerAllegation
@@ -130,9 +131,9 @@ class OfficerAllegationFactory(factory.django.DjangoModelFactory):
     officer = factory.SubFactory(OfficerFactory)
     allegation = factory.SubFactory(AllegationFactory)
     start_date = factory.Sequence(
-        lambda n: timezone.now() + datetime.timedelta(hours=n))
+        lambda n: (timezone.now() + datetime.timedelta(days=n)).date())
     end_date = factory.Sequence(
-        lambda n: timezone.now() + datetime.timedelta(hours=n*2))
+        lambda n: (timezone.now() + datetime.timedelta(days=n*2)).date())
 
 
 class DownloadFactory(factory.django.DjangoModelFactory):
@@ -141,3 +142,14 @@ class DownloadFactory(factory.django.DjangoModelFactory):
     query = factory.Sequence(lambda n: capitalize_word())
     finished = factory.Sequence(lambda n: n % 2)
     url = factory.Sequence(lambda n: fake.url())
+
+
+class OfficerHistoryFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = OfficerHistory
+
+    officer = factory.SubFactory(OfficerFactory)
+    unit = factory.LazyAttribute(lambda x: fake.text(max_nb_chars=5))
+    rank = factory.LazyAttribute(lambda x: fake.text(max_nb_chars=5))
+    star = factory.LazyAttribute(lambda x: float(fake.random_int()))
+    as_of = factory.LazyAttribute(lambda x: fake.date_time_between(start_date="-30y", end_date="now").date())
