@@ -182,9 +182,9 @@ class SunburstSerializer(object):
                 },
             }, {
                 'condition': Q(final_outcome='300'),
-                'name': 'Termination',
+                'name': 'Administrative Termination',
                 'tagValue': {
-                    'displayValue': 'Termination',
+                    'displayValue': 'Administrative Termination',
                     'displayCategory': 'Final Outcome',
                     'category': 'final_outcome',
                     'value': '300',
@@ -202,10 +202,10 @@ class SunburstSerializer(object):
                 },
             }]
         }, {
-            'name': 'Not Disciplined',
+            'name': 'No Discipline',
             'condition': ~Q(final_outcome__in=DISCIPLINE_CODES),
             'tagValue': {
-                'displayValue': 'No discipline',
+                'displayValue': 'No Discipline',
                 'displayCategory': 'Outcome',
                 'category': 'outcome_text',
                 'value': 'no discipline',
@@ -222,9 +222,9 @@ class SunburstSerializer(object):
                 },
             }, {
                 'condition': Q(final_outcome='000'),
-                'name': 'Noted',
+                'name': 'Violation Noted',
                 'tagValue': {
-                    'displayValue': 'Noted',
+                    'displayValue': 'Violation Noted',
                     'displayCategory': 'Final Outcome',
                     'category': 'final_outcome',
                     'value': '000',
@@ -244,7 +244,7 @@ class SunburstSerializer(object):
 
             }, {
                 'condition': Q(final_outcome='600'),
-                'name': 'No action taken',
+                'name': 'No Action Taken',
                 'tagValue': {
                     'displayValue': 'No action taken',
                     'displayCategory': 'Final Outcome',
@@ -266,9 +266,9 @@ class SunburstSerializer(object):
 
             }, {
                 'condition': Q(final_outcome='800'),
-                'name': 'Not served (resigned)',
+                'name': 'Resigned',
                 'tagValue': {
-                    'displayValue': 'Not served (resigned)',
+                    'displayValue': 'Resigned',
                     'displayCategory': 'Final Outcome',
                     'category': 'final_outcome',
                     'value': '800',
@@ -277,9 +277,9 @@ class SunburstSerializer(object):
 
             }, {
                 'condition': Q(final_outcome='900'),
-                'name': 'Not served (inactive)',
+                'name': 'Penalty Not Served',
                 'tagValue': {
-                    'displayValue': 'Not served (inactive)',
+                    'displayValue': 'Penalty Not Served',
                     'displayCategory': 'Final Outcome',
                     'category': 'final_outcome',
                     'value': '900',

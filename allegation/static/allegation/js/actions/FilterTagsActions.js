@@ -114,6 +114,7 @@ var FilterTagsActions = {
     AppDispatcher.dispatch({
       actionType: AppConstants.TOGGLE_ALL_TAGS
     });
+    SessionAPI.updateSessionInfo({'query': FilterTagStore.getSession()});
   }
 };
 

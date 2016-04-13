@@ -1,4 +1,4 @@
-Description:
+Description
 -- 
 
 - Story and all sub-stories with their links to PT
@@ -22,7 +22,7 @@ Relevant issues (Optional)
 - What you want to do but not yet in this PR
 - Something we should notice to extend/maintain this feature on the future.
 
-How to test:
+How to test
 --
 - Step 1
 - Step 2
