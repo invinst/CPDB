@@ -49,8 +49,8 @@ class SessionAliasViewTestCase(SimpleTestCase):
 
     def test_search_by_title(self):
         session = SessionFactory()
-        SessionAliasFactory(session=session)
-        SessionAliasFactory()
+        SessionAliasFactory(session=session, title='abc')
+        SessionAliasFactory(title='edf')
 
         response = self.client.get('/api/dashboard/session-alias2/', {
             'q': session.title[:3],
