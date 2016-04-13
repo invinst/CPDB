@@ -35,12 +35,13 @@ class AllegationSuggestTestCase(BaseSuggestTestCase):
         allegation_crid = '1002101'
         crids = [allegation_crid, 'cr 1002101', 'CR 1002101', 'cr1002101', 'crid 1002101']
         unavailable_crid = '10111111'
-        not_numeric = 'not_numeric'
+        not_numerics = ['not_numeric', 'cr not_numeric']
         AllegationFactory(crid=allegation_crid)
 
         self.rebuild_index()
 
         for crid in crids:
-            SuggestAllegationCrid.query('1002')['Allegation ID'][0]['suggest_value'].should.be.equal(allegation_crid)
+            SuggestAllegationCrid.query(crid)['Allegation ID'][0]['suggest_value'].should.be.equal(allegation_crid)
         SuggestAllegationCrid.query(unavailable_crid)['Allegation ID'].should.be.equal([])
-        SuggestAllegationCrid.query(not_numeric).should.be.equal(None)
+        for not_numeric in not_numerics:
+            SuggestAllegationCrid.query(not_numeric).should.be.equal(None)
