@@ -22,18 +22,20 @@ class FullOfficerSerializer(serializers.ModelSerializer):
         )
 
 
-class AllegationSerializer(serializers.ModelSerializer):
+class OfficerSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Allegation
+        model = Officer
         fields = (
-            'crid',
-            'incident_date',
+            'id',
+            'officer_first',
+            'officer_last',
+            'allegations_count'
         )
 
 
 class OfficerAllegationSerializer(serializers.ModelSerializer):
     cat = AllegationCategorySerializer(read_only=True)
-    allegation = AllegationSerializer()
+    officer = OfficerSerializer()
 
     class Meta:
         model = OfficerAllegation
@@ -42,14 +44,8 @@ class OfficerAllegationSerializer(serializers.ModelSerializer):
             'cat',
             'final_finding',
             'final_outcome_class',
-            'allegation'
+            'officer'
         )
-
-
-class OfficerAllegationDataSerializer(serializers.Serializer):
-    data = OfficerAllegationSerializer()
-    allegation_counts = \
-        serializers.ListField(child=serializers.IntegerField())
 
 
 class RelatedOfficerSerializer(serializers.ModelSerializer):
@@ -70,9 +66,21 @@ class RelatedOfficerSerializer(serializers.ModelSerializer):
         )
 
 
+class ComplaintDataSerializer(serializers.ModelSerializer):
+    officer_allegation_set = OfficerAllegationSerializer(many=True, source='officerallegation_set')
+
+    class Meta:
+        model = Allegation
+        fields = (
+            'crid',
+            'incident_date',
+            'officer_allegation_set'
+        )
+
+
 class MobileOfficerViewSerializer(serializers.Serializer):
     detail = FullOfficerSerializer()
-    complaints = OfficerAllegationDataSerializer(many=True)
+    complaints = ComplaintDataSerializer(many=True)
     co_accused = RelatedOfficerSerializer(many=True)
     distribution = serializers.ListField(
         child=serializers.IntegerField()

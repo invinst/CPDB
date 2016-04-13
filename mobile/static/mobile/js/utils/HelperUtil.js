@@ -12,8 +12,8 @@ var HelperUtil = {
 
     for (i = 0; i < paths.length; i++) {
       key = paths[i];
-
-      if (!obj || typeof(obj) != 'object' || !this.hasOwnProperty(obj, key) || obj[key] == null || !obj[key]) {
+      // TODO: Refactor this function, its funtionality need to be clearer
+      if (!obj || typeof(obj) != 'object' || !this.hasOwnProperty(obj, key) || obj[key] == null || obj[key] === '') {
         return defaultValue;
       }
 

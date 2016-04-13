@@ -20,7 +20,9 @@ def suggest_officer_star(query):
 
 
 def suggest_crid(query):
-    allegation = Allegation.objects.filter(crid=query).first()
+    allegation = Allegation.objects.filter(crid=query).prefetch_related('officerallegation_set__officer',
+                                                                        'officerallegation_set__cat').first()
+
     return wrap_as_suggestion(allegation)
 
 

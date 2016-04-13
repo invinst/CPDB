@@ -1,51 +1,34 @@
 var React = require('react');
-var cx = require('classnames');
 
 var u = require('utils/HelperUtil');
 var CollectionUtil = require('utils/CollectionUtil');
-var OfficerUtil = require('utils/OfficerUtil');
-var HelperUtil = require('utils/HelperUtil');
 
 var AppHistory = require('utils/History');
 
-var AllegationPresenter = require('presenters/AllegationPresenter');
 var ComplaintPageActions = require('actions/ComplaintPage/ComplaintPageActions');
+var AllegationPresenter = require('presenters/AllegationPresenter');
 var OfficerAllegationPresenter = require('presenters/OfficerAllegationPresenter');
 var OfficerPresenter = require('presenters/OfficerPresenter');
+var CircleList = require('components/Shared/OfficerAllegationItem/CircleList.react');
 
 
-//TODO: Should merge this with OfficerPage's one later
-var OfficerAllegationtItem = React.createClass({
+var OfficerAllegationItem = React.createClass({
   propTypes: {
+    officerAllegation: React.PropTypes.object,
     allegation: React.PropTypes.object,
     officerAllegations: React.PropTypes.array
   },
 
-  renderCircles: function (allegationCounts) {
-    var circles = [];
-    var i;
-
-    for (i = 0; i < allegationCounts.length; i++) {
-      circles.push(
-        <div className={ cx('circle-wrapper', HelperUtil.format('officer-{index}', {'index': i})) } key={ i }>
-          <span className={ cx('circle', OfficerUtil.getColorLevelClass('circle', allegationCounts[i])) } />
-        </div>
-      );
-    }
-
-    return circles;
-  },
-
-  _onClicked : function (crid, firstOfficerAllegation) {
+  _onClick : function (crid, firstOfficerAllegation) {
     var presenter = OfficerAllegationPresenter(firstOfficerAllegation);
     AppHistory.pushState(null, presenter.url(crid));
-    ComplaintPageActions.toggleClose(); // a trick here to close the toggle if we are still on the same link
+    ComplaintPageActions.resetState();
   },
 
   render: function () {
     var allegation = this.props.allegation;
     var officerAllegations = this.props.officerAllegations;
-    var firstOfficerAllegation = CollectionUtil.first(officerAllegations);
+    var firstOfficerAllegation = this.props.officerAllegation;
 
     var officer = u.fetch(firstOfficerAllegation, 'officer', null);
 
@@ -58,7 +41,7 @@ var OfficerAllegationtItem = React.createClass({
     var crid = allegationPresenter.crid;
 
     return (
-      <div className='officer-complaint-item' onClick={ this._onClicked.bind(this, crid, firstOfficerAllegation) }>
+      <div className='officer-complaint-item' onClick={ this._onClick.bind(this, crid, firstOfficerAllegation) }>
         <div className='crid-info pad'>
           <div className='inline-block half-width align-left'>
             <span className='crid-title'>CRID &nbsp;</span>
@@ -86,7 +69,7 @@ var OfficerAllegationtItem = React.createClass({
             </span>
           </div>
           <div className='circles row'>
-            { this.renderCircles(allegationCounts) }
+            <CircleList allegationCountList={ allegationCounts } />
           </div>
         </div>
       </div>
@@ -94,4 +77,4 @@ var OfficerAllegationtItem = React.createClass({
   }
 });
 
-module.exports = OfficerAllegationtItem;
+module.exports = OfficerAllegationItem;

@@ -9,7 +9,7 @@ f = require('utils/tests/f');
 require('utils/tests/should/React');
 
 ToggleComplaintPage = require('components/ComplaintPage/ToggleComplaintPage.react');
-OfficerAllegationItem = require('components/ComplaintPage/ToggleComplaintPage/OfficerAllegationItem.react');
+OfficerAllegationItem = require('components/Shared/OfficerAllegationItem.react');
 ComplaintPageActions = require('actions/ComplaintPage/ComplaintPageActions');
 
 

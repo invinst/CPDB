@@ -7,7 +7,7 @@ var Wrapper = require('components/Shared/Wrapper.react');
 
 var DocumentLink = React.createClass({
   propTypes: {
-    documentId: React.PropTypes.string,
+    documentId: React.PropTypes.number,
     documentNormalizedTitle: React.PropTypes.string
   },
 

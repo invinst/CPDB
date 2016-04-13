@@ -71,4 +71,17 @@ describe('ComplaintPageStore', function () {
     newState = ComplaintPageStore.getState();
     newState.toggle.should.be.false();
   });
+
+  it('updates toggle to false if reset state', function () {
+    var newState;
+
+    ComplaintPageStore.updateState('toggle', true);
+
+    callback({
+      actionType: AppConstants.RESET_STATE
+    });
+
+    newState = ComplaintPageStore.getState();
+    newState.toggle.should.be.false();
+  });
 });

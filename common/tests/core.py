@@ -22,7 +22,7 @@ from functools import wraps
 
 from api.models import Setting
 from common.factories import UserFactory
-from mobile.tests.mixins.mobile_url_mixins import MobileUrlMixins
+from mobile.tests.mixins.mobile_visiting_url_mixins import MobileVisitingUrlMixins
 from share.factories import SettingFactory
 
 
@@ -402,7 +402,7 @@ class BaseMobileLiveTestCase(BaseLiveTestCase):
         return world.mobile_browser
 
 
-class BaseLivePhoneTestCase(MobileUrlMixins, BaseLiveTestCase):
+class BaseLivePhoneTestCase(MobileVisitingUrlMixins, BaseLiveTestCase):
     IPHONE6_BROWSER_SIZE = {'width': 375, 'height': 627}
     IPHONE6_USER_AGENT = (
         'Mozilla/5.0 (iPhone; CPU iPhone OS 8_0 like Mac OS X) AppleWebKit/600.1.3 (KHTML, '

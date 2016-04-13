@@ -74,6 +74,7 @@ class AllegationSerializer(serializers.ModelSerializer):
     beat = BeatSerializer()
     point = GeoSerializer()
     investigator = InvestigatorSerializer()
+    officer_allegation_set = OfficerAllegationSerializer(many=True, source='officerallegation_set')
     document_id = serializers.SerializerMethodField('get_cr_document_id')
     document_normalized_title = serializers.SerializerMethodField('get_cr_normalized_title')
 
@@ -104,11 +105,11 @@ class AllegationSerializer(serializers.ModelSerializer):
             'city',
             'point',
             'document_id',
-            'document_normalized_title'
+            'document_normalized_title',
+            'officer_allegation_set',
         )
 
 
 class MobileAllegationViewSerializer(serializers.Serializer):
     allegation = AllegationSerializer()
     complaining_witnesses = ComplainingWitnessSerializer(many=True)
-    officer_allegations = OfficerAllegationSerializer(many=True)
