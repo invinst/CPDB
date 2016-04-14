@@ -16,6 +16,10 @@ class User(AbstractUser):
     pass
 
 
+class PoliceUnit(models.Model):
+    unit_name = models.CharField(max_length=5)
+
+
 class Officer(MobileSuggestibleOfficer, TimeStampedModel):
     officer_first = models.CharField(
         max_length=255, null=True, db_index=True, blank=True)
@@ -24,7 +28,7 @@ class Officer(MobileSuggestibleOfficer, TimeStampedModel):
     gender = models.CharField(max_length=1, null=True, blank=True)
     race = models.CharField(max_length=50, null=True, blank=True)
     appt_date = models.DateField(null=True, blank=True)
-    unit = models.CharField(max_length=5, null=True, blank=True)
+    unit = models.ForeignKey(PoliceUnit, null=True)
     rank = models.CharField(choices=RANKS, max_length=5, null=True, blank=True)
     star = models.FloatField(null=True, blank=True)
     allegations_count = models.IntegerField(default=0, blank=True, null=True)
@@ -68,7 +72,7 @@ class OfficerBadgeNumber(models.Model):
 
 class OfficerHistory(models.Model):
     officer = models.ForeignKey(Officer, null=True)
-    unit = models.CharField(max_length=5, null=True)
+    unit = models.ForeignKey(PoliceUnit, null=True)
     rank = models.CharField(max_length=5, null=True)
     star = models.FloatField(null=True)
     effective_date = models.DateField(null=True)
