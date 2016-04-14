@@ -1,3 +1,5 @@
+import traceback
+
 import tweepy
 from django.conf import settings
 
@@ -37,6 +39,7 @@ class TwitterBot:
             stream.userstream()
             return True
         except Exception as e:
+            traceback.print_exc()
             bot_log('Encounter error while streaming')
 
             TwitterBotError(stack_trace=repr(e)).save()

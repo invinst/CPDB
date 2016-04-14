@@ -8,7 +8,7 @@ from twitterbot.services.twitter_bot_statuses_service import TwitterBotStatusesS
 class TwitterBotStatusesServiceTestCase(SimpleTestCase):
     def test_get_all_related_statuses(self):
         level_2_quoted_status = TweetFactory()
-        quoted_status = QuotedTweetFactory(quoted_status_id_str=level_2_quoted_status.id, tweet_id=123)
+        quoted_status = QuotedTweetFactory(quoted_status_id_str=level_2_quoted_status.id, id=123)
         retweeted_status = TweetFactory()
         incoming_tweet = TweetFactory(
             quoted_status=quoted_status,
@@ -38,7 +38,7 @@ class TwitterBotStatusesServiceTestCase(SimpleTestCase):
             quoted_status=quoted_status,
             screen_name=screen_name,
             quoted_status_id_str=quoted_status_id_str,
-            tweet_id=id,
+            id=id,
             text=text
         )
         api = MagicMock(get_status=MagicMock())

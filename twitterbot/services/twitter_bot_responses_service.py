@@ -1,4 +1,3 @@
-from twitterbot.services.responses.investigators import InvestigatorResponses
 from twitterbot.services.responses.officers import OfficerResponses
 
 
@@ -10,6 +9,7 @@ class TwitterBotResponsesService:
 
     def build_responses(self):
         responses = OfficerResponses(self.names).build_responses()
-        responses += InvestigatorResponses(self.names).build_responses()
+        # Temporary disable investigator response since mobile version doesn't have investigator page yet
+        # responses += InvestigatorResponses(self.names).build_responses()
 
         return responses[:self.REPLY_LIMIT]

@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from mock import MagicMock
 
 from allegation.factories import OfficerFactory
@@ -12,17 +14,22 @@ class TwitterBotServiceTestCase(SimpleTestCase):
         self.service = TwitterBotService(MagicMock())
 
     def test_build_responses(self):
-        ResponseTemplateFactory(response_type='officer', message='@{user} {{obj.display_name}} {tweet_id}')
-        poster = 'poster'
-        officer = OfficerFactory(officer_first='John', officer_last='Doe')
+        officer = OfficerFactory()
+
         rebuild_index()
-        incoming_tweet = TweetFactory(screen_name=poster,
-                                      text=officer.display_name)
+
+        ResponseTemplateFactory(response_type='officer')
+        originating_tweet = TweetFactory(text=officer.display_name)
+        incoming_tweet = TweetFactory(retweeted_status=originating_tweet)
+        self.service.get_recipients = MagicMock(return_value=['r1', 'r2'])
 
         responses = self.service.build_responses(incoming_tweet)
 
-        responses.should.contain('@{user} {msg} {id}'.format(user=poster, msg=officer.display_name,
-                                                             id=incoming_tweet.id))
+        len(responses).should.equal(1)
+        for response in responses:
+            response.recipients.should.equal(['r1', 'r2'])
+            response.incoming_tweet.should.be(incoming_tweet)
+            response.originating_tweet.should.be(originating_tweet)
 
     def test_get_recipients(self):
         poster = 'poster'
@@ -33,3 +40,24 @@ class TwitterBotServiceTestCase(SimpleTestCase):
 
         recipients.should.contain(poster)
         recipients.should.contain(mentioned)
+
+    def test_get_originating_tweet(self):
+        oldest_tweet = TweetFactory(created_at=datetime.strptime('01-01-1970 00:00:00', '%d-%m-%Y %H:%M:%S'))
+        self.service.statuses = [
+            oldest_tweet,
+            TweetFactory(created_at=oldest_tweet.created_at + timedelta(days=1)),
+            TweetFactory(created_at=oldest_tweet.created_at + timedelta(days=2))
+        ]
+
+        originating_tweet = self.service.get_originating_tweet()
+
+        originating_tweet.should.be(oldest_tweet)
+
+    def test_get_non_existent_originating_tweet(self):
+        self.service.statuses = [
+            TweetFactory()
+        ]
+
+        originating_tweet = self.service.get_originating_tweet()
+
+        originating_tweet.should.be.none

@@ -13,28 +13,22 @@ class TwitterBotService:
         self.names = []
 
     def build_responses(self, status):
-        user_responses = []
-
         self.cache_all_related_statuses(status)
         self.cache_names()
 
-        recipients = self.get_recipients()
         responses = self.get_responses()
+        recipients = self.get_recipients()
+        originating_tweet = self.get_originating_tweet()
 
-        bot_log('Response: {responses}'.format(responses=len(responses)))
+        bot_log('No. responses: {num}'.format(num=len(responses)))
+        bot_log('No. user responses: {num}'.format(num=len(responses) * len(recipients)))
 
         for response in responses:
-            for recipient in recipients:
-                # For logging purpose => function deprecated
-                # query = '@{user}'.format(user=settings.TWITTER_SCREEN_NAME)
-                # search, _ = TwitterSearch.objects.get_or_create(query=query)
-                # TwitterResponse(search=search, response=response, user=status.user.screen_name).save()
-                user_response = response.replace('{user}', recipient)
-                user_response = user_response.replace('{tweet_id}', str(status.id))
+            response.recipients = recipients
+            response.incoming_tweet = status
+            response.originating_tweet = originating_tweet
 
-                user_responses.append(user_response)
-
-        return user_responses
+        return responses
 
     def cache_all_related_statuses(self, status):
         """
@@ -70,3 +64,15 @@ class TwitterBotService:
         :return:
         """
         return TwitterBotResponsesService(self.names).build_responses()
+
+    def get_originating_tweet(self):
+        if len(self.statuses) > 1:
+            originating_tweet = self.statuses[0]
+
+            for status in self.statuses[1:]:
+                if status.created_at < originating_tweet.created_at:
+                    originating_tweet = status
+
+            return originating_tweet
+        else:
+            return None
