@@ -30,7 +30,7 @@ class MobileOfficerViewTest(SimpleTestCase):
 
         detail['id'].should.be.equal(officer.id)
         detail['appt_date'].should.be.equal(officer.appt_date)
-        detail['unit'].should.be.equal(officer.unit)
+        detail['unit'].should.be.equal(officer.unit.unit_name)
         detail['gender'].should.be.equal(officer.gender)
         detail['rank'].should.be.equal(officer.rank)
         detail['race'].should.be.equal(officer.race)

@@ -1,7 +1,7 @@
 import datetime
 
 from allegation.factories import (
-    OfficerFactory, AllegationFactory, OfficerAllegationFactory)
+    OfficerFactory, AllegationFactory, OfficerAllegationFactory, PoliceUnitFactory)
 from common.tests.core import BaseLivePhoneTestCase
 
 
@@ -11,7 +11,7 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
         officer_rank_display = 'Police Officer'
         officer_star = 99
 
-        officer_unit = '012'
+        officer_unit = PoliceUnitFactory(unit_name='012')
         officer_unit_display = 'District 12 - Near West'
 
         officer_appt_date = '1992-01-02'
@@ -102,7 +102,7 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
 
     def test_no_summary_section(self):
         officer = OfficerFactory(gender='', rank=None, appt_date=None,
-                                 unit='', race='')
+                                 unit=None, race='')
         OfficerAllegationFactory(officer=officer)
 
         self.visit_officer_page(officer.id)
@@ -110,7 +110,7 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
 
     def test_less_data_information_officer(self):
         # no data, race is keep here to make summary section not to be hidden
-        officer = OfficerFactory(gender='', rank=None, appt_date=None, unit='', race='Hispanic')
+        officer = OfficerFactory(gender='', rank=None, appt_date=None, unit=None, race='Hispanic')
         OfficerAllegationFactory(officer=officer)
 
         self.visit_officer_page(officer.id)
@@ -123,7 +123,8 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
         officer_summary.shouldnt.contain('Sex')
 
         # Invalid units and no race data
-        other_officer = OfficerFactory(gender='M', rank=None, appt_date=None, unit='999', race='')
+        other_officer_unit = PoliceUnitFactory(unit_name='999')
+        other_officer = OfficerFactory(gender='M', rank=None, appt_date=None, unit=other_officer_unit, race='')
         OfficerAllegationFactory(officer=other_officer)
 
         self.visit_officer_page(other_officer.id)

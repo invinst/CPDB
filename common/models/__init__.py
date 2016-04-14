@@ -19,6 +19,9 @@ class User(AbstractUser):
 class PoliceUnit(models.Model):
     unit_name = models.CharField(max_length=5)
 
+    def __str__(self):
+        return self.unit_name
+
 
 class Officer(MobileSuggestibleOfficer, TimeStampedModel):
     officer_first = models.CharField(
@@ -77,6 +80,9 @@ class OfficerHistory(models.Model):
     star = models.FloatField(null=True)
     effective_date = models.DateField(null=True)
     end_date = models.DateField(null=True)
+
+    def __str__(self):
+        return '%s at %s from %s to %s' % (self.officer, self.unit, self.effective_date, self.end_date)
 
 
 class PoliceWitness(models.Model):
@@ -186,7 +192,7 @@ class Investigator(TimeStampedModel):
     discipline_count = models.IntegerField(default=0)
     current_rank = models.CharField(max_length=50, null=True)
     current_report = models.CharField(max_length=4, null=True)
-    unit = models.CharField(max_length=50, null=True)
+    unit = models.ForeignKey(PoliceUnit, null=True)
     agency = models.CharField(choices=[['IPRA', 'IPRA'], ['IAD', 'IAD']], max_length=10)
 
     def __str__(self):

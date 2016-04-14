@@ -1,6 +1,6 @@
 from allegation.factories import (
     AllegationFactory, OfficerFactory, PoliceWitnessFactory,
-    OfficerAllegationFactory)
+    OfficerAllegationFactory, PoliceUnitFactory)
 from allegation.tests.constants import TEST_DOCUMENT_URL
 from common.constants import UNITS
 from common.tests.core import BaseLiveTestCase
@@ -17,7 +17,8 @@ class OfficerDetailPageTestCase(BaseLiveTestCase):
         self.crid_2 = '2345'
         self.crid_3 = '3456'
 
-        self.officer = OfficerFactory(rank=self.rank, star=self.star, unit=self.unit, gender=self.gender)
+        police_unit = PoliceUnitFactory(unit_name=self.unit)
+        self.officer = OfficerFactory(rank=self.rank, star=self.star, unit=police_unit, gender=self.gender)
         self.involved_officer = OfficerFactory()
         self.witness_officer = OfficerFactory()
 
