@@ -226,7 +226,10 @@ class AllegationsDownload(OfficerAllegationAPIView):
             sheet.write(row_count, 3, officer.gender)
             sheet.write(row_count, 4, officer.race)
             sheet.write(row_count, 5, officer.appt_date)
-            sheet.write(row_count, 6, officer.unit)
+            try:
+                sheet.write(row_count, 6, officer.unit.unit_name)
+            except:
+                sheet.write(row_count, 6, None)
             sheet.write(row_count, 7, officer.rank)
             sheet.write(row_count, 8, officer.star)
             sheet.write(row_count, 9, officer.age)

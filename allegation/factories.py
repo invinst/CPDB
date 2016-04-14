@@ -8,7 +8,7 @@ from faker import Faker
 
 from allegation.models import Download
 from common.models import (
-    AllegationCategory, Officer, Area, Allegation, Investigator,
+    AllegationCategory, Officer, Area, Allegation, Investigator, PoliceUnit,
     ComplainingWitness,  PoliceWitness, OfficerAllegation, OfficerHistory)
 from common.constants import (
     RACES, OUTCOMES, GENDER_DICT, RACES_DICT, FINDINGS)
@@ -34,6 +34,13 @@ class AreaFactory(factory.django.DjangoModelFactory):
         (87.940101, 42.023135)))))
 
 
+class PoliceUnitFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = PoliceUnit
+
+    unit_name = factory.LazyAttribute(lambda n: str(fake.random_int(min=1, max=999)))
+
+
 class OfficerFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Officer
@@ -46,6 +53,7 @@ class OfficerFactory(factory.django.DjangoModelFactory):
     race = factory.Sequence(lambda n: random.choice(list(RACES_DICT.keys())))
     allegations_count = factory.Sequence(lambda n: n)
     birth_year = factory.Sequence(lambda n: fake.random_int(min=1910, max=2000))
+    unit = factory.SubFactory(PoliceUnitFactory)
 
 
 class InvestigatorFactory(factory.django.DjangoModelFactory):
