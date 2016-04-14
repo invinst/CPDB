@@ -19,6 +19,10 @@ class Migration(migrations.Migration):
             model_name='officerhistory',
             name='unit',
         ),
+        migrations.RemoveField(
+            model_name='investigator',
+            name='unit',
+        ),
         migrations.RenameField(
             model_name='officer',
             old_name='unit_fk',
@@ -26,6 +30,11 @@ class Migration(migrations.Migration):
         ),
         migrations.RenameField(
             model_name='officerhistory',
+            old_name='unit_fk',
+            new_name='unit',
+        ),
+        migrations.RenameField(
+            model_name='investigator',
             old_name='unit_fk',
             new_name='unit',
         ),

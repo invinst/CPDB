@@ -4,25 +4,14 @@ from __future__ import unicode_literals
 from django.db import models, migrations
 from django.db.models import F
 
-from tqdm import tqdm
-
-
-def apply_with_progress_bar(desc=None):
-    def decorator(key_func):
-        def func_wrapper(iterable):
-            pbar = tqdm(total=len(iterable), desc=desc)
-            for obj in iterable:
-                pbar.update()
-                key_func(obj)
-            pbar.close()
-        return func_wrapper
-    return decorator
+from common.decorators import apply_with_progress_bar
 
 
 def apply_changes(apps, schema_editor):
     PoliceUnit = apps.get_model('common', 'PoliceUnit')
     OfficerHistory = apps.get_model('common', 'OfficerHistory')
     Officer = apps.get_model('common', 'Officer')
+    Investigator = apps.get_model('common', 'Investigator')
 
     @apply_with_progress_bar('creating PoliceUnit rows')
     def create_policeunit_rows(unit_name):
@@ -45,14 +34,30 @@ def apply_changes(apps, schema_editor):
         officer.unit_fk = current_unit
         officer.save()
 
+    @apply_with_progress_bar('updating current unit for investigators')
+    def update_investigators_unit(investigator):
+        current_unit = None
+        try:
+            current_unit = PoliceUnit.objects.get(unit_name=investigator.unit)
+        except (PoliceUnit.DoesNotExist):
+            pass
+
+        if not current_unit:
+            return
+
+        investigator.unit_fk = current_unit
+        investigator.save()
+
     create_policeunit_rows(OfficerHistory.objects.all().values_list('unit', flat=True).distinct())
     update_officers_unit(Officer.objects.all())
+    update_investigators_unit(Investigator.objects.all())
 
 
 def revert_changes(apps, schema_editor):
     PoliceUnit = apps.get_model('common', 'PoliceUnit')
     OfficerHistory = apps.get_model('common', 'OfficerHistory')
     Officer = apps.get_model('common', 'Officer')
+    Investigator = apps.get_model('common', 'Investigator')
 
     @apply_with_progress_bar(desc='revert unit data for officers')
     def revert_change_for_officers(officer):
@@ -66,8 +71,15 @@ def revert_changes(apps, schema_editor):
         oh.unit_fk = None
         oh.save()
 
+    @apply_with_progress_bar(desc='revert unit data for investigators')
+    def revert_change_for_investigators(investigator):
+        investigator.unit = investigator.unit_fk.unit_name
+        investigator.unit_fk = None
+        investigator.save()
+
     revert_change_for_officers(Officer.objects.filter(unit_fk__isnull=False).distinct())
     revert_change_for_officer_histories(OfficerHistory.objects.filter(unit_fk__isnull=False).distinct())
+    revert_change_for_investigators(Investigator.objects.filter(unit_fk__isnull=False).distinct())
     PoliceUnit.objects.all().delete()
 
 

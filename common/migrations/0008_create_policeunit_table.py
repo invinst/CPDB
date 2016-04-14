@@ -33,4 +33,9 @@ class Migration(migrations.Migration):
             name='unit_fk',
             field=models.ForeignKey(null=True, to='common.PoliceUnit'),
         ),
+        migrations.AddField(
+            model_name='investigator',
+            name='unit_fk',
+            field=models.ForeignKey(null=True, to='common.PoliceUnit'),
+        ),
     ]
