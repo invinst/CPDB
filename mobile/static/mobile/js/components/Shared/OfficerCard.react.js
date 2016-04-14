@@ -14,6 +14,7 @@ var OfficerCard = React.createClass({
   },
 
   render: function () {
+    // FIXME: Make this component to be more general that we could use it in better way later
     var officerClassname = HelperUtil.format('officer-{id}', {'id': this.props.officerId});
     var classNames = cx('officer-card pad', officerClassname);
     var circleClassNames = cx('circle', OfficerUtil.getColorLevelClass('circle', this.props.allegationsCount));

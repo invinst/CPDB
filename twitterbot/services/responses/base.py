@@ -13,16 +13,15 @@ class BaseResponses:
         raise NotImplementedError
 
     def build_responses(self):
-        responses = []
-        objs = self.get_instances_from_names()
+        responses = self.get_instances_from_names()
         try:
             response_template = ResponseTemplate.objects.get(response_type=self.RESPONSE_TYPE)
 
-            for obj in objs:
-                msg = response_template.get_message({'obj': obj})
+            for response in responses:
+                msg = response_template.get_message({'obj': response.entity})
 
                 if msg:
-                    responses.append(msg)
+                    response.message = msg
         except ResponseTemplate.DoesNotExist:
             logging.error('Response type {type} does not exist in database'.format(type=self.RESPONSE_TYPE))
 

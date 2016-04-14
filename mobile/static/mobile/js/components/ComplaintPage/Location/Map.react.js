@@ -2,53 +2,40 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-var AppConstants = require('constants/AppConstants');
+var u = require('utils/HelperUtil');
 
-var ComplaintService = require('services/ComplaintService');
+var AllegationPresenter = require('presenters/AllegationPresenter');
+var MapFacade = require('utils/MapFacade');
 var Wrapper = require('components/Shared/Wrapper.react');
-var Map;
-
-require('mapbox.js');
 
 
-Map = React.createClass({
+var Map = React.createClass({
   propTypes: {
-    info: React.PropTypes.object
+    allegation: React.PropTypes.object
   },
 
   componentDidMount: function () {
-    var complaintService = ComplaintService(this.props.info);
-    var point = this.props.info.point;
-    var defaultZoom,
-      center,
-      mapbox,
-      map,
-      circle;
+    var allegation = this.props.allegation;
+    var point = u.fetch(allegation, 'point', '');
+    var allegationPresenter = AllegationPresenter(allegation);
 
     if (point) {
-      defaultZoom = 16;
-      center = [point.y, point.x];
-      mapbox = L.mapbox;
+      MapFacade.initialize(ReactDOM.findDOMNode(this), point);
 
-      mapbox.accessToken = AppConstants.MAPBOX_TOKEN;
-
-      map = mapbox.map(ReactDOM.findDOMNode(this), 'mapbox.streets').setView(center, defaultZoom);
-      map.doubleClickZoom.disable();
-      map.scrollWheelZoom.disable();
-
-      if (complaintService.hasFullAddress) {
-        L.marker(center).addTo(map);
+      if (allegationPresenter.hasFullAddress) {
+        MapFacade.addAccidentPlaceMarker();
       }
       else {
-        circle = L.circle(center, 50, { color: 'red', fillColor: '#f03', fillOpacity: 0.5 }).addTo(map);
-        circle.bindPopup('<b>Exact Address Not Available</b>').openPopup();
+        MapFacade.addNoAddressPopup();
       }
     }
   },
 
   render: function () {
+    var point = u.fetch(this.props.allegation, 'point', '');
+
     return (
-      <Wrapper wrapperClass='map' visible={ !!this.props.info.point } />
+      <Wrapper wrapperClass='map' visible={ (!!point) } />
     );
   }
 });

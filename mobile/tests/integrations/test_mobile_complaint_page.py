@@ -13,8 +13,6 @@ class MobileComplaintPageTest(BaseLivePhoneTestCase):
         officer_gender = 'X'
         officer_gender_display = 'X'
 
-        final_finding_code = 'UN'
-        final_finding_text = 'Unfounded'
         complaint_witness_gender = 'F'
         complaint_witness_race = 'Black'
         complaint_witness_age = 40
@@ -30,9 +28,7 @@ class MobileComplaintPageTest(BaseLivePhoneTestCase):
         allegation = AllegationFactory(
             investigator=investigator, add1=address1, add2=address2,
             city='Chicago, IL', location='15')
-        OfficerAllegationFactory(
-            cat=category, officer=officer, allegation=allegation,
-            final_finding=final_finding_code)
+        OfficerAllegationFactory(cat=category, officer=officer, allegation=allegation)
         document = allegation.documents.get(type='CR')
         document.documentcloud_id = documentcloud_id
         document.normalized_title = normalized_title
@@ -43,17 +39,13 @@ class MobileComplaintPageTest(BaseLivePhoneTestCase):
             allegation=allegation,
             race=complaint_witness_race, age=complaint_witness_age)
 
-        self.visit_complaint_page(allegation.crid)
+        self.visit_complaint_page(allegation.crid, category.id)
         self.until(lambda: self.find('.crid-number'))
+        self.until(lambda: self.find('.allegation-category').text.should.be.equal(category.category))
+        self.find('.allegation-name').text.should.be.equal(category.allegation_name)
 
-        self.find('.final-finding').text.should.be.equal(final_finding_text)
-        self.find('.complaint-category').text.should.be.equal(
-            category.category)
-        self.find('.complaint-sub-category').text.should.be.equal(
-            category.allegation_name)
-
-        self.should_see_text(officer.display_name, '.officer-involved')
-        self.should_see_text(officer_gender_display, '.officer-involved')
+        self.should_see_text(officer.display_name, '.against-section')
+        self.should_see_text(officer_gender_display, '.against-section')
         self.should_see_text(complaint_witness_text, '.complaining-witness-list')
         self.should_see_text(investigator.name, '.investigator .name')
         self.should_see_text(investigator.current_rank, '.investigator .rank')
@@ -68,6 +60,7 @@ class MobileComplaintPageTest(BaseLivePhoneTestCase):
 
     def test_circle_color_of_involved_officers(self):
         crid = '1234'
+        category = AllegationCategoryFactory()
         allegation = AllegationFactory(crid=crid)
         allegations_count_color_map = {
             'circle-0': 21,
@@ -82,9 +75,9 @@ class MobileComplaintPageTest(BaseLivePhoneTestCase):
                 allegations_count_color_map.items():
             officer = OfficerFactory(allegations_count=allegations_count)
             officers[circle_class] = officer
-            OfficerAllegationFactory(allegation=allegation, officer=officer)
+            OfficerAllegationFactory(allegation=allegation, officer=officer, cat=category)
 
-        self.visit_complaint_page(allegation.crid)
+        self.visit_complaint_page(allegation.crid, category.id)
         self.until(lambda: self.should_not_see_text(allegation.crid))
 
         for circle_class, allegations_count in \
@@ -98,83 +91,31 @@ class MobileComplaintPageTest(BaseLivePhoneTestCase):
 
     def test_allegation_with_bad_crid(self):
         bad_crid = 0
-        self.visit_complaint_page(bad_crid)
+        self.visit_complaint_page(bad_crid, 0)
         self.until(lambda: self.find('.message-title'))
         self.should_see_text('Invalid page!')
         self.should_see_text('The CRID {crid} is not'.format(crid=bad_crid))
 
-    def test_allegation_with_no_category(self):
-        officer_allegation = OfficerAllegationFactory(cat=None)
+    def test_allegation_with_bad_category(self):
+        cat = AllegationCategoryFactory()
+        officer_allegation = OfficerAllegationFactory(cat=cat)
 
-        self.visit_complaint_page(officer_allegation.allegation.crid)
-        self.until(lambda: self.find('.crid-number'))
+        self.visit_complaint_page(officer_allegation.allegation.crid, 0)
+        self.until(lambda: self.find('.message-title'))
 
-        self.find('.complaint-category').text.should.be.equal('Unknown')
-        self.find('.complaint-sub-category').text.should.be.equal('Unknown')
+        self.should_see_text('Invalid page!')
+        self.should_see_text('The Category')
 
-    def test_allegation_with_no_complaint_witness(self):
-        officer_allegation = OfficerAllegationFactory()
-
-        self.visit_complaint_page(officer_allegation.allegation.crid)
-        self.until(lambda: self.find('.crid-title'))
-
-        self.should_not_see_text('Complaining Witness')
-
-    def test_allegation_with_no_officers_involved(self):
-        officer_allegation = OfficerAllegationFactory(officer=None)
-
-        self.visit_complaint_page(officer_allegation.allegation.crid)
-        self.until(lambda: self.find('.crid-title'))
-
-        self.should_not_see_text('Officers involved')
-
-    def test_allegation_without_document(self):
-        officer_allegation = OfficerAllegationFactory(officer=None)
-
-        self.visit_complaint_page(officer_allegation.allegation.crid)
-        self.until(lambda: self.find('.crid-title'))
-
-        self.should_not_see_text('View documents')
-
-    def test_allegation_with_no_investigator(self):
-        allegation = AllegationFactory(investigator=None)
-        officer_allegation = OfficerAllegationFactory(
-            officer=None, allegation=allegation)
-
-        self.visit_complaint_page(officer_allegation.allegation.crid)
-        self.until(lambda: self.find('.crid-title'))
-
-        self.should_not_see_text('Investigator')
-
-    def test_investigator_without_rank(self):
-        investigator = InvestigatorFactory(current_rank=None)
-        allegation = AllegationFactory(investigator=investigator)
-        OfficerAllegationFactory(
-            officer=None, allegation=allegation)
-
-        self.visit_complaint_page(allegation.crid)
-        self.until(lambda: self.find('.crid-title'))
-        self.should_see_text('Rank unknown', '.investigator')
-
-    def test_officer_with_unknown_race(self):
-        officer = OfficerFactory(race='')
-        officer_allegation = OfficerAllegationFactory(officer=officer)
-
-        self.visit_complaint_page(officer_allegation.allegation.crid)
-        self.until(lambda: self.find('.crid-title'))
-
-        self.should_see_text('Race unknown')
-
-    def test_officer_without_gender(self):
+    def test_toggle_complaint_page(self):
+        category = AllegationCategoryFactory()
         allegation = AllegationFactory()
-        OfficerAllegationFactory(allegation=allegation)
-        ComplainingWitnessFactory(
-            gender=None, age=None, race=None, crid=allegation.crid,
-            allegation=allegation)
+        OfficerAllegationFactory(cat=category, allegation=allegation)
 
-        self.visit_complaint_page(allegation.crid)
-        self.until(lambda: self.find('.crid-title'))
-        content = self.find('.complaining-witness-row').text
-        content.should.contain('Gender unknown')
-        content.should.contain('Race unknown')
-        content.should.contain('Age unknown')
+        self.visit_complaint_page(allegation.crid, category.id)
+
+        self.until(lambda: self.find('.number-of-allegations-section')).click()
+        self.until(lambda: self.find('.toggle-page.content').text.should.contain(category.category))
+        self.find_all('.officer-allegation-detail').should.have.length_of(0)
+
+        self.find('.toggle-container').click()
+        self.element_exist('.officer-allegation-detail.pad')

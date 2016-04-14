@@ -17,7 +17,8 @@ class MobileSuggestionServiceTest(SimpleTestCase):
 
         expected_allegation = allegation.as_suggestion_entry()
         allegation_result = suggest_crid(crid)
-        allegation_result[0]['meta']['incident_date'] = allegation_result[0]['meta']['incident_date'].date()
+        allegation_result[0]['meta']['allegation'].incident_date = \
+            allegation_result[0]['meta']['allegation'].incident_date.date()
         allegation_result.should.equal([expected_allegation])
 
     def test_suggest_officer_badge(self):

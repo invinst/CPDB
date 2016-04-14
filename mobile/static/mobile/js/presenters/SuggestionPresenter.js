@@ -1,6 +1,4 @@
 var HelperUtil = require('utils/HelperUtil');
-var OfficerPresenter = require('presenters/OfficerPresenter');
-var ComplaintPresenter = require('presenters/ComplaintPresenter');
 
 
 var SuggestionPresenter = function (suggestion) {
@@ -21,15 +19,8 @@ var SuggestionPresenter = function (suggestion) {
     return HelperUtil.fetch(suggestion, 'resource_key', '');
   };
 
-  var getMetaPresenter = function () {
-    var meta = HelperUtil.fetch(suggestion, 'meta', '');
-
-    var RESOURCE_PRESENTER_MAP = {
-      'officer': OfficerPresenter,
-      'allegation': ComplaintPresenter
-    };
-
-    return RESOURCE_PRESENTER_MAP[resource()](meta);
+  var getMeta = function () {
+    return HelperUtil.fetch(suggestion, 'meta', '');
   };
 
   var uniqueKey = function () {
@@ -41,7 +32,7 @@ var SuggestionPresenter = function (suggestion) {
     url: url(),
     resource: resource(),
     resourceKey: resourceKey(),
-    meta: getMetaPresenter(),
+    meta: getMeta(),
     uniqueKey: uniqueKey()
   };
 };

@@ -4,6 +4,7 @@ var EventEmitter = require('events').EventEmitter;
 var AppConstants = require('../constants/AppConstants');
 
 
+// TODO: Move this clone to `u`
 var cloneObject = function (obj) {
   var temp,
     key;

@@ -6,7 +6,7 @@ var Wrapper = require('components/Shared/Wrapper.react');
 
 var ComplainingWitness = React.createClass({
   propTypes: {
-    complainingWitness: React.PropTypes.array
+    complainingWitnesses: React.PropTypes.array
   },
 
   renderComplaintWitnessRow: function (complainingWitness) {
@@ -30,7 +30,7 @@ var ComplainingWitness = React.createClass({
   },
 
   render: function () {
-    var complainingWitnesses = this.props.complainingWitness || [];
+    var complainingWitnesses = this.props.complainingWitnesses || [];
     var numberOfComplainingWitness = complainingWitnesses.length;
 
     return (

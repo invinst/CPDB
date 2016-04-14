@@ -23,7 +23,7 @@ class MobileSuggestionViewTest(SimpleTestCase):
 
         response.status_code.should.equal(HTTP_200_OK)
         len(data).should.equal(1)
-        data[0]['resource'].should.equal('allegation')
+        data[0]['resource'].should.equal('officer_allegation')
         data[0]['resource_key'].should.equal(str(allegation.crid))
 
     def test_return_404_response_of_there_no_found(self):

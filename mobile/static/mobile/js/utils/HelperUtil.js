@@ -12,10 +12,11 @@ var HelperUtil = {
 
     for (i = 0; i < paths.length; i++) {
       key = paths[i];
-
-      if (!obj || !this.hasOwnProperty(obj, key) || obj[key] == null || !obj[key]) {
+      // TODO: Refactor this function, its funtionality need to be clearer
+      if (!obj || typeof(obj) != 'object' || !this.hasOwnProperty(obj, key) || obj[key] == null || obj[key] === '') {
         return defaultValue;
       }
+
       obj = obj[key];
     }
 
@@ -33,6 +34,13 @@ var HelperUtil = {
 
       return prop;
     });
+  },
+
+  hasAnyProperties: function (obj, properties) {
+    var util = this;
+    return properties.reduce(function (p, v) {
+      return p || !!util.fetch(obj, v, '');
+    }, false);
   }
 };
 

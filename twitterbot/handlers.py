@@ -32,8 +32,16 @@ class CPDBTweetHandler(tweepy.StreamListener):
 
         for response in responses:
             try:
-                bot_log('Outgoing tweet: {msg}'.format(msg=response))
-                self.api.update_status(response)
+                user_responses = response.build_user_responses()
+
+                for user_response in user_responses:
+                    outgoing_tweet = self.api.update_status(user_response)
+
+                    if outgoing_tweet:
+                        bot_log('Outgoing tweet: {msg}'.format(msg=user_response))
+                        response.save_log(outgoing_tweet)
+                    else:
+                        bot_log('Unable to send: {msg}'.format(msg=user_response))
             except:
                 # TODO: will try to find what to do here
                 pass

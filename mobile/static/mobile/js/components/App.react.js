@@ -13,7 +13,7 @@ var App = React.createClass({
   render: function () {
     return (
       <Router history={ history }>
-        <Route path='/complaint/:crid' component={ ComplaintPage } />
+        <Route path='/complaint/:crid/:slug/:categoryHashId' component={ ComplaintPage } />
         <Route path='/officer/:slug/:id' component={ OfficerPage } />
         <Route path='/s/:query' component={ MainPage } />
         <Route path='/q/:query' component={ MainPage } />

@@ -15,7 +15,7 @@ var SuccessfulSearch = React.createClass({
   getSubComponentFor: function (type) {
     var subComponentMapper = {
       'officer': OfficerResult,
-      'allegation': ComplaintResult
+      'officer_allegation': ComplaintResult
     };
 
     return subComponentMapper[type];
