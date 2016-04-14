@@ -60,12 +60,19 @@ class Officer(MobileSuggestibleOfficer, TimeStampedModel):
         }
 
 
+class OfficerBadgeNumber(models.Model):
+    officer = models.ForeignKey(Officer, null=True)
+    star = models.CharField(max_length=10)
+    current = models.BooleanField(default=False)
+
+
 class OfficerHistory(models.Model):
     officer = models.ForeignKey(Officer, null=True)
     unit = models.CharField(max_length=5, null=True)
     rank = models.CharField(max_length=5, null=True)
     star = models.FloatField(null=True)
-    as_of = models.DateField(null=True)
+    effective_date = models.DateField(null=True)
+    end_date = models.DateField(null=True)
 
 
 class PoliceWitness(models.Model):

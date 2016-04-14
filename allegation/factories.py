@@ -152,4 +152,4 @@ class OfficerHistoryFactory(factory.django.DjangoModelFactory):
     unit = factory.LazyAttribute(lambda x: fake.text(max_nb_chars=5))
     rank = factory.LazyAttribute(lambda x: fake.text(max_nb_chars=5))
     star = factory.LazyAttribute(lambda x: float(fake.random_int()))
-    as_of = factory.LazyAttribute(lambda x: fake.date_time_between(start_date="-30y", end_date="now").date())
+    effective_date = factory.LazyAttribute(lambda x: fake.date_time_between(start_date="-30y", end_date="now").date())
