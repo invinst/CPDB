@@ -1,3 +1,5 @@
+import re
+
 from allegation.utils.query import OfficerQuery
 from common.constants import ALLEGATION_LIMIT
 from common.models import Officer, Allegation
@@ -19,9 +21,16 @@ def suggest_officer_star(query):
     return wrap_as_suggestion(officer)
 
 
+def get_crid_from_query(query):
+    pattern = re.compile('^(cr|crid)?(\s+)?(\d+)$')
+    matcher = pattern.match(query.lower())
+    return matcher.groups()[2] if matcher else ''
+
+
 def suggest_crid(query):
-    allegation = Allegation.objects.filter(crid=query).prefetch_related('officerallegation_set__officer',
-                                                                        'officerallegation_set__cat').first()
+    crid = get_crid_from_query(query)
+    allegation = Allegation.objects.filter(crid=crid).prefetch_related('officerallegation_set__officer',
+                                                                       'officerallegation_set__cat').first()
 
     return wrap_as_suggestion(allegation)
 

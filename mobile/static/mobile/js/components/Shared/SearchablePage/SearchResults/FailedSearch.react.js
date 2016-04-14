@@ -9,10 +9,10 @@ var FailedSearch = React.createClass({
   },
 
   render: function () {
-    var term = this.props.term;
+    var term = this.props.term || '';
     var textMessage = 'No matches yet.';
 
-    if (!DataTypeUtil.isNumeric(term)) {
+    if (!DataTypeUtil.isValidCridQueryFormat(term) && !DataTypeUtil.isNumeric(term)) {
       textMessage = 'Sorry, there\'s no results for your search in the database.';
     }
 
