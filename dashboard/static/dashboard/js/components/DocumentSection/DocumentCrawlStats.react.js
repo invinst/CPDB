@@ -19,6 +19,14 @@ var DocumentCrawlStats = React.createClass({
     DocumentCrawlStatStore.addChangeListener(this._onChange);
   },
 
+  _toggleCrawlStats: function () {
+    DocumentCrawlStatActions.toggleCrawlStats();
+  },
+
+  _onChange: function () {
+    this.setState(DocumentCrawlStatStore.getState());
+  },
+
   render: function () {
     var lastSuccessfulCrawlDate = <i className='fa fa-spin fa-spinner'></i>;
     var chevronClass = classnames({
@@ -58,14 +66,6 @@ var DocumentCrawlStats = React.createClass({
 
       </div>
     );
-  },
-
-  _toggleCrawlStats: function () {
-    DocumentCrawlStatActions.toggleCrawlStats();
-  },
-
-  _onChange: function () {
-    this.setState(DocumentCrawlStatStore.getState());
   }
 });
 

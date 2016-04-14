@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
 
-from mobile.serializers.suggestible_serializer import SuggestibleSerializer
+from mobile.serializers.mobile_suggestion_view_serializer import MobileSuggestionViewSerializer
 from mobile.services.mobile_suggestion_service import suggest
 
 
@@ -17,5 +17,5 @@ class MobileSuggestionView(APIView):
         if not suggestions:
             raise Http404()
 
-        content = SuggestibleSerializer(suggestions, many=True)
+        content = MobileSuggestionViewSerializer(suggestions, many=True)
         return Response(content.data)

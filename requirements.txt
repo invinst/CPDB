@@ -80,3 +80,4 @@ pre-commit==0.7.6
 xlrd==0.9.4
 django-modelcluster==1.1
 tqdm==3.8.0
+python-slugify==1.2.0

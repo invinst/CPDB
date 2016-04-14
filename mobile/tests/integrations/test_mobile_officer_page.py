@@ -57,7 +57,6 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
         officer_summary.should.contain(officer_appt_date)
         officer_summary.should.contain(officer_gender_display)
         officer_summary.should.contain(officer_race)
-
         self.find('.tab-navs .tab-complaints').click()
         self.find('.crid-number').text.should.equal(str(allegation.crid))
         self.find('.final-finding').text.should.equal(

@@ -4,7 +4,7 @@ from common.tests.core import BaseLivePhoneTestCase
 
 class MobileSearchPageTest(BaseLivePhoneTestCase):
     def should_see_text_in_result(self, text):
-        self.find('.search-results').text.should.contain(text)
+        self.until(lambda: self.find('.search-results').text.should.contain(text))
 
     def wait_for_success_result(self):
         self.until(lambda: self.find('.suggestion-list'))
@@ -26,7 +26,7 @@ class MobileSearchPageTest(BaseLivePhoneTestCase):
 
         self.wait_for_error_message()
 
-        self.should_see_text("Sorry, there's no results for your search in the database.")
+        self.until(lambda: self.should_see_text("Sorry, there's no results for your search in the database."))
 
     def test_search_with_special_character(self):
         officer = OfficerFactory()

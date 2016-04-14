@@ -1,6 +1,8 @@
 /*eslint react/no-is-mounted:0 */
-var Base = function (Store) {
+var Base = function (Store, name) {
   return {
+    displayName: name || 'TightlyStoreCoupledComponent',
+
     getInitialState: function () {
       return Store.getState();
     },

@@ -1,4 +1,4 @@
-from allegation.factories import OfficerFactory, AllegationFactory, OfficerAllegationFactory
+from allegation.factories import OfficerFactory, AllegationFactory, OfficerAllegationFactory, AllegationCategoryFactory
 from common.tests.core import BaseLivePhoneTestCase
 
 
@@ -15,14 +15,16 @@ class MobileSearchablePageTest(BaseLivePhoneTestCase):
     def setUp(self):
         self.officer = OfficerFactory()
         self.allegation = AllegationFactory()
-        self.officer_allegation = OfficerAllegationFactory(officer=self.officer, allegation=self.allegation)
+        self.cat = AllegationCategoryFactory()
+        self.officer_allegation = OfficerAllegationFactory(officer=self.officer, allegation=self.allegation,
+                                                           cat=self.cat)
 
     def test_good_data(self):
         self.visit_officer_page(self.officer.id)
         self.search_for(self.officer.officer_first)
         self.until(lambda: self.should_see_text(self.officer.display_name))
 
-        self.visit_complaint_page(self.allegation.crid)
+        self.visit_complaint_page(self.allegation.crid, self.cat.id)
         self.search_for(self.allegation.crid)
         self.until(lambda: self.should_see_text(self.officer_allegation.cat.category))
 
@@ -30,5 +32,5 @@ class MobileSearchablePageTest(BaseLivePhoneTestCase):
         self.visit_officer_page(self.officer.id)
         self.show_error_when_search_bad_query()
 
-        self.visit_complaint_page(self.allegation.crid)
+        self.visit_complaint_page(self.allegation.crid, self.cat.id)
         self.show_error_when_search_bad_query()

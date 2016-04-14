@@ -1,11 +1,11 @@
-var DeviceUtil = function () {
-  var isiOSDevice = function () {
-    return /iPhone|iPad|iPod/i.test(navigator.userAgent);
-  };
+var DeviceUtil = {
+  getUserAgent: function () {
+    return navigator.userAgent;
+  },
 
-  return {
-    isiOSDevice: isiOSDevice()
-  };
+  isiOSDevice: function () {
+    return /iPhone|iPad|iPod/i.test(this.getUserAgent());
+  }
 };
 
 module.exports = DeviceUtil;
