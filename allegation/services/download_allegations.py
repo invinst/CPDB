@@ -228,7 +228,7 @@ class AllegationsDownload(OfficerAllegationAPIView):
             sheet.write(row_count, 5, officer.appt_date)
             try:
                 sheet.write(row_count, 6, officer.unit.unit_name)
-            except:
+            except AttributeError:
                 sheet.write(row_count, 6, None)
             sheet.write(row_count, 7, officer.rank)
             sheet.write(row_count, 8, officer.star)
