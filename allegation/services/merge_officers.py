@@ -45,14 +45,14 @@ def merge_officer_history(officer_1, officer_2):
     officer_histories_1 = officer_1.officerhistory_set.all()
     officer_histories_2 = officer_2.officerhistory_set.all()
 
-    officer_histories_1_as_ofs = officer_histories_1.values_list('effective_date', flat=True)
-    outstanding_histories = officer_histories_2.exclude(effective_date__in=officer_histories_1_as_ofs)
-    intersect_histories = officer_histories_2.filter(effective_date__in=officer_histories_1_as_ofs)
+    officer_histories_1_as_ofs = officer_histories_1.values_list('as_of', flat=True)
+    outstanding_histories = officer_histories_2.exclude(as_of__in=officer_histories_1_as_ofs)
+    intersect_histories = officer_histories_2.filter(as_of__in=officer_histories_1_as_ofs)
 
     outstanding_histories.update(officer=officer_1)
 
     for oh_to_remove in intersect_histories:
-        oh_to_keep = officer_histories_1.get(effective_date=oh_to_remove.effective_date)
+        oh_to_keep = officer_histories_1.get(as_of=oh_to_remove.as_of)
         update_fields(oh_to_keep, oh_to_remove, ['unit', 'rank', 'star'])
         oh_to_remove.delete()
 

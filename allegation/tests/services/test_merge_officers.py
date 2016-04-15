@@ -51,8 +51,8 @@ class MergeOfficersTestCase(SimpleTestCase):
         officer_histories_1 = OfficerHistoryFactory.create_batch(2, officer=officer_1)
         officer_histories_2 = OfficerHistoryFactory.create_batch(2, officer=officer_2)
         intersect_as_of = datetime.date.today() - datetime.timedelta(days=1)
-        oh_1 = OfficerHistoryFactory(officer=officer_1, effective_date=intersect_as_of, unit=None, rank=None, star=None)
-        oh_2 = OfficerHistoryFactory(officer=officer_2, effective_date=intersect_as_of)
+        oh_1 = OfficerHistoryFactory(officer=officer_1, as_of=intersect_as_of, unit=None, rank=None, star=None)
+        oh_2 = OfficerHistoryFactory(officer=officer_2, as_of=intersect_as_of)
 
         merge_officer_history(officer_1, officer_2)
 
