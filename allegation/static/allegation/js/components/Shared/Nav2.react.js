@@ -179,7 +179,7 @@ Nav = React.createClass({
         return (
           <li className={ that.getNavClass(wagtailPage.slug) } key={ index }>
             <Link onClick={ that.goToPage.bind(that, wagtailPage.slug) }
-                  to={ wagtailPageTo }>{ wagtailPage.title }</Link>
+              to={ wagtailPageTo }>{ wagtailPage.title }</Link>
           </li>
         );
       });
@@ -193,8 +193,8 @@ Nav = React.createClass({
       <div className='nav-tabs pull-right'>
         <ul className='tablist' role='tablist'>
           <span className='moving-arrow' />
-          { this.renderNavTabItems() }
           { this.renderWagtailTabs() }
+          { this.renderNavTabItems() }
         </ul>
         <i onClick={ this.showNavTabsSidebar } className='fa fa-bars hamburger-btn'></i>
         <div className='hidden nav-tabs-sidebar'>
