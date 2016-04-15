@@ -19,7 +19,7 @@ var NotMatchedOfficerPage = React.createClass({
           </h3>
           <div className='message-content'>
             The id <span className='officer-id'>{ id }</span> is not recorded in out database. Please use
-            search box for new search session.
+            search bar for new search session.
           </div>
         </div>
       </SearchablePage>

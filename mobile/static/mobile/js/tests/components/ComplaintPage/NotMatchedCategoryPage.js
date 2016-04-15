@@ -1,4 +1,4 @@
-var ReactTestUtils, NotMatchedCategoryPage, HashUtil;
+var ReactTestUtils, NotMatchedCategoryPage;
 
 var React = require('react');
 ReactTestUtils = require('react-addons-test-utils');
@@ -6,7 +6,6 @@ ReactTestUtils = require('react-addons-test-utils');
 require('should');
 
 require('utils/tests/should/React');
-HashUtil = require('utils/HashUtil');
 require('utils/tests/should/SharedExample');
 require('tests/examples/components/SearchablePage');
 
@@ -20,15 +19,12 @@ describe('NotMatchedCategoryPageComponent', function () {
     NotMatchedCategoryPage.should.be.renderable();
   });
 
-  it('should render the message with decoded categoryId', function () {
-    var categoryId = 12345;
-    var categoryHashId = HashUtil.encode(categoryId);
-
+  it('should render the message', function () {
     notMatchedCategoryPage = ReactTestUtils.renderIntoDocument(
-      <NotMatchedCategoryPage category={ categoryHashId }/>
+      <NotMatchedCategoryPage />
     );
     ReactTestUtils.findRenderedDOMComponentWithClass(notMatchedCategoryPage, 'message-content')
-      .textContent.should.containEql(categoryId);
+      .textContent.should.containEql('The complaint with this category');
   });
 
   describe('should act like a searchable page', function () {

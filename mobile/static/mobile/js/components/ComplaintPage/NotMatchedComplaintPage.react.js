@@ -19,7 +19,7 @@ var NotMatchedComplaintPage = React.createClass({
           </h3>
           <div className='message-content'>
             The CRID <span className='crid-number'>{ crid }</span> is not recorded in our database. Please use
-            search box for new search session.
+            search bar for new search session.
           </div>
         </div>
       </SearchablePage>

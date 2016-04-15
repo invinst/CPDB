@@ -70,7 +70,7 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
 
     if (presenter.isInvalidCategory) {
       return (
-        <NotMatchedCategoryPage category={ categoryHashId }/>
+        <NotMatchedCategoryPage />
       );
     }
 
