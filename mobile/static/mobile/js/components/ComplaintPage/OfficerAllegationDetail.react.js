@@ -3,7 +3,6 @@ var pluralize = require('pluralize');
 
 var OfficerAllegationPresenter = require('presenters/OfficerAllegationPresenter');
 var AllegationPresenter = require('presenters/AllegationPresenter');
-var DocumentLink = require('components/ComplaintPage/DocumentLink.react');
 var ComplaintPageActions = require('actions/ComplaintPage/ComplaintPageActions');
 
 
@@ -45,8 +44,6 @@ var OfficerAllegationDetail = React.createClass({
             { currentOfficerAllegationPresenter.allegationName }
           </div>
         </div>
-        <DocumentLink documentId={ allegationPresenter.documentId }
-          documentNormalizedTitle={ allegationPresenter.documentNormalizedTitle } />
       </div>
     );
   }

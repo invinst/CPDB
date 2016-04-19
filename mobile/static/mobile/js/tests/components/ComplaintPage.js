@@ -1,7 +1,7 @@
 var sinon;
 var f, HashUtil, GaUtil, MapFacade;
 var AccompliceOfficerSection, AgainstSection, AllegationResourceUtil, ComplainingWitness, ComplaintPage,
-  ComplaintPageStore, InvestigatorSection, Location, OfficerAllegationDetail, SearchablePage;
+  ComplaintPageStore, InvestigatorSection, Location, OfficerAllegationDetail, SearchablePage, DocumentSection;
 
 var React = require('react');
 var ReactDOM = require('react-dom');
@@ -25,6 +25,7 @@ AllegationResourceUtil = require('utils/AllegationResourceUtil');
 ComplainingWitness = require('components/ComplaintPage/ComplainingWitness.react');
 ComplaintPage = require('components/ComplaintPage.react');
 ComplaintPageStore = require('stores/ComplaintPage/ComplaintPageStore');
+DocumentSection = require('components/ComplaintPage/DocumentSection.react');
 InvestigatorSection = require('components/ComplaintPage/InvestigatorSection.react');
 Location = require('components/ComplaintPage/Location.react');
 OfficerAllegationDetail = require('components/ComplaintPage/OfficerAllegationDetail.react');
@@ -126,7 +127,7 @@ describe('ComplaintPageComponent', function () {
     it('should render a list of sub-component', function () {
 
       complaintPage.should.render([SearchablePage, OfficerAllegationDetail, AgainstSection, ComplainingWitness,
-        Location, AccompliceOfficerSection, InvestigatorSection]);
+        Location, AccompliceOfficerSection, InvestigatorSection, DocumentSection]);
     });
 
     it('should render component with correct data for `AgainstSection` and `AccompliceOfficerSection`', function () {

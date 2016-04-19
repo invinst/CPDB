@@ -188,6 +188,11 @@ module.exports = {
     'Race': 'race'
   },
 
+  DOCUMENT_NAMES: {
+    'CR': 'Investigation report',
+    'CPB': 'Police board hearing'
+  },
+
   OFFICER_COMPLAINT_COUNT_RANGE: [20, 9, 3, 2, 0],
 
   // API endpoints
