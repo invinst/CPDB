@@ -2,13 +2,12 @@ from allegation.factories import (
     AllegationFactory, AllegationCategoryFactory, OfficerFactory,
     ComplainingWitnessFactory, InvestigatorFactory, OfficerAllegationFactory)
 from common.tests.core import BaseLivePhoneTestCase
+from document.factories import DocumentFactory
 
 
 class MobileComplaintPageTest(BaseLivePhoneTestCase):
     def test_allegation_with_full_information(self):
-        documentcloud_id = 123
-        normalized_title = 'abcd'
-        view_document_text = 'View documents'
+        view_document_text = 'View'
 
         officer_gender = 'X'
         officer_gender_display = 'X'
@@ -24,15 +23,11 @@ class MobileComplaintPageTest(BaseLivePhoneTestCase):
         officer = OfficerFactory(gender=officer_gender)
         current_rank = 'SERGEANT OF POLICE'
         investigator = InvestigatorFactory(current_rank=current_rank)
-
         allegation = AllegationFactory(
             investigator=investigator, add1=address1, add2=address2,
             city='Chicago, IL', location='15')
+        DocumentFactory(documentcloud_id=123, allegation=allegation)
         OfficerAllegationFactory(cat=category, officer=officer, allegation=allegation)
-        document = allegation.documents.get(type='CR')
-        document.documentcloud_id = documentcloud_id
-        document.normalized_title = normalized_title
-        document.save()
 
         ComplainingWitnessFactory(
             crid=allegation.crid, gender=complaint_witness_gender,
@@ -51,7 +46,7 @@ class MobileComplaintPageTest(BaseLivePhoneTestCase):
         self.should_see_text(investigator.current_rank, '.investigator .rank')
         self.should_see_text(allegation.beat.name, '.location-detail')
 
-        self.should_see_text(view_document_text, '.document-link')
+        self.should_see_text(view_document_text, '.document-card')
 
         location_detail = self.find('.location-detail').text
         location_detail.should.contain(addresss)
