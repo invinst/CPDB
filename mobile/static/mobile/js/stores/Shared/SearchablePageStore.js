@@ -20,6 +20,7 @@ AppDispatcher.register(function (action) {
 
     case AppConstants.SEARCH_BLUR:
     case AppConstants.SEARCH_CLEAR:
+    case AppConstants.RESET_STATE:
       SearchablePageStore.updateState('focus', 0);
       SearchablePageStore.emitChange();
       break;

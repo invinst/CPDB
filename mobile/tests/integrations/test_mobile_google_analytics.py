@@ -21,10 +21,6 @@ class MobileGoogleAnalyticsTest(BaseLivePhoneTestCase):
         self.find('.related-officer-item').click()
         self.should_track_ga_event()
 
-    def test_send_google_analytics_when_view_complaint_page(self):
-        self.visit_complaint_page(self.allegation.crid)
-        self.should_track_ga_event()
-
     def test_send_google_analytics_when_search_officer(self):
         self.visit_mobile_home()
         self.fill_in('.input-text', self.officer.officer_first)

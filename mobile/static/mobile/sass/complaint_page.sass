@@ -1,17 +1,20 @@
 .complaint-page
   .content
     background-color: $content-background
-    .complaint-detail
+    .officer-allegation-detail
       padding-top: 16px
       padding-bottom: 18px
       background: $section-background
-    .investigation-timeline
-      margin-bottom: 11px
+    .timeline
       background: $timeline-background
+      padding-bottom: 11px
+    .against-section
+      margin-bottom: 11px
+      background: $section-background
     .complaining-witness
       margin-bottom: 11px
       background: $section-background
-    .officer-involved
+    .accomplice-officer-section
       margin-bottom: 11px
       background: $section-background
     .investigator-section
@@ -20,13 +23,17 @@
     .location
       margin-bottom: 11px
       background: $section-background
+.toggle-page
+  background-color: $content-background
+  position: absolute
 
-@import 'complaint_page/complaint_detail'
-@import 'complaint_page/investigation_timeline'
+@import 'complaint_page/against_section'
+@import 'complaint_page/officer_allegation_detail'
 @import 'complaint_page/complaining_witness'
-@import 'complaint_page/officer_involved'
+@import 'complaint_page/accomplice_officer_section'
 @import 'complaint_page/investigation_section'
 @import 'complaint_page/location'
 @import 'complaint_page/police_witness'
 @import 'complaint_page/not_matched_page'
 @import 'complaint_page/document_link'
+@import 'complaint_page/toogle_complaint_page'

@@ -5,6 +5,7 @@ from rest_framework.status import HTTP_301_MOVED_PERMANENTLY
 
 from allegation.factories import OfficerFactory, AllegationFactory
 from mobile.constants import DEFAULT_REDIRECT_URL
+from mobile.utils.mobile_url_builder import MobileUrlBuilder
 from share.factories import SessionFactory
 
 
@@ -20,7 +21,7 @@ class MobileDataToolViewTest(SimpleTestCase):
         officer = OfficerFactory()
         filters = {'officer': [{'value': officer.id, 'category': 'officer'}]}
         session = SessionFactory(query={'filters': filters})
-        expected_url = officer.get_mobile_url()
+        expected_url = MobileUrlBuilder().officer_page(officer)
 
         response = self.request_mobile_data_tool_page(hash_id=session.hash_id)
 

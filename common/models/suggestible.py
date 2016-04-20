@@ -1,60 +1,27 @@
-from django.template.defaultfilters import slugify
-
-
 class MobileSuggestible(object):
-    def get_mobile_url(self):
-        raise NotImplementedError
-
     def as_suggestion_entry(self):
         raise NotImplementedError
 
 
 class MobileSuggestibleOfficer(MobileSuggestible):
-    def get_mobile_url(self):
-        slugified_display_name = slugify(self.display_name)
-        return '/officer/{display_name}/{id}'.format(
-            display_name=slugified_display_name, id=self.id)
-
     def as_suggestion_entry(self):
         return {
             'text': self.display_name,
             'resource': 'officer',
-            'url': self.get_mobile_url(),
             'resource_key': self.pk,
             'meta': {
-                'allegations_count': self.allegations_count,
-                'gender': self.gender,
-                'race': self.race,
-                'star': self.star
+                'officer': self
             }
         }
 
 
 class MobileSuggestibleAllegation(MobileSuggestible):
-    def get_mobile_url(self):
-        return '/complaint/{crid}'.format(crid=self.crid)
-
     def as_suggestion_entry(self):
-        cat = self.officerallegation_set.first().cat
-
-        # TODO: This is not a perfect solution here, but keep on using until we change to use suggestion_service instead
-        if cat:
-            allegation_name = cat.allegation_name
-            category = cat.category
-        else:
-            allegation_name = ''
-            category = ''
-
         return {
             'text': self.crid,
-            'resource': 'allegation',
-            'url': self.get_mobile_url(),
+            'resource': 'officer_allegation',
             'resource_key': self.crid,
             'meta': {
-                'incident_date': self.incident_date,
-                'cat': {
-                    'allegation_name': allegation_name,
-                    'category': category
-                }
+                'allegation': self
             }
         }

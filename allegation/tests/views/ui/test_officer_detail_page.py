@@ -89,8 +89,8 @@ class OfficerDetailPageTestCase(BaseLiveTestCase):
         logo_link.get_attribute('href').should.equal(session_url)
 
     def test_display_stories(self):
-        story1 = StoryFactory(officer=self.officer, url=TEST_DOCUMENT_URL)
-        story2 = StoryFactory(officer=self.officer, url=TEST_DOCUMENT_URL)
+        story1 = StoryFactory(officer=self.officer, url=TEST_DOCUMENT_URL, story_type='abc')
+        story2 = StoryFactory(officer=self.officer, url=TEST_DOCUMENT_URL, story_type='def')
         story_types_order = [story2.story_type.capitalize(), story1.story_type.capitalize()]
 
         self.setting.story_types_order = ",".join(story_types_order)
