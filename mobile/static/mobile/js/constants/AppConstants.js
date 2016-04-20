@@ -17,6 +17,9 @@ module.exports = {
   TOGGLE_PAGE_CLOSE: c++,
   RESET_STATE: c++,
 
+  //Document events
+  DOCUMENT_REQUESTED: c++,
+
   //OfficerPage events
   OFFICER_PAGE_RECEIVED_DATA: c++,
   OFFICER_PAGE_FAILED_TO_RECEIVED_DATA: c++,

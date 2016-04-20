@@ -75,6 +75,7 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
         <NotMatchedCategoryPage category={ categoryHashId }/>
       );
     }
+
     return (
       <div>
         <div className={ classNames }>

@@ -80,6 +80,7 @@
     "mochify": "^2.16.0",
     "react-addons-perf": "0.14.3",
     "react-addons-test-utils": "0.14.3",
+    "react-stub-context": "^0.4.0",
     "react-tools": "~0.13.3",
     "reactify": "^0.15.2",
     "run-sequence": "^1.1.5",

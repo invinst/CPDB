@@ -1,4 +1,4 @@
-var DocumentCard, f, DeviceUtil;
+var DocumentCard, f, DeviceUtil, Modal;
 
 var React = require('react');
 var ReactTestUtils = require('react-addons-test-utils');
@@ -8,8 +8,10 @@ require('should');
 
 DeviceUtil = require('utils/DeviceUtil');
 f = require('utils/tests/f');
+require('utils/tests/should/React');
 
 DocumentCard = require('components/ComplaintPage/DocumentSection/DocumentCard.react');
+Modal = require('components/Lib/Modal.react');
 
 
 describe('DocumentCardComponent', function () {
@@ -39,6 +41,15 @@ describe('DocumentCardComponent', function () {
     documentStatusNode.textContent.should.containEql('Available');
   });
 
+  it('should render request modal', function () {
+    var document = f.create('Document', {'documentcloud_id': 'something'});
+    var documentCard = ReactTestUtils.renderIntoDocument(
+      <DocumentCard document={ document } />
+    );
+
+    documentCard.should.renderWithProps(Modal, {'name': 'requestModal'});
+  });
+
   describe('document name css', function () {
     it('should have blur css if the document is not available', function () {
       var document = f.create('Document', {'documentcloud_id': ''});
@@ -62,9 +73,11 @@ describe('DocumentCardComponent', function () {
       documentNameNode.getAttribute('class').should.not.containEql('blur');
     });
   });
+
   describe('it should show correct action for document current status', function () {
     it('should show View action if the document is available', function () {
-      var document = f.create('Document', {'documentcloud_id': 'something'});
+      var document = f.create('Document', {'documentcloud_id': '12345', 'normalized_title': 'cr-123456'});
+      var documentUrl = 'http://documentcloud.org/documents/12345-cr-123456.html';
 
       var documentCard = ReactTestUtils.renderIntoDocument(
         <DocumentCard document={ document } />
@@ -72,28 +85,45 @@ describe('DocumentCardComponent', function () {
 
       var documentActionNode = ReactTestUtils.findRenderedDOMComponentWithClass(documentCard, 'action-type');
       documentActionNode.textContent.should.containEql('View');
+      documentActionNode.getAttribute('href').should.containEql(documentUrl);
     });
 
     it('should show follow action if the document is requested but the document is still not available ', function () {
+      var documentCard, documentActionNode;
       var document = f.create('Document', {'requested': true, 'documentcloud_id': ''});
 
-      var documentCard = ReactTestUtils.renderIntoDocument(
+      var mock = sinon.mock(Modal.eventSystem);
+      mock.expects('dispatch').once().withArgs('requestModal', 'open');
+
+      documentCard = ReactTestUtils.renderIntoDocument(
         <DocumentCard document={ document } />
       );
+      documentActionNode = ReactTestUtils.findRenderedDOMComponentWithClass(documentCard, 'action-type');
 
-      var documentActionNode = ReactTestUtils.findRenderedDOMComponentWithClass(documentCard, 'action-type');
+      ReactTestUtils.Simulate.click(documentActionNode);
       documentActionNode.textContent.should.containEql('Follow');
+
+      mock.verify();
+      mock.restore();
     });
 
     it('should show request action if the  document is still not available and not requested yet', function () {
+      var documentCard, documentActionNode;
       var document = f.create('Document', {'requested': false, 'documentcloud_id': ''});
 
-      var documentCard = ReactTestUtils.renderIntoDocument(
+      var mock = sinon.mock(Modal.eventSystem);
+      mock.expects('dispatch').once().withArgs('requestModal', 'open');
+
+      documentCard = ReactTestUtils.renderIntoDocument(
         <DocumentCard document={ document } />
       );
+      documentActionNode = ReactTestUtils.findRenderedDOMComponentWithClass(documentCard, 'action-type');
 
-      var documentActionNode = ReactTestUtils.findRenderedDOMComponentWithClass(documentCard, 'action-type');
+      ReactTestUtils.Simulate.click(documentActionNode);
       documentActionNode.textContent.should.containEql('Request');
+
+      mock.verify();
+      mock.restore();
     });
   });
 
