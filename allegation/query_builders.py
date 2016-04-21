@@ -1,9 +1,9 @@
+import inspect
+
 from django.contrib.gis.geos import Point
 from django.contrib.gis.measure import D
 from django.db.models.query_utils import Q
 from haystack.query import SearchQuerySet
-
-import inspect
 
 from allegation.utils.query import OfficerQuery
 from common.constants import FOIA_START_DATE, DISCIPLINE_CODES, NO_DISCIPLINE_CODES
@@ -251,6 +251,26 @@ class OfficerAllegationQueryBuilder(object):
         if allegation_ids:
             return Q(allegation__pk__in=allegation_ids)
         return Q()
+
+    def _q_incident_date_time_of_day(self, query_params):
+        times_of_days = {
+            'morning': [6, 11],
+            'midday': [11, 14],
+            'afternoon': [14, 17],
+            'evening': [17, 24],
+            'night': [0, 6]
+        }
+        allegation_queries = Q()
+
+        for date_range in query_params.getlist('incident_date_time_of_day'):
+            times_of_days = times_of_days.get(date_range)
+            if times_of_days:
+                allegation_queries |= Q(
+                    allegation__incident_date__hour__gte=times_of_days[0],
+                    allegation__incident_date__hour__lte=times_of_days[1]
+                )
+
+        return allegation_queries
 
     def _q_add_data_source_filter(self, query_params):
         data_source = query_params.getlist('data_source', [])

@@ -315,6 +315,17 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
         self.clean_db()
         self._test_incident_date_only()
 
+    def test_incident_date_time_of_day(self):
+        self.clean_db()
+        oa1 = OfficerAllegationFactory(allegation=AllegationFactory(
+            incident_date=datetime.datetime(2007, 12, 16, 7, 30, 30)
+        ))
+        OfficerAllegationFactory(allegation=AllegationFactory(
+            incident_date=datetime.datetime(2007, 12, 16, 16, 30, 30)
+        ))
+
+        self.check_built_query('incident_date_time_of_day=morning', [oa1.id])
+
     def _test_incident_date_only_range(self):
         expected_allegations = [
             OfficerAllegationFactory(allegation=AllegationFactory(
