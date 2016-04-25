@@ -68,12 +68,19 @@ class Officer(MobileSuggestibleOfficer, TimeStampedModel):
         }
 
 
+class OfficerBadgeNumber(models.Model):
+    officer = models.ForeignKey(Officer, null=True)
+    star = models.CharField(max_length=10)
+    current = models.BooleanField(default=False)
+
+
 class OfficerHistory(models.Model):
     officer = models.ForeignKey(Officer, null=True)
     unit = models.CharField(max_length=5, null=True)
     rank = models.CharField(max_length=5, null=True)
     star = models.FloatField(null=True)
-    as_of = models.DateField(null=True)
+    effective_date = models.DateField(null=True)
+    end_date = models.DateField(null=True)
 
 
 class PoliceWitness(models.Model):
@@ -227,3 +234,11 @@ class PendingPdfAllegation(models.Model):
 class DocumentCrawler(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     num_documents = models.IntegerField()
+
+
+class OfficerAlias(models.Model):
+    old_officer_id = models.IntegerField()
+    new_officer = models.ForeignKey(Officer)
+
+    class Meta:
+        unique_together = (('old_officer_id', 'new_officer'))
