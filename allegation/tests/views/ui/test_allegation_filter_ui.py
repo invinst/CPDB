@@ -144,11 +144,11 @@ class AllegationFilterTestCase(BaseLiveTestCase):
 
         self.find('body').send_keys(Keys.SHIFT)
 
-        self.number_of_pinned_tags().should.equal(2)
+        self.number_of_pinned_tags().should.equal(0)
 
         self.find('body').send_keys(Keys.SHIFT)
 
-        self.number_of_pinned_tags().should.equal(0)
+        self.number_of_pinned_tags().should.equal(2)
         self.number_of_tags().should.equal(2)
 
     def test_press_enter_not_refresh_page(self):
