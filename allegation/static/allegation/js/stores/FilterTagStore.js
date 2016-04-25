@@ -154,12 +154,14 @@ var FilterTagStore = _.assign(Base(_state), {
 
   getSession: function () {
     return {
-      filters: _state['filters']
+      filters: _state['filters'],
+      stacking: _state['stacking']
     };
   },
 
   setSession: function (session) {
     _state['filters'] = session.filters || {};
+    _state['stacking'] = session.stacking || false;
   },
 
   getFilters: function () {
