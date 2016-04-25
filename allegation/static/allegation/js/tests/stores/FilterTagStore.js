@@ -3,22 +3,13 @@ var _ = require('lodash');
 var AppConstants = require('constants/AppConstants');
 var AppDispatcher = require('dispatcher/AppDispatcher');
 var FilterTagStore = require('stores/FilterTagStore');
+var createTagValue = require('test_utils/Factory').createTagValue;
 
 require('should');
 
 
 describe('FilterTag store', function () {
   var callback = AppDispatcher.getCallback(FilterTagStore.dispatcherToken);
-  var n = 0;
-  var createTag = function () {
-    n++;
-    return {
-      value: 'value_' + n,
-      category: 'category_' + n,
-      displayValue: 'displayValue_' + n,
-      displayCategory: 'displayCategory_' + n
-    };
-  };
 
   var getAllTagsPinnedValue = function () {
     return _.pluck(
@@ -28,8 +19,8 @@ describe('FilterTag store', function () {
 
   it('should toggle stacking state', function () {
     FilterTagStore.updateState('filters',{
-      a: [createTag()],
-      b: [createTag()]
+      a: [createTagValue()],
+      b: [createTagValue()]
     });
 
     // enable stacking mode
@@ -39,17 +30,20 @@ describe('FilterTag store', function () {
 
     callback({
       actionType: AppConstants.ADD_TAG,
-      tagValue: createTag()
+      tagValue: createTagValue()
     });
     getAllTagsPinnedValue().should.deepEqual([true, true, true]);
 
     // disable stacking mode
     callback({actionType: AppConstants.TOGGLE_STACKING_MODE});
     FilterTagStore.isStacking().should.not.be.ok();
+    getAllTagsPinnedValue().should.deepEqual(
+      [false, false, false]
+    );
 
     callback({
       actionType: AppConstants.ADD_TAG,
-      tagValue: createTag()
+      tagValue: createTagValue()
     });
     getAllTagsPinnedValue().should.deepEqual(
       [false, false, false, false]
