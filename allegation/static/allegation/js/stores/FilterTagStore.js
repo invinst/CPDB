@@ -10,7 +10,8 @@ var DISABLE_EVENT = 'DISABLE_EVENT';
 
 var _state = {
   initialized: false,
-  filters: {}
+  filters: {},
+  stacking: false
 };
 
 var isNotPinned = function (item) {
@@ -27,6 +28,10 @@ var matchValue = function (value) {
 var FilterTagStore = _.assign(Base(_state), {
   isNoFilter: function () {
     return _.isEmpty(_state.filters);
+  },
+
+  isStacking: function () {
+    return _state.stacking;
   },
 
   update: function (category, values) {
@@ -47,7 +52,7 @@ var FilterTagStore = _.assign(Base(_state), {
       category: tagValue.category,
       displayValue: tagValue.displayValue,
       displayCategory: tagValue.displayCategory,
-      pinned: false
+      pinned: _state.stacking
     });
   },
 
@@ -149,12 +154,14 @@ var FilterTagStore = _.assign(Base(_state), {
 
   getSession: function () {
     return {
-      filters: _state['filters']
+      filters: _state['filters'],
+      stacking: _state['stacking']
     };
   },
 
   setSession: function (session) {
     _state['filters'] = session.filters || {};
+    _state['stacking'] = session.stacking || false;
   },
 
   getFilters: function () {
@@ -187,7 +194,7 @@ var FilterTagStore = _.assign(Base(_state), {
 });
 
 
-AppDispatcher.register(function (action) {
+FilterTagStore.dispatcherToken = AppDispatcher.register(function (action) {
   var sessionQuery,
     arc,
     selected,
@@ -243,6 +250,17 @@ AppDispatcher.register(function (action) {
 
     case AppConstants.TOGGLE_ALL_TAGS:
       FilterTagStore.toggleAllTags();
+      FilterTagStore.emitChange();
+      break;
+
+    case AppConstants.TOGGLE_STACKING_MODE:
+      _state.stacking = !_state.stacking;
+      _.each(
+        _.flatten(_.values(_state.filters)),
+        function (filter) {
+          filter.pinned = _state.stacking;
+        }
+      );
       FilterTagStore.emitChange();
       break;
 
