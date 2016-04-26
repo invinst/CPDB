@@ -3,9 +3,15 @@ var AppConstants = require('constants/AppConstants');
 
 
 var RequestActions = {
-  registerEmail: function () {
+  requestSuccess: function () {
     AppDispatcher.dispatch({
-      actionType: AppConstants.DOCUMENT_REQUESTED
+      actionType: AppConstants.DOCUMENT_REQUEST_SUCCESS
+    });
+  },
+
+  requestFail: function () {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.DOCUMENT_REQUEST_FAIL
     });
   }
 };

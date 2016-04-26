@@ -1,4 +1,4 @@
-var RequestModalContent, Modal, RequestActions;
+var RequestModalContent, Modal, RequestEmailResourceUtil;
 
 var React = require('react');
 var ReactTestUtils = require('react-addons-test-utils');
@@ -10,8 +10,8 @@ require('should');
 require('utils/tests/should/React');
 
 RequestModalContent = require('components/ComplaintPage/DocumentSection/DocumentCard/RequestModalContent.react');
-RequestActions = require('actions/ComplaintPage/RequestActions');
 Modal = require('components/Lib/Modal.react');
+RequestEmailResourceUtil = require('utils/RequestEmailResourceUtil.js');
 
 
 describe('RequestModalContentComponent', function () {
@@ -59,8 +59,8 @@ describe('RequestModalContentComponent', function () {
 
   it('should send register email action when clicking submit button', function () {
     var requestModal, submitBtn;
-    var mock = sinon.mock(RequestActions);
-    mock.expects('registerEmail').once();
+    var mock = sinon.mock(RequestEmailResourceUtil);
+    mock.expects('post').once();
 
     requestModal = ReactTestUtils.renderIntoDocument(
       <RequestModalContent/>

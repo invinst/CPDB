@@ -18,7 +18,8 @@ module.exports = {
   RESET_STATE: c++,
 
   //Document events
-  DOCUMENT_REQUESTED: c++,
+  DOCUMENT_REQUEST_SUCCESS: c++,
+  DOCUMENT_REQUEST_FAIL: c++,
 
   //OfficerPage events
   OFFICER_PAGE_RECEIVED_DATA: c++,
@@ -199,9 +200,10 @@ module.exports = {
   OFFICER_COMPLAINT_COUNT_RANGE: [20, 9, 3, 2, 0],
 
   // API endpoints
-  ALLEGATION_API_ENDPOINT: '/mobile/api/allegation',
-  OFFICER_API_ENDPOINT: '/mobile/api/officer',
-  SUGGESTION_API_ENDPOINT: '/mobile/api/suggestion',
+  ALLEGATION_API_ENDPOINT: '/mobile/api/allegation/',
+  OFFICER_API_ENDPOINT: '/mobile/api/officer/',
+  SUGGESTION_API_ENDPOINT: '/mobile/api/suggestion/',
+  REQUEST_EMAIL_API_EMAIL: '/mobile/api/request_email/',
 
   //Time format
   SIMPLE_DATE_FORMAT: 'MMM DD, YYYY',

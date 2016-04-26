@@ -4,12 +4,18 @@ var objectAssign = require('object-assign');
 var Base = require('components/Base.react');
 var cx = require('classnames');
 
-var RequestActions = require('actions/ComplaintPage/RequestActions');
+var u = require('utils/HelperUtil');
+
 var RequestStore = require('stores/ComplaintPage/RequestStore');
 var Modal = require('components/Lib/Modal.react');
+var RequestEmailResourceUtil = require('utils/RequestEmailResourceUtil.js');
 
 
 var RequestModalContent = React.createClass(objectAssign(Base(RequestStore), {
+  propTypes: {
+    document: React.PropTypes.object
+  },
+
   contextTypes: {
     modalName: React.PropTypes.string
   },
@@ -19,6 +25,11 @@ var RequestModalContent = React.createClass(objectAssign(Base(RequestStore), {
       requested: false,
       email: ''
     };
+  },
+
+  onSubmit: function () {
+    var documentId = u.fetch(this.props.document, 'id', null);
+    RequestEmailResourceUtil.post(this.refs.email.value, documentId);
   },
 
   render: function () {
@@ -36,11 +47,11 @@ var RequestModalContent = React.createClass(objectAssign(Base(RequestStore), {
             <div className={ requestFormClass }>
               <div className='modal-body'>
                 <div className='message-header'>We'll notify you when the document is made available.</div>
-                <input ref='email' type='email' placeholder='Your email address'></input>
+                <input className='email-input' ref='email' type='email' placeholder='Your email address'></input>
                 <button className='btn-cancel btn btn-outlined'
                   onClick={ Modal.dispatch(this.context.modalName, 'close') }>Cancel
                 </button>
-                <button className='btn-submit btn btn-positive btn-outlined' onClick={ RequestActions.registerEmail }>
+                <button className='btn-submit btn btn-positive btn-outlined' onClick={ this.onSubmit }>
                   Submit
                 </button>
               </div>
