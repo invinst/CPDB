@@ -1,4 +1,4 @@
-var DocumentCard, f, DeviceUtil, Modal;
+var DocumentCard, f, DeviceUtil, Modal, u;
 
 var React = require('react');
 var ReactTestUtils = require('react-addons-test-utils');
@@ -9,6 +9,7 @@ require('should');
 DeviceUtil = require('utils/DeviceUtil');
 f = require('utils/tests/f');
 require('utils/tests/should/React');
+u = require('utils/HelperUtil');
 
 DocumentCard = require('components/ComplaintPage/DocumentSection/DocumentCard.react');
 Modal = require('components/Lib/Modal.react');
@@ -43,11 +44,12 @@ describe('DocumentCardComponent', function () {
 
   it('should render request modal', function () {
     var document = f.create('Document', {'documentcloud_id': 'something'});
+    var modalName = u.format('requestModal-{id}', {'id': document.id});
     var documentCard = ReactTestUtils.renderIntoDocument(
       <DocumentCard document={ document } />
     );
 
-    documentCard.should.renderWithProps(Modal, {'name': 'requestModal'});
+    documentCard.should.renderWithProps(Modal, {'name': modalName});
   });
 
   describe('document name css', function () {
@@ -74,7 +76,7 @@ describe('DocumentCardComponent', function () {
     });
   });
 
-  describe('it should show correct action for document current status', function () {
+  describe('Multiple document', function () {
     it('should show View action if the document is available', function () {
       var document = f.create('Document', {'documentcloud_id': '12345', 'normalized_title': 'cr-123456'});
       var documentUrl = 'http://documentcloud.org/documents/12345-cr-123456.html';
@@ -91,9 +93,9 @@ describe('DocumentCardComponent', function () {
     it('should show follow action if the document is requested but the document is still not available ', function () {
       var documentCard, documentActionNode;
       var document = f.create('Document', {'requested': true, 'documentcloud_id': ''});
-
+      var modalName = u.format('requestModal-{id}', {'id': document.id});
       var mock = sinon.mock(Modal.eventSystem);
-      mock.expects('dispatch').once().withArgs('requestModal', 'open');
+      mock.expects('dispatch').once().withArgs(modalName, 'open');
 
       documentCard = ReactTestUtils.renderIntoDocument(
         <DocumentCard document={ document } />
@@ -110,9 +112,10 @@ describe('DocumentCardComponent', function () {
     it('should show request action if the  document is still not available and not requested yet', function () {
       var documentCard, documentActionNode;
       var document = f.create('Document', {'requested': false, 'documentcloud_id': ''});
+      var modalName = u.format('requestModal-{id}', {'id': document.id});
 
       var mock = sinon.mock(Modal.eventSystem);
-      mock.expects('dispatch').once().withArgs('requestModal', 'open');
+      mock.expects('dispatch').once().withArgs(modalName, 'open');
 
       documentCard = ReactTestUtils.renderIntoDocument(
         <DocumentCard document={ document } />
