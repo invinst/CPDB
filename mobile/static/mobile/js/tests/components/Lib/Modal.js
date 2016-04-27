@@ -44,4 +44,14 @@ describe('Modal', function () {
       mock.restore();
     });
   });
+
+  describe('#dispatchFor', function () {
+    it('should call dispatch', function () {
+      var dispatch = sinon.spy(Modal, 'dispatch');
+
+      Modal.dispatchFor('target')('event')();
+
+      dispatch.calledWith('target', 'event').should.be.true();
+    });
+  });
 });

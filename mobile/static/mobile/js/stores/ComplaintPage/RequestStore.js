@@ -17,6 +17,10 @@ RequestStore.dispatcherToken = AppDispatcher.register(function (action) {
       _state['requested'] = true;
       RequestStore.emitChange();
       break;
+    case AppConstants.DOCUMENT_REQUEST_FAIL:
+      _state['submitFailed'] = true;
+      RequestStore.emitChange();
+      break;
   }
 });
 

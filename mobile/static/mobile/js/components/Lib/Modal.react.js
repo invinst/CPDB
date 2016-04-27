@@ -12,7 +12,8 @@ var Modal = React.createClass({
   },
 
   childContextTypes: {
-    modalName: React.PropTypes.string
+    modalName: React.PropTypes.string,
+    action: React.PropTypes.func
   },
 
   getInitialState: function () {
@@ -23,7 +24,8 @@ var Modal = React.createClass({
 
   getChildContext: function () {
     return {
-      modalName: this.props.name
+      modalName: this.props.name,
+      action: Modal.dispatchFor(this.props.name)
     };
   },
 
@@ -43,6 +45,15 @@ var Modal = React.createClass({
         'open': event == 'open' ? 1 : 0
       });
     }
+  },
+
+  openModal: function () {
+
+    this.handleEvent('open');
+  },
+
+  closeModal: function () {
+    this.handleEvent('close');
   },
 
   render: function () {
@@ -65,6 +76,12 @@ Modal.eventSystem = SimpleEventSystem();
 Modal.dispatch = function (target, event) {
   return function () {
     Modal.eventSystem.dispatch(target, event);
+  };
+};
+
+Modal.dispatchFor = function (target) {
+  return function (event) {
+    return Modal.dispatch(target, event);
   };
 };
 

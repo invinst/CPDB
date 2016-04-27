@@ -7,7 +7,6 @@ var cx = require('classnames');
 var u = require('utils/HelperUtil');
 
 var RequestStore = require('stores/ComplaintPage/RequestStore');
-var Modal = require('components/Lib/Modal.react');
 var RequestEmailResourceUtil = require('utils/RequestEmailResourceUtil.js');
 
 
@@ -17,12 +16,14 @@ var RequestModalContent = React.createClass(objectAssign(Base(RequestStore), {
   },
 
   contextTypes: {
-    modalName: React.PropTypes.string
+    modalName: React.PropTypes.string,
+    action: React.PropTypes.func
   },
 
   getInitialState: function () {
     return {
       requested: false,
+      submitFailed: false,
       email: ''
     };
   },
@@ -35,25 +36,28 @@ var RequestModalContent = React.createClass(objectAssign(Base(RequestStore), {
   render: function () {
     var requestFormClass = cx('request-form', {'hide': this.state.requested});
     var thankYouClass = cx('thank-you', {'hide': !this.state.requested });
+    var modalAction = u.fetch(this.context, 'action', function () {});
+    var errorMsgClass = cx('error', {'hide': !this.state.submitFailed });
 
     return (
       <div>
         <div className='request-modal-content'>
           <div className='modal-content content'>
             <div className='modal-header'>
-              <div className='icon icon-close align-right' onClick={ Modal.dispatch(this.context.modalName, 'close') }>
+              <div className='icon icon-close align-right' onClick={ modalAction('close') }>
               </div>
             </div>
             <div className={ requestFormClass }>
               <div className='modal-body'>
-                <div className='message-header'>We'll notify you when the document is made available.</div>
+                <div className='message-header'>We&apos;ll notify you when the document is made available.</div>
                 <input className='email-input' ref='email' type='email' placeholder='Your email address'></input>
                 <button className='btn-cancel btn btn-outlined'
-                  onClick={ Modal.dispatch(this.context.modalName, 'close') }>Cancel
+                  onClick={ modalAction('close') }>Cancel
                 </button>
                 <button className='btn-submit btn btn-positive btn-outlined' onClick={ this.onSubmit }>
                   Submit
                 </button>
+                <div className={ errorMsgClass }>Your submission is invalid</div>
               </div>
             </div>
             <div className={ thankYouClass }>

@@ -1,4 +1,4 @@
-var RequestModalContent, Modal, RequestEmailResourceUtil;
+var RequestModalContent, RequestEmailResourceUtil;
 
 var React = require('react');
 var ReactTestUtils = require('react-addons-test-utils');
@@ -10,7 +10,6 @@ require('should');
 require('utils/tests/should/React');
 
 RequestModalContent = require('components/ComplaintPage/DocumentSection/DocumentCard/RequestModalContent.react');
-Modal = require('components/Lib/Modal.react');
 RequestEmailResourceUtil = require('utils/RequestEmailResourceUtil.js');
 
 
@@ -19,11 +18,13 @@ describe('RequestModalContentComponent', function () {
     RequestModalContent.should.be.renderable();
   });
 
-  it('should close the modal when clicking close icon', function () {
+  it('should call context action when clicking close icon', function () {
     var requestModal, closeBtn, RequestModalContentStub;
-    var context = {'modalName': 'requestModal'};
-    var mock = sinon.mock(Modal.eventSystem);
-    mock.expects('dispatch').once().withArgs('requestModal', 'close');
+    var action = sinon.spy();
+    var context = {
+      'modalName': 'requestModal',
+      'action': action
+    };
 
     RequestModalContentStub = ReactStubContext(RequestModalContent, context);
 
@@ -34,15 +35,16 @@ describe('RequestModalContentComponent', function () {
     closeBtn = ReactTestUtils.findRenderedDOMComponentWithClass(requestModal, 'icon-close');
     ReactTestUtils.Simulate.click(closeBtn);
 
-    mock.verify();
-    mock.restore();
+    action.called.should.be.true();
   });
 
-  it('should close the modal when clicking cancel button', function () {
+  it('should call context action when clicking cancel button', function () {
     var requestModal, cancelBtn, RequestModalContentStub;
-    var context = {'modalName': 'requestModal'};
-    var mock = sinon.mock(Modal.eventSystem);
-    mock.expects('dispatch').once().withArgs('requestModal', 'close');
+    var action = sinon.spy();
+    var context = {
+      'modalName': 'requestModal',
+      'action': action
+    };
 
     RequestModalContentStub = ReactStubContext(RequestModalContent, context);
 
@@ -53,8 +55,7 @@ describe('RequestModalContentComponent', function () {
     cancelBtn = ReactTestUtils.findRenderedDOMComponentWithClass(requestModal, 'btn-cancel');
     ReactTestUtils.Simulate.click(cancelBtn);
 
-    mock.verify();
-    mock.restore();
+    action.called.should.be.true();
   });
 
   it('should send register email action when clicking submit button', function () {
