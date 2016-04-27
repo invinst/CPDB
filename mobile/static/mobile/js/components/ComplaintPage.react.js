@@ -16,7 +16,7 @@ var InvestigatorSection = require('components/ComplaintPage/InvestigatorSection.
 var LoadingPage = require('components/Shared/LoadingPage.react');
 var Location = require('components/ComplaintPage/Location.react');
 var NotMatchedCategoryPage = require('components/ComplaintPage/NotMatchedCategoryPage.react');
-var NotMatchedPage = require('components/ComplaintPage/NotMatchedPage.react');
+var NotMatchedComplaintPage = require('components/ComplaintPage/NotMatchedComplaintPage.react');
 var OfficerAllegationDetail = require('components/ComplaintPage/OfficerAllegationDetail.react');
 var SearchablePage = require('components/Shared/SearchablePage.react');
 var ToggleComplaintPage = require('components/ComplaintPage/ToggleComplaintPage.react');
@@ -64,13 +64,13 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
 
     if (!found) {
       return (
-        <NotMatchedPage crid={ this.state.crid }/>
+        <NotMatchedComplaintPage crid={ this.state.crid }/>
       );
     }
 
     if (presenter.isInvalidCategory) {
       return (
-        <NotMatchedCategoryPage category={ categoryHashId }/>
+        <NotMatchedCategoryPage />
       );
     }
 

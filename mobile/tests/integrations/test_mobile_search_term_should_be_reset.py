@@ -14,7 +14,7 @@ class MobileSearchTermShouldBeResetTest(BaseLivePhoneTestCase):
         return self.find('.input-text').text
 
     def click_on_first_result(self):
-        self.find('.suggestion-list li').click()
+        self.find('.officer-complaint-item').click()
 
     def setUp(self):
         self.officer = OfficerFactory()

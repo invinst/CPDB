@@ -13,9 +13,9 @@ var CircleList = React.createClass({
 
   renderCircle: function (count, index) {
     return (
-       <div className={ cx('circle-wrapper', u.format('officer-{index}', {'index': index})) } key={ index }>
-          <span className={ cx('circle', OfficerUtil.getColorLevelClass('circle', count)) }/>
-       </div>
+      <div className={ cx('circle-wrapper', u.format('officer-{index}', {'index': index})) } key={ index }>
+        <span className={ cx('circle', OfficerUtil.getColorLevelClass('circle', count)) }/>
+      </div>
     );
   },
 

@@ -9,7 +9,7 @@ var SearchablePage = require('components/Shared/SearchablePage.react');
 var SummaryTab = require('components/OfficerPage/SummaryTab.react');
 var RelatedOfficersTab = require('components/OfficerPage/RelatedOfficersTab.react');
 var OfficerHeader = require('components/OfficerPage/OfficerHeader.react');
-var NotMatchedPage = require('components/OfficerPage/NotMatchedPage.react');
+var NotMatchedOfficerPage = require('components/OfficerPage/NotMatchedOfficerPage.react');
 var LoadingPage = require('components/Shared/LoadingPage.react');
 
 var OfficerPageServerActions = require('actions/OfficerPage/OfficerPageServerActions');
@@ -62,7 +62,7 @@ var OfficerPage = React.createClass(objectAssign(Base(OfficerPageStore), {
 
     if (!found) {
       return (
-        <NotMatchedPage id={ this.state.pk } />
+        <NotMatchedOfficerPage id={ this.state.pk } />
       );
     }
 
