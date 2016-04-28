@@ -1,10 +1,25 @@
 from allegation.factories import (
     AllegationFactory, OfficerFactory, OfficerAllegationFactory)
 from common.tests.core import SimpleTestCase
-from mobile.services.mobile_suggestion_service import suggest_crid, suggest_officer_star, suggest_officer_name
+from mobile.services.mobile_suggestion_service import suggest_crid, suggest_officer_star, suggest_officer_name, \
+    get_crid_from_query
 
 
 class MobileSuggestionServiceTest(SimpleTestCase):
+    def test_get_crid_from_query_succesful_return_crid(self):
+        crid = '123456'
+        templates = ['cr {crid}', 'CR {crid}', 'cr{crid}', 'CR{crid}', 'crid {crid}', 'CRID {crid}', '{crid}']
+
+        for template in templates:
+            get_crid_from_query(template.format(crid=crid)).should.be.equal(crid)
+
+    def test_get_crid_from_query_failed_return_empty(self):
+        crid = '123456'
+        templates = ['cri {crid}', 'CRd {crid}', 'cr_{crid}', 'aCR{crid}', 'cridd {crid}', 'CRID  1 {crid}']
+
+        for template in templates:
+            get_crid_from_query(template.format(crid=crid)).should.be.equal('')
+
     def test_suggest_crid(self):
         allegation = AllegationFactory(crid='1051333')
         OfficerAllegationFactory(allegation=allegation)
@@ -20,6 +35,16 @@ class MobileSuggestionServiceTest(SimpleTestCase):
         allegation_result[0]['meta']['allegation'].incident_date = \
             allegation_result[0]['meta']['allegation'].incident_date.date()
         allegation_result.should.equal([expected_allegation])
+
+    def test_suggest_crid_with_prefix(self):
+        officer_allegation = OfficerAllegationFactory()
+        crid = officer_allegation.allegation.crid
+        crid_query_templates = ['cr {crid}', 'CR {crid}', 'cr{crid}', 'CR{crid}', 'crid {crid}', 'CRID {crid}']
+
+        for template in crid_query_templates:
+            suggestions = suggest_crid(template.format(crid=crid))
+            suggestions.should.have.length_of(1)
+            suggestions[0]['meta']['allegation'].crid.should.be.equal(str(crid))
 
     def test_suggest_officer_badge(self):
         officer = OfficerFactory(star=19663)

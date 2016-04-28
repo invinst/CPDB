@@ -99,7 +99,8 @@ class MobileComplaintPageTest(BaseLivePhoneTestCase):
         self.until(lambda: self.find('.message-title'))
 
         self.should_see_text('Invalid page!')
-        self.should_see_text('The Category')
+        self.should_see_text('The complaint with this category is not recorded in our database. Please use search box '
+                             'for new search session.')
 
     def test_toggle_complaint_page(self):
         category = AllegationCategoryFactory()
