@@ -28,7 +28,7 @@ class MobileDocumentRequestViewTest(SimpleTestCase):
             'document_id': 123
         }
         response = self.client.post(reverse('mobile:mobile-request-email'), params)
-        response.status_code.should.equal(status.HTTP_404_NOT_FOUND)
+        response.status_code.should.equal(status.HTTP_400_BAD_REQUEST)
 
     def test_return_400_when_submit_invalid_data(self):
         document = DocumentFactory()
