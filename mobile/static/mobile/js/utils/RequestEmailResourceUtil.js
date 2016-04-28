@@ -13,7 +13,7 @@ var RequestEmailResourceUtil = {
         if (res.ok) {
           RequestActions.requestSuccess();
         } else {
-          RequestActions.requestFail();
+          RequestActions.requestFail(res.body);
         }
       });
 

@@ -8,6 +8,7 @@ var u = require('utils/HelperUtil');
 
 var RequestStore = require('stores/ComplaintPage/RequestStore');
 var RequestEmailResourceUtil = require('utils/RequestEmailResourceUtil.js');
+var RequestDocumentErrorPresenter = require('presenters/RequestDocumentErrorPresenter');
 
 
 var RequestModalContent = React.createClass(objectAssign(Base(RequestStore), {
@@ -24,6 +25,7 @@ var RequestModalContent = React.createClass(objectAssign(Base(RequestStore), {
     return {
       requested: false,
       submitFailed: false,
+      errors: {},
       email: ''
     };
   },
@@ -36,8 +38,9 @@ var RequestModalContent = React.createClass(objectAssign(Base(RequestStore), {
   render: function () {
     var requestFormClass = cx('request-form', {'hide': this.state.requested});
     var thankYouClass = cx('thank-you', {'hide': !this.state.requested });
-    var modalAction = u.fetch(this.context, 'action', function () {});
     var errorMsgClass = cx('error', {'hide': !this.state.submitFailed });
+    var modalAction = u.fetch(this.context, 'action', function () {});
+    var errorPresenter = RequestDocumentErrorPresenter(this.state.errors);
 
     return (
       <div>
@@ -50,14 +53,14 @@ var RequestModalContent = React.createClass(objectAssign(Base(RequestStore), {
             <div className={ requestFormClass }>
               <div className='modal-body'>
                 <div className='message-header'>We&apos;ll notify you when the document is made available.</div>
-                <input className='email-input' ref='email' type='email' placeholder='Your email address'></input>
+                <div className={ errorMsgClass }>{ errorPresenter.errorMessage }</div>
+                <input className='email-input' ref='email' type='email' placeholder='Your email address' />
                 <button className='btn-cancel btn btn-outlined'
                   onClick={ modalAction('close') }>Cancel
                 </button>
                 <button className='btn-submit btn btn-positive btn-outlined' onClick={ this.onSubmit }>
                   Submit
                 </button>
-                <div className={ errorMsgClass }>Your submission is invalid</div>
               </div>
             </div>
             <div className={ thankYouClass }>

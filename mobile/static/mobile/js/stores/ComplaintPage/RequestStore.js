@@ -6,7 +6,9 @@ var Base = require('stores/Base');
 
 
 var _state = {
-  'requested': false
+  'requested': false,
+  'submitFailed': false,
+  'errors': {}
 };
 
 var RequestStore = objectAssign(Base(_state), {});
@@ -19,6 +21,7 @@ RequestStore.dispatcherToken = AppDispatcher.register(function (action) {
       break;
     case AppConstants.DOCUMENT_REQUEST_FAIL:
       _state['submitFailed'] = true;
+      _state['errors'] = action.errors;
       RequestStore.emitChange();
       break;
   }

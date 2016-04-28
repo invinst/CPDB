@@ -1,4 +1,3 @@
-from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 
 from document.models import RequestEmail, Document
@@ -9,7 +8,9 @@ class MobileDocumentRequestViewSerializer(serializers.Serializer):
     document_id = serializers.IntegerField()
 
     def validate_document_id(self, value):
-        return get_object_or_404(Document, pk=value).pk
+        if not Document.objects.filter(pk=value):
+            raise serializers.ValidationError('Document is not existed')
+        return value
 
     def save(self):
         email = self.validated_data['email']

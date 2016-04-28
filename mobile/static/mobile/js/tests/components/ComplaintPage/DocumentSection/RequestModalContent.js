@@ -94,4 +94,24 @@ describe('RequestModalContentComponent', function () {
     thankYouNode = ReactTestUtils.findRenderedDOMComponentWithClass(requestModal, 'thank-you');
     thankYouNode.getAttribute('class').should.containEql('hide');
   });
+
+  it('should render `hide` style for error message if not submit', function () {
+    var errorNode;
+    var requestModal = ReactTestUtils.renderIntoDocument(
+      <RequestModalContent />
+    );
+    requestModal.setState({'submitFailed': false});
+    errorNode = ReactTestUtils.findRenderedDOMComponentWithClass(requestModal, 'error');
+    errorNode.getAttribute('class').should.containEql('hide');
+  });
+
+  it('should not render `hide` style for error message if submit failed', function () {
+    var errorNode;
+    var requestModal = ReactTestUtils.renderIntoDocument(
+      <RequestModalContent />
+    );
+    requestModal.setState({'submitFailed': true});
+    errorNode = ReactTestUtils.findRenderedDOMComponentWithClass(requestModal, 'error');
+    errorNode.getAttribute('class').should.not.containEql('hide');
+  });
 });

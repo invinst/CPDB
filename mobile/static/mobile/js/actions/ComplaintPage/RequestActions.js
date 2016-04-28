@@ -9,9 +9,10 @@ var RequestActions = {
     });
   },
 
-  requestFail: function () {
+  requestFail: function (errors) {
     AppDispatcher.dispatch({
-      actionType: AppConstants.DOCUMENT_REQUEST_FAIL
+      actionType: AppConstants.DOCUMENT_REQUEST_FAIL,
+      errors: errors
     });
   }
 };

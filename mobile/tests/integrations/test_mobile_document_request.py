@@ -44,4 +44,4 @@ class MobileDocumentRequestTest(BaseLivePhoneTestCase):
         element = self.until(lambda: self.find('.btn-submit'))
         element.click()
 
-        self.until(lambda: self.find('.error').text.should.contain('Your submission is invalid'))
+        self.until(lambda: self.find('.error').text.should.contain('Please provide a valid email address.'))
