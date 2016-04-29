@@ -7,29 +7,49 @@
   height: 100%
   overflow: auto
   background-color: rgba(0,0,0,0.4)
+  input, button
+    font-family:  -apple-system, 'San Francisco', 'Roboto', sans-serif
   .modal-content
     position: relative
     background-color: $section-background
-    margin: auto
-    padding: 5px
-    border: 1px solid #888
-    width: 100%
-    height: 250px
+    padding: 3%
+    margin: 3%
+    height: 220px
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19)
+    .thank-you
+      .message-header
+        margin: 0 0 12px 0
     .btn-submit
       margin-left: 2px
+      color: $request-modal-submit-button-color
+      border-color: $request-modal-submit-button-border-color
     .error
-      font-size: 15px
+      font-size: 13px
       padding-bottom: 10px
       color: $error-color
       font-style: italic
-    .icon
-      width: 100%
-      line-height: 24px
-      font-size: 25px
-    .message-header
-      font-size: 20px
-      font-weight: 600
-      padding-bottom: 11px
+    .modal-header
+      margin-bottom: 24px
+      .icon
+        float: right
+        line-height: 24px
+        font-size: 19px
+    .modal-body
+      .message-header
+        font-size: 16px
+        font-weight: 600
+        padding-bottom: 11px
+      .email-input
+        padding: 0 8px
+        font-size: 13px
+      .email-input::-webkit-input-placeholder
+        font-family:  -apple-system, 'San Francisco', 'Roboto', sans-serif
+        font-size: 13px
+      .email-input::-moz-placeholder
+        font-family:  -apple-system, 'San Francisco', 'Roboto', sans-serif
+        font-size: 13px
+      .email-input:-moz-placeholder
+        font-family:  -apple-system, 'San Francisco', 'Roboto', sans-serif
+        font-size: 13px
     .hide
       display: none

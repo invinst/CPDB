@@ -64,7 +64,7 @@ var RequestModalContent = React.createClass(objectAssign(Base(RequestStore), {
               </div>
             </div>
             <div className={ thankYouClass }>
-              <div className='message-header'>Thank you</div>
+              <div className='message-header'>Thank you!</div>
               <div className='message-content'>
                 <p>
                   Someone from our team will write a Freedom of Information Act Request for this document,
