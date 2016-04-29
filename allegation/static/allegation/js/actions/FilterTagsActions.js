@@ -29,6 +29,13 @@ var updateSiteData = function (dontUpdateSession) {
 
 
 var FilterTagsActions = {
+  toggleStackingMode: function () {
+    AppDispatcher.dispatch({
+      actionType: AppConstants.TOGGLE_STACKING_MODE
+    });
+    SessionAPI.updateSessionInfo({'query': FilterTagStore.getSession()});
+  },
+
   addTag: function (tagValue) {
     ga('send', 'event', 'filter', tagValue.category, tagValue.value);
     if (EmbedStore.isEmbedMode()) {

@@ -96,14 +96,16 @@ class DataToolCategoriesTabTestCase(BaseLiveTestCase):
         OfficerAllegationFactory(cat=sub_category)
 
         self.filter_complaint_type()
-        self.until(lambda: self.link(category).click())
+        self.link(category).click()
+        self.until_ajax_complete()
         self.element_by_classname_and_text('filter-name', category).should.be.ok
 
-        self.until(lambda: self.link(sub_category.allegation_name).click())
+        self.link(sub_category.allegation_name).click()
+        self.until_ajax_complete()
         self.element_by_classname_and_text('filter-name', sub_category.allegation_name).should.be.ok
         self.element_by_classname_and_text('filter-name', category).should.be.false
 
-        self.until(lambda: self.link(other_category.category).click())
-        self.element_by_classname_and_text('filter-name', other_category.category).should.be.ok
+        self.link(other_category.category).click()
         self.until_ajax_complete()
+        self.element_by_classname_and_text('filter-name', other_category.category).should.be.ok
         self.element_by_classname_and_text('filter-name', sub_category.allegation_name).should.be.false
