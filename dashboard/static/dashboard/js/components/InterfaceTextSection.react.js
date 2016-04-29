@@ -10,13 +10,13 @@ var InterfaceTextSection = React.createClass(_.assign(Base(InterfaceTextSectionS
 
   renderActive: function () {
     return (
-      <div className='row' key={ this.state.activeText.key }>
+      <div className='row' key={ this.state.activeText.id }>
         <div className='col-md-3'>
-          <input className='form-control' id='id_key' type='text' value={ this.state.activeText.key }
+          <input className='form-control' type='text' value={ this.state.activeText.key }
             onChange={ this.changeText.bind(this, 'key') } />
         </div>
         <div className='col-md-7'>
-          <textarea id='id_text' className='form-control' onChange={ this.changeText.bind(this, 'text') }
+          <textarea className='form-control' onChange={ this.changeText.bind(this, 'text') }
             value={ this.state.activeText.text }></textarea>
         </div>
         <div className='col-md-2'>
@@ -66,7 +66,7 @@ var InterfaceTextSection = React.createClass(_.assign(Base(InterfaceTextSectionS
       }
     }
     else {
-      children.push(<span key={ 0 }><i className='fa fa-spin fa-spinner'/></span>);
+      children.push(<span><i className='fa fa-spin fa-spinner'/></span>);
     }
     return children;
   },

@@ -1,3 +1,4 @@
+
 var React = require('react');
 var ReactDOM = require('react-dom');
 var classnames = require('classnames');
@@ -5,6 +6,7 @@ var classnames = require('classnames');
 var AppDispatcher = require('dispatcher/AppDispatcher');
 var RequestDocumentConstants = require('constants/RequestDocumentConstants');
 var RequestDocumentActions = require('actions/RequestDocumentActions');
+var InterfaceText = require('components/Shared/InterfaceText.react');
 
 
 var RequestModal = (function () {
@@ -87,11 +89,7 @@ var RequestModal = (function () {
               </div>
               <div className='modal-body'>
                 <h3 className='text-center'>Thank you!</h3>
-                <p>
-                  Someone from our team will write a Freedom of Information Act Request for this document,
-                  and e-mail FOIA@chicagopolice.org. We will wait to hear back.
-                </p>
-                <p>If we receive a responsive document, we will update this database. Check back in a few weeks!</p>
+                <InterfaceText identifier='thank-you-message' />
                 <div className='success-icon'><i className='fa fa-check-circle'></i></div>
               </div>
             </div>
