@@ -1,4 +1,4 @@
-var DocumentCard, f, DeviceUtil, Modal, u;
+var DocumentCard, f, DeviceUtil, Modal, u, InterfaceTextResourceUtil;
 
 var React = require('react');
 var ReactTestUtils = require('react-addons-test-utils');
@@ -13,9 +13,18 @@ u = require('utils/HelperUtil');
 
 DocumentCard = require('components/ComplaintPage/DocumentSection/DocumentCard.react');
 Modal = require('components/Lib/Modal.react');
+InterfaceTextResourceUtil = require('utils/InterfaceTextResourceUtil');
 
 
 describe('DocumentCardComponent', function () {
+  beforeEach(function () {
+    sinon.stub(InterfaceTextResourceUtil, 'get', function () {});
+  });
+
+  afterEach(function () {
+    InterfaceTextResourceUtil.get.restore();
+  });
+
   it('should be renderable', function () {
     DocumentCard.should.be.renderable();
   });
