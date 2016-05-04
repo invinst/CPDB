@@ -65,9 +65,11 @@ var RequestModalContent = React.createClass(objectAssign(Base(RequestStore), {
               </div>
             </div>
             <div className={ thankYouClass }>
-              <div className='message-header'>Thank you</div>
-              <div className='message-content'>
-                <InterfaceText identifier='thank-you-message' placeholderLength='350'/>
+              <div className='modal-body'>
+                <div className='message-header'>Thank you</div>
+                <div className='message-content'>
+                  <InterfaceText identifier='thank-you-message' placeholderLength='350'/>
+                </div>
               </div>
             </div>
           </div>
