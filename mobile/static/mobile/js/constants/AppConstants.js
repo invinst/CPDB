@@ -218,6 +218,9 @@ module.exports = {
   FIRST_AVAILABLE_DATE_FORMAT: 'DD/MM/YYYY',
   FIRST_AVAILABLE_DATE: '02/01/1970',
 
+  //Interface text cache
+  INTERFACE_TEXT_EXPIRED_TIMESPAN: 3600000, //ms
+
   //Hash
   SALT: '8qTCKQzt5jYYTADWcUO8'
 };

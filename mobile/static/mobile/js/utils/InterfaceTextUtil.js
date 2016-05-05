@@ -1,3 +1,4 @@
+var AppConstants = require('constants/AppConstants');
 var LocalStorageUtil = require('utils/LocalStorageUtil');
 
 
@@ -17,7 +18,7 @@ var InterfaceTextUtil = {
 
   saveToLocalStorage: function (interfaceTexts) {
     LocalStorageUtil.setItem('interfaceTexts', JSON.stringify(interfaceTexts));
-    LocalStorageUtil.setItem('interfaceTextExpiredTime', Date.now() + 60 * 60 * 1000);
+    LocalStorageUtil.setItem('interfaceTextExpiredTime', Date.now() + AppConstants.INTERFACE_TEXT_EXPIRED_TIMESPAN);
   }
 };
 
