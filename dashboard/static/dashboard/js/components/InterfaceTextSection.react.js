@@ -16,8 +16,8 @@ var InterfaceTextSection = React.createClass(_.assign(Base(InterfaceTextSectionS
             onChange={ this.changeText.bind(this, 'key') } />
         </div>
         <div className='col-md-7'>
-          <textarea className='form-control' onChange={ this.changeText.bind(this, 'text') }
-            value={ this.state.activeText.text }></textarea>
+          <textarea className='input-text form-control' onChange={ this.changeText.bind(this, 'text') }
+            value={ this.state.activeText.text }/>
         </div>
         <div className='col-md-2'>
           <button onClick={ this.save.bind(this, this.state.activeText) } className='btn btn-info'>
@@ -104,9 +104,9 @@ var InterfaceTextSection = React.createClass(_.assign(Base(InterfaceTextSectionS
         <div>
           <div className='row margin-top'>
             <div className='col-md-12'>
-              <form className='form-horizontal'>
+              <div className='form-horizontal'>
                 { this.renderContent() }
-              </form>
+              </div>
             </div>
           </div>
         </div>
