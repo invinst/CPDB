@@ -3,7 +3,7 @@ import datetime
 
 from django.core.management.base import BaseCommand
 
-from common.models import Officer, OfficerHistory, OfficerBadgeNumber
+from common.models import Officer, OfficerHistory, OfficerBadgeNumber, PoliceUnit
 
 LAST_NAME = 0
 FIRST_NAME = 1
@@ -49,6 +49,9 @@ class Command(BaseCommand):
         parser.add_argument('--file')
         parser.add_argument('--debug')
 
+    def get_or_create_unit(self, unit_name):
+        return PoliceUnit.objects.get_or_create(unit_name=unit_name)[0]
+
     def get_officer(self, **kwargs):
         order_of_contrain = ['appt_date', 'gender', 'race', 'unit', 'star']
         start_kw = {'officer_first__iexact': kwargs['officer_first'], 'officer_last__iexact': kwargs['officer_last']}
@@ -85,6 +88,8 @@ class Command(BaseCommand):
                         officers = officers.filter(race__icontains='hispanic')
                     elif add_filter == 'appt_date':
                         officers = officers.filter(appt_date=kwargs['appt_date'])
+                    elif add_filter == 'unit':
+                        officers = officers.filter(unit=kwargs['unit'])
                     else:
                         officers = officers.filter(**{"{field}__iexact".format(field=add_filter): constrain})
 
@@ -112,7 +117,7 @@ class Command(BaseCommand):
             gender=row[GENDER],
             star=officers_last_star_num,
             appt_date=appt_date,
-            unit=row[CPD_UNIT_ASSIGNED]
+            unit=self.get_or_create_unit(row[CPD_UNIT_ASSIGNED])
         )
 
         officer.save()
@@ -122,7 +127,7 @@ class Command(BaseCommand):
     def add_officer_history(self, officer, row, officers_last_star_num, appt_date):
 
         officer.appt_date = appt_date
-        officer.unit = row[CPD_UNIT_ASSIGNED]
+        officer.unit = self.get_or_create_unit(row[CPD_UNIT_ASSIGNED])
         officer.star = officers_last_star_num
         officer.save()
 
@@ -136,7 +141,7 @@ class Command(BaseCommand):
 
         history = OfficerHistory.objects.filter(
             officer=officer,
-            unit=row[CPD_UNIT_ASSIGNED],
+            unit=self.get_or_create_unit(row[CPD_UNIT_ASSIGNED]),
             effective_date=effective_date
         )
 
@@ -145,7 +150,7 @@ class Command(BaseCommand):
                 officer=officer,
                 effective_date=effective_date,
                 end_date=end_date,
-                unit=row[CPD_UNIT_ASSIGNED]
+                unit=self.get_or_create_unit(row[CPD_UNIT_ASSIGNED])
             )
 
             history.save()
@@ -198,7 +203,7 @@ class Command(BaseCommand):
                         star=officers_last_star_num,
                         appt_date=appt_date,
                         stars=stars,
-                        unit=row[CPD_UNIT_ASSIGNED]
+                        unit=self.get_or_create_unit(row[CPD_UNIT_ASSIGNED])
                     )
 
                     found_counter += 1

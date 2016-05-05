@@ -6,7 +6,7 @@ from django.db.models.query_utils import Q
 
 from allegation.factories import (
     OfficerAllegationFactory, AllegationFactory, OfficerFactory,
-    ComplainingWitnessFactory, AllegationCategoryFactory)
+    ComplainingWitnessFactory, AllegationCategoryFactory, PoliceUnitFactory)
 from allegation.query_builders import (
     OfficerAllegationQueryBuilder, DISCIPLINE_CODES, NO_DISCIPLINE_CODES, _apply_all_query_methods)
 from common.models import OfficerAllegation, Allegation, OUTCOMES
@@ -528,6 +528,12 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
         repr(queries).should.equal(repr(Q(id__isnull=True)))
         queries = builder.build(QueryDict('cat=null'))
         repr(queries).should.equal(repr(Q(cat__isnull=True)))
+
+    def test_query_officer_unit(self):
+        unit = PoliceUnitFactory(unit_name='123')
+        officer = OfficerFactory(unit=unit)
+        oa = OfficerAllegationFactory(officer=officer)
+        self.check_built_query('officer__unit=123', [oa.id])
 
     def check_built_query(self, query_string, expected_ids):
         params = QueryDict(query_string)

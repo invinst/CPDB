@@ -224,7 +224,7 @@ class Command(BaseCommand):
                         row, officers, update_queue)
                 else:
                     officers = officers.filter(
-                        id__in=prefoia_ids, unit__icontains=row[10])
+                        id__in=prefoia_ids, unit__unit_name__icontains=row[10])
                     if len(officers) == 0:
                         self.rows['new'].append(row)
                     elif len(officers) == 1:
