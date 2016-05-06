@@ -1,5 +1,4 @@
 import tweepy
-from django.conf import settings
 
 from twitterbot.services.twitter_bot_service import TwitterBotService
 from twitterbot.utils.log import bot_log
@@ -13,7 +12,8 @@ IGNORED_ERROR_CODES = [
 class CPDBTweetHandler(tweepy.StreamListener):
     def __init__(self, api, *args, **kwargs):
         super(CPDBTweetHandler, self).__init__(api=api, *args, **kwargs)
-        self.twitter_service = TwitterBotService(api)
+        self.user = api.me()
+        self.twitter_service = TwitterBotService(api=api, current_user=self.user)
 
     def on_status(self, status):
         if self.is_own_tweet(status):
@@ -47,4 +47,4 @@ class CPDBTweetHandler(tweepy.StreamListener):
                 pass
 
     def is_own_tweet(self, status):
-        return status.user.screen_name == settings.TWITTER_SCREEN_NAME
+        return status.user.id == self.user.id
