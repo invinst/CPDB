@@ -24,14 +24,7 @@ var RequestDocumentActions = {
         RequestDocumentActions.setRequested(documentId);
       },
       error: function (xhr) {
-        var key, errors, i;
-
-        for (key in xhr.responseJSON) {
-          errors = xhr.responseJSON[key];
-          for (i = 0; i < errors.length; i++) {
-            toastr.error(errors[i]);
-          }
-        }
+        RequestDocumentActions.requestFailed(xhr.responseJSON.errors);
       }
     });
   },
@@ -40,6 +33,13 @@ var RequestDocumentActions = {
     AppDispatcher.dispatch({
       actionType: RequestDocumentConstants.DOCUMENT_REQUESTED,
       id: documentId
+    });
+  },
+
+  requestFailed: function (errors) {
+    AppDispatcher.dispatch({
+      actionType: RequestDocumentConstants.DOCUMENT_REQUEST_FAILED,
+      errors: errors
     });
   }
 };

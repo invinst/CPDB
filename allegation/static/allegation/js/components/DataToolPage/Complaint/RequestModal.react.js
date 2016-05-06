@@ -6,6 +6,7 @@ var AppDispatcher = require('dispatcher/AppDispatcher');
 var RequestDocumentConstants = require('constants/RequestDocumentConstants');
 var RequestDocumentActions = require('actions/RequestDocumentActions');
 var InterfaceText = require('components/Shared/InterfaceText.react');
+var RequestDocumentErrorPresenter = require('presenters/RequestDocumentErrorPresenter');
 
 
 var RequestModal = (function () {
@@ -13,10 +14,13 @@ var RequestModal = (function () {
 
   var mountedInstant = null;
 
+  var errorMessage = '';
+
   var component = React.createClass({
     getInitialState: function () {
       return {
-        thank: false
+        thank: false,
+        requestFailed: false
       };
     },
     componentDidMount: function () {
@@ -59,6 +63,9 @@ var RequestModal = (function () {
       var thankClassName = classnames('modal-dialog thanks-form', {
         'hidden': !this.state.thank
       });
+      var errorClassName = classnames('error', {
+        'hidden': !this.state.requestFailed
+      });
       return (
         <div className='modal fade' id='request_modal' tabIndex='-1' role='dialog' aria-labelledby='myModalLabel'>
           <div className={ formClassName } role='document' style={ style }>
@@ -70,6 +77,7 @@ var RequestModal = (function () {
               </div>
               <div className='modal-body'>
                 <h3>We&apos;ll notify you when the document is made available.</h3>
+                <div className={ errorClassName }>{ errorMessage }</div>
                 <input type='email' name='email' className='form-control'
                   placeholder='Please enter email address' onKeyDown={ this.onKeyDown } />
               </div>
@@ -116,6 +124,14 @@ var RequestModal = (function () {
     });
   };
 
+  component.requestFailed = function (errors) {
+    var errorPresenter = RequestDocumentErrorPresenter(errors);
+    errorMessage = errorPresenter.errorMessage;
+    mountedInstant.setState({
+      requestFailed: true
+    });
+  };
+
   return component;
 })();
 
@@ -127,6 +143,10 @@ RequestModal.dispatcherToken = AppDispatcher.register(function (action) {
 
     case RequestDocumentConstants.DOCUMENT_REQUESTED:
       RequestModal.requestSuccess();
+      break;
+
+    case RequestDocumentConstants.DOCUMENT_REQUEST_FAILED:
+      RequestModal.requestFailed(action.errors);
       break;
 
     default:
