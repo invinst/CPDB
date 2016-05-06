@@ -77,13 +77,15 @@ var RequestModal = (function () {
               </div>
               <div className='modal-body'>
                 <h3>We&apos;ll notify you when the document is made available.</h3>
-                <div className={ errorClassName }>{ errorMessage }</div>
-                <input type='email' name='email' className='form-control'
+                <input type='email' name='email' className='form-control email-input'
                   placeholder='Please enter email address' onKeyDown={ this.onKeyDown } />
+                <div className={ errorClassName }>{ errorMessage }</div>
               </div>
               <div className='modal-footer'>
                 <button type='button' className='btn btn-default' data-dismiss='modal'>Cancel</button>
-                <button type='button' className='btn btn-primary' onClick={ this.onClick }>Submit</button>
+                <button type='button' className='btn btn-primary btn-request-submit' onClick={ this.onClick }>
+                  Submit
+                </button>
               </div>
             </div>
           </div>
