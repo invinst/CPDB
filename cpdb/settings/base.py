@@ -305,7 +305,6 @@ TWITTER_CONSUMER_KEY = os.environ.get('TWITTER_CONSUMER_KEY', '')
 TWITTER_CONSUMER_SECRET = os.environ.get('TWITTER_CONSUMER_SECRET', '')
 TWITTER_APP_TOKEN_KEY = os.environ.get('TWITTER_APP_TOKEN_KEY', '')
 TWITTER_APP_TOKEN_SECRET = os.environ.get('TWITTER_APP_TOKEN_SECRET', '')
-TWITTER_SCREEN_NAME = os.environ.get('TWITTER_SCREEN_NAME', '')
 TWITTER_ENTITY_URL_BASE = 'https://cpdb.co'  # Temporary solution for getting domain name in twitterbot
 
 DJANGO_ENV = 'prod'
