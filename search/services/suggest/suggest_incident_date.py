@@ -119,7 +119,7 @@ class SuggestTimeOfDay(SuggestBase):
                             category='incident_date_time_of_day',
                             value=entry,
                             display_category='Incident Time',
-                            display_value=entry,
+                            display_value=entry.capitalize(),
                         )
                     )
                 )
