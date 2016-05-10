@@ -61,7 +61,6 @@ class OfficerAllegationQueryBuilder(object):
             'final_finding',
             'officer',
             'officer__star',
-            'officer__unit',
             'officer__rank',
             'officer__gender',
             'officer__race',
@@ -90,6 +89,12 @@ class OfficerAllegationQueryBuilder(object):
                     queries &= sub_queries
 
         return queries
+
+    def _q_officer_unit(self, query_params):
+        if 'officer__unit' in query_params:
+            unit_name = query_params['officer__unit']
+            return Q(officer__unit__unit_name=unit_name)
+        return Q()
 
     def _q_areas_id(self, query_params):
         if 'allegation__areas__id' in query_params:

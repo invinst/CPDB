@@ -30,7 +30,6 @@ class TwitterBot:
         is_ok = self.handle_stream(stream)
 
         bot_log('Ready to receive tweet')
-
         while not is_ok and settings.DJANGO_ENV != 'test':
             is_ok = self.handle_stream(stream)
 

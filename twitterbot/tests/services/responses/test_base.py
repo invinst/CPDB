@@ -24,6 +24,21 @@ class BaseResponsesTestCase(SimpleTestCase):
         len(messages).should.equal(1)
         messages[0].message.should.contain(officer.display_name)
 
+    def test_build_responses_display_star(self):
+        ResponseTemplateFactory(
+            response_type='officer',
+            message='{% if obj.star %}(badge no. {{obj.star|stringformat:\'d\'}}) {% endif %}{{obj.display_name}}'
+        )
+        officer = OfficerFactory(officer_first='John', officer_last='Doe', star=123)
+
+        responses = BaseResponses([])
+        responses.RESPONSE_TYPE = 'officer'
+        responses.get_instances_from_names = MagicMock(return_value=[TwitterResponseFactory(entity=officer)])
+        messages = responses.build_responses()
+
+        len(messages).should.equal(1)
+        messages[0].message.should.contain('(badge no. 123) John Doe')
+
     def test_build_responses_log_not_existed_response_error(self):
         expected_error = 'Response type officer does not exist in database'
 

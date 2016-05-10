@@ -16,6 +16,7 @@ HashUtil = require('utils/HashUtil');
 MapFacade = require('utils/MapFacade');
 require('utils/tests/should/SharedExample');
 require('tests/examples/components/LoadablePage');
+require('tests/examples/components/SearchablePage');
 require('utils/tests/should/React');
 
 
@@ -154,8 +155,10 @@ describe('ComplaintPageComponent', function () {
       var officerAllegation1 = f.create('OfficerAllegation', {'cat': otherCategory, 'officer': officer1});
       var officerAllegation2 = f.create('OfficerAllegation', {'cat': otherCategory, 'officer': officer2});
       var officerAllegation3 = f.create('OfficerAllegation', {'cat': otherCategory, 'officer': officer3});
-      allegation = f.create('Allegation', {'officer_allegation_set': [officerAllegation, officerAllegation3,
-        officerAllegation1, officerAllegation2]});
+      allegation = f.create('Allegation', {
+        'officer_allegation_set': [officerAllegation, officerAllegation3,
+          officerAllegation1, officerAllegation2]
+      });
 
       data = f.create('ComplaintPageData', {
         'allegation': allegation
@@ -185,8 +188,10 @@ describe('ComplaintPageComponent', function () {
       var officerAllegation3 = f.create('OfficerAllegation', {'cat': category, 'officer': officer3});
 
       var otherOfficerAllegation = f.create('OfficerAllegation', {'cat': otherCategory, 'officer': officer3});
-      allegation = f.create('Allegation', {'officer_allegation_set': [otherOfficerAllegation, officerAllegation3,
-          officerAllegation1, officerAllegation2]});
+      allegation = f.create('Allegation', {
+        'officer_allegation_set': [otherOfficerAllegation, officerAllegation3,
+          officerAllegation1, officerAllegation2]
+      });
       data = f.create('ComplaintPageData', {
         'allegation': allegation
       });
@@ -221,6 +226,16 @@ describe('ComplaintPageComponent', function () {
       complaintPage.setState({'loading': false, 'found': true, 'toggle': false, 'data': data});
       ReactTestUtils.scryRenderedDOMComponentsWithClass(complaintPage, 'toggle-page content').should.have.length(0);
       ReactTestUtils.scryRenderedComponentsWithType(complaintPage, SearchablePage).should.have.length(1);
+    });
+
+    describe('should act like a searchable page', function () {
+      (function () {
+        var complaintPage = ReactTestUtils.renderIntoDocument(
+          <ComplaintPage params={ params }/>
+        );
+        complaintPage.setState({'loading': false, 'found': true, 'toggle': false});
+        return complaintPage;
+      }).should.behaveLike('a searchable page');
     });
   });
 

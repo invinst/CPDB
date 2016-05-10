@@ -6,6 +6,8 @@ from django.views.generic.base import View
 from common.json_serializer import JSONSerializer
 from common.models import Officer, PoliceWitness, OfficerAllegation
 
+from officer.serializers import OfficerDetailSerializer
+
 
 class OfficerDetailView(View):
     def get(self, request):
@@ -47,7 +49,7 @@ class OfficerDetailView(View):
             related_officers, key=lambda n: n['num_allegations'], reverse=True)
 
         return HttpResponse(JSONSerializer().serialize({
-            'officer': officer,
+            'officer': OfficerDetailSerializer(officer, context={'request': request}).data,
             'officer_allegations': officer_allegations,
             'relatedOfficers': related_officers,
             'has_map': has_map

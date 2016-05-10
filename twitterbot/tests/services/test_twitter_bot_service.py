@@ -11,7 +11,7 @@ from twitterbot.services.twitter_bot_service import TwitterBotService
 
 class TwitterBotServiceTestCase(SimpleTestCase):
     def setUp(self):
-        self.service = TwitterBotService(MagicMock())
+        self.service = TwitterBotService(api=MagicMock(), current_user=MagicMock(screen_name='tweeter'))
 
     def test_build_responses(self):
         officer = OfficerFactory()
