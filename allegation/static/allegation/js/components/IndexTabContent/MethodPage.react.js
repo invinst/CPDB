@@ -16,8 +16,8 @@ var MethodPage = React.createClass({
                 and we welcome community collaboration.
               </p>
               <p>
-                If you see an allegation you’d like to know more about, you can download a
-                <a href='https://assets.documentcloud.org/documents/2510275/sample-foia-cpd-crs.pdf'>sample</a>
+                If you see an allegation you’d like to know more about, you can download a&nbsp;
+                <a href='https://assets.documentcloud.org/documents/2510275/sample-foia-cpd-crs.pdf'>sample</a>&nbsp;
                 request for the full Complaint Register file, fill in the missing information,
                 and email the PDF to <a href='mailto:FOIA@chicagopolice.org'>FOIA@chicagopolice.org</a>.
                 Before being released, each Complaint Register file must have all personal information for
@@ -26,7 +26,7 @@ var MethodPage = React.createClass({
               </p>
               <p>
                 If you receive a response, you can contribute by forwarding the response you receive
-                from the FOIA officer, including the original attachments. Reach us at
+                from the FOIA officer, including the original attachments. Reach us at&nbsp;
                 <a href='mailto:records@invisibleinstitute.com'>records@invisibleinstitute.com</a>.
               </p>
             </div>
@@ -57,7 +57,7 @@ var MethodPage = React.createClass({
           <div className='container'>
             <div className='col-sm-12'>
               <p>
-                If you believe there is an error or problem with the data,
+                If you believe there is an error or problem with the data,&nbsp;
                 <a href='http://goo.gl/forms/RHCPGdNhYw'>please report it</a> to us.
                 We will verify that the website accurately reflects the data the city provided to us.
                 We will also alert the city’s Freedom of Information officer to the potential mistake
@@ -86,7 +86,7 @@ var MethodPage = React.createClass({
               </p>
               <p>
                 One example is a complaint filed against Officer Robert Drell, who was the subject of
-                a misconduct allegation in May 2009. You can view the data we have under the
+                a misconduct allegation in May 2009. You can view the data we have under the&nbsp;
                 <a href='http://cpdb.co/data/bZ5Y9L/allegations-of-police-misconduct-in-chicago'>CRID 1062099</a>.
                 The Category, Finding, and Final Outcome of this allegation are “Unknown.”
                 However, Officer Drell was suspended in October, 2014 and had a hearing in front of
@@ -109,10 +109,10 @@ var MethodPage = React.createClass({
                 What are the “Bond” and “Moore” datasets, and how do they affect the data?
               </h2>
               <p>
-                The
+                The&nbsp;
                 <a href='https://www.documentcloud.org/documents/1237492-bond-list-of-662-police-officers.html'>
                   Bond data
-                </a> was produced by the city of Chicago in
+                </a> was produced by the city of Chicago in&nbsp;
                 <a href='http://www.gpo.gov/fdsys/pkg/USCOURTS-ilnd-1_04-cv-02617'>
                   Bond v. Utreas
                 </a>, and includes the names of 662 Chicago police officers with
@@ -121,10 +121,10 @@ var MethodPage = React.createClass({
                 the outcome of the investigation, and any punishment served.
               </p>
               <p>
-                The
+                The&nbsp;
                 <a href='https://www.documentcloud.org/documents/1237391-moore-cc-list-1-120.html'>
                   Moore data
-                </a> was produced by the city of Chicago in
+                </a> was produced by the city of Chicago in&nbsp;
                 <a href='https://www.documentcloud.org/documents/2510218-documents-mx-final-motion-for-sanctions.html'>
                   Moore v. City of Chicago
                 </a>, and includes the names of 185 Chicago police officers with
