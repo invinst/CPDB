@@ -7,17 +7,17 @@ from common.models import Allegation, Area
 class Command(BaseCommand):
     help = 'GeoCode Allegations'
 
-    def add_arguments(self, parser):
-        parser.add_argument('--radius')
-
     def handle(self, *args, **options):
-        radius = int(options['radius']) or 1000
+        self.remove_all_school_grounds_from_allegation()
+        self.assign_school_grounds_to_allegation()
 
-        for allegation_id in Allegation.objects.filter(areas__type='school-grounds').values_list('id', flat=True):
-            Allegation(id=allegation_id).areas.filter(type='school-grounds').delete()
+    def remove_all_school_grounds_from_allegation(self):
+        for allegation in Allegation.objects.filter(areas__type='school-grounds'):
+            areas = allegation.areas.filter(type='school-grounds')
+            allegation.areas.remove(*areas)
 
+    def assign_school_grounds_to_allegation(self, radius=150):
         for school in Area.objects.filter(type='school-grounds').defer('created_at', 'modified_at'):
             center = school.polygon.centroid
-            for allegation_id in Allegation.objects.filter(
-                    point__distance_lte=(center, D(m=radius))).values_list('id', flat=True):
-                Allegation(id=allegation_id).areas.add(school)
+            for allegation in Allegation.objects.filter(point__distance_lte=(center, D(m=radius))):
+                allegation.areas.add(school)

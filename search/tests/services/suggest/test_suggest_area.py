@@ -1,5 +1,5 @@
 from allegation.factories import AreaFactory
-from search.services.suggest.suggest_area import SuggestArea
+from search.services.suggest.suggest_area import SuggestArea, SuggestSchools
 from search.tests.services.suggest.base_test_suggest import BaseSuggestTestCase
 
 
@@ -26,3 +26,9 @@ class AreaSuggestTestCase(BaseSuggestTestCase):
         suggest_entries[0]['suggest_value'].should.be.equal('{type}: {value}'.format(type=area3.type, value=area3.name))
         suggest_entries[1]['suggest_value'].should.be.equal('{type}: {value}'.format(type=area1.type, value=area1.name))
         suggest_entries[2]['suggest_value'].should.be.equal('{type}: {value}'.format(type=area2.type, value=area2.name))
+
+
+class SchoolSuggestTestCase(BaseSuggestTestCase):
+    def test_suggest_school(self):
+        suggestions = SuggestSchools.query('schoo')
+        suggestions.should.contain('Area Type')

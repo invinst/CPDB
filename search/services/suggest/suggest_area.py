@@ -30,3 +30,24 @@ class SuggestArea(SuggestBase):
     @classmethod
     def display_area(cls, type, id):
         return '{type}: {id}'.format(type=type, id=id)
+
+
+class SuggestSchools(SuggestBase):
+    @classmethod
+    def _query(cls, term):
+        entry = 'schools'
+        results = []
+        if term in entry:
+            results.append(
+                cls.entry_format(
+                        suggest_value=entry,
+                        tag_value=cls.build_tag_value(
+                            category='allegation__areas__type',
+                            value='school-grounds',
+                            display_category='Area Type',
+                            display_value=entry.capitalize(),
+                        )
+                    )
+            )
+
+        return {'Area Type': results}
