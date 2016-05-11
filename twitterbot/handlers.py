@@ -10,7 +10,7 @@ class CPDBTweetHandler(BaseTweetHandler):
         self.twitter_service = TwitterBotService(client=client)
 
     def on_tweet(self, tweet):
-        bot_log('Incoming tweet: {msg}'.format(msg=tweet.text))
+        bot_log(u'Incoming tweet: {msg}'.format(msg=tweet.text))
         responses = self.twitter_service.build_responses(tweet)
 
         for response in responses:
@@ -21,10 +21,10 @@ class CPDBTweetHandler(BaseTweetHandler):
                     outgoing_tweet = self.client.tweet(user_response)
 
                     if outgoing_tweet:
-                        bot_log('Outgoing tweet: {msg}'.format(msg=user_response))
+                        bot_log(u'Outgoing tweet: {msg}'.format(msg=user_response))
                         response.save_log(outgoing_tweet)
                     else:
-                        bot_log('Unable to send: {msg}'.format(msg=user_response))
+                        bot_log(u'Unable to send: {msg}'.format(msg=user_response))
             except:
                 # TODO: will try to find what to do here
                 pass
