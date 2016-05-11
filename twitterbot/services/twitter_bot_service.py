@@ -1,5 +1,3 @@
-from django.conf import settings
-
 from twitterbot.services.twitter_bot_names_service import TwitterBotNamesService
 from twitterbot.services.twitter_bot_responses_service import TwitterBotResponsesService
 from twitterbot.services.twitter_bot_statuses_service import TwitterBotStatusesService
@@ -7,8 +5,9 @@ from twitterbot.utils.log import bot_log
 
 
 class TwitterBotService:
-    def __init__(self, api):
+    def __init__(self, api, current_user):
         self.api = api
+        self.user = current_user
         self.statuses = []
         self.names = []
 
@@ -55,7 +54,7 @@ class TwitterBotService:
             screen_names.append(status.user.screen_name)
             screen_names += [x['screen_name'] for x in status.entities['user_mentions']]
 
-        return [x for x in set(screen_names) if x != settings.TWITTER_SCREEN_NAME]
+        return [x for x in set(screen_names) if x != self.user.screen_name]
 
     def get_responses(self):
         """

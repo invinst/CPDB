@@ -1,6 +1,5 @@
 from unittest.mock import MagicMock
 
-from django.conf import settings
 from mock import patch, call
 from tweepy.error import TweepError
 
@@ -11,12 +10,14 @@ from twitterbot.handlers import CPDBTweetHandler
 
 class CPDBTweetHandlerTestCase(SimpleTestCase):
     def setUp(self):
-        api = MagicMock(update_status=MagicMock(return_value=TweetFactory()))
+        update_status = MagicMock(return_value=TweetFactory())
+        me = MagicMock(return_value=MagicMock(id=123))
+        api = MagicMock(update_status=update_status, me=me)
         self.handler = CPDBTweetHandler(api)
 
     def test_not_response_to_own_tweets(self):
         self.handler.reply = MagicMock()
-        self.handler.on_status(TweetFactory(screen_name=settings.TWITTER_SCREEN_NAME))
+        self.handler.on_status(TweetFactory(user_id=123))
 
         self.handler.reply.called.should.be.false
 
@@ -29,6 +30,7 @@ class CPDBTweetHandlerTestCase(SimpleTestCase):
 
     def test_raise_error_on_not_ignored_errors(self):
         self.handler.reply = MagicMock(side_effect=ValueError)
+        self.handler.is_own_tweet = MagicMock(return_value=False)
         self.assertRaises(ValueError, self.handler.on_status, status=TweetFactory())
 
     def test_call_tweepy_update_status(self):

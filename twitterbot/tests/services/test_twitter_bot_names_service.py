@@ -1,4 +1,4 @@
-from unittest.mock import patch
+from unittest.mock import patch, MagicMock
 
 from allegation.factories import OfficerFactory
 from common.tests.core import SimpleTestCase
@@ -7,7 +7,8 @@ from twitterbot.services.twitter_bot_names_service import TwitterBotNamesService
 
 
 class TwitterBotNamesServiceTestCase(SimpleTestCase):
-    def test_get_all_names(self):
+    @patch('requests.get', return_value=MagicMock(content=b''))
+    def test_get_all_names(self, mock_requests_get):
         two_words_named_officer = OfficerFactory(officer_first='John', officer_last='Doe')
         three_words_named_officer = OfficerFactory(officer_first='John', officer_last='von Doe')
         hashtagged_officer = OfficerFactory(officer_first='Hash', officer_last='Tagged')
@@ -40,7 +41,8 @@ class TwitterBotNamesServiceTestCase(SimpleTestCase):
 
             names.should.contain(relevant_officer_2.display_name)
 
-    def test_do_not_get_names_from_unrelevant_articles(self):
+    @patch('requests.get', return_value=MagicMock(content=b''))
+    def test_do_not_get_names_from_unrelevant_articles(self, mock_requests_get):
         non_relevant_officer = OfficerFactory(officer_first='Non', officer_last='Relevant')
         non_relevant_linked_text = non_relevant_officer.display_name
         url = 'http://url.com'

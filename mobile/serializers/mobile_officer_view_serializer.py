@@ -5,6 +5,8 @@ from mobile.serializers.shared import AllegationCategorySerializer
 
 
 class FullOfficerSerializer(serializers.ModelSerializer):
+    unit = serializers.CharField(source='unit.unit_name', read_only=True)
+
     class Meta:
         model = Officer
         fields = (

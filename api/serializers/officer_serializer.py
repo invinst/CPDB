@@ -4,6 +4,8 @@ from common.models import Officer
 
 
 class OfficerSerializer(serializers.HyperlinkedModelSerializer):
+    unit = serializers.CharField(source='unit.unit_name', read_only=True)
+
     class Meta:
         model = Officer
         fields = ('absolute_url',
