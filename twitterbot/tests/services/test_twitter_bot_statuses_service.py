@@ -7,17 +7,18 @@ from twitterbot.services.twitter_bot_statuses_service import TwitterBotStatusesS
 
 class TwitterBotStatusesServiceTestCase(SimpleTestCase):
     def test_get_all_related_statuses(self):
-        replied_status = TweetFactory()
-        level_2_quoted_status = TweetFactory()
-        quoted_status = QuotedTweetFactory(quoted_status_id_str=level_2_quoted_status.id)
-        retweeted_status = TweetFactory()
+        replied_status = TweetFactory(user_id=124)
+        level_2_quoted_status = TweetFactory(user_id=124)
+        quoted_status = QuotedTweetFactory(quoted_status_id_str=level_2_quoted_status.id, user_id=124)
+        retweeted_status = TweetFactory(user_id=124)
         incoming_tweet = TweetFactory(
+            user_id=124,
             in_reply_to_status_id=replied_status.id,
             quoted_status=quoted_status,
             retweeted_status=retweeted_status
         )
         api = MagicMock(get_status=MagicMock(side_effect=[replied_status, level_2_quoted_status]))
-        service = TwitterBotStatusesService(api)
+        service = TwitterBotStatusesService(api, MagicMock(id=123))
 
         tweets = service.get_all_related_statuses(incoming_tweet)
 
@@ -45,7 +46,7 @@ class TwitterBotStatusesServiceTestCase(SimpleTestCase):
             text=text
         )
         api = MagicMock(get_status=MagicMock())
-        service = TwitterBotStatusesService(api)
+        service = TwitterBotStatusesService(api, MagicMock(id=123))
         converted = service._convert_quoted_status(quoted)
 
         converted.text.should.equal(text)
@@ -54,3 +55,19 @@ class TwitterBotStatusesServiceTestCase(SimpleTestCase):
         converted.quoted_status.should.equal(quoted_status)
         converted.quoted_status_id_str.should.equal(quoted_status_id_str)
         converted.id.should.equal(id)
+
+    def test_ignore_self_tweets(self):
+        retweeted = TweetFactory(user_id=124)
+        converted_quoted = TweetFactory(user_id=124)
+        requested_quoted = TweetFactory(user_id=124)
+        status = TweetFactory(retweeted_status=retweeted, quoted_status=MagicMock())
+        api = MagicMock(get_status=MagicMock(get_status=MagicMock(return_value=requested_quoted)))
+        service = TwitterBotStatusesService(api, user=MagicMock(id=124))
+        service._convert_quoted_status = MagicMock(return_value=converted_quoted)
+
+        statuses = service.get_all_related_statuses(status)
+
+        statuses.should.contain(status)
+        statuses.shouldnt.contain(converted_quoted)
+        statuses.shouldnt.contain(requested_quoted)
+        statuses.shouldnt.contain(retweeted)

@@ -6,11 +6,15 @@ from twitterbot.constants import QUOTED_STATUS_DATE_FORMAT
 
 
 class TwitterBotStatusesService:
-    def __init__(self, api):
+    def __init__(self, api, user):
         self.api = api
+        self.user = user
 
     def get_all_related_statuses(self, status):
-        statuses = [status]
+        if self.is_self_tweet(status):
+            return []
+        else:
+            statuses = [status]
 
         if getattr(status, 'in_reply_to_status_id', None):
             replied_status = self.api.get_status(status.in_reply_to_status_id)
@@ -33,3 +37,6 @@ class TwitterBotStatusesService:
         new_status['created_at'] = datetime.strptime(new_status['created_at'], QUOTED_STATUS_DATE_FORMAT)\
             .replace(tzinfo=None)
         return type('Status', (object, ), new_status)
+
+    def is_self_tweet(self, status):
+        return status.user.id == self.user.id
