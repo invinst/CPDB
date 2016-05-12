@@ -9,6 +9,7 @@ var u = require('utils/HelperUtil');
 var RequestStore = require('stores/ComplaintPage/RequestStore');
 var RequestEmailResourceUtil = require('utils/RequestEmailResourceUtil.js');
 var RequestDocumentErrorPresenter = require('presenters/RequestDocumentErrorPresenter');
+var TickIcon = require('components/Shared/TickIcon');
 
 
 var RequestModalContent = React.createClass(objectAssign(Base(RequestStore), {
@@ -47,14 +48,12 @@ var RequestModalContent = React.createClass(objectAssign(Base(RequestStore), {
         <div className='request-modal-content'>
           <div className='modal-content content'>
             <div className='modal-header'>
-              <div className='icon icon-close align-right' onClick={ modalAction('close') }>
-              </div>
             </div>
             <div className={ requestFormClass }>
               <div className='modal-body'>
                 <div className='message-header'>We&apos;ll notify you when the document is made available.</div>
-                <div className={ errorMsgClass }>{ errorPresenter.errorMessage }</div>
                 <input className='email-input' ref='email' type='email' placeholder='Your email address' />
+                <div className={ errorMsgClass }>{ errorPresenter.errorMessage }</div>
                 <button className='btn-cancel btn btn-outlined'
                   onClick={ modalAction('close') }>Cancel
                 </button>
@@ -71,6 +70,9 @@ var RequestModalContent = React.createClass(objectAssign(Base(RequestStore), {
                   and e-mail FOIA@chicagopolice.org. We will wait to hear back.
                 </p>
                 <p>If we receive a responsive document, we will update this database. Check back in a few weeks!</p>
+                <div className='success-icon'>
+                  <TickIcon />
+                </div>
               </div>
             </div>
           </div>
