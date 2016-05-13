@@ -5,6 +5,10 @@ from common.models import Allegation, Area
 
 
 class Command(BaseCommand):
+    '''
+    This command will remove all the current school grounds in database, and then re-assign these school grounds to
+    each allegation, with radius is supplied, default is 150
+    '''
     help = 'GeoCode Allegations'
 
     def handle(self, *args, **options):

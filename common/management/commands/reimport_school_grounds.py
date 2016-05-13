@@ -5,6 +5,11 @@ from common.models import Area
 
 
 class Command(BaseCommand):
+    '''
+    This command will get the file parameter is the shp file (*.shp), you can download this file from:
+    http://www.cityofchicago.org/city/en/depts/doit/dataset/school_grounds.html
+    It will remove all the school grounds data and re-import this data with the new ones.
+    '''
     help = 'Re-import schools data'
 
     def add_arguments(self, parser):
