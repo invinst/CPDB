@@ -1,41 +1,24 @@
-import tweepy
+from responsebot.handlers.base import BaseTweetHandler
 
 from twitterbot.services.twitter_bot_service import TwitterBotService
 from twitterbot.utils.log import bot_log
 
-ERR_DUPLICATED_RESPONSE = 187
-IGNORED_ERROR_CODES = [
-    ERR_DUPLICATED_RESPONSE,
-]
 
+class CPDBTweetHandler(BaseTweetHandler):
+    def __init__(self, client, *args, **kwargs):
+        super(CPDBTweetHandler, self).__init__(client=client, *args, **kwargs)
+        self.twitter_service = TwitterBotService(client=client)
 
-class CPDBTweetHandler(tweepy.StreamListener):
-    def __init__(self, api, *args, **kwargs):
-        super(CPDBTweetHandler, self).__init__(api=api, *args, **kwargs)
-        self.user = api.me()
-        self.twitter_service = TwitterBotService(api=api, current_user=self.user)
-
-    def on_status(self, status):
-        if self.is_own_tweet(status):
-            return
-
-        try:
-            self.reply(status)
-        except tweepy.TweepError as e:
-            if e.api_code in IGNORED_ERROR_CODES:
-                return
-            raise
-
-    def reply(self, status):
-        bot_log('Incoming tweet: {msg}'.format(msg=status.text))
-        responses = self.twitter_service.build_responses(status)
+    def on_tweet(self, tweet):
+        bot_log('Incoming tweet: {msg}'.format(msg=tweet.text))
+        responses = self.twitter_service.build_responses(tweet)
 
         for response in responses:
             try:
                 user_responses = response.build_user_responses()
 
                 for user_response in user_responses:
-                    outgoing_tweet = self.api.update_status(user_response)
+                    outgoing_tweet = self.client.tweet(user_response)
 
                     if outgoing_tweet:
                         bot_log('Outgoing tweet: {msg}'.format(msg=user_response))
@@ -45,6 +28,3 @@ class CPDBTweetHandler(tweepy.StreamListener):
             except:
                 # TODO: will try to find what to do here
                 pass
-
-    def is_own_tweet(self, status):
-        return status.user.id == self.user.id

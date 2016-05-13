@@ -58,6 +58,7 @@ oauth2==1.9.0.post1
 oauthlib==1.0.3
 redis==2.10.3
 requests==2.7.0
+responsebot==0.2.1
 selenium==2.53.1
 simplejson==3.7.3
 six==1.9.0
@@ -66,7 +67,6 @@ SQLAlchemy==1.0.4
 sure==1.2.10
 testtools==1.8.0
 traceback2==1.4.0
-tweepy==3.5.0
 Unidecode==0.4.18
 unittest2==1.0.1
 wagtail==1.4.1

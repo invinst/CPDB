@@ -3,7 +3,7 @@ from twitterbot.models import TwitterBotTextSource
 
 
 class TwitterBotTextSourceTestCase(SimpleTestCase):
-    def test_adding_sources_for_status_text(self):
+    def test_adding_sources_for_tweet_text(self):
         text = 'Something Jason Van Dyke something'
 
         text_source = TwitterBotTextSource(text=text, source='text')
