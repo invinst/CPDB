@@ -7,20 +7,23 @@ from twitterbot.services.twitter_bot_statuses_service import TwitterBotStatusesS
 
 class TwitterBotStatusesServiceTestCase(SimpleTestCase):
     def test_get_all_related_statuses(self):
+        replied_status = TweetFactory()
         level_2_quoted_status = TweetFactory()
-        quoted_status = QuotedTweetFactory(quoted_status_id_str=level_2_quoted_status.id, id=123)
+        quoted_status = QuotedTweetFactory(quoted_status_id_str=level_2_quoted_status.id)
         retweeted_status = TweetFactory()
         incoming_tweet = TweetFactory(
+            in_reply_to_status_id=replied_status.id,
             quoted_status=quoted_status,
             retweeted_status=retweeted_status
         )
-        api = MagicMock(get_status=MagicMock(return_value=level_2_quoted_status))
+        api = MagicMock(get_status=MagicMock(side_effect=[replied_status, level_2_quoted_status]))
         service = TwitterBotStatusesService(api)
 
         tweets = service.get_all_related_statuses(incoming_tweet)
 
         tweets.should.contain(level_2_quoted_status)
         tweets.should.contain(retweeted_status)
+        tweets.should.contain(replied_status)
         tweets.should.contain(incoming_tweet)
 
         [x.id for x in tweets].should.contain(quoted_status['id'])

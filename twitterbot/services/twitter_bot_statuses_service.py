@@ -12,6 +12,10 @@ class TwitterBotStatusesService:
     def get_all_related_statuses(self, status):
         statuses = [status]
 
+        if getattr(status, 'in_reply_to_status_id', None):
+            replied_status = self.api.get_status(status.in_reply_to_status_id)
+            statuses += self.get_all_related_statuses(replied_status)
+
         if getattr(status, 'retweeted_status', None):
             statuses += self.get_all_related_statuses(status.retweeted_status)
 
