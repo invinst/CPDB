@@ -70,7 +70,7 @@ var RequestModalContent = React.createClass(objectAssign(Base(RequestStore), {
                   and e-mail FOIA@chicagopolice.org. We will wait to hear back.
                 </p>
                 <p>If we receive a responsive document, we will update this database. Check back in a few weeks!</p>
-                <div className='success-icon'>
+                <div className='success-icon' onClick={ modalAction('close') }>
                   <TickIcon />
                 </div>
               </div>

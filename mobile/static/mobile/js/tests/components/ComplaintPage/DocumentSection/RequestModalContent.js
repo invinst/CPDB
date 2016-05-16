@@ -38,6 +38,26 @@ describe('RequestModalContentComponent', function () {
     action.called.should.be.true();
   });
 
+  it('should call context action when click the checkMark in thank you', function () {
+    var requestModal, checkMark, RequestModalContentStub;
+    var action = sinon.spy();
+    var context = {
+      'modalName': 'requestModal',
+      'action': action
+    };
+
+    RequestModalContentStub = ReactStubContext(RequestModalContent, context);
+
+    requestModal = ReactTestUtils.renderIntoDocument(
+      <RequestModalContentStub />
+    );
+
+    checkMark = ReactTestUtils.findRenderedDOMComponentWithClass(requestModal, 'success-icon');
+    ReactTestUtils.Simulate.click(checkMark);
+
+    action.called.should.be.true();
+  });
+
   it('should send register email action when clicking submit button', function () {
     var requestModal, submitBtn;
     var mock = sinon.mock(RequestEmailResourceUtil);
