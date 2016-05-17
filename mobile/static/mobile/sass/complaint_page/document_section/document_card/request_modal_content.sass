@@ -6,31 +6,60 @@
   width: 100%
   height: 100%
   overflow: auto
-  background-color: rgba(0,0,0,0.4)
+  background-color: rgba(0,0,0,0.3)
+  input, button
+    font-family:  -apple-system, 'San Francisco', 'Roboto', sans-serif
   .modal-content
     position: relative
     background-color: $section-background
-    margin: auto
-    padding: 5px
-    border: 1px solid #888
-    width: 100%
-    height: 250px
+    padding: 0px 20px 0px 20px
+    margin: 3%
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19)
+    .thank-you
+      .message-header
+        font-size: 15px
+        font-weight: 600
+        padding-bottom: 15px
+        text-align: center
+      .success-icon
+        text-align: center
+        margin: 15px 0px 22px 0px
+    .btn
+      height: 32px
+      width: 64px
+      border-radius: 0
+      margin: 6px auto 22px
     .btn-submit
-      margin-left: 2px
+      margin-left: 12px
+      color: $request-modal-submit-button-color
+      border-color: $request-modal-submit-button-border-color
     .error
-      font-size: 15px
+      font-size: 13px
       padding-bottom: 10px
       color: $error-color
       font-style: italic
-    .icon
-      width: 100%
-      line-height: 24px
-      font-size: 25px
-    .message-header
-      font-size: 20px
-      font-weight: 600
-      padding-bottom: 11px
+    .modal-header
+      margin-bottom: 22px
+    .modal-body
+      .message-header
+        font-size: 15px
+        font-weight: 600
+        padding-bottom: 15px
+      .email-input
+        padding: 23px 10px
+        font-size: 13px
+        margin-bottom: 11px
+        border-radius: 0
+        background-color: $content-background
+      .email-input::-webkit-input-placeholder
+        font-family:  -apple-system, 'San Francisco', 'Roboto', sans-serif
+        font-size: 13px
+      .email-input::-moz-placeholder
+        font-family:  -apple-system, 'San Francisco', 'Roboto', sans-serif
+        font-size: 13px
+      .email-input:-moz-placeholder
+        font-family:  -apple-system, 'San Francisco', 'Roboto', sans-serif
+        font-size: 13px
     .hide
       display: none
     .message-content

@@ -28,7 +28,7 @@ class OfficerIndex(SuggestionBaseIndex, indexes.Indexable):
 
     officer_name = CustomEdgeNgramField(model_attr='display_name')
     officer_star = CustomIntegerNgramField(model_attr='star', null=True)
-    officer_unit = CustomEdgeNgramField(model_attr='unit', null=True)
+    officer_unit = CustomEdgeNgramField(model_attr='unit__unit_name', null=True)
 
     officer_id = indexes.IntegerField(model_attr='id')
     officer_allegations_count = indexes.IntegerField(model_attr='allegations_count')

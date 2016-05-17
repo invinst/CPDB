@@ -19,12 +19,12 @@ class ResponseTemplateFactory(factory.django.DjangoModelFactory):
 
 class TweetFactory:
     def __init__(self, screen_name='tweeter', text='Random text here', retweeted_status=None, quoted_status=None,
-                 quoted_status_id_str='', **kwargs):
+                 quoted_status_id_str='', user_id=123, **kwargs):
         self.text = text
         self.entities = {'user_mentions': kwargs.get('user_mentions', [{'screen_name': screen_name}]),
                          'urls': kwargs.get('urls', []),
                          'hashtags': kwargs.get('hashtags', [])}
-        self.user = type('obj', (object,), {'screen_name': screen_name})
+        self.user = type('obj', (object,), {'screen_name': screen_name, 'id': user_id})
         self.retweeted_status = retweeted_status
         self.quoted_status = quoted_status
         self.quoted_status_id_str = quoted_status_id_str
@@ -33,13 +33,13 @@ class TweetFactory:
 
 
 def QuotedTweetFactory(screen_name='tweeter', text='Random text here', retweeted_status=None, quoted_status=None,
-                       quoted_status_id_str='', **kwargs):
+                       quoted_status_id_str='', user_id=123, **kwargs):
     return {
         'text': text,
         'entities': {'user_mentions': kwargs.get('user_mentions', [{'screen_name': screen_name}]),
                      'urls': kwargs.get('urls', []),
                      'hashtags': kwargs.get('hashtags', [])},
-        'user': {'screen_name': screen_name},
+        'user': {'screen_name': screen_name, 'id': user_id},
         'retweeted_status': retweeted_status,
         'quoted_status': quoted_status,
         'quoted_status_id_str': quoted_status_id_str,

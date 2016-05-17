@@ -32,7 +32,7 @@ class TwitterBotNamesService:
         texts = []
 
         for url in urls:
-            response = requests.get(url['expanded_url'])
+            response = requests.get(url['expanded_url'], headers={'User-Agent': 'Mozilla/5.0'})
             html = response.content.decode('utf-8')
             soup = BeautifulSoup(html)
             [s.extract() for s in soup([

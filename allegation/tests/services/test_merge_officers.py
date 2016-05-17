@@ -49,15 +49,22 @@ class MergeOfficersTestCase(SimpleTestCase):
         officer_1 = OfficerFactory()
         officer_2 = OfficerFactory()
         officer_histories_1 = OfficerHistoryFactory.create_batch(2, officer=officer_1)
-        officer_histories_2 = OfficerHistoryFactory.create_batch(2, officer=officer_2)
-        intersect_as_of = datetime.date.today() - datetime.timedelta(days=1)
-        oh_1 = OfficerHistoryFactory(officer=officer_1, effective_date=intersect_as_of, unit=None, rank=None, star=None)
-        oh_2 = OfficerHistoryFactory(officer=officer_2, effective_date=intersect_as_of)
+        officer_histories_2 = OfficerHistoryFactory.create_batch(
+            2, officer=officer_1, effective_date=None, end_date=None)
+        officer_histories_3 = OfficerHistoryFactory.create_batch(2, officer=officer_2)
+        intersect_effective_date = datetime.date.today() - datetime.timedelta(days=1)
+        intersect_end_date = datetime.date.today()
+        oh_1 = OfficerHistoryFactory(
+            officer=officer_1, effective_date=intersect_effective_date, unit=None, rank=None, star=None,
+            end_date=intersect_end_date)
+        oh_2 = OfficerHistoryFactory(
+            officer=officer_2, effective_date=intersect_effective_date, end_date=intersect_end_date)
 
         merge_officer_history(officer_1, officer_2)
 
         oh_1.refresh_from_db()
-        set(officer_1.officerhistory_set.all()).should.equal(set(officer_histories_1 + officer_histories_2 + [oh_1]))
+        set(officer_1.officerhistory_set.all()).should.equal(
+            set(officer_histories_1 + officer_histories_2 + officer_histories_3 + [oh_1]))
 
         for field in ['unit', 'rank', 'star']:
             getattr(oh_1, field).should.equal(getattr(oh_2, field))

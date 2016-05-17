@@ -1,5 +1,9 @@
 var RequestDocumentErrorPresenter = function (errors) {
-  var errorMessage = function () {
+  var errorMessage;
+
+  errors = errors || {};
+
+  errorMessage = function () {
     if ('email' in errors) {
       return 'Please provide a valid email address.';
     }

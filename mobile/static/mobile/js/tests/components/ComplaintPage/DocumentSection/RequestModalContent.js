@@ -27,26 +27,6 @@ describe('RequestModalContentComponent', function () {
     RequestModalContent.should.be.renderable();
   });
 
-  it('should call context action when clicking close icon', function () {
-    var requestModal, closeBtn, RequestModalContentStub;
-    var action = sinon.spy();
-    var context = {
-      'modalName': 'requestModal',
-      'action': action
-    };
-
-    RequestModalContentStub = ReactStubContext(RequestModalContent, context);
-
-    requestModal = ReactTestUtils.renderIntoDocument(
-      <RequestModalContentStub />
-    );
-
-    closeBtn = ReactTestUtils.findRenderedDOMComponentWithClass(requestModal, 'icon-close');
-    ReactTestUtils.Simulate.click(closeBtn);
-
-    action.called.should.be.true();
-  });
-
   it('should call context action when clicking cancel button', function () {
     var requestModal, cancelBtn, RequestModalContentStub;
     var action = sinon.spy();
@@ -63,6 +43,26 @@ describe('RequestModalContentComponent', function () {
 
     cancelBtn = ReactTestUtils.findRenderedDOMComponentWithClass(requestModal, 'btn-cancel');
     ReactTestUtils.Simulate.click(cancelBtn);
+
+    action.called.should.be.true();
+  });
+
+  it('should call context action when click the checkMark in thank you', function () {
+    var requestModal, checkMark, RequestModalContentStub;
+    var action = sinon.spy();
+    var context = {
+      'modalName': 'requestModal',
+      'action': action
+    };
+
+    RequestModalContentStub = ReactStubContext(RequestModalContent, context);
+
+    requestModal = ReactTestUtils.renderIntoDocument(
+      <RequestModalContentStub />
+    );
+
+    checkMark = ReactTestUtils.findRenderedDOMComponentWithClass(requestModal, 'success-icon');
+    ReactTestUtils.Simulate.click(checkMark);
 
     action.called.should.be.true();
   });

@@ -109,7 +109,7 @@ class AllegationsDownloadTestCase(SimpleTestCase):
             mock_worksheet.write.assert_any_call(1, 3, officer.gender)
             mock_worksheet.write.assert_any_call(1, 4, officer.race)
             mock_worksheet.write.assert_any_call(1, 5, officer.appt_date)
-            mock_worksheet.write.assert_any_call(1, 6, officer.unit)
+            mock_worksheet.write.assert_any_call(1, 6, officer.unit.unit_name)
             mock_worksheet.write.assert_any_call(1, 7, officer.rank)
             mock_worksheet.write.assert_any_call(1, 8, officer.star)
             mock_worksheet.write.assert_any_call(1, 9, officer.age)
