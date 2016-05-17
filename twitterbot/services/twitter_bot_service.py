@@ -35,7 +35,7 @@ class TwitterBotService:
         :param status: incoming status
         :return: list of all statuses we want to process
         """
-        self.statuses = TwitterBotStatusesService(self.api).get_all_related_statuses(status)
+        self.statuses = TwitterBotStatusesService(self.api, self.user).get_all_related_statuses(status)
 
     def cache_names(self):
         """

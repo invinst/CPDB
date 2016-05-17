@@ -55,3 +55,10 @@ class TwitterBotNamesServiceTestCase(SimpleTestCase):
             names = service.get_all_names()
 
             names.shouldnt.contain(non_relevant_officer.display_name)
+
+    def test_build_text_source_ignore_retweets(self):
+        service = TwitterBotNamesService([TweetFactory(retweeted_status=TweetFactory())])
+
+        text_sources = service.build_text_sources()
+
+        text_sources.should.be.empty

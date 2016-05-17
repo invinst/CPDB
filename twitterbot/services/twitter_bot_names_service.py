@@ -22,9 +22,10 @@ class TwitterBotNamesService:
     def build_text_sources(self):
         text_sources = []
         for status in self.statuses:
-            text_sources.append(TwitterBotTextSource(text=status.text, source='text'))
-            text_sources += self.parse_linked_websites(status.entities['urls'])
-            text_sources += self.parse_hashtags(status)
+            if not getattr(status, 'retweeted_status', None):
+                text_sources.append(TwitterBotTextSource(text=status.text, source='text'))
+                text_sources += self.parse_linked_websites(status.entities['urls'])
+                text_sources += self.parse_hashtags(status)
 
         return text_sources
 
