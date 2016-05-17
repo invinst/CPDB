@@ -9,6 +9,7 @@ var u = require('utils/HelperUtil');
 var RequestStore = require('stores/ComplaintPage/RequestStore');
 var RequestEmailResourceUtil = require('utils/RequestEmailResourceUtil.js');
 var RequestDocumentErrorPresenter = require('presenters/RequestDocumentErrorPresenter');
+var InterfaceText = require('components/Shared/InterfaceText.react');
 
 
 var RequestModalContent = React.createClass(objectAssign(Base(RequestStore), {
@@ -64,13 +65,11 @@ var RequestModalContent = React.createClass(objectAssign(Base(RequestStore), {
               </div>
             </div>
             <div className={ thankYouClass }>
-              <div className='message-header'>Thank you</div>
-              <div className='message-content'>
-                <p>
-                  Someone from our team will write a Freedom of Information Act Request for this document,
-                  and e-mail FOIA@chicagopolice.org. We will wait to hear back.
-                </p>
-                <p>If we receive a responsive document, we will update this database. Check back in a few weeks!</p>
+              <div className='modal-body'>
+                <div className='message-header'>Thank you</div>
+                <div className='message-content'>
+                  <InterfaceText identifier='thank-you-message' placeholderLength='350'/>
+                </div>
               </div>
             </div>
           </div>

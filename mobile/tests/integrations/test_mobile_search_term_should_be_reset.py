@@ -8,7 +8,7 @@ class MobileSearchTermShouldBeResetTest(BaseLivePhoneTestCase):
         self.fill_in('.input-text', query)
 
     def wait_for_suggestion_list(self):
-        self.until(lambda: self.find('.suggestion-list li'))
+        self.until(lambda: self.find('.officer-complaint-item'))
 
     def get_current_search_term(self):
         return self.find('.input-text').text

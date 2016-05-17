@@ -81,7 +81,7 @@ class MobileOfficerPageTest(BaseLivePhoneTestCase):
 
     def test_bad_officer_pk(self):
         bad_officer_pk = 1234
-        not_match_text = 'The id {officer_id} is not recorded in out database.'.format(officer_id=bad_officer_pk)
+        not_match_text = 'Sorry'
 
         self.visit_officer_page(bad_officer_pk)
 
