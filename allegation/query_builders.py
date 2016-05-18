@@ -102,6 +102,12 @@ class OfficerAllegationQueryBuilder(object):
             return Q(allegation__areas__id__in=val)
         return Q()
 
+    def _q_areas_type(self, query_params):
+        if 'allegation__areas__type' in query_params:
+            val = query_params.getlist('allegation__areas__type')
+            return Q(allegation__areas__type__in=val)
+        return Q()
+
     def _q_officer_names(self, query_params):
         queries = Q()
         for name in query_params.getlist('officer_name', []):

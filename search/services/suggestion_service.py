@@ -14,7 +14,7 @@ from search.services.suggest.suggest_allegation_category import (
     SuggestAllegationCategoryCategory,
     SuggestAllegationCategoryCat,
     SuggestAllegationCategoryOnDuty)
-from search.services.suggest.suggest_area import SuggestArea
+from search.services.suggest.suggest_area import SuggestArea, SuggestSchools
 from search.services.suggest.suggest_has import SuggestHas
 from search.services.suggest.suggest_investigator import SuggestInvestigator
 from search.services.suggest.suggest_investigator_agency import SuggestInvestigatorAgency
@@ -64,6 +64,7 @@ class SuggestionService(object):
             SuggestSessionAlias,
             SuggestHas,
             SuggestInvestigatorAgency,
+            SuggestSchools
         ]
 
     def _make_suggestion(self, q):
