@@ -4,7 +4,8 @@ from search.models.alias import Alias
 from search.services.suggest.suggest_incident_date import (
     SuggestIncidentDateOnlyYearMonth,
     SuggestIncidentDateOnly,
-    SuggestIncidentDateOnlyYear)
+    SuggestIncidentDateOnlyYear,
+    SuggestTimeOfDay)
 from search.services.suggest.suggest_allegation import (
     SuggestAllegationCity,
     SuggestAllegationCrid,
@@ -44,6 +45,7 @@ class SuggestionService(object):
             SuggestAllegationSummary,
             SuggestIncidentDateOnly,
             SuggestIncidentDateOnlyYear,
+            SuggestTimeOfDay,
             SuggestOfficerName,
             SuggestOfficerUnit,
             SuggestOfficerActive,

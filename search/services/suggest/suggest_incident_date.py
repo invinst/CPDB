@@ -103,3 +103,25 @@ class SuggestIncidentDateOnlyYear(SuggestBase):
         ]
 
         return {'Incident Year': results}
+
+
+class SuggestTimeOfDay(SuggestBase):
+    @classmethod
+    def _query(cls, term):
+        terms = ['morning', 'midday', 'afternoon', 'evening', 'night']
+        results = []
+        for entry in terms:
+            if entry.startswith(term.lower()):
+                results.append(
+                    cls.entry_format(
+                        suggest_value=entry,
+                        tag_value=cls.build_tag_value(
+                            category='incident_date_time_of_day',
+                            value=entry,
+                            display_category='Incident Time',
+                            display_value=entry.capitalize(),
+                        )
+                    )
+                )
+
+        return {'Incident Time of Day': results}
