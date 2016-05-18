@@ -71,6 +71,11 @@ $loading-color-1: $midnight-blue
 $loading-color-2: $bay-of-many
 $loading-color-3: $blue-ribbon
 
+//REQUEST MODAL
+$request-submit-color: $text_color
+$input-focus-border-color: $text_color
+$input-border-color: #d2d2d2
+
 
 @import 'shared/sf-compact-font'
 
@@ -1563,6 +1568,15 @@ form.navbar-form.navbar-right
     font-size: 56px
     .fa
       font-weight: 700
+  .error
+    font-weight: 300
+    color: $red
+    padding-top: 5px
+  .btn-request-submit
+    background-color: $request-submit-color
+  .form-control.email-input:focus
+    background-image: linear-gradient($input-focus-border-color,$input-focus-border-color),linear-gradient($input-border-color,$input-border-color)
+  
 
 @media(max-width: 1024px)
   .container.content

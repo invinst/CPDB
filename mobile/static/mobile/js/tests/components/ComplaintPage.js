@@ -1,7 +1,8 @@
 var sinon;
 var f, HashUtil, GaUtil, MapFacade;
 var AccompliceOfficerSection, AgainstSection, AllegationResourceUtil, ComplainingWitness, ComplaintPage,
-  ComplaintPageStore, InvestigatorSection, Location, OfficerAllegationDetail, SearchablePage, DocumentSection;
+  ComplaintPageStore, InvestigatorSection, Location, OfficerAllegationDetail, SearchablePage, DocumentSection,
+  InterfaceTextResourceUtil;
 
 var React = require('react');
 var ReactDOM = require('react-dom');
@@ -31,6 +32,7 @@ InvestigatorSection = require('components/ComplaintPage/InvestigatorSection.reac
 Location = require('components/ComplaintPage/Location.react');
 OfficerAllegationDetail = require('components/ComplaintPage/OfficerAllegationDetail.react');
 SearchablePage = require('components/Shared/SearchablePage.react');
+InterfaceTextResourceUtil = require('utils/InterfaceTextResourceUtil');
 
 
 function stubForComplaintPage() {
@@ -39,6 +41,7 @@ function stubForComplaintPage() {
   sinon.stub(MapFacade, 'initialize');
   sinon.stub(MapFacade, 'addAccidentPlaceMarker');
   sinon.stub(MapFacade, 'addNoAddressPopup');
+  sinon.stub(InterfaceTextResourceUtil, 'get', function () {});
 }
 
 function restoreForComplaintPage() {
@@ -60,6 +63,10 @@ function restoreForComplaintPage() {
 
   if (AllegationResourceUtil.get.restore) {
     AllegationResourceUtil.get.restore();
+  }
+
+  if (InterfaceTextResourceUtil.get.restore) {
+    InterfaceTextResourceUtil.get.restore();
   }
 }
 

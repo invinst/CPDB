@@ -1,4 +1,4 @@
-var RequestModalContent, RequestEmailResourceUtil;
+var RequestModalContent, RequestEmailResourceUtil, InterfaceTextResourceUtil;
 
 var React = require('react');
 var ReactTestUtils = require('react-addons-test-utils');
@@ -11,9 +11,18 @@ require('utils/tests/should/React');
 
 RequestModalContent = require('components/ComplaintPage/DocumentSection/DocumentCard/RequestModalContent.react');
 RequestEmailResourceUtil = require('utils/RequestEmailResourceUtil.js');
+InterfaceTextResourceUtil = require('utils/InterfaceTextResourceUtil');
 
 
 describe('RequestModalContentComponent', function () {
+  beforeEach(function () {
+    sinon.stub(InterfaceTextResourceUtil, 'get', function () {});
+  });
+
+  afterEach(function () {
+    InterfaceTextResourceUtil.get.restore();
+  });
+
   it('should be renderable', function () {
     RequestModalContent.should.be.renderable();
   });

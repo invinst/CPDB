@@ -5,6 +5,8 @@ var classnames = require('classnames');
 var AppDispatcher = require('dispatcher/AppDispatcher');
 var RequestDocumentConstants = require('constants/RequestDocumentConstants');
 var RequestDocumentActions = require('actions/RequestDocumentActions');
+var InterfaceText = require('components/Shared/InterfaceText.react');
+var RequestDocumentErrorPresenter = require('presenters/RequestDocumentErrorPresenter');
 
 
 var RequestModal = (function () {
@@ -12,10 +14,13 @@ var RequestModal = (function () {
 
   var mountedInstant = null;
 
+  var errorMessage = '';
+
   var component = React.createClass({
     getInitialState: function () {
       return {
-        thank: false
+        thank: false,
+        requestFailed: false
       };
     },
     componentDidMount: function () {
@@ -58,6 +63,9 @@ var RequestModal = (function () {
       var thankClassName = classnames('modal-dialog thanks-form', {
         'hidden': !this.state.thank
       });
+      var errorClassName = classnames('error', {
+        'hidden': !this.state.requestFailed
+      });
       return (
         <div className='modal fade' id='request_modal' tabIndex='-1' role='dialog' aria-labelledby='myModalLabel'>
           <div className={ formClassName } role='document' style={ style }>
@@ -69,12 +77,15 @@ var RequestModal = (function () {
               </div>
               <div className='modal-body'>
                 <h3>We&apos;ll notify you when the document is made available.</h3>
-                <input type='email' name='email' className='form-control'
+                <input type='email' name='email' className='form-control email-input'
                   placeholder='Please enter email address' onKeyDown={ this.onKeyDown } />
+                <div className={ errorClassName }>{ errorMessage }</div>
               </div>
               <div className='modal-footer'>
                 <button type='button' className='btn btn-default' data-dismiss='modal'>Cancel</button>
-                <button type='button' className='btn btn-primary' onClick={ this.onClick }>Submit</button>
+                <button type='button' className='btn btn-primary btn-request-submit' onClick={ this.onClick }>
+                  Submit
+                </button>
               </div>
             </div>
           </div>
@@ -87,11 +98,7 @@ var RequestModal = (function () {
               </div>
               <div className='modal-body'>
                 <h3 className='text-center'>Thank you!</h3>
-                <p>
-                  Someone from our team will write a Freedom of Information Act Request for this document,
-                  and e-mail FOIA@chicagopolice.org. We will wait to hear back.
-                </p>
-                <p>If we receive a responsive document, we will update this database. Check back in a few weeks!</p>
+                <InterfaceText identifier='thank-you-message' />
                 <div className='success-icon'><i className='fa fa-check-circle'></i></div>
               </div>
             </div>
@@ -119,6 +126,14 @@ var RequestModal = (function () {
     });
   };
 
+  component.requestFailed = function (errors) {
+    var errorPresenter = RequestDocumentErrorPresenter(errors);
+    errorMessage = errorPresenter.errorMessage;
+    mountedInstant.setState({
+      requestFailed: true
+    });
+  };
+
   return component;
 })();
 
@@ -130,6 +145,10 @@ RequestModal.dispatcherToken = AppDispatcher.register(function (action) {
 
     case RequestDocumentConstants.DOCUMENT_REQUESTED:
       RequestModal.requestSuccess();
+      break;
+
+    case RequestDocumentConstants.DOCUMENT_REQUEST_FAILED:
+      RequestModal.requestFailed(action.errors);
       break;
 
     default:

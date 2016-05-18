@@ -21,6 +21,11 @@ module.exports = {
   DOCUMENT_REQUEST_SUCCESS: c++,
   DOCUMENT_REQUEST_FAIL: c++,
 
+  //InterfaceText events
+  GET_INTERFACE_TEXT_SUCCESS: c++,
+  GET_INTERFACE_TEXT_FAILED: c++,
+
+
   //OfficerPage events
   OFFICER_PAGE_RECEIVED_DATA: c++,
   OFFICER_PAGE_FAILED_TO_RECEIVED_DATA: c++,
@@ -204,6 +209,7 @@ module.exports = {
   OFFICER_API_ENDPOINT: '/mobile/api/officer/',
   SUGGESTION_API_ENDPOINT: '/mobile/api/suggestion/',
   REQUEST_EMAIL_API_EMAIL: '/mobile/api/request_email/',
+  INTERFACE_TEXT_API_ENDPOINT: '/mobile/api/interface_text/',
 
   //Time format
   SIMPLE_DATE_FORMAT: 'MMM DD, YYYY',
@@ -211,6 +217,9 @@ module.exports = {
   SEARCH_INCIDENT_DATE_FORMAT: 'MMM Do, YYYY',
   FIRST_AVAILABLE_DATE_FORMAT: 'DD/MM/YYYY',
   FIRST_AVAILABLE_DATE: '02/01/1970',
+
+  //Interface text cache
+  INTERFACE_TEXT_EXPIRED_TIMESPAN: 3600000, //ms
 
   //Hash
   SALT: '8qTCKQzt5jYYTADWcUO8'

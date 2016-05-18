@@ -9,6 +9,7 @@ var AllegationPresenterFactory = require('presenters/AllegationPresenterFactory'
 var RequestModal = require('components/DataToolPage/Complaint/RequestModal.react');
 var AppDispatcher = require('dispatcher/AppDispatcher');
 var RequestDocumentActions = require('actions/RequestDocumentActions');
+var InterfaceTextUtil = require('utils/InterfaceTextUtil');
 
 require('should');
 require('utils/tests/should');
@@ -89,7 +90,11 @@ describe('AllegationSummary component', function () {
     var modalContent;
     var emailInput;
     var submitBtn;
+    var thankYouMessage = 'Thank you message';
     sinon.stub(RequestDocumentActions, 'registerEmail');
+    sinon.stub(InterfaceTextUtil, 'get', function () {
+      return thankYouMessage;
+    });
 
     allegationSummary = ReactTestUtils.renderIntoDocument(
       <AllegationSummary allegation={ MOCK_ALLEGATION } noButton={ true }/>
@@ -113,9 +118,13 @@ describe('AllegationSummary component', function () {
     submitBtn = ReactTestUtils.findRenderedDOMComponentWithClass(requestModal, 'btn-primary');
     ReactTestUtils.Simulate.click(submitBtn);
 
+    modalContent = ReactTestUtils.findRenderedDOMComponentWithClass(requestModal, 'thanks-form');
+    modalContent.textContent.should.contains(thankYouMessage);
+
     RequestDocumentActions.registerEmail.calledWith(1, 'what@ever.email').should.be.true();
 
     ReactDOM.unmountComponentAtNode(ReactDOM.findDOMNode(requestModal).parentNode);
     RequestDocumentActions.registerEmail.restore();
+    InterfaceTextUtil.get.restore();
   });
 });
