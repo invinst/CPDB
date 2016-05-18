@@ -14,9 +14,9 @@ class InterfaceTextEditTestCase(BaseAdminTestCase):
         self.until(lambda: self.find(".fa-pencil"))
         self.find(".fa-pencil").click()
 
-        self.until(lambda: self.find('#id_text'))
+        self.until(lambda: self.find('.input-text'))
 
-        input_field = self.find("#id_text")
+        input_field = self.find(".input-text")
 
         add_text = "Updating the summary text field"
         input_field.send_keys(add_text)

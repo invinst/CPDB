@@ -11,7 +11,7 @@ from twitterbot.services.twitter_bot_service import TwitterBotService
 
 class TwitterBotServiceTestCase(SimpleTestCase):
     def setUp(self):
-        self.service = TwitterBotService(api=MagicMock(), current_user=MagicMock(screen_name='tweeter'))
+        self.service = TwitterBotService(client=MagicMock())
 
     def test_build_responses(self):
         officer = OfficerFactory()
@@ -20,7 +20,7 @@ class TwitterBotServiceTestCase(SimpleTestCase):
 
         ResponseTemplateFactory(response_type='officer')
         originating_tweet = TweetFactory(text=officer.display_name)
-        incoming_tweet = TweetFactory(retweeted_status=originating_tweet)
+        incoming_tweet = TweetFactory(retweeted_tweet=originating_tweet)
         self.service.get_recipients = MagicMock(return_value=['r1', 'r2'])
 
         responses = self.service.build_responses(incoming_tweet)
@@ -34,7 +34,7 @@ class TwitterBotServiceTestCase(SimpleTestCase):
     def test_get_recipients(self):
         poster = 'poster'
         mentioned = 'mentioned'
-        self.service.statuses = [TweetFactory(screen_name=poster, user_mentions=[{'screen_name': mentioned}])]
+        self.service.tweets = [TweetFactory(screen_name=poster, user_mentions=[{'screen_name': mentioned}])]
 
         recipients = self.service.get_recipients()
 
@@ -43,7 +43,7 @@ class TwitterBotServiceTestCase(SimpleTestCase):
 
     def test_get_originating_tweet(self):
         oldest_tweet = TweetFactory(created_at=datetime.strptime('01-01-1970 00:00:00', '%d-%m-%Y %H:%M:%S'))
-        self.service.statuses = [
+        self.service.tweets = [
             oldest_tweet,
             TweetFactory(created_at=oldest_tweet.created_at + timedelta(days=1)),
             TweetFactory(created_at=oldest_tweet.created_at + timedelta(days=2))
@@ -54,7 +54,7 @@ class TwitterBotServiceTestCase(SimpleTestCase):
         originating_tweet.should.be(oldest_tweet)
 
     def test_get_non_existent_originating_tweet(self):
-        self.service.statuses = [
+        self.service.tweets = [
             TweetFactory()
         ]
 

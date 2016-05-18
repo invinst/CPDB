@@ -15,11 +15,10 @@ var NotMatchedOfficerPage = React.createClass({
       <SearchablePage>
         <div className='not-matched-officer-page container content'>
           <h3 className='message-title'>
-            Invalid page!
+            Sorry!
           </h3>
           <div className='message-content'>
-            The id <span className='officer-id'>{ id }</span> is not recorded in out database. Please use
-            search bar for new search session.
+            <span className='officer-id'>{ id }</span> is not in our database.
           </div>
         </div>
       </SearchablePage>

@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from common.models import Investigator, Area, ComplainingWitness, OfficerAllegation, Allegation, Officer
+from document.models import Document
 
 from mobile.serializers.shared import AllegationCategorySerializer
 
@@ -70,27 +71,25 @@ class OfficerAllegationSerializer(serializers.ModelSerializer):
         )
 
 
+class DocumentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Document
+        fields = (
+            'id',
+            'documentcloud_id',
+            'normalized_title',
+            'requested',
+            'pending',
+            'type'
+        )
+
+
 class AllegationSerializer(serializers.ModelSerializer):
     beat = BeatSerializer()
     point = GeoSerializer()
     investigator = InvestigatorSerializer()
     officer_allegation_set = OfficerAllegationSerializer(many=True, source='officerallegation_set')
-    document_id = serializers.SerializerMethodField('get_cr_document_id')
-    document_normalized_title = serializers.SerializerMethodField('get_cr_normalized_title')
-
-    def get_cr_document_id(self, obj):
-        documents = obj.documents.all()
-        for document in documents:
-            if document.type == 'CR':
-                return document.documentcloud_id
-        return 0
-
-    def get_cr_normalized_title(self, obj):
-        documents = obj.documents.all()
-        for document in documents:
-            if document.type == 'CR':
-                return document.normalized_title
-        return ''
+    documents = DocumentSerializer(many=True)
 
     class Meta:
         model = Allegation
@@ -104,8 +103,7 @@ class AllegationSerializer(serializers.ModelSerializer):
             'add2',
             'city',
             'point',
-            'document_id',
-            'document_normalized_title',
+            'documents',
             'officer_allegation_set',
         )
 

@@ -4,7 +4,8 @@ from search.models.alias import Alias
 from search.services.suggest.suggest_incident_date import (
     SuggestIncidentDateOnlyYearMonth,
     SuggestIncidentDateOnly,
-    SuggestIncidentDateOnlyYear)
+    SuggestIncidentDateOnlyYear,
+    SuggestTimeOfDay)
 from search.services.suggest.suggest_allegation import (
     SuggestAllegationCity,
     SuggestAllegationCrid,
@@ -13,7 +14,7 @@ from search.services.suggest.suggest_allegation_category import (
     SuggestAllegationCategoryCategory,
     SuggestAllegationCategoryCat,
     SuggestAllegationCategoryOnDuty)
-from search.services.suggest.suggest_area import SuggestArea
+from search.services.suggest.suggest_area import SuggestArea, SuggestSchools
 from search.services.suggest.suggest_has import SuggestHas
 from search.services.suggest.suggest_investigator import SuggestInvestigator
 from search.services.suggest.suggest_investigator_agency import SuggestInvestigatorAgency
@@ -44,6 +45,7 @@ class SuggestionService(object):
             SuggestAllegationSummary,
             SuggestIncidentDateOnly,
             SuggestIncidentDateOnlyYear,
+            SuggestTimeOfDay,
             SuggestOfficerName,
             SuggestOfficerUnit,
             SuggestOfficerActive,
@@ -62,6 +64,7 @@ class SuggestionService(object):
             SuggestSessionAlias,
             SuggestHas,
             SuggestInvestigatorAgency,
+            SuggestSchools
         ]
 
     def _make_suggestion(self, q):

@@ -6,12 +6,14 @@ var u = require('utils/HelperUtil');
 
 var GaUtil = require('utils/GaUtil');
 
+var AllegationPresenter = require('presenters/AllegationPresenter');
 var AccompliceOfficerSection = require('components/ComplaintPage/AccompliceOfficerSection.react');
 var AgainstSection = require('components/ComplaintPage/AgainstSection.react');
 var AllegationResourceUtil = require('utils/AllegationResourceUtil');
 var ComplainingWitness = require('components/ComplaintPage/ComplainingWitness.react');
 var ComplaintPagePresenter = require('presenters/Page/ComplaintPagePresenter');
 var ComplaintPageStore = require('stores/ComplaintPage/ComplaintPageStore');
+var DocumentSection = require('components/ComplaintPage/DocumentSection.react');
 var InvestigatorSection = require('components/ComplaintPage/InvestigatorSection.react');
 var LoadingPage = require('components/Shared/LoadingPage.react');
 var Location = require('components/ComplaintPage/Location.react');
@@ -53,7 +55,7 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
     var presenter = ComplaintPagePresenter(data, categoryHashId);
     var toggle = this.state.toggle;
     var classNames = cx('toggle-page', {'content': toggle}, {'animate': !toggle});
-
+    var allegationPresenter = AllegationPresenter(presenter.allegation);
 
     // TODO: Think about refactoring this later
     if (loading) {
@@ -90,6 +92,7 @@ var ComplaintPage = React.createClass(objectAssign(Base(ComplaintPageStore), {
                     <OfficerAllegationDetail allegation={ presenter.allegation }
                       currentOfficerAllegation={ presenter.currentOfficerAllegation }
                       numberOfAllegations={ presenter.numberOfOfficerAllegations }/>
+                    <DocumentSection documents={ allegationPresenter.documents } />
                     <AgainstSection allegation={ presenter.allegation }
                       officerAllegations={ presenter.againstOfficerAllegations }/>
                     <ComplainingWitness complainingWitnesses={ presenter.complainingWitnesses }/>

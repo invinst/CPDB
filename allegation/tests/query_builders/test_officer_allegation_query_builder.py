@@ -6,10 +6,10 @@ from django.db.models.query_utils import Q
 
 from allegation.factories import (
     OfficerAllegationFactory, AllegationFactory, OfficerFactory,
-    ComplainingWitnessFactory, AllegationCategoryFactory, PoliceUnitFactory)
+    ComplainingWitnessFactory, AllegationCategoryFactory, PoliceUnitFactory, AreaFactory)
 from allegation.query_builders import (
     OfficerAllegationQueryBuilder, DISCIPLINE_CODES, NO_DISCIPLINE_CODES, _apply_all_query_methods)
-from common.models import OfficerAllegation, Allegation, OUTCOMES
+from common.models import OfficerAllegation, Allegation, OUTCOMES, Area
 from common.tests.core import SimpleTestCase
 from common.utils.haystack import rebuild_index
 
@@ -24,6 +24,7 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
     def clean_db(self):
         Allegation.objects.all().delete()
         OfficerAllegation.objects.all().delete()
+        Area.objects.all().delete()
 
     def test_adhoc_queries(self):
         expected_allegations = [
@@ -315,6 +316,17 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
         self.clean_db()
         self._test_incident_date_only()
 
+    def test_incident_date_time_of_day(self):
+        self.clean_db()
+        oa1 = OfficerAllegationFactory(allegation=AllegationFactory(
+            incident_date=datetime.datetime(2007, 12, 16, 7, 30, 30)
+        ))
+        OfficerAllegationFactory(allegation=AllegationFactory(
+            incident_date=datetime.datetime(2007, 12, 16, 16, 30, 30)
+        ))
+
+        self.check_built_query('incident_date_time_of_day=morning', [oa1.id])
+
     def _test_incident_date_only_range(self):
         expected_allegations = [
             OfficerAllegationFactory(allegation=AllegationFactory(
@@ -534,6 +546,21 @@ class OfficerAllegationQueryBuilderTestCase(SimpleTestCase):
         officer = OfficerFactory(unit=unit)
         oa = OfficerAllegationFactory(officer=officer)
         self.check_built_query('officer__unit=123', [oa.id])
+
+    def test_query_area_type(self):
+        self.clean_db()
+        area = AreaFactory(type='school-grounds')
+        allegation = AllegationFactory()
+        allegation.areas = [area]
+        allegation.save()
+
+        other_allegation = AllegationFactory()
+        other_allegation.areas = [AreaFactory(type='beat')]
+        other_allegation.save()
+
+        oa1 = OfficerAllegationFactory(allegation=allegation)
+        OfficerAllegationFactory(allegation=other_allegation)
+        self.check_built_query('allegation__areas__type=school-grounds', [oa1.id])
 
     def check_built_query(self, query_string, expected_ids):
         params = QueryDict(query_string)

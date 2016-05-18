@@ -7,6 +7,7 @@ from django.core.urlresolvers import reverse
 
 from common.constants import FINDINGS, OUTCOMES, ACTIVE_CHOICES, CITIZEN_DEPTS, LOCATION_CHOICES, RANKS
 from common.models.time_stamp import TimeStampedModel
+from common.transforms import HourExtract  # NOQA
 from allegation.models.managers import AllegationManager, OfficerAllegationManager, DisciplinedManager
 from common.models.suggestible import (
     MobileSuggestibleOfficer, MobileSuggestibleAllegation)

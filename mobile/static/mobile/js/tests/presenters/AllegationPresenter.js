@@ -136,39 +136,13 @@ describe('AllegationPresenter', function () {
     });
   });
 
-  describe('#documentId', function () {
-    it('should return document id ', function () {
-      var documentId = 123467;
-      var allegation = f.create('Allegation', { 'document_id': documentId });
+  describe('#documents', function () {
+    it('should return documents ', function () {
+      var documents = f.createBatch(2, 'Document');
+      var allegation = f.create('Allegation', { 'documents': documents });
       var presenter = AllegationPresenter(allegation);
 
-      presenter.documentId.should.be.equal(documentId);
-    });
-
-    it('should return 0 if there is no document id', function () {
-      var documentId = 0;
-      var allegation = f.create('Allegation', { 'document_id': documentId });
-      var presenter = AllegationPresenter(allegation);
-
-      presenter.documentId.should.be.equal(0);
-    });
-  });
-
-  describe('#documentNormalizedTitle', function () {
-    it('should return document normalized title', function () {
-      var documentNormalizedTitle = 'cr-123467';
-      var allegation = f.create('Allegation', { 'document_normalized_title': documentNormalizedTitle });
-      var presenter = AllegationPresenter(allegation);
-
-      presenter.documentNormalizedTitle.should.be.equal(documentNormalizedTitle);
-    });
-
-    it('should return empty if there is no document normalized title', function () {
-      var documentNormalizedTitle = null; // this might not happens in real example
-      var allegation = f.create('Allegation', { 'document_normalized_title': documentNormalizedTitle });
-      var presenter = AllegationPresenter(allegation);
-
-      presenter.documentNormalizedTitle.should.be.equal('');
+      presenter.documents.should.have.length(2);
     });
   });
 
