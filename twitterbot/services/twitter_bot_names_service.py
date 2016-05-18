@@ -7,8 +7,8 @@ from twitterbot.models import TwitterBotTextSource
 
 
 class TwitterBotNamesService:
-    def __init__(self, statuses):
-        self.statuses = statuses
+    def __init__(self, tweets):
+        self.tweets = tweets
 
     def get_all_names(self):
         names = collections.defaultdict(lambda: [])
@@ -21,11 +21,11 @@ class TwitterBotNamesService:
 
     def build_text_sources(self):
         text_sources = []
-        for status in self.statuses:
-            if not getattr(status, 'retweeted_status', None):
-                text_sources.append(TwitterBotTextSource(text=status.text, source='text'))
-                text_sources += self.parse_linked_websites(status.entities['urls'])
-                text_sources += self.parse_hashtags(status)
+        for tweet in self.tweets:
+            if not getattr(tweet, 'retweeted_tweet', None):
+                text_sources.append(TwitterBotTextSource(text=tweet.text, source='text'))
+                text_sources += self.parse_linked_websites(tweet.entities['urls'])
+                text_sources += self.parse_hashtags(tweet)
 
         return text_sources
 
@@ -51,8 +51,8 @@ class TwitterBotNamesService:
 
         return texts
 
-    def parse_hashtags(self, status):
-        hashtags = status.entities.get('hashtags', [])
+    def parse_hashtags(self, tweet):
+        hashtags = tweet.entities.get('hashtags', [])
         text_sources = []
 
         for hashtag in hashtags:
