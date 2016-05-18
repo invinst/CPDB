@@ -10,14 +10,14 @@ var InterfaceTextSection = React.createClass(_.assign(Base(InterfaceTextSectionS
 
   renderActive: function () {
     return (
-      <div className='row' key={ this.state.activeText.key }>
+      <div className='row' key={ this.state.activeText.id }>
         <div className='col-md-3'>
-          <input className='form-control' id='id_key' type='text' value={ this.state.activeText.key }
+          <input className='form-control' type='text' value={ this.state.activeText.key }
             onChange={ this.changeText.bind(this, 'key') } />
         </div>
         <div className='col-md-7'>
-          <textarea id='id_text' className='form-control' onChange={ this.changeText.bind(this, 'text') }
-            value={ this.state.activeText.text }></textarea>
+          <textarea className='input-text form-control' onChange={ this.changeText.bind(this, 'text') }
+            value={ this.state.activeText.text }/>
         </div>
         <div className='col-md-2'>
           <button onClick={ this.save.bind(this, this.state.activeText) } className='btn btn-info'>
@@ -66,7 +66,7 @@ var InterfaceTextSection = React.createClass(_.assign(Base(InterfaceTextSectionS
       }
     }
     else {
-      children.push(<span key={ 0 }><i className='fa fa-spin fa-spinner'/></span>);
+      children.push(<span><i className='fa fa-spin fa-spinner'/></span>);
     }
     return children;
   },
@@ -104,9 +104,9 @@ var InterfaceTextSection = React.createClass(_.assign(Base(InterfaceTextSectionS
         <div>
           <div className='row margin-top'>
             <div className='col-md-12'>
-              <form className='form-horizontal'>
+              <div className='form-horizontal'>
                 { this.renderContent() }
-              </form>
+              </div>
             </div>
           </div>
         </div>

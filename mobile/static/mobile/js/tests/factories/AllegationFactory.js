@@ -1,8 +1,8 @@
 var faker = require('faker');
 
 var f = require('utils/tests/f');
-var u = require('utils/HelperUtil');
 
+require('tests/factories/DocumentFactory');
 require('tests/factories/InvestigatorFactory');
 require('tests/factories/PointFactory');
 
@@ -44,12 +44,8 @@ f.define('Allegation', {
     return f.create('Point');
   },
 
-  'document_id': function () {
-    return faker.random.number(1000000);
-  },
-
-  'document_normalized_title': function () {
-    return u.format('cr-{id}', { 'id': faker.random.number(1000000) });
+  'documents': function () {
+    return f.createBatch(2, 'Document');
   },
 
   'officer_allegation_set': function () {

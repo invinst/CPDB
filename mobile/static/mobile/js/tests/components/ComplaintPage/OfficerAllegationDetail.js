@@ -1,4 +1,4 @@
-var ReactTestUtils, f, DocumentLink, OfficerAllegationDetail, cridInfo, ComplaintPageActions, sinon;
+var ReactTestUtils, f, OfficerAllegationDetail, cridInfo, ComplaintPageActions, sinon;
 
 var React = require('react');
 require('react-dom');
@@ -12,7 +12,6 @@ require('utils/tests/should/React');
 
 ComplaintPageActions = require('actions/ComplaintPage/ComplaintPageActions');
 
-DocumentLink = require('components/ComplaintPage/DocumentLink.react');
 OfficerAllegationDetail = require('components/ComplaintPage/OfficerAllegationDetail.react');
 
 
@@ -88,16 +87,6 @@ describe('OfficerAllegationDetailComponent', function () {
       .textContent.should.be.containEql('Unknown');
     ReactTestUtils.findRenderedDOMComponentWithClass(officerAllegationDetail, 'allegation-name')
       .textContent.should.be.eql('');
-  });
-
-  it('should render `DocumentLink` as subcomponent', function () {
-    var allegation = f.create('Allegation');
-
-    officerAllegationDetail = ReactTestUtils.renderIntoDocument(
-      <OfficerAllegationDetail allegation={ allegation } />
-    );
-
-    officerAllegationDetail.should.render([DocumentLink]);
   });
 
   it('should trigger toggle action if clicking the hamburger menu', function () {

@@ -46,8 +46,8 @@ var AllegationPresenter = function (complaint) {
     return !!(add1() && add2());
   };
 
-  var documentId = function () {
-    return u.fetch(complaint, 'document_id', 0);
+  var documents = function () {
+    return u.fetch(complaint, 'documents', []);
   };
 
   return {
@@ -58,8 +58,7 @@ var AllegationPresenter = function (complaint) {
     city: u.fetch(complaint, 'city', ''),
     locationType: locationType(),
     beat: u.fetch(complaint, 'beat.name', ''),
-    documentId: documentId(),
-    documentNormalizedTitle: u.fetch(complaint, 'document_normalized_title', ''),
+    documents: documents(),
     hasLocation: hasLocation(),
     hasFullAddress: hasFullAddress(),
     url: url()
