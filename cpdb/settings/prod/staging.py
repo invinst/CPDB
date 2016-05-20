@@ -27,7 +27,7 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'cpdb_staging',
         'USER': 'deploy',
-        ***REMOVED***
+        'PORT': '***REMOVED***',
         'PASSWORD': '',
         'HOST': '',
     }

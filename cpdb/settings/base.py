@@ -127,7 +127,7 @@ DATABASES = {
         'USER': os.environ.get('DB_USER', 'eastagile'),
         'PASSWORD': os.environ.get('DB_PASSWORD', ''),
         'HOST': '127.0.0.1',
-        ***REMOVED***
+        'PORT': '***REMOVED***',
     }
 }
 

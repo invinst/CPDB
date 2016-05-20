@@ -7,7 +7,7 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'circle_test',
         'HOST': 'localhost',
-        ***REMOVED***
+        'PORT': '***REMOVED***',
         'USER': 'ubuntu',
         'TEST': {
             'NAME': 'circle_test',

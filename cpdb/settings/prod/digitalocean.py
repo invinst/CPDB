@@ -8,7 +8,7 @@ DATABASES = {
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
         'NAME': 'cpdb',
         'USER': os.environ.get('DB_USER'),
-        ***REMOVED***
+        'PORT': '***REMOVED***',
         'PASSWORD': os.environ.get('DB_PASS'),
         'HOST': os.environ.get('DB_HOST'),
     }
